@@ -1,12 +1,12 @@
 from os import listdir, environ
-from os.path import isfile, join
+from os.path import isdir, join
 import shutil
 import subprocess
 
 app_path = "apps"
 
 # Read apps directory
-app_dir_names = [f for f in listdir(app_path) if isfile(join(app_path, f))]
+app_dir_names = [f for f in listdir(app_path) if isdir(join(app_path, f))]
 
 # DDS provides DASH_APP_NAME variable
 app_name = environ["DASH_APP_NAME"]
