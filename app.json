@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "dokku": {
+            "predeploy": "python predeploy.py"
+        }
+    }
+}
