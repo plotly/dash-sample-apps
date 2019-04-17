@@ -1,0 +1,230 @@
+@page { size: auto;  margin: 0mm; }
+
+@media print {
+    body * {
+	visibility: hidden;
+    }
+
+    html, body {
+	page-break-after: avoid !important;
+	page-break-before: avoid !important;
+    }
+
+    .page, .page *, #las-curves {
+	visibility: visible;
+	-webkit-print-color-adjust: exact;
+    }
+
+    .page {
+	margin: 1.25in;
+	page-break-after: always;
+	page-break-before: auto;
+	border: solid 1px rgba(0,0,0,0)
+    }
+
+    .section-title {
+	-webkit-print-color-adjust: exact;
+	visibility: visible;
+	font-size: 28pt !important;
+	font-weight: 300 !important;
+	text-align: center;
+	margin-top: 0px !important;
+	padding: 10px !important;
+	width: 300px !important;
+	margin-left: 50px !important;
+    }
+    #las-curves {
+	page-break-after: avoid !important;
+	margin-bottom: -100px !important;
+	margin-left: 20px;
+    }
+    #frontpage {
+	background-color: rgba(0,0,0,0) !important;
+    }
+    #frontpage, #frontpage * {
+	page-break-after: always;
+	visibility: visible;
+	-webkit-print-color-adjust: exact;
+    }
+
+    #las-logo {
+	position: absolute !important;
+	display: block !important;
+	top: calc(65% - 212px) !important;
+	padding: 0px !important;
+	margin: 0px !important;
+	right: calc(100% - 315px) !important;
+	height: 212px !important;
+	clip-path: none !important;
+    }
+    #las-header-text {
+	position: absolute;
+	bottom: 35%;
+	right: 0px;
+	padding: 50px;
+	background-color: #0057a5;
+    }
+    #las-file-info {
+	font-size: 12pt;
+	margin-left: -5px !important;
+	background-color: #0057a5 !important;
+	color: white !important;
+	padding: 0px;
+    }
+    #las-curves {
+	z-index: 0;
+	position: relative;
+	top: -125px;
+	left: -125px;
+    }
+    #frontpage h1 {
+	font-size: 35pt !important;
+	font-weight: bolder;
+	color: white;
+    }
+
+    #las-table {
+	display: none;
+    }
+    #las-table-print {
+	margin-top: -150px;
+	display: block !important;
+	page-break-after: always !important;
+    }
+    #las-table-print table {
+	border-collapse: collapse;
+    }
+
+    #las-table-print th, #las-table-print td {
+	border: 1px solid lightgrey;
+	font-weight: lighter;
+	padding: 4px;
+	font-size: 10pt;
+	text-align: center;
+    }
+
+    .page.tablepage {
+	page-break-after: always;
+	position: relative;
+	left: -100px;
+    }
+    .tablepage {
+	margin-top: 100px;
+	page-break-after: always;
+	page-break-inside: avoid;
+    }
+
+    #las-table-print table > tr > td:nth-child(2), #las-table-print table > tr > td:nth-child(4) {
+	text-align: left;
+    }
+}
+
+body {
+    font-family: aktiv-grotesk-thin,sans-serif;
+    width: 100%;
+    margin-left: 0px;
+}
+
+#frontpage, .section-title {
+    background-color: #0057a5;
+    color: white;
+    margin: 0px;
+    padding: 10px;
+    width: calc(100% - 20px);
+}
+#frontpage {
+    margin-top: -30px;
+    padding-bottom: 0px;
+}
+
+#frontpage h1 {
+    font-size: 50pt;
+    display: inline;
+}
+
+#las-file-info {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    margin-left: -10px;
+}
+#las-logo {
+    height: 90px;
+    clip-path: inset(0px 0px 35.5px 0px);
+    position: relative;
+    top: 40px;
+    padding: 2px;
+    background-color: white;
+    margin-right: 20px;
+    display: inline
+}
+
+#las-header-text {
+    display: inline;
+}
+
+.section-title {
+    margin-top: 0px;
+    padding-left: 20px;
+    font-size: 20pt;
+    display: inline-block;
+    z-index: 100 !important;
+}
+
+#controls {
+    position: fixed;
+    background-color: rgba(0,0,0,0.4);
+    color: white;
+    padding: 10px;
+    padding-bottom: 15px;
+    top: 0px;
+    right: 0px;
+    z-index: 100;
+    text-align: center;
+    font-size: 20pt;
+    text-transform: lowercase;
+    font-variant: all-small-caps;
+}
+#graph-size {
+    transform: scale(0.9);
+    padding-top: 5px;
+}
+
+#las-print {
+    width: 100%;
+    font-family: aktiv-grotesk-thin,sans-serif;
+    font-variant: all-small-caps;
+    text-transform: lowercase;
+    font-size: 20pt;
+    color: white;
+    margin-top:10px;
+    background-color: rgba(0,87,165, 0.5);
+    border-style: solid 2px white;
+    border-radius: 2px;
+}
+
+.col-name, .col-entry {
+    padding-left: 20px;
+    padding-right: 20px;
+    border: solid 1px;
+    margin: 0px;
+}
+
+.col-name {
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+.col-entry {
+    font-size: 12pt;
+}
+
+#las-table table, #las-table-print table {
+    font-family: aktiv-grotesk-thin,sans-serif;
+}
+
+#las-table-print {
+    display: none; 
+}
