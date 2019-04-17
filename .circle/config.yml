@@ -1,0 +1,65 @@
+version: 2.0
+
+jobs:
+  test_black:
+    docker:
+      - image: circleci/python:3.6-stretch-node-browsers
+    working_directory: ~/dash-sample-apps
+    steps:
+      - run:
+          name: install black
+          command: |
+            sudo pip install black
+      - run:
+          name: run black
+          command: |
+            black . --check
+  deploy_to_playground:
+    docker:
+      - image: circleci/python:3.6-stretch
+    working_directory: ~/dash-sample-apps
+    steps:
+    steps:
+      - checkout
+      - run:
+          name: Add plotly remote
+          command: git remote add gallery https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
+      - run:
+          name: Create helper-script
+          command: printf '#!/bin/bash\necho username=$GALLERY_DEPLOY_USERNAME\necho password=$GALLERY_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
+      - run:
+          name: Set up git config
+          command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
+      - run:
+          name: Deploy
+          command: git push gallery $CIRCLE_BRANCH:master --force
+  deploy_to_gallery:
+    docker:
+      - image: circleci/python:3.6-stretch
+    working_directory: ~/dash-sample-apps
+    steps:
+      - checkout
+      - run:
+          name: Add plotly remote
+          command: git remote add gallery https://dash-gallery.plotly.host/GIT/$CIRCLE_BRANCH
+      - run:
+          name: Create helper-script
+          command: printf '#!/bin/bash\necho username=$GALLERY_DEPLOY_USERNAME\necho password=$GALLERY_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
+      - run:
+          name: Set up git config
+          command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
+      - run:
+          name: Deploy
+          command: git push gallery $CIRCLE_BRANCH:master --force
+
+workflows:
+  version: 2
+  test-and-deploy:
+    jobs:
+      - test_black
+      - deploy_to_playground:
+          requires:
+            - test_black
+      - deploy_to_gallery:
+          requires:
+            - test_black
