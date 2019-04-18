@@ -34,8 +34,9 @@ There are two options when you are naming the folder:
 
 1. Make the folder have the _exact same_ name as the Dash app name.
 
-2. Select any other name, but _update the file [`apps_mapping.py`](#)_
-   with the Dash app name and the folder name you have selected.
+2. Select any other name, but _update the file
+   [`apps_mapping.py`](apps_directory_mapping.py)_ with the Dash app
+   name and the folder name you have selected.
 
 Navigate to the directory you just created, and write a small README
 that only contains the name of the app. Stage the README and commit it
