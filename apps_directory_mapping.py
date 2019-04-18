@@ -1,3 +1,1 @@
-APPNAME_TO_DIRECTORY = {
-    "lastodash": "lastodash",
-}
+APPNAME_TO_DIRECTORY = {"lastodash": "lastodash"}
