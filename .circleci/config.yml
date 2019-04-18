@@ -14,49 +14,48 @@ jobs:
           name: run black
           command: |
             black . --check
-  deploy_to_playground:
-    docker:
-      - image: circleci/python:3.6-stretch
-    working_directory: ~/dash-sample-apps
-    steps:
-    steps:
-      - checkout
-      - run:
-          name: Add plotly remote
-          command: git remote add gallery https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
-      - run:
-          name: Create helper-script
-          command: printf '#!/bin/bash\necho username=$PLAYGROUND_DEPLOY_USERNAME\necho password=$PLAYGROUND_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
-      - run:
-          name: Set up git config
-          command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
-      - run:
-          name: Deploy
-          command: git push gallery $CIRCLE_BRANCH:master --force
-  deploy_to_gallery:
-    docker:
-      - image: circleci/python:3.6-stretch
-    working_directory: ~/dash-sample-apps
-    steps:
-      - checkout
-      - run:
-          name: Add plotly remote
-          command: git remote add gallery https://dash-gallery.plotly.host/GIT/$CIRCLE_BRANCH
-      - run:
-          name: Create helper-script
-          command: printf '#!/bin/bash\necho username=$GALLERY_DEPLOY_USERNAME\necho password=$GALLERY_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
-      - run:
-          name: Set up git config
-          command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
-      - run:
-          name: Deploy
-          command: |
-            APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 | awk '{ $2 ~ /apps/; split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }')
-            for APP in $APPS_MODIFIED
-            do
-              git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
-              git push $APP master
-            done
+    deploy_to_playground:
+      docker:
+        - image: circleci/python:3.6-stretch
+      working_directory: ~/dash-sample-apps
+      steps:
+        - checkout
+        - run:
+            name: Add plotly remote
+            command: git remote add gallery https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
+        - run:
+            name: Create helper-script
+            command: printf '#!/bin/bash\necho username=$PLAYGROUND_DEPLOY_USERNAME\necho password=$PLAYGROUND_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
+        - run:
+            name: Set up git config
+            command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
+        - run:
+            name: Deploy
+            command: git push gallery $CIRCLE_BRANCH:master --force
+    deploy_to_gallery:
+      docker:
+        - image: circleci/python:3.6-stretch
+      working_directory: ~/dash-sample-apps
+      steps:
+        - checkout
+        - run:
+            name: Add plotly remote
+            command: git remote add gallery https://dash-gallery.plotly.host/GIT/$CIRCLE_BRANCH
+        - run:
+            name: Create helper-script
+            command: printf '#!/bin/bash\necho username=$GALLERY_DEPLOY_USERNAME\necho password=$GALLERY_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
+        - run:
+            name: Set up git config
+            command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
+        - run:
+            name: Deploy
+            command: |
+              APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 | awk '{ $2 ~ /apps/; split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }')
+              for APP in $APPS_MODIFIED
+              do
+                git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
+                git push $APP master
+              done
 workflows:
   version: 2
   test-and-deploy:
