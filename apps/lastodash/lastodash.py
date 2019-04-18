@@ -63,7 +63,9 @@ def generate_frontpage():
                 html.Img(
                     id="las-logo",
                     src="data:image/png;base64,{}".format(
-                        base64.b64encode(open("apps/lastodash/assets/logo.png", "rb").read()).decode()
+                        base64.b64encode(
+                            open("apps/lastodash/assets/logo.png", "rb").read()
+                        ).decode()
                     ),
                 ),
                 html.Div(
