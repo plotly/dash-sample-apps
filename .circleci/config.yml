@@ -5,7 +5,9 @@ jobs:
     docker:
       - image: circleci/python:3.6-stretch-node-browsers
     working_directory: ~/dash-sample-apps
+
     steps:
+      - checkout
       - run:
           name: install black
           command: |
@@ -13,7 +15,7 @@ jobs:
       - run:
           name: run black
           command: |
-            black ~/dash-sample-apps --check
+            black . --check
   deploy_to_playground:
     docker:
       - image: circleci/python:3.6-stretch
