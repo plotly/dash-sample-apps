@@ -13,7 +13,7 @@ jobs:
       - run:
           name: run black
           command: |
-            black . --check
+            black ~/dash-sample-apps --check
   deploy_to_playground:
     docker:
       - image: circleci/python:3.6-stretch
