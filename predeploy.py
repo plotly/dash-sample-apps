@@ -2,7 +2,8 @@ import os
 import shutil
 import subprocess
 
-APPNAME_TO_DIRECTORY = {"lastodash": "lastodash"}
+from apps_directory_mapping import APPNAME_TO_DIRECTORY
+
 
 files = ["requirements.txt", "Procfile", "DOKKU_SCALE"]
 for f in files:
