@@ -5,7 +5,9 @@ jobs:
     docker:
       - image: circleci/python:3.6-stretch-node-browsers
     working_directory: ~/dash-sample-apps
+
     steps:
+      - checkout
       - run:
           name: install black
           command: |
@@ -19,11 +21,10 @@ jobs:
       - image: circleci/python:3.6-stretch
     working_directory: ~/dash-sample-apps
     steps:
-    steps:
       - checkout
       - run:
           name: Add plotly remote
-          command: git remote add gallery https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
+          command: git remote add playground https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
       - run:
           name: Create helper-script
           command: printf '#!/bin/bash\necho username=$PLAYGROUND_DEPLOY_USERNAME\necho password=$PLAYGROUND_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
@@ -32,7 +33,7 @@ jobs:
           command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
       - run:
           name: Deploy
-          command: git push gallery $CIRCLE_BRANCH:master --force
+          command: git push playground $CIRCLE_BRANCH:master --force
   deploy_to_gallery:
     docker:
       - image: circleci/python:3.6-stretch
