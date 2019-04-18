@@ -58,6 +58,11 @@ jobs:
               git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
               git push $APP master
             done
+      - run:
+          name: Push to production
+          command: |
+              git push git@github.com:plotly/dash-sample-apps master:production
+
 workflows:
   version: 2
   test-and-deploy:
