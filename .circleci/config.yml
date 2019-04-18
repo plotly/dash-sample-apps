@@ -82,4 +82,4 @@ workflows:
           filters:
             branches:
               only:
-              - production
+              - master
