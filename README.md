@@ -8,8 +8,8 @@ created for the Python Dash Gallery.
 You will need to run applications, and specify filenames, from the
 root directory of the repository. e.g., if the name of the app you
 want to run is `my_dash_app` and the app filename is `app.py`, you
-would need to run `python my_dash_app/app.py` from the root of the
-repository.
+would need to run `python apps/my_dash_app/app.py` from the root of
+the repository.
 
 ## Contributing to the sample apps repo
 
@@ -22,7 +22,11 @@ https://dash-gallery.plotly.host/my-dash-app, "DDS app name" is
 
 Each app has its own branch off of `master` that has the _exact same_
 name as the DDS app. This is an effective `master` branch _for that
-app only_.
+app only_. This is because we sync the apps in this repository with
+our staging deployment server, and the automatic deploys sync the app
+name with the github branch name. So, for automatic deploys to work,
+any changes for a particular app should be done on a branch that has
+the same name as the app.
 
 ### Adding a new app
 
@@ -52,11 +56,6 @@ Create a branch off of the app branch, and do all of your development
 in this branch (the "feature branch"). When you are finished, make a
 pull request from the feature branch to the app branch. Once you have
 passed your code review, you can merge your PR.
-
-*Merges from the app branch to the `master` branch of the repository
- are handled automatically, and will only happen if the code in the
- app branch passes the tests run by `black`.*
-
 
 #### Reading files from within an app
 
