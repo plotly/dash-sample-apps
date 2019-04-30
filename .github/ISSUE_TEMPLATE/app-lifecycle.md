@@ -1,9 +1,9 @@
 ---
 name: App lifecycle
-about: 'Apps that are in the process of being redesigned, cleaned up, and moved to
-  DDS. '
+about: 'Apps that are in the process of being redesigned, cleaned up, and deployed to
+  DDS.'
 title: ''
-labels: dashr
+labels: dashr, dash
 assignees: ''
 
 ---
