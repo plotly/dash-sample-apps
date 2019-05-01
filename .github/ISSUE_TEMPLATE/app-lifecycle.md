@@ -11,7 +11,7 @@ assignees: ''
 # App name
 
 # App
-- [ ] This app is currently deployed on Dash Gallery: [deployment URL]
+- [ ] This app is currently deployed on Dash(R) Gallery: [deployment URL]
 - [ ] This app is new
 
 # Source code repository
