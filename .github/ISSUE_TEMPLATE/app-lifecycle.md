@@ -9,26 +9,20 @@ assignees: ''
 ---
 
 # App name
+dash-recession-report
 
 # App
-- [ ] This app is currently deployed on Dash Gallery: [url of deployment]
-- [ ] This app is currently deployed on DashR Gallery: [url of deployment]
+- [x] This app is currently deployed on Dash Gallery: [deployment URL]
 - [ ] This app is new
 
+# Source code repository
+[source code repo URL]
+
 # Current appearance
-[add screenshot of current state of the app here]
+[attach screenshot of current app here]
 
 # Redesign
 [attach redesign image here]
 
-# Redesign implementation
-- [ ] Python
-- [ ] R
-
 # Playground deployment 
-- [ ] Python: [url of playground deployment]
-- [ ] R: [url of playground deployment]
-
-# Final deployment
-- [ ] Python
-- [ ] R
+[url of playground deployment]
