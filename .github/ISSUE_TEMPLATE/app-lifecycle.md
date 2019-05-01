@@ -10,8 +10,9 @@ assignees: ''
 
 # App name
 
-# App: Python version
+# App
 - [ ] This app is currently deployed on Dash Gallery: [url of deployment]
+- [ ] This app is currently deployed on DashR Gallery: [url of deployment]
 - [ ] This app is new
 
 # Current appearance
@@ -20,6 +21,14 @@ assignees: ''
 # Redesign
 [attach redesign image here]
 
-# Playground deployments 
+# Redesign implementation
+- [ ] Python
+- [ ] R
+
+# Playground deployment 
 - [ ] Python: [url of playground deployment]
 - [ ] R: [url of playground deployment]
+
+# Final deployment
+- [ ] Python
+- [ ] R
