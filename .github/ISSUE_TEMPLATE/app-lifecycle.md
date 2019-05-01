@@ -9,10 +9,9 @@ assignees: ''
 ---
 
 # App name
-dash-recession-report
 
 # App
-- [x] This app is currently deployed on Dash Gallery: [deployment URL]
+- [ ] This app is currently deployed on Dash Gallery: [deployment URL]
 - [ ] This app is new
 
 # Source code repository
