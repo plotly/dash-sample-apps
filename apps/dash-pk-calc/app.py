@@ -64,7 +64,7 @@ app.layout = html.Div(className='', children=[
             children=[
                 'View on GitHub'
             ],
-            href="https://github.com/shday/dash-bio/tree/master/pkcalc",
+            href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-pk-calc",
             style={'color': 'white',
                    'border': 'solid 1px white'}
         ),
