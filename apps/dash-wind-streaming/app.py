@@ -1,27 +1,22 @@
+import numpy as np
+import datetime as dt
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import plotly.graph_objs as go
+
 from dash.dependencies import Input, Output, State
-import plotly.plotly as py
-from plotly.graph_objs import *
 from scipy.stats import rayleigh
-from flask import Flask
-import numpy as np
-import pandas as pd
-import os
-import sqlite3
-import datetime as dt
-
-external_css = ["https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
-                "https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i",
-                "https://fonts.googleapis.com/css?family=Product+Sans:400,400i,700,700i"]
+from data.api import get_wind_data, get_wind_data_by_id
 
 
-app = dash.Dash(
-    'streaming-wind-app',
-    external_stylesheets=external_css
-)
-server = app.server
+external_css = [
+    "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
+    "https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i",
+    "https://fonts.googleapis.com/css?family=Product+Sans:400,400i,700,700i"
+]
+
+app = dash.Dash('streaming-wind-app', external_stylesheets=external_css)
 
 app.layout = html.Div([
     html.Div([
@@ -76,156 +71,164 @@ app.layout = html.Div([
           'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)'})
 
 
-@app.callback(Output('wind-speed', 'figure'), [Input('wind-speed-update', 'n_intervals')])
-def gen_wind_speed(interval):
+def get_current_time():
+    """ Helper function to get the current time in seconds. """
+
     now = dt.datetime.now()
-    sec = now.second
-    minute = now.minute
-    hour = now.hour
+    total_time = (now.hour * 3600) + (now.minute * 60) + (now.second)
+    return total_time
 
-    total_time = (hour * 3600) + (minute * 60) + (sec)
 
-    con = sqlite3.connect("./Data/wind-data.db")
-    df = pd.read_sql_query('SELECT Speed, SpeedError, Direction from Wind where\
-                            rowid > "{}" AND rowid <= "{}";'
-                           .format(total_time-200, total_time), con)
+@app.callback(
+    Output('wind-speed', 'figure'),
+    [Input('wind-speed-update', 'n_intervals')]
+)
+def gen_wind_speed(interval):
+    """
+    Generate the wind speed graph.
 
-    trace = Scatter(
+    :params interval: update the graph based on an interval
+    """
+
+    total_time = get_current_time()
+    df = get_wind_data(total_time-200, total_time)
+
+    trace = go.Scatter(
         y=df['Speed'],
-        line=dict(
-            color='#42C4F7'
-        ),
+        line={'color': '#42C4F7'},
         hoverinfo='skip',
-        error_y=dict(
-            type='data',
-            array=df['SpeedError'],
-            thickness=1.5,
-            width=2,
-            color='#B4E8FC'
-        ),
+        error_y={
+            'type': 'data',
+            'array': df['SpeedError'],
+            'thickness': 1.5,
+            'width': 2,
+            'color': '#B4E8FC'
+        },
         mode='lines'
     )
 
-    layout = Layout(
+    layout = go.Layout(
         height=450,
-        xaxis=dict(
-            range=[0, 200],
-            showgrid=False,
-            showline=False,
-            zeroline=False,
-            fixedrange=True,
-            tickvals=[0, 50, 100, 150, 200],
-            ticktext=['200', '150', '100', '50', '0'],
-            title='Time Elapsed (sec)'
-        ),
-        yaxis=dict(
-            range=[min(0, min(df['Speed'])),
-                   max(45, max(df['Speed'])+max(df['SpeedError']))],
-            showline=False,
-            fixedrange=True,
-            zeroline=False,
-            nticks=max(6, round(df['Speed'].iloc[-1]/10))
-        ),
-        margin=dict(
-            t=45,
-            l=50,
-            r=50
-        )
+        xaxis={
+            'range': [0, 200],
+            'showgrid': False,
+            'showline': False,
+            'zeroline': False,
+            'fixedrange': True,
+            'tickvals': [0, 50, 100, 150, 200],
+            'ticktext': ['200', '150', '100', '50', '0'],
+            'title': 'Time Elapsed (sec)'
+        },
+        yaxis={
+            'range': [min(0, min(df['Speed'])), max(45, max(df['Speed'])+max(df['SpeedError']))],
+            'showline': False,
+            'fixedrange': True,
+            'zeroline': False,
+            'nticks': max(6, round(df['Speed'].iloc[-1]/10))
+        },
+        margin={'t': 45, 'l': 50, 'r': 50}
     )
 
-    return Figure(data=[trace], layout=layout)
+    return go.Figure(data=[trace], layout=layout)
 
 
-@app.callback(Output('wind-direction', 'figure'), [Input('wind-speed-update', 'n_intervals')])
+@app.callback(
+    Output('wind-direction', 'figure'),
+    [Input('wind-speed-update', 'n_intervals')]
+)
 def gen_wind_direction(interval):
-    now = dt.datetime.now()
-    sec = now.second
-    minute = now.minute
-    hour = now.hour
+    """
+    Generate the wind direction graph.
 
-    total_time = (hour * 3600) + (minute * 60) + (sec)
+    :params interval: update the graph based on an interval
+    """
 
-    con = sqlite3.connect("./Data/wind-data.db")
-    df = pd.read_sql_query("SELECT * from Wind where rowid = " +
-                           str(total_time) + ";", con)
+    total_time = get_current_time()
+    df = get_wind_data_by_id(total_time)
     val = df['Speed'].iloc[-1]
     direction = [0, (df['Direction'][0]-20), (df['Direction'][0]+20), 0]
 
-    trace = Scatterpolar(
-        r=[0, val, val, 0],
-        theta=direction,
-        mode='lines',
-        fill='toself',
-        fillcolor='rgb(242, 196, 247)',
-        line=dict(
-            color='rgba(32, 32, 32, .6)',
-            width=1
-        )
-    )
-    trace1 = Scatterpolar(
-        r=[0, val*0.65, val*0.65, 0],
-        theta=direction,
-        mode='lines',
-        fill='toself',
-        fillcolor='#F6D7F9',
-        line=dict(
-            color='rgba(32, 32, 32, .6)',
-            width=1
-        )
-    )
-    trace2 = Scatterpolar(
-        r=[0, val*0.3, val*0.3, 0],
-        theta=direction,
-        mode='lines',
-        fill='toself',
-        fillcolor='#FAEBFC',
-        line=dict(
-            color='rgba(32, 32, 32, .6)',
-            width=1
-        )
-    )
+    traces_scatterpolar = [
+        {
+            'r': [0, val, val, 0],
+            'fillcolor': 'rgb(242, 196, 247)'
+        },
+        {
+            'r': [0, val*0.65, val*0.65, 0],
+            'fillcolor': 'rgb(242, 196, 247)'
+        },
+        {
+            'r': [0, val*0.3, val*0.3, 0],
+            'fillcolor': '#FAEBFC'
+        }
+    ]
 
-    layout = Layout(
+    data = [
+        go.Scatterpolar(
+            r=traces['r'],
+            theta=direction,
+            mode='lines',
+            fill='toself',
+            fillcolor=traces['fillcolor'],
+            line={
+                'color': 'rgba(32, 32, 32, .6)',
+                'width': 1
+            }
+        )
+        for traces in traces_scatterpolar
+    ]
+
+    layout = go.Layout(
         autosize=True,
         width=275,
-        margin=dict(
-            t=10,
-            b=10,
-            r=30,
-            l=40
-        ),
-        polar=dict(
-            bgcolor='#F2F2F2',
-            radialaxis=dict(range=[0, 45],
-                            angle=45,
-                            dtick=10),
-            angularaxis=dict(
-                showline=False,
-                tickcolor='white',
-            )
-        ),
+        margin={'t': 10, 'b': 10, 'r': 30, 'l': 40},
+        polar={
+            'bgcolor': '#F2F2F2',
+            'radialaxis': {
+                'range': [0, 45],
+                'angle': 45,
+                'dtick': 10
+            },
+            'angularaxis': {
+                'showline': False,
+                'tickcolor': 'white',
+            }
+        },
         showlegend=False,
     )
 
-    return Figure(data=[trace, trace1, trace2], layout=layout)
+    return go.Figure(data=data, layout=layout)
 
 
-@app.callback(Output('wind-histogram', 'figure'),
-              [Input('wind-speed-update', 'n_intervals')],
-              [State('wind-speed', 'figure'),
-               State('bin-slider', 'value'),
-               State('bin-auto', 'values')])
-def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
+@app.callback(
+    Output('wind-histogram', 'figure'),
+    [Input('wind-speed-update', 'n_intervals')],
+    [
+        State('wind-speed', 'figure'),
+        State('bin-slider', 'value'),
+        State('bin-auto', 'values')
+    ]
+)
+def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
+    """
+    Genererate wind histogram graph.
+
+    :params interval: upadte the graph based on an interval
+    :params wind_speed_figure: current wind speed graph
+    :params slider_value: current slider value
+    :params auto_state: current auto state
+    """
+
     wind_val = []
 
     # Check to see whether wind-speed has been plotted yet
     if wind_speed_figure is not None:
         wind_val = wind_speed_figure['data'][0]['y']
     if 'Auto' in auto_state:
-            bin_val = np.histogram(wind_val, bins=range(int(round(min(wind_val))),
-                                                        int(round(max(wind_val)))))
+        bin_val = np.histogram(wind_val, bins=range(int(round(min(wind_val))),
+                                                    int(round(max(wind_val)))))
     else:
-        bin_val = np.histogram(wind_val, bins=sliderValue)
+        bin_val = np.histogram(wind_val, bins=slider_value)
 
     avg_val = float(sum(wind_val))/len(wind_val)
     median_val = np.median(wind_val)
@@ -237,130 +240,137 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
     y_val_max = max(y_val[0])
     bin_val_max = max(bin_val[0])
 
-    trace = Bar(
+    trace = go.Bar(
         x=bin_val[1],
         y=bin_val[0],
-        marker=dict(
-            color='#7F7F7F'
-        ),
+        marker={
+            'color': '#7F7F7F'
+        },
         showlegend=False,
         hoverinfo='x+y'
     )
-    trace1 = Scatter(
-        x=[bin_val[int(len(bin_val)/2)]],
-        y=[0],
+
+    traces_scatter = [
+        {
+            'line_dash': 'dash',
+            'line_color': '#2E5266',
+            'name': 'Average'
+        },
+        {
+            'line_dash': 'dot',
+            'line_color': '#BD9391',
+            'name': 'Median'
+        }
+    ]
+
+    scatter_data = [
+        go.Scatter(
+            x=[bin_val[int(len(bin_val)/2)]],
+            y=[0],
+            mode='lines',
+            line={
+                'dash': traces['line_dash'],
+                'color': traces['line_color']
+            },
+            marker={
+                'opacity': 0,
+            },
+            visible=True,
+            name= traces['name']
+        )
+        for traces in traces_scatter
+    ]
+    
+    trace3 = go.Scatter(
         mode='lines',
-        line=dict(
-            dash='dash',
-            color='#2E5266'
-        ),
-        marker=dict(
-            opacity=0,
-        ),
-        visible=True,
-        name='Average'
-    )
-    trace2 = Scatter(
-        x=[bin_val[int(len(bin_val)/2)]],
-        y=[0],
-        line=dict(
-            dash='dot',
-            color='#BD9391'
-        ),
-        mode='lines',
-        marker=dict(
-            opacity=0,
-        ),
-        visible=True,
-        name='Median'
-    )
-    trace3 = Scatter(
-        mode='lines',
-        line=dict(
-            color='#42C4F7'
-        ),
+        line={
+            'color': '#42C4F7'
+        },
         y=y_val[0],
         x=bin_val[1][:len(bin_val[1])],
         name='Rayleigh Fit'
     )
-    layout = Layout(
-        xaxis=dict(
-            title='Wind Speed (mph)',
-            showgrid=False,
-            showline=False,
-            fixedrange=True
-        ),
-        yaxis=dict(
-            showgrid=False,
-            showline=False,
-            zeroline=False,
-            title='Number of Samples',
-            fixedrange=True
-        ),
-        margin=dict(
-            t=50,
-            b=20,
-            r=50
-        ),
+    layout = go.Layout(
+        xaxis={
+            'title': 'Wind Speed (mph)',
+            'showgrid': False,
+            'showline': False,
+            'fixedrange': True
+        },
+        yaxis={
+            'showgrid': False,
+            'showline': False,
+            'zeroline': False,
+            'title': 'Number of Samples',
+            'fixedrange': True
+        },
+        margin={'t': 50, 'b': 20, 'r': 50},
         autosize=True,
         bargap=0.01,
         bargroupgap=0,
         hovermode='closest',
-        legend=dict(
-            x=0.175,
-            y=-0.2,
-            orientation='h'
-        ),
+        legend={'x': 0.175, 'y': -0.2, 'orientation': 'h'},
         shapes=[
-            dict(
-                xref='x',
-                yref='y',
-                y1=int(max(bin_val_max, y_val_max))+0.5,
-                y0=0,
-                x0=avg_val,
-                x1=avg_val,
-                type='line',
-                line=dict(
-                    dash='dash',
-                    color='#2E5266',
-                    width=5
-                )
-            ),
-            dict(
-                xref='x',
-                yref='y',
-                y1=int(max(bin_val_max, y_val_max))+0.5,
-                y0=0,
-                x0=median_val,
-                x1=median_val,
-                type='line',
-                line=dict(
-                    dash='dot',
-                    color='#BD9391',
-                    width=5
-                )
-            )
+            {
+                'xref': 'x',
+                'yref': 'y',
+                'y1': int(max(bin_val_max, y_val_max))+0.5,
+                'y0': 0,
+                'x0': avg_val,
+                'x1': avg_val,
+                'type': 'line',
+                'line': {
+                    'dash': 'dash',
+                    'color': '#2E5266',
+                    'width': 5
+                }
+            },
+            {
+                'xref': 'x',
+                'yref': 'y',
+                'y1': int(max(bin_val_max, y_val_max))+0.5,
+                'y0': 0,
+                'x0': median_val,
+                'x1': median_val,
+                'type': 'line',
+                'line': {
+                    'dash': 'dot',
+                    'color': '#BD9391',
+                    'width': 5
+                }
+            }
         ]
     )
-    return Figure(data=[trace, trace1, trace2, trace3], layout=layout)
+    return go.Figure(data=[trace, scatter_data[0], scatter_data[1], trace3], layout=layout)
 
 
-@app.callback(Output('bin-auto', 'values'), [Input('bin-slider', 'value')],
-              [State('wind-speed', 'figure')])
-def deselect_auto(sliderValue, wind_speed_figure):
+@app.callback(
+    Output('bin-auto', 'values'),
+    [Input('bin-slider', 'value')],
+    [State('wind-speed', 'figure')]
+)
+def deselect_auto(slider_value, wind_speed_figure):
+    """ Toggle the auto checkbox. """
+
     if (wind_speed_figure is not None and
             len(wind_speed_figure['data'][0]['y']) > 5):
         return ['']
     else:
         return ['Auto']
 
-@app.callback(Output('bin-size', 'children'), [Input('bin-auto', 'values')],
-              [State('bin-slider', 'value')])
-def deselect_auto(autoValue, sliderValue):
+
+@app.callback(
+    Output('bin-size', 'children'),
+    [Input('bin-auto', 'values')],
+    [State('bin-slider', 'value')]
+)
+def show_num_bins(autoValue, slider_value):
+    """ Display the number of bins. """
+
     if 'Auto' in autoValue:
         return '# of Bins: Auto'
     else:
-        return '# of Bins: ' + str(int(sliderValue))
+        return '# of Bins: ' + str(int(slider_value))
 
 
 if __name__ == '__main__':
