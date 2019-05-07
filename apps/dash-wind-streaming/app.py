@@ -1,7 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State, Event
+from dash.dependencies import Input, Output, State
 import plotly.plotly as py
 from plotly.graph_objs import *
 from scipy.stats import rayleigh
@@ -88,15 +88,15 @@ def gen_wind_speed(interval):
     con = sqlite3.connect("./Data/wind-data.db")
     df = pd.read_sql_query('SELECT Speed, SpeedError, Direction from Wind where\
                             rowid > "{}" AND rowid <= "{}";'
-                            .format(total_time-200, total_time), con)
+                           .format(total_time-200, total_time), con)
 
     trace = Scatter(
         y=df['Speed'],
-        line=Line(
+        line=dict(
             color='#42C4F7'
         ),
         hoverinfo='skip',
-        error_y=ErrorY(
+        error_y=dict(
             type='data',
             array=df['SpeedError'],
             thickness=1.5,
@@ -126,7 +126,7 @@ def gen_wind_speed(interval):
             zeroline=False,
             nticks=max(6, round(df['Speed'].iloc[-1]/10))
         ),
-        margin=Margin(
+        margin=dict(
             t=45,
             l=50,
             r=50
@@ -147,7 +147,7 @@ def gen_wind_direction(interval):
 
     con = sqlite3.connect("./Data/wind-data.db")
     df = pd.read_sql_query("SELECT * from Wind where rowid = " +
-                                         str(total_time) + ";", con)
+                           str(total_time) + ";", con)
     val = df['Speed'].iloc[-1]
     direction = [0, (df['Direction'][0]-20), (df['Direction'][0]+20), 0]
 
@@ -169,8 +169,8 @@ def gen_wind_direction(interval):
         fill='toself',
         fillcolor='#F6D7F9',
         line=dict(
-            color = 'rgba(32, 32, 32, .6)',
-            width = 1
+            color='rgba(32, 32, 32, .6)',
+            width=1
         )
     )
     trace2 = Scatterpolar(
@@ -188,7 +188,7 @@ def gen_wind_direction(interval):
     layout = Layout(
         autosize=True,
         width=275,
-        margin=Margin(
+        margin=dict(
             t=10,
             b=10,
             r=30,
@@ -222,8 +222,8 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
     if wind_speed_figure is not None:
         wind_val = wind_speed_figure['data'][0]['y']
     if 'Auto' in auto_state:
-        bin_val = np.histogram(wind_val, bins=range(int(round(min(wind_val))),
-                               int(round(max(wind_val)))))
+            bin_val = np.histogram(wind_val, bins=range(int(round(min(wind_val))),
+                                                        int(round(max(wind_val)))))
     else:
         bin_val = np.histogram(wind_val, bins=sliderValue)
 
@@ -240,7 +240,7 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
     trace = Bar(
         x=bin_val[1],
         y=bin_val[0],
-        marker=Marker(
+        marker=dict(
             color='#7F7F7F'
         ),
         showlegend=False,
@@ -250,11 +250,11 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
         x=[bin_val[int(len(bin_val)/2)]],
         y=[0],
         mode='lines',
-        line=Line(
+        line=dict(
             dash='dash',
             color='#2E5266'
         ),
-        marker=Marker(
+        marker=dict(
             opacity=0,
         ),
         visible=True,
@@ -263,12 +263,12 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
     trace2 = Scatter(
         x=[bin_val[int(len(bin_val)/2)]],
         y=[0],
-        line=Line(
+        line=dict(
             dash='dot',
             color='#BD9391'
         ),
         mode='lines',
-        marker=Marker(
+        marker=dict(
             opacity=0,
         ),
         visible=True,
@@ -276,7 +276,7 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
     )
     trace3 = Scatter(
         mode='lines',
-        line=Line(
+        line=dict(
             color='#42C4F7'
         ),
         y=y_val[0],
@@ -297,7 +297,7 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
             title='Number of Samples',
             fixedrange=True
         ),
-        margin=Margin(
+        margin=dict(
             t=50,
             b=20,
             r=50
@@ -306,7 +306,7 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
         bargap=0.01,
         bargroupgap=0,
         hovermode='closest',
-        legend=Legend(
+        legend=dict(
             x=0.175,
             y=-0.2,
             orientation='h'
@@ -320,7 +320,7 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
                 x0=avg_val,
                 x1=avg_val,
                 type='line',
-                line=Line(
+                line=dict(
                     dash='dash',
                     color='#2E5266',
                     width=5
@@ -334,7 +334,7 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
                 x0=median_val,
                 x1=median_val,
                 type='line',
-                line=Line(
+                line=dict(
                     dash='dot',
                     color='#BD9391',
                     width=5
@@ -346,23 +346,22 @@ def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
 
 
 @app.callback(Output('bin-auto', 'values'), [Input('bin-slider', 'value')],
-              [State('wind-speed', 'figure')],
-              [Event('bin-slider', 'change')])
+              [State('wind-speed', 'figure')])
 def deselect_auto(sliderValue, wind_speed_figure):
     if (wind_speed_figure is not None and
-       len(wind_speed_figure['data'][0]['y']) > 5):
+            len(wind_speed_figure['data'][0]['y']) > 5):
         return ['']
     else:
         return ['Auto']
 
 @app.callback(Output('bin-size', 'children'), [Input('bin-auto', 'values')],
-              [State('bin-slider', 'value')],
-              [])
+              [State('bin-slider', 'value')])
 def deselect_auto(autoValue, sliderValue):
     if 'Auto' in autoValue:
         return '# of Bins: Auto'
     else:
         return '# of Bins: ' + str(int(sliderValue))
+
 
 if __name__ == '__main__':
     app.run_server()
