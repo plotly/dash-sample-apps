@@ -1,0 +1,90 @@
+body {
+    margin: 0 !important;
+    background-color: #061E44;
+}
+
+.app__container {
+    margin: 3% 5%;
+}
+
+.app__header {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+}
+
+.app__header__title {
+    font-weight: bold;
+    letter-spacing: 0.23rem;
+}
+
+.app__header__title--grey {
+    color: #DFE3E8;
+}
+
+.app__header__button {
+    background-color: #007ACE;
+    color: #fff;
+    border: none;
+}
+
+.app__menu__img {
+    height: 80px;
+    width: auto;
+}
+
+.app__content {
+    display: flex;
+    margin-top: 20px;
+}
+
+.wind__speed {
+    display: flex;
+    flex-direction: column;
+    background-color: #082255;
+    border-radius: 0.55rem;
+}
+
+.graph__title {
+    color: #fff !important;
+    letter-spacing: 0.3rem !important;
+    padding: 25px 25px 0px 25px;
+    margin-bottom: 0px !important;
+}
+
+.slider {
+    padding: 15px;
+}
+
+.auto__container {
+    display: flex;
+    justify-content: space-between;
+    color: #DFE3E8;
+    padding: 0px 15px;
+}
+
+.auto__p {
+    margin-bottom: 0;
+}
+
+.graph__container {
+    background-color: #082255;
+    border-radius: 0.55rem;
+}
+
+.first {
+    margin-bottom: 25px;
+}
+
+.second {
+    margin-top: 25px;
+}
+
+.histogram__direction {
+    margin-left: 25px;
+}
+
+#wind-direction {
+    display: flex;
+    justify-content: center;
+}

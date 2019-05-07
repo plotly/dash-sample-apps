@@ -3,6 +3,7 @@ import datetime as dt
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.exceptions import PreventUpdate
 import plotly.graph_objs as go
 
 from dash.dependencies import Input, Output, State
@@ -18,57 +19,77 @@ external_css = [
 
 app = dash.Dash('streaming-wind-app', external_stylesheets=external_css)
 
+app_color = {
+    'graph_bg': '#082255',
+    'graph_line': '#007ACE'
+}
+
+
 app.layout = html.Div([
-    html.Div([
-        html.H2("Wind Speed Streaming"),
-        html.Img(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png"),
-    ], className='banner'),
+
     html.Div([
         html.Div([
-            html.H3("WIND SPEED (mph)")
-        ], className='Title'),
+            html.H4('WIND SPEED STREAMING', className='app__header__title'),
+            html.H6('This app continually queries a SQL database and displays live charts of wind speed and wind direction.',
+                    className='app__header__title--grey'),
+            html.Button('Learn more', className='app__header__button')
+        ]),
         html.Div([
+            html.Img(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png",
+                     className='app__menu__img')
+        ])
+    ], className='app__header'),
+
+    html.Div([
+        html.Div([
+            html.Div([
+                html.H6('WIND SPEED (MPH)', className='graph__title'),
+            ]),
             dcc.Graph(id='wind-speed'),
-        ], className='twelve columns wind-speed'),
-        dcc.Interval(id='wind-speed-update', interval=1000, n_intervals=0),
-    ], className='row wind-speed-row'),
-    html.Div([
+            dcc.Interval(id='wind-speed-update', interval=1000, n_intervals=0),
+        ], className='two-thirds column wind__speed'),
         html.Div([
+
             html.Div([
-                html.H3("WIND SPEED HISTOGRAM")
-            ], className='Title'),
-            html.Div([
-                dcc.Slider(
-                    id='bin-slider',
-                    min=1,
-                    max=60,
-                    step=1,
-                    value=20,
-                    updatemode='drag'
-                ),
-            ], className='histogram-slider'),
-            html.P('# of Bins: Auto', id='bin-size', className='bin-size'),
-            html.Div([
-                dcc.Checklist(
-                    id='bin-auto',
-                    options=[
-                        {'label': 'Auto', 'value': 'Auto'}
-                    ],
-                    values=['Auto']
-                ),
-            ], className='bin-auto'),
-            dcc.Graph(id='wind-histogram'),
-        ], className='seven columns wind-histogram'),
-        html.Div([
-            html.Div([
-                html.H3("WIND DIRECTION")
-            ], className='Title'),
-            dcc.Graph(id='wind-direction'),
-        ], className='five columns wind-polar')
-    ], className='row wind-histo-polar')
-], style={'padding': '0px 10px 15px 10px',
-          'marginLeft': 'auto', 'marginRight': 'auto', "width": "900px",
-          'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)'})
+                html.Div([
+                    html.H6('WIND SPEED HISTOGRAM', className='graph__title'),
+                ]),
+
+                html.Div([
+                    dcc.Slider(
+                        id='bin-slider',
+                        min=1,
+                        max=60,
+                        step=1,
+                        value=20,
+                        updatemode='drag'
+                    ),
+                ], className='slider'),
+
+                html.Div([
+                    dcc.Checklist(
+                        id='bin-auto',
+                        options=[
+                            {'label': 'Auto', 'value': 'Auto'}
+                        ],
+                        values=['Auto']
+                    ),
+                    html.P('# of Bins: Auto', id='bin-size',
+                           className='auto__p'),
+                ], className='auto__container'),
+
+                dcc.Graph(id='wind-histogram'),
+            ], className='graph__container first'),
+
+            html.Div([html.Div([
+                html.H6('WIND DIRECTION', className='graph__title'),
+            ]),
+                dcc.Graph(id='wind-direction'),
+            ], className='graph__container second')
+        ], className='one-third column histogram__direction')
+
+    ], className='app__content'),
+], className='app__container')
 
 
 def get_current_time():
@@ -108,11 +129,15 @@ def gen_wind_speed(interval):
     )
 
     layout = go.Layout(
-        height=450,
+        plot_bgcolor=app_color['graph_bg'],
+        paper_bgcolor=app_color['graph_bg'],
+        font={
+            'color': '#fff',
+        },
+        height=700,
         xaxis={
             'range': [0, 200],
-            'showgrid': False,
-            'showline': False,
+            'showline': True,
             'zeroline': False,
             'fixedrange': True,
             'tickvals': [0, 50, 100, 150, 200],
@@ -121,12 +146,13 @@ def gen_wind_speed(interval):
         },
         yaxis={
             'range': [min(0, min(df['Speed'])), max(45, max(df['Speed'])+max(df['SpeedError']))],
-            'showline': False,
+            'showgrid': True,
+            'showline': True,
             'fixedrange': True,
             'zeroline': False,
+            'gridcolor': app_color['graph_line'],
             'nticks': max(6, round(df['Speed'].iloc[-1]/10))
         },
-        margin={'t': 45, 'l': 50, 'r': 50}
     )
 
     return go.Figure(data=[trace], layout=layout)
@@ -151,15 +177,15 @@ def gen_wind_direction(interval):
     traces_scatterpolar = [
         {
             'r': [0, val, val, 0],
-            'fillcolor': 'rgb(242, 196, 247)'
+            'fillcolor': '#084E8A'
         },
         {
             'r': [0, val*0.65, val*0.65, 0],
-            'fillcolor': 'rgb(242, 196, 247)'
+            'fillcolor': '#B4E1FA'
         },
         {
             'r': [0, val*0.3, val*0.3, 0],
-            'fillcolor': '#FAEBFC'
+            'fillcolor': '#EBF5FA'
         }
     ]
 
@@ -179,11 +205,15 @@ def gen_wind_direction(interval):
     ]
 
     layout = go.Layout(
-        autosize=True,
-        width=275,
-        margin={'t': 10, 'b': 10, 'r': 30, 'l': 40},
+        height=300,
+        plot_bgcolor=app_color['graph_bg'],
+        paper_bgcolor=app_color['graph_bg'],
+        font={
+            'color': '#fff'
+        },
+        autosize=False,
         polar={
-            'bgcolor': '#F2F2F2',
+            'bgcolor': app_color['graph_line'],
             'radialaxis': {
                 'range': [0, 45],
                 'angle': 45,
@@ -244,7 +274,7 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
         x=bin_val[1],
         y=bin_val[0],
         marker={
-            'color': '#7F7F7F'
+            'color': app_color['graph_line']
         },
         showlegend=False,
         hoverinfo='x+y'
@@ -276,11 +306,11 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
                 'opacity': 0,
             },
             visible=True,
-            name= traces['name']
+            name=traces['name']
         )
         for traces in traces_scatter
     ]
-    
+
     trace3 = go.Scatter(
         mode='lines',
         line={
@@ -291,6 +321,12 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
         name='Rayleigh Fit'
     )
     layout = go.Layout(
+        height=300,
+        plot_bgcolor=app_color['graph_bg'],
+        paper_bgcolor=app_color['graph_bg'],
+        font={
+            'color': '#fff'
+        },
         xaxis={
             'title': 'Wind Speed (mph)',
             'showgrid': False,
@@ -304,12 +340,12 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
             'title': 'Number of Samples',
             'fixedrange': True
         },
-        margin={'t': 50, 'b': 20, 'r': 50},
         autosize=True,
         bargap=0.01,
         bargroupgap=0,
         hovermode='closest',
-        legend={'x': 0.175, 'y': -0.2, 'orientation': 'h'},
+        legend={'orientation': 'h', 'yanchor': 'bottom',
+                'xanchor': 'center', 'y': 1, 'x': 0.5},
         shapes=[
             {
                 'xref': 'x',
@@ -374,4 +410,4 @@ def show_num_bins(autoValue, slider_value):
 
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug=True)
