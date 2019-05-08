@@ -8,21 +8,17 @@ import plotly.graph_objs as go
 
 from dash.dependencies import Input, Output, State
 from scipy.stats import rayleigh
-from data.api import get_wind_data, get_wind_data_by_id
+from db.api import get_wind_data, get_wind_data_by_id
 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-external_css = [
-    "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
-    "https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i",
-    "https://fonts.googleapis.com/css?family=Product+Sans:400,400i,700,700i"
-]
-
-app = dash.Dash('dash-wind-streaming', external_stylesheets=external_css)
+app = dash.Dash('dash-wind-streaming', external_stylesheets=external_stylesheets)
 
 app_color = {
     'graph_bg': '#082255',
     'graph_line': '#007ACE'
 }
+
 
 app.layout = html.Div([
 
@@ -30,12 +26,11 @@ app.layout = html.Div([
     html.Div([
         html.Div([
             html.H4('WIND SPEED STREAMING', className='app__header__title'),
-            html.H6('This app continually queries a SQL database and displays live charts of wind speed and wind direction.',
+            html.P('This app continually queries a SQL database and displays live charts of wind speed and wind direction.',
                     className='app__header__title--grey'),
-            html.Button('Learn more', className='app__header__button')
         ]),
         html.Div([
-            html.Img(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png",
+            html.Img(src="./assets/dash-logo-stripe-inverted.png",
                      className='app__menu__img')
         ])
     ], className='app__header'),

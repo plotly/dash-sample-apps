@@ -1,5 +1,5 @@
 body {
-    margin: 0 !important;
+    font-family: "Open Sans", sans-serif;
     background-color: #061E44;
 }
 
@@ -14,18 +14,11 @@ body {
 }
 
 .app__header__title {
-    font-weight: bold;
     letter-spacing: 0.23rem;
 }
 
 .app__header__title--grey {
-    color: #DFE3E8;
-}
-
-.app__header__button {
-    background-color: #007ACE;
-    color: #fff !important;
-    border: none;
+    color: #C4CDD5;
 }
 
 .app__menu__img {
@@ -51,6 +44,7 @@ body {
     letter-spacing: 0.3rem !important;
     padding: 25px 25px 0px 25px;
     margin-bottom: 0px !important;
+    font-size: 1em;
 }
 
 .slider {
