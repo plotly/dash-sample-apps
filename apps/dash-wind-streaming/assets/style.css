@@ -98,3 +98,7 @@ body {
     display: flex;
     justify-content: center;
 }
+
+._dash-undo-redo {
+    display: none;
+}
