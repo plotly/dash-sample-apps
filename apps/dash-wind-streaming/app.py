@@ -8,7 +8,7 @@ import plotly.graph_objs as go
 
 from dash.dependencies import Input, Output, State
 from scipy.stats import rayleigh
-from data.api import get_wind_data, get_wind_data_by_id
+from db.api import get_wind_data, get_wind_data_by_id
 
 
 external_css = [
