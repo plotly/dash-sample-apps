@@ -24,7 +24,7 @@ body {
 
 .app__header__button {
     background-color: #007ACE;
-    color: #fff;
+    color: #fff !important;
     border: none;
 }
 
@@ -38,11 +38,12 @@ body {
     margin-top: 20px;
 }
 
-.wind__speed {
+.wind__speed__container {
     display: flex;
     flex-direction: column;
     background-color: #082255;
     border-radius: 0.55rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .graph__title {
@@ -54,6 +55,14 @@ body {
 
 .slider {
     padding: 15px;
+}
+
+.auto__checkbox {
+    margin-right: 10px;
+}
+
+.auto__label {
+    color: #DFE3E8;
 }
 
 .auto__container {
@@ -70,18 +79,19 @@ body {
 .graph__container {
     background-color: #082255;
     border-radius: 0.55rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .first {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .second {
-    margin-top: 25px;
+    margin-top: 15px;
 }
 
 .histogram__direction {
-    margin-left: 25px;
+    margin-left: 15px;
 }
 
 #wind-direction {

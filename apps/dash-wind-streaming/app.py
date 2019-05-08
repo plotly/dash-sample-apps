@@ -17,16 +17,16 @@ external_css = [
     "https://fonts.googleapis.com/css?family=Product+Sans:400,400i,700,700i"
 ]
 
-app = dash.Dash('streaming-wind-app', external_stylesheets=external_css)
+app = dash.Dash('dash-wind-streaming', external_stylesheets=external_css)
 
 app_color = {
     'graph_bg': '#082255',
     'graph_line': '#007ACE'
 }
 
-
 app.layout = html.Div([
 
+    # header
     html.Div([
         html.Div([
             html.H4('WIND SPEED STREAMING', className='app__header__title'),
@@ -41,20 +41,23 @@ app.layout = html.Div([
     ], className='app__header'),
 
     html.Div([
+
+        # wind speed
         html.Div([
             html.Div([
                 html.H6('WIND SPEED (MPH)', className='graph__title'),
             ]),
             dcc.Graph(id='wind-speed'),
             dcc.Interval(id='wind-speed-update', interval=1000, n_intervals=0),
-        ], className='two-thirds column wind__speed'),
+        ], className='two-thirds column wind__speed__container'),
+
         html.Div([
 
+            # histogram
             html.Div([
                 html.Div([
                     html.H6('WIND SPEED HISTOGRAM', className='graph__title'),
                 ]),
-
                 html.Div([
                     dcc.Slider(
                         id='bin-slider',
@@ -62,17 +65,18 @@ app.layout = html.Div([
                         max=60,
                         step=1,
                         value=20,
-                        updatemode='drag'
+                        updatemode='drag',
                     ),
                 ], className='slider'),
-
                 html.Div([
                     dcc.Checklist(
                         id='bin-auto',
                         options=[
                             {'label': 'Auto', 'value': 'Auto'}
                         ],
-                        values=['Auto']
+                        values=['Auto'],
+                        inputClassName='auto__checkbox',
+                        labelClassName='auto__label'
                     ),
                     html.P('# of Bins: Auto', id='bin-size',
                            className='auto__p'),
@@ -81,14 +85,17 @@ app.layout = html.Div([
                 dcc.Graph(id='wind-histogram'),
             ], className='graph__container first'),
 
+            # wind direction
             html.Div([html.Div([
                 html.H6('WIND DIRECTION', className='graph__title'),
             ]),
                 dcc.Graph(id='wind-direction'),
             ], className='graph__container second')
+
         ], className='one-third column histogram__direction')
 
     ], className='app__content'),
+
 ], className='app__container')
 
 
@@ -205,7 +212,7 @@ def gen_wind_direction(interval):
     ]
 
     layout = go.Layout(
-        height=300,
+        height=350,
         plot_bgcolor=app_color['graph_bg'],
         paper_bgcolor=app_color['graph_bg'],
         font={
@@ -273,9 +280,7 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
     trace = go.Bar(
         x=bin_val[1],
         y=bin_val[0],
-        marker={
-            'color': app_color['graph_line']
-        },
+        marker={'color': app_color['graph_line']},
         showlegend=False,
         hoverinfo='x+y'
     )
@@ -302,9 +307,7 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
                 'dash': traces['line_dash'],
                 'color': traces['line_color']
             },
-            marker={
-                'opacity': 0,
-            },
+            marker={'opacity': 0},
             visible=True,
             name=traces['name']
         )
@@ -313,20 +316,16 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
 
     trace3 = go.Scatter(
         mode='lines',
-        line={
-            'color': '#42C4F7'
-        },
+        line={'color': '#42C4F7'},
         y=y_val[0],
         x=bin_val[1][:len(bin_val[1])],
         name='Rayleigh Fit'
     )
     layout = go.Layout(
-        height=300,
+        height=350,
         plot_bgcolor=app_color['graph_bg'],
         paper_bgcolor=app_color['graph_bg'],
-        font={
-            'color': '#fff'
-        },
+        font={'color': '#fff'},
         xaxis={
             'title': 'Wind Speed (mph)',
             'showgrid': False,
@@ -388,11 +387,9 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
 def deselect_auto(slider_value, wind_speed_figure):
     """ Toggle the auto checkbox. """
 
-    if (wind_speed_figure is not None and
-            len(wind_speed_figure['data'][0]['y']) > 5):
+    if (wind_speed_figure is not None and len(wind_speed_figure['data'][0]['y']) > 5):
         return ['']
-    else:
-        return ['Auto']
+    return ['Auto']
 
 
 @app.callback(
@@ -405,8 +402,7 @@ def show_num_bins(autoValue, slider_value):
 
     if 'Auto' in autoValue:
         return '# of Bins: Auto'
-    else:
-        return '# of Bins: ' + str(int(slider_value))
+    return '# of Bins: ' + str(int(slider_value))
 
 
 if __name__ == '__main__':
