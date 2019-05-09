@@ -1,24 +1,28 @@
+import pathlib
 import numpy as np
 import datetime as dt
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.exceptions import PreventUpdate
 import plotly.graph_objs as go
 
+from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 from scipy.stats import rayleigh
 from db.api import get_wind_data, get_wind_data_by_id
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash('dash-wind-streaming', external_stylesheets=external_stylesheets)
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+BASE_ASSETS_PATH = pathlib.Path(__file__, "/assets").resolve()
+LOGO_PATH = BASE_ASSETS_PATH.joinpath("dash-logo-stripe-inverted.png").resolve()
 
 app_color = {
     'graph_bg': '#082255',
     'graph_line': '#007ACE'
 }
-
 
 app.layout = html.Div([
 
@@ -29,10 +33,7 @@ app.layout = html.Div([
             html.P('This app continually queries a SQL database and displays live charts of wind speed and wind direction.',
                     className='app__header__title--grey'),
         ]),
-        html.Div([
-            html.Img(src="./assets/dash-logo-stripe-inverted.png",
-                     className='app__menu__img')
-        ])
+        html.Div([html.Img(src=str(LOGO_PATH), className='app__menu__img')])
     ], className='app__header'),
 
     html.Div([
