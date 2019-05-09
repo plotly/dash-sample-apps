@@ -1,0 +1,8 @@
+cloudpickle
+dash>=0.42.0
+dask>=0.17.1
+datashader>=0.6.9
+gunicorn
+numpy>=1.14.1
+pandas>=0.24.0
+xarray>=0.10.1
