@@ -5,10 +5,12 @@ Created on Thu Apr  4 17:43:39 2019
 @author: Stephen Day
 """
 
+import os
 import base64
 import statistics
 from collections import OrderedDict
 
+import pathlib as pl
 import dash
 import dash_table
 import dash_core_components as dcc
@@ -29,88 +31,12 @@ app = dash.Dash(__name__)
 
 server = app.server
 
-pkdata = pd.DataFrame(
-    {
-        "subject_index": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            2,
-            2,
-            2,
-            2,
-            2,
-            2,
-            2,
-            2,
-        ],
-        "time": [
-            0.0833,
-            0.25,
-            0.5,
-            1,
-            2,
-            4,
-            6,
-            8,
-            0.0833,
-            0.25,
-            0.5,
-            1,
-            2,
-            4,
-            6,
-            8,
-            0.0833,
-            0.25,
-            0.5,
-            1,
-            2,
-            4,
-            6,
-            8,
-        ],
-        "conc": [
-            1.1,
-            3.04,
-            4.85,
-            3.93,
-            2.01,
-            1.02,
-            0.51,
-            0.25,
-            0.92,
-            2.8,
-            4.6,
-            4.1,
-            1.99,
-            1.05,
-            0.55,
-            0.3,
-            1.04,
-            3.23,
-            5.35,
-            4.1,
-            2.4,
-            1.12,
-            0.52,
-            0.27,
-        ],
-    }
-)
+APP_PATH = str(pl.Path(__file__).parent.resolve())
+
+pkdata = pd.read_csv(os.path.join(
+    APP_PATH, os.path.join(
+        'data', 'pkdata.csv')
+))
 
 n_subjects = len(pkdata.subject_index.unique())
 n_times = len(pkdata.time.unique())
