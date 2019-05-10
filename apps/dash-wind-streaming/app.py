@@ -14,6 +14,8 @@ from db.api import get_wind_data, get_wind_data_by_id
 
 app = dash.Dash(__name__)
 
+server = app.server
+
 BASE_ASSETS_PATH = pathlib.Path(__file__, "/assets").resolve()
 LOGO_PATH = BASE_ASSETS_PATH.joinpath("dash-logo-stripe-inverted.png").resolve()
 
