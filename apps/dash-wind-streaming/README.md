@@ -5,6 +5,9 @@
 This app queries a SQL database every second and uses the data to update the wind speed diagram and the wind direction diagram. 
 The wind speed values are then binned in real time to generate the wind histogram plot.
 
+Original repo: [plotly/dash-wind-streaming](https://github.com/plotly/dash-wind-streaming)
+
+
 ## How to run this app
 
 (The following instructions apply to Posix/bash. Windows users should check
