@@ -8,10 +8,8 @@ from apps_directory_mapping import APPNAME_TO_DIRECTORY
 files = ["requirements.txt", "Procfile"]
 
 app_path = os.path.join(
-    'apps',
-    APPNAME_TO_DIRECTORY.get(
-        os.environ['DASH_APP_NAME'], os.environ['DASH_APP_NAME']
-    )
+    "apps",
+    APPNAME_TO_DIRECTORY.get(os.environ["DASH_APP_NAME"], os.environ["DASH_APP_NAME"]),
 )
 
 for f in files:
