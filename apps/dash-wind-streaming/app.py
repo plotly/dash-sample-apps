@@ -11,10 +11,8 @@ from dash.dependencies import Input, Output, State
 from scipy.stats import rayleigh
 from db.api import get_wind_data, get_wind_data_by_id
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 
 BASE_ASSETS_PATH = pathlib.Path(__file__, "/assets").resolve()
 LOGO_PATH = BASE_ASSETS_PATH.joinpath("dash-logo-stripe-inverted.png").resolve()
@@ -254,14 +252,17 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
 
     wind_val = []
 
-    # Check to see whether wind-speed has been plotted yet
-    if wind_speed_figure is not None:
-        wind_val = wind_speed_figure['data'][0]['y']
-    if 'Auto' in auto_state:
-        bin_val = np.histogram(wind_val, bins=range(int(round(min(wind_val))),
-                                                    int(round(max(wind_val)))))
-    else:
-        bin_val = np.histogram(wind_val, bins=slider_value)
+    try: 
+        # Check to see whether wind-speed has been plotted yet
+        if wind_speed_figure is not None:
+            wind_val = wind_speed_figure['data'][0]['y']
+        if 'Auto' in auto_state:
+            bin_val = np.histogram(wind_val, bins=range(int(round(min(wind_val))),
+                                                        int(round(max(wind_val)))))
+        else:
+            bin_val = np.histogram(wind_val, bins=slider_value)
+    except Exception as error:
+        raise PreventUpdate
 
     avg_val = float(sum(wind_val))/len(wind_val)
     median_val = np.median(wind_val)

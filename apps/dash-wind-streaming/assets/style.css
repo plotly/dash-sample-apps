@@ -3,6 +3,10 @@ body {
     background-color: #061E44;
 }
 
+h6 {
+    margin-top: 0;
+}
+
 .app__container {
     margin: 3% 5%;
 }
