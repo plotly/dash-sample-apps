@@ -33,10 +33,7 @@ server = app.server
 
 APP_PATH = str(pl.Path(__file__).parent.resolve())
 
-pkdata = pd.read_csv(os.path.join(
-    APP_PATH, os.path.join(
-        'data', 'pkdata.csv')
-))
+pkdata = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "pkdata.csv")))
 
 n_subjects = len(pkdata.subject_index.unique())
 n_times = len(pkdata.time.unique())
