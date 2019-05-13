@@ -11,7 +11,8 @@ want to run is `my_dash_app` and the app filename is `app.py`, you
 would need to run `python apps/my_dash_app/app.py` from the root
 of the repository.
 
-Each app has a requirements.txt, install the dependecies in a virtual environment.
+Each app has a requirements.txt, install the dependecies in a virtual 
+environment.
 
 ## Contributing to the sample apps repo
 
@@ -59,7 +60,7 @@ the DDS app.
 When you are finished, make a pull request from the app branch to the master
 branch. Once you have passed your code review, you can merge your PR.
 
-### Dash app project structure
+## Dash app project structure
 
 #### Data
 - All data (csv, json, txt, etc) should be in a data folder
@@ -120,9 +121,9 @@ with open(DATA_PATH.joinpath("data.csv")) as f:  # /data/data.csv
     some_string = f.read()
 ```
 
-#### Developer Guide
+## Developer Guide
 
-##### Creating a new project
+#### Creating a new project
 
 ```
 # branch off master
@@ -135,7 +136,7 @@ mkdir /apps/{DASH_APP_NAME}
 git push -u origin {DASH_APP_NAME}
 ```
 
-##### Before committing
+#### Before committing
 
 ```
 # make sure your code is linted (we use black)
@@ -146,7 +147,7 @@ pip install black
 ```
 
 
-##### App is ready to go!
+#### App is ready to go!
 ```
 # once your app branch is ready, make a PR into master!
 
