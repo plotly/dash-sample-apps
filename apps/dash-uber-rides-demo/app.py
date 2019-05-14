@@ -1,12 +1,11 @@
 import dash
-from dash.dependencies import Input, Output, State, Event
+from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.plotly as py
 from plotly import graph_objs as go
 from plotly.graph_objs import *
 from flask import Flask
-from flask_cors import CORS
 import pandas as pd
 import numpy as np
 import os
@@ -39,12 +38,18 @@ def initialize():
 
 
 app.layout = html.Div([
-    html.Div([
-        html.Div([
-            html.P(id='total-rides', className="totalRides"),
-            html.P(id='total-rides-selection', className="totalRideSelection"),
-            html.P(id='date-value', className="dateValue"),
-            dcc.Dropdown(
+    html.Div(className="row", children=[
+        html.Div(className="four columns", children=[
+            html.H2("DASH - UBER DATA APP"),
+            html.Img(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png",
+                    style={
+                        'height': '100px'
+                    }
+            ),
+            html.P('''Select different days using the dropdown and the slider
+                    below or by selecting different time frames on the
+                    histogram'''),
+            html.Div(children=[dcc.Dropdown(
                 id='my-dropdown',
                 options=[
                     {'label': 'April 2014', 'value': 'Apr'},
@@ -56,82 +61,79 @@ app.layout = html.Div([
                 ],
                 value="Apr",
                 placeholder="Please choose a month",
-                className="month-picker"
+            )], style={'padding':'12px'}),  
+            html.Div(children=[dcc.Dropdown(
+                id='location-dropdown',
+                options=[
+                    {'label': 'Madison Square Garden', 'value':'Madison Square Garden'},
+                    {'label': 'Yankee Stadium', 'value':'Yankee Stadium'},
+                    {'label': 'Empire State Building', 'value':'Empire State Building'},
+                    {'label': 'New York Stock Exchange', 'value':'New York Stock Exchange'},
+                    {'label': 'JFK Airport', 'value':'JFK Airport'},
+                    {'label': 'Grand Central Station', 'value':'Grand Central Station'},
+                    {'label': 'Times Square', 'value':'Times Square'},
+                ]
+            )], style={'padding':'12px'}),
+            html.Div(children=[dcc.Dropdown(
+                id='bar-selector',
+                options=[
+                    {'label': '0:00', 'value': '0'},
+                    {'label': '1:00', 'value': '1'},
+                    {'label': '2:00', 'value': '2'},
+                    {'label': '3:00', 'value': '3'},
+                    {'label': '4:00', 'value': '4'},
+                    {'label': '5:00', 'value': '5'},
+                    {'label': '6:00', 'value': '6'},
+                    {'label': '7:00', 'value': '7'},
+                    {'label': '8:00', 'value': '8'},
+                    {'label': '9:00', 'value': '9'},
+                    {'label': '10:00', 'value': '10'},
+                    {'label': '11:00', 'value': '11'},
+                    {'label': '12:00', 'value': '12'},
+                    {'label': '13:00', 'value': '13'},
+                    {'label': '14:00', 'value': '14'},
+                    {'label': '15:00', 'value': '15'},
+                    {'label': '16:00', 'value': '16'},
+                    {'label': '17:00', 'value': '17'},
+                    {'label': '18:00', 'value': '18'},
+                    {'label': '19:00', 'value': '19'},
+                    {'label': '20:00', 'value': '20'},
+                    {'label': '21:00', 'value': '21'},
+                    {'label': '22:00', 'value': '22'},
+                    {'label': '23:00', 'value': '23'}
+                ],
+                multi=True,
+                placeholder="Select certain hours using \
+                                the box-select/lasso tool or \
+                                using the dropdown menu",
+                className="bars"
+            )], style={'padding':'12px'}),
+            html.P(id='total-rides'),
+            html.P(id='total-rides-selection'),
+            html.P(id='date-value'),
+            dcc.Markdown(className="source",
+            children=["Source: [FiveThirtyEight](https://github.com/fivethirtyeight/uber-tlc-foil-response/tree/master/uber-trip-data)"]),
+
+        ]),
+        html.Div(className="graph eight columns", children=[
+            dcc.Graph(id='map-graph'),
+            dcc.Graph(id="histogram"),
+            html.P("", id="popupAnnotation", className="popupAnnotation"),
+            dcc.Slider(
+                id="my-slider",
+                min=1,
+                step=1,
+                value=1
             ),
-            html.Div([
-                html.Div([
-                    html.H2("Dash - Uber Data App", style={'font-family': 'Dosis'}),
-                    html.Img(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png",
-                            style={
-                                'height': '100px',
-                                'float': 'right',
-                                'position': 'relative',
-                                'bottom': '145px',
-                                'left': '5px'
-                            },
-                    ),
-                ]),
-                html.P("Select different days using the dropdown and the slider\
-                        below or by selecting different time frames on the\
-                        histogram", className="explanationParagraph twelve columns"),
-                dcc.Graph(id='map-graph'),
-                dcc.Dropdown(
-                    id='bar-selector',
-                    options=[
-                        {'label': '0:00', 'value': '0'},
-                        {'label': '1:00', 'value': '1'},
-                        {'label': '2:00', 'value': '2'},
-                        {'label': '3:00', 'value': '3'},
-                        {'label': '4:00', 'value': '4'},
-                        {'label': '5:00', 'value': '5'},
-                        {'label': '6:00', 'value': '6'},
-                        {'label': '7:00', 'value': '7'},
-                        {'label': '8:00', 'value': '8'},
-                        {'label': '9:00', 'value': '9'},
-                        {'label': '10:00', 'value': '10'},
-                        {'label': '11:00', 'value': '11'},
-                        {'label': '12:00', 'value': '12'},
-                        {'label': '13:00', 'value': '13'},
-                        {'label': '14:00', 'value': '14'},
-                        {'label': '15:00', 'value': '15'},
-                        {'label': '16:00', 'value': '16'},
-                        {'label': '17:00', 'value': '17'},
-                        {'label': '18:00', 'value': '18'},
-                        {'label': '19:00', 'value': '19'},
-                        {'label': '20:00', 'value': '20'},
-                        {'label': '21:00', 'value': '21'},
-                        {'label': '22:00', 'value': '22'},
-                        {'label': '23:00', 'value': '23'}
-                    ],
-                    multi=True,
-                    placeholder="Select certain hours using \
-                                 the box-select/lasso tool or \
-                                 using the dropdown menu",
-                    className="bars"
-                ),
-                dcc.Graph(id="histogram"),
-                html.P("", id="popupAnnotation", className="popupAnnotation"),
-            ], className="graph twelve coluns"),
-        ], style={'margin': 'auto auto'}),
-        dcc.Slider(
-            id="my-slider",
-            min=1,
-            step=1,
-            value=1
-        ),
-        dcc.Markdown("Source: [FiveThirtyEight](https://github.com/fivethirtyeight/uber-tlc-foil-response/tree/master/uber-trip-data)",
-                     className="source"),
-        dcc.Checklist(
-            id="mapControls",
-            options=[
-                {'label': 'Lock Camera', 'value': 'lock'}
-            ],
-            values=[''],
-            labelClassName="mapControls",
-            inputStyle={"z-index": "3"}
-        ),
-    ], className="graphSlider ten columns offset-by-one"),
-], style={"padding-top": "20px"})
+            dcc.Checklist(id="mapControls",
+                options=[{'label': 'Lock Camera', 'value': 'lock'}],
+                values=[''],
+                labelClassName="mapControls",
+                inputStyle={"z-index": "3"}
+            ),
+        ]),
+    ]),
+])
 
 
 def getValue(value):
@@ -286,15 +288,13 @@ def get_selection(value, slider_value, selection):
               [Input("my-dropdown", "value"), Input('my-slider', 'value'),
                Input("bar-selector", "value")])
 def update_histogram(value, slider_value, selection):
-
     [xVal, yVal, xSelected, colorVal] = get_selection(value, slider_value,
                                                       selection)
-
     layout = go.Layout(
         bargap=0.01,
         bargroupgap=0,
         barmode='group',
-        margin=Margin(l=10, r=0, t=0, b=30),
+        margin=go.layout.Margin(l=10, r=0, t=0, b=30),
         showlegend=False,
         plot_bgcolor='#323130',
         paper_bgcolor='rgb(66, 134, 244, 0)',
@@ -313,7 +313,7 @@ def update_histogram(value, slider_value, selection):
             showgrid=False,
             fixedrange=True,
             rangemode='nonnegative',
-            zeroline='hidden'
+            zeroline=False
         ),
         annotations=[
             dict(x=xi, y=yi,
@@ -328,8 +328,7 @@ def update_histogram(value, slider_value, selection):
     )
 
     return go.Figure(
-           data=Data([
-                go.Bar(
+           data=[go.Bar(
                     x=xVal,
                     y=yVal,
                     marker=dict(
@@ -343,14 +342,15 @@ def update_histogram(value, slider_value, selection):
                     y=yVal/2,
                     hoverinfo="none",
                     mode='markers',
-                    marker=Marker(
+                    marker=dict(
                         color='rgb(66, 134, 244, 0)',
                         symbol="square",
                         size=40
                     ),
                     visible=True
-                )
-            ]), layout=layout)
+                    )
+                ],layout=layout
+            )
 
 
 def get_lat_lon_color(selectedData, value, slider_value):
@@ -391,24 +391,15 @@ def update_graph(value, slider_value, selectedData, prevLayout, mapControls):
         lonInitial = float(prevLayout['mapbox']['center']['lon'])
         bearing = float(prevLayout['mapbox']['bearing'])
     return go.Figure(
-        data=Data([
+        data=[
             Scattermapbox(
                 lat=eval(listStr)['Lat'],
                 lon=eval(listStr)['Lon'],
                 mode='markers',
                 hoverinfo="lat+lon+text",
                 text=eval(listStr).index.hour,
-                marker=Marker(
+                marker=go.scattermapbox.Marker(
                     color=np.append(np.insert(eval(listStr).index.hour, 0, 0), 23),
-                    colorscale=[[0, "#F4EC15"], [0.04167, "#DAF017"],
-                                [0.0833, "#BBEC19"], [0.125, "9DE81B"],
-                                [0.1667, "#80E41D"], [0.2083, "#66E01F"],
-                                [0.25, "#4CDC20"], [0.292, "#34D822"],
-                                [0.333, "#24D249"], [0.375, "#25D042"],
-                                [0.4167, "#26CC58"], [0.4583, "#28C86D"],
-                                [0.50, "#29C481"], [0.54167, "#2AC093"],
-                                [0.5833, "#2BBCA4"],
-                                [1.0, "#613099"]],
                     opacity=0.5,
                     size=5,
                     colorbar=dict(
@@ -422,9 +413,8 @@ def update_graph(value, slider_value, selectedData, prevLayout, mapControls):
                         ),
                         titlefont=dict(
                             color='white'
-                        ),
-                        titleside='left'
                         )
+                    )
                 ),
             ),
             Scattermapbox(
@@ -440,17 +430,16 @@ def update_graph(value, slider_value, selectedData, prevLayout, mapControls):
                       "Grand Central Station", "One World Trade Center",
                       "Times Square", "Columbia University",
                       "United Nations HQ"],
-                # opacity=0.5,
-                marker=Marker(
+                marker=dict(
                     size=6,
                     color="#ffa0a0"
                 ),
             ),
-        ]),
+        ],
         layout=Layout(
             autosize=True,
             height=750,
-            margin=Margin(l=0, r=0, t=0, b=0),
+            margin=go.layout.Margin(l=0, r=0, t=0, b=0),
             showlegend=False,
             mapbox=dict(
                 accesstoken=mapbox_access_token,
@@ -591,10 +580,9 @@ def update_graph(value, slider_value, selectedData, prevLayout, mapControls):
 
 
 external_css = ["https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
-                "//fonts.googleapis.com/css?family=Raleway:400,300,600",
-                "//fonts.googleapis.com/css?family=Dosis:Medium",
                 "https://cdn.rawgit.com/plotly/dash-app-stylesheets/62f0eb4f1fadbefea64b2404493079bf848974e8/dash-uber-ride-demo.css",
-                "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"]
+                "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
+                "https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
 
 for css in external_css:
