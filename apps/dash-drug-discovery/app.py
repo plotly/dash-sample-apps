@@ -4,8 +4,9 @@ import pandas as pd
 import pathlib
 import dash_html_components as html
 import dash_core_components as dcc
-from dash.dependencies import Input, Output
 
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
 
 app = dash.Dash(__name__)
 server = app.server
@@ -158,8 +159,9 @@ def scatter_plot_3d(
 
     return dict( data=data, layout=layout )
 
-def make_dash_table( selection ):
-    ''' Return a dash defintion of an HTML table for a Pandas dataframe '''
+def make_dash_table(selection):
+    """ Return a dash defintion of an HTML table for a Pandas dataframe. """
+
     df_subset = df.loc[df['NAME'].isin(selection)]
     table = []
     for index, row in df_subset.iterrows():
@@ -246,30 +248,15 @@ app.layout = html.Div([
     ], className='' ),
 
     html.Div([
-        html.Table( make_dash_table( [STARTING_DRUG] ), id='table-element' )
+        html.Table( make_dash_table([STARTING_DRUG]), id='table-element' )
     ])
 
 ], className='')
 
 
-@app.callback(
-    Output('clickable-graph', 'figure'),
-    [Input('chem_dropdown', 'value'),
-    Input('charts_radio', 'value')])
-def highlight_molecule(chem_dropdown_values, plot_type):
-    return scatter_plot_3d( markers = chem_dropdown_values, plot_type = plot_type )
+def df_row_from_hover(hoverData):
+    """ Returns row for hover point as a Pandas Series. """
 
-
-@app.callback(
-    Output('table-element', 'children'),
-    [Input('chem_dropdown', 'value')])
-def update_table(chem_dropdown_value):
-    table = make_dash_table( chem_dropdown_value )
-    return table
-
-
-def dfRowFromHover( hoverData ):
-    ''' Returns row for hover point as a Pandas Series '''
     if hoverData is not None:
         if 'points' in hoverData:
             firstPoint = hoverData['points'][0]
@@ -281,49 +268,65 @@ def dfRowFromHover( hoverData ):
 
 
 @app.callback(
-    Output('chem_name', 'children'),
-    [Input('clickable-graph', 'hoverData')])
-def return_molecule_name(hoverData):
-    if hoverData is not None:
-        if 'points' in hoverData:
-            firstPoint = hoverData['points'][0]
-            if 'pointNumber' in firstPoint:
-                point_number = firstPoint['pointNumber']
-                molecule_name = str(FIGURE['data'][0]['text'][point_number]).strip()
-                return molecule_name
+    Output('clickable-graph', 'figure'),
+    [   
+        Input('chem_dropdown', 'value'),
+        Input('charts_radio', 'value')
+    ]
+)
+def highlight_molecule(chem_dropdown_values, plot_type):
+    """
+    Selected chemical dropdown values handler.
+
+    :params chem_dropdown_values: selected dropdown values
+    :params plot_type: selected plot graph
+    """
+
+    return scatter_plot_3d(markers = chem_dropdown_values, plot_type = plot_type)
 
 
 @app.callback(
-    dash.dependencies.Output('chem_name', 'href'),
-    [dash.dependencies.Input('clickable-graph', 'hoverData')])
-def return_href(hoverData):
-    row = dfRowFromHover(hoverData)
-    if row.empty:
-        return
-    datasheet_link = row['PAGE'].iloc[0]
-    return datasheet_link
+    Output('table-element', 'children'),
+    [Input('chem_dropdown', 'value')])
+def update_table(chem_dropdown_value):
+    """
+    Update the table rows.
+
+    :params chem_dropdown_values: selected dropdown values
+    """
+
+    return make_dash_table(chem_dropdown_value)
 
 
 @app.callback(
-    Output('chem_img', 'src'),
-    [Input('clickable-graph', 'hoverData')])
-def display_image(hoverData):
-    row = dfRowFromHover(hoverData)
-    if row.empty:
-        return
-    img_src = row['IMG_URL'].iloc[0]
-    return img_src
+    [
+        Output('chem_name', 'children'),
+        Output('chem_name', 'href'),
+        Output('chem_img', 'src'),
+        Output('chem_desc', 'children')
+    ],
+    [Input('clickable-graph', 'hoverData')]
+)
+def chem_info_on_hover(hoverData):
+    """ 
+    Display chemical information on graph hover.
+    Update the image, link, description.
 
+    :params hoverData: data on graph hover
+    """
 
-@app.callback(
-    Output('chem_desc', 'children'),
-    [Input('clickable-graph', 'hoverData')])
-def display_molecule(hoverData):
-    row = dfRowFromHover(hoverData)
-    if row.empty:
-        return
-    description = row['DESC'].iloc[0]
-    return description
+    if hoverData is None:
+        raise PreventUpdate
+
+    try:
+        row = df_row_from_hover(hoverData)
+        if row.empty:
+            raise Exception
+        return row["NAME"].iloc[0], row['PAGE'].iloc[0], row['IMG_URL'].iloc[0], row['DESC'].iloc[0]
+
+    except Exception as error:
+        raise PreventUpdate
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
