@@ -1,0 +1,20 @@
+.css-example h1,
+.css-example h2,
+.css-example h3,
+.css-example h4,
+.css-example h5,
+.css-example h6 {
+    color: hotpink;
+    font-family: sans-serif;
+}
+
+.css-example .app-header {
+    height: 60px;
+    line-height: 60px;
+    border-bottom: thin lightgrey solid;
+}
+
+.css-example .app-header .app-header--title {
+    font-size: 24px;
+    padding-left: 5px;
+}

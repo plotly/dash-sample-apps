@@ -1,0 +1,90 @@
+@media print {
+  body * {
+      visibility: hidden;
+  }
+  #pdf-docs, #pdf-docs * {
+      visibility: visible;
+      -webkit-print-color-adjust: exact;
+  }
+  @page {
+      margin: 1.25in; 
+  }
+  .example-container {
+      page-break-inside: avoid;
+  }
+}
+
+#pdf-docs {
+    font-family: Arial; 
+    font-size: 14pt; 
+    width:8.5in; 
+}
+#pdf-docs-title {
+    font-size: 76pt;
+    color: black;
+    font-family: Dosis;
+    text-align: center;
+    page-break-after: always;
+}
+
+.pdf-docs-section {
+    page-break-after: always;
+}
+.pdf-docs-section-name {
+    font-size: 68pt;
+    text-align: center;
+    margin: 0px;
+    margin-top: 4in; 
+    page-break-after: always;
+}
+
+.pdf-docs-chapter {
+    page-break-after: always;
+}
+.pdf-docs-chapter h5 {
+    font-size: 18pt;
+    page-break-after:avoid;
+}
+.pdf-docs-chapter h4 {
+    font-size: 22pt;
+    page-break-after:avoid;
+}
+.pdf-docs-chapter h3 {
+    font-size: 26pt;
+    page-break-after:avoid;
+}
+.pdf-docs-chapter h2 {
+    font-size: 32pt;
+    page-break-after:avoid;
+}
+.pdf-docs-chapter h1 {
+    font-size: 48pt;
+    page-break-after:avoid;
+}
+
+#pdf-docs-toc {
+    page-break-after: always;
+    font-family: Dosis;
+    margin-top: 1.25in; 
+}
+#pdf-docs-toc a, .toc-chapter-links a {
+    background-color: rgba(0,0,0,0);
+}
+#pdf-docs-toc h1 {
+    font-size: 48pt; 
+    text-align: center;
+}
+.toc-section-link {
+    font-size: 28pt;
+}
+.toc-chapter-links {
+    padding-left: 20px;
+    font-size: 24px;
+}
+.toc-chapter-links a {
+    display: block;
+    text-decoration: none;
+}
+.toc-chapter-links a::before {
+    content: "→ "
+}

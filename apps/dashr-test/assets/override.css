@@ -1,0 +1,262 @@
+body {
+  color: #506784;
+  background:
+    linear-gradient(
+      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.6)
+    ),
+    url("https://github.com/plotly/dash-docs/raw/master/images/dash-pattern.png");
+  margin: 0px;
+}
+
+._dash-loading {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Header */
+.header {
+  height: 60px;
+  -webkit-box-shadow: 0px 5px 5px 0px rgba(100, 100, 100, 0.1);
+  -moz-box-shadow:    0px 5px 5px 0px rgba(100, 100, 100, 0.1);
+  box-shadow:         0px 5px 5px 0px rgba(100, 100, 100, 0.1);
+  margin-bottom: 50px;
+  background-color: white;
+}
+
+.header .links {
+  display: inline-block;
+  float: right;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: rgb(81, 104, 131);
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.header .links .link {
+  margin-left: 20px;
+  line-height: 60px;
+  display: inline-block;
+  color: #506784;
+  cursor: pointer;
+  background-color: white;
+  text-decoration: none;
+}
+
+.header .links .link:hover {
+  color: #0D67BF;
+  text-decoration: none;
+}
+
+.header .links .link.active {
+  border-bottom: #119DFF 2px solid;
+  color: #2A3F5F;
+  height: 59px;
+}
+
+.header .links .link:hover {
+  border-bottom: #119DFF 2px solid;
+  color: #2A3F5F;
+  height: 59px;
+}
+
+
+.header .logo {
+  height: 95%;
+}
+
+.header .logo-link {
+  background-color: white;
+}
+
+/* Example Container */
+
+.example-container {
+  border: thin #C8D4E3 solid;
+  padding: 15px;
+  overflow-x: scroll;
+}
+.code-container {
+  border-left: thin #C8D4E3 solid;
+}
+
+/* Fonts */
+h1, h2, h3, h4, h5, h6 {
+  font-family: Dosis, 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  color: #2A3F5F;
+}
+
+h2, h3, h4, h5, h6 {
+  margin-top: 3rem;
+}
+
+.example-container h1,
+.example-container h2,
+.example-container h3,
+.example-container h4,
+.example-container h5,
+.example-container h6 {
+  font-weight: 300;
+  font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: rgb(50, 50, 50);
+}
+
+.gallery .image-link {
+  background-color: white;
+}
+
+.gallery img {
+  width: 100%;
+  border: thin lightgrey solid;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.toc--chapter {
+  list-style: none;
+}
+
+.toc--chapter .toc--chapter-link {
+    background-color: white;
+    font-family: Dosis, 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-decoration: underline;
+    padding-left: 0px;
+    list-style: none;
+    font-size: 26px;
+    color: #506784;
+    line-height: 1;
+}
+
+.toc--chapter-content {
+  color: #506784;
+  font-size: 1.5rem;
+}
+
+.toc--chapter-content ul {
+    font-size: 100%;
+}
+
+.toc--chapter-content ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* Links
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.content a {
+  color: #506784;
+  background-color: rgb(245, 245, 245);
+  text-decoration: underline;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: 1px;
+}
+
+.content a:hover {
+  color: #0D67BF;
+  text-decoration: underline;}
+
+.content a > img:hover {
+  border: thin #119DFF solid;
+  cursor: pointer;
+}
+
+.content p > code,
+.content li > code{
+    background-color: rgb(243, 246, 251);
+    border: 0.5px rgb(224, 232, 242) solid;
+    border-radius: 4px;
+    font-size: 95%;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.content-container {
+  background-color: white;
+  border-radius: 5px;
+  font-size: 1.7rem;
+  box-shadow: rgb(240, 240, 240) 5px 5px 5px 0px;
+  border: thin solid rgb(240, 240, 240);
+  margin-bottom: 100px;
+}
+
+.cytoscape-reference p {
+    display: inline;
+    font-size: 100%;
+}
+
+.cytoscape-reference ol, ul {
+    margin: 1rem 0 1rem 2rem;
+    list-style-position: outside;
+}
+
+.cytoscape-reference ol > li > ul, ul > li > ul {
+    list-style-type: disc;
+}
+
+.cytoscape-reference ol > li > ul > li > ul {
+    list-style-type: circle;
+}
+
+table {
+    font-size: 1.4rem;
+}
+
+@media (min-width: 0px) {
+  .content {
+     margin-left: 20px;
+     margin-right: 20px;
+     margin-top: 20px;
+     margin-bottom: 40px;
+  }
+
+  .container-width {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .toc-chapters {
+    column-count: 1;
+  }
+
+  .header .links {
+    display: none;
+  }
+}
+
+._dash-undo-redo {
+  display: none;
+}
+
+@media (min-width: 450px) {
+  .header .links {
+    display: block;
+  }
+}
+
+@media (min-width: 750px) {
+  .content {
+     margin-left: 60px;
+     margin-right: 60px;
+     margin-top: 20px;
+     margin-bottom: 40px;
+  }
+
+  .container-width {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 900px) {
+   .container-width {
+     width: 80%;
+     max-width: 960px;
+  }
+}

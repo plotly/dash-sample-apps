@@ -1,0 +1,36 @@
+.example-container .chrome-picker {
+    border: none !important;
+}
+#theme-colors {
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+
+#primary-color, #secondary-color, #detail-color {
+    width: 225px;
+    float: left;
+    margin-left: 5px; 
+}
+
+.dark-theme-control, .dark-theme-control > div {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#darktheme-daq-graduatedbar {
+    margin-left: calc(50% - 128px);
+}
+
+#darktheme-daq-indicator {
+    margin-left: calc(50% - 7.5px);
+}
+
+#darktheme-daq-slider {
+    margin-left: calc(50% - 132.5px); 
+}
+
+#darktheme-daq-tank {
+    margin-left: calc(50% - 56px);
+}
