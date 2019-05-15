@@ -40,6 +40,8 @@ jobs:
             if ["$APP" == "$CIRCLE_BRANCH"] 
             then
               git push playground $CIRCLE_BRANCH:master --force
+            else
+              echo "appname: $APP is not same as the branch name: $CIRCLE_BRANCH. Not deploying..."
             fi
           done
   deploy_to_gallery:
