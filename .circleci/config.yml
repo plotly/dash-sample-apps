@@ -33,7 +33,15 @@ jobs:
           command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
       - run:
           name: Deploy
-          command: git push playground $CIRCLE_BRANCH:master --force
+          command: |
+          APPS_MODIFIED=$(git diff origin/master origin/$CIRCLE_BRANCH --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }')
+          for APP in $APPS_MODIFIED
+          do
+            if ["$APP" == "$CIRCLE_BRANCH"] 
+            then
+              git push playground $CIRCLE_BRANCH:master --force
+            fi
+          done
   deploy_to_gallery:
     docker:
       - image: circleci/python:3.6-stretch
