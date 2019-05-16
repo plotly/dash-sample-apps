@@ -1,0 +1,59 @@
+.container.scalable {
+    width: 95%;
+    max-width: none;
+}
+
+/* Remove Undo
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+._dash-undo-redo {
+    display: none;
+}
+
+body {
+    background-color: #171b26;
+    color: #737a8d;
+}
+
+.banner {
+    height: 50px;
+    padding-top: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.banner h6 {
+    margin-left: 2%;
+    display: inline-block;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.banner Img {
+    position: relative;
+    float: right;
+    right: 5%;
+    height: 40px;
+}
+
+#select-metric-outer, #region-select-outer {
+    display: inline-block;
+}
+
+#cost-stats-table, #procedure-stats-table {
+    overflow-x: scroll;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+*.Select-control, *.Select has value is clearable is searchable Select--single, .Select-multi-value-wrapper, .Select-value, .Select-value-label {
+    background-color: #171b26 !important;
+    color: #7b7d8d !important;
+}
