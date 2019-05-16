@@ -2,35 +2,59 @@
 
 ## About this app
 
-This app creates a dashboard to visualize medical provider charges/costs from 
+This app creates a dashboard to visualize medical provider charges/costs from US hospitals and clinics.
+
+Data are downloaded from open data platform by [Centers for Medicare & Medicaid Services](https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Inpatient2016.html).  
+This dataset covers national and state summary of inpatient charges in Fiscal Year 2016. Information includes utilization, payment(total and medicare payment), hospital-specific charges
+for all medicare-certified hospital facilities.
+
+Detailed explanation on columns could be found [here](https://data.cms.gov/Medicare-Inpatient/Inpatient-Prospective-Payment-System-IPPS-Provider/fm2n-hjj6)
 
 
-### [technique or field associated with the app]
+## How to run this app locally
 
-[add a small description of the context in which this app might be
-used here]
+To run this app locally, clone this repository and open this app folder in your terminal/Command Prompt. We suggest you to create a 
+virtual environment for installation of required packages for this app.
 
-## How to run this app
+```
+cd dash-medical-provider-charges
+python3 -m virtualenv venv
 
-[add the *full instructions* for someone who has cloned the repo to
-run your app; this includes setting up a virtual environment,
-activating the virtual environment, installing requirements, and
-running your app from the root directory (the instructions should all
-be in the form of shell commands)]
+```
+In Unix System:
+```
+source venv/bin/activate
+
+```
+
+In Windows: 
+
+```
+venv\Scripts\activate
+```
+
+Install all required packages by running:
+```
+pip install -r requirements.txt
+```
+
+Run this app locally by:
+```
+python app.py
+```
+
+## How to use this app
+
+Select state, cost metric and region to visualize average charges or payments(for all medical procedures) on the map. Click on individual 
+hospital from map to highlight its procedure-specific charges on the bottom chart. You may also click or select individual data from bottom
+plot to view its geological location, as well as charges/payment summary from datatable.
+
 
 ## Screenshots
 
-[add a screenshot or (ideally) a gif of the app in action]
+
+
 
 ## Resources
-
-[add a list of references that you used here during development of the
-app; if you don't have anything to put here, delete this section]
-
-## Resources
-This app is made refers to github issue. https://github.com/plotly/streambed/issues/12759
-And tableau template https://www.tableau.com/solutions/workbook/improve-patient-satisfaction-improving-cycle-time
-
-## Data sources
-Data is downloaded from ...
-* Average Covered Charges: 
+* [Dash](https://dash.plot.ly/)
+* Inspired by [tableau template](https://www.tableau.com/solutions/workbook/improve-patient-satisfaction-improving-cycle-time)
