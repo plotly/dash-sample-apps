@@ -162,13 +162,7 @@ app.layout = html.Div(
                     className="eight columns",
                 ),
                 html.Div(
-                    [
-                        html.Img(
-                            id="logo",
-                            src=app.get_asset_url("dash-logo.png"),
-                            style={"height": "50px", "float": "right"},
-                        )
-                    ],
+                    [html.Img(id="logo", src=app.get_asset_url("dash-logo.png"))],
                     className="four columns",
                 ),
             ],
