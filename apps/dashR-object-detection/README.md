@@ -31,6 +31,7 @@ Run the init.R script to have your packages installed.
 ```
 source('<path-where-the-folder-is>/dashR-object-detection/init.R', echo=TRUE)
 ```
+Download dashPlayer_0.0.1.tar file so that you can locally install DashPlayer in R.
 
 Run the app in RStudio Console:
 ```
