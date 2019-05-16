@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath apps/dashr-svm app:server
