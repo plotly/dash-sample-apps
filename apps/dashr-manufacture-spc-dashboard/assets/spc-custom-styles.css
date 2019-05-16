@@ -1,0 +1,273 @@
+/* Table of contents
+––––––––––––––––––––––––––––––––––––––––––––––––––
+- Banner
+- Scalable Container
+- Remove Undo
+/* Banner
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+body {
+    color: #95969A !important;
+    background-color: #23262E !important;
+    font-family: "Open Sans", sans-serif;
+}
+
+.banner {
+    height: 50px;
+    background-color: #2d3038;
+    padding-top: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #95969A;
+}
+
+.banner h5 {
+    color: #95969A;
+    margin-left: 5%;
+    display: inline-block;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.banner button {
+    margin-left: 5%;
+    color: #95969A;
+}
+
+.banner Img {
+    position: relative;
+    float: right;
+    right: 5%;
+    height: 40px;
+}
+
+/* Tabs
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.custom-tabs {
+    background-color: #2d3038;
+    text-transform: uppercase;
+    font-weight: bold;
+    height: 20px;
+}
+
+#Specs-tab.custom-tab, #Control-chart-tab.custom-tab {
+    background-color: #2d3038;
+    color: #95969A;
+    border-color: #23262E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#Specs-tab.custom-tab--selected, #Control-chart-tab.custom-tab--selected {
+    border-top-color: #FFD15F !important;
+}
+
+.section-banner {
+    background-color: #2d3038;
+    text-align: center;
+    font-weight: bold;
+    padding: 0px;
+    height: 30px;
+    box-shadow: 0px 2px 2px -2px;
+}
+
+#top-section-container {
+    margin: 10px 0px;
+}
+
+#metric_header > div {
+    font-weight: bold;
+}
+
+/* Scalable Container
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.container.scalable {
+    width: 95%;
+    max-width: none;
+}
+
+/* Remove Undo
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+._dash-undo-redo {
+    display: none;
+}
+
+#Metric1_button, #Metric2_button, #Metric3_button, #Thickness1_button, #Width1_button, #Para1_button, #Metric4_button {
+    padding: 0px 0px;
+    color: #95969A;
+}
+
+#Metric1_button:hover, #Metric2_button:hover, #Metric3_button:hover, #Para1_button:hover, #Metric4_button:hover, #Thickness1_button:hover, #Width1_button:hover {
+    color: #FFFFFF;
+}
+
+#Metric1_OOC_graph > div > div, #Metric2_OOC_graph > div > div, #Metric3_OOC_graph > div > div, #Metric4_OOC_graph > div > div,#Para1_OOC_graph > div > div,#Thickness1_OOC_graph > div > div, #Width1_OOC_graph > div > div, #Metric6_OOC_graph > div > div {
+    width: 100%;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /*Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1005; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.markdown-container {
+    width: 60vw;
+    margin: 10% auto;
+    padding: 10px 15px;
+    background-color: #2d3038;
+}
+
+.close-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 40px;
+}
+
+.closeButton {
+    padding: 0 15px;
+    font-weight: normal;
+    float: right;
+    height: 100%;
+    border: none;
+}
+
+.closeButton:hover {
+    color: #FFD15F;
+}
+
+#quick-stats.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 20px 0px;
+}
+
+#metric-summary-session, #ooc-piechart-outer, #control-chart-container {
+    background-color: #2d3038;
+    border-radius: 10px;
+    padding: 3px;
+}
+
+#ooc-piechart-outer {
+    height: 100%;
+}
+
+#piechart {
+    height: calc(100% - 30px);
+    margin: 2px 0px;
+}
+
+#control-chart-live {
+    margin: 2px 0px;
+}
+
+#piechart.plot-container plotly {
+    height: 100%;
+}
+
+#card-1, #card-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: space-evenly;
+}
+
+#utility-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#stop-button > div > button {
+    font-size: 16px;
+    border-radius: 4px;
+    height: 40px;
+    line-height: 40px;
+}
+
+#stop-button > div > button:hover {
+    color: #FFD15F;
+}
+
+#card-1 h5, #card-2 h5 {
+    font-weight: 700;
+}
+
+#card1 span {
+    font-size: 25px;
+}
+
+#set-specs-intro-container {
+    font-weight: bold;
+    padding: 5px 5px;
+    margin: 20px 0px;
+}
+
+#metric-select-title {
+    font-weight: bold;
+}
+
+#value-setter-view-btn {
+    margin-left: 20px;
+}
+
+#value-setter-panel {
+    line-height: 3;
+}
+
+#value-setter-panel-header {
+    font-weight: bold;
+}
+
+#react-select-2--value {
+    background: #2d3038;
+}
+
+.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label {
+    color: #95969A !important;
+}
+
+.Select-control, .Select-control > span {
+    color: #95969A;
+    background: #2d3038 !important;
+}
+
+.Select.is-focused:not(.is-open) > .Select-control {
+    border-color: #FFD15F !important;
+}
+
+.output-datatable {
+    margin: 20px 0px;
+    line-height: 3;
+}
+
+.dash-spreadsheet-container .dash-spreadsheet-inner * {
+    background-color: #2d3038;
+    color: #95969A;
+    border: #53555B;
+}
+
+#value-setter-set-btn:hover, #value-setter-view-btn:hover {
+    color: #FFFFFF;
+}
