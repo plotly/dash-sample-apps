@@ -1,0 +1,65 @@
+body {
+    font-family: "Open Sans", sans-serif;
+}
+
+h3 {
+    letter-spacing: 0.23rem;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.app__container {
+    margin: 0% 3% 3% 3%;
+}
+
+.app__banner {
+    display: flex;
+    justify-content: flex-start;
+    padding: 30px 30px 0px 30px;
+}
+
+.app__banner__img {
+    height: 60px;
+    width: auto;
+}
+
+.app__header {
+    display: flex;
+    justify-content: center;
+}
+
+.app__dropdown {
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+#chem_dropdown {
+    width: 500px;
+}
+
+.app__content {
+    margin-top: 20px;
+}
+
+.radio__labels {
+    display: inline;
+    padding-right: 10px;
+}
+
+.radio__group {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.card {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    padding: 15px;
+    border-radius: 0.75rem;
+}

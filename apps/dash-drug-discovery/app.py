@@ -11,11 +11,11 @@ from dash.exceptions import PreventUpdate
 app = dash.Dash(__name__)
 server = app.server
 
-DATA_PATH = pathlib.Path(__file__).parent.joinpath("data") 
-ASSETS_PATH = pathlib.Path(__file__).parent.joinpath("assets")    
+DATA_PATH = pathlib.Path(__file__).parent.joinpath("data").resolve()
+ASSETS_PATH = pathlib.Path(__file__, "/assets")
 
 # read from datasheet
-df = pd.read_csv(DATA_PATH.joinpath("small_molecule_drugbank.csv").resolve()).drop(['Unnamed: 0'],axis=1)
+df = pd.read_csv(DATA_PATH.joinpath("small_molecule_drugbank.csv")).drop(['Unnamed: 0'],axis=1)
 
 def add_markers( figure_data, molecules, plot_type = 'scatter3d' ):
     indices = []
@@ -100,7 +100,10 @@ def scatter_plot_3d(
         mode = 'markers',
         marker = dict(
                 colorscale = COLORSCALE,
-                colorbar = dict( title = "Molecular<br>Weight" ),
+                colorbar = {
+                    "title": "Molecular<br>Weight",
+                    "yanchor": "left",
+                },
                 line = dict( color = '#444' ),
                 reversescale = True,
                 sizeref = 45,
@@ -181,77 +184,85 @@ STARTING_DRUG = 'Levobupivacaine'
 DRUG_DESCRIPTION = df.loc[df['NAME'] == STARTING_DRUG]['DESC'].iloc[0]
 DRUG_IMG = df.loc[df['NAME'] == STARTING_DRUG]['IMG_URL'].iloc[0]
 
+
 app.layout = html.Div([
-    # Row 1: Header and Intro text
 
     html.Div([
-        html.Img(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png"),
-        html.H2('Dash'),
-        html.H2('for'),
-        html.H2('Drug Discovery'),
-    ], className=''),
+        html.Img(src=str(ASSETS_PATH.joinpath("dash-logo-stripe.png").resolve()), className="app__banner__img")
+    ], className="app__banner"),
 
     html.Div([
         html.Div([
             html.Div([
-                html.P('HOVER over a drug in the graph to the right to see its structure to the left.'),
-                html.P('SELECT a drug in the dropdown to add it to the drug candidates at the bottom.')
-            ],),
-            dcc.Dropdown(id='chem_dropdown',
-                        multi=True,
-                        value=[ STARTING_DRUG ],
-                        options=[{'label': i, 'value': i} for i in df['NAME'].tolist()]),
-            ], className='' )
+                html.H3("dash for drug discovery", className="uppercase"),
+                html.Span("Hover ", className="uppercase bold"),
+                html.Span("over a drug in the graph to see its structure."), 
+                html.Br(),
+                html.Span("Select ", className="uppercase bold"),
+                html.Span("a drug in the dropdown to add it to the drug candidates at the bottom."), 
+            ]),
+        ], className="app__header"),
 
-    ], className='' ),
-
-    # Row 2: Hover Panel and Graph
-
-    html.Div([
         html.Div([
-
-            html.Img(id='chem_img', src=DRUG_IMG ),
-
-            html.Br(),
-
-            html.A(STARTING_DRUG,
-                  id='chem_name',
-                  href="https://www.drugbank.ca/drugs/DB01002",
-                  target="_blank"),
-
-            html.P(DRUG_DESCRIPTION,
-                  id='chem_desc'),
-
-        ], className=''),
+            dcc.Dropdown(
+                id='chem_dropdown',
+                multi=True,
+                value=[ STARTING_DRUG ],
+                options=[{'label': i, 'value': i} for i in df['NAME'].tolist()]),
+        ], className="app__dropdown"),
 
         html.Div([
 
-            dcc.RadioItems(
-                id = 'charts_radio',
-                options=[
-                    dict( label='3D Scatter', value='scatter3d' ),
-                    dict( label='2D Scatter', value='scatter' ),
-                    dict( label='2D Histogram', value='histogram2d' ),
-                ],
-                labelStyle = dict(display='inline'),
-                value='scatter3d'
-            ),
+            html.Div([
+                dcc.RadioItems(
+                    id = 'charts_radio',
+                    options=[
+                        {
+                            "label": "3D Scatter",
+                            "value": "scatter3d"
+                        },
+                        {
+                            "label": "2D Scatter",
+                            "value": "scatter"
+                        },
+                        {
+                            "label": "2D Histogram",
+                            "value": "histogram2d"
+                        }
+                    ],
+                    labelClassName = "radio__labels",
+                    value='scatter3d',
+                    className="radio__group"
+                ),
+                dcc.Graph(
+                    id='clickable-graph',
+                    hoverData={"points": [{"pointNumber": 0}]},
+                    figure=FIGURE 
+                ),
+            ], className="two-thirds column app__content__graph"),
 
-            dcc.Graph(id='clickable-graph',
-                      style=dict(width='700px'),
-                      hoverData=dict( points=[dict(pointNumber=0)] ),
-                      figure=FIGURE ),
 
-        ], className=''),
+            html.Div([
+                html.Img(id='chem_img', src=DRUG_IMG ),
+                html.Br(),
+                html.A(STARTING_DRUG,
+                    id='chem_name',
+                    href="https://www.drugbank.ca/drugs/DB01002",
+                    target="_blank"),
+                html.P(DRUG_DESCRIPTION,
+                    id='chem_desc'),
+            ], className="one-third column app__content__info"),
 
 
-    ], className='' ),
+        ], className="container card app__content")
+
+    ], className="app__container"),
 
     html.Div([
         html.Table( make_dash_table([STARTING_DRUG]), id='table-element' )
     ])
 
-], className='')
+], className="")
 
 
 def df_row_from_hover(hoverData):
