@@ -79,9 +79,7 @@ state_list = [
 # Load data
 data_dict = {}
 for state in state_list:
-    f_path = "processed/df_{}_lat_lon.csv".format(state)
-    data_path = DATA_PATH.joinpath(f_path)
-    state_data = pd.read_csv(str(data_path)[1:])
+    state_data = pd.read_csv("apps/dash-medical-provider-charges/data/processed/df_{}_lat_lon.csv".format(state))
     data_dict[state] = state_data
 
 df_al = data_dict["AL"]
