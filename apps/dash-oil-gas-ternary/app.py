@@ -17,10 +17,10 @@ mapbox_access_token = "pk.eyJ1IjoieWNhb2tyaXMiLCJhIjoiY2p1MDR5c3JmMzJsbjQ1cGlhNH
 
 # Load data
 df = pd.read_csv(
-    "apps/das-oil-gas-ternary/data/EKY_shale/EKY_shale_production/test_composition.csv"
+    "apps/das-oil-gas-ternary/data/test_composition.csv"
 )
 df_prod = pd.read_csv(
-    "apps/dash-oil-gas-ternary/data/EKY_shale/EKY_shale_production/YearlyProduction_table_1.csv"
+    "apps/dash-oil-gas-ternary/data/YearlyProduction_table_1.csv"
 )
 
 # Assign color to legend
