@@ -8,12 +8,12 @@ from dash.exceptions import PreventUpdate
 
 import pandas as pd
 import pathlib
+import os
 
 app = dash.Dash(__name__)
 server = app.server
 
 app.config["suppress_callback_exceptions"] = True
-
 
 ASSETS_PATH = pathlib.Path(__file__, "/assets").resolve()
 LOGO_PATH = ASSETS_PATH.joinpath("plotly_logo.png").resolve()
@@ -76,10 +76,15 @@ state_list = [
     "WY",
 ]
 
+
 # Load data
 data_dict = {}
 for state in state_list:
-    state_data = pd.read_csv("apps/dash-medical-provider-charges/data/processed/df_{}_lat_lon.csv".format(state))
+    p = os.getcwd().split(os.path.sep)
+    csv_path = "data/processed/df_{}_lat_lon.csv".format(state)
+    if p[-1] != 'dash-medical-provider-charges':
+        csv_path = 'apps/dash-medical-provider-charges/' + csv_path
+    state_data = pd.read_csv(csv_path)
     data_dict[state] = state_data
 
 df_al = data_dict["AL"]
@@ -103,8 +108,8 @@ def generate_aggregation_upfront(df, metric):
     }
     grouped = (
         df.groupby(["Hospital Referral Region (HRR) Description", "Provider Name"])
-        .agg(aggregation)
-        .reset_index()
+            .agg(aggregation)
+            .reset_index()
     )
 
     grouped["lat"] = grouped["lon"] = grouped["Provider Street Address"] = grouped[
@@ -124,21 +129,13 @@ def get_lat_lon_add(df, name):
         df.groupby(["Provider Name"]).get_group(name)["lat"].tolist()[0],
         df.groupby(["Provider Name"]).get_group(name)["lon"].tolist()[0],
         df.groupby(["Provider Name"])
-        .get_group(name)["Provider Street Address"]
-        .tolist()[0],
+            .get_group(name)["Provider Street Address"]
+            .tolist()[0],
     ]
 
 
 # Generate aggregated data
 data = generate_aggregation_upfront(df_al, cost_metric)
-
-
-def build_banner():
-    return html.Div(
-        id="banner",
-        className="banner",
-        children=[html.H6("Dash Clinical Analytics"), html.Img(src=str(LOGO_PATH))],
-    )
 
 
 def build_upper_left_panel():
@@ -207,17 +204,7 @@ def build_upper_left_panel():
                         ],
                     ),
                 ],
-            ),
-            html.Div(
-                id="cost-stats-outer-container",
-                style={"marginTop": "20px"},
-                children=[
-                    html.P("Hospital Charges Summary"),
-                    html.Div(id="cost-stats-container"),
-                    html.P("Procedure Charges Summary"),
-                    html.Div(id="procedure-stats-container"),
-                ],
-            ),
+            )
         ],
     )
 
@@ -244,11 +231,11 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
     cost_metric_data["max"] = filtered_data[selected_metric]["mean"].max()
     cost_metric_data["mid"] = (cost_metric_data["min"] + cost_metric_data["max"]) / 2
     cost_metric_data["low_mid"] = (
-        cost_metric_data["min"] + cost_metric_data["mid"]
-    ) / 2
+                                          cost_metric_data["min"] + cost_metric_data["mid"]
+                                  ) / 2
     cost_metric_data["high_mid"] = (
-        cost_metric_data["mid"] + cost_metric_data["max"]
-    ) / 2
+                                           cost_metric_data["mid"] + cost_metric_data["max"]
+                                   ) / 2
 
     for i in range(len(lat)):
         val = average_covered_charges_mean[i]
@@ -284,7 +271,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                 cmin=cost_metric_data["min"],
                 cmax=cost_metric_data["max"],
                 size=10
-                * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
+                     * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
                 colorbar=dict(
                     title="Average Cost",
                     titleside="top",
@@ -303,15 +290,14 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
             customdata=[(provider, region)],
             hoverinfo="text",
             text=provider
-            + "<br>"
-            + region
-            + "<br>Average Procedure Cost:"
-            + " ${:,.2f}".format(val),
+                 + "<br>"
+                 + region
+                 + "<br>Average Procedure Cost:"
+                 + " ${:,.2f}".format(val),
         )
         hospitals.append(hospital)
 
     layout = go.Layout(
-        height=700,
         margin=dict(l=10, r=10, t=10, b=10, pad=5),
         plot_bgcolor="#171b26",
         paper_bgcolor="#171b26",
@@ -343,7 +329,7 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
 
     for ind, provider in enumerate(providers):
         hovertemplate = (
-            provider + "<br><b>%{y}</b>" + "<br>Average Procedure Cost: %{x:$.2f}"
+                provider + "<br><b>%{y}</b>" + "<br>Average Procedure Cost: %{x:$.2f}"
         )
         dff = procedure_data[procedure_data["Provider Name"] == provider]
 
@@ -377,7 +363,6 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
         traces.append(provider_trace)
 
     layout = go.Layout(
-        height=6000,
         showlegend=False,
         hovermode="closest",
         dragmode="select",
@@ -396,8 +381,8 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
             tickfont=dict(color="#737a8d"),
             gridcolor="#171b26",
         ),
-        plot_bgcolor="#1f2536",
-        paper_bgcolor="#1f2536",
+        plot_bgcolor="#171b26",
+        paper_bgcolor="#171b26",
     )
     # x : procedure, y: cost,
     return {"data": traces, "layout": layout}
@@ -405,7 +390,11 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
 
 app.layout = html.Div(
     children=[
-        build_banner(),
+        html.Div(
+            id="banner",
+            className="banner",
+            children=[html.Img(src=str(LOGO_PATH)), html.H6("Dash Clinical Analytics"), ],
+        ),
         html.Div(
             id="upper-container",
             className="row",
@@ -429,13 +418,30 @@ app.layout = html.Div(
                 ),
             ],
         ),
+
         html.Div(
-            style={
-                "height": "800px",
-                "width": "90%",
-                "marginLeft": "5%",
-                "overflow-y": "scroll",
-            },
+            id="middle-container",
+            className='row',
+            children=[
+                html.Div(
+                    id="cost-stats-outer-container",
+                    children=[
+                        html.Div(
+                            id='table-left',
+                            className='six columns',
+                            children=[html.P("Hospital Charges Summary"),
+                                      html.Div(id="cost-stats-container")]),
+                        html.Div(
+                            id='table-right',
+                            className='six columns',
+                            children=[html.P("Procedure Charges Summary"),
+                                      html.Div(id="procedure-stats-container")]),
+                    ],
+                ),
+            ]
+        ),
+        html.Div(
+            id='lower-container',
             children=[
                 dcc.Graph(
                     id="procedure-plot",
