@@ -15,30 +15,53 @@ body {
 }
 
 .banner {
-    height: 50px;
-    padding-top: 5px;
-    padding-left: 0px;
-    padding-right: 0px;
+    height: 5rem;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
+    border-bottom: 0.5px #737a8d;
+    padding: 1rem;
 }
 
 .banner h6 {
-    margin-left: 2%;
-    display: inline-block;
     font-family: 'Open Sans', sans-serif;
     font-size: 2rem;
     font-weight: bold;
     line-height: 1;
     text-transform: uppercase;
+    float:right;
+    margin-right: 4rem;
 }
 
 .banner Img {
     position: relative;
-    float: right;
-    right: 5%;
-    height: 40px;
+    float: left;
+    left: 20px;
+    height: 4rem;
+    width: auto;
 }
+
+#upper-container, #lower-container, #middle-container {
+    margin: 0 3rem;
+}
+
+
+
+
+
+#lower-container {
+    border-top: 1px solid #1f2536;
+    height: 800px;
+    overflow-y: scroll;
+}
+
+#procedure-plot {
+    height: 6000px;
+}
+
+#geo-map {
+    height: 50rem;
+}
+
 
 #select-metric-outer, #region-select-outer {
     display: inline-block;
