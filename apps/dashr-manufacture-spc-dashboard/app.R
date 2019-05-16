@@ -5,7 +5,7 @@ library(dashCoreComponents)
 app <- Dash$new()
 
 build_banner <- function() {
-  return (
+  return(
     htmlDiv(
       id = 'banner',
       className = 'banner',
@@ -25,31 +25,61 @@ build_banner <- function() {
 }
 
 build_tabs <- function() {
-  return ('')
+  return(
+    htmlDiv(
+      id = 'tabs',
+      className = 'row container scalable',
+      list(
+        dccTabs(
+          id = 'app-tabs',
+          value = 'tab1',
+          className = 'custom-tabs',
+          list(
+            dccTab(
+              id = 'Specs-tab',
+              label = 'Specification Settings',
+              value = 'tab1',
+              className = 'custom-tab',
+              selected_className = 'custom-tab--selected',
+              disabled = FALSE
+            ),
+            dccTab(
+              id = 'Control-chart-tab',
+              label = 'Control Charts Dashboard',
+              value = 'tab2',
+              className = 'custom-tab',
+              selected_className = 'custom-tab--selected',
+              disabled = FALSE
+            )
+          )
+        )
+      )
+    )
+  )
 }
 
 init_df <- function() {
-  return ('')
+  return('')
 }
 
 populate_ooc <- function() {
-  return ('')
+  return('')
 }
 
 init_value_setter_store <- function() {
-  return ('')
+  return('')
 }
 
 build_tab_1 <- function() {
-  return ('')
+  return('')
 }
 
 build_value_setter_line <- function() {
-  return ('')
+  return('')
 }
 
 generate_modal <- function() {
-  return ('')
+  return('')
 }
 
 app$layout(
@@ -64,7 +94,7 @@ app$layout(
       id = 'value-setter-store',
       data = init_value_setter_store()
     ),
-    generate_model()
+    generate_modal()
   ))
 )
 
