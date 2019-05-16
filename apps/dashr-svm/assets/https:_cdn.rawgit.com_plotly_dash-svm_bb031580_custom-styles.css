@@ -1,0 +1,107 @@
+/* Table of contents
+––––––––––––––––––––––––––––––––––––––––––––––––––
+- Banner
+- Scalable Container
+- Remove Undo
+
+/* Body
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+body {
+    background-color: #272b38;
+}
+
+/* Banner
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.banner {
+    display:block;
+    overflow: auto;
+    background-color: #2e3444; 
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.banner h2 {
+    color: #a5b1cd;
+    display: inline-block;
+    font-family: 'Open Sans', sans-serif;
+    font-size:4rem;
+    line-height:1;
+}
+
+.banner Img {
+    position: relative;
+    float: right;
+    height: 75px;
+}
+
+/* Dropdown menus 
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.Select{
+  color: #a5b1cd;
+}
+
+.Select div{
+  background-color: #272b38;
+}
+
+.Select-control{
+  color: #a5b1cd;
+}
+
+.Select-menu-outer{
+  background-color: #2f3445;
+  border: 1px solid gray;
+}
+
+.Select--single>.Select-control .Select-value, .Select-placeholder{
+  border: 1px solid gray;
+  border-radius: 4px;
+}
+
+/*override from react css*/
+.Select-value-label {
+  color: #a5b1cd!important;
+}
+
+.Select-menu-outer div:hover{
+   background-color: rgba(255, 255, 255, 0.01);
+}
+
+/* Slider 
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+/*override from react css*/
+.rc-slider-track {
+  background-color: #00c7e8!important;
+}
+
+.rc-slider-disabled>.rc-slider-track {
+  background-color: #a7a7a7!important;
+}
+
+/* Button 
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#button-zero-threshold {
+  color: #a5b1cd;
+}
+
+/* Radio Button 
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+
+
+/* Scalable Container
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.container.scalable {
+    width: 90%;
+    max-width: none;
+}
+
+/* Remove Undo
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+._dash-undo-redo {
+  display: none;
+}
+
