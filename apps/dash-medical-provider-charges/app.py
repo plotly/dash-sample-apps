@@ -17,60 +17,6 @@ app.config["suppress_callback_exceptions"] = True
 # Plotly mapbox token
 mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
 
-state_list = [
-    "AL",
-    "AZ",
-    "AR",
-    "CA",
-    "CO",
-    "CT",
-    "DC",
-    "FL",
-    "GA",
-    "IL",
-    "IN",
-    "IA",
-    "KY",
-    "MD",
-    "MA",
-    "MI",
-    "MN",
-    "MO",
-    "NE",
-    "NJ",
-    "NY",
-    "NC",
-    "OH",
-    "OK",
-    "OR",
-    "PA",
-    "SC",
-    "TN",
-    "TX",
-    "UT",
-    "VA",
-    "WA",
-    "WI",
-    "AK",
-    "DE",
-    "HI",
-    "ID",
-    "KS",
-    "LA",
-    "ME",
-    "MS",
-    "MT",
-    "NV",
-    "NH",
-    "NM",
-    "ND",
-    "RI",
-    "SD",
-    "WV",
-    "VT",
-    "WY",
-]
-
 state_map = {
     "AK": "Alaska",
     "AL": "Alabama",
@@ -125,6 +71,8 @@ state_map = {
     "WY": "Wyoming",
 }
 
+state_list = list(state_map.keys())
+
 # Load data
 data_dict = {}
 for state in state_list:
@@ -135,7 +83,6 @@ for state in state_list:
     state_data = pd.read_csv(csv_path)
     data_dict[state] = state_data
 
-df_al = data_dict["AL"]
 
 # Cost Metric
 cost_metric = [
@@ -144,11 +91,12 @@ cost_metric = [
     "Average Medicare Payments",
 ]
 
-# Region
-region_list = df_al["Hospital Referral Region (HRR) Description"].unique()
+init_region = data_dict[state_list[1]][
+    "Hospital Referral Region (HRR) Description"
+].unique()
 
 
-def generate_aggregation_upfront(df, metric):
+def generate_aggregation(df, metric):
     aggregation = {
         metric[0]: ["min", "mean", "max"],
         metric[1]: ["min", "mean", "max"],
@@ -182,10 +130,6 @@ def get_lat_lon_add(df, name):
     ]
 
 
-# Generate aggregated data
-data = generate_aggregation_upfront(df_al, cost_metric)
-
-
 def build_upper_left_panel():
     return html.Div(
         id="upper-left",
@@ -198,7 +142,7 @@ def build_upper_left_panel():
                     dcc.Dropdown(
                         id="state-select",
                         options=[{"label": i, "value": i} for i in state_list],
-                        value=state_list[0],
+                        value=state_list[1],
                     ),
                 ],
             ),
@@ -229,8 +173,8 @@ def build_upper_left_panel():
                         id="region-select-dropdown-outer",
                         children=dcc.Dropdown(
                             id="region-select",
-                            options=[{"label": i, "value": i} for i in region_list],
-                            value=region_list[:4],
+                            options=[{"label": i, "value": i} for i in init_region],
+                            value=init_region[:4],
                             multi=True,
                             searchable=True,
                         ),
@@ -497,7 +441,7 @@ app.layout = html.Div(
                 dcc.Graph(
                     id="procedure-plot",
                     figure=generate_procedure_plot(
-                        df_al, cost_metric[0], region_list, []
+                        data_dict[state_list[1]], cost_metric[0], init_region, []
                     ),
                 )
             ],
@@ -575,7 +519,7 @@ def update_checklist(selected, select_options, checked):
     ],
 )
 def update_hospital_datatable(geo_select, procedure_select, cost_select, state_select):
-    state_agg = generate_aggregation_upfront(data_dict[state_select], cost_metric)
+    state_agg = generate_aggregation(data_dict[state_select], cost_metric)
     # make table from geo-select
     geo_data_dict = {
         "Provider Name": [],
@@ -699,7 +643,7 @@ def update_procedure_stats(procedure_select, geo_select):
 )
 def update_geo_map(cost_select, region_select, procedure_select, state_select):
     # generate geo map from state-select, procedure-select
-    state_agg_data = generate_aggregation_upfront(data_dict[state_select], cost_metric)
+    state_agg_data = generate_aggregation(data_dict[state_select], cost_metric)
 
     provider_data = {"procedure": [], "hospital": []}
     if procedure_select is not None:
