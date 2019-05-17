@@ -7,17 +7,12 @@ from dash.dependencies import State, Input, Output
 from dash.exceptions import PreventUpdate
 
 import pandas as pd
-import pathlib
 import os
 
 app = dash.Dash(__name__)
 server = app.server
 
 app.config["suppress_callback_exceptions"] = True
-
-ASSETS_PATH = pathlib.Path(__file__, "/assets").resolve()
-LOGO_PATH = ASSETS_PATH.joinpath("plotly_logo.png").resolve()
-DATA_PATH = pathlib.Path(__file__, "/data").resolve()  # /data
 
 # Plotly mapbox token
 mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
@@ -434,7 +429,10 @@ app.layout = html.Div(
         html.Div(
             id="banner",
             className="banner",
-            children=[html.Img(src=str(LOGO_PATH)), html.H6("Dash Clinical Analytics")],
+            children=[
+                html.Img(src=app.get_asset_url("plotly_logo.png")),
+                html.H6("Dash Clinical Analytics"),
+            ],
         ),
         html.Div(
             id="upper-container",
