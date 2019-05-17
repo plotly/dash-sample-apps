@@ -50,9 +50,9 @@ hospital from map to highlight its procedure-specific charges on the bottom char
 plot to view its geological location, as well as charges/payment summary from datatable.
 
 
-## Screenshots
+## Screenshot
 
-
+![Screencast](screenshot.png)
 
 
 ## Resources
