@@ -1,5 +1,9 @@
 # This file contains functions used to generate most of
 # the divs and plots used in app.R
+library(dashR)
+library(dashCoreComponents)
+library(dashHtmlComponents)
+library(data.table)
 
 # Generate plotly logo
 getLogo <- function(){
@@ -71,10 +75,10 @@ generateNewsTable <- function(dataframe, max_rows = 10){
 updateNews <- function(){
   r <- GET("https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=da8e2e705b914f9f86ed2e9692e66012")
   jsonData <- content(r, "parsed")$articles
-  d <- data.frame(do.call("rbind", jsonData))
   # include tryCatch for when the api breaks
   out <- tryCatch({
-    expr = d <- d[, c("title", "url")]
+    d <- data.frame(do.call("rbind", jsonData))
+    d <- d[, c("title", "url")]
   },
     error = function(x){
       d <- data.frame(title = "news api not available",
