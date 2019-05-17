@@ -83,7 +83,6 @@ for state in state_list:
     state_data = pd.read_csv(csv_path)
     data_dict[state] = state_data
 
-
 # Cost Metric
 cost_metric = [
     "Average Covered Charges",
@@ -393,7 +392,9 @@ app.layout = html.Div(
                     children=[
                         html.P(
                             id="map-title",
-                            children="Medicare Provider Charge Data Alabama State",
+                            children="Medicare Provider Charges in the State of {}".format(
+                                state_map[state_list[0]]
+                            ),
                         ),
                         dcc.Graph(
                             id="geo-map",
@@ -468,7 +469,7 @@ def update_region_dropdown(state_select):
             multi=True,
             searchable=True,
         ),
-        "Medicare Provider Charges {} State".format(state_map[state_select]),
+        "Medicare Provider Charges in the State of {}".format(state_map[state_select]),
     )
 
 
