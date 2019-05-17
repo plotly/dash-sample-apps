@@ -132,7 +132,7 @@ generate_main_plot <- function(data, model, threshold){
     zmax = scaled_threshold + r,
     hoverinfo = "none",
     showscale = FALSE,
-    colorscale = colorscale, #ncontours = 8,
+    colorscale = colorscale,
     opacity = 0.9,
     contours = list(showlines = FALSE),
     type = "contour"
@@ -142,7 +142,6 @@ generate_main_plot <- function(data, model, threshold){
         x = ~X1,
         y = ~X2,
         z = ~decision,
-        #line = list(color = "#222222", width = "3"),
         line = list(color = "#708090", width = "3"),
         showscale = FALSE,
         hoverinfo = "none",
@@ -225,7 +224,6 @@ generate_main_plot <- function(data, model, threshold){
       ),
       paper_bgcolor = "#272b38",
       plot_bgcolor = "#272b38",
-      #font = list(color = "#a5b1cd"),
       hovermode = "closest",
       legend = list(
         x = 0, y = -0.01,
