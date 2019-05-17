@@ -16,9 +16,6 @@ app = dash.Dash(__name__)
 
 server = app.server
 
-BASE_ASSETS_PATH = pathlib.Path(__file__, "/assets").resolve()
-LOGO_PATH = BASE_ASSETS_PATH.joinpath("dash-logo-stripe-inverted.png").resolve()
-
 app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 
 app.layout = html.Div(
@@ -35,7 +32,14 @@ app.layout = html.Div(
                         ),
                     ]
                 ),
-                html.Div([html.Img(src=str(LOGO_PATH), className="app__menu__img")]),
+                html.Div(
+                    [
+                        html.Img(
+                            src=app.get_asset_url("dash-logo-stripe-inverted.png"),
+                            className="app__menu__img",
+                        )
+                    ]
+                ),
             ],
             className="app__header",
         ),

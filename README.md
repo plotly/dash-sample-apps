@@ -105,15 +105,14 @@ Img(src="./assets/logo.png") will fail at root level
 
 Tips
 
+-  Use [get_asset_url()](https://dash.plot.ly/dash-deployment-server/static-assets)
 -  Use [Pathlib](https://docs.python.org/3/library/pathlib.html) for more flexibility
 
 ```Python
 import pathlib
 
 # get relative assets folder
-ASSETS_PATH = pathlib.Path(__file__, "/assets")  # /assets
-IMG_PATH = ASSETS_PATH.joinpath("logo.png")      # /assets/logo.png
-Img(src=str(IMG_PATH))                           
+html.Img(src=app.get_asset_url('logo'))                   
 
 # get relative data folder
 DATA_PATH = pathlib.Path(__file__, "/data")      # /data
