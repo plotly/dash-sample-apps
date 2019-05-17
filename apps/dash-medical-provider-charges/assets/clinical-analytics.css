@@ -40,11 +40,55 @@ body {
     width: auto;
 }
 
-#upper-container, #lower-container, #middle-container {
+#upper-container, #lower-container {
     margin: 0 3rem;
 }
 
+#upper-left{
+    padding: 1rem 2rem 1rem 2rem;
+    display:flex;
+    flex-direction:column;
+    height: 30rem;
+    justify-content: space-evenly;
+}
 
+#upper-left > div > label {
+    font-weight: bold;
+    margin: 2rem 1rem 0.8rem 1rem;
+}
+
+*.Select-control, Select--single, .Select-multi-value-wrapper, .Select-value, .Select-value-label {
+    background-color: #171b26 !important;
+    color: #7b7d8d !important;
+}
+
+.Select-control, .Select-menu-outer {
+    border: 1px solid dimgrey !important;
+}
+
+span.Select-clear-zone {
+    display: none !important;
+}
+
+.Select-menu-outer, .Select-menu-outer div, .Select--multi {
+    background-color: #171b26 !important;
+    color: #7b7d8d !important;
+}
+
+.Select-menu-outer div:hover {
+    color: white !important;
+    cursor: pointer;
+}
+
+#middle-container {
+    height: 20rem;
+    overflow-y: scroll;
+    margin: 1rem 3rem;
+}
+
+#table-left > p, #table-right > p {
+    font-weight: bold;
+}
 
 #lower-container {
     border-top: 1px solid #1f2536;
@@ -66,15 +110,11 @@ body {
 }
 
 #cost-stats-table, #procedure-stats-table {
-    overflow-x: scroll;
+    overflow: scroll;
 }
 
 .section-title {
     font-size: 16px;
     font-weight: bold;
-}
-
-*.Select-control, *.Select has value is clearable is searchable Select--single, .Select-multi-value-wrapper, .Select-value, .Select-value-label {
-    background-color: #171b26 !important;
-    color: #7b7d8d !important;
+    display: block;
 }

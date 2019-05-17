@@ -76,6 +76,59 @@ state_list = [
     "WY",
 ]
 
+state_map = {
+    "AK": "Alaska",
+    "AL": "Alabama",
+    "AR": "Arkansas",
+    "AZ": "Arizona",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DC": "District of Columbia",
+    "DE": "Delaware",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "HI": "Hawaii",
+    "IA": "Iowa",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "MA": "Massachusetts",
+    "MD": "Maryland",
+    "ME": "Maine",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MO": "Missouri",
+    "MS": "Mississippi",
+    "MT": "Montana",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "NE": "Nebraska",
+    "NH": "New Hampshire",
+    "NJ": "New Jersey",
+    "NM": "New Mexico",
+    "NV": "Nevada",
+    "NY": "New York",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PA": "Pennsylvania",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VA": "Virginia",
+    "VT": "Vermont",
+    "WA": "Washington",
+    "WI": "Wisconsin",
+    "WV": "West Virginia",
+    "WY": "Wyoming",
+}
 
 # Load data
 data_dict = {}
@@ -86,7 +139,6 @@ for state in state_list:
         csv_path = "apps/dash-medical-provider-charges/" + csv_path
     state_data = pd.read_csv(csv_path)
     data_dict[state] = state_data
-
 
 df_al = data_dict["AL"]
 
@@ -144,65 +196,49 @@ def build_upper_left_panel():
         id="upper-left",
         className="six columns",
         children=[
-            html.P(
-                className="section-title",
-                children="Choose hospital on the map or procedures from the list below to see costs",
+            html.Div(
+                id="state-select-outer",
+                children=[
+                    html.Label("Select a State"),
+                    dcc.Dropdown(
+                        id="state-select",
+                        options=[{"label": i, "value": i} for i in state_list],
+                        value=state_list[0],
+                    ),
+                ],
             ),
             html.Div(
-                id="select-panel",
+                id="select-metric-outer",
                 children=[
+                    html.Label("Choose a Cost Metric:"),
+                    dcc.Dropdown(
+                        id="metric-select",
+                        options=[{"label": i, "value": i} for i in cost_metric],
+                        value=cost_metric[0],
+                    ),
+                ],
+            ),
+            html.Div(
+                id="region-select-outer",
+                children=[
+                    html.Label("Pick a Region:"),
                     html.Div(
-                        id="state-select-outer",
-                        style={"width": "80%"},
-                        children=[
-                            html.Label("Select a State"),
-                            dcc.Dropdown(
-                                id="state-select",
-                                options=[{"label": i, "value": i} for i in state_list],
-                                value=state_list[0],
-                            ),
-                        ],
+                        id="checklist-container",
+                        children=dcc.Checklist(
+                            id="region-select-all",
+                            options=[{"label": "Select All Regions", "value": "All"}],
+                            values=["All"],
+                        ),
                     ),
                     html.Div(
-                        id="select-metric-outer",
-                        className="six columns",
-                        children=[
-                            html.Label("Choose a Cost Metric:"),
-                            dcc.Dropdown(
-                                id="metric-select",
-                                options=[{"label": i, "value": i} for i in cost_metric],
-                                value=cost_metric[0],
-                            ),
-                        ],
-                    ),
-                    html.Div(
-                        id="region-select-outer",
-                        className="six columns",
-                        children=[
-                            html.Label("Pick a Region:"),
-                            html.Div(
-                                id="checklist-container",
-                                children=dcc.Checklist(
-                                    id="region-select-all",
-                                    options=[
-                                        {"label": "Select All Regions", "value": "All"}
-                                    ],
-                                    values=["All"],
-                                ),
-                            ),
-                            html.Div(
-                                id="region-select-dropdown-outer",
-                                children=dcc.Dropdown(
-                                    id="region-select",
-                                    options=[
-                                        {"label": i, "value": i} for i in region_list
-                                    ],
-                                    value=region_list[:4],
-                                    multi=True,
-                                    searchable=True,
-                                ),
-                            ),
-                        ],
+                        id="region-select-dropdown-outer",
+                        children=dcc.Dropdown(
+                            id="region-select",
+                            options=[{"label": i, "value": i} for i in region_list],
+                            value=region_list[:4],
+                            multi=True,
+                            searchable=True,
+                        ),
                     ),
                 ],
             ),
@@ -274,7 +310,10 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                 size=10
                 * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
                 colorbar=dict(
-                    title="Average Cost",
+                    title=dict(
+                        text="Average Cost",
+                        font={"color": "#737a8d", "family": "Open Sans"},
+                    ),
                     titleside="top",
                     tickmode="array",
                     tickvals=[cost_metric_data["min"], cost_metric_data["max"]],
@@ -283,6 +322,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                         "${:,.2f}".format(cost_metric_data["max"]),
                     ],
                     ticks="outside",
+                    tickfont={"family": "Open Sans", "color": "#737a8d"},
                 ),
             ),
             opacity=0.8,
@@ -372,8 +412,8 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
             zeroline=False,
             automargin=True,
             showticklabels=True,
-            title="Procedure Cost",
-            linecolor="white",
+            title=dict(text="Procedure Cost", font=dict(color="#737a8d")),
+            linecolor="#737a8d",
             tickfont=dict(color="#737a8d"),
         ),
         yaxis=dict(
@@ -400,12 +440,19 @@ app.layout = html.Div(
             id="upper-container",
             className="row",
             children=[
+                html.P(
+                    className="section-title",
+                    children="Choose hospital on the map or procedures from the list below to see costs",
+                ),
                 build_upper_left_panel(),
                 html.Div(
                     id="geo-map-outer",
                     className="six columns",
                     children=[
-                        html.P("Medicare Provider Charge Data Alabama State"),
+                        html.P(
+                            id="map-title",
+                            children="Medicare Provider Charge Data Alabama State",
+                        ),
                         dcc.Graph(
                             id="geo-map",
                             figure={
@@ -462,18 +509,24 @@ app.layout = html.Div(
 
 
 @app.callback(
-    output=Output("region-select-dropdown-outer", "children"),
+    output=[
+        Output("region-select-dropdown-outer", "children"),
+        Output("map-title", "children"),
+    ],
     inputs=[Input("state-select", "value")],
 )
 def update_region_dropdown(state_select):
     state_raw_data = data_dict[state_select]
     regions = state_raw_data["Hospital Referral Region (HRR) Description"].unique()
-    return dcc.Dropdown(
-        id="region-select",
-        options=[{"label": i, "value": i} for i in regions],
-        value=regions[:4],
-        multi=True,
-        searchable=True,
+    return (
+        dcc.Dropdown(
+            id="region-select",
+            options=[{"label": i, "value": i} for i in regions],
+            value=regions[:4],
+            multi=True,
+            searchable=True,
+        ),
+        "Medicare Provider Charges {} State".format(state_map[state_select]),
     )
 
 
@@ -682,10 +735,4 @@ def update_procedure_plot(cost_select, region_select, geo_select, state_select):
 
 
 if __name__ == "__main__":
-    app.run_server(
-        dev_tools_hot_reload=False,
-        debug=True,
-        host="0.0.0.0",
-        port=8051,
-        use_reloader=False,
-    )
+    app.run_server(debug=True)
