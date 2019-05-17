@@ -3,6 +3,7 @@ import io
 import os
 import time
 import json
+import pathlib
 
 import numpy as np
 import dash
@@ -11,19 +12,25 @@ import dash_html_components as html
 from PIL import Image
 from io import BytesIO
 from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
 import pandas as pd
 import plotly.graph_objs as go
 import scipy.spatial.distance as spatial_distance
-
 
 IMAGE_DATASETS = ("mnist_3000", "cifar_gray_3000", "fashion_3000")
 WORD_EMBEDDINGS = ("wikipedia_3000", "twitter_3000", "crawler_3000")
 
 
-with open("demo_intro.md", "r") as file:
+# get relative data folder
+PATH = pathlib.Path(__file__).parent
+DATA_PATH = PATH.joinpath("data").resolve()
+
+
+with open(PATH.joinpath("demo_intro.md"), "r") as file:
     demo_intro_md = file.read()
 
-with open("demo_description.md", "r") as file:
+with open(PATH.joinpath("demo_description.md"), "r") as file:
     demo_description_md = file.read()
 
 
@@ -113,180 +120,185 @@ def NamedInlineRadioItems(name, short, options, val, **kwargs):
     )
 
 
-# Actual layout of the app
-demo_layout = html.Div(
-    className="row",
-    style={"max-width": "100%", "font-size": "1.5rem", "padding": "0px 0px"},
-    children=[
-        # Header
-        html.Div(
-            className="row header",
-            children=[
-                html.Div(
-                    [
-                        html.Img(
-                            className="logo",
-                            id="plotly-image",
-                            src="/assets/dash-logo-stripe.png",
-                        )
-                    ],
-                    className="one-half column header__img",
-                ),
-                html.Div(
-                    [
-                        html.H3(
-                            "t-SNE Explorer", className="header__title", id="app-title"
-                        )
-                    ],
-                    className="one-half column header__title__container",
-                ),
-            ],
-        ),
-        # Demo Description
-        html.Div(
-            className="row background",
-            id="learn-more-button",
-            style={"padding": "50px 45px"},
-            children=[
-                html.Div(
-                    id="description-text",
-                    style={"width": "75%"},
-                    children=dcc.Markdown(demo_intro_md),
-                ),
-                html.Button("Learn More", id="button"),
-            ],
-        ),
-        # Body
-        html.Div(
-            className="row background",
-            style={"padding": "10px"},
-            children=[
-                html.Div(
-                    className="three columns",
-                    children=[
-                        Card(
-                            [
-                                dcc.Dropdown(
-                                    id="dropdown-dataset",
-                                    searchable=False,
-                                    options=[
-                                        {
-                                            "label": "MNIST Digits",
-                                            "value": "mnist_3000",
+def create_layout(app):
+    # Actual layout of the app
+    return html.Div(
+        className="row",
+        style={"max-width": "100%", "font-size": "1.5rem", "padding": "0px 0px"},
+        children=[
+            # Header
+            html.Div(
+                className="row header",
+                children=[
+                    html.Div(
+                        [
+                            html.Img(
+                                className="logo",
+                                id="plotly-image",
+                                src=app.get_asset_url("dash-logo-stripe.png"),
+                            )
+                        ],
+                        className="one-half column header__img",
+                    ),
+                    html.Div(
+                        [
+                            html.H3(
+                                "t-SNE Explorer",
+                                className="header__title",
+                                id="app-title",
+                            )
+                        ],
+                        className="one-half column header__title__container",
+                    ),
+                ],
+            ),
+            # Demo Description
+            html.Div(
+                className="row background",
+                id="learn-more-button",
+                style={"padding": "50px 45px"},
+                children=[
+                    html.Div(
+                        id="description-text",
+                        style={"width": "75%"},
+                        children=dcc.Markdown(demo_intro_md),
+                    ),
+                    html.Button("Learn More", id="button"),
+                ],
+            ),
+            # Body
+            html.Div(
+                className="row background",
+                style={"padding": "10px"},
+                children=[
+                    html.Div(
+                        className="three columns",
+                        children=[
+                            Card(
+                                [
+                                    dcc.Dropdown(
+                                        id="dropdown-dataset",
+                                        searchable=False,
+                                        options=[
+                                            {
+                                                "label": "MNIST Digits",
+                                                "value": "mnist_3000",
+                                            },
+                                            {
+                                                "label": "Twitter (GloVe)",
+                                                "value": "twitter_3000",
+                                            },
+                                            {
+                                                "label": "Wikipedia (GloVe)",
+                                                "value": "wikipedia_3000",
+                                            },
+                                            # for the local version
+                                            # {'label': 'cifar_gray_3000},
+                                            # {'label': 'fashion_3000'},
+                                            # {'label': 'Web Crawler (GloVe)'},
+                                        ],
+                                        placeholder="Select a dataset",
+                                        value="mnist_3000",
+                                    ),
+                                    NamedSlider(
+                                        name="Number of Iterations",
+                                        short="iterations",
+                                        min=250,
+                                        max=1000,
+                                        step=None,
+                                        val=500,
+                                        marks={
+                                            i: str(i) for i in [250, 500, 750, 1000]
                                         },
-                                        {
-                                            "label": "Twitter (GloVe)",
-                                            "value": "twitter_3000",
+                                    ),
+                                    NamedSlider(
+                                        name="Perplexity",
+                                        short="perplexity",
+                                        min=3,
+                                        max=100,
+                                        step=None,
+                                        val=30,
+                                        marks={i: str(i) for i in [3, 10, 30, 50, 100]},
+                                    ),
+                                    NamedSlider(
+                                        name="Initial PCA Dimensions",
+                                        short="pca-dimension",
+                                        min=25,
+                                        max=100,
+                                        step=None,
+                                        val=50,
+                                        marks={i: str(i) for i in [25, 50, 100]},
+                                    ),
+                                    NamedSlider(
+                                        name="Learning Rate",
+                                        short="learning-rate",
+                                        min=10,
+                                        max=200,
+                                        step=None,
+                                        val=100,
+                                        marks={i: str(i) for i in [10, 50, 100, 200]},
+                                    ),
+                                    html.Div(
+                                        id="div-wordemb-controls",
+                                        style={"display": "none"},
+                                        children=[
+                                            NamedInlineRadioItems(
+                                                name="Display Mode",
+                                                short="wordemb-display-mode",
+                                                options=[
+                                                    {
+                                                        "label": " Regular",
+                                                        "value": "regular",
+                                                    },
+                                                    {
+                                                        "label": " Top-100 Neighbors",
+                                                        "value": "neighbors",
+                                                    },
+                                                ],
+                                                val="regular",
+                                            ),
+                                            dcc.Dropdown(
+                                                id="dropdown-word-selected",
+                                                placeholder="Select word to display its neighbors",
+                                                style={"background-color": "#f2f3f4"},
+                                            ),
+                                        ],
+                                    ),
+                                ]
+                            )
+                        ],
+                    ),
+                    html.Div(
+                        className="six columns",
+                        children=[
+                            dcc.Graph(id="graph-3d-plot-tsne", style={"height": "98vh"})
+                        ],
+                    ),
+                    html.Div(
+                        className="three columns",
+                        id="euclidean-distance",
+                        children=[
+                            Card(
+                                style={"padding": "5px"},
+                                children=[
+                                    html.Div(
+                                        id="div-plot-click-message",
+                                        style={
+                                            "text-align": "center",
+                                            "margin-bottom": "7px",
+                                            "font-weight": "bold",
                                         },
-                                        {
-                                            "label": "Wikipedia (GloVe)",
-                                            "value": "wikipedia_3000",
-                                        },
-                                        # for the local version
-                                        # {'label': 'cifar_gray_3000},
-                                        # {'label': 'fashion_3000'},
-                                        # {'label': 'Web Crawler (GloVe)'},
-                                    ],
-                                    placeholder="Select a dataset",
-                                    value="mnist_3000",
-                                ),
-                                NamedSlider(
-                                    name="Number of Iterations",
-                                    short="iterations",
-                                    min=250,
-                                    max=1000,
-                                    step=None,
-                                    val=500,
-                                    marks={i: str(i) for i in [250, 500, 750, 1000]},
-                                ),
-                                NamedSlider(
-                                    name="Perplexity",
-                                    short="perplexity",
-                                    min=3,
-                                    max=100,
-                                    step=None,
-                                    val=30,
-                                    marks={i: str(i) for i in [3, 10, 30, 50, 100]},
-                                ),
-                                NamedSlider(
-                                    name="Initial PCA Dimensions",
-                                    short="pca-dimension",
-                                    min=25,
-                                    max=100,
-                                    step=None,
-                                    val=50,
-                                    marks={i: str(i) for i in [25, 50, 100]},
-                                ),
-                                NamedSlider(
-                                    name="Learning Rate",
-                                    short="learning-rate",
-                                    min=10,
-                                    max=200,
-                                    step=None,
-                                    val=100,
-                                    marks={i: str(i) for i in [10, 50, 100, 200]},
-                                ),
-                                html.Div(
-                                    id="div-wordemb-controls",
-                                    style={"display": "none"},
-                                    children=[
-                                        NamedInlineRadioItems(
-                                            name="Display Mode",
-                                            short="wordemb-display-mode",
-                                            options=[
-                                                {
-                                                    "label": " Regular",
-                                                    "value": "regular",
-                                                },
-                                                {
-                                                    "label": " Top-100 Neighbors",
-                                                    "value": "neighbors",
-                                                },
-                                            ],
-                                            val="regular",
-                                        ),
-                                        dcc.Dropdown(
-                                            id="dropdown-word-selected",
-                                            placeholder="Select word to display its neighbors",
-                                            style={"background-color": "#f2f3f4"},
-                                        ),
-                                    ],
-                                ),
-                            ]
-                        )
-                    ],
-                ),
-                html.Div(
-                    className="six columns",
-                    children=[
-                        dcc.Graph(id="graph-3d-plot-tsne", style={"height": "98vh"})
-                    ],
-                ),
-                html.Div(
-                    className="three columns",
-                    id="euclidean-distance",
-                    children=[
-                        Card(
-                            style={"padding": "5px"},
-                            children=[
-                                html.Div(
-                                    id="div-plot-click-message",
-                                    style={
-                                        "text-align": "center",
-                                        "margin-bottom": "7px",
-                                        "font-weight": "bold",
-                                    },
-                                ),
-                                html.Div(id="div-plot-click-image"),
-                                html.Div(id="div-plot-click-wordemb"),
-                            ],
-                        )
-                    ],
-                ),
-            ],
-        ),
-    ],
-)
+                                    ),
+                                    html.Div(id="div-plot-click-image"),
+                                    html.Div(id="div-plot-click-wordemb"),
+                                ],
+                            )
+                        ],
+                    ),
+                ],
+            ),
+        ],
+    )
 
 
 def demo_callbacks(app):
@@ -314,58 +326,67 @@ def demo_callbacks(app):
     def generate_figure_word_vec(
         embedding_df, layout, wordemb_display_mode, selected_word, dataset
     ):
-        # Regular displays the full scatter plot with only circles
-        if wordemb_display_mode == "regular":
-            plot_mode = "markers"
 
-        # Nearest Neighbors displays only the 200 nearest neighbors of the selected_word, in text rather than circles
-        elif wordemb_display_mode == "neighbors":
-            if not selected_word:
-                return go.Figure()
+        try:
+            # Regular displays the full scatter plot with only circles
+            if wordemb_display_mode == "regular":
+                plot_mode = "markers"
 
-            plot_mode = "text"
+            # Nearest Neighbors displays only the 200 nearest neighbors of the selected_word, in text rather than circles
+            elif wordemb_display_mode == "neighbors":
+                if not selected_word:
+                    return go.Figure()
 
-            # Get the nearest neighbors indices using Euclidean distance
-            vector = data_dict[dataset].set_index("0")
-            selected_vec = vector.loc[selected_word]
+                plot_mode = "text"
 
-            def compare_pd(vector):
-                return spatial_distance.euclidean(vector, selected_vec)
+                # Get the nearest neighbors indices using Euclidean distance
+                vector = data_dict[dataset].set_index("0")
+                selected_vec = vector.loc[selected_word]
 
-            distance_map = vector.apply(compare_pd, axis=1)
-            neighbors_idx = distance_map.sort_values()[:100].index
+                def compare_pd(vector):
+                    return spatial_distance.euclidean(vector, selected_vec)
 
-            # Select those neighbors from the embedding_df
-            embedding_df = embedding_df.loc[neighbors_idx]
+                distance_map = vector.apply(compare_pd, axis=1)
+                neighbors_idx = distance_map.sort_values()[:100].index
 
-        scatter = go.Scatter3d(
-            name=str(embedding_df.index),
-            x=embedding_df["x"],
-            y=embedding_df["y"],
-            z=embedding_df["z"],
-            text=embedding_df.index,
-            textposition="middle center",
-            showlegend=False,
-            mode=plot_mode,
-            marker=dict(size=3, color="#3266c1", symbol="circle"),
-        )
+                # Select those neighbors from the embedding_df
+                embedding_df = embedding_df.loc[neighbors_idx]
 
-        figure = go.Figure(data=[scatter], layout=layout)
+            scatter = go.Scatter3d(
+                name=str(embedding_df.index),
+                x=embedding_df["x"],
+                y=embedding_df["y"],
+                z=embedding_df["z"],
+                text=embedding_df.index,
+                textposition="middle center",
+                showlegend=False,
+                mode=plot_mode,
+                marker=dict(size=3, color="#3266c1", symbol="circle"),
+            )
 
-        return figure
+            figure = go.Figure(data=[scatter], layout=layout)
+
+            return figure
+        except KeyError as error:
+            print(error)
+            raise PreventUpdate
 
     @app.server.before_first_request
     def load_image_data():
         global data_dict
 
         data_dict = {
-            "mnist_3000": pd.read_csv("data/mnist_3000_input.csv"),
-            "wikipedia_3000": pd.read_csv("data/wikipedia_3000.csv"),
-            "twitter_3000": pd.read_csv("data/twitter_3000.csv", encoding="ISO-8859-1"),
+            "mnist_3000": pd.read_csv(DATA_PATH.joinpath("mnist_3000_input.csv")),
+            "wikipedia_3000": pd.read_csv(DATA_PATH.joinpath("wikipedia_3000.csv")),
+            "twitter_3000": pd.read_csv(
+                DATA_PATH.joinpath("twitter_3000.csv"), encoding="ISO-8859-1"
+            ),
             # These are for the local app to generate uploaded datasets
-            "crawler_3000": pd.read_csv("data/crawler_3000.csv"),
-            "fashion_3000": pd.read_csv("data/fashion_3000_input.csv"),
-            "cifar_gray_3000": pd.read_csv("data/cifar_gray_3000_input.csv"),
+            "crawler_3000": pd.read_csv(DATA_PATH.joinpath("crawler_3000.csv")),
+            "fashion_3000": pd.read_csv(DATA_PATH.joinpath("fashion_3000_input.csv")),
+            "cifar_gray_3000": pd.read_csv(
+                DATA_PATH.joinpath("cifar_gray_3000_input.csv")
+            ),
         }
 
     # Callback function for the learn-more button
@@ -464,8 +485,19 @@ def demo_callbacks(app):
             path = f"demo_embeddings/{dataset}/iterations_{iterations}/perplexity_{perplexity}/pca_{pca_dim}/learning_rate_{learning_rate}"
 
             try:
+
+                data_url = [
+                    "demo_embeddings",
+                    str(dataset),
+                    "iterations_" + str(iterations),
+                    "perplexity_" + str(perplexity),
+                    "pca_" + str(pca_dim),
+                    "learning_rate_" + str(learning_rate),
+                    "data.csv",
+                ]
+                full_path = PATH.joinpath(*data_url)
                 embedding_df = pd.read_csv(
-                    path + f"/data.csv", index_col=0, encoding="ISO-8859-1"
+                    full_path, index_col=0, encoding="ISO-8859-1"
                 )
 
             except FileNotFoundError as error:
@@ -521,10 +553,22 @@ def demo_callbacks(app):
     ):
         if dataset in IMAGE_DATASETS and clickData:
             # Load the same dataset as the one displayed
-            path = f"demo_embeddings/{dataset}/iterations_{iterations}/perplexity_{perplexity}/pca_{pca_dim}/learning_rate_{learning_rate}"
 
             try:
-                embedding_df = pd.read_csv(path + f"/data.csv", encoding="ISO-8859-1")
+                # dataset_url = f"/demo_embeddings/{dataset}/iterations_{iterations}/perplexity_{perplexity}/pca_{pca_dim}/learning_rate_{learning_rate}/data.csv"
+
+                data_url = [
+                    "demo_embeddings",
+                    str(dataset),
+                    "iterations_" + str(iterations),
+                    "perplexity_" + str(perplexity),
+                    "pca_" + str(pca_dim),
+                    "learning_rate_" + str(learning_rate),
+                    "data.csv",
+                ]
+
+                full_path = PATH.joinpath(*data_url)
+                embedding_df = pd.read_csv(full_path, encoding="ISO-8859-1")
 
             except FileNotFoundError as error:
                 print(
@@ -569,41 +613,42 @@ def demo_callbacks(app):
         if dataset in WORD_EMBEDDINGS and clickData:
             selected_word = clickData["points"][0]["text"]
 
-            # Get the nearest neighbors indices using Euclidean distance
-            vector = data_dict[dataset].set_index("0")
-            selected_vec = vector.loc[selected_word]
+            try:
+                # Get the nearest neighbors indices using Euclidean distance
+                vector = data_dict[dataset].set_index("0")
+                selected_vec = vector.loc[selected_word]
 
-            def compare_pd(vector):
-                return spatial_distance.euclidean(vector, selected_vec)
+                def compare_pd(vector):
+                    return spatial_distance.euclidean(vector, selected_vec)
 
-            distance_map = vector.apply(compare_pd, axis=1)
-            nearest_neighbors = distance_map.sort_values()[1:6]
+                distance_map = vector.apply(compare_pd, axis=1)
+                nearest_neighbors = distance_map.sort_values()[1:6]
 
-            trace = go.Bar(
-                x=nearest_neighbors.values,
-                y=nearest_neighbors.index,
-                width=0.5,
-                orientation="h",
-                marker=dict(color="rgb(50, 102, 193)"),
-            )
+                trace = go.Bar(
+                    x=nearest_neighbors.values,
+                    y=nearest_neighbors.index,
+                    width=0.5,
+                    orientation="h",
+                    marker=dict(color="rgb(50, 102, 193)"),
+                )
 
-            layout = go.Layout(
-                title=f'5 nearest neighbors of "{selected_word}"',
-                xaxis=dict(title="Euclidean Distance"),
-                margin=go.layout.Margin(l=60, r=60, t=35, b=35),
-            )
+                layout = go.Layout(
+                    title=f'5 nearest neighbors of "{selected_word}"',
+                    xaxis=dict(title="Euclidean Distance"),
+                    margin=go.layout.Margin(l=60, r=60, t=35, b=35),
+                )
 
-            fig = go.Figure(data=[trace], layout=layout)
+                fig = go.Figure(data=[trace], layout=layout)
 
-            return dcc.Graph(
-                id="graph-bar-nearest-neighbors-word",
-                figure=fig,
-                style={"height": "25vh"},
-                config={"displayModeBar": False},
-            )
-
-        else:
-            return None
+                return dcc.Graph(
+                    id="graph-bar-nearest-neighbors-word",
+                    figure=fig,
+                    style={"height": "25vh"},
+                    config={"displayModeBar": False},
+                )
+            except KeyError as error:
+                raise PreventUpdate
+        return None
 
     @app.callback(
         Output("div-plot-click-message", "children"),

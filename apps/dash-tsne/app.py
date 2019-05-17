@@ -2,14 +2,14 @@
 import os
 import dash
 
-from demo import demo_layout, demo_callbacks
+from demo import create_layout, demo_callbacks
 from local import local_layout, local_callbacks
 
 app = dash.Dash(__name__)
 app = dash.Dash(meta_tags=[{"name": "viewport", "content": "width=device-width"}])
 
 server = app.server
-app.layout = demo_layout
+app.layout = create_layout(app)
 demo_callbacks(app)
 
 # Load external CSS

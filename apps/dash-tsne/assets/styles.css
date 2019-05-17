@@ -158,10 +158,7 @@ body {
   }
 
   #plotly-image {
-    /* float: left !important; */
     height: 30px !important;
-    /* margin-right: 0px !important;
-    padding-left: 20px !important; */
   }
   #app-title {
     float: none !important;
