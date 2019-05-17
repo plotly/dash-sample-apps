@@ -586,7 +586,6 @@ app$callback(
   output("USDJPYmenu", "className"),
   list(
     input("USDJPYmenu_button", "n_clicks"),
-    #input("USDJPYclose_button", "n_clicks"),
     state("USDJPYmenu", "className")
   ),
   function(n, cn){
@@ -600,7 +599,6 @@ app$callback(
   output("GBPUSDmenu", "className"),
   list(
     input("GBPUSDmenu_button", "n_clicks"),
-    #input("GBPUSDclose_button", "n_clicks"),
     state("GBPUSDmenu", "className")
   ),
   function(n, cn){
