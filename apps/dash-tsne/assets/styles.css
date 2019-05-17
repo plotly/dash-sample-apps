@@ -1,11 +1,28 @@
 /* New style sheet for the refreshed demo app */
 
-.title {
+.header {
+  padding: 15px 35px;
+}
+
+.header__img {
+  float: left;
+}
+
+.header__title__container {
+  float: right;
+}
+
+.header__title {
   font-family: "Times New Roman";
   color: #6c7182;
+  text-align: right;
+  margin: 0 !important;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
   float: left;
-  margin-top: 25px;
-  margin-left: 45px;
 }
 
 .background {
@@ -141,14 +158,14 @@ body {
   }
 
   #plotly-image {
-    float: left !important;
+    /* float: left !important; */
     height: 30px !important;
-    margin-right: 0px !important;
-    padding-left: 20px !important;
+    /* margin-right: 0px !important;
+    padding-left: 20px !important; */
   }
   #app-title {
-    float: right !important;
-    padding-right: 20px;
+    float: none !important;
+    text-align: center !important;
     margin: 10px 15px;
   }
 }
