@@ -396,14 +396,23 @@ app.layout = html.Div(
                                 state_map[state_list[0]]
                             ),
                         ),
-                        dcc.Graph(
-                            id="geo-map",
-                            figure={
-                                "data": [],
-                                "layout": dict(
-                                    plot_bgcolor="#171b26", paper_bgcolor="#171b26"
-                                ),
-                            },
+                        html.Div(
+                            id="geo-map-loading-outer",
+                            children=[
+                                dcc.Loading(
+                                    id="loading",
+                                    children=dcc.Graph(
+                                        id="geo-map",
+                                        figure={
+                                            "data": [],
+                                            "layout": dict(
+                                                plot_bgcolor="#171b26",
+                                                paper_bgcolor="#171b26",
+                                            ),
+                                        },
+                                    ),
+                                )
+                            ],
                         ),
                     ],
                 ),
@@ -421,7 +430,9 @@ app.layout = html.Div(
                             className="six columns",
                             children=[
                                 html.P("Hospital Charges Summary"),
-                                html.Div(id="cost-stats-container"),
+                                dcc.Loading(
+                                    children=html.Div(id="cost-stats-container")
+                                ),
                             ],
                         ),
                         html.Div(
@@ -429,7 +440,9 @@ app.layout = html.Div(
                             className="six columns",
                             children=[
                                 html.P("Procedure Charges Summary"),
-                                html.Div(id="procedure-stats-container"),
+                                dcc.Loading(
+                                    children=html.Div(id="procedure-stats-container")
+                                ),
                             ],
                         ),
                     ],
