@@ -3,4 +3,3 @@ gunicorn>=19.9.0
 numpy==1.16.2
 pandas==0.24.2
 uszipcode==0.2.2
-pathlib==1.0.1
