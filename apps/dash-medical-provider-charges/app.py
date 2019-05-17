@@ -82,10 +82,11 @@ data_dict = {}
 for state in state_list:
     p = os.getcwd().split(os.path.sep)
     csv_path = "data/processed/df_{}_lat_lon.csv".format(state)
-    if p[-1] != 'dash-medical-provider-charges':
-        csv_path = 'apps/dash-medical-provider-charges/' + csv_path
+    if p[-1] != "dash-medical-provider-charges":
+        csv_path = "apps/dash-medical-provider-charges/" + csv_path
     state_data = pd.read_csv(csv_path)
     data_dict[state] = state_data
+
 
 df_al = data_dict["AL"]
 
@@ -108,8 +109,8 @@ def generate_aggregation_upfront(df, metric):
     }
     grouped = (
         df.groupby(["Hospital Referral Region (HRR) Description", "Provider Name"])
-            .agg(aggregation)
-            .reset_index()
+        .agg(aggregation)
+        .reset_index()
     )
 
     grouped["lat"] = grouped["lon"] = grouped["Provider Street Address"] = grouped[
@@ -129,8 +130,8 @@ def get_lat_lon_add(df, name):
         df.groupby(["Provider Name"]).get_group(name)["lat"].tolist()[0],
         df.groupby(["Provider Name"]).get_group(name)["lon"].tolist()[0],
         df.groupby(["Provider Name"])
-            .get_group(name)["Provider Street Address"]
-            .tolist()[0],
+        .get_group(name)["Provider Street Address"]
+        .tolist()[0],
     ]
 
 
@@ -204,7 +205,7 @@ def build_upper_left_panel():
                         ],
                     ),
                 ],
-            )
+            ),
         ],
     )
 
@@ -231,11 +232,11 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
     cost_metric_data["max"] = filtered_data[selected_metric]["mean"].max()
     cost_metric_data["mid"] = (cost_metric_data["min"] + cost_metric_data["max"]) / 2
     cost_metric_data["low_mid"] = (
-                                          cost_metric_data["min"] + cost_metric_data["mid"]
-                                  ) / 2
+        cost_metric_data["min"] + cost_metric_data["mid"]
+    ) / 2
     cost_metric_data["high_mid"] = (
-                                           cost_metric_data["mid"] + cost_metric_data["max"]
-                                   ) / 2
+        cost_metric_data["mid"] + cost_metric_data["max"]
+    ) / 2
 
     for i in range(len(lat)):
         val = average_covered_charges_mean[i]
@@ -271,7 +272,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                 cmin=cost_metric_data["min"],
                 cmax=cost_metric_data["max"],
                 size=10
-                     * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
+                * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
                 colorbar=dict(
                     title="Average Cost",
                     titleside="top",
@@ -290,10 +291,10 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
             customdata=[(provider, region)],
             hoverinfo="text",
             text=provider
-                 + "<br>"
-                 + region
-                 + "<br>Average Procedure Cost:"
-                 + " ${:,.2f}".format(val),
+            + "<br>"
+            + region
+            + "<br>Average Procedure Cost:"
+            + " ${:,.2f}".format(val),
         )
         hospitals.append(hospital)
 
@@ -329,7 +330,7 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
 
     for ind, provider in enumerate(providers):
         hovertemplate = (
-                provider + "<br><b>%{y}</b>" + "<br>Average Procedure Cost: %{x:$.2f}"
+            provider + "<br><b>%{y}</b>" + "<br>Average Procedure Cost: %{x:$.2f}"
         )
         dff = procedure_data[procedure_data["Provider Name"] == provider]
 
@@ -393,7 +394,7 @@ app.layout = html.Div(
         html.Div(
             id="banner",
             className="banner",
-            children=[html.Img(src=str(LOGO_PATH)), html.H6("Dash Clinical Analytics"), ],
+            children=[html.Img(src=str(LOGO_PATH)), html.H6("Dash Clinical Analytics")],
         ),
         html.Div(
             id="upper-container",
@@ -418,30 +419,35 @@ app.layout = html.Div(
                 ),
             ],
         ),
-
         html.Div(
             id="middle-container",
-            className='row',
+            className="row",
             children=[
                 html.Div(
                     id="cost-stats-outer-container",
                     children=[
                         html.Div(
-                            id='table-left',
-                            className='six columns',
-                            children=[html.P("Hospital Charges Summary"),
-                                      html.Div(id="cost-stats-container")]),
+                            id="table-left",
+                            className="six columns",
+                            children=[
+                                html.P("Hospital Charges Summary"),
+                                html.Div(id="cost-stats-container"),
+                            ],
+                        ),
                         html.Div(
-                            id='table-right',
-                            className='six columns',
-                            children=[html.P("Procedure Charges Summary"),
-                                      html.Div(id="procedure-stats-container")]),
+                            id="table-right",
+                            className="six columns",
+                            children=[
+                                html.P("Procedure Charges Summary"),
+                                html.Div(id="procedure-stats-container"),
+                            ],
+                        ),
                     ],
-                ),
-            ]
+                )
+            ],
         ),
         html.Div(
-            id='lower-container',
+            id="lower-container",
             children=[
                 dcc.Graph(
                     id="procedure-plot",
