@@ -1,4 +1,3 @@
-#
 library(dashR)
 library(plotly)
 library(dashHtmlComponents)
