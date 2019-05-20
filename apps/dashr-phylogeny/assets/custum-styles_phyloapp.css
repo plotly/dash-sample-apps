@@ -1,0 +1,47 @@
+/* Table of contents
+––––––––––––––––––––––––––––––––––––––––––––––––––
+- Banner
+- Scalable Container
+- Remove Undo
+
+
+/* Banner
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.banner {
+    height: 75px;
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.banner h2 {
+    color: white;
+    margin-left: 5%;
+    display: inline-block;
+    font-family: 'Open Sans', sans-serif;
+    font-size:4rem;
+    line-height:1;
+}
+
+.banner Img {
+    position: relative;
+    float: right;
+    right: 5%;
+    height: 75px;
+}
+
+/* Scalable Container
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.container.scalable {
+    width: 90%;
+    max-width: none;
+}
+
+/* Remove Undo
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+._dash-undo-redo {
+  display: none;
+}
+
