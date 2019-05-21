@@ -13,19 +13,21 @@ from dash.dependencies import Input, Output, State
 
 constants = importlib.import_module("apps.dash-oil-gas-ternary.constants")
 
-#app initialize
+# app initialize
 app = dash.Dash(__name__)
 server = app.server
 app.config["suppress_callback_exceptions"] = True
 
-#mapbox
+# mapbox
 mapbox_access_token = "pk.eyJ1IjoieWNhb2tyaXMiLCJhIjoiY2p1MDR5c3JmMzJsbjQ1cGlhNHA3MHFkaCJ9.xb3lXp5JskCYFewsv5uU1w"
 
 # Load data
-APP_PATH = str(pathlib.Path(__file__).parent.absolute())
+APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
 df = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "test_composition.csv")))
-df_prod = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "YearlyProduction_table_1.csv")))
+df_prod = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "YearlyProduction_table_1.csv"))
+)
 
 # Assign color to legend
 colormap = {}
@@ -57,7 +59,7 @@ def generate_production_plot(processed_data):
 
     data = []
     for well_id, formation in list(
-            zip(processed_data["well_id"], processed_data["formation"])
+        zip(processed_data["well_id"], processed_data["formation"])
     ):
         well_prod = df_prod[df_prod["RecordNumber"] == well_id]
         new_trace = dict(
@@ -388,9 +390,9 @@ app.layout = html.Div(
                                 html.P(
                                     id="instructions",
                                     children="Select data points from the well map, ternary map or bar graph to visualize cross-filtering to"
-                                             " other plots. Selection could be done by clicking on individual data points or using the lasso tool "
-                                             "to capture multiple data points or bars. With the box tool from modebar, multiple regions can be selected by holding SHIFT "
-                                             "button while click-and-drag.",
+                                    " other plots. Selection could be done by clicking on individual data points or using the lasso tool "
+                                    "to capture multiple data points or bars. With the box tool from modebar, multiple regions can be selected by holding SHIFT "
+                                    "button while click-and-drag.",
                                 ),
                                 build_graph_title("Select Operator"),
                                 dcc.Dropdown(
@@ -568,12 +570,12 @@ def update_bar(map_selected_data, tern_selected_data, op_select):
     state=[State("ternary-map", "figure")],
 )
 def update_ternary_map(
-        map_selected_data,
-        bar_selected_data,
-        bar_click_data,
-        op_select,
-        layer_select,
-        curr_fig,
+    map_selected_data,
+    bar_selected_data,
+    bar_click_data,
+    op_select,
+    layer_select,
+    curr_fig,
 ):
     marker_visible = contour_visible = True
 
@@ -658,7 +660,7 @@ def update_ternary_map(
     ],
 )
 def update_well_map(
-        tern_selected_data, bar_selected_data, bar_click_data, op_select, mapbox_view
+    tern_selected_data, bar_selected_data, bar_click_data, op_select, mapbox_view
 ):
     dff = df[df["op"].isin(op_select)]
     formations = dff["fm_name"].unique().tolist()
