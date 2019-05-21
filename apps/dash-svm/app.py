@@ -1,4 +1,5 @@
 import time
+import importlib
 
 import dash
 import dash_core_components as dcc
@@ -10,12 +11,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import datasets
 from sklearn.svm import SVC
 
-import utils.dash_reusable_components as drc
-from utils.figures import (
-    serve_prediction_plot,
-    serve_roc_curve,
-    serve_pie_confusion_matrix,
-)
+drc = importlib.import_module('apps.dash-svm.utils.dash_reusable_components')
+figs = importlib.import_module('apps.dash-svm.utils.figures')
 
 app = dash.Dash(__name__)
 server = app.server
@@ -90,12 +87,6 @@ app.layout = html.Div(
                         html.Div(
                             className="three columns",
                             id="left-column",
-                            style={
-                                "max-height": "90vh",
-                                "max-width": "20%",
-                                "overflow-y": "auto",
-                                "overflow-x": "hidden",
-                            },
                             children=[
                                 drc.Card(
                                     id="first-card",
@@ -198,7 +189,6 @@ app.layout = html.Div(
                                             },
                                         ),
                                         drc.FormattedSlider(
-                                            style={"padding": "5px 10px 25px"},
                                             id="slider-svm-parameter-C-coef",
                                             min=1,
                                             max=9,
@@ -227,14 +217,13 @@ app.layout = html.Div(
                                             },
                                         ),
                                         drc.FormattedSlider(
-                                            style={"padding": "5px 10px 25px"},
                                             id="slider-svm-parameter-gamma-coef",
                                             min=1,
                                             max=9,
                                             value=5,
                                         ),
                                         html.Div(
-                                            style={"padding": "20px 10px 25px 4px"},
+                                            id='shrinking-container',
                                             children=[
                                                 html.P(children="Shrinking"),
                                                 dcc.RadioItems(
@@ -264,7 +253,8 @@ app.layout = html.Div(
                         html.Div(
                             id="div-graphs",
                             children=dcc.Graph(
-                                id="graph-sklearn-svm", style={"display": "none"}
+                                id="graph-sklearn-svm",
+                                style={"display": "none"}
                             ),
                         ),
                     ],
@@ -396,7 +386,7 @@ def update_svm_graph(
     else:
         Z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel()])[:, 1]
 
-    prediction_figure = serve_prediction_plot(
+    prediction_figure = figs.serve_prediction_plot(
         model=clf,
         X_train=X_train,
         X_test=X_test,
@@ -409,9 +399,9 @@ def update_svm_graph(
         threshold=threshold,
     )
 
-    roc_figure = serve_roc_curve(model=clf, X_test=X_test, y_test=y_test)
+    roc_figure = figs.serve_roc_curve(model=clf, X_test=X_test, y_test=y_test)
 
-    confusion_figure = serve_pie_confusion_matrix(
+    confusion_figure = figs.serve_pie_confusion_matrix(
         model=clf, X_test=X_test, y_test=y_test, Z=Z, threshold=threshold
     )
 
@@ -420,37 +410,25 @@ def update_svm_graph(
     return [
         html.Div(
             className="six columns",
-            style={"margin-top": "5px"},
+            id='svm-graph-container',
             children=[
                 dcc.Graph(
                     id="graph-sklearn-svm",
                     figure=prediction_figure,
-                    style={"height": "calc(100vh - 90px)"},
                 )
             ],
         ),
         html.Div(
             className="three columns",
-            style={
-                "min-width": "24.5%",
-                "height": "calc(100vh - 90px)",
-                "margin-top": "5px",
-                # Remove possibility to select the text for better UX
-                "user-select": "none",
-                "-moz-user-select": "none",
-                "-webkit-user-select": "none",
-                "-ms-user-select": "none",
-            },
+            id='graphs-container',
             children=[
                 dcc.Graph(
                     id="graph-line-roc-curve",
-                    style={"height": "40%"},
                     figure=roc_figure,
                 ),
                 dcc.Graph(
                     id="graph-pie-confusion-matrix",
                     figure=confusion_figure,
-                    style={"height": "60%"},
                 ),
             ],
         ),

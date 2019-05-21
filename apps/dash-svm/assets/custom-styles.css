@@ -39,6 +39,7 @@
 
 /* Scalable Container
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
 .container.scalable {
     width: 95%;
     max-width: none;
@@ -47,7 +48,6 @@
 
 /* Dropdowns
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-
 .Select-control {
     color: #a5b1cd;
 }
@@ -108,12 +108,17 @@
 }
 
 #left-column {
-    margin: 0 3% 0 0 !important;
+    margin: 0 3rem 0 0 !important;
+    max-height: 83rem;
+    max-width: 20%;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 
 /* Slider
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
 .rc-slider-track {
     background-color: #13c6e9 !important;
 }
@@ -126,6 +131,49 @@ input[type='radio']:checked {
     background-color: #13c6e9 !important;
     border-color: #13c6e9 !important;
 }
+
+/* Left column
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#slider-svm-parameter-C-coef {
+    padding: 5px 10px 25px;
+}
+
+#slider-svm-parameter-gamma-coef {
+    padding: 5px 10px 25px
+}
+
+#shrinking-container {
+    padding: 20px 10px 25px 4px
+}
+
+/* Graph container
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#svm-graph-container{
+    margin-top: 5px;
+}
+
+#graphs-container{
+    min-width: 24.5%;
+    height: 83rem;
+    margin-top: 5px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+#graph-line-roc-curve{
+    height: 40%
+}
+
+#graph-pie-confusion-matrix{
+    height: 60%
+}
+
+#graph-sklearn-svm{
+    height: 83rem;
+}
+
 
 /* Remove Undo
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
