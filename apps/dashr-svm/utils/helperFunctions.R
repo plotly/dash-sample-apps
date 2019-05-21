@@ -228,7 +228,6 @@ generate_main_plot <- function(data, model, threshold){
       legend = list(
         x = 0, y = -0.01,
         orientation = "h",
-        #bgcolor = "#2e3444",
         font = list(color = "#a5b1cd")
       ),
       margin = list(t = 0, l = 0, r = 0, b = 0)
