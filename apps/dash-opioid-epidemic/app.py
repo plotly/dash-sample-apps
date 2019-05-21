@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -10,10 +9,10 @@ import re
 app = dash.Dash(__name__)
 server = app.server
 
-df_lat_lon = pd.read_csv("lat_lon_counties.csv")
+df_lat_lon = pd.read_csv("apps/dash-opioid-epidemic/data/lat_lon_counties.csv")
 df_lat_lon["FIPS "] = df_lat_lon["FIPS "].apply(lambda x: str(x).zfill(5))
 
-df_full_data = pd.read_csv("age_adjusted_death_rate_no_quotes.csv")
+df_full_data = pd.read_csv("apps/dash-opioid-epidemic/data/age_adjusted_death_rate_no_quotes.csv")
 df_full_data["County Code"] = df_full_data["County Code"].apply(
     lambda x: str(x).zfill(5)
 )
