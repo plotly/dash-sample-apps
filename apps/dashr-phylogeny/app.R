@@ -1,13 +1,10 @@
 library(dashR)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-
-library(data.table)
 library(plotly)
+library(data.table)
 library(ape)
-library(RColorBrewer)
 
-virusName <- "measles"
 # TODO: add flu virus?
 species <- list(
   "Avian", "Ebola", "Dengue", "Lassa", "Measles", "Mumps", "Zika"
@@ -229,7 +226,6 @@ createCurveLine <- function(metadata_file_stat, virus_name,
     all.x = TRUE
   )
   casesByYear[is.na(casesByYear)] <- 0
-
   plot_ly(
     data = casesByYear, x = ~Year, y = ~N,
     type = "scatter", mode = "markers+lines",
@@ -298,9 +294,8 @@ createHistogram <- function(metadata_file_stat, virus_name,
 
 createPathsFile <- function(virus_name, ...){
   dir <- paste0("data/", virus_name, "/")
-  lvls <- list(...)
-  lvls_dir <- paste(c(lvls, ""), collapse = "/")
-  lvls_file <- paste(c("", lvls), collapse = "_")
+  lvls_dir <- paste(c(list(...), ""), collapse = "/")
+  lvls_file <- paste(c("", list(...)), collapse = "_")
   tree_file <- paste0(
     dir, lvls_dir, "nextstrain_", virus_name, lvls_file, "_tree.new"
   )
@@ -379,8 +374,6 @@ app$layout(
                 list(
                   htmlDiv(
                     list(
-                      htmlBr(),
-                      htmlBr(),
                       htmlH6("Dataset"),
                       dccDropdown(
                         id = "d_virus-name",
@@ -398,6 +391,9 @@ app$layout(
                       htmlDiv(
                         id = "controls-container_mumps",
                         children = list(
+                          htmlSpan(
+                            "Region:", style = list(fontStyle = "italic")
+                          ),
                           dccDropdown(
                             id = "d_mumps",
                             options = list(
@@ -412,6 +408,9 @@ app$layout(
                       htmlDiv(
                         id = "controls-container_dengue",
                         children = list(
+                          htmlSpan(
+                            "Serotype:", style = list(fontStyle = "italic")
+                          ),
                           dccDropdown(
                             id = "d_dengue",
                             options = lapply(
@@ -428,6 +427,9 @@ app$layout(
                       htmlDiv(
                         id = "controls-container_lassa",
                         children = list(
+                          htmlSpan(
+                            "RNA:", style = list(fontStyle = "italic")
+                          ),
                           dccDropdown(
                             id = "d_lassa",
                             options = lapply(
@@ -444,6 +446,9 @@ app$layout(
                       htmlDiv(
                         id = "controls-container_avian",
                         children = list(
+                          htmlSpan(
+                            "Subtype:", style = list(fontStyle = "italic")
+                          ),
                           dccDropdown(
                             id = "d_avian_opt1",
                             options = list(
@@ -455,8 +460,12 @@ app$layout(
                             ),
                             value = "h7n9"
                           ),
+                          htmlSpan(
+                            "RNA segment:", style = list(fontStyle = "italic")
+                          ),
                           dccDropdown(
                             id = "d_avian_opt2",
+                            # RNA segments?
                             options = lapply(
                               list(
                                 "ha", "mp", "na", "ns",
@@ -522,7 +531,7 @@ app$layout(
                             value = list(min_date, max_date)
                           )
                         ),
-                        style = list(margin = "0 3rem")
+                        style = list(margin = "0 1.5rem")
                       ),
                       htmlBr(),
                       htmlBr(),
@@ -537,13 +546,13 @@ app$layout(
                           min_date,
                           max_date
                         ),
-                        style = list(height = 700)
+                        style = list(maxHeight = 700)
                       )
                     )
                   )
                 ),
                 className = "four columns",
-                style = list(marginTop = "10")
+                style = list(marginTop = "1rem")
               ),
               htmlBr(),
               htmlDiv(
