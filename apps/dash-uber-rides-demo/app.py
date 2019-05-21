@@ -11,8 +11,7 @@ from plotly import graph_objs as go
 from plotly.graph_objs import *
 
 app = dash.Dash(
-    "UberApp",
-    meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+    "UberApp", meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
 server = app.server
 
@@ -61,7 +60,10 @@ app.layout = html.Div(
                 html.Div(
                     className="four columns div-user-controls",
                     children=[
-                        html.Img(className="logo", src=app.get_asset_url('dash-logo-stripe.png')),
+                        html.Img(
+                            className="logo",
+                            src=app.get_asset_url("dash-logo-stripe.png"),
+                        ),
                         html.H2("DASH - UBER DATA APP"),
                         html.P(
                             """Select different days using the dropdown and the slider
@@ -250,9 +252,10 @@ def update_day_dropdown(month):
 
 
 # Selected Data in the Histogram updates the Values in the Hours Dropdown menu
-@app.callback(Output("bar-selector", "value"), 
-              [Input("histogram", "selectedData"),
-              Input("histogram", "clickData")])
+@app.callback(
+    Output("bar-selector", "value"),
+    [Input("histogram", "selectedData"), Input("histogram", "clickData")],
+)
 def update_bar_selector(value, clickData):
     holder = []
     if clickData:
@@ -262,12 +265,12 @@ def update_bar_selector(value, clickData):
             holder.append(str(int(x["x"])))
     return list(set(holder))
 
+
 # Clear Selected Data if Click Data is used
-@app.callback(Output("histogram", "selectedData"),
-              [Input("histogram", "clickData")])
+@app.callback(Output("histogram", "selectedData"), [Input("histogram", "clickData")])
 def update_selected_data(clickData):
-    if(clickData):
-        return {"points":[]}
+    if clickData:
+        return {"points": []}
 
 
 # Update the total number of rides Tag
