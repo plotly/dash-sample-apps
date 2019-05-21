@@ -1,0 +1,134 @@
+/* Table of contents
+––––––––––––––––––––––––––––––––––––––––––––––––––
+- Banner
+- Scalable Container
+- Remove Undo
+
+
+/* Banner
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display');
+
+.banner {
+    height: 75px;
+    background-color: #2f3445; /* Machine Learning Color is orange */
+    padding: 3rem 0;
+    width: 100%;
+    margin-bottom: 6% !important;
+    display: block;
+    overflow: hidden;
+}
+
+.banner h2 {
+    color: #a5b1cd;
+    display: inline-block;
+    font-family: 'Playfair Display', sans-serif;
+    font-size: 4rem;
+    line-height: 1;
+}
+
+.banner h2:hover {
+    color: #b4b5bf;
+}
+
+.banner Img {
+    position: relative;
+    float: right;
+    height: 8rem;
+}
+
+/* Scalable Container
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.container.scalable {
+    width: 95%;
+    max-width: none;
+    margin-bottom: 5%;
+}
+
+/* Dropdowns
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.Select-control {
+    color: #a5b1cd;
+}
+
+.Select {
+    color: #a5b1cd;
+}
+
+.Select-menu-outer {
+    background-color: #2f3445;
+    border: 1px solid gray;
+}
+
+.Select div {
+    background-color: #2f3445;
+}
+
+.Select-menu-outer div:hover {
+    background-color: rgba(255, 255, 255, 0.01);
+}
+
+.Select-value-label {
+    color: #a5b1cd !important;
+}
+
+.Select--single > .Select-control .Select-value, .Select-placeholder {
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+.card {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    width: 75%;
+}
+
+#last-card {
+    border-bottom: none;
+}
+
+.graph-title {
+    font-size: 2rem;
+    margin: 15% 0 0 25%;
+}
+
+#button-zero-threshold {
+    background-color: #2f3445;
+    color: #a5b1cd;
+    border-color: gray;
+}
+
+#button-card {
+    display: flex;
+    flex-direction: column;
+}
+
+#first-card {
+    padding-top: 0 !important;
+}
+
+#left-column {
+    margin: 0 3% 0 0 !important;
+}
+
+
+/* Slider
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.rc-slider-track {
+    background-color: #13c6e9 !important;
+}
+
+.rc-slider-handle {
+    border: solid 2px #13c6e9 !important
+}
+
+input[type='radio']:checked {
+    background-color: #13c6e9 !important;
+    border-color: #13c6e9 !important;
+}
+
+/* Remove Undo
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+._dash-undo-redo {
+    display: none;
+}
