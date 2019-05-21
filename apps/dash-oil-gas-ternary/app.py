@@ -1,4 +1,6 @@
 import importlib
+import pathlib
+import os
 
 import pandas as pd
 import numpy as np
@@ -11,15 +13,19 @@ from dash.dependencies import Input, Output, State
 
 constants = importlib.import_module("apps.dash-oil-gas-ternary.constants")
 
+#app initialize
 app = dash.Dash(__name__)
 server = app.server
 app.config["suppress_callback_exceptions"] = True
 
+#mapbox
 mapbox_access_token = "pk.eyJ1IjoieWNhb2tyaXMiLCJhIjoiY2p1MDR5c3JmMzJsbjQ1cGlhNHA3MHFkaCJ9.xb3lXp5JskCYFewsv5uU1w"
 
 # Load data
-df = pd.read_csv("/apps/dash-oil-gas-ternary/data/test_composition.csv")
-df_prod = pd.read_csv("/apps/dash-oil-gas-ternary/data/YearlyProduction_table_1.csv")
+APP_PATH = str(pathlib.Path(__file__).parent.absolute())
+
+df = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "test_composition.csv")))
+df_prod = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "YearlyProduction_table_1.csv")))
 
 # Assign color to legend
 colormap = {}
