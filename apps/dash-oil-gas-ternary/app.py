@@ -1,4 +1,4 @@
-from constants import *
+import importlib
 
 import pandas as pd
 import numpy as np
@@ -9,6 +9,7 @@ import dash_html_components as html
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
 
+constants = importlib.import_module("apps.dash-oil-gas-ternary.constants")
 
 app = dash.Dash(__name__)
 server = app.server
@@ -17,13 +18,13 @@ app.config["suppress_callback_exceptions"] = True
 mapbox_access_token = "pk.eyJ1IjoieWNhb2tyaXMiLCJhIjoiY2p1MDR5c3JmMzJsbjQ1cGlhNHA3MHFkaCJ9.xb3lXp5JskCYFewsv5uU1w"
 
 # Load data
-df = pd.read_csv("apps/das-oil-gas-ternary/data/test_composition.csv")
-df_prod = pd.read_csv("apps/dash-oil-gas-ternary/data/YearlyProduction_table_1.csv")
+df = pd.read_csv("/apps/dash-oil-gas-ternary/data/test_composition.csv")
+df_prod = pd.read_csv("/apps/dash-oil-gas-ternary/data/YearlyProduction_table_1.csv")
 
 # Assign color to legend
 colormap = {}
 for ind, formation_name in enumerate(df["fm_name"].unique().tolist()):
-    colormap[formation_name] = colors[ind]
+    colormap[formation_name] = constants.colors[ind]
 
 
 def build_banner():
@@ -50,7 +51,7 @@ def generate_production_plot(processed_data):
 
     data = []
     for well_id, formation in list(
-        zip(processed_data["well_id"], processed_data["formation"])
+            zip(processed_data["well_id"], processed_data["formation"])
     ):
         well_prod = df_prod[df_prod["RecordNumber"] == well_id]
         new_trace = dict(
@@ -157,17 +158,17 @@ def generate_ternary_map(dff, selected_data, contour_visible, marker_visible):
     # Generate contour
 
     contour_traces = []
-    for ind, key in enumerate(ternary_contour.keys()):
+    for ind, key in enumerate(constants.ternary_contour.keys()):
         trace = dict(
             name=key,
             type="scatterternary",
-            a=[k["Quartz"] for k in ternary_contour[key]],
-            b=[k["Carbonate"] for k in ternary_contour[key]],
-            c=[k["Clay"] for k in ternary_contour[key]],
+            a=[k["Quartz"] for k in constants.ternary_contour[key]],
+            b=[k["Carbonate"] for k in constants.ternary_contour[key]],
+            c=[k["Clay"] for k in constants.ternary_contour[key]],
             mode="lines",
             line=dict(color="#444", width=0.5),
             fill="toself",
-            fillcolor=ternary_color[ind],
+            fillcolor=constants.ternary_color[ind],
             opacity=0.8,
             hoverinfo="none",
             showlegend=False,
@@ -261,7 +262,7 @@ def generate_ternary_map(dff, selected_data, contour_visible, marker_visible):
 
 def generate_contour_text_layer(contour_visible):
     layer = []
-    for key, value in ternary_contour.items():
+    for key, value in constants.ternary_contour.items():
         a = np.mean([i["Quartz"] for i in value])
         b = np.mean([i["Carbonate"] for i in value])
         c = np.mean([i["Clay"] for i in value])
@@ -381,9 +382,9 @@ app.layout = html.Div(
                                 html.P(
                                     id="instructions",
                                     children="Select data points from the well map, ternary map or bar graph to visualize cross-filtering to"
-                                    " other plots. Selection could be done by clicking on individual data points or using the lasso tool "
-                                    "to capture multiple data points or bars. With the box tool from modebar, multiple regions can be selected by holding SHIFT "
-                                    "button while click-and-drag.",
+                                             " other plots. Selection could be done by clicking on individual data points or using the lasso tool "
+                                             "to capture multiple data points or bars. With the box tool from modebar, multiple regions can be selected by holding SHIFT "
+                                             "button while click-and-drag.",
                                 ),
                                 build_graph_title("Select Operator"),
                                 dcc.Dropdown(
@@ -561,12 +562,12 @@ def update_bar(map_selected_data, tern_selected_data, op_select):
     state=[State("ternary-map", "figure")],
 )
 def update_ternary_map(
-    map_selected_data,
-    bar_selected_data,
-    bar_click_data,
-    op_select,
-    layer_select,
-    curr_fig,
+        map_selected_data,
+        bar_selected_data,
+        bar_click_data,
+        op_select,
+        layer_select,
+        curr_fig,
 ):
     marker_visible = contour_visible = True
 
@@ -651,7 +652,7 @@ def update_ternary_map(
     ],
 )
 def update_well_map(
-    tern_selected_data, bar_selected_data, bar_click_data, op_select, mapbox_view
+        tern_selected_data, bar_selected_data, bar_click_data, op_select, mapbox_view
 ):
     dff = df[df["op"].isin(op_select)]
     formations = dff["fm_name"].unique().tolist()
