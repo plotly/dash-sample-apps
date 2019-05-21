@@ -1,0 +1,5 @@
+dash>=0.42.0
+gunicorn>=19.7.1
+numpy>=1.14.0
+pandas>=0.22.0
+cufflinks>=0.0
