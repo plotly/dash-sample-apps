@@ -11,8 +11,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import datasets
 from sklearn.svm import SVC
 
-drc = importlib.import_module('apps.dash-svm.utils.dash_reusable_components')
-figs = importlib.import_module('apps.dash-svm.utils.figures')
+drc = importlib.import_module("apps.dash-svm.utils.dash_reusable_components")
+figs = importlib.import_module("apps.dash-svm.utils.figures")
 
 app = dash.Dash(__name__)
 server = app.server
@@ -223,7 +223,7 @@ app.layout = html.Div(
                                             value=5,
                                         ),
                                         html.Div(
-                                            id='shrinking-container',
+                                            id="shrinking-container",
                                             children=[
                                                 html.P(children="Shrinking"),
                                                 dcc.RadioItems(
@@ -253,8 +253,7 @@ app.layout = html.Div(
                         html.Div(
                             id="div-graphs",
                             children=dcc.Graph(
-                                id="graph-sklearn-svm",
-                                style={"display": "none"}
+                                id="graph-sklearn-svm", style={"display": "none"}
                             ),
                         ),
                     ],
@@ -410,26 +409,15 @@ def update_svm_graph(
     return [
         html.Div(
             className="six columns",
-            id='svm-graph-container',
-            children=[
-                dcc.Graph(
-                    id="graph-sklearn-svm",
-                    figure=prediction_figure,
-                )
-            ],
+            id="svm-graph-container",
+            children=[dcc.Graph(id="graph-sklearn-svm", figure=prediction_figure)],
         ),
         html.Div(
             className="three columns",
-            id='graphs-container',
+            id="graphs-container",
             children=[
-                dcc.Graph(
-                    id="graph-line-roc-curve",
-                    figure=roc_figure,
-                ),
-                dcc.Graph(
-                    id="graph-pie-confusion-matrix",
-                    figure=confusion_figure,
-                ),
+                dcc.Graph(id="graph-line-roc-curve", figure=roc_figure),
+                dcc.Graph(id="graph-pie-confusion-matrix", figure=confusion_figure),
             ],
         ),
     ]
