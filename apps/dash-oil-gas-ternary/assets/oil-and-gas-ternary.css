@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,800');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700');
+
+.container.scalable {
+    width: 95%;
+    max-width: none;
+}
+
+/* Remove Undo
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+._dash-undo-redo {
+    display: none;
+}
+
+/* Top-row
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#top-row {
+    background-color: #192444;
+    padding: 0 5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+/* Top-row-header
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#top-row-header {
+    background-color: #1f2c56;
+    padding: 6rem 3rem 9rem 3rem;
+    max-width: 35rem;
+    min-height: 53rem;
+}
+
+.banner h6 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 4rem;
+    width: 35rem;
+    color: white;
+}
+
+.banner Img {
+    height: 5rem;
+    margin-bottom: 5rem;
+}
+
+#well-map-container .graph-title, #ternary-map-container .graph-title, #header-container .graph-title {
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: white;
+}
+
+
+#instructions {
+    font-style: italic;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    color: white;
+    width: 30rem;
+    margin: 2rem 0 4rem 0;
+}
+
+#operator-select {
+    width: 35rem;
+}
+
+.Select-control, .Select-multi-value-wrapper, .Select-menu-outer div{
+    background-color: #1f2c56 ;
+}
+
+.Select-control, .Select, .Select-value-label, .Select-clear-zone {
+    color: white;
+}
+
+.Select-menu-outer {
+    background-color: #1f2c56;
+    border: 1px solid gray !important;
+}
+
+.Select-menu-outer div:hover {
+    background-color: rgba(255, 255, 255, 0.01);
+    cursor: pointer;
+}
+
+.Select--single > .Select-control .Select-value, .Select-placeholder {
+    border: 1px solid white;
+    border-radius: 4px;
+    color: white;
+    background-color: #1f2c56;
+}
+
+.Select--multi .Select-value-label, .Select--multi .Select-value {
+    color: #3c81e8;
+    background-color: #dfecff;
+}
+
+.Select-arrow {
+    border-color: white transparent transparent;
+}
+
+.Select-arrow-zone, .Select-clear-zone, .is-open > .Select-control {
+    background-color: #1f2c56 !important;
+}
+
+/* Top-row-graphs
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#top-row-graphs{
+    padding: 5rem 0;
+}
+
+#well-map-container{
+    margin: 0 -2rem 0 4rem;
+}
+
+#well-map {
+    height: 50rem;
+    width: 60rem;
+}
+
+#ternary-map{
+    height: 50rem;
+    width: 70rem;
+}
+
+#mapbox-view-selector, #ternary-layer-select{
+    margin-bottom: 1rem;
+}
+
+#ternary-header{
+    margin-left: 5rem;
+}
+
+/* hides the svg dom element that has the click handler responsible for toggling */
+#well-map .legend .traces .legendtoggle {
+    display: none;
+}
+
+#ternary-map .legend .traces .legendtoggle {
+    display: none;
+}
+
+#mapbox-view-selector label, #ternary-layer-select label{
+    color: white;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 300;
+    display: inline-block;
+}
+
+
+/* Bottom row
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#bottom-row{
+    padding: 5rem;
+    background-color: #f2f5fa;
+}
+
+#bottom-row .graph-title{
+    font-family: "Open Sans", sans-serif;
+    font-weight: 800;
+    margin-bottom: 3rem;
+}
+
+.graph-title{
+    font-size: 2rem;
+}
