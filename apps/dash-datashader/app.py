@@ -1,21 +1,13 @@
-# coding: utf-8
-
+from collections import OrderedDict
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State
-import plotly.plotly as py
-import plotly.graph_objs as go
+from dash.dependencies import Input, Output
 import datashader as ds
 import datashader.transfer_functions as tf
 import pandas as pd
 import numpy as np
-import json
-import copy
-import xarray as xr
-from collections import OrderedDict
 
-#######################################################################################################################
 # Data generation
 #######################################################################################################################
 
@@ -66,9 +58,9 @@ dims = len(z[0]), len(z)
 x = np.linspace(x_range[0], x_range[1], dims[0])
 y = np.linspace(y_range[0], y_range[1], dims[0])
 
-#######################################################################################################################
 # Layout
 #######################################################################################################################
+
 
 external_stylesheets = [
     "https://codepen.io/chriddyp/pen/bWLwgP.css",
@@ -209,10 +201,8 @@ app.layout = html.Div(
 )
 
 
-#######################################################################################################################
 # Callbacks
 #######################################################################################################################
-
 
 @app.callback(
     [Output("header-2-strong", "children"), Output("header-2-p", "children")],
@@ -284,7 +274,6 @@ def selectionHighlight(selection):
 
 @app.callback(Output("graph-1", "figure"), [Input("graph-1", "relayoutData")])
 def draw_undecimated_data(selection):
-    new_fig1 = fig1.copy()
     if (
         selection is not None
         and "xaxis.range[0]" in selection
@@ -295,6 +284,7 @@ def draw_undecimated_data(selection):
         sub_df = df[(df.Time >= x0) & (df.Time <= x1)]
         num_pts = len(sub_df)
         if num_pts < max_points:
+            new_fig1 = fig1.copy()
             high_res_data = [
                 dict(
                     x=sub_df["Time"],
