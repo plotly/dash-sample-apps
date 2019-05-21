@@ -16,6 +16,8 @@
 - [ ] If the app is a redesigned and/or restyled version of an
   existing gallery app, I've summarized the changes requested in the
   appropriate Streambed issue and confirm that they have been applied.
+- [ ] If the app is on the Dash Gallery portal, I have added a link to
+  the GitHub repository for the source code in the portal description.
 - [ ] If the app is a reimplementation of a Python gallery app for the
   DashR gallery, the app in this PR mimics, as closely as possible,
   the style and functionality of the existing app.
