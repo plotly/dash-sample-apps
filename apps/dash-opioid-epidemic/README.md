@@ -4,7 +4,7 @@ Poison induced death data was downloaded from [CDC Wonder](dash_app_screencast.g
 
 [View the Dash app](https://opioid-epidemic.herokuapp.com/)
 
-![plotly-dash-screencast](app_screencast.gif)
+![plotly-dash-screencast](data/app_screencast.gif)
 
 ![cube-helix-colorscale](https://github.com/plotly/dash-colorscales/raw/master/screenshot.png)
 
