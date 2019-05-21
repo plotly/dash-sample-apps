@@ -162,5 +162,5 @@ regions <- data.table(
   )
 )
 
-fwrite(regions, file = "regions.csv")
+fwrite(unique(regions), file = "regions.csv")
 

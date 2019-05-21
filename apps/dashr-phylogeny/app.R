@@ -131,7 +131,6 @@ createTree <- function(virus_name, tree_file, metadata_file){
     ) %>%
     layout(
       title = graph_title,
-      dragmode = "select",
       font = list(family = "Roboto", size = "14"),
       hovermode = "closest",
       margin = list(
