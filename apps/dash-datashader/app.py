@@ -9,7 +9,6 @@ import pandas as pd
 import numpy as np
 
 # Data generation
-#######################################################################################################################
 
 n = 1000000
 max_points = 100000
@@ -59,8 +58,6 @@ x = np.linspace(x_range[0], x_range[1], dims[0])
 y = np.linspace(y_range[0], y_range[1], dims[0])
 
 # Layout
-#######################################################################################################################
-
 
 external_stylesheets = [
     "https://codepen.io/chriddyp/pen/bWLwgP.css",
@@ -202,8 +199,6 @@ app.layout = html.Div(
 
 
 # Callbacks
-#######################################################################################################################
-
 
 @app.callback(
     [Output("header-2-strong", "children"), Output("header-2-p", "children")],
