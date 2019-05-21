@@ -1,4 +1,6 @@
 venv
+data
+.vscode
 *.pyc
 .DS_Store
 .env
