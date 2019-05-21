@@ -22,10 +22,16 @@ server = app.server
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
 
-df_lat_lon = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "lat_lon_counties.csv")))
+df_lat_lon = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "lat_lon_counties.csv"))
+)
 df_lat_lon["FIPS "] = df_lat_lon["FIPS "].apply(lambda x: str(x).zfill(5))
 
-df_full_data = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "age_adjusted_death_rate_no_quotes.csv")))
+df_full_data = pd.read_csv(
+    os.path.join(
+        APP_PATH, os.path.join("data", "age_adjusted_death_rate_no_quotes.csv")
+    )
+)
 df_full_data["County Code"] = df_full_data["County Code"].apply(
     lambda x: str(x).zfill(5)
 )
