@@ -73,7 +73,6 @@ getCladeLines <- function(tree, fig){
 }
 
 # Create the tree graph
-# TODO: set regions
 createTree <- function(virus_name, tree_file, metadata_file){
   tree <- read.tree(file = tree_file)
   x_coords <- getXCoordinates(tree)
@@ -85,7 +84,9 @@ createTree <- function(virus_name, tree_file, metadata_file){
   )
   DT[, Clade := !Strain %like% "NODE_.*"]
   df <- fread(metadata_file)
+  regions <- fread("utils/regions.csv")
   DT2 <- merge(DT, df, by = "Strain", all.x = TRUE)
+  DT2 <- merge(DT2, regions, by = "Country", all.x = TRUE)
   nb_genome <- DT2[Clade == TRUE, .N]
   graph_title <- sprintf(
     paste0(
@@ -121,7 +122,7 @@ createTree <- function(virus_name, tree_file, metadata_file){
       text = ~paste(
         sprintf("%s </br>", Strain),
         sprintf("Country: %s", Country),
-        sprintf("Regions: %s", "Placeholder"),
+        sprintf("Region: %s", region),
         sprintf("Collection Date: %s", Date),
         sprintf("Journal: %s", Journal),
         sprintf("Authors: ", Authors),
