@@ -1,18 +1,31 @@
+import re
+import os
+import pathlib
+
+import pandas as pd
+import cufflinks as cf
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-import pandas as pd
-import cufflinks as cf
-import re
+
+
+# Initialize app
 
 app = dash.Dash(__name__)
 server = app.server
 
-df_lat_lon = pd.read_csv("apps/dash-opioid-epidemic/data/lat_lon_counties.csv")
+
+# Load data
+
+APP_PATH = str(pathlib.Path(__file__).parent.resolve())
+
+
+df_lat_lon = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "lat_lon_counties.csv")))
 df_lat_lon["FIPS "] = df_lat_lon["FIPS "].apply(lambda x: str(x).zfill(5))
 
-df_full_data = pd.read_csv("apps/dash-opioid-epidemic/data/age_adjusted_death_rate_no_quotes.csv")
+df_full_data = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "age_adjusted_death_rate_no_quotes.csv")))
 df_full_data["County Code"] = df_full_data["County Code"].apply(
     lambda x: str(x).zfill(5)
 )
@@ -65,11 +78,8 @@ DEFAULT_OPACITY = 0.8
 mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
 mapbox_style = "mapbox://styles/plotlymapbox/cjvprkf3t1kns1cqjxuxmwixz"
 
-"""
-~~~~~~~~~~~~~~~~
-~~ APP LAYOUT ~~
-~~~~~~~~~~~~~~~~
-"""
+
+# App layout
 
 app.layout = html.Div(
     id="root",
