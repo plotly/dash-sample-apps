@@ -105,8 +105,9 @@ samples = df.sample(n=sample_size, random_state=1234)
 
 DATA_PATH = pathlib.Path(__file__).parent.joinpath("data").resolve()
 
-samples.to_csv(DATA_PATH.joinpath(
-    f"{dataset_name}_{sample_size}_input.csv"), index=False)
+samples.to_csv(
+    DATA_PATH.joinpath(f"{dataset_name}_{sample_size}_input.csv"), index=False
+)
 pd.DataFrame(samples.index).to_csv(
     DATA_PATH.joinpath(f"{dataset_name}_{sample_size}_labels.csv"), index=False
 )

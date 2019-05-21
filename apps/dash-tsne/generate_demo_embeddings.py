@@ -35,8 +35,9 @@ def generate_embedding(
         data = pd.read_csv(DATA_PATH.joinpath(f"{dataset}_input.csv"))
         labels = pd.read_csv(DATA_PATH.joinpath(f"{dataset}_labels.csv"))
     elif mode == "one_file":
-        data = pd.read_csv(DATA_PATH.joinpath(
-            f"{dataset}.csv"), index_col=0, encoding="ISO-8859-1")
+        data = pd.read_csv(
+            DATA_PATH.joinpath(f"{dataset}.csv"), index_col=0, encoding="ISO-8859-1"
+        )
         labels = data.index
 
     nb_col = data.shape[1]
