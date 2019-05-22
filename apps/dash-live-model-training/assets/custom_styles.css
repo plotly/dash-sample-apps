@@ -1,0 +1,17 @@
+.markdown img {
+  width: 100%;
+}
+
+._dash-undo-redo {
+  display: none;
+}
+
+#learn-more-button {
+  color: #e8e8e8;
+  margin-left: 40%;
+  font-family: "Open Sans Semi Bold", sans-serif;
+  font-weight: 200;
+  text-transform: uppercase;
+  letter-spacing: 1.16px;
+  font-size: 12px;
+}
