@@ -62,8 +62,13 @@ init_df <- function() {
   return('')
 }
 
-populate_ooc <- function() {
-  return('')
+populate_ooc <- function(data, ucl, lcl) {
+  ooc_count <- 0
+  ret <- list()
+  for (i in seq(1,length(data))) {
+    
+  }
+  return()
 }
 
 init_value_setter_store <- function() {
