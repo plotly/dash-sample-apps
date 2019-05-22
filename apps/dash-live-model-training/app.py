@@ -23,109 +23,137 @@ demo_mode = True
 
 def div_graph(name):
     """Generates an html Div containing graph and control options for smoothing and display, given the name"""
-    return html.Div(className="row", children=[
-        html.Div(className="two columns", children=[
-            html.Div([
-                html.P(
-                    "Smoothing:",
-                    style={"font-weight": "bold",
-                           "margin-bottom": "0px"},
-                ),
-                dcc.Checklist(
-                    options=[
-                        {"label": " Training", "value": "train"},
-                        {"label": " Validation", "value": "val"},
-                    ],
-                    values=[],
-                    id=f"checklist-smoothing-options-{name}",
-                ),
-            ],
-                style={"margin-top": "10px"},
+    return html.Div(
+        className="row",
+        children=[
+            html.Div(
+                className="two columns",
+                children=[
+                    html.Div(
+                        [
+                            html.P(
+                                "Smoothing:",
+                                style={"font-weight": "bold", "margin-bottom": "0px"},
+                            ),
+                            dcc.Checklist(
+                                options=[
+                                    {"label": " Training", "value": "train"},
+                                    {"label": " Validation", "value": "val"},
+                                ],
+                                values=[],
+                                id=f"checklist-smoothing-options-{name}",
+                            ),
+                        ],
+                        style={"margin-top": "10px"},
+                    ),
+                    html.Div(
+                        [
+                            dcc.Slider(
+                                min=0,
+                                max=1,
+                                step=0.05,
+                                marks={i / 5: str(i / 5) for i in range(0, 6)},
+                                value=0.6,
+                                updatemode="drag",
+                                id=f"slider-smoothing-{name}",
+                            )
+                        ],
+                        style={"margin-bottom": "40px"},
+                    ),
+                    html.Div(
+                        [
+                            html.P(
+                                "Plot Display mode:",
+                                style={"font-weight": "bold", "margin-bottom": "0px"},
+                            ),
+                            dcc.RadioItems(
+                                options=[
+                                    {"label": " Overlapping", "value": "overlap"},
+                                    {
+                                        "label": " Separate (Vertical)",
+                                        "value": "separate_vertical",
+                                    },
+                                    {
+                                        "label": " Separate (Horizontal)",
+                                        "value": "separate_horizontal",
+                                    },
+                                ],
+                                value="overlap",
+                                id=f"radio-display-mode-{name}",
+                            ),
+                            html.Div(id=f"div-current-{name}-value"),
+                        ]
+                    ),
+                ],
             ),
-            html.Div([
-                dcc.Slider(
-                    min=0,
-                    max=1,
-                    step=0.05,
-                    marks={i / 5: str(i / 5) for i in range(0, 6)},
-                    value=0.6,
-                    updatemode="drag",
-                    id=f"slider-smoothing-{name}",
-                )
-            ], style={"margin-bottom": "40px"} ),
-            html.Div([
-                html.P(
-                    "Plot Display mode:",
-                    style={"font-weight": "bold",
-                           "margin-bottom": "0px"},
-                ),
-                dcc.RadioItems(
-                    options=[
-                        {"label": " Overlapping", "value": "overlap"},
-                        {
-                            "label": " Separate (Vertical)",
-                            "value": "separate_vertical",
-                        },
-                        {
-                            "label": " Separate (Horizontal)",
-                            "value": "separate_horizontal",
-                        },
-                    ],
-                    value="overlap",
-                    id=f"radio-display-mode-{name}",
-                ),
-                html.Div(id=f"div-current-{name}-value"),
-            ]),
-        ]),
-        html.Div(id=f"div-{name}-graph", className="ten columns"),
-    ])
+            html.Div(id=f"div-{name}-graph", className="ten columns"),
+        ],
+    )
 
 
-app.layout = html.Div([
-    # Banner display
-    html.Div([
-        html.H2("Live Model Training Viewer", id="title"),
-        html.Button("Learn More", id="learn-more-button"),
-        html.Img(src=app.get_asset_url("dash-by-plotly-logo.png"))],
-        className="banner",
-    ),
-    # Body
-    html.Div([
-        # Extract the demo components if we are in demo mode
-        *demo_components(demo_mode),
-
+app.layout = html.Div(
+    [
+        # Banner display
         html.Div(
-            className="row", id="div-interval-control",
-            children=[
-                html.Div(id="div-step-display", className="two columns", style={"float":"right"}),
-                dcc.Dropdown(
-                    id="dropdown-interval-control",
-                    options=[
-                        {"label": "No Updates", "value": "no"},
-                        {"label": "Slow Updates", "value": "slow"},
-                        {"label": "Regular Updates", "value": "regular"},
-                        {"label": "Fast Updates", "value": "fast"},
-                    ],
-                    value="regular",
-                    className="ten columns",
-                    clearable=False,
-                    searchable=False,
-                )]
+            [
+                html.H2("Live Model Training Viewer", id="title"),
+                html.Button("Learn More", id="learn-more-button"),
+                html.Img(src=app.get_asset_url("dash-by-plotly-logo.png")),
+            ],
+            className="banner",
         ),
-
-        dcc.Interval(id="interval-log-update", n_intervals=0),
-        # Hidden Div Storing JSON-serialized dataframe of run log
-        html.Div(id="run-log-storage", style={"display": "none"}),
-        # The html divs storing the graphs and display parameters
-        div_graph("accuracy", style={"color":"#6b6b6b"}),
-        div_graph("cross-entropy", style={"color":"#6b6b6b"}),
-        # Explanation for the demo version of the app
-        demo_explanation(demo_mode),
-    ],
-        className="container",
-    )]
+        # Body
+        html.Div(
+            className="container",
+            children=[
+                # Extract the demo components if we are in demo mode
+                *demo_components(demo_mode),
+                html.Div(
+                    className="row",
+                    id="div-interval-control",
+                    children=[
+                        html.Div(
+                            id="div-step-display",
+                            className="two columns",
+                            style={"float": "right"},
+                        ),
+                        dcc.Dropdown(
+                            id="dropdown-interval-control",
+                            options=[
+                                {"label": "No Updates", "value": "no"},
+                                {"label": "Slow Updates", "value": "slow"},
+                                {"label": "Regular Updates", "value": "regular"},
+                                {"label": "Fast Updates", "value": "fast"},
+                            ],
+                            value="regular",
+                            className="ten columns",
+                            clearable=False,
+                            searchable=False,
+                        ),
+                    ],
+                ),
+                dcc.Interval(id="interval-log-update", n_intervals=0),
+                # Hidden Div Storing JSON-serialized dataframe of run log
+                html.Div(id="run-log-storage", style={"display": "none"}),
+                # The html divs storing the graphs and display parameters
+                div_graph("accuracy"),
+            ],
+        ),
+        html.Div(
+            className="container",
+            children=[
+                div_graph("cross-entropy"),
+                # Explanation for the demo version of the app
+            ],
+        ),
+        html.Div(
+            id="demo-explanation",
+            children=[
+                # demo_explanation(demo_mode),
+            ],
+        ),
+    ]
 )
-
 
 
 def update_graph(
@@ -181,10 +209,20 @@ def update_graph(
             y_val = smooth(y_val, weight=slider_smoothing)
 
         trace_train = go.Scatter(
-            x=step, y=y_train, mode="lines", name="Training")
+            x=step,
+            y=y_train,
+            mode="lines",
+            name="Training",
+            line=dict(color="rgb(54, 218, 170)"),
+        )
 
         trace_val = go.Scatter(
-            x=step, y=y_val, mode="lines", name="Validation")
+            x=step,
+            y=y_val,
+            mode="lines",
+            name="Validation",
+            line=dict(color="rgb(246, 236, 145)"),
+        )
 
         if display_mode == "separate_vertical":
             figure = tools.make_subplots(
@@ -222,6 +260,31 @@ def update_graph(
 
 
 demo_callbacks(app, demo_mode)
+
+
+@app.callback(
+    Output("demo-explanation", "children"), [Input("learn-more-button", "n_clicks")]
+)
+def learn_more(n_clicks):
+    if n_clicks == None:
+        n_clicks = 0
+        return
+    else:
+        if (n_clicks % 2) == 1:
+            n_clicks += 1
+            return (
+                html.Div(className="container", children=[demo_explanation(demo_mode)]),
+            )
+
+        else:
+            n_clicks += 1
+            return (
+                html.Div(
+                    children=[
+                        # demo_explanation(demo_mode),
+                    ]
+                ),
+            )
 
 
 @app.callback(
@@ -272,8 +335,7 @@ if not demo_mode:
 
 
 @app.callback(
-    Output("div-step-display",
-           "children"), [Input("run-log-storage", "children")]
+    Output("div-step-display", "children"), [Input("run-log-storage", "children")]
 )
 def update_div_step_display(run_log_json):
     if run_log_json:
@@ -383,10 +445,8 @@ def update_div_current_cross_entropy_value(run_log_json):
                     "margin-bottom": "0px",
                 },
             ),
-            html.Div(
-                f"Training: {run_log_df['train cross entropy'].iloc[-1]:.4f}"),
-            html.Div(
-                f"Validation: {run_log_df['val cross entropy'].iloc[-1]:.4f}"),
+            html.Div(f"Training: {run_log_df['train cross entropy'].iloc[-1]:.4f}"),
+            html.Div(f"Validation: {run_log_df['val cross entropy'].iloc[-1]:.4f}"),
         ]
 
 

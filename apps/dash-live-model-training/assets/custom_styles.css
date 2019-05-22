@@ -8,10 +8,42 @@
 
 #learn-more-button {
   color: #e8e8e8;
-  margin-left: 40%;
+  margin-left: 50%;
   font-family: "Open Sans Semi Bold", sans-serif;
   font-weight: 200;
   text-transform: uppercase;
   letter-spacing: 1.16px;
   font-size: 12px;
+}
+
+.rc-slider-track {
+  position: absolute;
+  left: 0;
+  height: 4px;
+  border-radius: 6px;
+  background-color: #f6ec91;
+}
+
+.rc-slider-dot-active {
+  border-color: #f6ec91;
+}
+
+.rc-slider-handle {
+  border-color: #f6ec91;
+  /* border: solid 2px #f6ec91; */
+}
+
+#_dash-app-content > div {
+  background-color: #f8f9fa;
+}
+
+/*.rc-slider-handle:hover {
+  border-color: white;
+  border: solid 2px #f6ec91;
+}  */
+
+.char-btn input[type="radio"] {
+  background-color: #f6866e;
+  opacity: 0.7;
+  z-index: 100;
 }
