@@ -90,6 +90,9 @@ mapbox_style = "mapbox://styles/plotlymapbox/cjvprkf3t1kns1cqjxuxmwixz"
 app.layout = html.Div(
     id="root",
     children=[
+        html.Meta(
+            {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
+        ),
         html.Div(
             id="header",
             children=[
