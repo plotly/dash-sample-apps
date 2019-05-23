@@ -373,8 +373,8 @@ app.layout = html.Div(
             id="banner",
             className="banner",
             children=[
-                html.Img(src=app.get_asset_url("plotly_logo.png")),
                 html.H6("Dash Clinical Analytics"),
+                html.Img(src=app.get_asset_url("plotly_logo_white.png")),
             ],
         ),
         html.Div(
