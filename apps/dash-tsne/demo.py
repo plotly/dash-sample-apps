@@ -160,7 +160,7 @@ def create_layout(app):
                 children=[
                     html.Div(
                         id="description-text",
-                        style={"width": "75%"},
+                        style={"padding-right": "25%"},
                         children=dcc.Markdown(demo_intro_md),
                     ),
                     html.Button("Learn More", id="button"),
@@ -218,7 +218,8 @@ def create_layout(app):
                                         max=100,
                                         step=None,
                                         val=30,
-                                        marks={i: str(i) for i in [3, 10, 30, 50, 100]},
+                                        marks={i: str(i)
+                                               for i in [3, 10, 30, 50, 100]},
                                     ),
                                     NamedSlider(
                                         name="Initial PCA Dimensions",
@@ -227,7 +228,8 @@ def create_layout(app):
                                         max=100,
                                         step=None,
                                         val=50,
-                                        marks={i: str(i) for i in [25, 50, 100]},
+                                        marks={i: str(i)
+                                               for i in [25, 50, 100]},
                                     ),
                                     NamedSlider(
                                         name="Learning Rate",
@@ -236,7 +238,8 @@ def create_layout(app):
                                         max=200,
                                         step=None,
                                         val=100,
-                                        marks={i: str(i) for i in [10, 50, 100, 200]},
+                                        marks={i: str(i)
+                                               for i in [10, 50, 100, 200]},
                                     ),
                                     html.Div(
                                         id="div-wordemb-controls",
@@ -260,7 +263,8 @@ def create_layout(app):
                                             dcc.Dropdown(
                                                 id="dropdown-word-selected",
                                                 placeholder="Select word to display its neighbors",
-                                                style={"background-color": "#f2f3f4"},
+                                                style={
+                                                    "background-color": "#f2f3f4"},
                                             ),
                                         ],
                                     ),
@@ -271,7 +275,8 @@ def create_layout(app):
                     html.Div(
                         className="six columns",
                         children=[
-                            dcc.Graph(id="graph-3d-plot-tsne", style={"height": "98vh"})
+                            dcc.Graph(id="graph-3d-plot-tsne",
+                                      style={"height": "98vh"})
                         ],
                     ),
                     html.Div(
@@ -401,7 +406,7 @@ def demo_callbacks(app):
             return html.Div(
                 children=[
                     html.Div(
-                        style={"width": "75%"}, children=dcc.Markdown(demo_intro_md)
+                        style={"padding-right": "25%"}, children=dcc.Markdown(demo_intro_md)
                     ),
                     html.Button("Learn More", id="button"),
                 ]
@@ -412,7 +417,7 @@ def demo_callbacks(app):
                 return html.Div(
                     children=[
                         html.Div(
-                            style={"width": "75%"}, children=dcc.Markdown(demo_intro_md)
+                            style={"padding-right": "25%"}, children=dcc.Markdown(demo_intro_md)
                         ),
                         html.Div(children=dcc.Markdown(demo_description_md)),
                         html.Button("Close", id="button"),
@@ -423,14 +428,15 @@ def demo_callbacks(app):
                 return html.Div(
                     children=[
                         html.Div(
-                            style={"width": "75%"}, children=dcc.Markdown(demo_intro_md)
+                            style={"padding-right": "25%"}, children=dcc.Markdown(demo_intro_md)
                         ),
                         html.Button("Learn More", id="button"),
                     ]
                 )
 
     @app.callback(
-        Output("div-wordemb-controls", "style"), [Input("dropdown-dataset", "value")]
+        Output("div-wordemb-controls",
+               "style"), [Input("dropdown-dataset", "value")]
     )
     def show_wordemb_controls(dataset):
         if dataset in WORD_EMBEDDINGS:
@@ -508,7 +514,8 @@ def demo_callbacks(app):
                 return go.Figure()
 
             # Plot layout
-            axes = dict(title="", showgrid=True, zeroline=False, showticklabels=False)
+            axes = dict(title="", showgrid=True,
+                        zeroline=False, showticklabels=False)
 
             layout = go.Layout(
                 margin=dict(l=0, r=0, b=0, t=0),
@@ -592,22 +599,26 @@ def demo_callbacks(app):
                 # Retrieve the image corresponding to the index
                 image_vector = data_dict[dataset].iloc[clicked_idx]
                 if dataset == "cifar_gray_3000":
-                    image_np = image_vector.values.reshape(32, 32).astype(np.float64)
+                    image_np = image_vector.values.reshape(
+                        32, 32).astype(np.float64)
                 else:
-                    image_np = image_vector.values.reshape(28, 28).astype(np.float64)
+                    image_np = image_vector.values.reshape(
+                        28, 28).astype(np.float64)
 
                 # Encode image into base 64
                 image_b64 = numpy_to_b64(image_np)
 
                 return html.Img(
                     src="data:image/png;base64, " + image_b64,
-                    style={"height": "25vh", "display": "block", "margin": "auto"},
+                    style={"height": "25vh",
+                           "display": "block", "margin": "auto"},
                 )
         return None
 
     @app.callback(
         Output("div-plot-click-wordemb", "children"),
-        [Input("graph-3d-plot-tsne", "clickData"), Input("dropdown-dataset", "value")],
+        [Input("graph-3d-plot-tsne", "clickData"),
+         Input("dropdown-dataset", "value")],
     )
     def display_click_word_neighbors(clickData, dataset):
         if dataset in WORD_EMBEDDINGS and clickData:
@@ -652,7 +663,8 @@ def demo_callbacks(app):
 
     @app.callback(
         Output("div-plot-click-message", "children"),
-        [Input("graph-3d-plot-tsne", "clickData"), Input("dropdown-dataset", "value")],
+        [Input("graph-3d-plot-tsne", "clickData"),
+         Input("dropdown-dataset", "value")],
     )
     def display_click_message(clickData, dataset):
         """
