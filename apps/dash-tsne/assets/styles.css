@@ -35,10 +35,10 @@
   left: 0;
   height: 4px;
   border-radius: 6px;
-  background-color: #3266c1;
+  background-color: #3266c1 !important;
 }
 .rc-slider-dot-active {
-  border-color: #3266c1;
+  border-color: #3266c1 !important;
 }
 
 .rc-slider-handle {
@@ -49,7 +49,7 @@
   height: 14px;
   cursor: pointer;
   border-radius: 50%;
-  border: solid 2px #3266c1;
+  border: solid 2px #3266c1 !important;
   background-color: #fff;
 }
 .rc-slider-step {
@@ -57,7 +57,7 @@
   width: 100%;
   height: 4px;
   background: transparent;
-  border-color: #3266c1;
+  border-color: #3266c1 !important;
 }
 
 .Select-control {
