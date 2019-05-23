@@ -193,18 +193,17 @@ generateGeoMap <- function(geo_data, selected_metric,
     filtered_data[["Provider Name"]] %in% procedure_select$hospital, 
     which = TRUE
   ]
-  #print(filtered_data[selected_indices])
-  #print(filtered_data)
-  #print(selected_indices)
-
   plot_mapbox(
     data  = filtered_data, 
     x = ~lon, y = ~lat, 
     type = "scatter",
     mode = "markers",
-    # TODO: Wrong hospitals being highlighted :(
-    selectedpoints = selected_indices,
+    # Two strange issues here:
+    # Selects right hospitals only if you subtract 1 from indices
+    # Also, only selects single hospital if the length(selected_indices) > 1
+    selectedpoints = c(-1, (selected_indices - 1)),
     selected = list(marker = list(color = "#FFFF00")),
+    customdata = filtered_data[["Provider Name"]],
     #customdata = list(
       #list(
         #filtered_data[,"Provider Name",with=FALSE]
@@ -235,7 +234,7 @@ generateGeoMap <- function(geo_data, selected_metric,
         titleside = "top",
         tickmode = "array",
         tickvals = c(dMin, dMax),
-        ticktext = list(round(dMin, 2), round(dMax,2)),
+        ticktext = c(round(dMin, 2), round(dMax,2)),
         ticks = "outside",
         tickfont = list(family = "Open Sans", color = "#737a8d")
       )
@@ -294,7 +293,8 @@ generateProcedurePlot <- function(raw_data, cost_select,
     name = "",
     customdata = procedure_data[["Provider Name"]],
     hovertemplate = hovertemplate,
-    selectedpoints = selected_indices,
+    # Same issue as generateGeoMap for the selected point indices
+    selectedpoints = selected_indices - 1,
     selected = list(marker = list(color = "#FFFF00", size = 13)),
     unselected = list(marker = list(opacity = 0.2)),
     marker = list(
@@ -328,13 +328,6 @@ generateProcedurePlot <- function(raw_data, cost_select,
       paper_bgcolor = "#171b26"
     )
 }
-
-#raw_data <- dataList[[2]]
-#region_select <- list("AL - Birmingham", "AL - Dothan")
-#provider_select <- list("UNIVERSITY OF ALABAMA HOSPITAL", "EAST ALABAMA MEDICAL CENTER")
-#cost_select <- cost_metric[[1]]
-
-#generateProcedurePlot(raw_data, cost_select, region_select, provider_select)
 
 ##############################################
 app <- Dash$new(name = "DashR Medical Provider Charges")
@@ -538,36 +531,33 @@ app$callback(
         provider_data[["hospital"]][[i]] <- point[["customdata"]]
         i <- i + 1
       }
-      #provider_data[["procedure"]] <- unlist(provider_data[["procedure"]])
-      #provider_data[["hospital"]] <- unlist(provider_data[["hospital"]])
     }
-    print(provider_data)
     generateGeoMap(state_agg_data, cost_select, region_select, provider_data)
   }
 )
 
-#app$callback(
-  #output("procedure-plot", "figure"),
-  #list(
-    #input("metric-select", "value"),
-    #input("region-select", "value"),
-    #input("geo-map", "selectedData"),
-    #input("state-select", "value")
-  #),
-  #function(cost_select, region_select, geo_select, state_select){
-    #state_raw_data <- dataList[[state_select]]
-    #provider_select <- list()
-    #if (!is.null(unlist(geo_select))){
-      #i <- 1
-      #for (point in geo_select[["points"]]){
-        #provider_select[[i]] <- point[["customdata"]][[1]][1]
-        #i <- i + 1
-      #}
-    #}
-    #generateProcedurePlot(
-      #state_raw_data, cost_select, region_select, provider_select
-    #)
-  #}
-#)
+app$callback(
+  output("procedure-plot", "figure"),
+  list(
+    input("metric-select", "value"),
+    input("region-select", "value"),
+    input("geo-map", "selectedData"),
+    input("state-select", "value")
+  ),
+  function(cost_select, region_select, geo_select, state_select){
+    state_raw_data <- dataList[[state_select]]
+    provider_select <- list()
+    if (!is.null(unlist(geo_select))){
+      i <- 1
+      for (point in geo_select[["points"]]){
+        provider_select[[i]] <- point[["customdata"]]
+        i <- i + 1
+      }
+    }
+    generateProcedurePlot(
+      state_raw_data, cost_select, region_select, provider_select
+    )
+  }
+)
 
 app$run_server()
