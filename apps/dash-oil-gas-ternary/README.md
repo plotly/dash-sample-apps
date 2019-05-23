@@ -1,7 +1,7 @@
-## Dash-oil-gas-ternary
+## dash-oil-gas-ternary
 
 `dash-oil-gas-ternary` creates a dashboard for mineral composition evaluations from natural gas wells.  
-By pairing geographic map of well locations with ternary diagram, this app helps geologists to find out results of gas wells with relationship to formations or rock types.
+By pairing a geographic map of well locations with ternary diagram, this app helps geologists to find out results of gas wells with relationship to formations or rock types.
 This is a demo of Dash interactive Python framework developed by [Plotly](https//plot.ly/).
 
 ![Animated](assets/Screencast.gif)
@@ -44,9 +44,9 @@ python app.py
 ```
 Open http://127.0.0.1:8050/ in your browser.
 
-Select data points from well map, ternary map or bar graph to visualize cross-filtering to other plots.
-Selection could be done by clicking on individual data points or using the lasso tool to capture multiple data points or bars. Hold SHIFT
-button while click-and-drag for multi-region selection.
+Select a subset of data points from the well map, ternary map or bar graph to visualize cross-filtering to other plots.
+Selection can be done by clicking on individual data points, or by using the lasso tool to capture multiple data points or bars. Hold the SHIFT
+key while clicking and dragging for multi-region selection.
 
 ## Data source
 Historical shale gas production data for selected Devonian Ohio Shale wells http://www.uky.edu/KGS/emsweb/kyogfaq/kyogfaq10.html
