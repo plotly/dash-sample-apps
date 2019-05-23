@@ -200,6 +200,7 @@ app.layout = html.Div(
 
 # Callbacks
 
+
 @app.callback(
     [Output("header-2-strong", "children"), Output("header-2-p", "children")],
     [Input("graph-1", "relayoutData")],
