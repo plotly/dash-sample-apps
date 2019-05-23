@@ -390,11 +390,11 @@ app.layout = html.Div(
                                 html.P(
                                     id="instructions",
                                     children="Select data points from the well map, ternary map or bar graph to "
-                                             "visualize cross-filtering to other plots. Selection could be done by "
-                                             "clicking on individual data points or using the lasso tool to capture "
-                                             "multiple data points or bars. With the box tool from modebar, multiple "
-                                             "regions can be selected by holding the SHIFT key while clicking and "
-                                             "dragging.",
+                                    "visualize cross-filtering to other plots. Selection could be done by "
+                                    "clicking on individual data points or using the lasso tool to capture "
+                                    "multiple data points or bars. With the box tool from modebar, multiple "
+                                    "regions can be selected by holding the SHIFT key while clicking and "
+                                    "dragging.",
                                 ),
                                 build_graph_title("Select Operator"),
                                 dcc.Dropdown(
