@@ -367,20 +367,24 @@ def display_selected_data(selectedData, chart_dropdown, year):
         fig = deaths_or_rate_by_fips.iplot(
             kind="bar", y=AGGREGATE_BY, title=title, asFigure=True
         )
-        fig["data"][0]["text"] = deaths_or_rate_by_fips.values.tolist()
-        fig["data"][0]["marker"]["color"] = "#2cfec1"
-        fig["data"][0]["marker"]["opacity"] = 1
-        fig["data"][0]["marker"]["line"]["width"] = 0
+
+        fig_layout = fig["layout"]
+        fig_data = fig["data"]
+
+        fig_data[0]["text"] = deaths_or_rate_by_fips.values.tolist()
+        fig_data[0]["marker"]["color"] = "#2cfec1"
+        fig_data[0]["marker"]["opacity"] = 1
+        fig_data[0]["marker"]["line"]["width"] = 0
         # TODO: Why doesn't the text show up over the bars?
-        fig["data"][0]["textposition"] = "outside"
-        fig["layout"]["paper_bgcolor"] = "#1f2630"
-        fig["layout"]["plot_bgcolor"] = "#1f2630"
-        fig["layout"]["font"]["color"] = "#2cfec1"
-        fig["layout"]["title"]["font"]["color"] = "#2cfec1"
-        fig["layout"]["xaxis"]["tickfont"]["color"] = "#2cfec1"
-        fig["layout"]["yaxis"]["tickfont"]["color"] = "#2cfec1"
-        fig["layout"]["xaxis"]["gridcolor"] = "#5b5b5b"
-        fig["layout"]["yaxis"]["gridcolor"] = "#5b5b5b"
+        fig_data[0]["textposition"] = "outside"
+        fig_layout["paper_bgcolor"] = "#1f2630"
+        fig_layout["plot_bgcolor"] = "#1f2630"
+        fig_layout["font"]["color"] = "#2cfec1"
+        fig_layout["title"]["font"]["color"] = "#2cfec1"
+        fig_layout["xaxis"]["tickfont"]["color"] = "#2cfec1"
+        fig_layout["yaxis"]["tickfont"]["color"] = "#2cfec1"
+        fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+        fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
         return fig
 
     fig = dff.iplot(
@@ -415,23 +419,25 @@ def display_selected_data(selectedData, chart_dropdown, year):
     # Only show first 500 lines
     fig["data"] = fig["data"][0:500]
 
+    fig_layout = fig["layout"]
+
     # See plot.ly/python/reference
-    fig["layout"]["yaxis"]["title"] = "Age-adjusted death rate per county per year"
-    fig["layout"]["xaxis"]["title"] = ""
-    fig["layout"]["yaxis"]["fixedrange"] = True
-    fig["layout"]["xaxis"]["fixedrange"] = False
+    fig_layout["yaxis"]["title"] = "Age-adjusted death rate per county per year"
+    fig_layout["xaxis"]["title"] = ""
+    fig_layout["yaxis"]["fixedrange"] = True
+    fig_layout["xaxis"]["fixedrange"] = False
     # fig['layout']['margin'] = dict(t=50, r=150, b=20, l=80)
-    fig["layout"]["hovermode"] = "closest"
-    fig["layout"]["title"] = "<b>{0}</b> counties selected".format(len(fips))
-    fig["layout"]["legend"] = dict(orientation="v")
-    fig["layout"]["autosize"] = True
-    fig["layout"]["paper_bgcolor"] = "#1f2630"
-    fig["layout"]["plot_bgcolor"] = "#1f2630"
-    fig["layout"]["font"]["color"] = "#2cfec1"
-    fig["layout"]["xaxis"]["tickfont"]["color"] = "#2cfec1"
-    fig["layout"]["yaxis"]["tickfont"]["color"] = "#2cfec1"
-    fig["layout"]["xaxis"]["gridcolor"] = "#5b5b5b"
-    fig["layout"]["yaxis"]["gridcolor"] = "#5b5b5b"
+    fig_layout["hovermode"] = "closest"
+    fig_layout["title"] = "<b>{0}</b> counties selected".format(len(fips))
+    fig_layout["legend"] = dict(orientation="v")
+    fig_layout["autosize"] = True
+    fig_layout["paper_bgcolor"] = "#1f2630"
+    fig_layout["plot_bgcolor"] = "#1f2630"
+    fig_layout["font"]["color"] = "#2cfec1"
+    fig_layout["xaxis"]["tickfont"]["color"] = "#2cfec1"
+    fig_layout["yaxis"]["tickfont"]["color"] = "#2cfec1"
+    fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+    fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
 
     if len(fips) > 500:
         fig["layout"][
