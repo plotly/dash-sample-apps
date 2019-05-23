@@ -9,7 +9,6 @@ This is a demo of Dash interactive Python framework developed by [Plotly](https/
 ## Screenshots
 ![initial](assets/Screenshot.png)
 
-
 ## Requirements
 We suggest you to create a separate virtual environment running Python 3 for this app, and install all of the required dependencies there. Run in Terminal/Command Prompt:
 
