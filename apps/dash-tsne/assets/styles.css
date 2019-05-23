@@ -146,11 +146,12 @@ body {
   }
 
   .three.columns {
-    padding-left: 20px;
+    margin: auto;
   }
 
   .six.columns {
-    padding-left: 40px;
+    /* padding-left: 40px; */
+    margin: auto;
   }
 
   background {
@@ -167,7 +168,20 @@ body {
   }
 
   #scene > canvas {
-    min-width: 100%;
-    height: 650px;
+    min-width: 100% !important;
+    height: 650px !important;
+  }
+
+  #learn-more-button {
+    text-align: center;
+    padding-right: 0 !important;
+  }
+
+  #learn-more-button > div > div:nth-child(2) {
+    padding-right: 15%;
+  }
+
+  #learn-more-button > div > div:nth-child(3) {
+    padding-right: 15%;
   }
 }

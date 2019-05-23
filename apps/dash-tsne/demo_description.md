@@ -19,11 +19,9 @@ Upon clicking a data point, you will be able to see the 5 closest neighbors of t
 
 Images can be seen as long vectors of hundred or thousands of dimensions, each dimension representing one shade of color, or of gray (if the image is black & white). For example, a 28x28 image (such as MNIST) can be unrolled into one 784-dimensional vector. Kept this way, it would be extremely hard to visualize our dataset, especially if it contains tens of thousands of samples; in fact, the only way would be to go through each and every image, and keep track of how they are all written.
 
-The t-SNE algorithm solves this problem by reducing the number of dimensions of your datasets, so that you can visualize it in low-dimensional space, i.e. in 2D or 3D. For each data point, you will now have a position on your 3D plot, which can be compared with other data points to understand how close or far apart they are from each other. Let's observe the image below, where each dot represent one handwritten digit:
+The t-SNE algorithm solves this problem by reducing the number of dimensions of your datasets, so that you can visualize it in low-dimensional space, i.e. in 2D or 3D. For each data point, you will now have a position on your 3D plot, which can be compared with other data points to understand how close or far apart they are from each other.
 
-![demo_image](https://raw.githubusercontent.com/plotly/dash-tsne/refresh-app/screenshots/demo_image.png)
-
-We can see that most of the Digits 2 (in green) and 3 (in red) are clustered together, with a few outliers probably caused by poor handwriting. When that happens, click on the images to see what kind of problem it might have; if none, maybe try to change the input parameters to find a tighter clustering.
+For the MNIST Digits dataset, we can see that sometimes there are a few digits clustered together, with a few outliers probably caused by poor handwriting. When that happens, click on the images to see what kind of problem it might have; if none, maybe try to change the input parameters to find a tighter clustering.
 
 ### Choosing the right parameters
 

@@ -160,10 +160,10 @@ def create_layout(app):
                 children=[
                     html.Div(
                         id="description-text",
-                        style={"padding-right": "25%"},
+                        style={"padding-right": "15%"},
                         children=dcc.Markdown(demo_intro_md),
                     ),
-                    html.Button("Learn More", id="button"),
+                    html.Div(html.Button("Learn More", id="button")),
                 ],
             ),
             # Body
@@ -401,10 +401,10 @@ def demo_callbacks(app):
             return html.Div(
                 children=[
                     html.Div(
-                        style={"padding-right": "25%"},
+                        style={"padding-right": "15%"},
                         children=dcc.Markdown(demo_intro_md),
                     ),
-                    html.Button("Learn More", id="button"),
+                    html.Div(html.Button("Learn More", id="button")),
                 ]
             )
         else:
@@ -413,11 +413,11 @@ def demo_callbacks(app):
                 return html.Div(
                     children=[
                         html.Div(
-                            style={"padding-right": "25%"},
+                            style={"padding-right": "15%"},
                             children=dcc.Markdown(demo_intro_md),
                         ),
                         html.Div(children=dcc.Markdown(demo_description_md)),
-                        html.Button("Close", id="button"),
+                        html.Div(html.Button("Close", id="button")),
                     ]
                 )
             else:
@@ -425,10 +425,10 @@ def demo_callbacks(app):
                 return html.Div(
                     children=[
                         html.Div(
-                            style={"padding-right": "25%"},
+                            style={"padding-right": "15%"},
                             children=dcc.Markdown(demo_intro_md),
                         ),
-                        html.Button("Learn More", id="button"),
+                        html.Div(html.Button("Learn More", id="button")),
                     ]
                 )
 
