@@ -1,5 +1,5 @@
 .container.scalable {
-    width: 95%;
+    width: 100%;
     max-width: none;
 }
 
@@ -16,10 +16,14 @@ body {
 
 .banner {
     height: 5rem;
-    width: 100%;
+    width: 90%;
     margin-bottom: 1rem;
     border-bottom: 0.5px #737a8d;
-    padding: 1rem;
+    padding: 0rem 4rem 0rem;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .banner h6 {
@@ -28,14 +32,10 @@ body {
     font-weight: bold;
     line-height: 1;
     text-transform: uppercase;
-    float:right;
-    margin-right: 4rem;
 }
 
 .banner Img {
     position: relative;
-    float: left;
-    left: 20px;
     height: 4rem;
     width: auto;
 }
