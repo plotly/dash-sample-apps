@@ -133,9 +133,9 @@ def create_layout(app):
                     html.Div(
                         [
                             html.Img(
+                                src=app.get_asset_url("dash-logo-stripe.png"),
                                 className="logo",
                                 id="plotly-image",
-                                src=app.get_asset_url("dash-logo-stripe.png"),
                             )
                         ],
                         className="one-half column header__img",
