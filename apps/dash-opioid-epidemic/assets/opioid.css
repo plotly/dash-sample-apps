@@ -305,14 +305,14 @@ p {
     font-size: 2rem;
 }
 
-#description{
+#description {
     border-left: #2cfec1 solid 1rem;
     padding-left: 1rem;
     max-width: 100rem;
     margin-bottom: 5rem;
 }
 
-#slider-text, #chart-selector{
+#slider-text, #chart-selector {
     margin-bottom: 2rem !important;
     font-size: 2rem;
 }
@@ -632,17 +632,17 @@ hr {
 
 /* Heatmap
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#heatmap-container{
-    margin-top: 2.5rem;
+#heatmap-container {
+    margin: 2.5rem 0;
     background-color: #252e3f;
 }
 
-#heatmap-title{
+#heatmap-title {
     margin: 0;
     padding: 1rem;
 }
 
-#county-choropleth{
+#county-choropleth {
     margin: 0;
     height: 59.5rem;
     max-height: 59.5rem;
@@ -650,27 +650,53 @@ hr {
 
 /* Left column
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#left-column{
-    margin-right: 1.5%;
+@media only screen and (max-width: 1250px) {
+    /*For mobile and smaller screens*/
+    #left-column {
+        margin-right: 1.5%;
+        width: 100%;
+    }
+}
+
+@media (min-width: 1251px) {
+    /*For desktop*/
+    #left-column {
+        margin-right: 1.5%
+    }
 }
 
 
 /* Graph
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-#graph-container{
-    margin: 0 0 10rem 0;
-    background-color: #252e3f;
-    padding: 5rem;
-    max-height: 80rem;
-    height: 80rem;
+@media only screen and (max-width: 1250px) {
+    /*For mobile and smaller screens*/
+    #graph-container {
+        margin: 0 0 10rem 0;
+        background-color: #252e3f;
+        padding: 5rem;
+        height: 80rem;
+        width: 100%;
+    }
 }
 
-#chart-dropdown{
+@media (min-width: 1251px) {
+    /*For desktop*/
+    #graph-container {
+        margin: 0 0 10rem 0;
+        background-color: #252e3f;
+        padding: 5rem;
+        max-height: 80rem;
+        height: 80rem;
+    }
+}
+
+
+#chart-dropdown {
     margin-bottom: 6.6rem;
 }
 
-#selected-data{
+#selected-data {
     height: 55rem;
 }
 
@@ -686,7 +712,7 @@ hr {
 }
 
 .Select-menu-outer {
-    background-color: #252e3f!important;
+    background-color: #252e3f !important;
     border: 1px solid #7fafdf !important;
 }
 
@@ -698,6 +724,7 @@ hr {
     background-color: rgba(255, 255, 255, 0.01) !important;
     cursor: pointer;
 }
+
 .Select-value-label {
     color: #7fafdf !important;
 }
@@ -709,13 +736,27 @@ hr {
 
 /* Placement
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#app-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+@media only screen and (max-width: 1250px) {
+    /*For mobile and smaller screens*/
+    #app-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+    }
 }
 
-#header{
+@media (min-width: 1251px) {
+    /*For desktop*/
+    #app-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+#header {
     margin-left: 1.5%;
 }
 
