@@ -103,8 +103,8 @@ def generate_aggregation(df, metric):
     }
     grouped = (
         df.groupby(["Hospital Referral Region (HRR) Description", "Provider Name"])
-        .agg(aggregation)
-        .reset_index()
+            .agg(aggregation)
+            .reset_index()
     )
 
     grouped["lat"] = grouped["lon"] = grouped["Provider Street Address"] = grouped[
@@ -124,8 +124,8 @@ def get_lat_lon_add(df, name):
         df.groupby(["Provider Name"]).get_group(name)["lat"].tolist()[0],
         df.groupby(["Provider Name"]).get_group(name)["lon"].tolist()[0],
         df.groupby(["Provider Name"])
-        .get_group(name)["Provider Street Address"]
-        .tolist()[0],
+            .get_group(name)["Provider Street Address"]
+            .tolist()[0],
     ]
 
 
@@ -206,11 +206,11 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
     cost_metric_data["max"] = filtered_data[selected_metric]["mean"].max()
     cost_metric_data["mid"] = (cost_metric_data["min"] + cost_metric_data["max"]) / 2
     cost_metric_data["low_mid"] = (
-        cost_metric_data["min"] + cost_metric_data["mid"]
-    ) / 2
+                                          cost_metric_data["min"] + cost_metric_data["mid"]
+                                  ) / 2
     cost_metric_data["high_mid"] = (
-        cost_metric_data["mid"] + cost_metric_data["max"]
-    ) / 2
+                                           cost_metric_data["mid"] + cost_metric_data["max"]
+                                   ) / 2
 
     for i in range(len(lat)):
         val = average_covered_charges_mean[i]
@@ -246,7 +246,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                 cmin=cost_metric_data["min"],
                 cmax=cost_metric_data["max"],
                 size=10
-                * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
+                     * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
                 colorbar=dict(
                     title=dict(
                         text="Average Cost",
@@ -269,10 +269,10 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
             customdata=[(provider, region)],
             hoverinfo="text",
             text=provider
-            + "<br>"
-            + region
-            + "<br>Average Procedure Cost:"
-            + " ${:,.2f}".format(val),
+                 + "<br>"
+                 + region
+                 + "<br>Average Procedure Cost:"
+                 + " ${:,.2f}".format(val),
         )
         hospitals.append(hospital)
 
@@ -308,7 +308,7 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
 
     for ind, provider in enumerate(providers):
         hovertemplate = (
-            provider + "<br><b>%{y}</b>" + "<br>Average Procedure Cost: %{x:$.2f}"
+                provider + "<br><b>%{y}</b>" + "<br>Average Procedure Cost: %{x:$.2f}"
         )
         dff = procedure_data[procedure_data["Provider Name"] == provider]
 
@@ -465,11 +465,11 @@ app.layout = html.Div(
 
 
 @app.callback(
-    output=[
+    [
         Output("region-select-dropdown-outer", "children"),
         Output("map-title", "children"),
     ],
-    inputs=[Input("state-select", "value")],
+    [Input("state-select", "value")],
 )
 def update_region_dropdown(state_select):
     state_raw_data = data_dict[state_select]
@@ -487,9 +487,9 @@ def update_region_dropdown(state_select):
 
 
 @app.callback(
-    output=Output("region-select", "value"),
-    inputs=[Input("region-select-all", "values")],
-    state=[State("region-select", "options")],
+    Output("region-select", "value"),
+    [Input("region-select-all", "values")],
+    [State("region-select", "options")],
 )
 def update_region_select(select_all, options):
     if select_all == ["All"]:
@@ -524,8 +524,8 @@ def update_checklist(selected, select_options, checked):
 
 
 @app.callback(
-    output=Output("cost-stats-container", "children"),
-    inputs=[
+    Output("cost-stats-container", "children"),
+    [
         Input("geo-map", "selectedData"),
         Input("procedure-plot", "selectedData"),
         Input("metric-select", "value"),
@@ -603,8 +603,8 @@ def update_hospital_datatable(geo_select, procedure_select, cost_select, state_s
 
 
 @app.callback(
-    output=Output("procedure-stats-container", "children"),
-    inputs=[Input("procedure-plot", "selectedData"), Input("geo-map", "selectedData")],
+    Output("procedure-stats-container", "children"),
+    [Input("procedure-plot", "selectedData"), Input("geo-map", "selectedData")],
 )
 def update_procedure_stats(procedure_select, geo_select):
     procedure_dict = {
@@ -647,8 +647,8 @@ def update_procedure_stats(procedure_select, geo_select):
 
 
 @app.callback(
-    output=Output("geo-map", "figure"),
-    inputs=[
+    Output("geo-map", "figure"),
+    [
         Input("metric-select", "value"),
         Input("region-select", "value"),
         Input("procedure-plot", "selectedData"),
@@ -669,8 +669,8 @@ def update_geo_map(cost_select, region_select, procedure_select, state_select):
 
 
 @app.callback(
-    output=Output("procedure-plot", "figure"),
-    inputs=[
+    Output("procedure-plot", "figure"),
+    [
         Input("metric-select", "value"),
         Input("region-select", "value"),
         Input("geo-map", "selectedData"),
