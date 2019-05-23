@@ -389,10 +389,12 @@ app.layout = html.Div(
                                 build_banner(),
                                 html.P(
                                     id="instructions",
-                                    children="Select data points from the well map, ternary map or bar graph to visualize cross-filtering to"
-                                    " other plots. Selection could be done by clicking on individual data points or using the lasso tool "
-                                    "to capture multiple data points or bars. With the box tool from modebar, multiple regions can be selected by holding SHIFT "
-                                    "button while click-and-drag.",
+                                    children="Select data points from the well map, ternary map or bar graph to "
+                                             "visualize cross-filtering to other plots. Selection could be done by "
+                                             "clicking on individual data points or using the lasso tool to capture "
+                                             "multiple data points or bars. With the box tool from modebar, multiple "
+                                             "regions can be selected by holding the SHIFT key while clicking and "
+                                             "dragging.",
                                 ),
                                 build_graph_title("Select Operator"),
                                 dcc.Dropdown(
@@ -507,8 +509,8 @@ app.layout = html.Div(
 
 # Update bar plot
 @app.callback(
-    output=Output("form-by-bar", "figure"),
-    inputs=[
+    Output("form-by-bar", "figure"),
+    [
         Input("well-map", "selectedData"),
         Input("ternary-map", "selectedData"),
         Input("operator-select", "value"),
@@ -559,8 +561,8 @@ def update_bar(map_selected_data, tern_selected_data, op_select):
 
 # Update ternary map
 @app.callback(
-    output=Output("ternary-map", "figure"),
-    inputs=[
+    Output("ternary-map", "figure"),
+    [
         Input("well-map", "selectedData"),
         Input("form-by-bar", "selectedData"),
         Input("form-by-bar", "clickData"),
@@ -650,8 +652,8 @@ def update_ternary_map(
 
 # Update well map
 @app.callback(
-    output=Output("well-map", "figure"),
-    inputs=[
+    Output("well-map", "figure"),
+    [
         Input("ternary-map", "selectedData"),
         Input("form-by-bar", "selectedData"),
         Input("form-by-bar", "clickData"),
@@ -711,8 +713,8 @@ def update_well_map(
 
 # Update production plot
 @app.callback(
-    output=Output("production-fig", "figure"),
-    inputs=[
+    Output("production-fig", "figure"),
+    [
         Input("well-map", "selectedData"),
         Input("ternary-map", "selectedData"),
         Input("form-by-bar", "selectedData"),
