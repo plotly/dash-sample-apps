@@ -139,7 +139,7 @@ body {
 
 /* ---Different Screen Sizes--- */
 
-@media only screen and (max-width: 375px) {
+@media only screen and (max-width: 550px) {
   .columns {
     float: none;
     width: 70%;
