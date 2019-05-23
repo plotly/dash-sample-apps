@@ -189,10 +189,28 @@ generateGeoMap <- function(geo_data, selected_metric,
     cuts, labels = FALSE, include.lowest = TRUE
     )
   ]
+  selected_indices <- filtered_data[
+    filtered_data[["Provider Name"]] %in% procedure_select$hospital, 
+    which = TRUE
+  ]
+  #print(filtered_data[selected_indices])
+  #print(filtered_data)
+  #print(selected_indices)
+
   plot_mapbox(
-    data = filtered_data, x = ~lon, y = ~lat, 
+    data  = filtered_data, 
+    x = ~lon, y = ~lat, 
     type = "scatter",
     mode = "markers",
+    # TODO: Wrong hospitals being highlighted :(
+    selectedpoints = selected_indices,
+    selected = list(marker = list(color = "#FFFF00")),
+    #customdata = list(
+      #list(
+        #filtered_data[,"Provider Name",with=FALSE]
+        ##filtered_data[selected_indices, "Hospital Referral Region (HRR) Description"]
+      #)
+    #),
     marker = list(
       color = ~f,
       showscale = TRUE,
@@ -223,9 +241,6 @@ generateGeoMap <- function(geo_data, selected_metric,
       )
     ),
     opacity = 0.8,
-    #selectedpoints = selected_index,
-    #selected = list(marker = list(color = "#ffff00")),
-    #customdata = list(list(~"Provider Name", ~"Hospital Referral Region (HRR) Description")),
     hoverinfo = "text",
     text = paste(
       filtered_data[["Provider Name"]],
@@ -235,7 +250,7 @@ generateGeoMap <- function(geo_data, selected_metric,
     )
   ) %>%
     layout(
-      margin = list(l = 10, r = 10, b = 10, t = 10, pad = 5),
+      margin  = list(l = 10, r = 10, b = 10, t = 10, pad = 5),
       plot_bgcolor = "#171b26",
       paper_bgcolor = "#171b26",
       clickmode = "event+select",
@@ -251,6 +266,75 @@ generateGeoMap <- function(geo_data, selected_metric,
       )
     )
 }
+
+generateProcedurePlot <- function(raw_data, cost_select, 
+                                  region_select, provider_select){
+  procedure_data <- raw_data[
+    raw_data[["Hospital Referral Region (HRR) Description"]] %in% region_select
+    ]
+  providers <- unique(procedure_data[["Provider Name"]])
+
+  procedure_data[procedure_data[["Provider Name"]] %in% provider_select, 
+                 l := .N, 
+                 by = "Provider Name"
+                 ]
+  hovertemplate <- paste0(
+    procedure_data[["Provider Name"]], "<br><b>%{y}</b>", "<br>Average Procedure Cost: %{x:$.2f}"
+  )
+  selected_indices <- procedure_data[
+    procedure_data[["Provider Name"]] %in% provider_select, 
+    which = TRUE
+  ]
+
+  plot_ly(
+    data = procedure_data, 
+    y = procedure_data[["DRG Definition"]], 
+    x = procedure_data[[cost_select]], 
+    type = "scatter", mode = "markers",
+    name = "",
+    customdata = procedure_data[["Provider Name"]],
+    hovertemplate = hovertemplate,
+    selectedpoints = selected_indices,
+    selected = list(marker = list(color = "#FFFF00", size = 13)),
+    unselected = list(marker = list(opacity = 0.2)),
+    marker = list(
+      line = list(width = 1, color = "#000000"),
+      color = "#21c7ef",
+      opacity = 0.7,
+      symbol = "square",
+      size = 12
+    )
+  ) %>%
+    layout(
+      showlegend = FALSE,
+      hovermode = "closest",
+      dragmode = "select",
+      clickmode = "event+select",
+      xaxis = list(
+        zeroline = FALSE,
+        automargin = TRUE,
+        showticklabels = TRUE,
+        title = list(text = "Procedure Cost", font = list(color = "#737a8d")),
+        linecolor = "#737a8d",
+        tickfont = list(color = "#737a8d")
+      ),
+      yaxis = list(
+        automargin = TRUE,
+        showticklabels = TRUE,
+        tickfont = list(color = "#737a8d"),
+        gridcolor = "#171b26"
+      ),
+      plot_bgcolor = "#171b26",
+      paper_bgcolor = "#171b26"
+    )
+}
+
+#raw_data <- dataList[[2]]
+#region_select <- list("AL - Birmingham", "AL - Dothan")
+#provider_select <- list("UNIVERSITY OF ALABAMA HOSPITAL", "EAST ALABAMA MEDICAL CENTER")
+#cost_select <- cost_metric[[1]]
+
+#generateProcedurePlot(raw_data, cost_select, region_select, provider_select)
 
 ##############################################
 app <- Dash$new(name = "DashR Medical Provider Charges")
@@ -343,30 +427,147 @@ app$layout(
       htmlDiv(
         id = "lower-container",
         children = dccGraph(
-          id = "procedure plot",
-          figure = plot_ly()
+          id = "procedure-plot",
+          #figure = plot_ly()
+          figure = generateProcedurePlot(
+            dataList[[2]], cost_metric[[1]], init_region, list()
+          )
         )
       )
     )
   )
 )
 
+# TODO: implement the following 2 callbacks as a multi-output callback
+app$callback(
+  output("region-select-dropdown-outer", "children"),
+  list(input("state-select", "value")),
+  function(state_select){
+    state_raw_data <- dataList[[state_select]]
+    regions <- unique(
+      state_raw_data[["Hospital Referral Region (HRR) Description"]]
+    )
+    dccDropdown(
+      id = "region-select",
+      options = lapply(regions, function(x) list(label = x, value = x)),
+      value = regions[1:4],
+      multi = TRUE,
+      searchable = TRUE
+    )
+  }
+)
+
+app$callback(
+  output("map-title", "children"),
+  list(input("state-select", "value")),
+  function(state_select){
+    state_raw_data <- dataList[[state_select]]
+    regions <- unique(
+      state_raw_data[["Hospital Referral Region (HRR) Description"]]
+    )
+    sprintf(
+      "Medicare Provider Charges in the State of %s", 
+      state_map[state_select]
+    )
+  }
+)
+
+#app$callback(
+  #output("region-select", "value"),
+  #list(
+    #input("region-select-all", "values"),
+    #state("region-select", "options")
+  #),
+  #function(select_all, options){
+    #if (identical(select_all, list("all"))){
+      #return(lapply(options, function(x){x[["value"]]}))
+    #}
+    #return()
+  #}
+#)
+
+#app$callback(
+  #output("checklist-container", "children"),
+  #list(
+    #input("region-select", "value"),
+    #state("region-select", "options"),
+    #state("region-select-all", "values")
+  #),
+  #function(selected, select_options, checked){
+    #if ((length(selected) < length(select_options)) & (length(checked) == 0)){
+      #return()
+    #} else if ((length(selected) < length(select_options)) & (length(checked) == 1)){
+      #return(
+        #dccChecklist(
+          #id = "region-select-all",
+          #options = list(list(label = "Select All Regions", value = "All")),
+          #values = list()
+        #)
+      #) 
+    #} else if ((length(selected) == length(select_options)) & length(checked) == 1){
+      #return()
+    #}
+    #return(
+      #dccChecklist(
+        #id = "region-select-all",
+        #options = list(list(label = "Select All Regions", value = "All")),
+        #values = list("All")
+      #)
+    #)
+  #}
+#)
+
+
 app$callback(
   output("geo-map", "figure"),
   list(
     input("metric-select", "value"),
     input("region-select", "value"),
-    # input("procedure-plot", "selectedData"),
+    input("procedure-plot", "selectedData"),
     input("state-select", "value")
   ),
-  function(cost_select, region_select, state_select){
-    state_agg_data <- generateAggregation(dataList[[state_select]], cost_metric)
-    generateGeoMap(state_agg_data, cost_select, region_select)
+  function(cost_select, region_select, procedure_select, state_select){
+    state_agg_data <- generateAggregation(
+      dataList[[state_select]], cost_metric
+    )
+    provider_data <- list(procedure = list(), hospital = list())
+    if (!is.null(unlist(procedure_select))){
+      i <- 1
+      for (point in procedure_select[["points"]]){
+        provider_data[["procedure"]][[i]] <- point[["y"]] 
+        provider_data[["hospital"]][[i]] <- point[["customdata"]]
+        i <- i + 1
+      }
+      #provider_data[["procedure"]] <- unlist(provider_data[["procedure"]])
+      #provider_data[["hospital"]] <- unlist(provider_data[["hospital"]])
+    }
+    print(provider_data)
+    generateGeoMap(state_agg_data, cost_select, region_select, provider_data)
   }
 )
 
-#state_agg_data <- generateAggregation(dataList[["AL"]], cost_metric)
-#generateGeoMap(state_agg_data, "Average Covered Charges", list("AL - Birmingham", "AL - Dothan", "AL - Montgomery", "AL - Huntsville"))
-
+#app$callback(
+  #output("procedure-plot", "figure"),
+  #list(
+    #input("metric-select", "value"),
+    #input("region-select", "value"),
+    #input("geo-map", "selectedData"),
+    #input("state-select", "value")
+  #),
+  #function(cost_select, region_select, geo_select, state_select){
+    #state_raw_data <- dataList[[state_select]]
+    #provider_select <- list()
+    #if (!is.null(unlist(geo_select))){
+      #i <- 1
+      #for (point in geo_select[["points"]]){
+        #provider_select[[i]] <- point[["customdata"]][[1]][1]
+        #i <- i + 1
+      #}
+    #}
+    #generateProcedurePlot(
+      #state_raw_data, cost_select, region_select, provider_select
+    #)
+  #}
+#)
 
 app$run_server()
