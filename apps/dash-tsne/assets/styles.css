@@ -4,15 +4,15 @@
   padding: 15px 35px;
 }
 
-.header__img {
+.header_img {
   float: left;
 }
 
-.header__title__container {
+.header_title_container {
   float: right;
 }
 
-.header__title {
+.header_title {
   font-family: "Times New Roman";
   color: #6c7182;
   text-align: right;
@@ -139,7 +139,7 @@ body {
 
 /* ---Different Screen Sizes--- */
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 768px) {
   .columns {
     float: none;
     width: 90%;
@@ -147,24 +147,31 @@ body {
 
   .three.columns {
     margin: auto;
+    width: 70%;
   }
 
   .six.columns {
-    /* padding-left: 40px; */
     margin: auto;
+  }
+
+  .nine.columns {
+    float: left;
+    margin: 0;
+    width: 100%;
   }
 
   background {
     width: 100%;
   }
 
-  #plotly-image {
-    height: 30px !important;
-  }
   #app-title {
-    float: none !important;
     text-align: center !important;
-    margin: 10px 15px;
+  }
+
+  .header_img {
+    height: 40px;
+    float: left;
+    margin: 0 !important;
   }
 
   #scene > canvas {
@@ -183,5 +190,11 @@ body {
 
   #learn-more-button > div > div:nth-child(3) {
     padding-right: 15%;
+  }
+}
+@media only screen and (max-width: 550px) {
+  #plotly-image {
+    height: 35px !important;
+    width: auto;
   }
 }

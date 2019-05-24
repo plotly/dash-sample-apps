@@ -18,8 +18,9 @@ import pandas as pd
 import plotly.graph_objs as go
 import scipy.spatial.distance as spatial_distance
 
-IMAGE_DATASETS = ("mnist_3000", "cifar_gray_3000", "fashion_3000")
-WORD_EMBEDDINGS = ("wikipedia_3000", "twitter_3000", "crawler_3000")
+# Import datasets here for running the Local version
+IMAGE_DATASETS = "mnist_3000"
+WORD_EMBEDDINGS = ("wikipedia_3000", "twitter_3000")
 
 
 # get relative data folder
@@ -129,6 +130,7 @@ def create_layout(app):
             # Header
             html.Div(
                 className="row header",
+                id="app-header",
                 children=[
                     html.Div(
                         [
@@ -138,17 +140,17 @@ def create_layout(app):
                                 id="plotly-image",
                             )
                         ],
-                        className="one-half column header__img",
+                        className="three columns header_img",
                     ),
                     html.Div(
                         [
                             html.H3(
                                 "t-SNE Explorer",
-                                className="header__title",
+                                className="header_title",
                                 id="app-title",
                             )
                         ],
-                        className="one-half column header__title__container",
+                        className="nine columns header_title_container",
                     ),
                 ],
             ),
@@ -192,7 +194,7 @@ def create_layout(app):
                                                 "label": "Wikipedia (GloVe)",
                                                 "value": "wikipedia_3000",
                                             },
-                                            # for the local version
+                                            # For running the local version (change names to your own dataset(s))
                                             # {'label': 'cifar_gray_3000},
                                             # {'label': 'fashion_3000'},
                                             # {'label': 'Web Crawler (GloVe)'},
@@ -381,12 +383,10 @@ def demo_callbacks(app):
             "twitter_3000": pd.read_csv(
                 DATA_PATH.joinpath("twitter_3000.csv"), encoding="ISO-8859-1"
             ),
-            # These are for the local app to generate uploaded datasets
-            "crawler_3000": pd.read_csv(DATA_PATH.joinpath("crawler_3000.csv")),
-            "fashion_3000": pd.read_csv(DATA_PATH.joinpath("fashion_3000_input.csv")),
-            "cifar_gray_3000": pd.read_csv(
-                DATA_PATH.joinpath("cifar_gray_3000_input.csv")
-            ),
+            # These are for the local app to generate uploaded datasets (change the filenames to match the uploaded datasets)
+            # "crawler_3000": pd.read_csv(DATA_PATH.joinpath("crawler_3000.csv")),
+            # "fashion_3000": pd.read_csv(DATA_PATH.joinpath("fashion_3000_input.csv")),
+            # "cifar_gray_3000": pd.read_csv(DATA_PATH.joinpath("cifar_gray_3000_input.csv")),
         }
 
     # Callback function for the learn-more button
@@ -558,8 +558,6 @@ def demo_callbacks(app):
             # Load the same dataset as the one displayed
 
             try:
-                # dataset_url = f"/demo_embeddings/{dataset}/iterations_{iterations}/perplexity_{perplexity}/pca_{pca_dim}/learning_rate_{learning_rate}/data.csv"
-
                 data_url = [
                     "demo_embeddings",
                     str(dataset),
