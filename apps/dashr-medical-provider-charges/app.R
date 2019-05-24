@@ -1,6 +1,11 @@
+#library(devtools)
+#install_github("plotly/dashR", ref = "0.0.7-debug")
+#install_github("plotly/dashR")
+
 library(dashR)
 library(dashCoreComponents)
 library(dashHtmlComponents)
+library(dashTable)
 library(plotly)
 library(data.table)
 
@@ -148,7 +153,7 @@ buildUpperLeftPanel <- function(){
               options = list(
                 list(label = "Select All Regions", value = "All")
               ),
-              values = list("All")
+              values = list()
             )
           ),
           htmlDiv(
@@ -193,23 +198,20 @@ generateGeoMap <- function(geo_data, selected_metric,
     filtered_data[["Provider Name"]] %in% procedure_select$hospital, 
     which = TRUE
   ]
+
+  provider <- filtered_data[["Provider Name"]]
+  region <- filtered_data[["Hospital Referral Region (HRR) Description"]]
+
   plot_mapbox(
     data  = filtered_data, 
     x = ~lon, y = ~lat, 
-    type = "scatter",
-    mode = "markers",
+    type = "scatter", mode = "markers",
     # Two strange issues here:
     # Selects right hospitals only if you subtract 1 from indices
     # Also, only selects single hospital if the length(selected_indices) > 1
     selectedpoints = c(-1, (selected_indices - 1)),
     selected = list(marker = list(color = "#FFFF00")),
     customdata = filtered_data[["Provider Name"]],
-    #customdata = list(
-      #list(
-        #filtered_data[,"Provider Name",with=FALSE]
-        ##filtered_data[selected_indices, "Hospital Referral Region (HRR) Description"]
-      #)
-    #),
     marker = list(
       color = ~f,
       showscale = TRUE,
@@ -219,8 +221,8 @@ generateGeoMap <- function(geo_data, selected_metric,
         list(0.66, "#ff6969"),
         list(1, "#ff1717")
       ),
-      cmin = dMin,
-      cmax = dMax,
+      #cmin = dMin,
+      #cmax = dMax,
       # Different scaling method used here (min max scaling)
       size = 10 * 
         (
@@ -228,15 +230,14 @@ generateGeoMap <- function(geo_data, selected_metric,
         ),
       colorbar = list(
         title = list(
-          text = "Average Cost",
-          font = list(color = "#737a8d", family = "Open Sans")
+          text = "Average Cost<br><br>",
+          font = list(color = "#737a8d", family = "Arial", size = 17)
         ),
-        titleside = "top",
         tickmode = "array",
-        tickvals = c(dMin, dMax),
-        ticktext = c(round(dMin, 2), round(dMax,2)),
+        tickvals = c(~min(f), ~max(f)),
+        ticktext = sapply(c(dMin[[1]], dMax[[1]]), round, 2),
         ticks = "outside",
-        tickfont = list(family = "Open Sans", color = "#737a8d")
+        tickfont = list(family = "Arial", color = "#737a8d")
       )
     ),
     opacity = 0.8,
@@ -329,6 +330,53 @@ generateProcedurePlot <- function(raw_data, cost_select,
     )
 }
 
+generateDataTable <- function(DT, type = c("procedure", "cost")){
+  dashDataTable(
+    id = ifelse(
+      type == "cost",
+      "cost-stats-table",
+      "procedure-stats-table"
+    ),
+    columns = lapply(
+      colnames(DT),
+      function(x){
+        list(name = x, id = x)
+      }
+    ),
+    data = setNames(
+      lapply(
+        split(DT, seq(nrow(DT))),
+        function(x){
+          as.list(x)
+        }
+      ),
+      NULL
+    ),
+    filtering = TRUE,
+    sorting = ifelse(
+      type == "cost",
+      FALSE,
+      TRUE
+    ),
+    sorting_type = "multi",
+    pagination_mode = "fe",
+    pagination_settings = list(
+      displayed_pages = 1, current_page = 0, page_size = 5
+    ),
+    navigation = "page",
+    style_cell = list(
+      backgroundColor = "#171b26", 
+      color = "#7b7d8d",
+      textOverflow = "ellipsis"
+    ),
+    style_filter = list(
+      backgroundColor = "#171b26", 
+      color = "#7b7d8d"
+    )
+  )
+}
+
+
 ##############################################
 app <- Dash$new(name = "DashR Medical Provider Charges")
 
@@ -399,7 +447,10 @@ app$layout(
                 children = list(
                   htmlP("Hospital Charges Summary"),
                   dccLoading(
-                    children = htmlDiv(id = "cost-stats-container")
+                    children = htmlDiv(
+                      id = "cost-stats-container",
+                      children = generateDataTable(data.table(), "cost")
+                    )
                   )
                 )
               ),
@@ -409,7 +460,10 @@ app$layout(
                 children = list(
                   htmlP("Procedure Charges Summary"),
                   dccLoading(
-                    children = htmlDiv(id = "procedure-stats-container")
+                    children = htmlDiv(
+                      id = "procedure-stats-container",
+                      children = generateDataTable(data.table(), "procedure")
+                    )
                   )
                 )
               )
@@ -465,50 +519,123 @@ app$callback(
   }
 )
 
-#app$callback(
-  #output("region-select", "value"),
-  #list(
-    #input("region-select-all", "values"),
-    #state("region-select", "options")
-  #),
-  #function(select_all, options){
-    #if (identical(select_all, list("all"))){
-      #return(lapply(options, function(x){x[["value"]]}))
-    #}
-    #return()
-  #}
-#)
 
-#app$callback(
-  #output("checklist-container", "children"),
-  #list(
-    #input("region-select", "value"),
-    #state("region-select", "options"),
-    #state("region-select-all", "values")
-  #),
-  #function(selected, select_options, checked){
-    #if ((length(selected) < length(select_options)) & (length(checked) == 0)){
-      #return()
-    #} else if ((length(selected) < length(select_options)) & (length(checked) == 1)){
-      #return(
-        #dccChecklist(
-          #id = "region-select-all",
-          #options = list(list(label = "Select All Regions", value = "All")),
-          #values = list()
-        #)
-      #) 
-    #} else if ((length(selected) == length(select_options)) & length(checked) == 1){
-      #return()
-    #}
-    #return(
-      #dccChecklist(
-        #id = "region-select-all",
-        #options = list(list(label = "Select All Regions", value = "All")),
-        #values = list("All")
-      #)
-    #)
-  #}
-#)
+app$callback(
+  output("region-select", "value"),
+  list(
+    input("region-select-all", "values"),
+    state("region-select", "value"),
+    state("region-select", "options")
+  ),
+  function(select_all, selected_options, options){
+    if (length(select_all) > 0){
+      return(lapply(options, function(x){x[["value"]]}))
+    }
+    return(selected_options)
+  }
+)
+
+app$callback(
+  output("cost-stats-container", "children"),
+  list(
+    input("geo-map", "selectedData"),
+    input("procedure-plot", "selectedData"),
+    input("metric-select", "value"),
+    input("state-select", "value")
+  ),
+  function(geo_select, procedure_select, cost_select, state_select){
+    state_agg <- generateAggregation(
+      dataList[[state_select]], cost_metric
+    )
+    geoDataList <- list(
+      "Provider Name" = list(),
+      "City" = list(),
+      "Street Address" = list(),
+      "Maximum Cost ($)" = list(),
+      "Minimum Cost ($)" = list()
+    )
+    DT <- as.data.table(geoDataList)
+
+    ## Need proper callback_context to work here:
+    ## For now, just use data from selected hospitals from geo-map
+
+    ##ctx <- app$callback_context()
+    ##if (!is.null(ctx$triggered[["value"]][[1]])){
+      ##prop_id <- ctx$triggered[[1]][["prop_id"]]
+      ##prop_id <- unlist(strsplit(prop_id, split = "[.]"))[1]
+    ##}
+    ##print(prop_id)
+
+    costmin <- paste0(cost_select, ".min")
+    costmax <- paste0(cost_select, ".max")
+    if (!is.null(unlist(geo_select))){
+      for (i in seq_along(geo_select[["points"]])){
+        point <- geo_select[["points"]][i]
+        dfrow <- state_agg[
+          state_agg[["Provider Name"]] == point[[1]]["customdata"]
+          ]
+        hrr <- dfrow[["Hospital Referral Region (HRR) Description"]]
+        city <- strsplit(
+          as.character(hrr), " - ", fixed = TRUE
+        )[[1]][2]
+        adrs <- dfrow[["Provider Street Address"]]
+        geoDataList[["Provider Name"]][[i]] <- dfrow[["Provider Name"]]
+        geoDataList[["City"]][[i]] <- city 
+        geoDataList[["Street Address"]][[i]] <- adrs 
+        geoDataList[["Maximum Cost ($)"]][[i]] <- dfrow[[costmax]]
+        geoDataList[["Minimum Cost ($)"]][[i]] <- dfrow[[costmin]]
+      }
+      DT <- as.data.table(geoDataList)
+    }
+    generateDataTable(DT, "cost")
+  }
+)
+
+app$callback(
+  output("procedure-stats-container", "children"),
+  list(
+    input("procedure-plot", "selectedData"),
+    input("geo-map", "selectedData")
+  ),
+  function(procedure_select, geo_select){
+    procedureList <- list(
+      "DRG" = list(),
+      "Procedure" = list(),
+      "Provider Name" = list(),
+      "Cost Summary" = list()
+    )
+    DT <- as.data.table(procedureList)
+
+
+    ## Need proper callback_context to work here:
+    ## For now, just use data from selected hospitals from geo-map
+
+    ##ctx <- app$callback_context()
+    ##if (!is.null(ctx$triggered[["value"]][[1]])){
+      ##prop_id <- ctx$triggered[[1]][["prop_id"]]
+      ##prop_id <- unlist(strsplit(prop_id, split = "[.]"))[1]
+    ##}
+    ##print(prop_id)
+
+    if(!is.null(unlist(procedure_select))){
+      for (i in seq_along(procedure_select[["points"]])){
+        point <- procedure_select[["points"]][[i]]
+        fullProcedureName <- point[["y"]]
+        splitProcedureName <- strsplit(
+          as.character(fullProcedureName), " - ", fixed = TRUE
+        )[[1]]
+        drg <- splitProcedureName[1]
+        proc <- splitProcedureName[2]
+        procedureList[["DRG"]][[i]] <- drg 
+        procedureList[["Procedure"]][[i]] <- proc
+        procedureList[["Provider Name"]][[i]] <- point[["customdata"]]
+        procedureList[["Cost Summary"]][[i]] <- point[["x"]]
+      }
+      DT <- as.data.table(procedureList)
+    }
+    generateDataTable(DT, "procedure")
+  }
+)
 
 
 app$callback(
