@@ -1,1 +1,1 @@
-web: R -f /app/run.R
+web: R -f /apps/dashr-test/run.R
