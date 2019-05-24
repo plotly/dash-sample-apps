@@ -1,1 +1,1 @@
-web: fakechroot fakeroot chroot /app/.root /bin/sh -c 'cd /app && /usr/bin/R -f /app/app.R --gui-none --no-save'
+web: R -f /app/run.R
