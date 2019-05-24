@@ -131,6 +131,7 @@ def create_layout(app):
             html.Div(
                 className="row header",
                 id="app-header",
+                style={"background-color": "#f9f9f9"},
                 children=[
                     html.Div(
                         [
