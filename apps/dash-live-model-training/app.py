@@ -16,6 +16,7 @@ DATA_PATH = PATH.joinpath("data").resolve()
 LOGFILE = "examples/run_log.csv"
 
 app = dash.Dash(__name__)
+# app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}])
 server = app.server
 
 demo_mode = True
@@ -96,15 +97,30 @@ app.layout = html.Div(
         # Banner display
         html.Div(
             [
-                html.H2("Live Model Training Viewer", id="title"),
-                html.Button("Learn More", id="learn-more-button"),
-                html.Img(src=app.get_asset_url("dash-by-plotly-logo.png")),
+                html.H2(
+                    "Live Model Training Viewer",
+                    id="title",
+                    className="eight columns",
+                    style={"margin-left": "3%"},
+                ),
+                # html.Div(
+                #     id="button",
+                #     style={"padding-bottom": "3px"},
+                #     children=[html.Button("Learn More", id="learn-more-button")],
+                # ),
+                html.Button(
+                    "Learn More", id="learn-more-button", className="two columns"
+                ),
+                html.Img(
+                    src=app.get_asset_url("dash-logo.png"), className="two columns"
+                ),
             ],
             className="banner",
         ),
         # Body
         html.Div(
             className="container",
+            style={"padding": "35px 25px"},
             children=[
                 # Extract the demo components if we are in demo mode
                 *demo_components(demo_mode),
@@ -112,11 +128,6 @@ app.layout = html.Div(
                     className="row",
                     id="div-interval-control",
                     children=[
-                        html.Div(
-                            id="div-step-display",
-                            className="two columns",
-                            style={"float": "right"},
-                        ),
                         dcc.Dropdown(
                             id="dropdown-interval-control",
                             options=[
@@ -126,29 +137,26 @@ app.layout = html.Div(
                                 {"label": "Fast Updates", "value": "fast"},
                             ],
                             value="regular",
-                            className="ten columns",
+                            className="eight columns",
                             clearable=False,
                             searchable=False,
                         ),
+                        html.Div(id="div-step-display", className="four columns"),
                     ],
                 ),
                 dcc.Interval(id="interval-log-update", n_intervals=0),
                 # Hidden Div Storing JSON-serialized dataframe of run log
                 html.Div(id="run-log-storage", style={"display": "none"}),
                 # The html divs storing the graphs and display parameters
-                div_graph("accuracy"),
+                # div_graph("accuracy"),
             ],
         ),
-        html.Div(
-            className="container",
-            children=[
-                div_graph("cross-entropy"),
-                # Explanation for the demo version of the app
-            ],
-        ),
+        html.Div(className="container", children=[div_graph("accuracy")]),
+        html.Div(className="container", children=[div_graph("cross-entropy")]),
         html.Div(
             id="demo-explanation",
             children=[
+                # Explanation for the demo version of the app
                 # demo_explanation(demo_mode),
             ],
         ),
@@ -208,12 +216,14 @@ def update_graph(
         if "val" in checklist_smoothing_options:
             y_val = smooth(y_val, weight=slider_smoothing)
 
+        # line charts
         trace_train = go.Scatter(
             x=step,
             y=y_train,
             mode="lines",
             name="Training",
             line=dict(color="rgb(54, 218, 170)"),
+            showlegend=False,
         )
 
         trace_val = go.Scatter(
@@ -222,6 +232,7 @@ def update_graph(
             mode="lines",
             name="Validation",
             line=dict(color="rgb(246, 236, 145)"),
+            showlegend=False,
         )
 
         if display_mode == "separate_vertical":
@@ -278,13 +289,7 @@ def learn_more(n_clicks):
 
         else:
             n_clicks += 1
-            return (
-                html.Div(
-                    children=[
-                        # demo_explanation(demo_mode),
-                    ]
-                ),
-            )
+            return (html.Div(),)
 
 
 @app.callback(
@@ -341,7 +346,8 @@ def update_div_step_display(run_log_json):
     if run_log_json:
         run_log_df = pd.read_json(run_log_json, orient="split")
         return html.H6(
-            f"Step: {run_log_df['step'].iloc[-1]}", style={"margin-top": "3px"}
+            f"Step: {run_log_df['step'].iloc[-1]}",
+            style={"margin-top": "3px", "float": "right"},
         )
 
 

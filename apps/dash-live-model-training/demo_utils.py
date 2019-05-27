@@ -35,7 +35,7 @@ def demo_components(demo_mode):
                 style={"margin-bottom": "8px"},
                 children=[
                     html.Div(
-                        className="ten columns",
+                        className="eight columns",
                         children=[
                             html.Div(
                                 className="six columns",
@@ -67,7 +67,7 @@ def demo_components(demo_mode):
                             ),
                         ],
                     ),
-                    html.Div(id="div-total-step-count", className="two columns"),
+                    html.Div(id="div-total-step-count", className="four columns"),
                 ],
             ),
         ]
@@ -162,5 +162,5 @@ def demo_callbacks(app, demo_mode):
                 dataset = data_dict["softmax"][dataset_name]
                 return html.H6(
                     f"Total Steps: {dataset['step'].iloc[-1]}",
-                    style={"margin-top": "3px"},
+                    style={"margin-top": "3px", "float": "right"},
                 )

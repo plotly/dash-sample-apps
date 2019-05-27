@@ -1,3 +1,5 @@
+/* custom styling for the new refreshed app */
+
 .markdown img {
   width: 100%;
 }
@@ -8,12 +10,18 @@
 
 #learn-more-button {
   color: #e8e8e8;
-  margin-left: 50%;
   font-family: "Open Sans Semi Bold", sans-serif;
   font-weight: 200;
   text-transform: uppercase;
   letter-spacing: 1.16px;
   font-size: 12px;
+  padding: 0px 15px;
+  margin-top: 20px;
+  width: auto;
+}
+
+.dropdown-box {
+  padding: 15px 15px;
 }
 
 .rc-slider-track {
@@ -36,6 +44,15 @@
 #_dash-app-content > div {
   background-color: #f8f9fa;
 }
+
+/* #_dash-app-content > div > div:nth-child(2) > div:nth-child(2) {
+  width: 80.5%;
+} */
+
+/* 
+#div-interval-control {
+  padding: 10px 10px;
+} */
 
 /*.rc-slider-handle:hover {
   border-color: white;

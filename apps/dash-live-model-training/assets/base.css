@@ -28,12 +28,14 @@ Development: https://rawgit.com/xhlulu/0acba79000a3fd1e6f552ed82edb8a64/raw/dash
   height: 75px;
   background-color: #191e27;
   /* border-radius: 5px 5px 2px 2px; */
-  padding-top: 0px;
+  /* padding-top: 0px;
   padding-left: 0px;
-  padding-right: 0px;
+  padding-right: 0px; */
+  padding: 0px;
   /* width: 90%; */
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
+  margin: auto;
 }
 
 .banner h2 {
@@ -49,10 +51,12 @@ Development: https://rawgit.com/xhlulu/0acba79000a3fd1e6f552ed82edb8a64/raw/dash
 }
 
 .banner img {
-  position: relative;
-  float: right;
-  right: 1.5%;
-  height: 75px;
+  /* margin: 20px 0; */
+  /* width: auto !important; */
+
+  padding: 0px 15px;
+  margin-top: 20px;
+  margin-bottom: 5px;
 }
 
 /* Grid
@@ -67,10 +71,11 @@ Development: https://rawgit.com/xhlulu/0acba79000a3fd1e6f552ed82edb8a64/raw/dash
   margin-right: auto;
   color: #302f54;
   margin-top: 30px;
-  padding: 8px;
+  padding: 45px;
   width: 90%;
   max-width: none;
   box-sizing: border-box;
+  height: auto;
 }
 
 .column,
@@ -214,7 +219,7 @@ body {
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
   font-weight: 400;
-  font-family: "Roboto", sans-serif;
+  font-family: "Raleway Semi Bold", sans-serif;
   color: #222;
 }
 
@@ -354,8 +359,8 @@ input[type="submit"].button-primary:focus,
 input[type="reset"].button-primary:focus,
 input[type="button"].button-primary:focus {
   color: #fff;
-  background-color: #1eaedb;
-  border-color: #1eaedb;
+  background-color: #db1e1e;
+  border-color: #db1e1e;
 }
 
 /* Forms

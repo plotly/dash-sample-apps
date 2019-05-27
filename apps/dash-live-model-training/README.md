@@ -80,10 +80,6 @@ At the moment, the logging only works for iterative Tensorflow models. We are pl
 - [Dash](https://dash.plot.ly/) - Main server and interactive components
 - [Plotly Python](https://plot.ly/python/) - Used to create the interactive plots
 
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
 ## Authors
 
 - **Celine Huang** [@celinehuang](https://github.com/celinehuang)
