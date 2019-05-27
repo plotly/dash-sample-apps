@@ -147,11 +147,12 @@ body {
 
   .three.columns {
     margin: auto;
-    width: 70%;
+    width: 75%;
   }
 
   .six.columns {
-    margin: auto;
+    margin: 10% 5%;
+    width: auto;
   }
 
   .nine.columns {
@@ -174,18 +175,17 @@ body {
     margin: 0 !important;
   }
 
-  #scene > canvas {
-    min-width: 100% !important;
-    height: 650px !important;
-  }
-
   #learn-more-button {
     text-align: center;
     padding-right: 0 !important;
   }
 
+  #learn-more-button > div > div:nth-child(1) {
+    padding-right: 7% !important;
+  }
+
   #learn-more-button > div > div:nth-child(2) {
-    padding-right: 15%;
+    padding-right: 7%;
   }
 
   #learn-more-button > div > div:nth-child(3) {
