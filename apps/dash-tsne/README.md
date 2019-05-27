@@ -23,13 +23,13 @@ virtualenv dash-tsne-venv
 # Windows
 dash-tsne-venv\Scripts\activate
 # Or Linux
-source venv/bin/activate
+source dash-tsne-venv/bin/activate
 ```
 
 Clone the git repo, then install the requirements with pip
 
 ```
-git clone https://github.com/plotly/dash-tsne.git
+git clone https://github.com/plotly/dash-sample-apps
 cd dash-tsne
 pip install -r requirements.txt
 ```
@@ -69,10 +69,6 @@ A classical example is MNIST, a dataset of 60,000 handwritten digits, 28x28 gray
 - [Dash](https://dash.plot.ly/) - Main server and interactive components
 - [Plotly Python](https://plot.ly/python/) - Used to create the interactive plots
 - [Scikit-Learn](http://scikit-learn.org/stable/documentation.html) - Run the t-SNE algorithm
-
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Authors
 
