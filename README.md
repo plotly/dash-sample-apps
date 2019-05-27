@@ -33,6 +33,11 @@ the same name as the app.
 
 ### Adding a new app
 
+Create an app on Dash Playground. This will be the location of the
+auto-deployment. To do this, log into the app manager on
+[dash-playground.plotly.host](https://dash-playground.plotly.host)
+and click "initialize app".
+
 Create a branch from `master` that has the _exact same_ name as the
 Dash app name. Switch to this branch, then navigate to the `apps/`
 directory and add a directory for your app.
