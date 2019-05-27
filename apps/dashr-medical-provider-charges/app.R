@@ -1,6 +1,7 @@
 #library(devtools)
 #install_github("plotly/dashR", ref = "0.0.7-debug")
 #install_github("plotly/dashR")
+#install_github("plotly/dash-table", ref = "R")
 
 library(dashR)
 library(dashCoreComponents)
@@ -221,8 +222,6 @@ generateGeoMap <- function(geo_data, selected_metric,
         list(0.66, "#ff6969"),
         list(1, "#ff1717")
       ),
-      #cmin = dMin,
-      #cmax = dMax,
       # Different scaling method used here (min max scaling)
       size = 10 * 
         (
@@ -230,12 +229,17 @@ generateGeoMap <- function(geo_data, selected_metric,
         ),
       colorbar = list(
         title = list(
-          text = "Average Cost<br><br>",
+          text = "Average Cost",
           font = list(color = "#737a8d", family = "Arial", size = 17)
         ),
         tickmode = "array",
         tickvals = c(~min(f), ~max(f)),
-        ticktext = sapply(c(dMin[[1]], dMax[[1]]), round, 2),
+        ticktext = sapply(
+          c(dMin[[1]], dMax[[1]]), 
+          function(x){
+            paste("$", round(x,2))
+          }
+        ),
         ticks = "outside",
         tickfont = list(family = "Arial", color = "#737a8d")
       )
@@ -469,13 +473,13 @@ app$layout(
               )
             )
           )
-        )
+        ),
+        style = list(height = "31rem")
       ),
       htmlDiv(
         id = "lower-container",
         children = dccGraph(
           id = "procedure-plot",
-          #figure = plot_ly()
           figure = generateProcedurePlot(
             dataList[[2]], cost_metric[[1]], init_region, list()
           )
@@ -519,7 +523,6 @@ app$callback(
   }
 )
 
-
 app$callback(
   output("region-select", "value"),
   list(
@@ -554,39 +557,42 @@ app$callback(
       "Maximum Cost ($)" = list(),
       "Minimum Cost ($)" = list()
     )
+    # Create empty data table as default
     DT <- as.data.table(geoDataList)
-
-    ## Need proper callback_context to work here:
-    ## For now, just use data from selected hospitals from geo-map
-
-    ##ctx <- app$callback_context()
-    ##if (!is.null(ctx$triggered[["value"]][[1]])){
-      ##prop_id <- ctx$triggered[[1]][["prop_id"]]
-      ##prop_id <- unlist(strsplit(prop_id, split = "[.]"))[1]
-    ##}
-    ##print(prop_id)
-
     costmin <- paste0(cost_select, ".min")
     costmax <- paste0(cost_select, ".max")
-    if (!is.null(unlist(geo_select))){
-      for (i in seq_along(geo_select[["points"]])){
-        point <- geo_select[["points"]][i]
-        dfrow <- state_agg[
-          state_agg[["Provider Name"]] == point[[1]]["customdata"]
-          ]
-        hrr <- dfrow[["Hospital Referral Region (HRR) Description"]]
-        city <- strsplit(
-          as.character(hrr), " - ", fixed = TRUE
-        )[[1]][2]
-        adrs <- dfrow[["Provider Street Address"]]
-        geoDataList[["Provider Name"]][[i]] <- dfrow[["Provider Name"]]
-        geoDataList[["City"]][[i]] <- city 
-        geoDataList[["Street Address"]][[i]] <- adrs 
-        geoDataList[["Maximum Cost ($)"]][[i]] <- dfrow[[costmax]]
-        geoDataList[["Minimum Cost ($)"]][[i]] <- dfrow[[costmin]]
-      }
-      DT <- as.data.table(geoDataList)
+    ctx <- app$callback_context()
+    prop_id <- strsplit(
+      as.character(ctx[["triggered"]]["prop_id"]), 
+      "\\."
+      )[[1]][1]
+    if ((prop_id == "procedure-plot") &
+        (!is.null(unlist(procedure_select)))){
+      point_select <- procedure_select
+    } else if ((prop_id == "geo-map") &
+               (!is.null(unlist(geo_select)))){
+      point_select <- geo_select
+    } else {
+      return(generateDataTable(DT, "cost"))
     }
+    for (i in seq_along(point_select[["points"]])){
+      point <- point_select[["points"]][i]
+      dfrow <- state_agg[
+        state_agg[["Provider Name"]] == point[[1]]["customdata"]
+        ]
+      hrr <- dfrow[["Hospital Referral Region (HRR) Description"]]
+      city <- strsplit(
+        as.character(hrr), " - ", fixed = TRUE
+      )[[1]][2]
+      adrs <- dfrow[["Provider Street Address"]]
+      geoDataList[["Provider Name"]][[i]] <- dfrow[["Provider Name"]]
+      geoDataList[["City"]][[i]] <- city 
+      geoDataList[["Street Address"]][[i]] <- adrs 
+      geoDataList[["Maximum Cost ($)"]][[i]] <- dfrow[[costmax]]
+      geoDataList[["Minimum Cost ($)"]][[i]] <- dfrow[[costmin]]
+    }
+    DT <- as.data.table(geoDataList)
+    DT <- DT[!duplicated(DT[["Provider Name"]])]
     generateDataTable(DT, "cost")
   }
 )
@@ -595,29 +601,48 @@ app$callback(
   output("procedure-stats-container", "children"),
   list(
     input("procedure-plot", "selectedData"),
-    input("geo-map", "selectedData")
+    input("geo-map", "selectedData"),
+    input("metric-select", "value"),
+    state("state-select", "value")
   ),
-  function(procedure_select, geo_select){
+  function(procedure_select, geo_select, cost_select, state_select){
     procedureList <- list(
       "DRG" = list(),
       "Procedure" = list(),
       "Provider Name" = list(),
       "Cost Summary" = list()
     )
-    DT <- as.data.table(procedureList)
-
-
-    ## Need proper callback_context to work here:
-    ## For now, just use data from selected hospitals from geo-map
-
-    ##ctx <- app$callback_context()
-    ##if (!is.null(ctx$triggered[["value"]][[1]])){
-      ##prop_id <- ctx$triggered[[1]][["prop_id"]]
-      ##prop_id <- unlist(strsplit(prop_id, split = "[.]"))[1]
-    ##}
-    ##print(prop_id)
-
-    if(!is.null(unlist(procedure_select))){
+    ctx <- app$callback_context()
+    prop_id <- strsplit(
+      as.character(ctx[["triggered"]]["prop_id"]), 
+      "\\."
+      )[[1]][1]
+    # Displays all the procedures offered at selected hospital 
+    if ((prop_id == "geo-map") &
+        (!is.null(unlist(geo_select)))){
+      provider_select <- list()
+      i <- 1
+      for (point in geo_select[["points"]]){
+        provider_select[[i]] <- point[["customdata"]]
+        i <- i + 1
+      }
+      state_raw_data <- dataList[[state_select]]
+      filtered <- state_raw_data[
+        state_raw_data[["Provider Name"]] %in% unlist(provider_select)
+        ]
+      for (i in 1:nrow(filtered)){
+        fullProcedureName <- filtered[i, `DRG Definition`]
+        splitProcedureName <- strsplit(
+          as.character(fullProcedureName), " - ", fixed = TRUE
+        )[[1]]
+        drg <- splitProcedureName[1]
+        proc <- splitProcedureName[2]
+        procedureList[["DRG"]][[i]] <- drg 
+        procedureList[["Procedure"]][[i]] <- proc
+        procedureList[["Provider Name"]][[i]] <- filtered[i, `Provider Name`]
+        procedureList[["Cost Summary"]][[i]] <- filtered[i, ..cost_select][[1]]
+      }
+    } else if (!is.null(unlist(procedure_select))){
       for (i in seq_along(procedure_select[["points"]])){
         point <- procedure_select[["points"]][[i]]
         fullProcedureName <- point[["y"]]
@@ -631,12 +656,11 @@ app$callback(
         procedureList[["Provider Name"]][[i]] <- point[["customdata"]]
         procedureList[["Cost Summary"]][[i]] <- point[["x"]]
       }
-      DT <- as.data.table(procedureList)
     }
+    DT <- as.data.table(procedureList)
     generateDataTable(DT, "procedure")
   }
 )
-
 
 app$callback(
   output("geo-map", "figure"),
@@ -687,4 +711,4 @@ app$callback(
   }
 )
 
-app$run_server()
+app$run_server(debug = TRUE)
