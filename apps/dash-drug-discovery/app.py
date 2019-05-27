@@ -1,4 +1,3 @@
-import os
 import dash
 import pandas as pd
 import pathlib
@@ -16,7 +15,6 @@ app = dash.Dash(
 server = app.server
 
 DATA_PATH = pathlib.Path(__file__).parent.joinpath("data").resolve()
-ASSETS_PATH = pathlib.Path(__file__, "/assets")
 
 # read from datasheet
 df = pd.read_csv(DATA_PATH.joinpath("small_molecule_drugbank.csv")).drop(
@@ -313,14 +311,13 @@ app.layout = html.Div(
 def df_row_from_hover(hoverData):
     """ Returns row for hover point as a Pandas Series. """
 
-    if hoverData is not None:
-        if "points" in hoverData:
-            firstPoint = hoverData["points"][0]
-            if "pointNumber" in firstPoint:
-                point_number = firstPoint["pointNumber"]
-                molecule_name = str(FIGURE["data"][0]["text"][point_number]).strip()
-                return df.loc[df["NAME"] == molecule_name]
-    return pd.Series()
+    try:
+        point_number = hoverData["points"][0]["pointNumber"]
+        molecule_name = str(FIGURE["data"][0]["text"][point_number]).strip()
+        return df.loc[df["NAME"] == molecule_name]
+    except KeyError as error:
+        print(error)
+        return pd.Series()
 
 
 @app.callback(
@@ -381,6 +378,7 @@ def chem_info_on_hover(hoverData):
         )
 
     except Exception as error:
+        print(error)
         raise PreventUpdate
 
 
