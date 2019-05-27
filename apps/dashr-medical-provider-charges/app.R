@@ -1,4 +1,4 @@
-#library(devtools)
+library(devtools)
 #install_github("plotly/dashR", ref = "0.0.7-debug")
 #install_github("plotly/dashR")
 #install_github("plotly/dash-table", ref = "R")
@@ -9,6 +9,8 @@ library(dashHtmlComponents)
 library(dashTable)
 library(plotly)
 library(data.table)
+
+rm(list = ls())
 
 # Plotly mapbox token
 mapbox_access_token <- "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
@@ -178,7 +180,7 @@ buildUpperLeftPanel <- function(){
   )
 }
 
-generateGeoMap <- function(geo_data, selected_metric, 
+generateGeoMap <- function(geo_data, selected_metric,
                            region_select, procedure_select){
   filtered_data <- geo_data[
     geo_data[["Hospital Referral Region (HRR) Description"]] %in% region_select
@@ -196,7 +198,7 @@ generateGeoMap <- function(geo_data, selected_metric,
     )
   ]
   selected_indices <- filtered_data[
-    filtered_data[["Provider Name"]] %in% procedure_select$hospital, 
+    filtered_data[["Provider Name"]] %in% procedure_select$hospital,
     which = TRUE
   ]
 
@@ -204,8 +206,8 @@ generateGeoMap <- function(geo_data, selected_metric,
   region <- filtered_data[["Hospital Referral Region (HRR) Description"]]
 
   plot_mapbox(
-    data  = filtered_data, 
-    x = ~lon, y = ~lat, 
+    data  = filtered_data,
+    x = ~lon, y = ~lat,
     type = "scatter", mode = "markers",
     # Two strange issues here:
     # Selects right hospitals only if you subtract 1 from indices
@@ -223,7 +225,7 @@ generateGeoMap <- function(geo_data, selected_metric,
         list(1, "#ff1717")
       ),
       # Different scaling method used here (min max scaling)
-      size = 10 * 
+      size = 10 *
         (
           1 + (filtered_data[[co]] - dMin[[1]]) / (dMax[[1]] - dMin[[1]])
         ),
@@ -235,9 +237,9 @@ generateGeoMap <- function(geo_data, selected_metric,
         tickmode = "array",
         tickvals = c(~min(f), ~max(f)),
         ticktext = sapply(
-          c(dMin[[1]], dMax[[1]]), 
+          c(dMin[[1]], dMax[[1]]),
           function(x){
-            paste("$", round(x,2))
+            paste("$", round(x, 2))
           }
         ),
         ticks = "outside",
@@ -271,29 +273,30 @@ generateGeoMap <- function(geo_data, selected_metric,
     )
 }
 
-generateProcedurePlot <- function(raw_data, cost_select, 
+generateProcedurePlot <- function(raw_data, cost_select,
                                   region_select, provider_select){
   procedure_data <- raw_data[
     raw_data[["Hospital Referral Region (HRR) Description"]] %in% region_select
     ]
   providers <- unique(procedure_data[["Provider Name"]])
 
-  procedure_data[procedure_data[["Provider Name"]] %in% provider_select, 
-                 l := .N, 
+  procedure_data[procedure_data[["Provider Name"]] %in% provider_select,
+                 l := .N,
                  by = "Provider Name"
                  ]
   hovertemplate <- paste0(
-    procedure_data[["Provider Name"]], "<br><b>%{y}</b>", "<br>Average Procedure Cost: %{x:$.2f}"
+    procedure_data[["Provider Name"]],
+    "<br><b>%{y}</b>", "<br>Average Procedure Cost: %{x:$.2f}"
   )
   selected_indices <- procedure_data[
-    procedure_data[["Provider Name"]] %in% provider_select, 
+    procedure_data[["Provider Name"]] %in% provider_select,
     which = TRUE
   ]
 
   plot_ly(
-    data = procedure_data, 
-    y = procedure_data[["DRG Definition"]], 
-    x = procedure_data[[cost_select]], 
+    data = procedure_data,
+    y = procedure_data[["DRG Definition"]],
+    x = procedure_data[[cost_select]],
     type = "scatter", mode = "markers",
     name = "",
     customdata = procedure_data[["Provider Name"]],
@@ -369,12 +372,12 @@ generateDataTable <- function(DT, type = c("procedure", "cost")){
     ),
     navigation = "page",
     style_cell = list(
-      backgroundColor = "#171b26", 
+      backgroundColor = "#171b26",
       color = "#7b7d8d",
       textOverflow = "ellipsis"
     ),
     style_filter = list(
-      backgroundColor = "#171b26", 
+      backgroundColor = "#171b26",
       color = "#7b7d8d"
     )
   )
@@ -517,7 +520,7 @@ app$callback(
       state_raw_data[["Hospital Referral Region (HRR) Description"]]
     )
     sprintf(
-      "Medicare Provider Charges in the State of %s", 
+      "Medicare Provider Charges in the State of %s",
       state_map[state_select]
     )
   }
@@ -532,7 +535,12 @@ app$callback(
   ),
   function(select_all, selected_options, options){
     if (length(select_all) > 0){
-      return(lapply(options, function(x){x[["value"]]}))
+      return(lapply(
+        options,
+        function(x){
+          x[["value"]]
+        })
+      )
     }
     return(selected_options)
   }
@@ -563,13 +571,12 @@ app$callback(
     costmax <- paste0(cost_select, ".max")
     ctx <- app$callback_context()
     prop_id <- strsplit(
-      as.character(ctx[["triggered"]]["prop_id"]), 
-      "\\."
+      as.character(ctx[["triggered"]]["prop_id"]), "\\."
       )[[1]][1]
-    if ((prop_id == "procedure-plot") &
+    if ( (prop_id == "procedure-plot") &
         (!is.null(unlist(procedure_select)))){
       point_select <- procedure_select
-    } else if ((prop_id == "geo-map") &
+    } else if ( (prop_id == "geo-map") &
                (!is.null(unlist(geo_select)))){
       point_select <- geo_select
     } else {
@@ -586,8 +593,8 @@ app$callback(
       )[[1]][2]
       adrs <- dfrow[["Provider Street Address"]]
       geoDataList[["Provider Name"]][[i]] <- dfrow[["Provider Name"]]
-      geoDataList[["City"]][[i]] <- city 
-      geoDataList[["Street Address"]][[i]] <- adrs 
+      geoDataList[["City"]][[i]] <- city
+      geoDataList[["Street Address"]][[i]] <- adrs
       geoDataList[["Maximum Cost ($)"]][[i]] <- dfrow[[costmax]]
       geoDataList[["Minimum Cost ($)"]][[i]] <- dfrow[[costmin]]
     }
@@ -614,11 +621,11 @@ app$callback(
     )
     ctx <- app$callback_context()
     prop_id <- strsplit(
-      as.character(ctx[["triggered"]]["prop_id"]), 
+      as.character(ctx[["triggered"]]["prop_id"]),
       "\\."
       )[[1]][1]
-    # Displays all the procedures offered at selected hospital 
-    if ((prop_id == "geo-map") &
+    # Displays all the procedures offered at selected hospital
+    if ( (prop_id == "geo-map") &
         (!is.null(unlist(geo_select)))){
       provider_select <- list()
       i <- 1
@@ -637,7 +644,7 @@ app$callback(
         )[[1]]
         drg <- splitProcedureName[1]
         proc <- splitProcedureName[2]
-        procedureList[["DRG"]][[i]] <- drg 
+        procedureList[["DRG"]][[i]] <- drg
         procedureList[["Procedure"]][[i]] <- proc
         procedureList[["Provider Name"]][[i]] <- filtered[i, `Provider Name`]
         procedureList[["Cost Summary"]][[i]] <- filtered[i, ..cost_select][[1]]
@@ -651,7 +658,7 @@ app$callback(
         )[[1]]
         drg <- splitProcedureName[1]
         proc <- splitProcedureName[2]
-        procedureList[["DRG"]][[i]] <- drg 
+        procedureList[["DRG"]][[i]] <- drg
         procedureList[["Procedure"]][[i]] <- proc
         procedureList[["Provider Name"]][[i]] <- point[["customdata"]]
         procedureList[["Cost Summary"]][[i]] <- point[["x"]]
@@ -678,7 +685,7 @@ app$callback(
     if (!is.null(unlist(procedure_select))){
       i <- 1
       for (point in procedure_select[["points"]]){
-        provider_data[["procedure"]][[i]] <- point[["y"]] 
+        provider_data[["procedure"]][[i]] <- point[["y"]]
         provider_data[["hospital"]][[i]] <- point[["customdata"]]
         i <- i + 1
       }
