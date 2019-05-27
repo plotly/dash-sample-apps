@@ -8,7 +8,10 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, meta_tags=[
+    {"name": "viewport", "content": "width=device-width, initial-scale=1"}
+])
+
 server = app.server
 
 DATA_PATH = pathlib.Path(__file__).parent.joinpath("data").resolve()
@@ -102,7 +105,6 @@ def scatter_plot_3d(
                 colorscale = COLORSCALE,
                 colorbar = {
                     "title": "Molecular<br>Weight",
-                    "yanchor": "left",
                 },
                 line = dict( color = '#444' ),
                 reversescale = True,
@@ -162,21 +164,21 @@ def scatter_plot_3d(
 
     return dict( data=data, layout=layout )
 
+
 def make_dash_table(selection):
     """ Return a dash defintion of an HTML table for a Pandas dataframe. """
 
     df_subset = df.loc[df['NAME'].isin(selection)]
     table = []
+
     for index, row in df_subset.iterrows():
-        html_row = []
-        for i in range(len(row)):
-            if i == 0 or i == 6:
-                html_row.append( html.Td([ row[i] ]) )
-            elif i == 1:
-                html_row.append( html.Td([ html.A( href=row[i], children='Datasheet' )]))
-            elif i == 2:
-                html_row.append( html.Td([ html.Img( src=row[i] )]))
-        table.append( html.Tr( html_row ) )
+        rows = []
+        rows.append(html.Td([row["NAME"]]))
+        rows.append(html.Td([html.Img(src=row["IMG_URL"])]))
+        rows.append(html.Td([row["FORM"]]))
+        rows.append(html.Td([html.A( href=row["PAGE"], children='Datasheet', target="_blank" )]))
+        table.append(html.Tr(rows))
+
     return table
 
 FIGURE = scatter_plot_3d()
@@ -188,7 +190,7 @@ DRUG_IMG = df.loc[df['NAME'] == STARTING_DRUG]['IMG_URL'].iloc[0]
 app.layout = html.Div([
 
     html.Div([
-        html.Img(src=str(ASSETS_PATH.joinpath("dash-logo-stripe.png").resolve()), className="app__banner__img")
+        html.Img(src=app.get_asset_url("dash-logo-stripe.png"))
     ], className="app__banner"),
 
     html.Div([
@@ -231,6 +233,7 @@ app.layout = html.Div([
                         }
                     ],
                     labelClassName = "radio__labels",
+                    inputClassName = "radio__input",
                     value='scatter3d',
                     className="radio__group"
                 ),
@@ -239,30 +242,32 @@ app.layout = html.Div([
                     hoverData={"points": [{"pointNumber": 0}]},
                     figure=FIGURE 
                 ),
-            ], className="two-thirds column app__content__graph"),
+            ], className="two-thirds column"),
 
 
             html.Div([
-                html.Img(id='chem_img', src=DRUG_IMG ),
-                html.Br(),
-                html.A(STARTING_DRUG,
-                    id='chem_name',
-                    href="https://www.drugbank.ca/drugs/DB01002",
-                    target="_blank"),
-                html.P(DRUG_DESCRIPTION,
-                    id='chem_desc'),
-            ], className="one-third column app__content__info"),
+                html.Div([
+                    html.Img(id='chem_img', src=DRUG_IMG, className="chem__img" ),
+                ], className="chem__img__container"),
+                html.Div([
+                    html.A(STARTING_DRUG,
+                        id='chem_name',
+                        href="https://www.drugbank.ca/drugs/DB01002",
+                        target="_blank"),
+                    html.P(DRUG_DESCRIPTION,
+                        id='chem_desc'),
+                ], className="chem__desc__container"),
+            ], className="one-third column"),
 
+        ], className="container card app__content bg-white"),
 
-        ], className="container card app__content")
+        html.Div([
+            html.Table(make_dash_table([STARTING_DRUG]), id='table-element', className="table__container")
+        ], className="container bg-white p-0"),
 
     ], className="app__container"),
 
-    html.Div([
-        html.Table( make_dash_table([STARTING_DRUG]), id='table-element' )
-    ])
-
-], className="")
+])
 
 
 def df_row_from_hover(hoverData):
@@ -298,7 +303,8 @@ def highlight_molecule(chem_dropdown_values, plot_type):
 
 @app.callback(
     Output('table-element', 'children'),
-    [Input('chem_dropdown', 'value')])
+    [Input('chem_dropdown', 'value')]
+)
 def update_table(chem_dropdown_value):
     """
     Update the table rows.
