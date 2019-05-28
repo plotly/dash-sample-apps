@@ -1,8 +1,15 @@
 /* Table of contents
 ––––––––––––––––––––––––––––––––––––––––––––––––––
 - Banner
+- Dropdown menus
+- Sliders
+- Button
+- Radio Button
 - Scalable Container
 - Remove Undo
+- Cards
+- Left Column
+- Graphs
 
 /* Body
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -72,15 +79,22 @@ section {
    background-color: rgba(255, 255, 255, 0.01);
 }
 
-/* Slider 
+/* Sliders
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-/*override from react css*/
 .rc-slider-track {
   background-color: #00c7e8!important;
 }
 
 .rc-slider-disabled>.rc-slider-track {
     background-color: #a7a7a7!important;
+}
+
+#slider-svm-parameter-C-coef {
+    padding: 5px 10px 25px;
+}
+
+#slider-svm-parameter-gamma-coef {
+    padding: 5px 10px 25px
 }
 
 /* Button 
@@ -125,8 +139,8 @@ input[type='radio']:checked {
   display: none;
 }
 
-
-
+/* Cards
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
 .card {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     width: 75%;
@@ -145,6 +159,8 @@ input[type='radio']:checked {
     flex-direction: column;
 }
 
+/* Left column
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
 #left-column {
     margin: 0 3rem 0 0 !important;
     max-height: 83rem;
@@ -165,22 +181,12 @@ input[type='radio']:checked {
     }
 }
 
-/* Left column
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-#slider-svm-parameter-C-coef {
-    padding: 5px 10px 25px;
-}
-
-#slider-svm-parameter-gamma-coef {
-    padding: 5px 10px 25px
-}
-
 #shrinking-container {
     padding: 20px 10px 25px 4px
 }
 
-
-
+/* Graphs
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
 #svm-graph-container {
     margin-top: 5px;
 }
@@ -254,6 +260,7 @@ input[type='radio']:checked {
         height: 75rem !important;
     }
 }
+
 
 @media only screen and (max-width: 1300px) {
     section{
