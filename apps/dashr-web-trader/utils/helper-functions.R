@@ -73,7 +73,8 @@ generateNewsTable <- function(dataframe, max_rows = 10){
 
 # Get the news from newsapi.org
 updateNews <- function(){
-  r <- GET("https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=da8e2e705b914f9f86ed2e9692e66012")
+  apiURL <- "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=da8e2e705b914f9f86ed2e9692e66012" 
+  r <- GET(apiURL)
   jsonData <- content(r, "parsed")$articles
   # include tryCatch for when the api breaks
   out <- tryCatch({
@@ -82,7 +83,7 @@ updateNews <- function(){
   },
     error = function(x){
       d <- data.frame(title = "news api not available",
-                      url = "http://google.com")
+                      url = apiURL)
     }
   )
   generateNewsTable(out)
@@ -813,6 +814,7 @@ chartDiv <- function(pair){
               htmlSpan(
                 pairname,
                 style = list(
+                  margin = "0 1rem 0 2rem",
                   paddingLeft = "25",
                   marginRight = "15",
                   fontSize = "18px"
@@ -823,6 +825,7 @@ chartDiv <- function(pair){
                 id = paste0(pairname, "menu_button"),
                 n_clicks = 0,
                 style = list(
+                  margin = "0 1rem",
                   cursor = "pointer",
                   fontSize = "18px"
                 )
@@ -853,6 +856,7 @@ chartDiv <- function(pair){
                 id = paste0(pairname, "close"),
                 n_clicks = 0,
                 style = list(
+                  margin = "0 2rem",
                   color = "#b4b4b4",
                   cursor = "pointer",
                   fontSize = "18px",
