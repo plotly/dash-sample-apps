@@ -16,6 +16,7 @@ library(base64enc)
 library(magrittr)
 library(Rtsne)
 library(stringr)
+
 l. <- cmpfun(list)
 
 IMAGE_DATASETS <- c("mnist_3000", "cifar_gray_3000", "fashion_3000")
@@ -812,37 +813,37 @@ app$callback(
 #
 
 #helper function
-parse_content <- function(contents, filename){
-  
-  if(is.null(contents)){
-    return(NULL)
-  } else {
-    
-  }
-  
-}
+# parse_content <- function(contents, filename){
+#   
+#   if(is.null(contents)){
+#     return(NULL)
+#   } else {
+#     
+#   }
+#   
+# }
 
 
 # main callback
-app$callback(
-  
-  output = l.(id='data-df-and-message', property='children')
-  ,
-  params= l.(
-    
-    input(id='upload-data', property='contents')
-    ,
-    input(id='upload-data', property='filename')
-    
-  )
-  ,
-  function(contents, filenames){
-    
-    return(htmlP(contents))
-    
-  }
-  
-)
+# app$callback(
+#   
+#   output = l.(id='data-df-and-message', property='children')
+#   ,
+#   params= l.(
+#     
+#     input(id='upload-data', property='contents')
+#     ,
+#     input(id='upload-data', property='filename')
+#     
+#   )
+#   ,
+#   function(contents, filenames){
+#     
+#     return(htmlP(contents))
+#     
+#   }
+#   
+# )
 
 
 #
