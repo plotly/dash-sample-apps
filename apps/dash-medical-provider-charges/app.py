@@ -598,14 +598,9 @@ def update_hospital_datatable(geo_select, procedure_select, cost_select, state_s
         pagination_mode="fe",
         pagination_settings={"displayed_pages": 1, "current_page": 0, "page_size": 5},
         navigation="page",
-        css=[
-            {"selector": "th:first-of-type", "rule": "border-left: none !important"},
-            {"selector": "th:last-of-type", "rule": "border-right: none !important"},
-            {"selector": "td:first-of-type", "rule": "border-right: none !important"},
-        ],
         style_cell={"background-color": "#242a3b", "color": "#7b7d8d"},
-        style_as_list_view=True
-        # style_header={"background-color":  "#1f2536", "text-align":'center', "border-top": "none", "border-left": 'none'}
+        style_as_list_view=False,
+        style_header={"background-color":  "#1f2536"}
     )
 
 
@@ -643,13 +638,15 @@ def update_procedure_stats(procedure_select, geo_select):
         sorting=True,
         style_cell={
             "textOverflow": "ellipsis",
-            "background-color": "#171b26",
+            "background-color": "#242a3b",
             "color": "#7b7d8d",
         },
         sorting_type="multi",
         pagination_mode="fe",
         pagination_settings={"displayed_pages": 1, "current_page": 0, "page_size": 5},
         navigation="page",
+        style_as_list_view=False,
+        style_header={"background-color": "#1f2536"}
     )
 
 

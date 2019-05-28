@@ -95,7 +95,14 @@ span.Select-clear-zone {
 
 .dash-spreadsheet-container .dash-spreadsheet-inner th, td {
     text-align: center !important;
+    font-family: "Open Sans", sans-serif !important;
+    border-top-color: #171b26 !important;
+    border-bottom-color: #171b26 !important;
+    border-left-color: #171b26 !important;
+    border-right-color: #171b26 !important;
+    font-size: 11px;
 }
+
 
 #table-upper > p, #table-lower > p {
     font-weight: bold;
@@ -134,4 +141,8 @@ span.Select-clear-zone {
     font-size: 16px;
     font-weight: bold;
     display: block;
+}
+
+@media only screen and (max-width: 600px) {
+
 }
