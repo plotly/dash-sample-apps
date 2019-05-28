@@ -45,16 +45,23 @@ body {
 }
 
 #upper-left{
-    padding: 1rem 2rem 1rem 2rem;
+    padding: 0rem 2rem 1rem 2rem;
     display:flex;
     flex-direction:column;
     height: 30rem;
     /*justify-content: space-evenly;*/
 }
 
+#upper-left > div > div > label, 
 #upper-left > div > label {
     font-weight: bold;
     margin: 2rem 1rem 0.8rem 1rem;
+}
+
+#select-state-metric {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 *.Select-control, Select--single, .Select-multi-value-wrapper, .Select-value, .Select-value-label {
@@ -123,7 +130,8 @@ span.Select-clear-zone {
 }
 
 .section-title {
-    font-size: 16px;
-    font-weight: bold;
-    display: block;
+ margin: 0.6rem 0rem 2rem 0rem;
+    /*font-size: 16px;*/
+    /*font-weight: bold;*/
+    /*display: block;*/
 }

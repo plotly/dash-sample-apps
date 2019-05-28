@@ -1,7 +1,8 @@
-library(devtools)
+#library(devtools)
 #install_github("plotly/dashR", ref = "0.0.7-debug")
 #install_github("plotly/dashR")
 #install_github("plotly/dash-table", ref = "R")
+
 
 library(dashR)
 library(dashCoreComponents)
@@ -112,25 +113,20 @@ buildUpperLeftPanel <- function(){
   htmlDiv(
     id = "upper-left",
     className = "six columns",
-    style = list(paddingTop = "0"),
     children = list(
       htmlH5(
+        className = "section-title",
         paste(
           "Choose hospitals on the map or", 
           "procedures from the list below to see costs"
-        ),
-        style = list(marginBottom = "2rem", marginTop = "0.6rem")
+        )
       ),
       htmlDiv(
-        style = list(
-          display = "flex", 
-          flexDirecetion = "row",
-          justifyContent = "space-between"
-        ),
+        id = "select-state-metric",
         children = list(
           htmlDiv(
-            style = list(width = "45%"),
             id = "state-select-outer",
+            style = list(width = "45%"),
             children = list(
               htmlLabel("Select a State"),
               dccDropdown(
@@ -146,8 +142,8 @@ buildUpperLeftPanel <- function(){
             )
           ),
           htmlDiv(
+            id = "metric-select-outer",
             style = list(width = "45%"),
-            id = "select-metric-outer",
             children = list(
               htmlLabel("Choose a Cost Metric:"),
               dccDropdown(
@@ -292,12 +288,6 @@ generateGeoMap <- function(geo_data, selected_metric,
     )
 }
 
-raw_data <- dataList[["AL"]]
-cost_select <- cost_metric[[1]]
-region_select <- c("AL - Birmingham", "AL - Dothan")
-provider_select <- list()
-
-
 generateProcedurePlot <- function(raw_data, cost_select,
                                   region_select, provider_select){
   procedure_data <- raw_data[
@@ -365,9 +355,6 @@ generateProcedurePlot <- function(raw_data, cost_select,
       paper_bgcolor = "#171b26"
     )
 }
-#p <- generateProcedurePlot(raw_data, cost_select, region_select, provider_select)
-#str(p)
-#p
 
 generateDataTable <- function(DT, type = c("procedure", "cost")){
   dashDataTable(
@@ -382,21 +369,19 @@ generateDataTable <- function(DT, type = c("procedure", "cost")){
         list(name = x, id = x)
       }
     ),
-    data = setNames(
-      lapply(
-        split(DT, seq(nrow(DT))),
-        function(x){
-          as.list(x)
-        }
-      ),
-      NULL
-    ),
+    #data = setNames(
+      #lapply(
+        #split(DT, seq(nrow(DT))),
+        #function(x){
+          #as.list(x)
+        #}
+      #),
+      #NULL
+    #),
+    # Internal convenience function is syntactically nicer than the above:
+    data = dashTable:::df_to_list(DT),
     filtering = TRUE,
-    sorting = ifelse(
-      type == "cost",
-      FALSE,
-      TRUE
-    ),
+    sorting = ifelse(type == "cost", FALSE, TRUE),
     sorting_type = "multi",
     pagination_mode = "fe",
     pagination_settings = list(
@@ -408,13 +393,9 @@ generateDataTable <- function(DT, type = c("procedure", "cost")){
       color = "#7b7d8d",
       textOverflow = "ellipsis"
     ),
-    style_filter = list(
-      backgroundColor = "#171b26",
-      color = "#7b7d8d"
-    )
+    style_filter = list(backgroundColor = "#171b26", color = "#7b7d8d")
   )
 }
-
 
 ##############################################
 app <- Dash$new(name = "DashR Medical Provider Charges")
@@ -434,13 +415,6 @@ app$layout(
         id = "upper-container",
         className = "row",
         children = list(
-          #htmlP(
-            #className = "section title",
-            #children = paste(
-              #"Choose hospital on the map or procedures",
-              #"from the list below to see costs"
-            #)
-          #),
           buildUpperLeftPanel(),
           htmlDiv(
             id = "geo-map-outer",
@@ -450,6 +424,7 @@ app$layout(
                 id = "map-title",
                 children = 
                   htmlH5(
+                    className = "section-title",
                     sprintf(
                     "Medical Provider Charges in the State of %s",
                     state_map[state_list[2]]
@@ -487,7 +462,10 @@ app$layout(
                 id = "table-left",
                 className = "six columns",
                 children = list(
-                  htmlH5("Hospital Charges Summary"),
+                  htmlH5(
+                    className = "section-title", 
+                    "Hospital Charges Summary"
+                  ),
                   dccLoading(
                     children = htmlDiv(
                       id = "cost-stats-container",
@@ -500,7 +478,10 @@ app$layout(
                 id = "table-right",
                 className = "six columns",
                 children = list(
-                  htmlH5("Procedure Charges Summary"),
+                  htmlH5(
+                    className = "section-title",
+                    "Procedure Charges Summary"
+                  ),
                   dccLoading(
                     children = htmlDiv(
                       id = "procedure-stats-container",
@@ -511,8 +492,7 @@ app$layout(
               )
             )
           )
-        ),
-        style = list(height = "31rem")
+        )
       ),
       htmlDiv(
         id = "lower-container",
@@ -551,6 +531,7 @@ app$callback(
   list(input("state-select", "value")),
   function(state_select){
     htmlH5(
+      className = "section-title",
       sprintf(
         "Medical Provider Charges in the State of %s",
         state_map[state_select]
