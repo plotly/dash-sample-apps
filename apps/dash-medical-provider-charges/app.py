@@ -134,30 +134,40 @@ def build_upper_left_panel():
         id="upper-left",
         className="six columns",
         children=[
-            html.Div(
-                id="state-select-outer",
-                children=[
-                    html.Label("Select a State"),
-                    dcc.Dropdown(
-                        id="state-select",
-                        options=[{"label": i, "value": i} for i in state_list],
-                        value=state_list[1],
-                    ),
-                ],
+            html.P(
+                className="section-title",
+                children="Choose hospital on the map or procedures from the list below to see costs",
             ),
             html.Div(
-                id="select-metric-outer",
+                className='control-row-1',
                 children=[
-                    html.Label("Choose a Cost Metric:"),
-                    dcc.Dropdown(
-                        id="metric-select",
-                        options=[{"label": i, "value": i} for i in cost_metric],
-                        value=cost_metric[0],
+                    html.Div(
+                        id="state-select-outer",
+                        children=[
+                            html.Label("Select a State"),
+                            dcc.Dropdown(
+                                id="state-select",
+                                options=[{"label": i, "value": i} for i in state_list],
+                                value=state_list[1],
+                            ),
+                        ],
                     ),
-                ],
+                    html.Div(
+                        id="select-metric-outer",
+                        children=[
+                            html.Label("Choose a Cost Metric:"),
+                            dcc.Dropdown(
+                                id="metric-select",
+                                options=[{"label": i, "value": i} for i in cost_metric],
+                                value=cost_metric[0],
+                            ),
+                        ],
+                    )
+                ]
             ),
             html.Div(
                 id="region-select-outer",
+                className='control-row-2',
                 children=[
                     html.Label("Pick a Region:"),
                     html.Div(
@@ -177,6 +187,31 @@ def build_upper_left_panel():
                             multi=True,
                             searchable=True,
                         ),
+                    ),
+                ],
+            ),
+
+            html.Div(
+                id="table-container",
+                className="table-container",
+                children=[
+                    html.Div(
+                        id="table-upper",
+                        children=[
+                            html.P("Hospital Charges Summary"),
+                            dcc.Loading(
+                                children=html.Div(id="cost-stats-container")
+                            ),
+                        ],
+                    ),
+                    html.Div(
+                        id="table-lower",
+                        children=[
+                            html.P("Procedure Charges Summary"),
+                            dcc.Loading(
+                                children=html.Div(id="procedure-stats-container")
+                            ),
+                        ],
                     ),
                 ],
             ),
@@ -381,10 +416,6 @@ app.layout = html.Div(
             id="upper-container",
             className="row",
             children=[
-                html.P(
-                    className="section-title",
-                    children="Choose hospital on the map or procedures from the list below to see costs",
-                ),
                 build_upper_left_panel(),
                 html.Div(
                     id="geo-map-outer",
@@ -416,37 +447,6 @@ app.layout = html.Div(
                         ),
                     ],
                 ),
-            ],
-        ),
-        html.Div(
-            id="middle-container",
-            className="row",
-            children=[
-                html.Div(
-                    id="cost-stats-outer-container",
-                    children=[
-                        html.Div(
-                            id="table-left",
-                            className="six columns",
-                            children=[
-                                html.P("Hospital Charges Summary"),
-                                dcc.Loading(
-                                    children=html.Div(id="cost-stats-container")
-                                ),
-                            ],
-                        ),
-                        html.Div(
-                            id="table-right",
-                            className="six columns",
-                            children=[
-                                html.P("Procedure Charges Summary"),
-                                dcc.Loading(
-                                    children=html.Div(id="procedure-stats-container")
-                                ),
-                            ],
-                        ),
-                    ],
-                )
             ],
         ),
         html.Div(
@@ -598,7 +598,14 @@ def update_hospital_datatable(geo_select, procedure_select, cost_select, state_s
         pagination_mode="fe",
         pagination_settings={"displayed_pages": 1, "current_page": 0, "page_size": 5},
         navigation="page",
-        style_cell={"background-color": "#171b26", "color": "#7b7d8d"},
+        css=[
+            {"selector": "th:first-of-type", "rule": "border-left: none !important"},
+            {"selector": "th:last-of-type", "rule": "border-right: none !important"},
+            {"selector": "td:first-of-type", "rule": "border-right: none !important"},
+        ],
+        style_cell={"background-color": "#242a3b", "color": "#7b7d8d"},
+        style_as_list_view=True
+        # style_header={"background-color":  "#1f2536", "text-align":'center', "border-top": "none", "border-left": 'none'}
     )
 
 
