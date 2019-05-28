@@ -15,8 +15,10 @@ DATA_PATH = PATH.joinpath("data").resolve()
 
 LOGFILE = "examples/run_log.csv"
 
-app = dash.Dash(__name__)
-# app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}])
+# app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+)
 server = app.server
 
 demo_mode = True
@@ -103,19 +105,16 @@ app.layout = html.Div(
                     className="eight columns",
                     style={"margin-left": "3%"},
                 ),
-                # html.Div(
-                #     id="button",
-                #     style={"padding-bottom": "3px"},
-                #     children=[html.Button("Learn More", id="learn-more-button")],
-                # ),
                 html.Button(
-                    "Learn More", id="learn-more-button", className="two columns"
+                    id="learn-more-button",
+                    className="two columns",
+                    children=["Learn More"],
                 ),
                 html.Img(
                     src=app.get_asset_url("dash-logo.png"), className="two columns"
                 ),
             ],
-            className="banner",
+            className="banner row",
         ),
         # Body
         html.Div(
@@ -274,22 +273,23 @@ demo_callbacks(app, demo_mode)
 
 
 @app.callback(
-    Output("demo-explanation", "children"), [Input("learn-more-button", "n_clicks")]
+    [Output("demo-explanation", "children"), Output("learn-more-button", "children")],
+    [Input("learn-more-button", "n_clicks")],
 )
 def learn_more(n_clicks):
     if n_clicks == None:
         n_clicks = 0
-        return
-    else:
-        if (n_clicks % 2) == 1:
-            n_clicks += 1
-            return (
-                html.Div(className="container", children=[demo_explanation(demo_mode)]),
-            )
 
-        else:
-            n_clicks += 1
-            return (html.Div(),)
+    if (n_clicks % 2) == 1:
+        n_clicks += 1
+        return (
+            html.Div(className="container", children=[demo_explanation(demo_mode)]),
+            "Close",
+        )
+
+    else:
+        n_clicks += 1
+        return (html.Div(), "Learn More")
 
 
 @app.callback(
@@ -459,4 +459,3 @@ def update_div_current_cross_entropy_value(run_log_json):
 # Running the server
 if __name__ == "__main__":
     app.run_server(debug=True)
-

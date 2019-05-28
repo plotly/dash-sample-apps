@@ -45,6 +45,10 @@
   background-color: #f8f9fa;
 }
 
+#react-select-4--value-item {
+  color: #6b6b6b;
+}
+
 /* #_dash-app-content > div > div:nth-child(2) > div:nth-child(2) {
   width: 80.5%;
 } */
@@ -58,9 +62,3 @@
   border-color: white;
   border: solid 2px #f6ec91;
 }  */
-
-.char-btn input[type="radio"] {
-  background-color: #f6866e;
-  opacity: 0.7;
-  z-index: 100;
-}

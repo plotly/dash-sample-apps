@@ -56,7 +56,7 @@ Development: https://rawgit.com/xhlulu/0acba79000a3fd1e6f552ed82edb8a64/raw/dash
 
   padding: 0px 15px;
   margin-top: 20px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 /* Grid
@@ -69,7 +69,7 @@ Development: https://rawgit.com/xhlulu/0acba79000a3fd1e6f552ed82edb8a64/raw/dash
   /* border: thin solid rgb(240, 240, 240); */
   margin-left: auto;
   margin-right: auto;
-  color: #302f54;
+  color: #6b6b6b;
   margin-top: 30px;
   padding: 45px;
   width: 90%;
@@ -86,7 +86,7 @@ Development: https://rawgit.com/xhlulu/0acba79000a3fd1e6f552ed82edb8a64/raw/dash
 }
 
 /* For devices larger than 550px */
-@media (min-width: 550px) {
+@media (min-width: 768px) {
   .column,
   .columns {
     margin-left: 0.5%;
