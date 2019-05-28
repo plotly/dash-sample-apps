@@ -207,9 +207,9 @@ app.layout = html.Div(
 )
 def selectionRange(selection):
     if (
-            selection is not None
-            and "xaxis.range[0]" in selection
-            and "xaxis.range[1]" in selection
+        selection is not None
+        and "xaxis.range[0]" in selection
+        and "xaxis.range[1]" in selection
     ):
         x0 = selection["xaxis.range[0]"]
         x1 = selection["xaxis.range[1]"]
@@ -240,9 +240,9 @@ def selectionRange(selection):
 def selectionHighlight(selection):
     new_fig2 = fig2.copy()
     if (
-            selection is not None
-            and "xaxis.range[0]" in selection
-            and "xaxis.range[1]" in selection
+        selection is not None
+        and "xaxis.range[0]" in selection
+        and "xaxis.range[1]" in selection
     ):
         x0 = selection["xaxis.range[0]"]
         x1 = selection["xaxis.range[1]"]
@@ -272,11 +272,16 @@ def selectionHighlight(selection):
 @app.callback(Output("graph-1", "figure"), [Input("graph-1", "relayoutData")])
 def draw_undecimated_data(selection):
     if (
-            selection is not None
-            and "xaxis.range[0]" in selection
-            and "xaxis.range[1]" in selection
-            and len(
-        df[(df.Time >= selection["xaxis.range[0]"]) & (df.Time <= selection["xaxis.range[1]"])]) < max_points
+        selection is not None
+        and "xaxis.range[0]" in selection
+        and "xaxis.range[1]" in selection
+        and len(
+            df[
+                (df.Time >= selection["xaxis.range[0]"])
+                & (df.Time <= selection["xaxis.range[1]"])
+            ]
+        )
+        < max_points
     ):
         x0 = selection["xaxis.range[0]"]
         x1 = selection["xaxis.range[1]"]
