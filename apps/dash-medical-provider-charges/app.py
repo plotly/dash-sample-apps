@@ -283,7 +283,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                 size=10
                      * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
                 colorbar=dict(
-                    x=1,
+                    x=0.9,
                     title=dict(
                         text="Average Cost",
                         font={"color": "#737a8d", "family": "Open Sans"},
@@ -326,7 +326,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                 lat=filtered_data.lat.mean(), lon=filtered_data.lon.mean()
             ),
             pitch=5,
-            zoom=7,
+            zoom=5,
             style="mapbox://styles/plotlymapbox/cjvppq1jl1ips1co3j12b9hex",
         ),
     )
@@ -404,6 +404,7 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
 
 
 app.layout = html.Div(
+    className='container scalable',
     children=[
         html.Div(
             id="banner",
