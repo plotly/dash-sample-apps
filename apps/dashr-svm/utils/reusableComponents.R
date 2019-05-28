@@ -30,7 +30,7 @@ namedDropdown <- function(name, ...){
 
 namedSlider <- function(name, ...){
   htmlDiv(
-    style = list(padding = "20px 10px 25px 4px"),
+    style = list(padding = "5px 10px 25px"),
     children = list(
       htmlP(sprintf("%s:", name)),
       htmlDiv(
@@ -41,9 +41,9 @@ namedSlider <- function(name, ...){
   )
 }
 
-formattedSlider <- function(style, ...){
+formattedSlider <- function(...){
   htmlDiv(
-    style = style,
+    style = list(padding = "5px 10px 25px"),
     children = dccSlider(...)
   )
 }

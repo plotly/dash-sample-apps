@@ -286,7 +286,7 @@ pieConfusionMatrix <- function(model, data, threshold){
     marker = list(colors = colors)
   ) %>%
     layout(
-      title = "Confusion Matrix",
+      title = "<b>Confusion Matrix</b>",
       margin = list(l = 10, r = 10, t = 60, b = 10),
       paper_bgcolor = "#272b38",
       plot_bgcolor = "#272b38",
@@ -317,7 +317,9 @@ rocCurve <- function(data, model){
     line = list(color = "#00d0e8")
   ) %>%
     layout(
-      title = sprintf("ROC Curve (AUC = %s)", round(auc, 3)),
+      title = paste0(
+        "<b>", sprintf("ROC Curve (AUC = %s)", round(auc, 3)), "</b>"
+      ),
       paper_bgcolor = "#272b38",
       plot_bgcolor = "#272b38",
       xaxis = list(title = "False Positive Rate"),

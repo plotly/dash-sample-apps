@@ -40,9 +40,11 @@ app$layout(
           className = "container scalable",
           children = list(
             htmlDiv(
+              id = "app-container",
               className = "row",
-             children = list(
+              children = list(
                 htmlDiv(
+                id = "left-column",
                 className = "three columns",
                 style = list(
                   minWidth = "24.5%",
@@ -51,7 +53,9 @@ app$layout(
                   overflowX = "hidden"
                 ),
                 children = list(
-                  card(children = list(
+                  card(
+                    id = "first-card",
+                    children = list(
                     namedDropdown(
                       name = "Select Dataset",
                       id = "dropdown-select-dataset",
@@ -94,7 +98,8 @@ app$layout(
                     )
                   )),
                   card(
-                    list(
+                    id = "button-card",
+                    children = list(
                       namedSlider(
                         name = "Threshold",
                         id = "slider-threshold",
@@ -110,7 +115,9 @@ app$layout(
                       )
                     )
                   ),
-                  card(list(
+                  card(
+                    id = "last-card",
+                    children = list(
                     namedDropdown(
                       name = "Kernel",
                       id = "dropdown-svm-parameter-kernel",
@@ -136,7 +143,6 @@ app$layout(
                       value = 0
                     ),
                     formattedSlider(
-                      style = list(padding = "5px 10px 25px"),
                       id = "slider-svm-parameter-C-coef",
                       min = 1,
                       max = 9,
@@ -161,7 +167,6 @@ app$layout(
                       marks = as.list(setNames(10 ** (-5:0), -5:0))
                     ),
                     formattedSlider(
-                      style = list(padding = "5px 10px 25px"),
                       id = "slider-svm-parameter-gamma-coef",
                       min = 1,
                       max = 9,
@@ -326,7 +331,8 @@ app$callback(
     list(
       htmlDiv(
         className = "six columns",
-        style = list(marginTop = "5px"),
+        id = "svm-graph-container",
+        style = list(marginTop = "1rem"),
         children = list(
           dccGraph(
             id = "main_figure",
@@ -341,10 +347,11 @@ app$callback(
       ),
       htmlDiv(
         className = "three columns",
+        id = "graphs-container",
         style = list(
-          minWidth = "24.5%",
+          minWidth = "22%",
           height = "calc(100vh - 90px)",
-          marginTop = "5px",
+          marginTop = "1rem",
           "-moz-user-select" = "none",
           "-webkit-user-select" = "none",
           "-ms-user-select" = "none"
