@@ -10,13 +10,10 @@
 @import url('https://fonts.googleapis.com/css?family=Playfair+Display');
 
 .banner {
-    height: 75px;
     background-color: #2f3445; /* Machine Learning Color is orange */
     padding: 3rem 0;
     width: 100%;
     margin-bottom: 6% !important;
-    /*display: block;*/
-    /*overflow: hidden;*/
 }
 
 .banner h2 {
@@ -25,6 +22,7 @@
     font-family: 'Playfair Display', sans-serif;
     font-size: 4rem;
     line-height: 1;
+    text-align: center;
 }
 
 .banner h2:hover {
@@ -43,8 +41,28 @@
 .container.scalable {
     width: 95%;
     max-width: none;
-    margin-bottom: 5%;
 }
+
+@media only screen and (max-width: 950px) {
+
+    .banner .container.scalable {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+    }
+
+    .banner h2 {
+        font-size: 4rem;
+    }
+
+    .banner Img {
+        height: 8rem;
+        float: left;
+        margin-bottom: 5rem;
+    }
+
+}
+
 
 /* Dropdowns
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -115,6 +133,19 @@
     overflow-y: auto;
 }
 
+@media only screen and (max-width: 1300px) {
+
+    #left-column {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 !important;
+        max-height: none;
+        max-width: none;
+    }
+
+}
 
 /* Slider
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -148,11 +179,11 @@ input[type='radio']:checked {
 
 /* Graph container
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#svm-graph-container{
+#svm-graph-container {
     margin-top: 5px;
 }
 
-#graphs-container{
+#graphs-container {
     min-width: 24.5%;
     height: 83rem;
     margin-top: 5px;
@@ -162,16 +193,55 @@ input[type='radio']:checked {
     -ms-user-select: none;
 }
 
-#graph-line-roc-curve{
+#graph-line-roc-curve {
     height: 40%
 }
 
-#graph-pie-confusion-matrix{
+#graph-pie-confusion-matrix {
     height: 60%
 }
 
-#graph-sklearn-svm{
+#graph-sklearn-svm {
     height: 83rem;
+}
+
+@media only screen and (max-width: 1300px) {
+    #div-graphs {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #svm-graph-container {
+        width: 80vw;
+        height: 65vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #graph-sklearn-svm {
+        width: 80%;
+        height: 150%;
+    }
+
+    #graphs-container {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        margin: 0;
+        padding: 8rem 10rem;
+    }
+
+    #graph-line-roc-curve{
+        margin-left: -7rem !important;
+    }
+
+    #graph-pie-confusion-matrix{
+        margin-left: -7rem !important;
+    }
 }
 
 
@@ -179,4 +249,13 @@ input[type='radio']:checked {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ._dash-undo-redo {
     display: none;
+}
+
+@media only screen and (max-width: 1300px) {
+    #app-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
