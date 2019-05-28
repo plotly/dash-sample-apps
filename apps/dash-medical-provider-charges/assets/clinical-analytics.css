@@ -16,11 +16,10 @@ body {
 
 .banner {
     height: 5rem;
-    width: 90%;
     margin-bottom: 1rem;
-    padding: 0rem 4rem 0rem;
+    padding: 0rem 5rem 0rem;
     display: flex;
-    flex-direction: row;
+    flex-direction: row nowrap;
     align-items: center;
     justify-content: space-between;
 }
@@ -35,7 +34,7 @@ body {
 
 .banner Img {
     position: relative;
-    height: 4rem;
+    height: 2rem;
     width: auto;
 }
 
@@ -127,6 +126,9 @@ span.Select-clear-zone {
     height: 55rem;
 }
 
+#procedure-plot {
+    margin: -300px 0px -200px -50px;
+}
 
 #select-metric-outer, #region-select-outer {
     display: inline-block;
@@ -144,20 +146,38 @@ span.Select-clear-zone {
 }
 
 @media only screen and (max-width: 650px) {
+    body {
+        font-size: 14px;
+    }
+
+    .section-title, #map-title {
+        font-size: 14px;
+    }
+
+    .banner {
+        padding: 0rem 2rem;
+    }
+
     .banner h6 {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
+
     .banner img {
-        height: 2rem;
+        height: 1.5rem;
     }
+
     #upper-container {
-        margin: 1em;
+        margin: 1rem;
     }
+
     .control-row-1 {
         flex-direction: column;
     }
-    #upper-left, #geo-map-outer{
+
+    #upper-left, #geo-map-outer {
         width: 100%;
+        margin-left: 0;
+        padding: 1rem;
     }
 
     #state-select-outer, #select-metric-outer {
