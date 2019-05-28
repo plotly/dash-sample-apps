@@ -1,7 +1,6 @@
 # Support Vector Machine (SVM) Explorer [![GitHub license](https://img.shields.io/github/license/plotly/dash-svm.svg)](https://github.com/plotly/dash-svm/blob/master/LICENSE.md) [![Mentioned in Awesome Machine Learning](https://awesome.re/mentioned-badge.svg)](https://github.com/josephmisiti/awesome-machine-learning)
 
 
-
 This is a learning tool and exploration app made using the Dash interactive Python framework developed by [Plotly](https://plot.ly/).
 
 Dash abstracts away all of the technologies and protocols required to build an interactive web-based application and is a simple and effective way to bind a user interface around your Python code. To learn more check out our [documentation](https://plot.ly/dash).
@@ -59,9 +58,6 @@ An SVM is a popular Machine Learning model used in many different fields. You ca
 * [Plotly Python](https://plot.ly/python/) - Used to create the interactive plots
 * [Scikit-Learn](http://scikit-learn.org/stable/documentation.html) - Run the classification algorithms and generate datasets
 
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Authors
 
@@ -70,9 +66,6 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 See also the list of [contributors](https://github.com/plotly/dash-svm/contributors) who participated in this project.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
 The heatmap configuration is heavily inspired from the [scikit-learn Classification Comparison Tutorial](http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html). Please go take a look!
