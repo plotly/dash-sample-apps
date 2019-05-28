@@ -35,14 +35,6 @@ with open(PATH.joinpath("demo_description.md"), "r") as file:
     demo_description_md = file.read()
 
 
-def merge(a, b):
-    return dict(a, **b)
-
-
-def omit(omitted_keys, d):
-    return {k: v for k, v in d.items() if k not in omitted_keys}
-
-
 def numpy_to_b64(array, scalar=True):
     # Convert from 0-1 to 0-255
     if scalar:
@@ -58,22 +50,7 @@ def numpy_to_b64(array, scalar=True):
 
 # Methods for creating components in the layout code
 def Card(children, **kwargs):
-    return html.Section(
-        children,
-        style=merge(
-            {
-                "padding": 20,
-                "margin": 5,
-                "borderRadius": 5,
-                "user-select": "none",
-                "-moz-user-select": "none",
-                "-webkit-user-select": "none",
-                "-ms-user-select": "none",
-            },
-            kwargs.get("style", {}),
-        ),
-        **omit(["style"], kwargs),
-    )
+    return html.Section(children, className="card-style")
 
 
 def NamedSlider(name, short, min, max, step, val, marks=None):
@@ -106,7 +83,7 @@ def NamedSlider(name, short, min, max, step, val, marks=None):
 def NamedInlineRadioItems(name, short, options, val, **kwargs):
     return html.Div(
         id=f"div-{short}",
-        style=merge({"display": "inline-block"}, kwargs.get("style", {})),
+        style={"display": "inline-block"},
         children=[
             f"{name}:",
             dcc.RadioItems(
@@ -117,7 +94,6 @@ def NamedInlineRadioItems(name, short, options, val, **kwargs):
                 style={"display": "inline-block", "margin-left": "7px"},
             ),
         ],
-        **omit(["style"], kwargs),
     )
 
 
@@ -182,6 +158,7 @@ def create_layout(app):
                                     dcc.Dropdown(
                                         id="dropdown-dataset",
                                         searchable=False,
+                                        clearable=False,
                                         options=[
                                             {
                                                 "label": "MNIST Digits",
@@ -195,10 +172,6 @@ def create_layout(app):
                                                 "label": "Wikipedia (GloVe)",
                                                 "value": "wikipedia_3000",
                                             },
-                                            # For running the local version (change names to your own dataset(s))
-                                            # {'label': 'cifar_gray_3000},
-                                            # {'label': 'fashion_3000'},
-                                            # {'label': 'Web Crawler (GloVe)'},
                                         ],
                                         placeholder="Select a dataset",
                                         value="mnist_3000",
@@ -384,10 +357,6 @@ def demo_callbacks(app):
             "twitter_3000": pd.read_csv(
                 DATA_PATH.joinpath("twitter_3000.csv"), encoding="ISO-8859-1"
             ),
-            # These are for the local app to generate uploaded datasets (change the filenames to match the uploaded datasets)
-            # "crawler_3000": pd.read_csv(DATA_PATH.joinpath("crawler_3000.csv")),
-            # "fashion_3000": pd.read_csv(DATA_PATH.joinpath("fashion_3000_input.csv")),
-            # "cifar_gray_3000": pd.read_csv(DATA_PATH.joinpath("cifar_gray_3000_input.csv")),
         }
 
     # Callback function for the learn-more button
@@ -399,6 +368,20 @@ def demo_callbacks(app):
         # If clicked odd times, the insturctions will show; else (even times), only the header will show
         if n_clicks == None:
             n_clicks = 0
+        if (n_clicks % 2) == 1:
+            n_clicks += 1
+            return html.Div(
+                children=[
+                    html.Div(
+                        style={"padding-right": "15%"},
+                        children=dcc.Markdown(demo_intro_md),
+                    ),
+                    html.Div(children=dcc.Markdown(demo_description_md)),
+                    html.Div(html.Button("Close", id="button")),
+                ]
+            )
+        else:
+            n_clicks += 1
             return html.Div(
                 children=[
                     html.Div(
@@ -408,30 +391,6 @@ def demo_callbacks(app):
                     html.Div(html.Button("Learn More", id="button")),
                 ]
             )
-        else:
-            if (n_clicks % 2) == 1:
-                n_clicks += 1
-                return html.Div(
-                    children=[
-                        html.Div(
-                            style={"padding-right": "15%"},
-                            children=dcc.Markdown(demo_intro_md),
-                        ),
-                        html.Div(children=dcc.Markdown(demo_description_md)),
-                        html.Div(html.Button("Close", id="button")),
-                    ]
-                )
-            else:
-                n_clicks += 1
-                return html.Div(
-                    children=[
-                        html.Div(
-                            style={"padding-right": "15%"},
-                            children=dcc.Markdown(demo_intro_md),
-                        ),
-                        html.Div(html.Button("Learn More", id="button")),
-                    ]
-                )
 
     @app.callback(
         Output("div-wordemb-controls", "style"), [Input("dropdown-dataset", "value")]

@@ -74,6 +74,16 @@
   background-color: #f2f3f4 !important;
 }
 
+.card-style {
+  padding: 20px;
+  margin: 5px;
+  border-radius: 5px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
 body {
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
@@ -166,13 +176,16 @@ body {
   }
 
   #app-title {
-    text-align: center !important;
+    text-align: center;
+  }
+
+  #plotly-image {
+    height: 40px;
   }
 
   .header_img {
-    height: 40px;
     float: left;
-    margin: 0 !important;
+    margin: 0;
   }
 
   #learn-more-button {
@@ -181,11 +194,11 @@ body {
   }
 
   #learn-more-button > div > div:nth-child(1) {
-    padding-right: 7% !important;
+    padding-right: 7%;
   }
 
   #learn-more-button > div > div:nth-child(2) {
-    padding-right: 7%;
+    padding-right: 15%;
   }
 
   #learn-more-button > div > div:nth-child(3) {
@@ -194,7 +207,7 @@ body {
 }
 @media only screen and (max-width: 550px) {
   #plotly-image {
-    height: 35px !important;
+    height: 35px;
     width: auto;
   }
 }
