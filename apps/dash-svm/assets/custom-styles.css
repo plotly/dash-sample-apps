@@ -233,14 +233,19 @@ input[type='radio']:checked {
         width: 100%;
         margin: 0;
         padding: 8rem 10rem;
+        max-height: none;
+        height: 150rem;
     }
 
     #graph-line-roc-curve{
         margin-left: -7rem !important;
+        height: 50rem !important;
+        margin-bottom: 7rem;
     }
 
     #graph-pie-confusion-matrix{
         margin-left: -7rem !important;
+        height: 75rem !important;
     }
 }
 
