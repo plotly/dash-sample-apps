@@ -112,36 +112,55 @@ buildUpperLeftPanel <- function(){
   htmlDiv(
     id = "upper-left",
     className = "six columns",
+    style = list(paddingTop = "0"),
     children = list(
-      htmlDiv(
-        id = "state-select-outer",
-        children = list(
-          htmlLabel("Select a State"),
-          dccDropdown(
-            id = "state-select",
-            options = lapply(
-              state_list,
-              function(x){
-                list(label = x, value = x)
-              }
-            ),
-            value = state_list[2]
-          )
-        )
+      htmlH5(
+        paste(
+          "Choose hospitals on the map or", 
+          "procedures from the list below to see costs"
+        ),
+        style = list(marginBottom = "2rem", marginTop = "0.6rem")
       ),
       htmlDiv(
-        id = "select-metric-outer",
+        style = list(
+          display = "flex", 
+          flexDirecetion = "row",
+          justifyContent = "space-between"
+        ),
         children = list(
-          htmlLabel("Choose a Cost Metric:"),
-          dccDropdown(
-            id = "metric-select",
-            options = lapply(
-              cost_metric,
-              function(x){
-                list(label = x, value = x)
-              }
-            ),
-            value = cost_metric[[1]]
+          htmlDiv(
+            style = list(width = "45%"),
+            id = "state-select-outer",
+            children = list(
+              htmlLabel("Select a State"),
+              dccDropdown(
+                id = "state-select",
+                options = lapply(
+                  state_list,
+                  function(x){
+                    list(label = x, value = x)
+                  }
+                ),
+                value = state_list[2]
+              )
+            )
+          ),
+          htmlDiv(
+            style = list(width = "45%"),
+            id = "select-metric-outer",
+            children = list(
+              htmlLabel("Choose a Cost Metric:"),
+              dccDropdown(
+                id = "metric-select",
+                options = lapply(
+                  cost_metric,
+                  function(x){
+                    list(label = x, value = x)
+                  }
+                ),
+                value = cost_metric[[1]]
+              )
+            )
           )
         )
       ),
@@ -273,34 +292,44 @@ generateGeoMap <- function(geo_data, selected_metric,
     )
 }
 
+raw_data <- dataList[["AL"]]
+cost_select <- cost_metric[[1]]
+region_select <- c("AL - Birmingham", "AL - Dothan")
+provider_select <- list()
+
+
 generateProcedurePlot <- function(raw_data, cost_select,
                                   region_select, provider_select){
   procedure_data <- raw_data[
     raw_data[["Hospital Referral Region (HRR) Description"]] %in% region_select
     ]
   providers <- unique(procedure_data[["Provider Name"]])
-
   procedure_data[procedure_data[["Provider Name"]] %in% provider_select,
                  l := .N,
                  by = "Provider Name"
                  ]
-  hovertemplate <- paste0(
-    procedure_data[["Provider Name"]],
-    "<br><b>%{y}</b>", "<br>Average Procedure Cost: %{x:$.2f}"
-  )
   selected_indices <- procedure_data[
     procedure_data[["Provider Name"]] %in% provider_select,
     which = TRUE
   ]
-
   plot_ly(
     data = procedure_data,
     y = procedure_data[["DRG Definition"]],
     x = procedure_data[[cost_select]],
-    type = "scatter", mode = "markers",
+    type = "box", boxpoints = "all", jitter = 0,
+    pointpos = 0,
+    hoveron = "points",
+    fillcolor = "rgba(0,0,0,0)",
+    line = list(color = "rgba(0,0,0,0)"),
+    hoverinfo = "text",
+    hovertext = paste(
+      procedure_data[["Provider Name"]],
+      paste("<b>", procedure_data[["DRG Definition"]], "</b>"),
+      paste0("Average Procedure Cost: $", procedure_data[[cost_select]]),
+      sep = "<br>"
+    ),
     name = "",
     customdata = procedure_data[["Provider Name"]],
-    hovertemplate = hovertemplate,
     # Same issue as generateGeoMap for the selected point indices
     selectedpoints = selected_indices - 1,
     selected = list(marker = list(color = "#FFFF00", size = 13)),
@@ -336,6 +365,9 @@ generateProcedurePlot <- function(raw_data, cost_select,
       paper_bgcolor = "#171b26"
     )
 }
+#p <- generateProcedurePlot(raw_data, cost_select, region_select, provider_select)
+#str(p)
+#p
 
 generateDataTable <- function(DT, type = c("procedure", "cost")){
   dashDataTable(
@@ -402,13 +434,13 @@ app$layout(
         id = "upper-container",
         className = "row",
         children = list(
-          htmlP(
-            className = "section title",
-            children = paste(
-              "Choose hospital on the map or procedures",
-              "from the list below to see costs"
-            )
-          ),
+          #htmlP(
+            #className = "section title",
+            #children = paste(
+              #"Choose hospital on the map or procedures",
+              #"from the list below to see costs"
+            #)
+          #),
           buildUpperLeftPanel(),
           htmlDiv(
             id = "geo-map-outer",
@@ -416,9 +448,12 @@ app$layout(
             children = list(
               htmlP(
                 id = "map-title",
-                children = sprintf(
-                  "Medical Provider Charges in the State of %s",
-                  state_map[state_list[2]]
+                children = 
+                  htmlH5(
+                    sprintf(
+                    "Medical Provider Charges in the State of %s",
+                    state_map[state_list[2]]
+                  )
                 )
               ),
               htmlDiv(
@@ -452,7 +487,7 @@ app$layout(
                 id = "table-left",
                 className = "six columns",
                 children = list(
-                  htmlP("Hospital Charges Summary"),
+                  htmlH5("Hospital Charges Summary"),
                   dccLoading(
                     children = htmlDiv(
                       id = "cost-stats-container",
@@ -465,7 +500,7 @@ app$layout(
                 id = "table-right",
                 className = "six columns",
                 children = list(
-                  htmlP("Procedure Charges Summary"),
+                  htmlH5("Procedure Charges Summary"),
                   dccLoading(
                     children = htmlDiv(
                       id = "procedure-stats-container",
@@ -515,13 +550,11 @@ app$callback(
   output("map-title", "children"),
   list(input("state-select", "value")),
   function(state_select){
-    state_raw_data <- dataList[[state_select]]
-    regions <- unique(
-      state_raw_data[["Hospital Referral Region (HRR) Description"]]
-    )
-    sprintf(
-      "Medicare Provider Charges in the State of %s",
-      state_map[state_select]
+    htmlH5(
+      sprintf(
+        "Medical Provider Charges in the State of %s",
+        state_map[state_select]
+      )
     )
   }
 )

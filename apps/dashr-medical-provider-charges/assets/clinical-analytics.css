@@ -49,7 +49,7 @@ body {
     display:flex;
     flex-direction:column;
     height: 30rem;
-    justify-content: space-evenly;
+    /*justify-content: space-evenly;*/
 }
 
 #upper-left > div > label {
@@ -60,6 +60,11 @@ body {
 *.Select-control, Select--single, .Select-multi-value-wrapper, .Select-value, .Select-value-label {
     background-color: #171b26 !important;
     color: #7b7d8d !important;
+}
+
+.Select--single > .Select-control .Select-value {
+  border: 1px solid dimgrey;
+  border-radius: 4px;
 }
 
 .Select-control, .Select-menu-outer {
