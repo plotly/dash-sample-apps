@@ -9,10 +9,9 @@ require(stringr)
 require(data.table)
 require(glue)
 require(compiler)
-library(dashTable)
 
-DEBUG <- T
-FRAMERATE <- 24.0
+DEBUG <<- T
+FRAMERATE <<- 24.0
 f_read <- cmpfun(fread)
 data_table = cmpfun(data.table)
 
@@ -24,7 +23,7 @@ aplly <- cmpfun(apply)
 laplly <- cmpfun(lapply)
 
 
-load.data <- cmpfun(function(path){
+load.data <<- cmpfun(function(path){
   #  # Load data about a specific footage (given by the path). It returns a dictionary of useful variables such as
   #  #  the dataframe containing all the detection and bounds localization, the number of classes inside that footage,
   #  #  the matrix of all the classes in string, the given class with padding, and the root of the number of classes,
@@ -68,29 +67,6 @@ load.data <- cmpfun(function(path){
   
 })
 
-LABELS <- function(footage){
-  titles = dat.dict[[footage]]$TITL
-  l <- length(titles)
-  m <- ceiling(sqrt(l))
-  titles_pad <- c(titles, rep("", times=(m^2-l)))
-  
-  hover_text = titles_pad
-  
-  hover_text = matrix(hover_text, ncol = m, byrow=F)
-  
-  colnames(hover_text) <- 1:m
-  rownames(hover_text) <- 1:m
-  df <- data.table(hover_text, keep.rownames = T)
-  return(dashDataTable(
-    id = 'table',
-    columns = lapply(colnames(df), function(x) {
-      list(name = x, id = x)
-    }),
-    data = setNames(lapply(split(df, seq(nrow(df))), FUN = function (x) {as.list(x)}), NULL)
-  ))
-}
-
-
 #dict of optimized function through cmpfun
 load_data <- cmpfun(load.data)
 
@@ -98,7 +74,7 @@ load_data <- cmpfun(load.data)
 
 footage_labels <- c("james_bond", "zebra", "car_show_drone", "car_footage", "DroneCanalFestival","DroneCarFestival2","FarmDrone", "ManCCTV", "RestaurantHoldup")
 
-dat.dict <- dict( james_bond = load_data("data/james_bond_object_data.csv"), 
+dat.dict <<- dict( james_bond = load_data("data/james_bond_object_data.csv"), 
                          
                          zebra =  load_data("data/Zebra_object_data.csv"), 
                          
@@ -119,7 +95,7 @@ dat.dict <- dict( james_bond = load_data("data/james_bond_object_data.csv"),
 
 
 
-url.dict <-  dict(regular=data_table(james_bond = 'https://www.youtube.com/watch?v=g9S5GndUhko', 
+url.dict <<-  dict(regular=data_table(james_bond = 'https://www.youtube.com/watch?v=g9S5GndUhko', 
                                          
                                          zebra =  'https://www.youtube.com/watch?v=TVvtD3AVt10', 
                                          
@@ -661,7 +637,7 @@ app$callback(
         figure_xaxis <- dict(automargin=TRUE, tickangle = -45)
         figure_yaxis <- dict(automargin=TRUE, range=c(0,1), title = dict(text = 'Score'))
         
-        figure = figure %>% plotly::layout(showlegend = FALSE, autosize=TRUE,  paper_bgcolor = 'rgb(249,249,249)', plot_bgcolor = 'rgb(249,249,249)') 
+        figure %>% layout(showlegend = FALSE, autosize=TRUE,  paper_bgcolor = 'rgb(249,249,249)', plot_bgcolor = 'rgb(249,249,249)') 
         
         return(figure)
         
@@ -674,7 +650,7 @@ app$callback(
     p_xaxis <- dict(automargin=TRUE)
     p_yaxis <- dict(title = 'Score', automargin = TRUE, range= 0:1)
     p = plot_ly(type =  'bar', x=c("Empty 1","Empty 2" ), y=c(0,0))
-    p = p %>% plotly::layout(showlegend=FALSE, paper_bgcolor='rgb(249,249,249)', plot_bgcolor='rgb(249,249,249)', xaxis = p_xaxis, yaxis = p_yaxis)
+    p %>% layout(showlegend=FALSE, paper_bgcolor='rgb(249,249,249)', plot_bgcolor='rgb(249,249,249)', xaxis = p_xaxis, yaxis = p_yaxis)
     
     
     return(p) # Returns an empty bar graph
@@ -784,7 +760,7 @@ app$callback(
     }
     p = plot_ly(type='heatmap')
     
-    p = p %>% layout(showlegend = F, paper_bgcolor=bgc, plot_bgcolor=bgc, autosize=F, margin = heatmap_margin)
+    p %>% layout(showlegend = F, paper_bgcolor=bgc, plot_bgcolor=bgc, autosize=F, margin = heatmap_margin)
     return(p)
     
   }
@@ -793,39 +769,14 @@ app$callback(
 )
 
 
-# app$callback(
-#   
-#   output = dict(id='heatmap-labels', property='children'),
-#   params = dict(input(id = "interval-confidence-mode", property = "n_intervals"),
-#                
-#                 input(id = 'dropdown-footage-selection', property = 'value')),
-#   
-#   function(n, footage){
-#     titles = dat.dict[[footage]]$TITL
-#     l <- length(titles)
-#     m <- ceiling(sqrt(l))
-#     titles_pad <- c(titles, rep("", times=(m^2-l)))
-#     
-#     hover_text = titles_pad
-#     
-#     hover_text = matrix(hover_text, ncol = m, byrow=F)
-#     return(htmlPre(paste('
-#     ', laplly(1:m, function(i){return(paste(laplly(1:m, function(j){glue('{i} {j} - {hover_text[i, j]}')}), collapse ='
-#     '))}), collapse='
-#     ') 
-#     ))
-#   }
-#   
-#   
-# )
 app$callback(
   
   output = dict(id='heatmap-labels', property='children'),
   params = dict(input(id = "interval-confidence-mode", property = "n_intervals"),
-                
-                input(id = 'dropdown-footage-selection', property = 'value')),
+                state(id = 'video-display', property = 'currentTime'),
+                state(id = 'dropdown-footage-selection', property = 'value')),
   
-  function(n, footage){
+  function(n, ct, footage){
     titles = dat.dict[[footage]]$TITL
     l <- length(titles)
     m <- ceiling(sqrt(l))
@@ -834,13 +785,11 @@ app$callback(
     hover_text = titles_pad
     
     hover_text = matrix(hover_text, ncol = m, byrow=F)
-   return(htmlDiv(dashDataTable(
-     id = 'table',
-     columns = lapply(colnames(df), function(x) {
-       list(name = x, id = x)
-     }),
-     data = setNames(lapply(split(df, seq(nrow(df))), FUN = function (x) {as.list(x)}), NULL)
-   )))
+    return(htmlPre(paste('
+    ', laplly(1:m, function(i){return(paste(laplly(1:m, function(j){glue('{i} {j} - {hover_text[i, j]}')}), collapse ='
+    '))}), collapse='
+    ') 
+    ))
   }
   
   
@@ -905,7 +854,7 @@ app$callback(
         pie =plot_ly(type = "pie", labels = clses, values=counts, hoverinfo="text+percent", textinfo = "label+percent", marker = dict(colors=colorscale[1:length(clses)]))
         
         
-        pie %>% plotly::layout( showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
+        pie %>% layout( showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
         return(pie)
       }
       
@@ -913,7 +862,7 @@ app$callback(
     
     p <- plot_ly(type="pie")
     
-    p %>% plotly::layout(showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
+    p %>% layout(showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
     return(p)
     
   }

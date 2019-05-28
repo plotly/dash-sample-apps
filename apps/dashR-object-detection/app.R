@@ -10,8 +10,9 @@ require(data.table)
 require(glue)
 require(compiler)
 
-DEBUG <<- T
-FRAMERATE <<- 24.0
+
+DEBUG <- T
+FRAMERATE <- 24.0
 f_read <- cmpfun(fread)
 data_table = cmpfun(data.table)
 
@@ -23,7 +24,7 @@ aplly <- cmpfun(apply)
 laplly <- cmpfun(lapply)
 
 
-load.data <<- cmpfun(function(path){
+load.data <- cmpfun(function(path){
   #  # Load data about a specific footage (given by the path). It returns a dictionary of useful variables such as
   #  #  the dataframe containing all the detection and bounds localization, the number of classes inside that footage,
   #  #  the matrix of all the classes in string, the given class with padding, and the root of the number of classes,
@@ -67,6 +68,29 @@ load.data <<- cmpfun(function(path){
   
 })
 
+LABELS <- function(footage){
+  titles = dat.dict[[footage]]$TITL
+  l <- length(titles)
+  m <- ceiling(sqrt(l))
+  titles_pad <- c(titles, rep("", times=(m^2-l)))
+  
+  hover_text = titles_pad
+  
+  hover_text = matrix(hover_text, ncol = m, byrow=F)
+  
+  colnames(hover_text) <- 1:m
+  rownames(hover_text) <- 1:m
+  df <- data.table(hover_text, keep.rownames = T)
+  return(dashDataTable(
+    id = 'table',
+    columns = lapply(colnames(df), function(x) {
+      list(name = x, id = x)
+    }),
+    data = setNames(lapply(split(df, seq(nrow(df))), FUN = function (x) {as.list(x)}), NULL)
+  ))
+}
+
+
 #dict of optimized function through cmpfun
 load_data <- cmpfun(load.data)
 
@@ -74,7 +98,7 @@ load_data <- cmpfun(load.data)
 
 footage_labels <- c("james_bond", "zebra", "car_show_drone", "car_footage", "DroneCanalFestival","DroneCarFestival2","FarmDrone", "ManCCTV", "RestaurantHoldup")
 
-dat.dict <<- dict( james_bond = load_data("data/james_bond_object_data.csv"), 
+dat.dict <- dict( james_bond = load_data("data/james_bond_object_data.csv"), 
                          
                          zebra =  load_data("data/Zebra_object_data.csv"), 
                          
@@ -95,7 +119,7 @@ dat.dict <<- dict( james_bond = load_data("data/james_bond_object_data.csv"),
 
 
 
-url.dict <<-  dict(regular=data_table(james_bond = 'https://www.youtube.com/watch?v=g9S5GndUhko', 
+url.dict <-  dict(regular=data_table(james_bond = 'https://www.youtube.com/watch?v=g9S5GndUhko', 
                                          
                                          zebra =  'https://www.youtube.com/watch?v=TVvtD3AVt10', 
                                          
@@ -637,7 +661,7 @@ app$callback(
         figure_xaxis <- dict(automargin=TRUE, tickangle = -45)
         figure_yaxis <- dict(automargin=TRUE, range=c(0,1), title = dict(text = 'Score'))
         
-        figure %>% layout(showlegend = FALSE, autosize=TRUE,  paper_bgcolor = 'rgb(249,249,249)', plot_bgcolor = 'rgb(249,249,249)') 
+        figure = figure %>% plotly::layout(showlegend = FALSE, autosize=TRUE,  paper_bgcolor = 'rgb(249,249,249)', plot_bgcolor = 'rgb(249,249,249)') 
         
         return(figure)
         
@@ -650,7 +674,7 @@ app$callback(
     p_xaxis <- dict(automargin=TRUE)
     p_yaxis <- dict(title = 'Score', automargin = TRUE, range= 0:1)
     p = plot_ly(type =  'bar', x=c("Empty 1","Empty 2" ), y=c(0,0))
-    p %>% layout(showlegend=FALSE, paper_bgcolor='rgb(249,249,249)', plot_bgcolor='rgb(249,249,249)', xaxis = p_xaxis, yaxis = p_yaxis)
+    p = p %>% plotly::layout(showlegend=FALSE, paper_bgcolor='rgb(249,249,249)', plot_bgcolor='rgb(249,249,249)', xaxis = p_xaxis, yaxis = p_yaxis)
     
     
     return(p) # Returns an empty bar graph
@@ -737,21 +761,7 @@ app$callback(
         
         ##Resorted to ggplot2
         
-        checker_tbl <- data.table(checker_brd) %>% rownames_to_column('X') %>% gather(Y, value, -X)%>% mutate(
-          X= factor(X, levels=1:m),
-          Y = factor(gsub("V", "", Y), levels=1:m),
-          Z = hover_text
-        )
-        
-        
-        ##plot data
-        theme(text=element_text(size=5))
-        
-        plot_score <- ggplot(checker_tbl, aes(X, Y))  + geom_tile(aes(fill=value)) + geom_text(aes(label=round(value, 2), size=2)) + scale_fill_gradient(low="white", high="red")
-        
-        
-        figure <- ggplotly(plot_score, label.size=0.01, tooltip='text') %>% layout(showlegend = FALSE, autosize = FALSE, paper_bgcolor = bgc, plot_bgcolor = bgc, margin = list(l=10, r=10, b=20, t=20, pad=2), font = list(size=7)) 
-        
+        figure <- plot_ly(type='heatmap',  x=1:m, y=1:m, z=checker_brd, text=hover_text, colors=colorRamp(c('white', 'red')))
         
         return(figure)
         
@@ -760,7 +770,7 @@ app$callback(
     }
     p = plot_ly(type='heatmap')
     
-    p %>% layout(showlegend = F, paper_bgcolor=bgc, plot_bgcolor=bgc, autosize=F, margin = heatmap_margin)
+    p = p %>% layout(showlegend = F, paper_bgcolor=bgc, plot_bgcolor=bgc, autosize=F, margin = heatmap_margin)
     return(p)
     
   }
@@ -769,31 +779,6 @@ app$callback(
 )
 
 
-app$callback(
-  
-  output = dict(id='heatmap-labels', property='children'),
-  params = dict(input(id = "interval-confidence-mode", property = "n_intervals"),
-                state(id = 'video-display', property = 'currentTime'),
-                state(id = 'dropdown-footage-selection', property = 'value')),
-  
-  function(n, ct, footage){
-    titles = dat.dict[[footage]]$TITL
-    l <- length(titles)
-    m <- ceiling(sqrt(l))
-    titles_pad <- c(titles, rep("", times=(m^2-l)))
-    
-    hover_text = titles_pad
-    
-    hover_text = matrix(hover_text, ncol = m, byrow=F)
-    return(htmlPre(paste('
-    ', laplly(1:m, function(i){return(paste(laplly(1:m, function(j){glue('{i} {j} - {hover_text[i, j]}')}), collapse ='
-    '))}), collapse='
-    ') 
-    ))
-  }
-  
-  
-)
 
 #VISUAL MODE - Object count pie graph
 
@@ -854,7 +839,7 @@ app$callback(
         pie =plot_ly(type = "pie", labels = clses, values=counts, hoverinfo="text+percent", textinfo = "label+percent", marker = dict(colors=colorscale[1:length(clses)]))
         
         
-        pie %>% layout( showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
+        pie %>% plotly::layout( showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
         return(pie)
       }
       
@@ -862,7 +847,7 @@ app$callback(
     
     p <- plot_ly(type="pie")
     
-    p %>% layout(showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
+    p %>% plotly::layout(showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
     return(p)
     
   }
