@@ -30,7 +30,7 @@ Clone the git repo, then install the requirements with pip
 
 ```
 git clone https://github.com/plotly/dash-sample-apps
-cd dash-tsne
+cd dash-sample-apps/apps/dash-tsne
 pip install -r requirements.txt
 ```
 
@@ -76,12 +76,6 @@ A classical example is MNIST, a dataset of 60,000 handwritten digits, 28x28 gray
 - **Xing Han Lu** - _Initial Work_ - [@xhlulu](https://github.com/xhlulu)
 
 See also the list of [contributors](https://github.com/plotly/dash-svm/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
 
 ## Screenshots
 
