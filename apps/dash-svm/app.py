@@ -61,17 +61,20 @@ app.layout = html.Div(
                     children=[
                         # Change App Name here
                         html.H2(
-                            id='banner-title',
+                            id="banner-title",
                             children=[
                                 html.A(
                                     "Support Vector Machine (SVM) Explorer",
                                     href="https://github.com/plotly/dash-svm",
-                                    style={"text-decoration": "none", "color": "inherit"},
+                                    style={
+                                        "text-decoration": "none",
+                                        "color": "inherit",
+                                    },
                                 )
                             ],
                         ),
                         html.A(
-                            id='banner-logo',
+                            id="banner-logo",
                             children=[
                                 html.Img(
                                     src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png"
@@ -88,7 +91,7 @@ app.layout = html.Div(
             className="container scalable",
             children=[
                 html.Div(
-                    id='app-container',
+                    id="app-container",
                     className="row",
                     children=[
                         html.Div(
@@ -345,17 +348,17 @@ def disable_slider_param_gamma_power(kernel):
     ],
 )
 def update_svm_graph(
-        kernel,
-        degree,
-        C_coef,
-        C_power,
-        gamma_coef,
-        gamma_power,
-        dataset,
-        noise,
-        shrinking,
-        threshold,
-        sample_size,
+    kernel,
+    degree,
+    C_coef,
+    C_power,
+    gamma_coef,
+    gamma_power,
+    dataset,
+    noise,
+    shrinking,
+    threshold,
+    sample_size,
 ):
     t_start = time.time()
     h = 0.3  # step size in the mesh
