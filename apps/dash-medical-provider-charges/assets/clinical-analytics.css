@@ -11,16 +11,15 @@
 
 body {
     background-color: #171b26;
-    color: #737a8d;
+    color: #9fa6b7;
 }
 
 .banner {
     height: 5rem;
     width: 90%;
     margin-bottom: 1rem;
-    border-bottom: 0.5px #737a8d;
     padding: 0rem 4rem 0rem;
-    display:flex;
+    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -41,20 +40,29 @@ body {
 }
 
 #upper-container, #lower-container {
-    margin: 0 3rem;
+    margin: 2rem 5rem;
 }
 
-#upper-left{
+#upper-left {
     padding: 1rem 2rem 1rem 2rem;
-    display:flex;
-    flex-direction:column;
-    height: 30rem;
+    display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
+}
+
+.control-row-1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#state-select-outer, #select-metric-outer {
+    width: 45%;
 }
 
 #upper-left > div > label {
     font-weight: bold;
-    margin: 2rem 1rem 0.8rem 1rem;
+    margin: 20px 0px;
 }
 
 *.Select-control, Select--single, .Select-multi-value-wrapper, .Select-value, .Select-value-label {
@@ -80,14 +88,18 @@ span.Select-clear-zone {
     cursor: pointer;
 }
 
-#middle-container {
-    height: 20rem;
-    overflow-y: scroll;
-    margin: 1rem 3rem;
+#region-select-all, #state-select-outer > label, #select-metric-outer > label {
+    margin-bottom: 2px;
+    color: #7b7d8d;
 }
 
-#table-left > p, #table-right > p {
+.dash-spreadsheet-container .dash-spreadsheet-inner th, td {
+    text-align: center !important;
+}
+
+#table-upper > p, #table-lower > p {
     font-weight: bold;
+    margin: 20px 0px;
 }
 
 #lower-container {
@@ -115,6 +127,7 @@ span.Select-clear-zone {
 
 #cost-stats-table, #procedure-stats-table {
     overflow: scroll;
+    height: 10rem;
 }
 
 .section-title {
