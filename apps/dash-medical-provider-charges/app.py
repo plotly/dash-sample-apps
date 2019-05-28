@@ -9,7 +9,10 @@ from dash.exceptions import PreventUpdate
 import pandas as pd
 import os
 
-app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
+app = dash.Dash(
+    __name__,
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+)
 server = app.server
 
 app.config["suppress_callback_exceptions"] = True
@@ -103,8 +106,8 @@ def generate_aggregation(df, metric):
     }
     grouped = (
         df.groupby(["Hospital Referral Region (HRR) Description", "Provider Name"])
-            .agg(aggregation)
-            .reset_index()
+        .agg(aggregation)
+        .reset_index()
     )
 
     grouped["lat"] = grouped["lon"] = grouped["Provider Street Address"] = grouped[
@@ -124,8 +127,8 @@ def get_lat_lon_add(df, name):
         df.groupby(["Provider Name"]).get_group(name)["lat"].tolist()[0],
         df.groupby(["Provider Name"]).get_group(name)["lon"].tolist()[0],
         df.groupby(["Provider Name"])
-            .get_group(name)["Provider Street Address"]
-            .tolist()[0],
+        .get_group(name)["Provider Street Address"]
+        .tolist()[0],
     ]
 
 
@@ -139,7 +142,7 @@ def build_upper_left_panel():
                 children="Choose hospital on the map or procedures from the list below to see costs",
             ),
             html.Div(
-                className='control-row-1',
+                className="control-row-1",
                 children=[
                     html.Div(
                         id="state-select-outer",
@@ -162,12 +165,12 @@ def build_upper_left_panel():
                                 value=cost_metric[0],
                             ),
                         ],
-                    )
-                ]
+                    ),
+                ],
             ),
             html.Div(
                 id="region-select-outer",
-                className='control-row-2',
+                className="control-row-2",
                 children=[
                     html.Label("Pick a Region:"),
                     html.Div(
@@ -190,7 +193,6 @@ def build_upper_left_panel():
                     ),
                 ],
             ),
-
             html.Div(
                 id="table-container",
                 className="table-container",
@@ -199,9 +201,7 @@ def build_upper_left_panel():
                         id="table-upper",
                         children=[
                             html.P("Hospital Charges Summary"),
-                            dcc.Loading(
-                                children=html.Div(id="cost-stats-container")
-                            ),
+                            dcc.Loading(children=html.Div(id="cost-stats-container")),
                         ],
                     ),
                     html.Div(
@@ -241,11 +241,11 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
     cost_metric_data["max"] = filtered_data[selected_metric]["mean"].max()
     cost_metric_data["mid"] = (cost_metric_data["min"] + cost_metric_data["max"]) / 2
     cost_metric_data["low_mid"] = (
-                                          cost_metric_data["min"] + cost_metric_data["mid"]
-                                  ) / 2
+        cost_metric_data["min"] + cost_metric_data["mid"]
+    ) / 2
     cost_metric_data["high_mid"] = (
-                                           cost_metric_data["mid"] + cost_metric_data["max"]
-                                   ) / 2
+        cost_metric_data["mid"] + cost_metric_data["max"]
+    ) / 2
 
     for i in range(len(lat)):
         val = average_covered_charges_mean[i]
@@ -281,7 +281,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                 cmin=cost_metric_data["min"],
                 cmax=cost_metric_data["max"],
                 size=10
-                     * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
+                * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
                 colorbar=dict(
                     x=0.9,
                     title=dict(
@@ -305,10 +305,10 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
             customdata=[(provider, region)],
             hoverinfo="text",
             text=provider
-                 + "<br>"
-                 + region
-                 + "<br>Average Procedure Cost:"
-                 + " ${:,.2f}".format(val),
+            + "<br>"
+            + region
+            + "<br>Average Procedure Cost:"
+            + " ${:,.2f}".format(val),
         )
         hospitals.append(hospital)
 
@@ -344,7 +344,7 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
 
     for ind, provider in enumerate(providers):
         hovertemplate = (
-                provider + "<br><b>%{y}</b>" + "<br>Average Procedure Cost: %{x:$.2f}"
+            provider + "<br><b>%{y}</b>" + "<br>Average Procedure Cost: %{x:$.2f}"
         )
         dff = procedure_data[procedure_data["Provider Name"] == provider]
 
@@ -404,7 +404,7 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
 
 
 app.layout = html.Div(
-    className='container scalable',
+    className="container scalable",
     children=[
         html.Div(
             id="banner",
@@ -441,7 +441,6 @@ app.layout = html.Div(
                                             "layout": dict(
                                                 plot_bgcolor="#171b26",
                                                 paper_bgcolor="#171b26",
-
                                             ),
                                         },
                                     ),
@@ -463,7 +462,7 @@ app.layout = html.Div(
                 )
             ],
         ),
-    ]
+    ],
 )
 
 
@@ -603,7 +602,7 @@ def update_hospital_datatable(geo_select, procedure_select, cost_select, state_s
         navigation="page",
         style_cell={"background-color": "#242a3b", "color": "#7b7d8d"},
         style_as_list_view=False,
-        style_header={"background-color":  "#1f2536"}
+        style_header={"background-color": "#1f2536"},
     )
 
 
@@ -649,7 +648,7 @@ def update_procedure_stats(procedure_select, geo_select):
         pagination_settings={"displayed_pages": 1, "current_page": 0, "page_size": 5},
         navigation="page",
         style_as_list_view=False,
-        style_header={"background-color": "#1f2536"}
+        style_header={"background-color": "#1f2536"},
     )
 
 
