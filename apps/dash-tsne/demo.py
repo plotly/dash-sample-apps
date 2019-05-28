@@ -1,8 +1,5 @@
 import base64
 import io
-import os
-import time
-import json
 import pathlib
 
 import numpy as np
@@ -406,10 +403,7 @@ def demo_callbacks(app):
         [Input("radio-wordemb-display-mode", "value")],
     )
     def disable_word_selection(mode):
-        if mode == "neighbors":
-            return False
-        else:
-            return True
+        return not mode == "neighbors"
 
     @app.callback(
         Output("dropdown-word-selected", "options"),
@@ -616,12 +610,7 @@ def demo_callbacks(app):
         [Input("graph-3d-plot-tsne", "clickData"), Input("dropdown-dataset", "value")],
     )
     def display_click_message(clickData, dataset):
-        """
-        Displays message shown when a point in the graph is clicked, depending whether it's an image or word
-        :param clickData:
-        :param dataset:
-        :return:
-        """
+        # Displays message shown when a point in the graph is clicked, depending whether it's an image or word
         if dataset in IMAGE_DATASETS:
             if clickData:
                 return "Image Selected"

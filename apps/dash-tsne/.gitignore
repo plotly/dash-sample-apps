@@ -12,4 +12,5 @@ input_data.csv
 data/cifar_3000*
 *.pyc
 .vscode/
+venv
 .env
