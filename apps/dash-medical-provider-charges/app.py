@@ -9,7 +9,7 @@ from dash.exceptions import PreventUpdate
 import pandas as pd
 import os
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
 server = app.server
 
 app.config["suppress_callback_exceptions"] = True
@@ -283,6 +283,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                 size=10
                      * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
                 colorbar=dict(
+                    x=1,
                     title=dict(
                         text="Average Cost",
                         font={"color": "#737a8d", "family": "Open Sans"},
@@ -312,7 +313,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
         hospitals.append(hospital)
 
     layout = go.Layout(
-        margin=dict(l=10, r=10, t=10, b=10, pad=5),
+        margin=dict(l=10, r=10, t=20, b=10, pad=5),
         plot_bgcolor="#171b26",
         paper_bgcolor="#171b26",
         clickmode="event+select",
@@ -439,6 +440,7 @@ app.layout = html.Div(
                                             "layout": dict(
                                                 plot_bgcolor="#171b26",
                                                 paper_bgcolor="#171b26",
+
                                             ),
                                         },
                                     ),

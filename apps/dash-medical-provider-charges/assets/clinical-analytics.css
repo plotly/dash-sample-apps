@@ -43,7 +43,7 @@ body {
     margin: 2rem 5rem;
 }
 
-#upper-left {
+#upper-left, #geo-map-outer {
     padding: 1rem 2rem 1rem 2rem;
     display: flex;
     flex-direction: column;
@@ -120,11 +120,11 @@ span.Select-clear-zone {
 }
 
 #geo-map-loading-outer {
-    height: 55rem;
+    height: 60rem;
 }
 
 #geo-map {
-    height: 50rem;
+    height: 55rem;
 }
 
 
@@ -137,12 +137,33 @@ span.Select-clear-zone {
     height: 10rem;
 }
 
-.section-title {
+.section-title, #map-title {
     font-size: 16px;
     font-weight: bold;
     display: block;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 650px) {
+    .banner h6 {
+        font-size: 2rem;
+    }
+    .banner img {
+        height: 2rem;
+    }
+    #upper-container {
+        margin: 1em;
+    }
+    .control-row-1 {
+        flex-direction: column;
+    }
+    #upper-left, #geo-map-outer{
+        width: 100%;
+    }
+
+    #state-select-outer, #select-metric-outer {
+        width: 100%;
+        margin: 1rem 0rem;
+    }
+
 
 }
