@@ -4,6 +4,7 @@ import dash
 
 from demo import create_layout, demo_callbacks
 
+# for the Local version, import local_layout and local_callbacks
 # from local import local_layout, local_callbacks
 
 app = dash.Dash(
