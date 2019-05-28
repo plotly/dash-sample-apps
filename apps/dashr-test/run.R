@@ -2,6 +2,9 @@ library(dashR)
 library(plotly)
 library(dashHtmlComponents)
 library(dashCoreComponents)
+setwd("/app")
+Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = '/dashr-test/',
+           DASH_REQUESTS_PATHNAME_PREFIX = '/dashr-test/')
 
 app <- Dash$new()
 
@@ -69,4 +72,4 @@ app$callback(output=list(id='div-sepal-sepal', property='children'),
              }
 )
 
-app$run_server()
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8080))
