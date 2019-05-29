@@ -48,7 +48,8 @@ app.layout = html.Div(
                         html.Div(
                             [
                                 html.H3(
-                                    "dash for drug discovery", className="uppercase"
+                                    "dash for drug discovery",
+                                    className="uppercase title",
                                 ),
                                 html.Span("Hover ", className="uppercase bold"),
                                 html.Span(
@@ -70,9 +71,7 @@ app.layout = html.Div(
                             id="chem_dropdown",
                             multi=True,
                             value=[STARTING_DRUG],
-                            options=[
-                                {"label": i, "value": i} for i in df["NAME"].tolist()
-                            ],
+                            options=[{"label": i, "value": i} for i in df["NAME"]],
                         )
                     ],
                     className="app__dropdown",

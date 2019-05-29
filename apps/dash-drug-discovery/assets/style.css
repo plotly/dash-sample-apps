@@ -22,6 +22,10 @@ p {
     font-weight: bold;
 }
 
+.title {
+    font-family: serif;
+}
+
 .bg-white {
     background-color: #fff;
 }
