@@ -7,6 +7,7 @@ library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
 library(fasttime)
+setwd("/app/apps/dashr-web-trader")
 source("utils/helper-functions.R")
 
 # load the R object with currency pairs data
