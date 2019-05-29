@@ -212,10 +212,13 @@ generateGeoMap <- function(geo_data, selected_metric,
     cuts, labels = FALSE, include.lowest = TRUE
     )
   ]
-  selected_indices <- filtered_data[
-    filtered_data[["Provider Name"]] %in% procedure_select$hospital,
-    which = TRUE
-  ]
+  #selected_indices <- filtered_data[
+    #filtered_data[["Provider Name"]] %in% procedure_select$hospital,
+    #which = TRUE
+  #]
+  selected_indices <- which(
+    filtered_data[["Provider Name"]] %in% procedure_select$hospital
+  )
 
   provider <- filtered_data[["Provider Name"]]
   region <- filtered_data[["Hospital Referral Region (HRR) Description"]]
@@ -293,15 +296,13 @@ generateProcedurePlot <- function(raw_data, cost_select,
   procedure_data <- raw_data[
     raw_data[["Hospital Referral Region (HRR) Description"]] %in% region_select
     ]
-  providers <- unique(procedure_data[["Provider Name"]])
-  procedure_data[procedure_data[["Provider Name"]] %in% provider_select,
-                 l := .N,
-                 by = "Provider Name"
-                 ]
-  selected_indices <- procedure_data[
-    procedure_data[["Provider Name"]] %in% provider_select,
-    which = TRUE
-  ]
+  #selected_indices <- procedure_data[
+    #procedure_data[["Provider Name"]] %in% provider_select,
+    #which = TRUE
+  #]
+  selected_indices <- which(
+    procedure_data[["Provider Name"]] %in% provider_select
+  )
   plot_ly(
     data = procedure_data,
     y = procedure_data[["DRG Definition"]],
