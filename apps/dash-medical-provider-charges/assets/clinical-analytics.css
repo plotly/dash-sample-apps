@@ -145,7 +145,11 @@ span.Select-clear-zone {
     display: block;
 }
 
-@media only screen and (max-width: 650px) {
+/*
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  */
+
+@media only screen and (max-width: 750px), (min-width: 768px) and (max-width: 1024px) {
     body {
         font-size: 14px;
     }
@@ -184,6 +188,15 @@ span.Select-clear-zone {
         width: 100%;
         margin: 1rem 0rem;
     }
+}
 
+/*
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
 
+    #upper-left, #geo-map-outer {
+    padding: 0rem 4rem;
+    }
 }
