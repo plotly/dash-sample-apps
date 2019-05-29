@@ -28,7 +28,7 @@ generateNewsTable <- function(dataframe, max_rows = 10){
         ),
         className = "newsRow",
         style = list(
-          fontSize = "15px",
+          fontSize = 15,
           padding = "0px 10px 0px 10px"
         ),
       )
@@ -39,15 +39,16 @@ generateNewsTable <- function(dataframe, max_rows = 10){
       htmlP(
         list(
           "Headlines",
+          htmlBr(),
           htmlSpan(
-            paste(
-              "Last update :",
-              strftime(Sys.time(), format = "%H:%M:%S")
+            id = "news_update",
+            children = paste(
+              "Last updated :",
+              strftime(Sys.time(), format = "%Y-%m-%d %H:%M:%S")
             ),
             style = list(
-              fontSize = "13",
-              float = "right",
-              marginTop = "4"
+              fontSize = 12,
+              marginTop = 4
             )
           )
         ),
@@ -278,13 +279,13 @@ getTopBarCell <- function(up, down, color = "white"){
         style = list(
           marginBottom = "1px",
           color = "#b4b4b4",
-          fontSize = "14"
+          fontSize = 14
         )
       ),
       htmlP(
         children = down,
         id = up,
-        style = list(marginBottom = "3", fontSize = "18")
+        style = list(marginBottom = "3", fontSize = 18)
       )
     ),
     className = "one columns",
@@ -817,7 +818,7 @@ chartDiv <- function(pair){
                   margin = "0 1rem 0 2rem",
                   paddingLeft = "25",
                   marginRight = "15",
-                  fontSize = "18px"
+                  fontSize = 18
                 )
               ),
               htmlSpan(
@@ -827,7 +828,7 @@ chartDiv <- function(pair){
                 style = list(
                   margin = "0 1rem",
                   cursor = "pointer",
-                  fontSize = "18px"
+                  fontSize = 18
                 )
               )
             )
@@ -859,7 +860,7 @@ chartDiv <- function(pair){
                   margin = "0 2rem",
                   color = "#b4b4b4",
                   cursor = "pointer",
-                  fontSize = "18px",
+                  fontSize = 18,
                   paddingRight = "25"
                 )
               )
@@ -975,7 +976,7 @@ modal <- function(pair){
                 float = "right",
                 cursor = "pointer",
                 color = "#b6b6b6",
-                fontSize = "18"
+                fontSize = 18
               )
             ),
             htmlSpan(
@@ -1222,7 +1223,7 @@ updateOrders <- function(orders, current_bids, current_asks, id_to_close){
       if (o[i, "sl"] != 0 & price >= o[i, "sl"]){
         o[i, status := "closed"]
         o[i, "close Time" :=
-          strftime(Sys.time(), format = "%Y-%m-%d %H:%M:%S")
+          strftime(Sys.time(), format = "%Y/%m/%d %H:%M:%S")
         ]
         o[i, "close Price" := price]
       }
