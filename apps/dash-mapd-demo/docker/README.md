@@ -4,7 +4,7 @@
 
 ## Build docker image
 
-The docker image can be built by running following command from the project directory:
+The docker image can be built by running the following command from the project directory:
 ```
 docker build -t omnisc_db .
 ```

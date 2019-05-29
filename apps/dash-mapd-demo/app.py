@@ -18,11 +18,11 @@ server = app.server
 
 app.config.suppress_callback_exceptions = True
 
-# Get credentials from env
 user = "mapd"
 password = "HyperInteractive"
 db_name = "mapd"
 
+# Get credentials from env
 if "DASH_APP_NAME" in os.environ:
     host = os.environ.get("DB_HOST")
 else:
@@ -44,26 +44,19 @@ def db_connect():
         return connection
 
     except Exception as e:
-        print("Error connection to db : {}".format(e))
+        print("Error connecting to OmniSci database: {}".format(e))
 
 
 con = db_connect()
 print(con.get_tables())
 
 
-def build_banner():
-    return html.Div(
-        id="banner",
-        className="banner",
-        children=[
-            html.H6("US Flights"),
-            html.Img(src=app.get_asset_url("plotly_logo.png")),
-        ],
-    )
-
-
 def generate_dest_choro(dd_select, start, end):
     """
+    :param dd_select: dropdown select value.
+    :param start: start date from date-picker.
+    :param end: end date from date-picker.
+
     :return: Choropleth map displaying average delay time.
     """
     start_f = f"{start} 00:00:00"
@@ -78,7 +71,7 @@ def generate_dest_choro(dd_select, start, end):
     try:
         dest_df = pd.read_sql(choro_query, db_connect())
     except Exception as e:
-        print("Error querying for choropleth", e)
+        print("Error querying for choropleth: ", e)
         return {}
 
     zmin, zmax = np.min(dest_df["avg_delay"]), np.max(dest_df["avg_delay"])
@@ -172,6 +165,10 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
 
 def generate_time_series_chart(state, start, end, dd_select):
     """
+    :param state: state selection from choropleth.
+    :param start: start date from date-picker.
+    :param end: end date from date-picker.
+    :param dd_select: dropdown select value.
     :return: Binned departure/arrival flight record chart.
     """
     # bin at each hour
@@ -229,6 +226,11 @@ def generate_time_series_chart(state, start, end, dd_select):
 
 def generate_count_chart(state, dd_select, start, end):
     """
+    :param state: state selection from choropleth.
+    :param dd_select: dropdown select value.
+    :param start: start date from date-picker.
+    :param end: end date from date-picker.
+
     :return: Flight count sum graph by dayofweek
     """
     select_f = "origin_state" if dd_select == "dep" else "dest_state"
@@ -272,7 +274,7 @@ def generate_city_graph(state_select, dd_select, start, end):
     :param end: end date from date-picker.
     :param start: start date from date-picker.
     :param dd_select: dropdown select value.
-    :param state_select: State selection from choropleth.
+    :param state_select: state selection from choropleth.
 
     :return: city delay scatter graph.
     """
@@ -332,9 +334,36 @@ def generate_city_graph(state_select, dd_select, start, end):
     return {"data": data, "layout": layout}
 
 
+def query_helper(state_query, dd_select, start, end, weekday_query):
+    con = db_connect()
+    add_and = ""
+    if state_query:
+        add_and = "AND"
+    query = (
+        f"SELECT uniquecarrier AS carrier, flightnum, dep_timestamp, arr_timestamp, origin_city, dest_city "
+        f"FROM {table} WHERE {state_query} {add_and} {dd_select}_timestamp BETWEEN '{start}' AND '{end}' {weekday_query} limit 100"
+    )
+
+    try:
+        dff = pd.read_sql(query, con)
+        dff["flightnum"] = dff["carrier"] + dff["flightnum"].map(str)
+        dff.drop(["carrier"], axis=1)
+        return dff.to_dict("rows")
+    except Exception as e:
+        print(f"Error querying {query}", e)
+        raise PreventUpdate
+
+
 app.layout = html.Div(
     children=[
-        build_banner(),
+        html.Div(
+            id="banner",
+            className="banner",
+            children=[
+                html.H6("US Flights"),
+                html.Img(src=app.get_asset_url("plotly_logo.png")),
+            ],
+        ),
         html.Div(
             id="dropdown-select-outer",
             children=[
@@ -441,8 +470,8 @@ wk_map = {"Mon": 1, "Tues": 2, "Wed": 3, "Thu": 4, "Fri": 5, "Sat": 6, "Sun": 7}
 
 
 @app.callback(
-    output=Output("choropleth", "figure"),
-    inputs=[
+    Output("choropleth", "figure"),
+    [
         Input("dropdown-select", "value"),
         Input("date-picker-range", "start_date"),
         Input("date-picker-range", "end_date"),
@@ -453,35 +482,15 @@ def update_choro(dd_select, start, end):
     return generate_dest_choro(dd_select, start, end)
 
 
-def query_helper(state_query, dd_select, start, end, weekday_query):
-    con = db_connect()
-    add_and = ""
-    if state_query:
-        add_and = "AND"
-    query = (
-        f"SELECT uniquecarrier AS carrier, flightnum, dep_timestamp, arr_timestamp, origin_city, dest_city "
-        f"FROM {table} WHERE {state_query} {add_and} {dd_select}_timestamp BETWEEN '{start}' AND '{end}' {weekday_query} limit 100"
-    )
-
-    try:
-        dff = pd.read_sql(query, con)
-        dff["flightnum"] = dff["carrier"] + dff["flightnum"].map(str)
-        dff.drop(["carrier"], axis=1)
-        return dff.to_dict("rows")
-    except Exception as e:
-        print(f"Error querying {query}", e)
-        raise PreventUpdate
-
-
 @app.callback(
-    output=Output("flights-table", "data"),
-    inputs=[
+    Output("flights-table", "data"),
+    [
         Input("flights_time_series", "relayoutData"),
         Input("count_by_day_graph", "clickData"),
         Input("value_by_city_graph", "selectedData"),
         Input("choropleth", "figure"),
     ],
-    state=[
+    [
         State("dropdown-select", "value"),
         State("date-picker-range", "start_date"),
         State("date-picker-range", "end_date"),
@@ -573,9 +582,9 @@ def update_sel_for_table(
 
 
 @app.callback(
-    output=Output("flights_hm", "figure"),
-    inputs=[Input("choropleth", "clickData"), Input("choropleth", "figure")],
-    state=[
+    Output("flights_hm", "figure"),
+    [Input("choropleth", "clickData"), Input("choropleth", "figure")],
+    [
         State("dropdown-select", "value"),
         State("date-picker-range", "end_date"),
         State("date-picker-range", "start_date"),
@@ -593,9 +602,9 @@ def update_hm(choro_click, choro_figure, dd_select, end, start):
 
 
 @app.callback(
-    output=Output("flights_time_series", "figure"),
-    inputs=[Input("choropleth", "clickData"), Input("choropleth", "figure")],
-    state=[
+    Output("flights_time_series", "figure"),
+    [Input("choropleth", "clickData"), Input("choropleth", "figure")],
+    [
         State("dropdown-select", "value"),
         State("date-picker-range", "end_date"),
         State("date-picker-range", "start_date"),
@@ -614,12 +623,9 @@ def update_time_series(choro_click, choro_figure, dd_select, end, start):
 
 
 @app.callback(
-    output=[
-        Output("count_by_day_graph", "figure"),
-        Output("value_by_city_graph", "figure"),
-    ],
-    inputs=[Input("choropleth", "clickData"), Input("choropleth", "figure")],
-    state=[
+    [Output("count_by_day_graph", "figure"), Output("value_by_city_graph", "figure")],
+    [Input("choropleth", "clickData"), Input("choropleth", "figure")],
+    [
         State("dropdown-select", "value"),
         State("date-picker-range", "end_date"),
         State("date-picker-range", "start_date"),
