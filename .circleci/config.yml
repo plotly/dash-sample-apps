@@ -45,6 +45,14 @@ jobs:
             do
               if [ "$APP" == "$CIRCLE_BRANCH" ] 
               then
+                if [[ $APP =~ "dashr" ]]
+                then
+                  cp ~/dash-sample-apps/apps/"$APP"/Aptfile ~/dash-sample-apps/
+                  cp ~/dash-sample-apps/apps/"$APP"/Procfile ~/dash-sample-apps/
+                  cp ~/dash-sample-apps/apps/"$APP"/.buildpacks ~/dash-sample-apps/
+                  rm ~/dash-sample-apps/app.json
+                  git add . && git commit -a -m "Deployed commit: $CIRCLE_SHA1"
+                fi
                 git push playground $CIRCLE_BRANCH:master --force
                 exit 0
               else
