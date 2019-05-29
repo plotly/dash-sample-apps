@@ -22,6 +22,8 @@ The app will load into your default browser window. If it does not, navigate to 
 
 ![image](assets/vanguard_screenshot2.png)
 
+![image](assets/vanguard_screenshot3.png)
+
 ## More:
 
 Learn more about Plotly and Dash [here](https://plot.ly/dash).
