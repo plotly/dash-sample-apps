@@ -42,14 +42,13 @@ body {
 
 #upper-container, #lower-container {
     margin: 0 3rem;
-    height: inherit;
 }
 
 #upper-left{
     padding: 0rem 2rem 1rem 2rem;
     display:flex;
     flex-direction:column;
-    height: 30rem;
+    /*height: 30rem;*/
     /*justify-content: space-evenly;*/
 }
 
