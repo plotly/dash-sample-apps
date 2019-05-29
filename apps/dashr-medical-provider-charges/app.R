@@ -263,9 +263,8 @@ generateGeoMap <- function(geo_data, selected_metric,
   selected_indices <- which(
     filtered_data[["Provider Name"]] %in% procedure_select$hospital
   )
-
-  provider <- filtered_data[["Provider Name"]]
-  region <- filtered_data[["Hospital Referral Region (HRR) Description"]]
+  #provider <- filtered_data[["Provider Name"]]
+  #region <- filtered_data[["Hospital Referral Region (HRR) Description"]]
 
   plot_mapbox(
     data  = filtered_data,
@@ -324,6 +323,7 @@ generateGeoMap <- function(geo_data, selected_metric,
       clickmode = "event+select",
       hovermode = "closest",
       showlegend = FALSE,
+      autosize = TRUE,
       mapbox = list(
         accesstoken = mapbox_access_token,
         bearing = 10,
@@ -686,6 +686,12 @@ app$callback(
     # Displays all the procedures offered at selected hospital
     if ( (prop_id == "geo-map") &
         (!is.null(unlist(geo_select)))){
+      if (is.null(unlist(geo_select$points))){
+        return(
+          generateDataTable(
+            as.data.table(procedureList), "procedure")
+        )
+      }
       provider_select <- list()
       i <- 1
       for (point in geo_select[["points"]]){
