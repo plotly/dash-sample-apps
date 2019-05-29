@@ -1,0 +1,18 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.header{
+    margin:0px;
+    background-color: #1E1E1E;
+    color:#d8d8d8;
+    padding-left:64px;
+    padding-right:64px;
+    padding-top:32px;
+    padding-bottom:32px;
+}
+
+.row{
+    padding: 64px;
+}
