@@ -3,7 +3,6 @@
 #install_github("plotly/dashR")
 #install_github("plotly/dash-table", ref = "R")
 
-
 library(dashR)
 library(dashCoreComponents)
 library(dashHtmlComponents)
@@ -117,7 +116,7 @@ buildUpperLeftPanel <- function(){
       htmlH5(
         className = "section-title",
         paste(
-          "Choose hospitals on the map or", 
+          "Choose hospitals on the map or",
           "procedures from the list below to see costs"
         )
       ),
@@ -203,7 +202,7 @@ buildUpperLeftPanel <- function(){
                 className = "twelve columns",
                 children = list(
                   htmlH5(
-                    className = "section-title", 
+                    className = "section-title",
                     "Hospital Charges Summary"
                   ),
                   dccLoading(
@@ -256,16 +255,9 @@ generateGeoMap <- function(geo_data, selected_metric,
     cuts, labels = FALSE, include.lowest = TRUE
     )
   ]
-  #selected_indices <- filtered_data[
-    #filtered_data[["Provider Name"]] %in% procedure_select$hospital,
-    #which = TRUE
-  #]
-  selected_indices <- which(
+ selected_indices <- which(
     filtered_data[["Provider Name"]] %in% procedure_select$hospital
   )
-  #provider <- filtered_data[["Provider Name"]]
-  #region <- filtered_data[["Hospital Referral Region (HRR) Description"]]
-
   plot_mapbox(
     data  = filtered_data,
     x = ~lon, y = ~lat,
@@ -340,10 +332,6 @@ generateProcedurePlot <- function(raw_data, cost_select,
   procedure_data <- raw_data[
     raw_data[["Hospital Referral Region (HRR) Description"]] %in% region_select
     ]
-  #selected_indices <- procedure_data[
-    #procedure_data[["Provider Name"]] %in% provider_select,
-    #which = TRUE
-  #]
   selected_indices <- which(
     procedure_data[["Provider Name"]] %in% provider_select
   )
@@ -414,16 +402,6 @@ generateDataTable <- function(DT, type = c("procedure", "cost")){
         list(name = x, id = x)
       }
     ),
-    #data = setNames(
-      #lapply(
-        #split(DT, seq(nrow(DT))),
-        #function(x){
-          #as.list(x)
-        #}
-      #),
-      #NULL
-    #),
-    # Internal convenience function is syntactically nicer than the above:
     data = dashTable:::df_to_list(DT),
     filtering = TRUE,
     sorting = ifelse(type == "cost", FALSE, TRUE),
@@ -467,7 +445,7 @@ app$layout(
             children = list(
               htmlP(
                 id = "map-title",
-                children = 
+                children =
                   htmlH5(
                     className = "section-title",
                     sprintf(
@@ -496,49 +474,6 @@ app$layout(
           )
         )
       ),
-      #htmlDiv(
-        #id = "middle-container",
-        #className = "row",
-        #children = list(
-          #htmlDiv(
-            #id = "cost-stats-outer-container",
-            #children = list(
-              #htmlDiv(
-                #id = "table-left",
-                #className = "six columns",
-                #children = list(
-                  #htmlH5(
-                    #className = "section-title", 
-                    #"Hospital Charges Summary"
-                  #),
-                  #dccLoading(
-                    #children = htmlDiv(
-                      #id = "cost-stats-container",
-                      #children = generateDataTable(data.table(), "cost")
-                    #)
-                  #)
-                #)
-              #),
-              #htmlDiv(
-                #id = "table-right",
-                #className = "six columns",
-                #children = list(
-                  #htmlH5(
-                    #className = "section-title",
-                    #"Procedure Charges Summary"
-                  #),
-                  #dccLoading(
-                    #children = htmlDiv(
-                      #id = "procedure-stats-container",
-                      #children = generateDataTable(data.table(), "procedure")
-                    #)
-                  #)
-                #)
-              #)
-            #)
-          #)
-        #)
-      #),
       htmlDiv(
         id = "lower-container",
         children = dccGraph(
