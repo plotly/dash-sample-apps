@@ -190,7 +190,51 @@ buildUpperLeftPanel <- function(){
             )
           )
         )
+      ),
+      htmlDiv(
+        #id = "middle-container",
+        #className = "row",
+        children = list(
+          htmlDiv(
+            id = "cost-stats-outer-container",
+            children = list(
+              htmlDiv(
+                id = "table-left",
+                className = "twelve columns",
+                children = list(
+                  htmlH5(
+                    className = "section-title", 
+                    "Hospital Charges Summary"
+                  ),
+                  dccLoading(
+                    children = htmlDiv(
+                      id = "cost-stats-container",
+                      children = generateDataTable(data.table(), "cost")
+                    )
+                  )
+                )
+              ),
+              htmlDiv(
+                id = "table-right",
+                className = "twelve columns",
+                children = list(
+                  htmlH5(
+                    className = "section-title",
+                    "Procedure Charges Summary"
+                  ),
+                  dccLoading(
+                    children = htmlDiv(
+                      id = "procedure-stats-container",
+                      children = generateDataTable(data.table(), "procedure")
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
       )
+
     )
   )
 }
@@ -452,49 +496,49 @@ app$layout(
           )
         )
       ),
-      htmlDiv(
-        id = "middle-container",
-        className = "row",
-        children = list(
-          htmlDiv(
-            id = "cost-stats-outer-container",
-            children = list(
-              htmlDiv(
-                id = "table-left",
-                className = "six columns",
-                children = list(
-                  htmlH5(
-                    className = "section-title", 
-                    "Hospital Charges Summary"
-                  ),
-                  dccLoading(
-                    children = htmlDiv(
-                      id = "cost-stats-container",
-                      children = generateDataTable(data.table(), "cost")
-                    )
-                  )
-                )
-              ),
-              htmlDiv(
-                id = "table-right",
-                className = "six columns",
-                children = list(
-                  htmlH5(
-                    className = "section-title",
-                    "Procedure Charges Summary"
-                  ),
-                  dccLoading(
-                    children = htmlDiv(
-                      id = "procedure-stats-container",
-                      children = generateDataTable(data.table(), "procedure")
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      ),
+      #htmlDiv(
+        #id = "middle-container",
+        #className = "row",
+        #children = list(
+          #htmlDiv(
+            #id = "cost-stats-outer-container",
+            #children = list(
+              #htmlDiv(
+                #id = "table-left",
+                #className = "six columns",
+                #children = list(
+                  #htmlH5(
+                    #className = "section-title", 
+                    #"Hospital Charges Summary"
+                  #),
+                  #dccLoading(
+                    #children = htmlDiv(
+                      #id = "cost-stats-container",
+                      #children = generateDataTable(data.table(), "cost")
+                    #)
+                  #)
+                #)
+              #),
+              #htmlDiv(
+                #id = "table-right",
+                #className = "six columns",
+                #children = list(
+                  #htmlH5(
+                    #className = "section-title",
+                    #"Procedure Charges Summary"
+                  #),
+                  #dccLoading(
+                    #children = htmlDiv(
+                      #id = "procedure-stats-container",
+                      #children = generateDataTable(data.table(), "procedure")
+                    #)
+                  #)
+                #)
+              #)
+            #)
+          #)
+        #)
+      #),
       htmlDiv(
         id = "lower-container",
         children = dccGraph(

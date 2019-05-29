@@ -42,6 +42,7 @@ body {
 
 #upper-container, #lower-container {
     margin: 0 3rem;
+    height: inherit;
 }
 
 #upper-left{
