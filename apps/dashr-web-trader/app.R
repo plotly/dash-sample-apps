@@ -32,8 +32,6 @@ app$layout(
       dccInterval(id = "i_bis", interval = 1 * 2000, n_intervals = 0),
       # interval component for graph updates
       dccInterval(id = "i_tris", interval = 1 * 5000, n_intervals = 0),
-      # interval component for graph updates
-      dccInterval(id = "i_news", interval = 1 * 60000, n_intervals = 0),
       # left div
       htmlDiv(
         list(
@@ -1583,15 +1581,6 @@ app$callback(
   list(input("interval", "n_intervals")),
   function(n){
     strftime(Sys.time(), format = "%H:%M:%S")
-  }
-)
-
-# Callback for news update
-app$callback(
-  output("news", "children"),
-  list(input("i_news", "n_intervals")),
-  function(n){
-    updateNews()
   }
 )
 
