@@ -32,6 +32,8 @@ app$layout(
       dccInterval(id = "i_bis", interval = 1 * 2000, n_intervals = 0),
       # interval component for graph updates
       dccInterval(id = "i_tris", interval = 1 * 5000, n_intervals = 0),
+      # interval for news
+      dccInterval(id="i_news", interval= 24 * 60 * 60 * 1000, n_intervals=0),
       # left div
       htmlDiv(
         list(
@@ -72,7 +74,7 @@ app$layout(
               height = "33%",
               backgroundColor = "#262a30",
               color = "white",
-              fontSize = "12",
+              #fontSize = 12,
               padding = "1rem 1rem 0 1rem",
               marginTop = "0.5rem"
             )
@@ -1581,6 +1583,19 @@ app$callback(
   list(input("interval", "n_intervals")),
   function(n){
     strftime(Sys.time(), format = "%H:%M:%S")
+  }
+)
+
+app$callback(
+  # This updates the "last updated" span instead of the actual news
+  # in order to avoid excessive calls to newsapi 
+  output("news_update", "children"),
+  list(input("i_news", "n_intervals")),
+  function(n){
+    paste(
+      "Last updated :",
+       strftime(Sys.time(), format = "%Y/%m/%d %H:%M:%S")
+    )
   }
 )
 
