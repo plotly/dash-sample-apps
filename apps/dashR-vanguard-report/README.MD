@@ -20,7 +20,7 @@ The app will load into your default browser window. If it does not, navigate to 
 ![vanguard.gif](assets/vanguard.gif)
 
 
-![image](assets/vanguard_screenshot1.png)
+![image](assets/vanguard_screenshot2.png)
 
 ## More:
 
