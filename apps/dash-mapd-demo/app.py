@@ -83,10 +83,13 @@ def generate_dest_choro(dd_select, start, end):
                 tickformat=".2f",
                 ticks="",
                 title="Average Delay(Min)",
-                thickness=20,
+                titlefont=dict(family="Open Sans", color='#515151'),
+                thickness=15,
                 len=0.7,
+                tickcolor="#515151",
+                tickfont=dict(family="Open Sans", color='#515151')
             ),
-            colorscale="Cividis",
+            colorscale=[[0, '#71cde4'], [1, '#ecae50']],
             reversescale=True,
             locations=dest_df["state"],
             z=dest_df["avg_delay"],
@@ -102,9 +105,9 @@ def generate_dest_choro(dd_select, start, end):
     )
 
     layout = dict(
-        title=title,
-        font=dict(family="Open Sans, sans-serif"),
-        automargin=True,
+        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=13, color="#515151")),
+        margin=dict(l=20, r=20, b=20, pad=5),
+        automargin=False,
         clickmode="event+select",
         geo=go.layout.Geo(
             scope="usa", projection=go.layout.geo.Projection(type="albers usa")
@@ -140,16 +143,20 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
 
     hm_df = pd.concat(hm, axis=1)
 
+    zmin, zmax = np.min(hm_df.to_numpy()), np.max(hm_df.to_numpy())
+
     trace = dict(
         type="heatmap",
         z=hm_df.to_numpy(),
         x=list("{}:00".format(i) for i in range(24)),
         y=["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        colorscale="Cividis",
+        colorscale= [[0, '#71cde4'], [1, '#ecae50']],
         reversescale=True,
         showscale=True,
         xgap=2,
         ygap=2,
+        colorbar=dict(len=0.7, ticks="", title='Delays', titlefont=dict(family="Open Sans", color='#515151'), thickness=15, tickcolor="#515151",
+                      tickfont=dict(family="Open Sans", color='#515151'), tickvals=[zmin, zmax])
     )
 
     title = "Arrival Flights by days/hours State <b>{}</b>".format(state)
@@ -157,7 +164,8 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
         title = "Departure Flights by days/hours State <b>{}</b>".format(state)
 
     layout = dict(
-        title=title, font=dict(family="Open Sans, sans-serif"), automargin=True
+        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=13, color="#515151")),
+        automargin=True,
     )
 
     return {"data": [trace], "layout": layout}
@@ -355,6 +363,7 @@ def query_helper(state_query, dd_select, start, end, weekday_query):
 
 
 app.layout = html.Div(
+    className="container scalable",
     children=[
         html.Div(
             id="banner",
@@ -365,104 +374,121 @@ app.layout = html.Div(
             ],
         ),
         html.Div(
-            id="dropdown-select-outer",
+            className="app_main_content",
             children=[
-                dcc.Dropdown(
-                    id="dropdown-select",
-                    className="three columns",
-                    options=[
-                        {"label": "Departure", "value": "dep"},
-                        {"label": "Arrival", "value": "arr"},
-                    ],
-                    value="dep",
-                ),
                 html.Div(
-                    [
-                        html.P("Select Date Range"),
-                        dcc.DatePickerRange(
-                            id="date-picker-range",
-                            min_date_allowed=dt(2008, 1, 1),
-                            max_date_allowed=dt(2008, 12, 31),
-                            initial_visible_month=dt(2008, 1, 1),
-                            display_format="MMM Do, YY",
-                            start_date=dt(2008, 1, 1),
-                            end_date=dt(2008, 1, 8),
+                    id="dropdown-select-outer",
+                    children=[
+                        html.Div(
+                            [
+                                html.P("Select Departure/Arrival"),
+                                dcc.Dropdown(
+                                    id="dropdown-select",
+                                    options=[
+                                        {"label": "Departure", "value": "dep"},
+                                        {"label": "Arrival", "value": "arr"},
+                                    ],
+                                    value="dep",
+                                )],
+                            className="selector"
                         ),
-                    ]
-                ),
-            ],
-        ),
-        html.Div(
-            id="top-row",
-            className="row",
-            children=[
-                html.Div(
-                    id="map_geo_outer",
-                    className="four columns",
-                    # avg arrival/dep delay by destination state
-                    children=dcc.Graph(id="choropleth"),
-                ),
-                html.Div(
-                    id="flights_by_day_hm_outer",
-                    className="four columns",
-                    children=dcc.Loading(children=dcc.Graph(id="flights_hm")),
+                        html.Div(
+                            [
+                                html.P("Select Date Range"),
+                                dcc.DatePickerRange(
+                                    id="date-picker-range",
+                                    min_date_allowed=dt(2008, 1, 1),
+                                    max_date_allowed=dt(2008, 12, 31),
+                                    initial_visible_month=dt(2008, 1, 1),
+                                    display_format="MMM Do, YY",
+                                    start_date=dt(2008, 1, 1),
+                                    end_date=dt(2008, 1, 8),
+                                ),
+                            ],
+                            className="selector"
+                        ),
+                    ],
                 ),
                 html.Div(
-                    id="Flights-by-city-outer",
-                    className="four columns",
-                    children=dcc.Loading(children=dcc.Graph(id="value_by_city_graph")),
+                    id="top-row",
+                    className="row",
+                    children=[
+                        html.Div(
+                            id="map_geo_outer",
+                            className="seven columns",
+                            # avg arrival/dep delay by destination state
+                            children=dcc.Graph(id="choropleth"),
+                        ),
+                        html.Div(
+                            id="flights_by_day_hm_outer",
+                            className="five columns",
+                            children=dcc.Loading(children=dcc.Graph(id="flights_hm")),
+                        )
+                    ],
                 ),
-            ],
-        ),
-        html.Div(
-            id="bottom-row",
-            className="row",
-            children=[
                 html.Div(
-                    id="time-series-outer",
-                    className="four columns",
-                    children=dcc.Loading(
-                        children=dcc.Graph(
-                            id="flights_time_series",
-                            figure=generate_time_series_chart(
-                                "", "2018-01-01 00:00:00", "2018-01-08 00:00:00", "dep"
+                    id="middle-row",
+                    className='row',
+                    children=[
+                        html.Div(
+                            id="Flights-by-city-outer",
+                            className="six columns",
+                            children=dcc.Loading(children=dcc.Graph(id="value_by_city_graph")),
+                        ),
+                        html.Div(
+                            id="time-series-outer",
+                            className="six columns",
+                            children=dcc.Loading(
+                                children=dcc.Graph(
+                                    id="flights_time_series",
+                                    figure=generate_time_series_chart(
+                                        "", "2018-01-01 00:00:00", "2018-01-08 00:00:00", "dep"
+                                    ),
+                                )
                             ),
                         )
-                    ),
+
+                    ]
                 ),
                 html.Div(
-                    id="Count_by_days_outer",
-                    className="four columns",
-                    children=dcc.Loading(children=dcc.Graph(id="count_by_day_graph")),
-                ),
-                html.Div(
-                    id="flight_info_table_outer",
-                    className="four columns",
-                    children=dcc.Loading(
-                        id="table-loading",
-                        children=dash_table.DataTable(
-                            id="flights-table",
-                            columns=[
-                                {"name": i, "id": i}
-                                for i in [
-                                    "flightnum",
-                                    "dep_timestamp",
-                                    "arr_timestamp",
-                                    "origin_city",
-                                    "dest_city",
-                                ]
-                            ],
-                            data=[],
-                            style_as_list_view=True,
-                            style_header={
-                                "textTransform": "Uppercase",
-                                "fontWeight": "bold",
-                            },
+                    id="bottom-row",
+                    className="row",
+                    children=[
+                        html.Div(
+                            id="Count_by_days_outer",
+                            className="three columns",
+                            children=dcc.Loading(children=dcc.Graph(id="count_by_day_graph")),
                         ),
-                    ),
+                        html.Div(
+                            id="flight_info_table_outer",
+                            className="nine columns",
+                            children=dcc.Loading(
+                                id="table-loading",
+                                children=dash_table.DataTable(
+                                    id="flights-table",
+                                    columns=[
+                                        {"name": i, "id": i}
+                                        for i in [
+                                            "flightnum",
+                                            "dep_timestamp",
+                                            "arr_timestamp",
+                                            "origin_city",
+                                            "dest_city",
+                                        ]
+                                    ],
+                                    data=[],
+                                    style_as_list_view=True,
+                                    style_header={
+                                        "textTransform": "Uppercase",
+                                        "fontWeight": "bold",
+                                    },
+                                ),
+                            ),
+                        ),
+                    ],
                 ),
-            ],
-        ),
+            ]
+        )
     ]
 )
 
@@ -498,7 +524,7 @@ def update_choro(dd_select, start, end):
     ],
 )
 def update_sel_for_table(
-    ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
+        ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
 ):
     """
     :return: Data for generating flight info datatable.

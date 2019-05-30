@@ -1,5 +1,5 @@
 .container.scalable {
-    width: 95%;
+    width: 100% !important;
     max-width: none;
 }
 
@@ -10,59 +10,76 @@
 }
 
 body {
-    background-color: rgb(245, 245, 245);
-    padding-top: 60px;
+    background-color: #f5f6f7;
+    color: #515151;
+    font-size: 14px;
 }
 
 .banner {
-    height: 50px !important;
-    position:absolute;
-    width: 100%;
-    top:0;
-    display:flex;
-    flex-direction:row;
-    justify-content: space-evenly;
-    align-items:center;
-    z-index:1003 !important;
+    height: 5rem;
+    margin-bottom: 1rem;
+    padding: 0rem 5rem 0rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fcfcfc;
 }
 
 .banner h6 {
-    margin: auto;
     display: inline-block;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial;
     font-size: 2rem;
     font-weight: bold;
     line-height: 1;
 }
 
 .banner Img {
-    margin-right:20px;
-    height: 40px;
+    position: relative;
+    height: 3rem;
+    width: auto;
 }
 
-
-#top-row {
-    margin-top: 60px;
+.app_main_content {
+    padding: 2rem 4rem;
 }
 
-#top-row, #bottom-row  {
-    margin: 20px 10px;
+#dropdown-select-outer {
+    display: flex;
+    flex-direction: row;
+    margin-left: 1%;
+    margin-bottom: 20px;
 }
 
-#bottom-row {
-    height: 450px;
-    overflow-y: scroll;
+.selector {
+    width: 30%;
+    margin-right: 20px;
 }
+
+#dropdown-select-outer > div > p {
+    color: #999999;
+}
+
+#top-row, #middle-row, #bottom-row {
+    height: 37rem;
+}
+
+#choropleth, #flights_hm, #flights_time_series, #value_by_city_graph {
+    height: 35rem;
+}
+
+/*#bottom-row {*/
+    /*height: 450px;*/
+    /*overflow-y: scroll;*/
+/*}*/
 
 #flight_info_table_outer > div {
     height: 100% !important;
 }
 
-#map_geo_outer, #flights_by_day_hm_outer, #time-series-outer, #Count_by_days_outer, #Flights-by-city-outer, #flight_info_table_outer {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    padding: 5px;
-    height: 100%;
-}
+/*#map_geo_outer, #flights_by_day_hm_outer, #time-series-outer, #Count_by_days_outer, #Flights-by-city-outer, #flight_info_table_outer {*/
+    /*height: 100%;*/
+/*}*/
 
 #flights-table {
     height: 100%;
