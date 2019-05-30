@@ -1,13 +1,3 @@
-# Install a package that is necessary and has not been installed, or load one that is.
-
-usePackage <- function(p) 
-{
-  if (!is.element(p, installed.packages()[,1]))
-    install.packages(p, dep = TRUE)
-  require(p, character.only = TRUE)
-}
-
-
 appName <- Sys.getenv("DASH_APP_NAME")
 pathPrefix <- sprintf("/%s/", appName)
 
@@ -20,14 +10,14 @@ setwd("/app/apps/dashr-vanguard-report")
 source("assets/VanguardFunctions.R")
 
 # Load Necessary Packages
-usePackage('dashR')
-usePackage('dashCoreComponents')
-usePackage('dashHtmlComponents')
-usePackage('plyr')
-usePackage('plotly')
-usePackage('lubridate')
-usePackage('dashTable')
-usePackage('taRifx')
+library('dashR')
+library('dashCoreComponents')
+library('dashHtmlComponents')
+library('plyr')
+library('plotly')
+library('lubridate')
+library('dashTable')
+library('taRifx')
 
 #################################################################################
 
