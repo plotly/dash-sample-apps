@@ -13,7 +13,12 @@ from dash.dependencies import Input, Output, State
 
 # Initialize app
 
-app = dash.Dash(__name__)
+app = dash.Dash(
+    meta_tags=[
+        {"name": "description", "content": "My description"},
+        {"http-equiv": "X-UA-Compatible", "content": "IE=edge"},
+    ]
+)
 server = app.server
 
 
