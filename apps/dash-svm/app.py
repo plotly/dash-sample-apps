@@ -16,12 +16,8 @@ figs = importlib.import_module("apps.dash-svm.utils.figures")
 
 app = dash.Dash(meta_tags=[
     {
-        'name': 'description',
-        'content': 'My description'
-    },
-    {
-        'http-equiv': 'X-UA-Compatible',
-        'content': 'IE=edge'
+        'name': 'viewport',
+        'content': 'width=device-width, initial-scale=1.0'
     }
 ])
 server = app.server
