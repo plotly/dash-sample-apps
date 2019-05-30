@@ -13,7 +13,11 @@ import datetime
 from datetime import datetime as dt
 import os
 
-app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__,
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+)
+
 server = app.server
 
 app.config.suppress_callback_exceptions = True
@@ -99,13 +103,13 @@ def generate_dest_choro(dd_select, start, end):
         )
     ]
     title = (
-        "Average Departure Delay <b>(Minutes)</b> By Original State"
+        "Average Departure Delay <b>(Minutes)</b> <br> By Original State"
         if dd_select == "dep"
-        else "Average Arrival Delay <b>(Minutes)</b> By Destination State"
+        else "Average Arrival Delay <b>(Minutes)</b> <br> By Destination State"
     )
 
     layout = dict(
-        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=13, color="#515151")),
+        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=15, color="#515151")),
         margin=dict(l=20, r=20, b=20, pad=5),
         automargin=False,
         clickmode="event+select",
@@ -150,13 +154,14 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
         z=hm_df.to_numpy(),
         x=list("{}:00".format(i) for i in range(24)),
         y=["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        colorscale= [[0, '#71cde4'], [1, '#ecae50']],
+        colorscale=[[0, '#71cde4'], [1, '#ecae50']],
         reversescale=True,
         showscale=True,
         xgap=2,
         ygap=2,
-        colorbar=dict(len=0.7, ticks="", title='Delays', titlefont=dict(family="Open Sans", color='#515151'), thickness=15, tickcolor="#515151",
-                      tickfont=dict(family="Open Sans", color='#515151'), tickvals=[zmin, zmax])
+        colorbar=dict(len=0.7, ticks="", title='Delays', titlefont=dict(family="Gravitas One", color='#515151'),
+                      thickness=15, tickcolor="#515151",
+                      tickfont=dict(family="Open Sans, sans serif", color='#515151'), tickvals=[zmin, zmax])
     )
 
     title = "Arrival Flights by days/hours State <b>{}</b>".format(state)
@@ -164,7 +169,8 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
         title = "Departure Flights by days/hours State <b>{}</b>".format(state)
 
     layout = dict(
-        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=13, color="#515151")),
+        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=15, color="#515151")),
+        font=dict(family="Open Sans, sans-serif", size=13),
         automargin=True,
     )
 
@@ -222,10 +228,10 @@ def generate_time_series_chart(state, start, end, dd_select):
         x.append(x_timestamp)
         y.append(count[key])
 
-    data = [go.Scatter(x=x, y=y, mode="lines", line=dict(color="#123570"))]
+    data = [go.Scatter(x=x, y=y, mode="lines", line=dict(color="#71cde4"))]
     layout = dict(
-        title=title,
-        font=dict(family="Open Sans, sans-serif"),
+        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=15, color="#515151")),
+        font=dict(family="Open Sans, sans-serif", size=13),
         hovermode="closest",
         xaxis=dict(rangeslider=dict(visible=True), yaxis=dict(title="Records")),
     )
@@ -262,15 +268,16 @@ def generate_count_chart(state, dd_select, start, end):
             x=df_count["total_count"],
             y=["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
             orientation="h",
+            marker=dict(color="#71cde4")
         )
     ]
 
     layout = dict(
-        title="Flight counts by Days {0} State <b>{1}<b>".format(
+        title=dict(text="Flight counts by Days {0} State <b>{1}<b>".format(
             select_f.split("_")[0].capitalize(), state
-        ),
-        font=dict(family="Open Sans, sans-serif"),
-        xaxis=dict(title="Total Flight Counts"),
+        ), font=dict(size=15)),
+        font=dict(family="Open Sans, sans-serif", size=13),
+        xaxis=dict(title=dict(text="Total Flight Counts", font=dict(size=12)), zerolinecolor='#999999'),
         clickmode="event+select",
     )
 
@@ -330,9 +337,10 @@ def generate_city_graph(state_select, dd_select, start, end):
         data.append(trace)
 
     layout = dict(
-        title=title,
-        font=dict(family="Open Sans, sans-serif"),
-        xaxis=dict(title="Minutes"),
+        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=15, color="#515151")),
+        automargin=True,
+        font=dict(family="Open Sans, sans-serif", size=13),
+        xaxis=dict(title=dict(text="Minutes", font=dict(size=12)), zerolinecolor='#999999'),
         hovermode="closest",
         clickmode="event+select",
         dragmode="select",
@@ -405,6 +413,7 @@ app.layout = html.Div(
                                     end_date=dt(2008, 1, 8),
                                 ),
                             ],
+                            id='date-picker-outer',
                             className="selector"
                         ),
                     ],
@@ -456,12 +465,12 @@ app.layout = html.Div(
                     children=[
                         html.Div(
                             id="Count_by_days_outer",
-                            className="three columns",
+                            className="four columns",
                             children=dcc.Loading(children=dcc.Graph(id="count_by_day_graph")),
                         ),
                         html.Div(
                             id="flight_info_table_outer",
-                            className="nine columns",
+                            className="eight columns",
                             children=dcc.Loading(
                                 id="table-loading",
                                 children=dash_table.DataTable(
@@ -476,12 +485,24 @@ app.layout = html.Div(
                                             "dest_city",
                                         ]
                                     ],
+                                    filtering=True,
                                     data=[],
                                     style_as_list_view=True,
                                     style_header={
                                         "textTransform": "Uppercase",
                                         "fontWeight": "bold",
+                                        "backgroundColor": "#ffffff"
                                     },
+                                    style_cell_conditional=[
+                                        {
+                                            'if': {'row_index': 'even'},
+                                            'backgroundColor': '#f5f6f7'
+                                        },
+                                        {
+                                            'if': {'row_index': 'odd'},
+                                            'backgroundColor': '#ffffff'
+                                        }
+                                    ]
                                 ),
                             ),
                         ),

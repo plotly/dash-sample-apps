@@ -12,7 +12,7 @@
 body {
     background-color: #f5f6f7;
     color: #515151;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .banner {
@@ -41,7 +41,7 @@ body {
 }
 
 .app_main_content {
-    padding: 2rem 4rem;
+    padding: 2rem 2rem 4rem 2rem;
 }
 
 #dropdown-select-outer {
@@ -64,25 +64,49 @@ body {
     height: 37rem;
 }
 
-#choropleth, #flights_hm, #flights_time_series, #value_by_city_graph {
+#choropleth, #flights_hm, #flights_time_series, #value_by_city_graph, #count_by_day_graph, #flight_info_table_outer {
     height: 35rem;
 }
 
-/*#bottom-row {*/
-    /*height: 450px;*/
-    /*overflow-y: scroll;*/
-/*}*/
+.dash-spreadsheet-container .dash-spreadsheet-inner th, td {
+    text-align: center !important;
+    font-family: "Open Sans", sans-serif !important;
+    border: none !important;
+    font-size: 11px;
+}
 
 #flight_info_table_outer > div {
     height: 100% !important;
 }
-
-/*#map_geo_outer, #flights_by_day_hm_outer, #time-series-outer, #Count_by_days_outer, #Flights-by-city-outer, #flight_info_table_outer {*/
-    /*height: 100%;*/
-/*}*/
 
 #flights-table {
     height: 100%;
     overflow-y: scroll;
 }
 
+/*
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  */
+
+@media only screen and (max-width: 750px) {
+    #dropdown-select-outer {
+        flex-direction:column;
+    }
+    .selector {
+        width:100%;
+    }
+
+    .column, .columns {
+        margin: 10px 0px;
+    }
+
+
+}
+
+/*ipad*/
+
+@media only screen and (min-width: 768px) and (max-width: 1024px){
+    #date-picker-outer {
+        width:50%;
+    }
+}
