@@ -50,4 +50,4 @@ install.packages("taRifx")
 remotes::install_github("plotly/dashR", dependencies=FALSE)
 remotes::install_github("plotly/dash-html-components")
 remotes::install_github("plotly/dash-core-components")
-remotes::install_github("plotly/dash-table", ref="R")
+
