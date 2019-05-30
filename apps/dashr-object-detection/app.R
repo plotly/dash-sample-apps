@@ -5,7 +5,7 @@ Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
 
 setwd("app/apps/dashr-object-detection")
 
-library(tidyverse)
+
 library(dashR)
 library(dashCoreComponents)
 library(dashHtmlComponents)
@@ -16,6 +16,7 @@ library(stringr)
 library(data.table)
 library(glue)
 library(compiler)
+library(magrittr)
 
 
 DEBUG <- T
