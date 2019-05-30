@@ -41,4 +41,4 @@ DTl <- generate_lin_sep(500)
 
 allDT <- list(moons = DTm, circles = DTc, linear = DTl)
 
-saveRDS(object = allDT, file = "data.rds")
+saveRDS(object = allDT, file = "data.rds", version = 2)
