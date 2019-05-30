@@ -33,7 +33,37 @@ jobs:
           command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
       - run:
           name: Deploy
-          command: git push playground $CIRCLE_BRANCH:master --force
+          command: |
+            APPS_MODIFIED=$(git diff origin/master origin/$CIRCLE_BRANCH --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} } ' | sort -u)
+            if [ -z "$APPS_MODIFIED" ]
+            then
+                  echo "No app change detected. Skipping the deploy.."
+                  exit 0
+            fi
+
+            for APP in $APPS_MODIFIED
+            do
+              if [ "$APP" == "$CIRCLE_BRANCH" ] 
+              then
+                if [[ $APP =~ "dashr" ]]
+                then
+                  cp ~/dash-sample-apps/apps/"$APP"/Aptfile ~/dash-sample-apps/
+                  cp ~/dash-sample-apps/apps/"$APP"/Procfile ~/dash-sample-apps/
+                  cp ~/dash-sample-apps/apps/"$APP"/.buildpacks ~/dash-sample-apps/
+                  # app.json tries to call python predeploy, which is not needed for R apps:
+                  rm ~/dash-sample-apps/app.json
+                  git config --global user.email '<>' # Leave email blank
+                  git config --global user.name "Circle MonoRepo Automatic Deployer"
+                  git add . && git commit -a -m "Deployed commit: $CIRCLE_SHA1"
+                fi
+                git push playground $CIRCLE_BRANCH:master --force
+                exit 0
+              else
+                echo "appname: $APP is not same as the branchname: $CIRCLE_BRANCH. Not deploying..."
+              fi
+            done
+            echo "Deploy failed because of a branchname/appname mismatch. Exiting..."
+            exit 1
   deploy_to_gallery:
     docker:
       - image: circleci/python:3.6-stretch
@@ -52,7 +82,7 @@ jobs:
       - run:
           name: Deploy
           command: |
-            APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 | awk '{ $2 ~ /apps/; split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }')
+            APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }' | sort -u)
             for APP in $APPS_MODIFIED
             do
               git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
