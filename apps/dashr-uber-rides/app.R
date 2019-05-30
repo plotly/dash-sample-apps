@@ -12,6 +12,7 @@ library(dashHtmlComponents)
 library(plotly)
 library(data.table)
 library(dplyr)
+library(lubridate)
 library(Hmisc)
 
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
@@ -504,4 +505,8 @@ app$callback(output = list(id = "total-rides", property = "children"),
   }
 )
 ####################################################################################################
+
+
+
 app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+
