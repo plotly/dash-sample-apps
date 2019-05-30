@@ -390,6 +390,7 @@ def generate_procedure_plot(raw_data, cost_select, region_select, provider_selec
             title=dict(text="Procedure Cost", font=dict(color="#737a8d")),
             linecolor="#737a8d",
             tickfont=dict(color="#737a8d"),
+            type="log",
         ),
         yaxis=dict(
             automargin=True,
