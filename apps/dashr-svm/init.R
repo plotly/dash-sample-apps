@@ -40,13 +40,13 @@ install.packages("https://cloud.r-project.org/src/contrib/codetools_0.2-16.tar.g
 install.packages("https://cloud.r-project.org/src/contrib/globals_0.12.4.tar.gz", type="source", repos=NULL)
 install.packages("https://cloud.r-project.org/src/contrib/Archive/future/future_1.11.1.1.tar.gz", type="source", repos=NULL)
 
-# fiery and friends
-install.packages("https://cloud.r-project.org/src/contrib/routr_0.3.0.tar.gz", type="source", repos=NULL)
-install.packages("https://cloud.r-project.org/src/contrib/fiery_1.1.1.tar.gz", type="source", repos=NULL)
-
 install.packages("caret")
 install.packages("kernlab")
 install.packages("ROCR")
+
+# fiery and friends
+install.packages("https://cloud.r-project.org/src/contrib/routr_0.3.0.tar.gz", type="source", repos=NULL)
+install.packages("https://cloud.r-project.org/src/contrib/fiery_1.1.1.tar.gz", type="source", repos=NULL)
 
 remotes::install_github("plotly/dashR", dependencies=FALSE)
 remotes::install_github("plotly/dash-html-components")
