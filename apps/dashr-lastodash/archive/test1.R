@@ -10,7 +10,7 @@ source("lastodf.R")
 app <- Dash$new(name='DashR LAS Report')
 
 LASdir <- "data/"
-LASfile <- "alcor2.las"
+LASfile <- "alcor1.las"
 LASpath <- paste(LASdir, LASfile, sep="")
 LASdata <- convertLAS(LASpath)
 
@@ -69,7 +69,7 @@ plotList <- function(nplots) {
 }
 
 generate_curves <- function(height=950,
-                            width=1000,
+                            width=800,
                             bg_color="white",
                             font_size=10,
                             tick_font_size=8,
@@ -96,86 +96,85 @@ generate_curves <- function(height=950,
     plots[[1]], plots[[2]], plots[[3]], plots[[4]], plots[[5]], 
     plotList(5), nrows=1, shareY=TRUE, margin=0
   )
-  #fig$x["data"][[2]]["xaxis"] = "x6"
-  #fig$x["data"][[7]]["xaxis"] = "x7"
-  #fig$x["data"][[9]]["xaxis"] = "x8"
-  #fig$x["data"][[12]]["xaxis"] = "x9"
+  #fig["data"][2]["xaxis"] = "x6"
+  #fig["data"][7]["xaxis"] = "x7"
+  #fig["data"][9]["xaxis"] = "x8"
+  #fig["data"][12]["xaxis"] = "x9"
   fig <- layout(fig, 
-    height = height, 
-    width = width, 
-    plot_bgcolor = bg_color, 
-    paper_bgcolor = bg_color, 
-    hovermode = "y", 
-    legend = list(font = list(size = tick_font_size)), 
-    margin = list(r=100),
-    yaxis = list(
-      title = list(text=generate_axis_title("Depth", "F"), font=list(family="Arial, sans-serif", size=font_size)), 
-      autorange = "reversed",
-      mirror = "all",
-      automargin = TRUE,
-      showline = TRUE,
-      tickfont = list(family="Arial, sans-serif", size=tick_font_size)
-    ),
-    xaxis1 = list(
-      title = list(text="TITLE 1", font=list(family="Arial, sans-serif", size=font_size)), 
-      mirror = "all",
-      automargin = TRUE,
-      showline = TRUE,
-      tickfont = list(family="Arial, sans-serif", size=tick_font_size)
-    ),
-    xaxis2 = list(
-      title = list(text="TITLE 2", font=list(family="Arial, sans-serif", size=font_size)), 
-      mirror = "all",
-      automargin = TRUE,
-      showline = TRUE,
-      tickfont = list(family="Arial, sans-serif", size=tick_font_size),
-      type="log"
-    ),
-    xaxis3 = list(
-      title = list(text="TITLE 3", font=list(family="Arial, sans-serif", size=font_size)), 
-      mirror = "all",
-      automargin = TRUE,
-      showline = TRUE,
-      tickfont = list(family="Arial, sans-serif", size=tick_font_size)
-    ),
-    xaxis4 = list(
-      title = list(text="TITLE 4", font=list(family="Arial, sans-serif", size=font_size)), 
-      mirror = "all",
-      automargin = TRUE,
-      showline = TRUE,
-      tickfont = list(family="Arial, sans-serif", size=tick_font_size)
-    ),
-    xaxis5 = list(
-      title = list(text="TITLE 5", font=list(family="Arial, sans-serif", size=font_size)), 
-      mirror = "all",
-      automargin = TRUE,
-      showline = TRUE,
-      tickfont = list(family="Arial, sans-serif", size=tick_font_size)
-    ),
-    xaxis6 = list(
-      title = list(text="TITLE 6", font=list(family="Arial, sans-serif", size=font_size)),
-      overlaying="x1",
-      anchor="y",
-      side="top",
-      mirror = "all",
-      automargin = TRUE,
-      showline = TRUE,
-      tickfont = list(family="Arial, sans-serif", size=tick_font_size)
-    ),
-    xaxis7 = list(
-      title = list(text="TITLE 7", font=list(family="Arial, sans-serif", size=font_size)),
-      overlaying="x1",
-      anchor="y",
-      side="top",
-      mirror = "all",
-      automargin = TRUE,
-      showline = TRUE,
-      tickfont = list(family="Arial, sans-serif", size=tick_font_size)
-    )
+                height = height, 
+                width = width, 
+                plot_bgcolor = bg_color, 
+                paper_bgcolor = bg_color, 
+                hovermode = "y", 
+                legend = list(font = list(size = tick_font_size)), 
+                margin = list(r=100),
+                yaxis = list(
+                  title = list(text=generate_axis_title("Depth", "F"), font=list(family="Arial, sans-serif", size=font_size)), 
+                  autorange = "reversed",
+                  mirror = "all",
+                  automargin = TRUE,
+                  showline = TRUE,
+                  tickfont = list(family="Arial, sans-serif", size=tick_font_size)
+                ),
+                xaxis = list(
+                  title = list(text="TITLE 1", font=list(family="Arial, sans-serif", size=font_size)), 
+                  mirror = "all",
+                  automargin = TRUE,
+                  showline = TRUE,
+                  tickfont = list(family="Arial, sans-serif", size=tick_font_size)
+                ),
+                xaxis2 = list(
+                  title = list(text="TITLE 2", font=list(family="Arial, sans-serif", size=font_size)), 
+                  mirror = "all",
+                  automargin = TRUE,
+                  showline = TRUE,
+                  tickfont = list(family="Arial, sans-serif", size=tick_font_size),
+                  type="log"
+                ),
+                xaxis3 = list(
+                  title = list(text="TITLE 3", font=list(family="Arial, sans-serif", size=font_size)), 
+                  mirror = "all",
+                  automargin = TRUE,
+                  showline = TRUE,
+                  tickfont = list(family="Arial, sans-serif", size=tick_font_size)
+                ),
+                xaxis4 = list(
+                  title = list(text="TITLE 4", font=list(family="Arial, sans-serif", size=font_size)), 
+                  mirror = "all",
+                  automargin = TRUE,
+                  showline = TRUE,
+                  tickfont = list(family="Arial, sans-serif", size=tick_font_size)
+                ),
+                xaxis5 = list(
+                  title = list(text="TITLE 5", font=list(family="Arial, sans-serif", size=font_size)), 
+                  mirror = "all",
+                  automargin = TRUE,
+                  showline = TRUE,
+                  tickfont = list(family="Arial, sans-serif", size=tick_font_size)
+                ),
+                xaxis6 = list(
+                  title = list(text="TITLE 6", font=list(family="Arial, sans-serif", size=font_size)),
+                  overlaying="x1",
+                  anchor="y",
+                  side="top",
+                  mirror = "all",
+                  automargin = TRUE,
+                  showline = TRUE,
+                  tickfont = list(family="Arial, sans-serif", size=tick_font_size)
+                ),
+                xaxis7 = list(
+                  title = list(text="TITLE 7", font=list(family="Arial, sans-serif", size=font_size)),
+                  overlaying="x1",
+                  anchor="y",
+                  side="top",
+                  mirror = "all",
+                  automargin = TRUE,
+                  showline = TRUE,
+                  tickfont = list(family="Arial, sans-serif", size=tick_font_size)
+                )
   )
-  for (i in 1:5) {
-    str(fig$x$layout[[paste('xaxis', i, sep="")]])
-  }
+  print("HERE")
+  browser()
   return(dccGraph(figure=fig))
 }
 
@@ -301,4 +300,4 @@ app$callback(
 #print("TEST FUNCTION (generate axis):")
 #print(generate_axis_title("BAT comp slowness", "uspf"))
 
-#app$run_server(showcase=TRUE)
+app$run_server(showcase=TRUE)
