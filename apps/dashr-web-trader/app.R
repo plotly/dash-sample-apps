@@ -7,6 +7,15 @@ library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
 library(fasttime)
+
+appName <- Sys.getenv("DASH_APP_NAME")
+pathPrefix <- sprintf("/%s/", appName)
+
+Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+
+setwd("/app/apps/dashr-web-trader")
+
 source("utils/helper-functions.R")
 
 # load the R object with currency pairs data
@@ -33,7 +42,11 @@ app$layout(
       # interval component for graph updates
       dccInterval(id = "i_tris", interval = 1 * 5000, n_intervals = 0),
       # interval for news
+<<<<<<< HEAD
       dccInterval(id="i_news", interval = 24 * 60 * 60 * 1000, n_intervals=0),
+=======
+      dccInterval(id="i_news", interval= 24 * 60 * 60 * 1000, n_intervals=0),
+>>>>>>> d4f81377008b59c168729e7154072322b52cf993
       # left div
       htmlDiv(
         list(
@@ -1595,4 +1608,4 @@ app$callback(
   }
 )
 
-app$run_server()
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8080))
