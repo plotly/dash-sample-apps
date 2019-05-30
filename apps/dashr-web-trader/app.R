@@ -42,11 +42,7 @@ app$layout(
       # interval component for graph updates
       dccInterval(id = "i_tris", interval = 1 * 5000, n_intervals = 0),
       # interval for news
-<<<<<<< HEAD
       dccInterval(id="i_news", interval = 24 * 60 * 60 * 1000, n_intervals=0),
-=======
-      dccInterval(id="i_news", interval= 24 * 60 * 60 * 1000, n_intervals=0),
->>>>>>> d4f81377008b59c168729e7154072322b52cf993
       # left div
       htmlDiv(
         list(
