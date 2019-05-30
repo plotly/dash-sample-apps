@@ -1,1 +1,2 @@
 output.csv filter=lfs diff=lfs merge=lfs -text
+assets/output.csv filter=lfs diff=lfs merge=lfs -text
