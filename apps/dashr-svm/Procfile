@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath apps/dashr-svm app:server
+web: R -f /app/apps/"$DASH_APP_NAME"/app.R
