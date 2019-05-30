@@ -390,6 +390,12 @@ generateProcedurePlot <- function(raw_data, cost_select,
 }
 
 generateDataTable <- function(DT, type = c("procedure", "cost")){
+  # Create datatable w/ no rows if DT is empty, fixes default 2 empty rows
+  if (nrow(DT) > 0){
+    d <- dashTable:::df_to_list(DT)
+  } else {
+    d <- list()
+  }
   dashDataTable(
     id = ifelse(
       type == "cost",
@@ -402,7 +408,7 @@ generateDataTable <- function(DT, type = c("procedure", "cost")){
         list(name = x, id = x)
       }
     ),
-    data = dashTable:::df_to_list(DT),
+    data = d,
     filtering = TRUE,
     sorting = ifelse(type == "cost", FALSE, TRUE),
     sorting_type = "multi",
