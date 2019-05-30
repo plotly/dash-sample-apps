@@ -40,13 +40,9 @@ install.packages("https://cloud.r-project.org/src/contrib/codetools_0.2-16.tar.g
 install.packages("https://cloud.r-project.org/src/contrib/globals_0.12.4.tar.gz", type="source", repos=NULL)
 install.packages("https://cloud.r-project.org/src/contrib/Archive/future/future_1.11.1.1.tar.gz", type="source", repos=NULL)
 
-install.packages("https://cloud.r-project.org/src/contrib/caret_6.0-84.tar.gz", type="source", repos=NULL)
-install.packages("https://cloud.r-project.org/src/contrib/kernlab_0.9-27.tar.gz", type="source", repos=NULL)
-install.packages("https://cloud.r-project.org/src/contrib/ROCR_1.0-7.tar.gz", type="source", repos=NULL)
-
-#install.packages("caret")
-#install.packages("kernlab")
-#install.packages("ROCR")
+install.packages("caret")
+install.packages("kernlab")
+install.packages("ROCR")
 
 # fiery and friends
 install.packages("https://cloud.r-project.org/src/contrib/routr_0.3.0.tar.gz", type="source", repos=NULL)
