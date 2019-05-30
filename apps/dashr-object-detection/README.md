@@ -10,7 +10,7 @@ Try out the [demo app here](https://dash-object-detection.plot.ly/). (Will be re
 
 ## Getting Started
 
-### Using the demo
+### Using the demo 
 
 To get started, select a footage you want to view, and choose the display mode (with or without bounding boxes). Then, you can start playing the video, and the visualization will be displayed depending on the current time.
 
