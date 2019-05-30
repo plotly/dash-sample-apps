@@ -10,22 +10,21 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 
-
 # Initialize app
 
 app = dash.Dash(
     meta_tags=[
-        {"name": "description", "content": "My description"},
-        {"http-equiv": "X-UA-Compatible", "content": "IE=edge"},
+        {
+            'name': 'viewport',
+            'content': 'width=device-width, initial-scale=1.0'
+        }
     ]
 )
 server = app.server
 
-
 # Load data
 
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
-
 
 df_lat_lon = pd.read_csv(
     os.path.join(APP_PATH, os.path.join("data", "lat_lon_counties.csv"))
@@ -41,7 +40,7 @@ df_full_data["County Code"] = df_full_data["County Code"].apply(
     lambda x: str(x).zfill(5)
 )
 df_full_data["County"] = (
-    df_full_data["Unnamed: 0"] + ", " + df_full_data.County.map(str)
+        df_full_data["Unnamed: 0"] + ", " + df_full_data.County.map(str)
 )
 
 YEARS = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
@@ -89,15 +88,11 @@ DEFAULT_OPACITY = 0.8
 mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
 mapbox_style = "mapbox://styles/plotlymapbox/cjvprkf3t1kns1cqjxuxmwixz"
 
-
 # App layout
 
 app.layout = html.Div(
     id="root",
     children=[
-        html.Meta(
-            {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
-        ),
         html.Div(
             id="header",
             children=[
