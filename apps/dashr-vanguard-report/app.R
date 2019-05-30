@@ -16,7 +16,6 @@ library('dashHtmlComponents')
 library('plyr')
 library('plotly')
 library('lubridate')
-library('taRifx')
 
 #################################################################################
 
