@@ -86,7 +86,7 @@ jobs:
             for APP in $APPS_MODIFIED
             do
               git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
-              git push $APP master
+              git push $APP master --force
             done
       - run:
           name: Push to production
