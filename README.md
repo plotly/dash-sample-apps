@@ -33,6 +33,11 @@ the same name as the app.
 
 ### Adding a new app
 
+Create an app on Dash Playground. This will be the location of the
+auto-deployment. To do this, log into the app manager on
+[dash-playground.plotly.host](https://dash-playground.plotly.host)
+and click "initialize app".
+
 Create a branch from `master` that has the _exact same_ name as the
 Dash app name. Switch to this branch, then navigate to the `apps/`
 directory and add a directory for your app.
@@ -105,15 +110,14 @@ Img(src="./assets/logo.png") will fail at root level
 
 Tips
 
+-  Use [get_asset_url()](https://dash.plot.ly/dash-deployment-server/static-assets)
 -  Use [Pathlib](https://docs.python.org/3/library/pathlib.html) for more flexibility
 
 ```Python
 import pathlib
 
 # get relative assets folder
-ASSETS_PATH = pathlib.Path(__file__, "/assets")  # /assets
-IMG_PATH = ASSETS_PATH.joinpath("logo.png")      # /assets/logo.png
-Img(src=str(IMG_PATH))                           
+html.Img(src=app.get_asset_url('logo'))                   
 
 # get relative data folder
 DATA_PATH = pathlib.Path(__file__, "/data")      # /data
