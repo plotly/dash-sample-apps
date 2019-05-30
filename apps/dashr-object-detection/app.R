@@ -1,4 +1,9 @@
-setwd("~/GitHub/dash-sample-apps/apps/dashr-object-detection")
+appName <- Sys.getenv("DASH_APP_NAME")
+pathPrefix <- sprintf("/%s/", appName)
+Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix, 
+          DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+
+setwd("app/apps/dashr-object-detection")
 
 require(tidyverse)
 require(dashR)
