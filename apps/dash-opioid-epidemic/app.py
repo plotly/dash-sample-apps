@@ -13,12 +13,7 @@ from dash.dependencies import Input, Output, State
 # Initialize app
 
 app = dash.Dash(
-    meta_tags=[
-        {
-            'name': 'viewport',
-            'content': 'width=device-width, initial-scale=1.0'
-        }
-    ]
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1.0"}]
 )
 server = app.server
 
@@ -40,7 +35,7 @@ df_full_data["County Code"] = df_full_data["County Code"].apply(
     lambda x: str(x).zfill(5)
 )
 df_full_data["County"] = (
-        df_full_data["Unnamed: 0"] + ", " + df_full_data.County.map(str)
+    df_full_data["Unnamed: 0"] + ", " + df_full_data.County.map(str)
 )
 
 YEARS = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
