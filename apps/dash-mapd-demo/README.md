@@ -53,7 +53,6 @@ single bar or drag along scatters to know flight details in the table.
 
 ![Screenshot1](img/screenshot.png)
 
-![Animated1](img/mapd-demo-gif.gif)
 
 ## Resources
 

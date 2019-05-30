@@ -87,13 +87,13 @@ def generate_dest_choro(dd_select, start, end):
                 tickformat=".2f",
                 ticks="",
                 title="Average Delay(Min)",
-                titlefont=dict(family="Open Sans", color='#515151'),
+                titlefont=dict(family="Open Sans", color="#515151"),
                 thickness=15,
                 len=0.7,
                 tickcolor="#515151",
-                tickfont=dict(family="Open Sans", color='#515151')
+                tickfont=dict(family="Open Sans", color="#515151"),
             ),
-            colorscale=[[0, '#71cde4'], [1, '#ecae50']],
+            colorscale=[[0, "#71cde4"], [1, "#ecae50"]],
             reversescale=True,
             locations=dest_df["state"],
             z=dest_df["avg_delay"],
@@ -109,7 +109,10 @@ def generate_dest_choro(dd_select, start, end):
     )
 
     layout = dict(
-        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=15, color="#515151")),
+        title=dict(
+            text=title,
+            font=dict(family="Open Sans, sans-serif", size=15, color="#515151"),
+        ),
         margin=dict(l=20, r=20, b=20, pad=5),
         automargin=False,
         clickmode="event+select",
@@ -154,14 +157,21 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
         z=hm_df.to_numpy(),
         x=list("{}:00".format(i) for i in range(24)),
         y=["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        colorscale=[[0, '#71cde4'], [1, '#ecae50']],
+        colorscale=[[0, "#71cde4"], [1, "#ecae50"]],
         reversescale=True,
         showscale=True,
         xgap=2,
         ygap=2,
-        colorbar=dict(len=0.7, ticks="", title='Delays', titlefont=dict(family="Gravitas One", color='#515151'),
-                      thickness=15, tickcolor="#515151",
-                      tickfont=dict(family="Open Sans, sans serif", color='#515151'), tickvals=[zmin, zmax])
+        colorbar=dict(
+            len=0.7,
+            ticks="",
+            title="Delays",
+            titlefont=dict(family="Gravitas One", color="#515151"),
+            thickness=15,
+            tickcolor="#515151",
+            tickfont=dict(family="Open Sans, sans serif", color="#515151"),
+            tickvals=[zmin, zmax],
+        ),
     )
 
     title = "Arrival Flights by days/hours State <b>{}</b>".format(state)
@@ -169,7 +179,10 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
         title = "Departure Flights by days/hours State <b>{}</b>".format(state)
 
     layout = dict(
-        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=15, color="#515151")),
+        title=dict(
+            text=title,
+            font=dict(family="Open Sans, sans-serif", size=15, color="#515151"),
+        ),
         font=dict(family="Open Sans, sans-serif", size=13),
         automargin=True,
     )
@@ -230,7 +243,10 @@ def generate_time_series_chart(state, start, end, dd_select):
 
     data = [go.Scatter(x=x, y=y, mode="lines", line=dict(color="#71cde4"))]
     layout = dict(
-        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=15, color="#515151")),
+        title=dict(
+            text=title,
+            font=dict(family="Open Sans, sans-serif", size=15, color="#515151"),
+        ),
         font=dict(family="Open Sans, sans-serif", size=13),
         hovermode="closest",
         xaxis=dict(rangeslider=dict(visible=True), yaxis=dict(title="Records")),
@@ -268,16 +284,22 @@ def generate_count_chart(state, dd_select, start, end):
             x=df_count["total_count"],
             y=["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
             orientation="h",
-            marker=dict(color="#71cde4")
+            marker=dict(color="#71cde4"),
         )
     ]
 
     layout = dict(
-        title=dict(text="Flight counts by Days {0} State <b>{1}<b>".format(
-            select_f.split("_")[0].capitalize(), state
-        ), font=dict(size=15)),
+        title=dict(
+            text="Flight counts by Days {0} State <b>{1}<b>".format(
+                select_f.split("_")[0].capitalize(), state
+            ),
+            font=dict(size=15),
+        ),
         font=dict(family="Open Sans, sans-serif", size=13),
-        xaxis=dict(title=dict(text="Total Flight Counts", font=dict(size=12)), zerolinecolor='#999999'),
+        xaxis=dict(
+            title=dict(text="Total Flight Counts", font=dict(size=12)),
+            zerolinecolor="#999999",
+        ),
         clickmode="event+select",
     )
 
@@ -337,10 +359,15 @@ def generate_city_graph(state_select, dd_select, start, end):
         data.append(trace)
 
     layout = dict(
-        title=dict(text=title, font=dict(family="Open Sans, sans-serif", size=15, color="#515151")),
+        title=dict(
+            text=title,
+            font=dict(family="Open Sans, sans-serif", size=15, color="#515151"),
+        ),
         automargin=True,
         font=dict(family="Open Sans, sans-serif", size=13),
-        xaxis=dict(title=dict(text="Minutes", font=dict(size=12)), zerolinecolor='#999999'),
+        xaxis=dict(
+            title=dict(text="Minutes", font=dict(size=12)), zerolinecolor="#999999"
+        ),
         hovermode="closest",
         clickmode="event+select",
         dragmode="select",
@@ -397,8 +424,9 @@ app.layout = html.Div(
                                         {"label": "Arrival", "value": "arr"},
                                     ],
                                     value="dep",
-                                )],
-                            className="selector"
+                                ),
+                            ],
+                            className="selector",
                         ),
                         html.Div(
                             [
@@ -413,8 +441,8 @@ app.layout = html.Div(
                                     end_date=dt(2008, 1, 8),
                                 ),
                             ],
-                            id='date-picker-outer',
-                            className="selector"
+                            id="date-picker-outer",
+                            className="selector",
                         ),
                     ],
                 ),
@@ -432,17 +460,19 @@ app.layout = html.Div(
                             id="flights_by_day_hm_outer",
                             className="five columns",
                             children=dcc.Loading(children=dcc.Graph(id="flights_hm")),
-                        )
+                        ),
                     ],
                 ),
                 html.Div(
                     id="middle-row",
-                    className='row',
+                    className="row",
                     children=[
                         html.Div(
                             id="Flights-by-city-outer",
                             className="six columns",
-                            children=dcc.Loading(children=dcc.Graph(id="value_by_city_graph")),
+                            children=dcc.Loading(
+                                children=dcc.Graph(id="value_by_city_graph")
+                            ),
                         ),
                         html.Div(
                             id="time-series-outer",
@@ -451,13 +481,15 @@ app.layout = html.Div(
                                 children=dcc.Graph(
                                     id="flights_time_series",
                                     figure=generate_time_series_chart(
-                                        "", "2018-01-01 00:00:00", "2018-01-08 00:00:00", "dep"
+                                        "",
+                                        "2018-01-01 00:00:00",
+                                        "2018-01-08 00:00:00",
+                                        "dep",
                                     ),
                                 )
                             ),
-                        )
-
-                    ]
+                        ),
+                    ],
                 ),
                 html.Div(
                     id="bottom-row",
@@ -466,7 +498,9 @@ app.layout = html.Div(
                         html.Div(
                             id="Count_by_days_outer",
                             className="four columns",
-                            children=dcc.Loading(children=dcc.Graph(id="count_by_day_graph")),
+                            children=dcc.Loading(
+                                children=dcc.Graph(id="count_by_day_graph")
+                            ),
                         ),
                         html.Div(
                             id="flight_info_table_outer",
@@ -491,26 +525,27 @@ app.layout = html.Div(
                                     style_header={
                                         "textTransform": "Uppercase",
                                         "fontWeight": "bold",
-                                        "backgroundColor": "#ffffff"
+                                        "backgroundColor": "#ffffff",
+                                        "padding": "10px 0px",
                                     },
                                     style_cell_conditional=[
                                         {
-                                            'if': {'row_index': 'even'},
-                                            'backgroundColor': '#f5f6f7'
+                                            "if": {"row_index": "even"},
+                                            "backgroundColor": "#f5f6f7",
                                         },
                                         {
-                                            'if': {'row_index': 'odd'},
-                                            'backgroundColor': '#ffffff'
-                                        }
-                                    ]
+                                            "if": {"row_index": "odd"},
+                                            "backgroundColor": "#ffffff",
+                                        },
+                                    ],
                                 ),
                             ),
                         ),
                     ],
                 ),
-            ]
-        )
-    ]
+            ],
+        ),
+    ],
 )
 
 wk_map = {"Mon": 1, "Tues": 2, "Wed": 3, "Thu": 4, "Fri": 5, "Sat": 6, "Sun": 7}
@@ -545,7 +580,7 @@ def update_choro(dd_select, start, end):
     ],
 )
 def update_sel_for_table(
-        ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
+    ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
 ):
     """
     :return: Data for generating flight info datatable.
@@ -699,4 +734,4 @@ def update_state_click(choro_click, choro_fig, dd_select, end, start):
 
 # Run the server
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, dev_tools_ui=False)

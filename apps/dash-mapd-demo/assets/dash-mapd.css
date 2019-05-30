@@ -90,10 +90,15 @@ body {
 
 @media only screen and (max-width: 750px) {
     #dropdown-select-outer {
-        flex-direction:column;
+        flex-direction: column;
     }
+
     .selector {
-        width:100%;
+        width: 100%;
+    }
+
+    #date-picker-outer {
+        margin-top: 10px;
     }
 
     .column, .columns {
@@ -105,8 +110,8 @@ body {
 
 /*ipad*/
 
-@media only screen and (min-width: 768px) and (max-width: 1024px){
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
     #date-picker-outer {
-        width:50%;
+        width: 50%;
     }
 }
