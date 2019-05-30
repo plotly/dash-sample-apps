@@ -7,6 +7,13 @@ library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
 library(fasttime)
+
+appName <- Sys.getenv("DASH_APP_NAME")
+pathPrefix <- sprintf("/%s/", appName)
+
+Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+
 setwd("/app/apps/dashr-web-trader")
 source("utils/helper-functions.R")
 
