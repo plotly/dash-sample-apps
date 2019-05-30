@@ -14,7 +14,16 @@ from sklearn.svm import SVC
 drc = importlib.import_module("apps.dash-svm.utils.dash_reusable_components")
 figs = importlib.import_module("apps.dash-svm.utils.figures")
 
-app = dash.Dash(__name__)
+app = dash.Dash(meta_tags=[
+    {
+        'name': 'description',
+        'content': 'My description'
+    },
+    {
+        'http-equiv': 'X-UA-Compatible',
+        'content': 'IE=edge'
+    }
+])
 server = app.server
 
 
