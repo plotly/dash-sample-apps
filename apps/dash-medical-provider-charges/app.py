@@ -158,7 +158,7 @@ def build_upper_left_panel():
                     html.Div(
                         id="select-metric-outer",
                         children=[
-                            html.Label("Choose a Cost Metric:"),
+                            html.Label("Choose a Cost Metric"),
                             dcc.Dropdown(
                                 id="metric-select",
                                 options=[{"label": i, "value": i} for i in cost_metric],
@@ -172,7 +172,7 @@ def build_upper_left_panel():
                 id="region-select-outer",
                 className="control-row-2",
                 children=[
-                    html.Label("Pick a Region:"),
+                    html.Label("Pick a Region"),
                     html.Div(
                         id="checklist-container",
                         children=dcc.Checklist(
@@ -283,7 +283,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                 size=10
                 * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
                 colorbar=dict(
-                    x=0.9,
+                    x=1,
                     len=0.8,
                     title=dict(
                         text="Average Cost",
