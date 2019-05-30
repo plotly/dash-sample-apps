@@ -15,31 +15,26 @@ usePackage <- function(p)
 }
 
 
-setwd('plotly/dash-sample-apps/apps/dashR-vanguard-report')
+appName <- Sys.getenv("DASH_APP_NAME")
+pathPrefix <- sprintf("/%s/", appName)
+
+Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+
+setwd("/app/apps/dashr-vanguard-report")
+
 #Source assets
 source("assets/VanguardFunctions.R")
 
-#setwd("Vanguard")
-
-
 # Load Necessary Packages
-
 usePackage('dashR')
-
 usePackage('dashCoreComponents')
-
 usePackage('dashHtmlComponents')
-
 usePackage('plyr')
-
 usePackage('plotly')
-
 usePackage('lubridate')
-
 usePackage('dashTable')
-
 usePackage('taRifx')
-
 
 #################################################################################
 
@@ -49,20 +44,15 @@ external_css1 = list("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/nor
                      "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
                      "https://cdn.rawgit.com/plotly/dash-app-stylesheets/5047eb29e4afe01b45b27b1d2f7deda2a942311a/goldman-sachs-report.css")
 
-
 app <- Dash$new(external_stylesheets = external_css1)
-
 
 grey_line <- htmlDiv(list(
   htmlHr(className = "greyline")
 ))
 
-
 overview <- htmlDiv(list(
   Header()
 ))
-
-
 
 #################################################################################
 
@@ -71,8 +61,6 @@ colors <- list(
   text = '#111111'
 )
 
-
-
 #################################################################################
 
 #Intro Paragraph and Overview
@@ -80,7 +68,6 @@ colors <- list(
 paragraph <- htmlDiv(list(
   htmlDiv(list(
     htmlH4('Product Summary', style = list("color" = "#ffffff")),
-    
     htmlP("\
                             As the industry’s first index fund for individual investors, \
                             the 500 Index Fund is a low-cost way to gain diversified exposure \
@@ -94,14 +81,9 @@ paragraph <- htmlDiv(list(
   )), className = "product"
 )
 
-
 #################################################################################
 
-
 #Code for the Average Annual Performance Bar Charts
-
-
-
 ax <- list(
   title = ""
 )
@@ -109,7 +91,6 @@ ax <- list(
 years <- c("1 year", "3 year", "5 year", "10 year", "41 year")
 SP_Index <- c(21.83, 11.41, 15.79, 8.50, 0)
 Index_Fund <- c(21.67, 11.26, 15.62, 8.37, 11.11)
-
 
 performance_data <- data.frame(years, SP_Index, Index_Fund)
 
@@ -122,8 +103,6 @@ performance <- plot_ly(performance_data, x= ~years, y= ~Index_Fund, type = "bar"
          legend = list(x = 1.0, y =  0.95, orientation = 'h', yanchor = "top", font = list(size =9)),
          autosize = FALSE, bargap = 0.35, hovermode = "closest",  margin = list(r=0, t=20, b=10, l=10))
 
-
-
 performance_graph <- htmlDiv(
   list(
     htmlH6(list('Average annual performance'), className = 'subtitle'),
@@ -134,9 +113,7 @@ performance_graph <- htmlDiv(
 
 #################################################################################
 
-
 #Code for the Hypothetical Growth Line Graphs
-
 hypothetical_yaxis <- list(
   title = "",
   autotick = FALSE,
@@ -162,17 +139,13 @@ nogrid <- list(
 x = c(2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018)
 y = c(10000, 7500, 9000, 10000, 10500, 11000, 14000, 18000, 19000, 20500, 30000)
 
-
 hypothetical_data <- data.frame(x,y)
-
-
 
 hypothetical_growth <- plot_ly(hypothetical_data, x= x, y= y, type = "scatter",
                                mode = 'lines', line = list(color = '#98151B', width = 3), name = "500 Index Fund Inv",
                                height = 200, width = 340) %>%
   layout(yaxis = hypothetical_yaxis, xaxis = nogrid, legend=list(orientation='h', y = -0.2), showlegend=TRUE, autosize = FALSE
          , margin = list(r=20, t=20, b=20, l=50))
-
 
 hypothetical_graph <- htmlDiv(
   list(
@@ -185,10 +158,7 @@ hypothetical_graph <- htmlDiv(
 #################################################################################
 
 #Code for the performance line graphs.
-
-
 df_graph <- read.csv('data/df_graph.csv')
-
 
 performance_yaxis <- list(
   title = "",
@@ -199,7 +169,6 @@ performance_yaxis <- list(
   color = 'gray',
   linecolor = toRGB('lightgray')
 )
-
 
 performance_xaxis <- list(
   title = "" ,
@@ -248,7 +217,6 @@ performance_xaxis <- list(
 df_graph$Date <- ymd(as.character(df_graph$Date))
 
 df_graph$Date <- floor_date(df_graph$Date, "month")
-
 
 df_graph <- ddply(df_graph, "Date", summarise, Vanguard.500.Index.Fund = mean(Vanguard.500.Index.Fund),
                   MSCI.EAFE.Index.Fund..ETF. = mean(MSCI.EAFE.Index.Fund..ETF.))
@@ -1072,11 +1040,4 @@ app$callback(output = list(id='page-content', property = 'children'),
              }
 )
 
-
-
-app$run_server()
-
-
-
-
-
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8080))
