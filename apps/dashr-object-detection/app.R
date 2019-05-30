@@ -5,17 +5,17 @@ Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
 
 setwd("app/apps/dashr-object-detection")
 
-require(tidyverse)
-require(dashR)
-require(dashCoreComponents)
-require(dashHtmlComponents)
-require(dashPlayer)
-require(plotly)
-require(rlist)
-require(stringr)
-require(data.table)
-require(glue)
-require(compiler)
+library(tidyverse)
+library(dashR)
+library(dashCoreComponents)
+library(dashHtmlComponents)
+library(dashPlayer)
+library(plotly)
+library(rlist)
+library(stringr)
+library(data.table)
+library(glue)
+library(compiler)
 
 
 DEBUG <- T
