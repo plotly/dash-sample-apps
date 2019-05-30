@@ -7,6 +7,17 @@ usePackage <- function(p)
   require(p, character.only = TRUE)
 }
 
+# Remove.Factors
+
+remove.factors <- function (df) 
+{
+  for (varnum in 1:length(df)) {
+    if ("factor" %in% class(df[, varnum])) {
+      df[varnum] = as.character(df[, varnum])
+    }
+  }
+  return(df)
+}
 
 # Generate a Table Function 
 generate_table <- function(df, nrows=20)
