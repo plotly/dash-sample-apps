@@ -11,6 +11,9 @@ options(repos=r)
 # packages go here
 install.packages("remotes")
 
+# installs lubridate
+install.packages("lubridate")
+
 # installs Rcpp, rlang, BH
 install.packages("later")
 
