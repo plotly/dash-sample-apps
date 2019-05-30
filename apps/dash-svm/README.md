@@ -1,5 +1,4 @@
-# Support Vector Machine (SVM) Explorer [![GitHub license](https://img.shields.io/github/license/plotly/dash-svm.svg)](https://github.com/plotly/dash-svm/blob/master/LICENSE.md) [![Mentioned in Awesome Machine Learning](https://awesome.re/mentioned-badge.svg)](https://github.com/josephmisiti/awesome-machine-learning)
-
+# Support Vector Machine (SVM) Explorer [![Mentioned in Awesome Machine Learning](https://awesome.re/mentioned-badge.svg)](https://github.com/josephmisiti/awesome-machine-learning)
 
 This is a learning tool and exploration app made using the Dash interactive Python framework developed by [Plotly](https://plot.ly/).
 
