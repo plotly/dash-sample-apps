@@ -127,7 +127,7 @@ span.Select-clear-zone {
 }
 
 #procedure-plot {
-    margin: -300px 0px -200px -50px;
+    margin: -300px 0px -200px 0px;
 }
 
 #select-metric-outer, #region-select-outer {
@@ -193,6 +193,14 @@ span.Select-clear-zone {
         width: 100%;
         margin-left: 0;
     }
+
+    /*
+  Hide y axis labels for mobile device
+*/
+    #procedure-plot {
+    margin: -300px 0px -200px -80px;
+}
+
 }
 
 /*
@@ -208,4 +216,5 @@ span.Select-clear-zone {
     #state-select-outer, #select-metric-outer {
         width: 45%;
     }
+
 }
