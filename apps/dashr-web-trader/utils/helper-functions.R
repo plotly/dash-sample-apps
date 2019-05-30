@@ -822,7 +822,8 @@ chartDiv <- function(pair){
                 )
               ),
               htmlSpan(
-                "☰",
+                #"☰",
+                htmlI(className = "fas fa-bars"),
                 id = paste0(pairname, "menu_button"),
                 n_clicks = 0,
                 style = list(

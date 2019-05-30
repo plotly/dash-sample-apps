@@ -9,12 +9,15 @@ library(data.table)
 library(fasttime)
 
 appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
 
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+if (!appName == ""){
+  pathPrefix <- sprintf("/%s/", appName)
 
-setwd("/app/apps/dashr-web-trader")
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+
+  setwd("/app/apps/dashr-web-trader")
+}
 
 source("utils/helper-functions.R")
 
@@ -1604,4 +1607,6 @@ app$callback(
   }
 )
 
-app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8080))
+if (appName == ""){
+  app$run_server()
+} else {app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8080))}
