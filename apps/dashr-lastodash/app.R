@@ -10,7 +10,7 @@ source("lastodf.R")
 app <- Dash$new(name='DashR LAS Report')
 
 LASdir <- "data/"
-LASfile <- "alcor1.las"
+LASfile <- "alcor2.las"
 LASpath <- paste(LASdir, LASfile, sep="")
 LASdata <- convertLAS(LASpath)
 
@@ -69,7 +69,7 @@ plotList <- function(nplots) {
 }
 
 generate_curves <- function(height=950,
-                            width=800,
+                            width=1000,
                             bg_color="white",
                             font_size=10,
                             tick_font_size=8,
