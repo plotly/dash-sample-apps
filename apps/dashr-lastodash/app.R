@@ -29,8 +29,8 @@ generate_frontpage <- function() {
               htmlDiv(
                 id="las-file-info",
                 children=list(
-                  htmlB(id="las-filename", children=LASfile),
-                  htmlSpan(glue("({desc})"))
+                  htmlSpan(id="las-filename", children=LASfile),
+                  htmlSpan(glue(" ({desc})"))
                 )
               )
             )
@@ -69,7 +69,7 @@ plotList <- function(nplots) {
 }
 
 generate_curves <- function(height=950,
-                            width=725,
+                            width=800,
                             bg_color="white",
                             font_size=10,
                             tick_font_size=8,
@@ -96,10 +96,10 @@ generate_curves <- function(height=950,
     plots[[1]], plots[[2]], plots[[3]], plots[[4]], plots[[5]], 
     plotList(5), nrows=1, shareY=TRUE, margin=0
   )
-  #fig["data"][2]["xaxis"] = "x6"
-  #fig["data"][7]["xaxis"] = "x7"
-  #fig["data"][9]["xaxis"] = "x8"
-  #fig["data"][12]["xaxis"] = "x9"
+  #fig$x["data"][[2]]["xaxis"] = "x6"
+  #fig$x["data"][[7]]["xaxis"] = "x7"
+  #fig$x["data"][[9]]["xaxis"] = "x8"
+  #fig$x["data"][[12]]["xaxis"] = "x9"
   fig <- layout(fig, 
     height = height, 
     width = width, 
@@ -179,17 +179,17 @@ generate_curves <- function(height=950,
 generate_table <- function() {
   #columns <- list()
   #for (key in names(LASdata$W)) {
-  #  columns[[length(columns)+1]] <- list(name = key, id = key)
+  #  columns[[length(columns)+1]] <- list(name = key, id=key)
   #}
   cols <- list (
-    list(name = "mnemonic", id = "mnemonic"),
-    list(name = "description", id = "description"),
-    list(name = "unit", id = "unit"),
-    list(name = "value", id = "value")
+    list(name = "mnemonic", id="mnemonic"),
+    list(name = "description", id="description"),
+    list(name = "unit", id="unit"),
+    list(name = "value", id="value")
   )
   return(
     dashTable::dashDataTable(
-      id = "table",
+      id="table",
       sorting = TRUE,
       filtering = TRUE,
       row_deletable = TRUE,
@@ -203,20 +203,58 @@ generate_table <- function() {
 app$layout(
   htmlDiv(
     list(
-      htmlDiv(id="controls", children=list(htmlButton("Print", id="las-print"))),
-      htmlDiv(id="frontpage", className="page", children=generate_frontpage()),
-      htmlDiv(className="section-title", children="LAS well"),
       htmlDiv(
-        className="page",
+        id="controls", 
         children=list(
-          htmlDiv(id="las-table", children=generate_table()),
-          htmlDiv(id="las-table-print")
-        ),
+          htmlButton(
+            "Print", 
+            id="las-print"
+          )
+        )
       ),
-      htmlDiv(className="section-title", children="LAS curves"),
       htmlDiv(
+        id="frontpage",
         className="page",
-        children=list(htmlDiv(id="las-curves", children=generate_curves()))
+        children=generate_frontpage()
+      ),
+      htmlDiv(
+        className="section",
+        children=list(
+          htmlDiv(
+            className="section-title",
+            children="LAS well"
+          ),
+          htmlDiv(
+            className="page",
+            children=list(
+              htmlDiv(
+                id="las-table", 
+                children=generate_table()
+              ),
+              htmlDiv(
+                id="las-table-print"
+              )
+            )
+          )
+        )
+      ),
+      htmlDiv(
+        className="section",
+        children=list(
+          htmlDiv(
+            className="section-title", 
+            children="LAS curves"
+          ),
+          htmlDiv(
+            className="page",
+            children=list(
+              htmlDiv(
+                id="las-curves", 
+                children=generate_curves()
+              )
+            )
+          )
+        )
       )
     )
   )
