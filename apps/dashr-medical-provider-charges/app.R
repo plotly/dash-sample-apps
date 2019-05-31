@@ -305,7 +305,10 @@ generateGeoMap <- function(geo_data, selected_metric,
           }
         ),
         ticks = "outside",
-        tickfont = list(family = "Arial", color = "#737a8d")
+        tickfont = list(family = "Arial", color = "#737a8d"),
+        thickness = 15,
+        x = 0.8,
+        len = 0.7
       )
     ),
     opacity = 0.8,
