@@ -3,12 +3,14 @@ library(dashHtmlComponents)
 library(dashR)
 
 appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
 
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
 
-setwd(sprintf("/app/apps/%s", appName))
+  setwd(sprintf("/app/apps/%s", appName))
+}
 
 source("utils/helperFunctions.R")
 source("utils/reusableComponents.R")
@@ -383,4 +385,8 @@ app$callback(
   }
 )
 
-app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+if (appName != "") {
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+} else {
+  app$run_server()
+}
