@@ -126,7 +126,8 @@ span.Select-clear-zone {
 }
 
 #cost-stats-table, #procedure-stats-table {
-    overflow: scroll;
+    overflow: auto;
+    /*overflow: scroll;*/
 }
 
 .section-title {

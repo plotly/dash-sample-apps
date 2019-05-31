@@ -12,6 +12,17 @@ library(data.table)
 
 rm(list = ls())
 
+appName <- Sys.getenv("DASH_APP_NAME")
+
+if (appName != "") {
+  pathPrefix <- sprintf("/%s/", appName)
+
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+
+  setwd(sprintf("/app/apps/%s", appName))
+}
+
 # Plotly mapbox token
 mapbox_access_token <- "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
 Sys.setenv("MAPBOX_TOKEN" = mapbox_access_token)
@@ -203,7 +214,8 @@ buildUpperLeftPanel <- function(){
                 children = list(
                   htmlH5(
                     className = "section-title",
-                    "Hospital Charges Summary"
+                    "Hospital Charges Summary",
+                    style = list(marginTop = "1em")
                   ),
                   dccLoading(
                     children = htmlDiv(
@@ -219,7 +231,9 @@ buildUpperLeftPanel <- function(){
                 children = list(
                   htmlH5(
                     className = "section-title",
-                    "Procedure Charges Summary"
+                    "Procedure Charges Summary",
+                    style = list(marginTop = "1em")
+
                   ),
                   dccLoading(
                     children = htmlDiv(
@@ -725,4 +739,9 @@ app$callback(
   }
 )
 
-app$run_server(debug = TRUE)
+if (appName != ""){
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+} else {
+  app$run_server(debug = TRUE)
+}
+
