@@ -16,7 +16,7 @@ library(Hmisc)
 
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
 
-ridesRaw <- fread("data/output.csv",
+ridesRaw <- fread("https://www.dropbox.com/s/b3nf9eous05thwx/output.csv?dl=1",
                   stringsAsFactors = FALSE)
 # Read Actual df
 
