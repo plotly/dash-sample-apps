@@ -12,18 +12,21 @@ library(dashHtmlComponents)
 library(plotly)
 library(data.table)
 library(dplyr)
-#library(lubridate)
 library(Hmisc)
 
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
-ridesRaw <- read.csv("data/output.csv",
-                     stringsAsFactors = FALSE)
-# Read data
 
-ridesDf <- ridesRaw[, c("Date.Time","Lat","Lon")]
+ridesRaw <- fread("/Users/Caner/Desktop/plotly/dashR-uber-rides/data/output.csv",
+                  stringsAsFactors = FALSE)
+# Read Actual df
+
+ridesDf <- ridesRaw[, c("Date/Time","Lat","Lon")]
 # Remove extra columns
 
-ridesDf$Date.Time <- as.POSIXct(ridesDf$Date.Time, format = "%Y-%m-%d %H:%M:%OS")
+names(ridesDf) <- c("dateTime", "Lat", "Lon")
+# Rename columns
+
+ridesDf$Date.Time <- as.POSIXct(ridesDf$dateTime, format = "%Y-%m-%d %H:%M:%OS")
 # Convert Date.Time column to posix type || THIS IS ABOUT A MINUTE WITH THE ACTUAL DF 
 
 locationCoordinates <- list(
@@ -505,8 +508,4 @@ app$callback(output = list(id = "total-rides", property = "children"),
   }
 )
 ####################################################################################################
-
-
-
 app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
-
