@@ -19,8 +19,8 @@ library(Hmisc)
 ridesRaw <- fread("data/sample-output.csv",
                      stringsAsFactors = FALSE)
 # Read Actual df
-
-ridesDf <- ridesRaw[, c("Date/Time","Lat","Lon")]
+print(head(ridesRaw))
+ridesDf <- ridesRaw[, 2:4] #c("Date/Time","Lat","Lon")]
 # Remove extra columns
 
 names(ridesDf) <- c("dateTime", "Lat", "Lon")
