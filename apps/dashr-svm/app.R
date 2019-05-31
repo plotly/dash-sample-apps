@@ -223,6 +223,24 @@ app$layout(
                     children = list(
                       dccGraph(
                         id = "main_figure",
+                        figure = plot_ly() %>%
+                          layout(
+														paper_bgcolor = "#272b38",
+														plot_bgcolor = "#272b38",
+														showgrid = FALSE,
+														xaxis = list(
+															zeroline = FALSE, 
+															showline = FALSE, 
+															showticklabels = FALSE, 
+															showgrid = FALSE
+														),
+														yaxis = list(
+															zeroline = FALSE, 
+															showline = FALSE, 
+															showticklabels = FALSE, 
+															showgrid = FALSE
+														)
+													),
                         style = list(
                           height = "calc(100vh - 90px)",
                           margin = "0 1.66rem"
@@ -246,11 +264,47 @@ app$layout(
                       dccGraph(
                         id = "graph-line-roc-curve",
                         style = list(height = "40%"),
+                        figure = plot_ly() %>%
+                          layout(
+														paper_bgcolor = "#272b38",
+														plot_bgcolor = "#272b38",
+														showgrid = FALSE,
+														xaxis = list(
+															zeroline = FALSE, 
+															showline = FALSE, 
+															showticklabels = FALSE, 
+															showgrid = FALSE
+														),
+														yaxis = list(
+															zeroline = FALSE, 
+															showline = FALSE, 
+															showticklabels = FALSE, 
+															showgrid = FALSE
+														)
+													),
                         config = list(displayModeBar = FALSE)
                       ),
                       dccGraph(
                         id = "graph-pie-confusion-matrix",
                         style = list(height = "55%", marginTop = "5%"),
+                        figure = plot_ly() %>%
+                          layout(
+														paper_bgcolor = "#272b38",
+														plot_bgcolor = "#272b38",
+														showgrid = FALSE,
+														xaxis = list(
+															zeroline = FALSE, 
+															showline = FALSE, 
+															showticklabels = FALSE, 
+															showgrid = FALSE
+														),
+														yaxis = list(
+															zeroline = FALSE, 
+															showline = FALSE, 
+															showticklabels = FALSE, 
+															showgrid = FALSE
+														)
+													),
                         config = list(displayModeBar = FALSE)
                       )
                     )
