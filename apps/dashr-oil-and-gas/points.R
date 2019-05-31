@@ -1,6 +1,4 @@
 setwd('/Users/kevinphan/Desktop/PLOTLY APPS MADE/OIL AND GAS/data')
-#install.packages('dplyr')
-#install.packages('sqldf')
 #install.packages("dashR_0.0.4.tar.gz", repos = NULL, type = "source")
 library(dplyr)
 library(sqldf)
