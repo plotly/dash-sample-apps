@@ -100,3 +100,12 @@ h6 {
 ._dash-undo-redo {
     display: none;
 }
+
+@media only screen and (max-width: 600px) {
+    .histogram__direction {
+        margin: 15px 0px 20px 0px;
+    }
+    .app__content {
+        display: block;
+    }    
+}

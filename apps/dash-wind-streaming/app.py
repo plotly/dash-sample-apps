@@ -12,7 +12,10 @@ from scipy.stats import rayleigh
 from db.api import get_wind_data, get_wind_data_by_id
 
 
-app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__,
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+)
 
 server = app.server
 
