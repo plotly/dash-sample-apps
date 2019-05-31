@@ -12,7 +12,7 @@ library(dashHtmlComponents)
 library(plotly)
 library(data.table)
 library(dplyr)
-library(lubridate)
+#library(lubridate)
 library(Hmisc)
 
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
