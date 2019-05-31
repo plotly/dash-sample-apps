@@ -16,7 +16,7 @@ library(Hmisc)
 
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
 
-ridesRaw <- fread("/Users/Caner/Desktop/plotly/dashR-uber-rides/data/output.csv",
+ridesRaw <- fread("data/output.csv",
                   stringsAsFactors = FALSE)
 # Read Actual df
 
