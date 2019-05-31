@@ -19,6 +19,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 df = pd.read_csv("data/data.csv")
 
+
 df["datetime"] = pd.to_datetime(df["datetime"])
 df["endtime"] = df["datetime"] + pd.to_timedelta(df["time_on_page"], unit="s")
 df.sort_values(by=["datetime"], inplace=True)
