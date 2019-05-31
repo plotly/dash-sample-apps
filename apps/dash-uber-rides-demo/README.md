@@ -11,11 +11,11 @@ This demo is based off of data provided by [FiveThirtyEight](https://github.com/
 
 (The following instructions apply to Windows command line.)
 
-To run this app first clone repository and then open a terminal to the app folder
+To run this app first clone repository and then open a terminal to the app folder.
 
 ```
 git clone https://github.com/plotly/dash-sample-apps.git
-cd apps\dash-uber-rides-demo
+cd apps/dash-uber-rides-demo
 ```
 
 Create and activate a new virtual environment (recommended) by running
@@ -23,7 +23,7 @@ the following:
 
 ```
 virtualenv venv 
-\venv\scripts\activate
+/venv/scripts/activate
 ```
 
 Install the requirements:

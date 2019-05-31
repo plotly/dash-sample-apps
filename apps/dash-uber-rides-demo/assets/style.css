@@ -402,16 +402,21 @@ Taken from https://codepen.io/chriddyp/pen/bWLwgP.css
 /* Custom App CSS Below
 --------------------------------- */
 
+/*Fonts
+––––––––––––––––––––––––––––––––––––––––––––––––––*/ 
+
 @font-face {
-	font-family: 'Open Sans Semi Bold';
-	src: url('../assets/OpenSans-Semibold.ttf');
+  font-family: "Open Sans Semi Bold";
+  src: url("OpenSans-Semibold.ttf") format('opentype');
 }
 
 @font-face {
-	font-family: 'Open Sans Light';
-	src: url('../assets/OpenSans-Light.ttf');
+  font-family: "Open Sans Light";
+  src: url("OpenSans-Light.ttf") format('opentype');
 }
 
+/* Main Layout
+––––––––––––––––––––––––––––––––––––––––––––––––––*/
 body {
 	background-color: #1E1E1E;
 	color: #d8d8d8;
@@ -439,12 +444,37 @@ a {
 	text-decoration: none;
 }
 
-button {
-	background-color: #4abaff;
-	color: white;
-	display: block;
-	margin-right: auto;
+
+.bg-grey{
+  background-color: #323130;
+  padding: 5px;
 }
+
+/*  Graph Layout 
+––––––––––––––––––––––––––––––––––––––––––––––––––*/
+
+.div-for-charts{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+#histogram {
+  flex-grow: 1
+}
+  
+#map-graph {
+  flex-grow: 1
+}
+ 
+.mapboxgl-canvas,
+.mapboxgl-map {
+  min-width: 100%;
+}
+
+/* Graph Control Objects
+––––––––––––––––––––––––––––––––––––––––––––––––––*/
 
 .div-user-controls {
 	padding: 12px;
@@ -502,6 +532,43 @@ button {
     font-size: 14px;
 }
 
+#date {
+  background-color: #1e1e1e;
+  font-family: "Open Sans Light";
+  font-weight: 400;
+  background: #1e1e1e;
+  color: #dbdbdb; 
+}
+
+#date-picker{
+  width: 100%;
+}
+
+.DateInput.DateInput_1{
+  background: #1e1e1e;
+  width: 100%;
+}
+
+.SingleDatePickerInput__withBorder {
+  border-radius: 3px;
+  border: 0.5px solid #dbdbdb;
+  color: #dbdbdb;
+  background: #1e1e1e;
+  background-color: #1e1e1e;
+}
+
+.SingleDatePickerInput.SingleDatePickerInput_1.SingleDatePickerInput__withBorder.SingleDatePickerInput__withBorder_2 {
+  border: 0.0px solid #dbdbdb;
+  display: block;
+}
+
+
+.SingleDatePicker_1 {
+  display: block;
+}
+
+
+
 /* For Mobile Phones and small screens 
 ––––––––––––––––––––––––––––––––––––––––––––––––––*/
 
@@ -521,8 +588,8 @@ button {
 		margin: 8px;
 	}
 	.div-for-charts {
-		padding: 24px;
-		text-align: center;
+    padding: 24px;
+    text-align: center;
     }
     .mapboxgl-canvas,
     .mapboxgl-map {
