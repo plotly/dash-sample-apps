@@ -1,6 +1,7 @@
 .container.scalable {
     width: 100% !important;
     max-width: none;
+    padding: 0px;
 }
 
 /* Remove Undo
@@ -68,7 +69,7 @@ body {
     height: 35rem;
 }
 
-.dash-spreadsheet-container .dash-spreadsheet-inner th, td {
+.dash-spreadsheet-container .dash-spreadsheet-inner th, tr, td {
     text-align: center !important;
     font-family: "Open Sans", sans-serif !important;
     border: none !important;
@@ -91,6 +92,10 @@ body {
 @media only screen and (max-width: 750px) {
     #dropdown-select-outer {
         flex-direction: column;
+    }
+
+    .banner {
+        padding: 0rem 2rem;
     }
 
     .selector {

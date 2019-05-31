@@ -734,4 +734,4 @@ def update_state_click(choro_click, choro_fig, dd_select, end, start):
 
 # Run the server
 if __name__ == "__main__":
-    app.run_server(debug=True, dev_tools_ui=False)
+    app.run_server(debug=True)
