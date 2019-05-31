@@ -130,8 +130,89 @@ span.Select-clear-zone {
 }
 
 .section-title {
- margin: 0.6rem 0rem 2rem 0rem;
-    /*font-size: 16px;*/
-    /*font-weight: bold;*/
-    /*display: block;*/
+    margin: 0.6rem 0rem 2rem 0rem;
+}
+
+.dash-spreadsheet-container .dash-spreadsheet-inner th, td {
+    text-align: center !important;
+    font-family: "Open Sans", sans-serif !important;
+    border-top-color: #171b26 !important;
+    border-bottom-color: #171b26 !important;
+    border-left-color: #171b26 !important;
+    border-right-color: #171b26 !important;
+    font-size: 11px;
+}
+
+.dash-filter input {
+    color: #7b7d8d !important;
+}
+
+@media only screen and (max-width: 750px) {
+    .control-row-1 {
+        flex-direction: column;
+    }
+
+    #state-select-outer, #select-metric-outer {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 750px), (min-width: 768px) and (max-width: 1024px) {
+    body {
+        font-size: 14px;
+    }
+
+    .section-title, #map-title {
+        font-size: 14px;
+    }
+
+    .banner {
+        padding: 0rem 2rem;
+    }
+
+    .banner h6 {
+        font-size: 1.5rem;
+    }
+
+    .banner img {
+        height: 1.5rem;
+    }
+
+    #upper-container {
+        margin: 1rem;
+    }
+
+    #upper-left > div > label {
+        font-weight: normal;
+        margin-bottom: 2px;
+    }
+
+    #upper-left, #geo-map-outer {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    /*
+  Hide y axis labels for mobile device
+*/
+    #procedure-plot {
+    margin-left: -80px;
+    /*margin: -300px 0px -200px -80px;*/
+}
+
+}
+/*
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+
+    #upper-left, #geo-map-outer {
+        padding: 1rem 4rem;
+    }
+
+    #state-select-outer, #select-metric-outer {
+        width: 45%;
+    }
+
 }

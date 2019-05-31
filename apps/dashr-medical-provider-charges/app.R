@@ -421,8 +421,7 @@ generateDataTable <- function(DT, type = c("procedure", "cost")){
       backgroundColor = "#171b26",
       color = "#7b7d8d",
       textOverflow = "ellipsis"
-    ),
-    style_filter = list(backgroundColor = "#171b26", color = "#7b7d8d")
+    )
   )
 }
 
