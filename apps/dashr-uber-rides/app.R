@@ -16,8 +16,8 @@ library(Hmisc)
 
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
 
-ridesRaw <- fread("https://www.dropbox.com/s/b3nf9eous05thwx/output.csv?dl=1",
-                  stringsAsFactors = FALSE)
+ridesRaw <- fread("data/sample-output.csv",
+                     stringsAsFactors = FALSE)
 # Read Actual df
 
 ridesDf <- ridesRaw[, c("Date/Time","Lat","Lon")]
