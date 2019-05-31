@@ -16,9 +16,13 @@ library(Hmisc)
 library(lubridate)
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
 
-ridesRaw <- fread("data/output.csv",
-                     stringsAsFactors = FALSE)
-# Read Actual df
+ridesRaw_1 <- fread("data/rides_raw_1.csv", stringsAsFactors = FALSE)                     
+ridesRaw_2 <- fread("data/rides_raw_2.csv", stringsAsFactors = FALSE)                     
+ridesRaw_3 <- fread("data/rides_raw_3.csv", stringsAsFactors = FALSE)                     
+
+ridesRaw <- rbind(ridesRaw_1, ridesRaw_2, ridesRaw_3)
+# Combine partitions of data
+
 print(head(ridesRaw))
 ridesDf <- ridesRaw[, 2:4] #c("Date.Time","Lat","Lon")]
 # Remove extra columns
