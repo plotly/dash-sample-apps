@@ -278,7 +278,7 @@ generateGeoMap <- function(geo_data, selected_metric,
         list(1, "#ff1717")
       ),
       # Different scaling method used here (min max scaling)
-      size = 10 *
+      size = 15 *
         (
           1 + (filtered_data[[co]] - dMin[[1]]) / (dMax[[1]] - dMin[[1]])
         ),
@@ -321,7 +321,7 @@ generateGeoMap <- function(geo_data, selected_metric,
         bearing = 10,
         center = list(lat = ~mean(lat), lon = ~mean(lon)),
         pitch = 5,
-        zoom = 7,
+        zoom = 5,
         style = "mapbox://styles/plotlymapbox/cjvppq1jl1ips1co3j12b9hex"
       )
     )
@@ -376,7 +376,8 @@ generateProcedurePlot <- function(raw_data, cost_select,
         showticklabels = TRUE,
         title = list(text = "Procedure Cost", font = list(color = "#737a8d")),
         linecolor = "#737a8d",
-        tickfont = list(color = "#737a8d")
+        tickfont = list(color = "#737a8d"),
+        type = "log"
       ),
       yaxis = list(
         automargin = TRUE,
@@ -421,7 +422,8 @@ generateDataTable <- function(DT, type = c("procedure", "cost")){
       backgroundColor = "#171b26",
       color = "#7b7d8d",
       textOverflow = "ellipsis"
-    )
+    ),
+    style_header = list(backgroundColor = "#1f2536")
   )
 }
 
