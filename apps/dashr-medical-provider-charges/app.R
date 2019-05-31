@@ -1,8 +1,3 @@
-#library(devtools)
-#install_github("plotly/dashR", ref = "0.0.7-debug")
-#install_github("plotly/dashR")
-#install_github("plotly/dash-table", ref = "R")
-
 library(dashR)
 library(dashCoreComponents)
 library(dashHtmlComponents)
