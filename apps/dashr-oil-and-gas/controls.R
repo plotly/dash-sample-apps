@@ -1,5 +1,4 @@
-  #install.packages('hash')
-  #library(hash)
+
   COUNTIES1 = c('Albany','Allegany','bronx', 'Broome','Cattaraugus','Cayuga',
     'Chautauqua','Chemung','Chenango','Clinton','Columbia','Cortland','Delaware','Dutchess',
     'Erie','Essex','Franklin','Fulton','Genesee','Greene','Hamilton','Herkimer','Jefferson','Kings','Lewis',
