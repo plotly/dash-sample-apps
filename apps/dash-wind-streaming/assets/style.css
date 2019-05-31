@@ -108,4 +108,8 @@ h6 {
     .app__content {
         display: block;
     }    
+    .app__menu__img {
+        height: 30px;
+        width: auto;
+    }
 }
