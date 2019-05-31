@@ -4,10 +4,7 @@ pathPrefix <- sprintf("/%s/", appName)
 Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
            DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
 
-setwd("/app/apps/dashr-vanguard-report")
-
-#Source assets
-source("assets/VanguardFunctions.R")
+setwd("/app/apps/dashr-ideogram")
 
 # Load Necessary Packages
 library('dashR')
@@ -15,8 +12,8 @@ library('dashCoreComponents')
 library('dashHtmlComponents')
 library('plyr')
 library('plotly')
-library('lubridate')
-
+library('dashBio')
+library('dashDaq')
 #################################################################################
 
 external_css1 = list("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",
@@ -27,998 +24,992 @@ external_css1 = list("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/nor
 
 app <- Dash$new(external_stylesheets = external_css1)
 
-grey_line <- htmlDiv(list(
-  htmlHr(className = "greyline")
-))
-
-overview <- htmlDiv(list(
-  Header()
-))
-
-#################################################################################
-
-colors <- list(
-  background = '#ffffff',
-  text = '#111111'
-)
-
-#################################################################################
-
-#Intro Paragraph and Overview
-
-paragraph <- htmlDiv(list(
-  htmlDiv(list(
-    htmlH4('Product Summary', style = list("color" = "#ffffff")),
-    htmlP("\
-                            As the industry’s first index fund for individual investors, \
-                            the 500 Index Fund is a low-cost way to gain diversified exposure \
-                            to the U.S. equity market. The fund offers exposure to 500 of the \
-                            largest U.S. companies, which span many different industries and \
-                            account for about three-fourths of the U.S. stock market’s value. \
-                            The key risk for the fund is the volatility that comes with its full \
-                            exposure to the stock market. Because the 500 Index Fund is broadly \
-                            diversified within the large-capitalization market, it may be \
-                            considered a core equity holding in a portfolio.")), className = 'row'
-  )), className = "product"
-)
-
-#################################################################################
-
-#Code for the Average Annual Performance Bar Charts
-ax <- list(
-  title = ""
-)
-
-years <- c("1 year", "3 year", "5 year", "10 year", "41 year")
-SP_Index <- c(21.83, 11.41, 15.79, 8.50, 0)
-Index_Fund <- c(21.67, 11.26, 15.62, 8.37, 11.11)
-
-performance_data <- data.frame(years, SP_Index, Index_Fund)
-
-performance_data$years <- factor(performance_data$years, levels = performance_data$years[order(c(1,2,3,4,5))])
-
-performance <- plot_ly(performance_data, x= ~years, y= ~Index_Fund, type = "bar",
-                       name = '500 Index Fund', width = 340,  height = 200) %>%
-  add_trace(y= ~SP_Index, name = "S&P Index Fund") %>%
-  layout(yaxis = ax, xaxis = ax, colorway = c('#98151B', '#DCDCDC'), 
-         legend = list(x = 1.0, y =  0.95, orientation = 'h', yanchor = "top", font = list(size =9)),
-         autosize = FALSE, bargap = 0.35, hovermode = "closest",  margin = list(r=0, t=20, b=10, l=10))
-
-performance_graph <- htmlDiv(
-  list(
-    htmlH6(list('Average annual performance'), className = 'subtitle'),
-    htmlBr(),
-    dccGraph(id= "Annual Performance", figure=performance)
-  ), className = "six columns"
-)
-
-#################################################################################
-
-#Code for the Hypothetical Growth Line Graphs
-hypothetical_yaxis <- list(
-  title = "",
-  autotick = FALSE,
-  tickmode = "array",
-  tickvals = c(0, 10000, 20000, 30000),
-  showline = TRUE,
-  color = 'gray',
-  linecolor = toRGB('lightgray')
+theme = list(
+  'dark' = FALSE,
+  'detail' = '#007439',
+  'primary' = '#00EA64',
+  'secondary' = '#6E6E6E'
 )
 
 
-nogrid <- list(
-  title = "" ,
-  showgrid = FALSE,
-  autotick = FALSE,
-  tickmode = "array",
-  tickvals = c(2010, 2015),
-  showline = TRUE,
-  color = 'gray',
-  linecolor = toRGB('lightgray')
+
+
+listofchromosomes = (sprintf("%d",seq(1:22)))
+
+listofchromosomes = c(listofchromosomes, "X")
+
+listofchromosomes = c(listofchromosomes, "Y")
+
+
+listOfoptions <- list(
+  list('label' = 'All', 'value' = unlist(listofchromosomes)),
+  list('label' = '1', 'value' = '1'),
+  list('label' = '2', 'value' = '2'),
+  list('label' = '3', 'value' = '3'),
+  list('label' = '4', 'value' = '4'),
+  list('label' = '5', 'value' = '5'),
+  list('label' = '6', 'value' = '6'),
+  list('label' = '7', 'value' = '7'),
+  list('label' = '8', 'value' = '8'),
+  list('label' = '9', 'value' = '9'),
+  list('label' = '10', 'value' = '10'),
+  list('label' = '11', 'value' = '11'),
+  list('label' = '12', 'value' = '12'),
+  list('label' = '13', 'value' = '13'),
+  list('label' = '14', 'value' = '14'),
+  list('label' = '15', 'value' = '15'),
+  list('label' = '16', 'value' = '16'),
+  list('label' = '17', 'value' = '17'),
+  list('label' = '18', 'value' = '18'),
+  list('label' = '19', 'value' = '19'),
+  list('label' = '20', 'value' = '20'),
+  list('label' = '21', 'value' = '21'),
+  list('label' = '22', 'value' = '22'),
+  list('label' = 'X', 'value' = 'X'),
+  list('label' = 'Y', 'value' = 'Y')
 )
 
-x = c(2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018)
-y = c(10000, 7500, 9000, 10000, 10500, 11000, 14000, 18000, 19000, 20500, 30000)
-
-hypothetical_data <- data.frame(x,y)
-
-hypothetical_growth <- plot_ly(hypothetical_data, x= x, y= y, type = "scatter",
-                               mode = 'lines', line = list(color = '#98151B', width = 3), name = "500 Index Fund Inv",
-                               height = 200, width = 340) %>%
-  layout(yaxis = hypothetical_yaxis, xaxis = nogrid, legend=list(orientation='h', y = -0.2), showlegend=TRUE, autosize = FALSE
-         , margin = list(r=20, t=20, b=20, l=50))
-
-hypothetical_graph <- htmlDiv(
-  list(
-    htmlH6(list('Hypothetical Growth of $10,000'), className = 'subtitle'),
-    htmlBr(),
-    dccGraph(id= "Hypothetical Graph", figure=hypothetical_growth)
-  ) , className = 'six columns'
-)
-
-#################################################################################
-
-#Code for the performance line graphs.
-df_graph <- read.csv('data/df_graph.csv')
-
-performance_yaxis <- list(
-  title = "",
-  autotick = FALSE,
-  tickmode = "array",
-  tickvals = c(100,200),
-  showline = TRUE,
-  color = 'gray',
-  linecolor = toRGB('lightgray')
-)
-
-performance_xaxis <- list(
-  title = "" ,
-  showgrid = TRUE,
-  autotick = FALSE,
-  tickmode = "array",
-  tickvals = c(2008,2010,2012,2014,2016,2018),
-  showline = TRUE,
-  color = 'gray',
-  linecolor = toRGB('lightgray'),
-  type="date",
-  
-  rangeselector = (list(
-    buttons = list(
-      list(
-        count = 1,
-        label = "1Y",
-        step = "year",
-        stepmode = "backward"
-      ),
-      list(
-        count = 3,
-        label = "3Y",
-        step = "year",
-        stepmode = "backward"
-      ),
-      list(
-        count = 5,
-        label = "5Y",
-        step = "year",
-        stepmode = "backward"
-      ),
-      list(
-        count = 10,
-        label = "10Y",
-        step = "year",
-        stepmode = "backward"
+chromosome_div <- function(id_tag = 'chr',
+                           name_tag = 'Chr',
+                           startone = 0,
+                           stopone = 1,
+                           starttwo = 0,
+                           stoptwo = 1) {
+  return(htmlDiv(list(
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children = sprintf('%s Start-one', name_tag)),
+      dccInput(
+        id=sprintf('%s-startone', id_tag),
+        placeholder= sprintf('%s Startone', name_tag),
+        type = 'number',
+        value = startone,
+        className = 'ideogram-homology-inputs'
       )
-    )
-  ))
-  
-  
-)
-
-
-df_graph$Date <- ymd(as.character(df_graph$Date))
-
-df_graph$Date <- floor_date(df_graph$Date, "month")
-
-df_graph <- ddply(df_graph, "Date", summarise, Vanguard.500.Index.Fund = mean(Vanguard.500.Index.Fund),
-                  MSCI.EAFE.Index.Fund..ETF. = mean(MSCI.EAFE.Index.Fund..ETF.))
-
-
-
-
-
-
-performance_lines <- plot_ly(df_graph, x= df_graph$Date, y= df_graph$Vanguard.500.Index.Fund, type = "scatter",
-                             mode = 'lines', line = list(color = '#98151B', width = 3), name = "Vanguard 500 Index Fund",
-                             height = 200, width = 750) %>%
-  add_trace(y= df_graph$MSCI.EAFE.Index.Fund..ETF., line = list(color = '#DCDCDC', width = 3), name = "MSCI EAFE Index Fund (ETF)") %>%
-  layout(yaxis = performance_yaxis, xaxis = performance_xaxis, autosize = FALSE, margin = list(r=40, t=40, b=30, l=40))
-
-
-
-performance_lines_graph <- htmlDiv(list(
-  htmlH6(list('Performance'), className = 'subtitle'),
-  htmlBr(),
-  dccGraph(id= "Performance_Lines", figure=performance_lines)
-) , className = 'twelve columns'
-)
-
-
-#################################################################################
-
-stock_style_graph <- plot_ly(x = list("1"), y = list("1"), hoverinfo = "none",
-                             marker = list("opacity" = 0), mode = "markers", name = "B", type = "scatter",
-                             width = 200,
-                             height = 150) %>%
-  layout(title = "",
-         annotations = list(
-           list(
-             "x" = 0.990130093458,
-             "y" = 1.00181709504,
-             "align" = "left",
-             "font" = list("size" = 9),
-             "showarrow" = FALSE,
-             "text" = "<b>Market<br>Cap</b>",
-             "xref" = "x",
-             "yref" = "y"
-           ),
-           list(
-             "x"= 1.00001816013,
-             "y"= 1.35907755794e-16,
-             "font" = list("size" = 9),
-             "showarrow" = FALSE,
-             "text" = "<b>Style</b>",
-             "xref" = "x",
-             "yref" = "y"
-           )
-         ),
-         
-         hovermode = "closest",
-         margin = list("r" = 30, "t" = 20, "b" = 20, "l" = 30),
-         
-         shapes = list(
-           list(
-             "fillcolor" = "rgb(127,127,127)",
-             "line" = list("color"="rgb(0,0,0)", "width"=2),
-             "opacity" = 0.3,
-             "type" = "rect",
-             "x0" = 0,
-             "x1" = 0.33,
-             "xref" = "paper",
-             "y0" = 0,
-             "y1" = 0.33,
-             "yref" = "paper"
-           ),
-           list(
-             "fillcolor" = "rgb(127,127,127)",
-             "line" = list("color"="rgb(0,0,0)", "dash" ="solid", "width"=2),
-             "opacity" = 0.3,
-             "type" = "rect",
-             "x0" = 0.33,
-             "x1" = 0.66,
-             "xref" = "paper",
-             "y0" = 0,
-             "y1" = 0.33,
-             "yref" = "paper"
-           ),
-           list(
-             "fillcolor" = "rgb(127,127,127)",
-             "line" = list("color"="rgb(0,0,0)", "width"=2),
-             "opacity" = 0.3,
-             "type" = "rect",
-             "x0" = 0.66,
-             "x1" = 0.99,
-             "xref" = "paper",
-             "y0" = 0,
-             "y1" = 0.33,
-             "yref" = "paper"
-           ),
-           list(
-             "fillcolor" = "rgb(127,127,127)",
-             "line" = list("color"="rgb(0,0,0)", "width"=2),
-             "opacity" = 0.3,
-             "type" = "rect",
-             "x0" = 0,
-             "x1" = 0.33,
-             "xref" = "paper",
-             "y0" = 0.33,
-             "y1" = 0.66,
-             "yref" = "paper"
-           ),
-           list(
-             "fillcolor" = "rgb(127,127,127)",
-             "line" = list("color"="rgb(0,0,0)", "width"=2),
-             "opacity" = 0.3,
-             "type" = "rect",
-             "x0" = 0.33,
-             "x1" = 0.66,
-             "xref" = "paper",
-             "y0" = 0.33,
-             "y1" = 0.66,
-             "yref" = "paper"
-           ),
-           list(
-             "fillcolor" = "rgb(127,127,127)",
-             "line" = list("color"="rgb(0,0,0)", "width"=2),
-             "opacity" = 0.3,
-             "type" = "rect",
-             "x0" = 0.66,
-             "x1" = 0.99,
-             "xref" = "paper",
-             "y0" = 0.33,
-             "y1" = 0.66,
-             "yref" = "paper"
-           ),
-           list(
-             "fillcolor" = "rgb(127,127,127)",
-             "line" = list("color"="rgb(0,0,0)", "width"=2),
-             "opacity" = 0.3,
-             "type" = "rect",
-             "x0" = 0,
-             "x1" = 0.33,
-             "xref" = "paper",
-             "y0" = 0.66,
-             "y1" = 0.99,
-             "yref" = "paper"
-           ),
-           list(
-             "fillcolor" = "#98151B",
-             "line" = list("color"="rgb(0,0,0)", "width"=1),
-             "opacity" = 0.9,
-             "type" = "rect",
-             "x0" = 0.33,
-             "x1" = 0.66,
-             "xref" = "paper",
-             "y0" = 0.66,
-             "y1" = 0.99,
-             "yref" = "paper"
-           ),
-           list(
-             "fillcolor" = "rgb(127,127,127)",
-             "line" = list("color"="rgb(0,0,0)", "width"=1),
-             "opacity" = 0.9,
-             "type" = "rect",
-             "x0" = 0.66,
-             "x1" = 0.99,
-             "xref" = "paper",
-             "y0" = 0.66,
-             "y1" = 0.99,
-             "yref" = "paper"
-           )
-         ),
-         xaxis = list(
-           "autorange" = TRUE,
-           "range" = list(0.989694747864, 1.00064057995),
-           "showgrid" = FALSE,
-           "showline" = FALSE,
-           "showticklabels" = FALSE,
-           "title"  = "<br>",
-           "type" = "linear",
-           "zeroline" = FALSE
-         ),
-         yaxis = list(
-           "autorange" = TRUE,
-           "range" = list(-0.0358637178721, 1.06395696354),
-           "showgrid" = FALSE,
-           "showline" = FALSE,
-           "showticklabels" = FALSE,
-           "title"  = "<br>",
-           "type" = "linear",
-           "zeroline" = FALSE
-         )
-         
-  )
-
-stock_graph <- htmlDiv(list(
-  htmlH6(list('Portfolio'), className = 'subtitle'),
-  htmlBr(),
-  dccGraph(id= "Stock_Graph", figure=stock_style_graph, className = "four columns")))
-
-stock_graph_noheader <- htmlDiv(list(
-  dccGraph(id= "Stock_Graph", figure=stock_style_graph, className = "four columns")))
-
-stock_text <- htmlDiv(list(
-  htmlLi("Vanguard 500 Index Fund seeks to track the performance of\
-                     a benchmark index that meaures the investment return of large-capitalization stocks."),
-  htmlLi("Learn more about this portfolio's investment strategy and policy.")
-) , className="eight columns middle-aligned")
-
-
-
-# Fees and Expenses
-
-
-fees_graph <- plot_ly(x = list("Category Average", "This fund"), y = list("2242", "329"),
-                      marker = list("color" = "B22222"), name = "A", type = "bar",  height = 150,
-                      width = 340) %>%
-  add_trace(x = list("This Fund"), y = list("1913"), marker = list("color"="#D3D3D3"),
-            name = "B", type = "bar") %>%
-  layout(annotations = list(
-    list(
-      "x" = "-0.0111111111111",
-      "y" = "2381.92771084",
-      "font" = list("color"="rgb(0,0,0)", "size" = 10),
-      "showarrow" = FALSE,
-      "text" = "$2,242",
-      "xref" = "x",
-      "yref" = "y"
-    ),
-    list(
-      "x" = "0.995555555556",
-      "y" = "509.638554217",
-      "font" = list("color"="rgb(0,0,0)", "size" = 10),
-      "showarrow" = FALSE,
-      "text" = "$329",
-      "xref" = "x",
-      "yref" = "y"
-    ),
-    list(
-      "x" = "0.995551020408",
-      "y" = "1730.32432432",
-      "font" = list("color"="rgb(0,0,0)", "size" = 10),
-      "showarrow" = FALSE,
-      "text" = "You save<br><b>$1,913</b>",
-      "xref" = "x",
-      "yref" = "y"
-    )
-  ),
-  autosize = FALSE,
-  bargap = 0.5,
-  barmode = "stack",
-  hovermode = "closest",
-  margin = list("r" = 40, "t" = 20, "b" = 20, "l" = 40),
-  showlegend = FALSE,
-  title = "",
-  xaxis = list(
-    "autorange" = TRUE,
-    "mirror" = FALSE,
-    "showline" = TRUE,
-    "tickfont" = list("size" = 10),
-    "title" = "",
-    "type" = "category",
-    "zeroline" = FALSE
-  ),
-  yaxis = list(
-    "autorange" = FALSE,
-    "mirror" = FALSE,
-    "nticks" = 3,
-    "range" = list(0, 3000),
-    "showline" = TRUE,
-    "tickfont" = list("size" = 10),
-    "title" = "",
-    "tickprefix" = "$",
-    "type" = "linear",
-    "zeroline" = FALSE
-  )
-  )
-
-fees_bars <- htmlDiv(list(
-  htmlStrong("Fees on $10,000 invested over 10 years"),
-  htmlBr(),
-  dccGraph(id= "Fees", figure=fees_graph)
-), className = "six columns"
-)
-
-
-
-
-#################################################################################
-
-news <- htmlDiv(list(
-  htmlH6(list('Vanguard News'), className = 'subtitle'),
-  htmlBr(),
-  htmlLi('10/25/16    The rise of indexing and the fall of costs'),
-  htmlBr(),
-  htmlLi("08/31/16    It's the index mutual fund's 40th anniversary: Let the low-cost, passive party begin")
-), className = "six columns")
-
-reviews <- htmlDiv(list(
-  htmlH6(list('Reviews'), className = 'subtitle'),
-  htmlBr(),
-  htmlLi('Launched in 1976.'),
-  htmlLi('On average, has historically produced returns that have far outpaced the rate of inflation.*'),
-  htmlLi("Vanguard Quantitative Equity Group, the fund's advisor, is among the world's largest equity index managers."),
-  htmlBr(),
-  htmlP("Did you know? The fund launched in 1976 as Vanguard First Index Investment 
-         Trust—the nation's first index fund available to individual investors."),
-  htmlBr(),
-  htmlP("* The performance of an index is not an exact representation of any particular investment, as you cannot invest directly in an index."),
-  htmlBr(),
-  htmlP("Past performance is no guarantee of future returns. See performance data current to the most recent month-end.")
-), className = "six columns")
-
-
-fees_text <- htmlDiv(list(
-  htmlDiv(list(
-    htmlH6(list("Fees"), className = "subtitle"),
+    )),
     
-    htmlBr(list()),
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children= sprintf('%s Stop-one', name_tag)),
+      dccInput(
+        id=sprintf('%s-stopone', id_tag),
+        placeholder = 'Enter chromosomes',
+        type = 'number',
+        value = stopone,
+        className = 'ideogram-homology-inputs'
+      )
+    )),
     
-    htmlDiv(list(
-      
-      htmlDiv(list(
-        htmlStrong(list("Purchase fee"))
-      ), className = "three columns right-aligned"),
-      
-      htmlDiv(list(
-        htmlP(list("None"))
-      ), className = "nine columns")
-    ), className = "row"),
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children= sprintf('%s Start-two', name_tag)),
+      dccInput(
+        id=sprintf('%s-starttwo', id_tag),
+        placeholder =sprintf('%s Starttwo', name_tag),
+        type = 'number',
+        value = starttwo,
+        className = 'ideogram-homology-inputs'
+      )
+    )),
     
-    htmlDiv(list(
-      htmlDiv(list(
-        htmlStrong(list("Redemption fee"))
-      ), className = "three columns right-aligned"),
-      
-      htmlDiv(list(
-        htmlP(list("None"))
-      ), className = "nine columns")
-    ), className = "row"),
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children= sprintf('%s Stop-two', name_tag)),
+      dccInput(
+        id=sprintf('%s-stoptwo', id_tag),
+        placeholder = 'Enter chromosomes',
+        type = 'number',
+        value = stoptwo,
+        className = 'ideogram-homology-inputs'
+      )
+    ))
     
-    htmlDiv(list(
-      htmlDiv(list(
-        htmlStrong(list("12b-1 fee"))
-      ), className = "three columns right-aligned"),
-      
-      htmlDiv(list(
-        htmlP(list("None"))
-      ), className = "nine columns")
-    ), className = "row"),
+  )))
+}
+
+
+
+options = list(
+  'custom' = list(
+    htmlH4('Organism'),
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children = 'Species'),
+      dccDropdown(
+        className = 'ideogram-dropdown',
+        id = 'organism-change',
+        options = list(
+          
+          list('label' = 'Human', 'value' = 'human'),
+          
+          list('label' = 'Drosophila-Melanogaster', 'value' = 7227),
+          
+          list('label' = 'Zea-mays', 'value' = 4577),
+          
+          list('label' = 'Pan-troglodytes', 'value' = 9598),
+          
+          list('label' = 'Macaca-fascicularis', 'value' = 9541)
+        ) , value = 'human'
+      )
+    )),
     
-    htmlDiv(list(
-      htmlDiv(list(
-        htmlStrong(list("Account service fee"))
-      ), className = "three columns right-aligned"),
-      
-      htmlDiv(list(
-        htmlStrong(list("Nonretirement accounts, traditional IRAs, Roth IRAs, 
-                        UGMAs/UTMAs, SEP-IRAs, and education savings accounts (ESAs)")),
-        htmlP(list("We charge a $20 annual account service fee for each Vanguard Brokerage Account, 
-                   as well as each individual Vanguard mutual fund holding with a balance of less than 
-                   $10,000 in an account. This fee does not apply if you sign up for account access on 
-                   vanguard.com and choose electronic delivery of statements, confirmations, and 
-                   Vanguard fund reports and prospectuses. This fee also does not apply to members 
-                   of Flagship Select™, Flagship®, Voyager Select®, and Voyager® Services.")),
-        htmlBr(list()),
-        htmlStrong(list("SIMPLE IRAs")),
-        htmlP(list("We charge participants a $25 annual account service fee for each fund they hold in their Vanguard SIMPLE IRA. 
-                   This fee does not apply to members of Flagship Select, Flagship, Voyager Select, and Voyager Services.")),
-        htmlBr(list()),
-        htmlStrong(list("403(b)(7) plans")),
-        htmlP(list("We charge participants a $15 annual account service fee for each fund they hold in their Vanguard 403(b)(7) account.
-                   This fee does not apply to members of Flagship Select, Flagship, Voyager Select, and Voyager Services.")),
-        htmlBr(list()),
-        htmlStrong(list("Individual 401(k) plans")),
-        htmlP(list("We charge participants a $20 annual account service fee for each fund they hold in their 
-                   Vanguard Individual 401(k) account. This fee will be waived for all participants in the plan 
-                   if at least 1 participant qualifies for Flagship Select, Flagship, Voyager Select, and Voyager Services")),
-        htmlBr(list())
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children = 'Sex'),
+      daqToggleSwitch(
+        id='sex-switch',
+        color = '#230047',
+        label = list('m', 'f'),
+        size = 35,
+        labelPosition = 'bottom',
+        value = FALSE
+      )
+    )),
+    
+    htmlDiv(id='ideogram-resolution-option', children = list(
+      htmlDiv(className = 'app-controls-block', children = list(
+        htmlDiv(className = 'app-controls-name', children = 'Resolution'),
         
-      ), className = "nine columns")
-    ), className = "row")
-  ), className = "twelve columns")
-), className = "row")
+        dccDropdown(
+          className = 'ideogram-dropdown',
+          id = 'resolution-select',
+          options = list(
+            list('label' = '500 bphs', 'value' = 500),
+            list('label' = '550 bphs', 'value' = 550),
+            list('label' = '650 bphs', 'value' = 850)
+            
+            
+          ) , value = 550
+        )
+      ))
+    )),
+    
+    htmlHr(),
+    
+    htmlH4('Labels'),
+    
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children = 'Band'),
+      daqToggleSwitch(
+        id='bandlabel-switch',
+        color = '#230047',
+        label = list('off', 'on'),
+        size = 35,
+        labelPosition = 'bottom',
+        value = TRUE
+      )
+    )),
+    
+    
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children = 'Chromosome'),
+      daqToggleSwitch(
+        id='chromlabel-switch',
+        color = '#230047',
+        label = list('off', 'on'),
+        size = 35,
+        labelPosition = 'bottom',
+        value = TRUE
+      )
+    )),
+    
+    htmlHr(),
+    
+    htmlH4('Chromosome display'),
+    
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children = 'Orientation'),
+      dccDropdown(
+        className = 'ideogram-dropdown',
+        id = 'orientation-switch',
+        options = list(
+          list('label' = 'Vertical', 'value' = 'vertical'),
+          list('label' = 'Horizontal', 'value' = 'horizontal')
+        ), value = 'horizontal'
+      )
+    )),
+    
+    
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children = 'Rotatable'),
+      daqToggleSwitch(
+        id='rotatable-switch',
+        color = '#230047',
+        label = list('off', 'on'),
+        size = 35,
+        labelPosition = 'bottom',
+        value = TRUE
+      )
+    )),
+    
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children = 'Margin'),
+      dccSlider(
+        id = 'chr-margin-input',
+        className = 'ideogram-slider',
+        value = 10,
+        min=2, max=50,
+      ),
+      
+      htmlDiv(className = 'app-controls-name', children = 'Height'),
+      dccSlider(
+        id='chr-height-input',
+        className = 'ideogram-slider',
+        min = 100, max = 700,
+        value = 300
+      ),
+      
+      htmlDiv(className = 'app-controls-name', children = 'Width'),
+      dccSlider(
+        id='chr-width-input',
+        className = 'ideogram-slider',
+        min = 5, max = 30,
+        value = 8
+      )
+      
+      
+    )),
+    
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children = 'Fully Banded'),
+      daqToggleSwitch(
+        id='fullband-switch',
+        color = '#230047',
+        label = list('off', 'on'),
+        size = 35,
+        labelPosition = 'bottom',
+        value = TRUE
+      )
+    ))
+    
+  ),
+  
+  'homology' = list(
+    htmlDiv(className = 'app-controls-name', children = 'Chromosomes:' ),
+    dccDropdown(
+      className = 'ideogram-dropdown',
+      id = 'chr-select-1',
+      options = list(
+        list('label' = 'X', 'value' = 'X'),
+        list('label' = 'Y', 'value' = 'Y'),
+        list('label' = '1', 'value' = '1'),
+        list('label' = '2', 'value' = '2'),
+        list('label' = '3', 'value' = '3'),
+        list('label' = '4', 'value' = '4'),
+        list('label' = '5', 'value' = '5'),
+        list('label' = '6', 'value' = '6'),
+        list('label' = '7', 'value' = '7'),
+        list('label' = '8', 'value' = '8'),
+        list('label' = '9', 'value' = '9'),
+        list('label' = '10', 'value' = '10'),
+        list('label' = '11', 'value' = '11'),
+        list('label' = '12', 'value' = '12'),
+        list('label' = '13', 'value' = '13'),
+        list('label' = '14', 'value' = '14'),
+        list('label' = '15', 'value' = '15'),
+        list('label' = '16', 'value' = '16'),
+        list('label' = '17', 'value' = '17'),
+        list('label' = '18', 'value' = '18'),
+        list('label' = '19', 'value' = '19'),
+        list('label' = '20', 'value' = '20'),
+        list('label' = '21', 'value' = '21'),
+        list('label' = '22', 'value' = '22')
+      ) , value = '1'
+    ),
+    
+    dccDropdown(
+      className = 'ideogram-dropdown',
+      id = 'chr-select-2',
+      value = '2',
+      options = list(
+        list('label' = 'X', 'value' = 'X'),
+        list('label' = 'Y', 'value' = 'Y'),
+        list('label' = '1', 'value' = '1'),
+        list('label' = '2', 'value' = '2'),
+        list('label' = '3', 'value' = '3'),
+        list('label' = '4', 'value' = '4'),
+        list('label' = '5', 'value' = '5'),
+        list('label' = '6', 'value' = '6'),
+        list('label' = '7', 'value' = '7'),
+        list('label' = '8', 'value' = '8'),
+        list('label' = '9', 'value' = '9'),
+        list('label' = '10', 'value' = '10'),
+        list('label' = '11', 'value' = '11'),
+        list('label' = '12', 'value' = '12'),
+        list('label' = '13', 'value' = '13'),
+        list('label' = '14', 'value' = '14'),
+        list('label' = '15', 'value' = '15'),
+        list('label' = '16', 'value' = '16'),
+        list('label' = '17', 'value' = '17'),
+        list('label' = '18', 'value' = '18'),
+        list('label' = '19', 'value' = '19'),
+        list('label' = '20', 'value' = '20'),
+        list('label' = '21', 'value' = '21'),
+        list('label' = '22', 'value' = '22')
+      )
+    ),
+    
+    chromosome_div(
+      id_tag = 'chrone',
+      name_tag = 'Chr 1',
+      startone=50000,
+      stopone=900000,
+      starttwo=155701383,
+      stoptwo=156030895
+    ),
+    
+    chromosome_div(
+      id_tag = 'chrtwo',
+      name_tag = 'Chr 2',
+      startone=10001,
+      stopone=2781479,
+      starttwo=56887903,
+      stoptwo=57217415
+    )
+  ),
+  
+  'brush' = list(
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', id = 'brush-control-name', children = 'Chromosome:'),
+      dccDropdown(
+        className = 'ideogram-dropdown',
+        id = 'chr-brush',
+        options = list(
+          list('label' = 'X', 'value' = 'X'),
+          list('label' = 'Y', 'value' = 'Y'),
+          list('label' = '1', 'value' = 1),
+          list('label' = '2', 'value' = 2),
+          list('label' = '3', 'value' = 3),
+          list('label' = '4', 'value' = 4),
+          list('label' = '5', 'value' = 5),
+          list('label' = '6', 'value' = 6),
+          list('label' = '7', 'value' = 7),
+          list('label' = '8', 'value' = 8),
+          list('label' = '9', 'value' = 9),
+          list('label' = '10', 'value' = 10),
+          list('label' = '11', 'value' = 11),
+          list('label' = '12', 'value' = 12),
+          list('label' = '13', 'value' = 13),
+          list('label' = '14', 'value' = 14),
+          list('label' = '15', 'value' = 15),
+          list('label' = '16', 'value' = 16),
+          list('label' = '17', 'value' = 17),
+          list('label' = '18', 'value' = 18),
+          list('label' = '19', 'value' = 19),
+          list('label' = '20', 'value' = 20),
+          list('label' = '21', 'value' = 21),
+          list('label' = '22', 'value' = 22)
+        ), value = 'X'
+      )
+    )),
+    
+    htmlHr(),
+    
+    htmlDiv(
+      id = 'brush-data',
+      children = list(
+        htmlH4('Brush Data'),
+        'Start: ',
+        htmlSpan(
+          '',
+          id='brush-print-start',
+          style = list('color' = '#0D76Bf')
+        ),
+        htmlBr(),
+        
+        'Extent: ',
+        
+        htmlSpan(
+          '',
+          id='brush-print-extent',
+          style = list('color' = '#0D76BF')
+        ),
+        
+        htmlBr(),
+        'End: ',
+        htmlSpan(
+          '',
+          id='brush-print-end',
+          style = list('color' = '#0D76BF')
+        )
+      ),
+      className = 'ideogram-databox-parameters'
+    )
+  ),
+  
+  'annotations' = list(
+    htmlH4('Hover data'),
+    htmlDiv(children = list(
+      htmlSpan(
+        'None',
+        id='annote-data',
+        style = list('color' = '#0D76BF')
+      )
+    ), className = 'ideogram-databox-parameters'),
+    
+    htmlHr(),
+    
+    htmlH4('Appearance'),
+    
+    htmlDiv(className = 'app-controls-block', children = list(
+      htmlDiv(className = 'app-controls-name', children = 'Type: '),
+      dccDropdown(
+        className = 'ideogram-dropdown',
+        id= 'annotation-select',
+        options = list(
+          list('label' = 'Histogram', 'value' = 'histogram'),
+          list('label' = 'Overlay-1', 'value' = 'overlay-1'),
+          list('label' = 'Overlay-2', 'value' = 'overlay-2')
+        ), value = 'histogram'
+      )
+    )),
+    
+    htmlDiv(id = 'ideogram-histo-options', children = list(
+      htmlDiv(className = 'app-controls-block', children = list(
+        htmlDiv(className = 'app-controls-name', children = 'Color:'),
+        dccInput(
+          id='color-input',
+          className = 'ideogram-annot-inputs',
+          type = 'text',
+          value = '#FF0000'
+        )
+      )),
+      
+      htmlDiv(className = 'app-controls-block', children=list(
+        htmlDiv(className = 'app-controls-name', children = 'Bar width:'),
+        dccSlider(
+          id='bar-input',
+          className = 'ideogram-slider',
+          value = 3,
+          min = 1,
+          max = 10
+        )
+      )),
+      
+      htmlDiv(className = 'app-controls-block', children=list(
+        htmlDiv(className = 'app-controls-name', children = 'Height:'),
+        dccSlider(
+          id='height-input',
+          className = 'ideogram-slider',
+          value = 3,
+          min = 1,
+          max = 10
+        )
+      )),
+      
+      htmlDiv(className = 'app-controls-block', children = list(
+        htmlDiv(className = 'app-controls-name', children = 'Orientation:'),
+        dccDropdown(
+          className = 'ideogram-dropdown',
+          id= 'orientation-anote',
+          options = list(
+            list('label' = 'Vertical', 'value'='vertical'),
+            list('label' = 'Horizontal', 'value' = 'horizontal')
+          ), value = 'horizontal'
+        )
+      ))
+      
+      
+    ))
+  )
+)
+
+ideograms_initial = list(
+  'custom' = list(
+    id = 'ideo-custom',
+    dataDir = 'https://unpkg.com/ideogram@1.3.0/dist/data/bands/native/',
+    orientation = 'horizontal',
+    organism = 'human',
+    chrHeight = 300,
+    chrMargin = 10,
+    chrWidth = 8,
+    rotatable = TRUE
+  ),
+  
+  'homology' = list(
+    id = 'ideo-homology',
+    showBandLabels = TRUE,
+    showChromosomeLabels = TRUE,
+    showFullyBanded = TRUE,
+    fullChromosomeLabels = TRUE,
+    chrHeight = 400,
+    chrMargin = 200,
+    rotatable = FALSE,
+    perspective = 'comparative'
+  ),
+  
+  'brush' = list(
+    id = 'brush-ideo',
+    dataDir = 'https://unpkg.com/ideogram@1.3.0/dist/data/bands/native/',
+    organism = 'human',
+    chromosomes = list('1'),
+    brush = 'chr1:1-10000000',
+    chrHeight = 900,
+    resolution = 550,
+    orientation = 'horizontal'
+  ),
+  
+  'annotations' = list(
+    id='ideo-annotations',
+    dataDir = 'https://unpkg.com/ideogram@1.3.0/dist/data/bands/native/',
+    organism = 'human',
+    assembly = 'GRCh37',
+    showBandLabels = TRUE,
+    chrHeight = 275,
+    chrMargin = 28,
+    rotatable = TRUE,
+    filterable = TRUE,
+    className = 'ideogram-cluster'
+  )
+)
+
+#####################################################################################################
+
+#Layout
+
+
+ideolayout <- htmlDiv(list(
+  htmlDiv(id = 'ideogram-body', className = 'app-body', children = list(
+    dccLoading(className = 'dashbio-loading', children = htmlDiv(id = 'ideogram-container')),
+    htmlDiv(className = 'control-tabs', children = list(
+      dccTabs(id='ideogram-control-tabs', value = 'what-is', children=list(
+        dccTab(
+          label = 'About',
+          value = 'what-is',
+          children = htmlDiv(className = 'control-tab', children = list(
+            htmlH4(className = 'what-is', children = 'What is Ideogram'),
+            htmlP('Ideogram is a tool used to schematically represent
+                    chromosomes. Bands on the chromosomes can show the locations
+                    of specific genes.'),
+            htmlP('In the "View" tab, you can choose to interact with several
+                    different features of the Ideogram component. You can customize the 
+                    appearance of the ideogram, as well as choose a different organism
+                    to display, under the "Custom" option. The homology, brush, and 
+                    annotation features are demonstrated under the corresponding options.', id = 'text')
+          ))
+        ),
+        
+        dccTab(
+          label = 'View',
+          value = 'view',
+          children = htmlDiv(className = 'control-tab', children = list(
+            htmlDiv(id='ideogram-feature-select', children = list(
+              htmlDiv(className = 'app-controls-block', children = list(
+                htmlDiv(className = 'app-controls-name', children = 'View feature:'),
+                
+                dccDropdown(
+                  className = 'ideogram-dropdown',
+                  id='ideogram-feature-dropdown',
+                  options = list(
+                    list('label' = 'Customizability', 'value' = 'custom'),
+                    list('label' = 'Homology', 'value' = 'homology'),
+                    list('label' = 'Brush', 'value' = 'brush'),
+                    list('label' = 'Annotations', 'value' = 'annotations')
+                    
+                  ), clearable = FALSE, value = 'custom'
+                )
+              ))
+            )),
+            
+            htmlHr(),
+            htmlDiv(
+              id = 'ideogram-feature-view-options'
+            )
+          ))
+        )
+      ))
+    )),
+    
+    
+    # 
+    # dccDropdown(
+    #   id = 'displayed-chromosomes',
+    #   options = listOfoptions, multi = TRUE, value = listofchromosomes
+    # ),
+    
+    htmlDiv(do.call(dashbioIdeogram, ideograms_initial[['custom']]), style = list('display' = 'none')),
+    
+    
+    
+    dccStore(id='ideo-custom-data', data=ideograms_initial[['custom']]),
+    dccStore(id='ideo-homology-data', data=ideograms_initial[['homology']]),
+    dccStore(id='brush-ideo-data', data=ideograms_initial[['brush']]),    # Might be brush-ideo-data
+    dccStore(id='ideo-annotations-data', data=ideograms_initial[['annotations']])
+  )
+  )
+))
 
-#################################################################################
-#Tables
-
-
-#Fund Facts Table
-
-fund_facts_data <- read.csv("data/df_fund_facts.csv")
-
-fund_facts_table <- generate_table(as.matrix(fund_facts_data))
-
-funds <- htmlDiv(list(
-  htmlH6(list('Fund Facts'), className = 'subtitle'),
-  htmlBr(),
-  fund_facts_table
-), className = "six columns")
-
-
-
-#Price Performance Table
-
-price_perf_data <- read.csv("data/df_price_perf.csv")
-
-price_perf_table <- generate_table(as.matrix(price_perf_data))
-
-price_perf <- htmlDiv(list(
-  htmlH6(list('Price and Performance (%)'), className = 'subtitle'),
-  htmlBr(),
-  price_perf_table
-), className = "six columns")
-
-
-
-#Current Prices Table
-
-
-current_prices_data <- read.csv("data/df_current_prices.csv")
-
-current_prices_table <- generate_table(as.matrix(current_prices_data))
-
-current_prices <- htmlDiv(list(
-  htmlH6(list('Current Prices'), className = 'subtitle'),
-  htmlBr(),
-  current_prices_table
-), className = "six columns")
-
-
-
-#Historical Prices Table
-
-historical_prices_data <- read.csv("data/df_hist_prices.csv")
-
-historical_prices_table <- generate_table(as.matrix(historical_prices_data))
-
-historical_prices <- htmlDiv(list(
-  htmlH6(list('Historical Prices'), className = 'subtitle'),
-  htmlBr(),
-  historical_prices_table
-), className = "six columns")
-
-
-# AVerage annual returns table
-avg_returns_data <- read.csv("data/df_avg_returns.csv")
-
-avg_returns_data[1,1] <- NA
-
-avg_returns_data[3,6] <- NA
-
-avg_returns_table <- generate_table(as.matrix(avg_returns_data))
-
-avg_returns <- htmlDiv(list(
-  htmlH6(list('Average annual returns--updated monthly as of 02/28/2018'), className = 'subtitle'),
-  htmlBr(),
-  avg_returns_table
-), className = "twelve columns")
-
-# After Tax Returns Table
-
-after_tax_data <- read.csv("data/df_after_tax.csv")
-
-after_tax_data[1,1] <- NA
-after_tax_data[2, 2:6] <- NA
-after_tax_data[6, 2:6] <- NA
-after_tax_data[8, 2:6] <- NA
-after_tax_data[9, 2:6] <- NA
-after_tax_data[4,6] <- NA
-after_tax_data[5,6] <- NA
-after_tax_data[7,6] <- NA
-
-after_tax_table <- generate_table(as.matrix(after_tax_data))
-
-after_tax <- htmlDiv(list(
-  htmlH6(list('After-tax returns--updated quarterly as of 12/31/2017'), className = 'subtitle'),
-  htmlBr(),
-  after_tax_table
-), className = "twelve columns")
-
-# Dividends Table
-
-dividends_data <- read.csv("data/df_dividend.csv")
-
-
-
-dividends_data$Distribution.Yield <- "—"
-
-dividends_data[2:6,8] <- "—"
-
-
-
-dividends_table <- generate_table(remove.factors(dividends_data))
-
-
-dividends <- htmlDiv(list(
-  htmlH6(list('Dividend and capital gains distributions'), className = 'subtitle'),
-  htmlBr(),
-  dividends_table
-), className = "twelve columns")
-
-
-# Realized and Unrealized Gains Table
-
-realized_data <- read.csv("data/df_realized.csv")
-
-realized_table <- generate_table(as.matrix(realized_data))
-
-realized <- htmlDiv(list(
-  htmlBr(),
-  htmlH6(list('Realized/unrealized gains as of 01/31/2018'), className = 'subtitle'),
-  htmlBr(),
-  realized_table
-), className = "six columns")
-
-# Unrealized appreciation table
-
-unrealized_data <- read.csv("data/df_unrealized.csv")
-
-unrealized_table <- generate_table(as.matrix(unrealized_data))
-
-unrealized <- htmlDiv(list(
-  htmlBr(),
-  htmlH6(list('Unrealized appreciation/depreciation'), className = 'subtitle'),
-  htmlBr(),
-  unrealized_table
-), className = "six columns")
-
-# Recent Investment Returns
-
-recent_returns_data <- read.csv("data/df_recent_returns.csv")
-
-recent_returns_table <- generate_table(as.matrix(recent_returns_data))
-
-recent_returns <- htmlDiv(list(
-  htmlH6(list('Recent Investment Returns'), className = 'subtitle'),
-  htmlBr(),
-  recent_returns_table
-), className = "twelve columns")
-
-
-# Equity Sector Table
-
-equity_characteristics_data <- read.csv("data/df_equity_char.csv")
-
-equity_characteristics_data[8:12, 3] <- NA
-
-
-equity_characteristics_table <- generate_table(as.matrix(equity_characteristics_data))
-
-
-equity_characteristics <- htmlDiv(list(
-  htmlH6(list("Equity characteristics as of 01/31/2018"), className = 'subtitle'),
-  htmlBr(),
-  equity_characteristics_table
-), className = "twelve columns")
-
-#Equity Sector Diversification Table
-
-equity_div_data <- read.csv('data/df_equity_diver.csv')
-
-equity_div_table <- generate_table(as.matrix(equity_div_data))
-
-
-equity_div <- htmlDiv(list(
-  htmlH6(list("Equity sector diversification"), className = 'subtitle'),
-  htmlBr(),
-  equity_div_table
-), className = "twelve columns")
-
-# Expenses Table
-
-
-expenses_data <- read.csv("data/df_expenses.csv")
-
-expenses_table <- generate_table(as.matrix(expenses_data))
-
-expenses <- htmlDiv(list(
-  htmlH6(list('Expenses'), className = 'subtitle'),
-  htmlBr(),
-  expenses_table
-), className = "six columns")
-
-
-# Minimums Table
-
-minimums_data <- read.csv("data/df_minimums.csv")
-
-minimums_table <- generate_table(as.matrix(minimums_data))
-
-minimums <- htmlDiv(list(
-  htmlH6(list('Minimums'), className = 'subtitle'),
-  htmlBr(),
-  minimums_table
-), className = "six columns")
-
-
-######################################################################################
-
-#Second Page First Row
-
-secondpage_firstrow <- htmlDiv(list(
-  current_prices,
-  historical_prices
-), className = "row")
-
-
-
-#First Page First Row
-
-firstpage_firstrow <- htmlDiv(list(
-  funds,
-  performance_graph
-), className = "row")
-
-#First Page Second Row
-
-firstpage_secondrow <- htmlDiv(list(
-  htmlBr(),
-  htmlBr(),
-  hypothetical_graph,
-  price_perf
-), className = "row")
-
-#News and Reviews
-news_reviews <- htmlDiv(list(
-  htmlBr(),
-  news,
-  reviews
-), className = "row")
-
-
-#News and Reviews
-news_reviews <- htmlDiv(list(
-  htmlBr(),
-  news,
-  reviews
-), className = "row")
-
-
-# Distributions Row Two
-distributions <- htmlDiv(list(
-  htmlBr(),
-  realized,
-  unrealized
-), className = "row")
-
-# Portfolio&Stock Page First Row
-
-portfolio_firstrow <- htmlDiv(list(
-  stock_graph,
-  stock_text
-), className = "row")
-
-
-# RiskReward Image and Layout
-
-risk_reward <- htmlDiv(list(
-  htmlH6(list("Risk Potential"), className = 'subtitle'),
-  htmlBr(),
-  htmlImg(src= 'https://raw.githubusercontent.com/HammadTheOne/hammadtheone.github.io/master/assets/risk_reward.png', height = "140", width = "332")
-), className = "six columns")
-
-white_space <- htmlDiv(list(
-  htmlBr()
-), className = "six columns")
-
-risk_reward_proper <- htmlDiv(list(
-  white_space,
-  risk_reward
-), className = "row")
-
-# Expenses Row
-
-expenses_row <- htmlDiv(list(
-  expenses
-), className = "row")
-
-# Fees and Minimums Row
-
-fees_mins_row <- htmlDiv(list(
-  minimums,
-  fees_bars
-), className = "row")
-#################################################################################
-
-#Define pages to be selected with URL calls.
 
 
 app$layout(htmlDiv(list(
+    ideolayout,
+    daqToggleSwitch(
+      id = 'daq-light-dark-theme',
+      color = '#FDFCFF',
+      labelPosition = 'bottom',
+      label = list('Light', 'Dark'),
+      style = list('width' = '250px', 'margin' = 'auto', 'display' = 'none'),
+      value = FALSE
+    )
+  ), style = list('background-color' = '#FDFCFF')
+))
+
+
+
+#####################################################################################################
+
+# Callbacks
+
+
+
+# Select which chromosomes to show for the customizable feature.
+
+# app$callback(
+#    output = list(id = 'ideo-custom', property = 'chromosomes'),
+#    params = list(input(id = 'displayed-chromosomes', property = 'value')),
+# 
+#    update_ideogram <- function(value) {
+#      return(value)
+#    }
+#  )
+
+# Updates the plot that is shown in the ideogram container. 
+
+app$callback(
+  output = list(id = 'ideogram-container', property = 'children'),
+  params = list(
+    input(id = 'ideo-custom-data', property = 'data'),
+    input(id = 'ideo-homology-data', property = 'data'),
+    input(id = 'brush-ideo-data', property = 'data'),
+    input(id = 'ideo-annotations-data', property = 'data'),
+    input(id = 'ideogram-feature-dropdown', property = 'value')
+  ),
   
-  #URL
-  dccLocation(id = 'url', refresh=FALSE),
-  
-  #Content
-  htmlDiv(id='page-content')
-)))
-
-index_page <- (htmlDiv(list(
-  overview,
-  grey_line,
-  paragraph,
-  htmlDiv(list(
-    firstpage_firstrow,
-    htmlBr(),
-    htmlBr(),
-    firstpage_secondrow,
-    risk_reward_proper,
-    secondpage_firstrow,
-    performance_lines_graph,
-    avg_returns,
-    after_tax,
-    stock_graph_noheader,
-    stock_text,
-    expenses_row,
-    fees_mins_row,
-    fees_text,
-    dividends,
-    distributions,
-    news_reviews
-  ), className='subpagefull')
-), className = 'page'))
-
-page_1_layout <- (htmlDiv(list(
-  overview,
-  grey_line,
-  paragraph,
-  htmlDiv(list(
-    firstpage_firstrow,
-    firstpage_secondrow,
-    risk_reward_proper,
-    htmlDiv(id='page-1-content'),
-    htmlBr()
-  ), className='subpageone')
-), className = 'page'))
-
-page_2_layout <- (htmlDiv(list(
-  overview,
-  grey_line,
-  htmlDiv(list(
-    secondpage_firstrow,
-    performance_lines_graph,
-    avg_returns,
-    after_tax,
-    recent_returns,
-    htmlDiv(id='page-1-content')
-  ), className='subpagetwo')
-), className = 'page'))
-
-news_layout <- (htmlDiv(list(
-  overview,
-  grey_line,
-  htmlDiv(list(
-    news_reviews,
-    htmlBr(),
-    htmlDiv(id='page-1-content'),
-    htmlBr()
-  ), className='subpagefive')
-), className = 'pagetwo'))
+  update_ideogram <- function(
+    ideo_custom,
+    ideo_homology,
+    ideo_brush,
+    ideo_annotations,
+    selected_ideo
+  ) {
+    
+    ideograms = list(
+      'custom' = ideo_custom,
+      'homology' = ideo_homology,
+      'brush' = ideo_brush,
+      'annotations' = ideo_annotations
+    )
+    
+    
+    return(do.call(dashbioIdeogram, ideograms[[selected_ideo]]))
+    
+    
+  }
+)
 
 
-distributions_layout <- (htmlDiv(list(
-  overview,
-  grey_line,
-  htmlDiv(list(
-    dividends,
-    htmlBr(),
-    htmlBr(),
-    htmlBr(),
-    distributions,
-    htmlDiv(id='page-1-content'),
-    htmlBr()
-  ), className='subpagefive')
-), className = 'pagetwo'))
 
-portfolio_layout <- (htmlDiv(list(
-  overview,
-  grey_line,
-  htmlDiv(list(
-    portfolio_firstrow,
-    equity_characteristics,
-    equity_div
-  ), className='subpagetwo')
-), className = 'page'))
+# Updates which options are shown based on the selected feature.
 
-
-fees_minimums_layout <- htmlDiv(list(
-  overview,
-  grey_line,
-  htmlDiv(list(
-    expenses_row,
-    fees_mins_row,
-    fees_text
-  ), className='subpagefour')
-), className = 'page')
-#################################################################################
-
-app$callback(output = list(id='page-content', property = 'children'),
-             params = list(input(id='url', property = 'pathname')),
-             display_page <- function(pathname) {
-               if (pathname == '/dash-vanguard-report/overview') {
-                 return(page_1_layout)
-               }
-               else if (pathname == '/') {
-                 return(page_1_layout)
-               }
-               else if (pathname == '/dash-vanguard-report/price-performance') {
-                 return(page_2_layout)
-               }
-               else if (pathname == '/dash-vanguard-report/news-and-reviews') {
-                 return(news_layout)
-               }
-               else if (pathname == '/dash-vanguard-report/portfolio-management') {
-                 return(portfolio_layout)
-               }
-               else if (pathname == '/dash-vanguard-report/distributions') {
-                 return(distributions_layout)
-               }
-               else if (pathname == '/dash-vanguard-report/fees') {
-                 return (fees_minimums_layout)
-               }
-               else {
-                 return(index_page)
-               }
+app$callback(output = list(id = 'ideogram-feature-view-options', property = 'children'),
+             params = list(input(id = 'ideogram-feature-dropdown', property = 'value')),
+             
+             show_options <- function(feature) {
+               return(options[[feature]])
              }
+)
+
+
+# Change resolution for the plot. 
+
+app$callback(
+  output = list(id = 'ideogram-resolution-option', property = 'style'),
+  params = list(input(id = 'organism-change', 'value')),
+  
+  show_hide_resolution <- function(organism) {
+    if (organism != 'human') {
+      resolution <- list('display' = 'none')
+    }
+    
+    else {
+      resolution <- list('display' = 'block')
+    }
+    return(resolution)
+  }
+)
+
+
+# Choose the annotation option for histogram. 
+
+app$callback(
+  output = list(id = 'ideogram-histo-options', property = 'style'),
+  params = list(input(id = 'annotation-select', 'value')),
+  
+  show_hide_histo_options <- function(annot_type) {
+    if (annot_type != 'histogram') {
+      annot <- list('display' = 'none')
+    }
+    
+    else {
+      annot <- list('display' = 'block')
+    }
+    return(annot)
+  }
+)
+
+
+# Rest of the Callbacks Test
+
+
+
+app$callback(
+  output = list(id = 'annote-data', property = 'children'),
+  params = list(
+    input(id = 'ideo-annotations' , property = 'annotationsData')
+  ),
+  
+  annote_data <- function(data) {
+    if (!exists(data)) {
+      data = 'None'
+    }
+    data = gsub('<br>', '', data)
+    
+    return(data)
+  }
+)
+
+
+
+# Brush Feature Callbacks
+
+
+app$callback(
+  output = list(id = 'brush-ideo-data', property = 'data'),
+  params = list(
+    input(id = 'chr-brush', property = 'value'),
+    state(id = 'brush-ideo-data', property = 'data')
+  ),
+  
+  
+  change_brush_ideo <- function(brush_value, current) {
+    if (is.null('current')) {
+      current = ideograms_initial[['brush']]
+      current['chromosomes'] = as.character(brush_value)
+      current['brush'] = sprintf('chr%s:1-10000000', brush_value)
+    }
+    else {
+      current['chromosomes'] = as.character(brush_value)
+      current['brush'] = sprintf('chr%s:1-10000000', brush_value)
+    }
+    
+    print(brush_value)
+    
+    print(current)
+    
+    return(current)
+  }
+  
+)
+
+
+
+app$callback(
+  output = list(id = 'brush-print-start', property = 'children'),
+  params = list(
+    input(id = 'brush-ideo', 'brushData')
+  ),
+  brush_data_start <- function(brush_data) {
+    answer = NA
+    
+    if (exists('brush_data')) {
+      answer = brush_data[['start']]
+    }
+    
+    return(answer)
+  }
+)
+
+
+app$callback(
+  output = list(id = 'brush-print-end', property = 'children'),
+  params = list(
+    input(id = 'brush-ideo', 'brushData')
+  ),
+  brush_data_end <- function(brush_data) {
+    answer = NA
+    
+    if (exists('brush_data')) {
+      answer = brush_data[['end']]
+    }
+    
+    return(answer)
+  }
+)
+
+
+app$callback(
+  output = list(id = 'brush-print-extent', property = 'children'),
+  params = list(
+    input(id = 'brush-ideo', 'brushData')
+  ),
+  brush_data_extent <- function(brush_data) {
+    answer = NA
+    
+    if (exists('brush_data')) {
+      answer = brush_data[['extent']]
+    }
+    
+    return(answer)
+  }
+)
+
+# Homology Callbacks
+
+
+
+# app$callback(
+#   ouput = list(id = 'chr-select-2', property = 'options'),
+#   params = list(
+#     input(id = 'chr-select-1', property = 'value'),
+#     state(id = 'chr-select-1', property = 'options')
+#   ),
+#   update_homology_options <- function(chr_1, all_chromosomes) {
+#     chromosome_list = list()
+#     
+#     for (option in all_chromosomes) {
+#       if (option['label'] != chr_1) {
+#         chromosome_list = c(chromosome_list, option)
+#         return(chromosome_list)
+#       }
+#     }
+#     
+#     
+#   }
+# )
+
+
+app$callback(
+  output = list(id = 'ideo-homology-data', property = 'data'),
+  params = list(
+    input(id = 'chr-select-1', property = 'value'),
+    input(id = 'chr-select-2',  property = 'value'),
+    input(id = 'chrone-startone',  property = 'value'),
+    input(id = 'chrone-stopone',  property = 'value'),
+    input(id = 'chrone-starttwo',  property = 'value'),
+    input(id = 'chrone-stoptwo',  property = 'value'),
+    input(id = 'chrtwo-startone',  property = 'value'),
+    input(id = 'chrtwo-stopone',  property = 'value'),
+    input(id = 'chrtwo-starttwo',  property = 'value'),
+    input(id = 'chrtwo-stoptwo',  property = 'value'),
+    state(id = 'ideo-homology-data', property = 'data')
+  ),
+  
+  change_homology_ideogram <- function(
+    chr_selected_1,
+    chr_selected_2,
+    start_one,
+    stop_one,
+    start_two,
+    stop_two,
+    start_one_a,
+    stop_one_a,
+    start_two_a,
+    stop_two_a,
+    current
+  ) {
+    
+    current = ideograms_initial[['homology']]
+      
+    current[['chromosomes']] = list(chr_selected_1, chr_selected_2)
+    
+    print(current)
+    
+    current['homology'] = list(
+      'chrOne' = list(
+        'organism' = '9606',
+        'start' = list(start_one, start_two),
+        'stop' = list(stop_one, stop_two)
+      ),
+      
+      'chrTwo' = list(
+        'organism' = '9606',
+        'start' = list(start_one_a, start_two_a),
+        'stop' = list(stop_one_a, stop_two_a)
+      )
+    )
+      
+    return(current)
+    
+  }
+)
+
+
+
+
+
+
+# Custom Callback
+
+
+app$callback(
+  output = list(id = 'ideo-custom-data', property = 'data'),
+  params = list(
+    input(id = 'organism-change', property = 'value'),
+    input(id = 'bandlabel-switch', property = 'value'),
+    input(id = 'chromlabel-switch', property = 'value'),
+    input(id = 'orientation-switch', property = 'value'),
+    input(id = 'chr-width-input', property = 'value'),
+    input(id = 'chr-height-input', property = 'value'),
+    input(id = 'chr-margin-input', property = 'value'),
+    input(id = 'rotatable-switch', property = 'value'),
+    input(id = 'resolution-select', property = 'value'),
+    input(id = 'sex-switch', property = 'value'),
+    input(id = 'fullband-switch', property = 'value'),
+    state(id = 'ideo-custom-data', property = 'data')
+  ),
+  
+  change_custom_ideogram <- function(
+    organism_sel,
+    show_band_labels,
+    show_chromosome_labels,
+    orientation_value,
+    chr_width,
+    chr_height,
+    chr_margin,
+    rotatable_value,
+    resolution_value,
+    sex_value,
+    show_banded,
+    current) {
+    
+
+    if (is.null('current')) {
+      current = ideograms_initial[['custom']]
+      
+      current['organism'] = organism_sel
+      current['showBandLabels'] = show_band_labels
+      current['showChromosomeLabels'] = show_chromosome_labels
+      current['orientation'] = orientation_value
+      current['chrMargin'] = chr_margin
+      current['chrWidth'] = chr_width
+      current['chrHeight'] = chr_height
+      current['rotatable'] = rotatable_value
+      current['showFullyBanded'] = show_banded
+      current['resolution'] = resolution_value
+      current['sex'] = ifelse(sex_value, 'female', 'male')
+    }
+    
+    else {
+      current['organism'] = organism_sel
+      current['showBandLabels'] = show_band_labels
+      current['showChromosomeLabels'] = show_chromosome_labels
+      current['orientation'] = orientation_value
+      current['chrWidth'] = chr_width
+      current['chrHeight'] = chr_height
+      current['chrMargin'] = chr_margin
+      current['rotatable'] = rotatable_value
+      current['showFullyBanded'] = show_banded
+      current['resolution'] = resolution_value
+      current['sex'] = ifelse(sex_value, 'female', 'male')
+    }
+
+
+    return(current)
+  }
 )
 
 app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8080))
