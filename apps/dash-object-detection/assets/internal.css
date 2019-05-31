@@ -1,0 +1,153 @@
+/* Remove Undo
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+._dash-undo-redo {
+    display: none;
+}
+
+body {
+    margin: 0 !important;
+    color: #606060 !important;
+    font-family: 'Raleway', sans-serif;
+    background-color: #F9F9F9 !important;
+}
+
+h4 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+p {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+/*.four.columns {*/
+    /*width: 32.6666666667% !important;*/
+/*}*/
+
+.model {
+    display: block; /*Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.markdown-container {
+    width: 60vw;
+    margin: 10% auto;
+    padding: 10px 15px;
+    background-color: #F9F9F9;
+    border-radius: 10px;
+}
+
+.close-container {
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.markdown-text {
+    width: 100%;
+    margin: 0;
+    padding: 0px 10px;
+}
+
+
+.closeButton {
+    padding: 0 15px;
+    font-weight: normal;
+    float: right;
+    font-size: 1.2rem;
+}
+
+.closeButton:hover {
+    color: red; !important
+}
+
+#header-section {
+    width: 90%;
+    margin-top: 2%;
+}
+
+.button:focus {
+    color: #FFFFFF;
+    border-color: #bbb;
+}
+
+#learn-more-button {
+    background-color: #fa4f56;
+    color: #FFFFFF;
+    font-size: 13px;
+    height: 30px;
+    font-weight: 500;
+    padding: 5px 25px 30px 25px;
+    line-height: 30px;
+    font-family: 'Raleway', sans-serif;
+}
+
+.video-outer-container {
+    width: 65%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    min-width: 500px;
+}
+
+.control-section {
+    width: 85%;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 5px;
+    flex-shrink: 0;
+    margin-bottom: 2%;
+}
+
+.control-element {
+    font-size: 15px;
+    padding: 10px;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.Select-control {
+    width: 100% !important;
+}
+
+.Select-menu-outer {
+    position: relative;
+}
+
+.has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+    color: #606060;
+}
+
+.rc-slider-track {
+    background-color: #fa4f56;
+}
+
+.rc-slider-dot-active, .rc-slider-dot, .rc-slider-handle {
+    border-color: #fa4f56;
+}
+
+.rc-slider-handle:hover {
+    border-color: #fa4f56;
+}
+
+.img-container {
+    border-color: black;
+    display: flex;
+    justify-content: flex-end;
+    height: 40px;
+}
+
+.plot-title {
+    margin-left: 5%;
+    margin-bottom: 0px;
+    font-weight: 500;
+}
