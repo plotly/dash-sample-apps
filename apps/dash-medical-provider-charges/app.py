@@ -283,8 +283,8 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                 size=10
                 * (1 + (val + cost_metric_data["min"]) / cost_metric_data["mid"]),
                 colorbar=dict(
-                    x=1,
-                    len=0.8,
+                    x=0.8,
+                    len=0.7,
                     title=dict(
                         text="Average Cost",
                         font={"color": "#737a8d", "family": "Open Sans"},
@@ -297,6 +297,7 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
                         "${:,.2f}".format(cost_metric_data["max"]),
                     ],
                     ticks="outside",
+                    thickness=15,
                     tickfont={"family": "Open Sans", "color": "#737a8d"},
                 ),
             ),
