@@ -13,14 +13,14 @@ library(plotly)
 library(data.table)
 library(dplyr)
 library(Hmisc)
-
+library(lubridate)
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
 
-ridesRaw <- fread("data/sample-output.csv",
+ridesRaw <- fread("data/output.csv",
                      stringsAsFactors = FALSE)
 # Read Actual df
 print(head(ridesRaw))
-ridesDf <- ridesRaw[, 2:4] #c("Date/Time","Lat","Lon")]
+ridesDf <- ridesRaw[, 2:4] #c("Date.Time","Lat","Lon")]
 # Remove extra columns
 
 names(ridesDf) <- c("dateTime", "Lat", "Lon")

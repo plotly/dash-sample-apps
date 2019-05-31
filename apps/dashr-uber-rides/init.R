@@ -50,5 +50,4 @@ remotes::install_github("plotly/dash-core-components")
 
 install.packages("data.table")
 install.packages("dplyr")
-install.packages("lubridate")
 install.packages("Hmisc")
