@@ -215,9 +215,46 @@ app$layout(
               ),
               htmlDiv(
                 id = "div-graphs",
-                children = dccGraph(
-                  id = "main_figure",
-                  style = list(display = "none")
+                children = list(
+                  htmlDiv(
+                    className = "six columns",
+                    id = "svm-graph-container",
+                    style = list(marginTop = "1rem"),
+                    children = list(
+                      dccGraph(
+                        id = "main_figure",
+                        style = list(
+                          height = "calc(100vh - 90px)",
+                          margin = "0 1.66rem"
+                        ),
+                        config = list(displayModeBar = FALSE)
+                      )
+                    )
+                  ),
+                  htmlDiv(
+                    className = "three columns",
+                    id = "graphs-container",
+                    style = list(
+                      minWidth = "22%",
+                      height = "calc(100vh - 90px)",
+                      marginTop = "1rem",
+                      "-moz-user-select" = "none",
+                      "-webkit-user-select" = "none",
+                      "-ms-user-select" = "none"
+                    ),
+                    children = list(
+                      dccGraph(
+                        id = "graph-line-roc-curve",
+                        style = list(height = "40%"),
+                        config = list(displayModeBar = FALSE)
+                      ),
+                      dccGraph(
+                        id = "graph-pie-confusion-matrix",
+                        style = list(height = "55%", marginTop = "5%"),
+                        config = list(displayModeBar = FALSE)
+                      )
+                    )
+                  )
                 )
               )
             )
