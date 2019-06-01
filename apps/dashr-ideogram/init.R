@@ -17,6 +17,9 @@ install.packages("later")
 install.packages("jsonlite")
 install.packages("listenv")
 
+remotes::install_github("plotly/dash-bio")
+remotes::install_github("plotly/dash-daq")
+
 # installs magrittr, promises, R6
 remotes::install_version("httpuv", version = "1.4.5.1", repos = "http://cloud.r-project.org", upgrade="never")
 
@@ -50,5 +53,4 @@ install.packages("https://cloud.r-project.org/src/contrib/fiery_1.1.1.tar.gz", t
 remotes::install_github("plotly/dashR", dependencies=FALSE)
 remotes::install_github("plotly/dash-html-components")
 remotes::install_github("plotly/dash-core-components")
-remotes::install_github("plotly/dash-bio")
-remotes::install_github("plotly/dash-daq")
+
