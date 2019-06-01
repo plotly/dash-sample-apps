@@ -19,6 +19,8 @@ install.packages("listenv")
 
 install.packages("magrittr")
 
+install.packages("manhattanly")
+
 # installs magrittr, promises, R6
 remotes::install_version("httpuv", version = "1.4.5.1", repos = "http://cloud.r-project.org", upgrade="never")
 
