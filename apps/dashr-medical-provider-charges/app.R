@@ -212,11 +212,9 @@ buildUpperLeftPanel <- function(){
                     "Hospital Charges Summary",
                     style = list(marginTop = "1em")
                   ),
-                  dccLoading(
-                    children = htmlDiv(
-                      id = "cost-stats-container",
-                      children = generateDataTable(data.table(), "cost")
-                    )
+                  htmlDiv(
+                    id = "cost-stats-container",
+                    children = generateDataTable(data.table(), "cost")
                   )
                 )
               ),
@@ -228,13 +226,10 @@ buildUpperLeftPanel <- function(){
                     className = "section-title",
                     "Procedure Charges Summary",
                     style = list(marginTop = "1em")
-
                   ),
-                  dccLoading(
-                    children = htmlDiv(
-                      id = "procedure-stats-container",
-                      children = generateDataTable(data.table(), "procedure")
-                    )
+                  htmlDiv(
+                    id = "procedure-stats-container",
+                    children = generateDataTable(data.table(), "procedure")
                   )
                 )
               )
@@ -242,7 +237,6 @@ buildUpperLeftPanel <- function(){
           )
         )
       )
-
     )
   )
 }
@@ -475,19 +469,14 @@ app$layout(
               ),
               htmlDiv(
                 id = "geo-map-loading-outer",
-                children = list(
-                  dccLoading(
-                    id = "loading",
-                    children = dccGraph(
-                      id = "geo-map",
-                      figure = plot_ly() %>%
-                        layout(
-                          plot_bgcolor = "#171b26",
-                          paper_bgcolor = "#171b26"
-                        )
-                    )
+                children = dccGraph(
+                id = "geo-map",
+                figure = plot_ly() %>%
+                  layout(
+                    plot_bgcolor = "#171b26",
+                    paper_bgcolor = "#171b26"
                   )
-                )
+              )
               )
             )
           )
