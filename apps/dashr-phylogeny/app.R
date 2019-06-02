@@ -566,7 +566,7 @@ app$layout(
               htmlBr(),
               htmlDiv(
                 className = "eight columns",
-                style = list(marginTop = "10"),
+                style = list(marginTop = 10),
                 children = htmlDiv(
                   list(
                     htmlDiv(
@@ -578,7 +578,7 @@ app$layout(
                           tree_file,
                           metadata_file
                         ),
-                        style = list(height = "1000")
+                        style = list(height = 1000)
                       )
                     )
                   ),
