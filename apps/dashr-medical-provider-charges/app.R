@@ -212,9 +212,11 @@ buildUpperLeftPanel <- function(){
                     "Hospital Charges Summary",
                     style = list(marginTop = "1em")
                   ),
-                  htmlDiv(
-                    id = "cost-stats-container",
-                    children = generateDataTable(data.table(), "cost")
+                  dccLoading(
+                    children = htmlDiv(
+                      id = "cost-stats-container",
+                      children = generateDataTable(data.table(), "cost")
+                    )
                   )
                 )
               ),
@@ -226,10 +228,13 @@ buildUpperLeftPanel <- function(){
                     className = "section-title",
                     "Procedure Charges Summary",
                     style = list(marginTop = "1em")
+
                   ),
-                  htmlDiv(
-                    id = "procedure-stats-container",
-                    children = generateDataTable(data.table(), "procedure")
+                  dccLoading(
+                    children = htmlDiv(
+                      id = "procedure-stats-container",
+                      children = generateDataTable(data.table(), "procedure")
+                    )
                   )
                 )
               )
@@ -237,6 +242,7 @@ buildUpperLeftPanel <- function(){
           )
         )
       )
+
     )
   )
 }
@@ -469,14 +475,19 @@ app$layout(
               ),
               htmlDiv(
                 id = "geo-map-loading-outer",
-                children = dccGraph(
-                id = "geo-map",
-                figure = plot_ly() %>%
-                  layout(
-                    plot_bgcolor = "#171b26",
-                    paper_bgcolor = "#171b26"
+                children = list(
+                  dccLoading(
+                    id = "loading",
+                    children = dccGraph(
+                      id = "geo-map",
+                      figure = plot_ly() %>%
+                        layout(
+                          plot_bgcolor = "#171b26",
+                          paper_bgcolor = "#171b26"
+                        )
+                    )
                   )
-              )
+                )
               )
             )
           )
