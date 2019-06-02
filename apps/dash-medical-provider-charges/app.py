@@ -339,45 +339,49 @@ def generate_geo_map(geo_data, selected_metric, region_select, procedure_select)
 def generate_procedure_plot(raw_data, cost_select, region_select, provider_select):
     procedure_data = raw_data[
         raw_data["Hospital Referral Region (HRR) Description"].isin(region_select)
-    ]
-    providers = procedure_data["Provider Name"].unique()
+    ].reset_index()
 
     traces = []
+    selected_index = procedure_data[
+        procedure_data["Provider Name"].isin(provider_select)
+    ].index
 
-    for ind, provider in enumerate(providers):
-        hovertemplate = (
-            provider + "<br><b>%{y}</b>" + "<br>Average Procedure Cost: %{x:$.2f}"
-        )
-        dff = procedure_data[procedure_data["Provider Name"] == provider]
+    text = (
+        procedure_data["Provider Name"]
+        + "<br>"
+        + "<b>"
+        + procedure_data["DRG Definition"].map(str)
+        + "/<b> <br>"
+        + "Average Procedure Cost: $ "
+        + procedure_data[cost_select].map(str)
+    )
 
-        if provider in provider_select:
-            selected_index = list(range(len(dff)))
-        else:
-            selected_index = []  # empty list
+    provider_trace = go.Box(
+        y=procedure_data["DRG Definition"],
+        x=procedure_data[cost_select],
+        name="",
+        customdata=procedure_data["Provider Name"],
+        boxpoints="all",
+        jitter=0,
+        pointpos=0,
+        hoveron="points",
+        fillcolor="rgba(0,0,0,0)",
+        line=dict(color="rgba(0,0,0,0)"),
+        hoverinfo="text",
+        hovertext=text,
+        selectedpoints=selected_index,
+        selected=dict(marker={"color": "#FFFF00", "size": 13}),
+        unselected=dict(marker={"opacity": 0.2}),
+        marker=dict(
+            line=dict(width=1, color="#000000"),
+            color="#21c7ef",
+            opacity=0.7,
+            symbol="square",
+            size=12,
+        ),
+    )
 
-        if len(provider_select) == 0:
-            selected_index = ""
-
-        provider_trace = go.Scatter(
-            y=dff["DRG Definition"],
-            x=dff[cost_select],
-            name="",
-            customdata=dff["Provider Name"],
-            hovertemplate=hovertemplate,
-            mode="markers",
-            selectedpoints=selected_index,
-            selected=dict(marker={"color": "#FFFF00", "size": 13}),
-            unselected=dict(marker={"opacity": 0.2}),
-            marker=dict(
-                line=dict(width=1, color="#000000"),
-                color="#21c7ef",
-                opacity=0.7,
-                symbol="square",
-                size=12,
-            ),
-        )
-
-        traces.append(provider_trace)
+    traces.append(provider_trace)
 
     layout = go.Layout(
         showlegend=False,
