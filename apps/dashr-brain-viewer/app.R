@@ -195,6 +195,7 @@ styles = list(
 )
 
 #APP LAYOUT*************************
+app = Dash$new()
 
 app$layout(htmlDiv(children = list(
   
