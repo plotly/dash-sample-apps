@@ -1,13 +1,24 @@
 appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
 
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+if (appName != ""){
 
-setwd("/app/apps/dashr-vanguard-report")
+ pathPrefix <- sprintf("/%s/", appName)
+
+
+
+ Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+
+            DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+
+
+
+ setwd(sprintf("/app/apps/%s", appName))
+
+}
+
 
 #Source assets
-source("assets/VanguardFunctions.R")
+source("assets/FinancialFunctions.R")
 
 # Load Necessary Packages
 library('dashR')
@@ -25,15 +36,20 @@ external_css1 = list("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/nor
                      "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
                      "https://cdn.rawgit.com/plotly/dash-app-stylesheets/5047eb29e4afe01b45b27b1d2f7deda2a942311a/goldman-sachs-report.css")
 
+
 app <- Dash$new(external_stylesheets = external_css1)
+
 
 grey_line <- htmlDiv(list(
   htmlHr(className = "greyline")
 ))
 
+
 overview <- htmlDiv(list(
   Header()
 ))
+
+
 
 #################################################################################
 
@@ -42,6 +58,8 @@ colors <- list(
   text = '#111111'
 )
 
+
+
 #################################################################################
 
 #Intro Paragraph and Overview
@@ -49,22 +67,28 @@ colors <- list(
 paragraph <- htmlDiv(list(
   htmlDiv(list(
     htmlH4('Product Summary', style = list("color" = "#ffffff")),
+    
     htmlP("\
-                            As the industry’s first index fund for individual investors, \
-                            the 500 Index Fund is a low-cost way to gain diversified exposure \
+                            As the industry's first index fund for individual investors, \
+                            the Calibre Index Fund is a low-cost way to gain diversified exposure \
                             to the U.S. equity market. The fund offers exposure to 500 of the \
                             largest U.S. companies, which span many different industries and \
-                            account for about three-fourths of the U.S. stock market’s value. \
+                            account for about three-fourths of the U.S. stock market's value. \
                             The key risk for the fund is the volatility that comes with its full \
-                            exposure to the stock market. Because the 500 Index Fund is broadly \
+                            exposure to the stock market. Because the Calibre Index Fund is broadly \
                             diversified within the large-capitalization market, it may be \
                             considered a core equity holding in a portfolio.")), className = 'row'
   )), className = "product"
 )
 
+
 #################################################################################
 
+
 #Code for the Average Annual Performance Bar Charts
+
+
+
 ax <- list(
   title = ""
 )
@@ -73,16 +97,19 @@ years <- c("1 year", "3 year", "5 year", "10 year", "41 year")
 SP_Index <- c(21.83, 11.41, 15.79, 8.50, 0)
 Index_Fund <- c(21.67, 11.26, 15.62, 8.37, 11.11)
 
+
 performance_data <- data.frame(years, SP_Index, Index_Fund)
 
 performance_data$years <- factor(performance_data$years, levels = performance_data$years[order(c(1,2,3,4,5))])
 
 performance <- plot_ly(performance_data, x= ~years, y= ~Index_Fund, type = "bar",
-                       name = '500 Index Fund', width = 340,  height = 200) %>%
+                       name = 'Calibre Index Fund', width = 340,  height = 200) %>%
   add_trace(y= ~SP_Index, name = "S&P Index Fund") %>%
   layout(yaxis = ax, xaxis = ax, colorway = c('#98151B', '#DCDCDC'), 
          legend = list(x = 1.0, y =  0.95, orientation = 'h', yanchor = "top", font = list(size =9)),
          autosize = FALSE, bargap = 0.35, hovermode = "closest",  margin = list(r=0, t=20, b=10, l=10))
+
+
 
 performance_graph <- htmlDiv(
   list(
@@ -94,7 +121,9 @@ performance_graph <- htmlDiv(
 
 #################################################################################
 
+
 #Code for the Hypothetical Growth Line Graphs
+
 hypothetical_yaxis <- list(
   title = "",
   autotick = FALSE,
@@ -120,13 +149,17 @@ nogrid <- list(
 x = c(2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018)
 y = c(10000, 7500, 9000, 10000, 10500, 11000, 14000, 18000, 19000, 20500, 30000)
 
+
 hypothetical_data <- data.frame(x,y)
 
+
+
 hypothetical_growth <- plot_ly(hypothetical_data, x= x, y= y, type = "scatter",
-                               mode = 'lines', line = list(color = '#98151B', width = 3), name = "500 Index Fund Inv",
+                               mode = 'lines', line = list(color = '#98151B', width = 3), name = "Calibre Index Fund Inv",
                                height = 200, width = 340) %>%
   layout(yaxis = hypothetical_yaxis, xaxis = nogrid, legend=list(orientation='h', y = -0.2), showlegend=TRUE, autosize = FALSE
          , margin = list(r=20, t=20, b=20, l=50))
+
 
 hypothetical_graph <- htmlDiv(
   list(
@@ -139,7 +172,10 @@ hypothetical_graph <- htmlDiv(
 #################################################################################
 
 #Code for the performance line graphs.
+
+
 df_graph <- read.csv('data/df_graph.csv')
+
 
 performance_yaxis <- list(
   title = "",
@@ -150,6 +186,7 @@ performance_yaxis <- list(
   color = 'gray',
   linecolor = toRGB('lightgray')
 )
+
 
 performance_xaxis <- list(
   title = "" ,
@@ -199,6 +236,7 @@ df_graph$Date <- ymd(as.character(df_graph$Date))
 
 df_graph$Date <- floor_date(df_graph$Date, "month")
 
+
 df_graph <- ddply(df_graph, "Date", summarise, Vanguard.500.Index.Fund = mean(Vanguard.500.Index.Fund),
                   MSCI.EAFE.Index.Fund..ETF. = mean(MSCI.EAFE.Index.Fund..ETF.))
 
@@ -208,7 +246,7 @@ df_graph <- ddply(df_graph, "Date", summarise, Vanguard.500.Index.Fund = mean(Va
 
 
 performance_lines <- plot_ly(df_graph, x= df_graph$Date, y= df_graph$Vanguard.500.Index.Fund, type = "scatter",
-                             mode = 'lines', line = list(color = '#98151B', width = 3), name = "Vanguard 500 Index Fund",
+                             mode = 'lines', line = list(color = '#98151B', width = 3), name = "Calibre Index Fund",
                              height = 200, width = 750) %>%
   add_trace(y= df_graph$MSCI.EAFE.Index.Fund..ETF., line = list(color = '#DCDCDC', width = 3), name = "MSCI EAFE Index Fund (ETF)") %>%
   layout(yaxis = performance_yaxis, xaxis = performance_xaxis, autosize = FALSE, margin = list(r=40, t=40, b=30, l=40))
@@ -397,7 +435,7 @@ stock_graph_noheader <- htmlDiv(list(
   dccGraph(id= "Stock_Graph", figure=stock_style_graph, className = "four columns")))
 
 stock_text <- htmlDiv(list(
-  htmlLi("Vanguard 500 Index Fund seeks to track the performance of\
+  htmlLi("Calibre Index Fund seeks to track the performance of\
                      a benchmark index that meaures the investment return of large-capitalization stocks."),
   htmlLi("Learn more about this portfolio's investment strategy and policy.")
 ) , className="eight columns middle-aligned")
@@ -408,7 +446,7 @@ stock_text <- htmlDiv(list(
 
 
 fees_graph <- plot_ly(x = list("Category Average", "This fund"), y = list("2242", "329"),
-                      marker = list("color" = "B22222"), name = "A", type = "bar",  height = 150,
+                      marker = list("color" = "#98151B"), name = "A", type = "bar",  height = 150,
                       width = 340) %>%
   add_trace(x = list("This Fund"), y = list("1913"), marker = list("color"="#D3D3D3"),
             name = "B", type = "bar") %>%
@@ -484,7 +522,7 @@ fees_bars <- htmlDiv(list(
 #################################################################################
 
 news <- htmlDiv(list(
-  htmlH6(list('Vanguard News'), className = 'subtitle'),
+  htmlH6(list('Calibre News'), className = 'subtitle'),
   htmlBr(),
   htmlLi('10/25/16    The rise of indexing and the fall of costs'),
   htmlBr(),
@@ -496,10 +534,10 @@ reviews <- htmlDiv(list(
   htmlBr(),
   htmlLi('Launched in 1976.'),
   htmlLi('On average, has historically produced returns that have far outpaced the rate of inflation.*'),
-  htmlLi("Vanguard Quantitative Equity Group, the fund's advisor, is among the world's largest equity index managers."),
+  htmlLi("Calibre Quantitative Equity Group, the fund's advisor, is among the world's largest equity index managers."),
   htmlBr(),
-  htmlP("Did you know? The fund launched in 1976 as Vanguard First Index Investment 
-         Trust—the nation's first index fund available to individual investors."),
+  htmlP("Did you know? The fund launched in 1976 as Calibre First Index Investment 
+         Trust-the nation's first index fund available to individual investors."),
   htmlBr(),
   htmlP("* The performance of an index is not an exact representation of any particular investment, as you cannot invest directly in an index."),
   htmlBr(),
@@ -552,24 +590,24 @@ fees_text <- htmlDiv(list(
       htmlDiv(list(
         htmlStrong(list("Nonretirement accounts, traditional IRAs, Roth IRAs, 
                         UGMAs/UTMAs, SEP-IRAs, and education savings accounts (ESAs)")),
-        htmlP(list("We charge a $20 annual account service fee for each Vanguard Brokerage Account, 
-                   as well as each individual Vanguard mutual fund holding with a balance of less than 
+        htmlP(list("We charge a $20 annual account service fee for each Calibre Brokerage Account, 
+                   as well as each individual Calibre mutual fund holding with a balance of less than 
                    $10,000 in an account. This fee does not apply if you sign up for account access on 
-                   vanguard.com and choose electronic delivery of statements, confirmations, and 
-                   Vanguard fund reports and prospectuses. This fee also does not apply to members 
-                   of Flagship Select™, Flagship®, Voyager Select®, and Voyager® Services.")),
+                   Calibre.com and choose electronic delivery of statements, confirmations, and 
+                   Calibre fund reports and prospectuses. This fee also does not apply to members 
+                   of Flagship SelectT, Flagship®, Voyager Select®, and Voyager® Services.")),
         htmlBr(list()),
         htmlStrong(list("SIMPLE IRAs")),
-        htmlP(list("We charge participants a $25 annual account service fee for each fund they hold in their Vanguard SIMPLE IRA. 
+        htmlP(list("We charge participants a $25 annual account service fee for each fund they hold in their Calibre SIMPLE IRA. 
                    This fee does not apply to members of Flagship Select, Flagship, Voyager Select, and Voyager Services.")),
         htmlBr(list()),
         htmlStrong(list("403(b)(7) plans")),
-        htmlP(list("We charge participants a $15 annual account service fee for each fund they hold in their Vanguard 403(b)(7) account.
+        htmlP(list("We charge participants a $15 annual account service fee for each fund they hold in their Calibre 403(b)(7) account.
                    This fee does not apply to members of Flagship Select, Flagship, Voyager Select, and Voyager Services.")),
         htmlBr(list()),
         htmlStrong(list("Individual 401(k) plans")),
         htmlP(list("We charge participants a $20 annual account service fee for each fund they hold in their 
-                   Vanguard Individual 401(k) account. This fee will be waived for all participants in the plan 
+                   Calibre Individual 401(k) account. This fee will be waived for all participants in the plan 
                    if at least 1 participant qualifies for Flagship Select, Flagship, Voyager Select, and Voyager Services")),
         htmlBr(list())
         
@@ -680,9 +718,9 @@ dividends_data <- read.csv("data/df_dividend.csv")
 
 
 
-dividends_data$Distribution.Yield <- "—"
+dividends_data$Distribution.Yield <- "-"
 
-dividends_data[2:6,8] <- "—"
+dividends_data[2:6,8] <- "-"
 
 
 
@@ -854,7 +892,7 @@ portfolio_firstrow <- htmlDiv(list(
 risk_reward <- htmlDiv(list(
   htmlH6(list("Risk Potential"), className = 'subtitle'),
   htmlBr(),
-  htmlImg(src= 'https://raw.githubusercontent.com/HammadTheOne/hammadtheone.github.io/master/assets/risk_reward.png', height = "140", width = "332")
+  htmlImg(src= 'assets/risk_reward.png', height = "140", width = "332")
 ), className = "six columns")
 
 white_space <- htmlDiv(list(
@@ -1021,4 +1059,12 @@ app$callback(output = list(id='page-content', property = 'children'),
              }
 )
 
-app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8080))
+if (appName != "") {
+
+ app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+
+} else {
+
+ app$run_server()
+
+}
