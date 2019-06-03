@@ -4,9 +4,6 @@
 
 This is a demo of the Dash interactive Python framework developed by [Plotly](https://plot.ly/).
 
-This demo is based off of data provided by [FiveThirtyEight](https://github.com/fivethirtyeight/uber-tlc-foil-response/tree/master/uber-trip-data) and highlights Uber trips taken in New York City from April 2014 to September 2014.
-
-
 ## How to run this app
 
 (The following instructions apply to Windows command line.)
