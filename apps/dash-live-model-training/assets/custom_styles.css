@@ -1,11 +1,32 @@
 /* custom styling for the new refreshed app */
 
+/* .container {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 0.75rem;
+} */
+
+#div-total-step-count > h6 {
+  font-weight: bold;
+  font-size: 20px;
+  color: #6b6b6b;
+}
+
+#div-step-display > h6 {
+  font-weight: bold;
+  font-size: 20px;
+  color: #6b6b6b;
+}
+
 .markdown img {
   width: 100%;
 }
 
 ._dash-undo-redo {
   display: none;
+}
+
+.two.columns {
+  /* padding: 0px 5px; */
 }
 
 #learn-more-button {
@@ -24,11 +45,9 @@
   padding: 15px 15px;
 }
 
+/* slider colors */
+
 .rc-slider-track {
-  position: absolute;
-  left: 0;
-  height: 4px;
-  border-radius: 6px;
   background-color: #f6ec91;
 }
 
@@ -38,27 +57,45 @@
 
 .rc-slider-handle {
   border-color: #f6ec91;
-  /* border: solid 2px #f6ec91; */
 }
 
+#slider-smoothing-accuracy > div > div.rc-slider-handle {
+  border-color: #f6ec91;
+}
+
+#slider-smoothing-accuracy
+  > div
+  > div.rc-slider-step
+  > div.rc-slider-dot-active {
+  border-color: #f6ec91;
+}
+
+#slider-smoothing-cross-entropy > div > div.rc-slider-track {
+  background-color: #36daaa;
+}
+
+#slider-smoothing-cross-entropy > div > div.rc-slider-handle {
+  border-color: #36daaa;
+}
+
+#slider-smoothing-cross-entropy
+  > div
+  > div.rc-slider-step
+  > .rc-slider-dot-active {
+  border-color: #36daaa;
+}
+
+/* overall app background color */
 #_dash-app-content > div {
   background-color: #f8f9fa;
 }
 
-#react-select-4--value-item {
+/* @media (min-width: 1000px) {
+  #plotly-logo {
+    width: 10.25%;
+    padding: 5px;
+  }
+} */
+/* #react-select-4--value-item {
   color: #6b6b6b;
-}
-
-/* #_dash-app-content > div > div:nth-child(2) > div:nth-child(2) {
-  width: 80.5%;
 } */
-
-/* 
-#div-interval-control {
-  padding: 10px 10px;
-} */
-
-/*.rc-slider-handle:hover {
-  border-color: white;
-  border: solid 2px #f6ec91;
-}  */

@@ -85,8 +85,8 @@ Development: https://rawgit.com/xhlulu/0acba79000a3fd1e6f552ed82edb8a64/raw/dash
   box-sizing: border-box;
 }
 
-/* For devices larger than 550px */
-@media (min-width: 768px) {
+/* For devices larger than 1000px i.e. Larger than desktop */
+@media (min-width: 1000px) {
   .column,
   .columns {
     margin-left: 0.5%;
@@ -547,21 +547,106 @@ there.
 */
 
 /* Larger than mobile */
-@media (min-width: 400px) {
-}
-
-/* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {
+@media (max-width: 375px) {
+  #title {
+    width: 30%;
+    font-size: 20px;
+    padding-top: 10px;
+  }
+  #learn-more-button {
+    margin-left: 0px;
+    font-size: 10px !important;
+    padding: 0px 10px !important;
+  }
+  #plotly-logo {
+    padding: 10px 10px !important;
+  }
 }
 
 /* Larger than tablet */
-@media (min-width: 750px) {
+@media (max-width: 575px) {
+  #title {
+    width: 40% !important;
+    font-size: 15px;
+    padding-top: 10px;
+  }
+  #learn-more-button {
+    margin-left: 0px;
+    font-size: 10px !important;
+    padding: 0px 10px !important;
+  }
+  #plotly-logo {
+    padding: 10px 10px !important;
+  }
 }
 
-/* Larger than desktop */
-@media (min-width: 1000px) {
+/* Larger than phablet (also point when grid becomes active) */
+@media (max-width: 710px) {
+  #title {
+    width: 50% !important;
+    font-size: 25px;
+  }
+
+  #plotly-logo {
+    padding: 5px 10px;
+    width: 10%;
+  }
+  #learn-more-button {
+    margin-left: 30px;
+  }
 }
 
 /* Larger than Desktop HD */
-@media (min-width: 1200px) {
+@media (max-width: 1000px) {
+  #title {
+    width: 60%;
+  }
+
+  #plotly-logo {
+    padding: 5px 10px;
+    width: 20%;
+  }
+
+  #radio-display-mode-accuracy {
+    float: right;
+  }
+
+  #checklist-smoothing-options-accuracy {
+    float: right;
+  }
+
+  #slider-smoothing-accuracy > div {
+    float: right;
+    margin-bottom: 5%;
+  }
+
+  #slider-smoothing-cross-entropy > div {
+    float: right;
+    margin-bottom: 5%;
+  }
+  .slider-smoothing {
+    width: 50%;
+  }
+
+  .graph-checkbox-smoothing {
+    float: left;
+  }
+
+  .checklist-smoothing {
+    float: right;
+  }
+  .plot-display-radio-items {
+    float: right;
+  }
+  .plot-display-text {
+    float: left;
+  }
+
+  /* #dropdown-demo-dataset {
+    width: 30%;
+  }
+
+  #dropdown-simulation-model {
+    width: 30%;
+  } */
 }

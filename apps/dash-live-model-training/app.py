@@ -31,11 +31,13 @@ def div_graph(name):
         children=[
             html.Div(
                 className="two columns",
+                style={"padding-bottom": "5%"},
                 children=[
                     html.Div(
                         [
                             html.P(
-                                "Smoothing:",
+                                className="graph-checkbox-smoothing",
+                                children=["Smoothing:"],
                                 style={"font-weight": "bold", "margin-bottom": "0px"},
                             ),
                             dcc.Checklist(
@@ -45,6 +47,7 @@ def div_graph(name):
                                 ],
                                 values=[],
                                 id=f"checklist-smoothing-options-{name}",
+                                className="checklist-smoothing",
                             ),
                         ],
                         style={"margin-top": "10px"},
@@ -62,28 +65,52 @@ def div_graph(name):
                             )
                         ],
                         style={"margin-bottom": "40px"},
+                        className="slider-smoothing",
                     ),
                     html.Div(
                         [
                             html.P(
-                                "Plot Display mode:",
-                                style={"font-weight": "bold", "margin-bottom": "0px"},
-                            ),
-                            dcc.RadioItems(
-                                options=[
-                                    {"label": " Overlapping", "value": "overlap"},
-                                    {
-                                        "label": " Separate (Vertical)",
-                                        "value": "separate_vertical",
-                                    },
-                                    {
-                                        "label": " Separate (Horizontal)",
-                                        "value": "separate_horizontal",
-                                    },
+                                className="plot-display-text",
+                                children=[
+                                    "Plot Display mode:",
+                                    dcc.RadioItems(
+                                        options=[
+                                            {
+                                                "label": " Overlapping",
+                                                "value": "overlap",
+                                            },
+                                            {
+                                                "label": " Separate (Vertical)",
+                                                "value": "separate_vertical",
+                                            },
+                                            {
+                                                "label": " Separate (Horizontal)",
+                                                "value": "separate_horizontal",
+                                            },
+                                        ],
+                                        value="overlap",
+                                        id=f"radio-display-mode-{name}",
+                                        className="plot-display-radio-items",
+                                    ),
                                 ],
-                                value="overlap",
-                                id=f"radio-display-mode-{name}",
+                                # style={"font-weight": "bold", "margin-bottom": "0px"},
                             ),
+                            # dcc.RadioItems(
+                            #     options=[
+                            #         {"label": " Overlapping", "value": "overlap"},
+                            #         {
+                            #             "label": " Separate (Vertical)",
+                            #             "value": "separate_vertical",
+                            #         },
+                            #         {
+                            #             "label": " Separate (Horizontal)",
+                            #             "value": "separate_horizontal",
+                            #         },
+                            #     ],
+                            #     value="overlap",
+                            #     id=f"radio-display-mode-{name}",
+                            #     className="plot-display-radio-items",
+                            # ),
                             html.Div(id=f"div-current-{name}-value"),
                         ]
                     ),
@@ -95,7 +122,8 @@ def div_graph(name):
 
 
 app.layout = html.Div(
-    [
+    style={"height": "100%"},
+    children=[
         # Banner display
         html.Div(
             [
@@ -111,10 +139,16 @@ app.layout = html.Div(
                     children=["Learn More"],
                 ),
                 html.Img(
-                    src=app.get_asset_url("dash-logo.png"), className="two columns"
+                    src=app.get_asset_url("dash-logo.png"),
+                    className="two columns",
+                    id="plotly-logo",
                 ),
             ],
             className="banner row",
+        ),
+        html.Div(
+            # empty child function for the callback
+            html.Div(id="demo-explanation", children=[])
         ),
         # Body
         html.Div(
@@ -147,19 +181,15 @@ app.layout = html.Div(
                 # Hidden Div Storing JSON-serialized dataframe of run log
                 html.Div(id="run-log-storage", style={"display": "none"}),
                 # The html divs storing the graphs and display parameters
-                # div_graph("accuracy"),
             ],
         ),
         html.Div(className="container", children=[div_graph("accuracy")]),
-        html.Div(className="container", children=[div_graph("cross-entropy")]),
         html.Div(
-            id="demo-explanation",
-            children=[
-                # Explanation for the demo version of the app
-                # demo_explanation(demo_mode),
-            ],
+            className="container",
+            style={"margin-bottom": "30px"},
+            children=[div_graph("cross-entropy")],
         ),
-    ]
+    ],
 )
 
 
@@ -283,7 +313,11 @@ def learn_more(n_clicks):
     if (n_clicks % 2) == 1:
         n_clicks += 1
         return (
-            html.Div(className="container", children=[demo_explanation(demo_mode)]),
+            html.Div(
+                className="container",
+                style={"margin-bottom": "30px"},
+                children=[demo_explanation(demo_mode)],
+            ),
             "Close",
         )
 

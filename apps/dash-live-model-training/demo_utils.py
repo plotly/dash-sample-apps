@@ -3,6 +3,10 @@ import dash_html_components as html
 import pandas as pd
 from dash.dependencies import Input, Output, State
 
+# # get relative data folder
+# PATH = pathlib.Path(__file__).parent
+# DATA_PATH = PATH.joinpath("data").resolve()
+
 
 def demo_explanation(demo_mode):
     if demo_mode:
@@ -11,11 +15,9 @@ def demo_explanation(demo_mode):
             demo_md = file.read()
 
         return html.Div(
-            html.Div(
-                [dcc.Markdown(demo_md, className="markdown")], className="ten columns"
-            ),
-            className="row",
-            style={"margin": "20px"},
+            html.Div([dcc.Markdown(demo_md, className="markdown")]),
+            # className="row",
+            style={"margin": "10px"},
         )
 
 
@@ -32,13 +34,13 @@ def demo_components(demo_mode):
             ),
             html.Div(
                 className="row",
-                style={"margin-bottom": "8px"},
+                style={"margin": "8px 0px"},
                 children=[
                     html.Div(
-                        className="eight columns",
+                        className="twelve columns",
                         children=[
                             html.Div(
-                                className="six columns",
+                                className="four columns",
                                 children=dcc.Dropdown(
                                     id="dropdown-demo-dataset",
                                     options=[
@@ -51,7 +53,7 @@ def demo_components(demo_mode):
                                 ),
                             ),
                             html.Div(
-                                className="six columns",
+                                className="four columns",
                                 children=dcc.Dropdown(
                                     id="dropdown-simulation-model",
                                     options=[
@@ -65,9 +67,12 @@ def demo_components(demo_mode):
                                     searchable=False,
                                 ),
                             ),
+                            html.Div(
+                                id="div-total-step-count", className="four columns"
+                            ),
                         ],
                     ),
-                    html.Div(id="div-total-step-count", className="four columns"),
+                    # html.Div(id="div-total-step-count", className="four columns"),
                 ],
             ),
         ]
