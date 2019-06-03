@@ -378,10 +378,14 @@ app$layout(
         className = "container",
         list(
           htmlDiv(
-            list(
+            id = "top-graphs",
+            style = list(display = "flex", width = "100%"),
+            children = list(
               htmlDiv(
+                id = "left-top-graphs",
                 list(
                   htmlDiv(
+                    style = list(width = "100%"),
                     list(
                       htmlH6("Dataset"),
                       dccDropdown(
@@ -560,17 +564,25 @@ app$layout(
                     )
                   )
                 ),
-                className = "four columns",
-                style = list(marginTop = "1rem")
+                style = list(
+                  marginTop = "1rem", 
+                  width = "33%", 
+                  float = "left", 
+                  boxSizing = "border-box"
+                )
               ),
               htmlBr(),
               htmlDiv(
-                className = "eight columns",
-                style = list(marginTop = 10),
+                id = "right-top-graphs",
+                style = list(
+                  marginTop = "1rem", 
+                  width = "66.5%", 
+                  float = "left", 
+                  boxSizing = "border-box"
+                ),
                 children = htmlDiv(
                   list(
                     htmlDiv(
-                      id = "right-top-graph",
                       children = dccGraph(
                         id = "tree-graph",
                         figure = createTree(
@@ -581,15 +593,16 @@ app$layout(
                         style = list(height = 1000)
                       )
                     )
-                  ),
-                  className = "row"
+                  )
                 )
               )
             )
           ),
           htmlDiv(
-            list(
+            id = "bottom-graphs",
+            children = list(
               htmlDiv(
+                id = "left-bottom-graphs",
                 list(
                   dccGraph(
                     id = "graph_map",
@@ -601,9 +614,14 @@ app$layout(
                     )
                   )
                 ),
-                className = "six columns"
+                style = list(
+                  width = "49.75%", 
+                  float = "left", 
+                  boxSizing = "border-box"
+                )
               ),
               htmlDiv(
+                id = "right-bottom-graphs",
                 list(
                   dccGraph(
                     id = "id-histo",
@@ -615,11 +633,20 @@ app$layout(
                     )
                   )
                 ),
-                className = "six columns"
+                style = list(
+                  width = "49.75%", 
+                  float = "left", 
+                  boxSizing = "border-box"
+                )
               )
             ),
-            style = list(marginTop = "5rem"),
-            className = "twelve columns"
+            style = list(
+              display = "flex",
+              marginTop = "5rem", 
+              width = "100%", 
+              float = "left", 
+              boxSizing = "border-box"
+            )
           )
         )
       )
