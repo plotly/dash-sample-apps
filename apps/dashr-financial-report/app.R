@@ -1032,25 +1032,25 @@ fees_minimums_layout <- htmlDiv(list(
 app$callback(output = list(id='page-content', property = 'children'),
              params = list(input(id='url', property = 'pathname')),
              display_page <- function(pathname) {
-               if (pathname == '/dash-vanguard-report/overview') {
+               if (pathname == '/dashr-financial-report/overview') {
                  return(page_1_layout)
                }
                else if (pathname == '/') {
                  return(page_1_layout)
                }
-               else if (pathname == '/dash-vanguard-report/price-performance') {
+               else if (pathname == '/dashr-financial-report/price-performance') {
                  return(page_2_layout)
                }
-               else if (pathname == '/dash-vanguard-report/news-and-reviews') {
+               else if (pathname == '/dashr-financial-report/news-and-reviews') {
                  return(news_layout)
                }
-               else if (pathname == '/dash-vanguard-report/portfolio-management') {
+               else if (pathname == '/dashr-financial-report/portfolio-management') {
                  return(portfolio_layout)
                }
-               else if (pathname == '/dash-vanguard-report/distributions') {
+               else if (pathname == '/dashr-financial-report/distributions') {
                  return(distributions_layout)
                }
-               else if (pathname == '/dash-vanguard-report/fees') {
+               else if (pathname == '/dashr-financial-report/fees') {
                  return (fees_minimums_layout)
                }
                else {
