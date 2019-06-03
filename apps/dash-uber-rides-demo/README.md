@@ -15,15 +15,24 @@ To run this app first clone repository and then open a terminal to the app folde
 
 ```
 git clone https://github.com/plotly/dash-sample-apps.git
-cd apps/dash-uber-rides-demo
+cd dash-sample-apps/apps/dash-uber-rides-demo
 ```
 
 Create and activate a new virtual environment (recommended) by running
 the following:
 
+On Windows
+
 ```
 virtualenv venv 
-/venv/scripts/activate
+\venv\scripts\activate
+```
+
+Or if using linux
+
+```bash
+python3 -m venv myvenv
+source myvenv/bin/activate
 ```
 
 Install the requirements:

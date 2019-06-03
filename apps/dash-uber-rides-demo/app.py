@@ -296,7 +296,6 @@ def update_histogram(datePicked, selection):
         showlegend=False,
         plot_bgcolor="#323130",
         paper_bgcolor="#323130",
-        # height=250,
         dragmode="select",
         font=dict(color="white"),
         xaxis=dict(
