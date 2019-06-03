@@ -71,7 +71,7 @@ getLogo <- function() {
       )), className = 'ten columns padded'),
 
     
-    htmlDiv(list(htmlA( href = "/fullversion",
+    htmlDiv(list(htmlA( href = "/dashr-financial-report/fullversion",
       htmlButton(list("Full Version"), className = "redbutton"
       )))),
     
@@ -103,17 +103,17 @@ getHeader <- function() {
 
 getMenu <- function() {
   menu = htmlDiv(list(
-    dccLink('Overview   ', href='/dash-vanguard-report/overview', className="tab"),
+    dccLink('Overview   ', href='/dashr-financial-report/overview', className="tab"),
     
-    dccLink('Price Performance   ', href='/dash-vanguard-report/price-performance', className="tab"),
+    dccLink('Price Performance   ', href='/dashr-financial-report/price-performance', className="tab"),
     
-    dccLink('Portfolio & Management   ', href='/dash-vanguard-report/portfolio-management', className="tab"),
+    dccLink('Portfolio & Management   ', href='/dashr-financial-report/portfolio-management', className="tab"),
     
-    dccLink('Fees & Minimums   ', href='/dash-vanguard-report/fees', className="tab"),
+    dccLink('Fees & Minimums   ', href='/dashr-financial-report/fees', className="tab"),
     
-    dccLink('Distributions   ', href='/dash-vanguard-report/distributions', className="tab"),
+    dccLink('Distributions   ', href='/dashr-financial-report/distributions', className="tab"),
     
-    dccLink('News & Reviews   ', href='/dash-vanguard-report/news-and-reviews', className="tablast")
+    dccLink('News & Reviews   ', href='/dashr-financial-report/news-and-reviews', className="tablast")
   ), className = "rowrow")
   return (menu)
 }
