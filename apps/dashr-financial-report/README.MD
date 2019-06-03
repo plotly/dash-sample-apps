@@ -17,7 +17,7 @@ The app will load into your default browser window. If it does not, navigate to 
 
 ## Screenshots:
 
-![image](assets/CalibreBlue.png)
+![image](assets/CalibreRed.png)
 
 ## More:
 
