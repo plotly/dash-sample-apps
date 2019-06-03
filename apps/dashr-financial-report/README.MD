@@ -1,4 +1,4 @@
-# Dash Vanguard Report App
+# Dash Financial Report App
 
 ## About this App:
 
@@ -11,21 +11,15 @@ Github Repo: [plotly/dash-sample-apps](https://github.com/plotly/dash-sample-app
 
 Clone the repository.
 
-Run `Vanguard.R`
+Run `app.R`
 
 The app will load into your default browser window. If it does not, navigate to 127.0.0.1:8050.
 
 ## Screenshots:
 
-![vanguard.gif](assets/vanguard.gif)
-
-
-![image](assets/vanguard_screenshot2.png)
-
-![image](assets/vanguard_screenshot3.png)
+![image](assets/CalibreBlue.png)
 
 ## More:
 
 Learn more about Plotly and Dash [here](https://plot.ly/dash).
-#
 #
