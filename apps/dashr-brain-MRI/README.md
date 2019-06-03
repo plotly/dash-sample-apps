@@ -11,7 +11,13 @@ Github Repo: [plotly/dash-sample-apps](https://github.com/plotly/dash-sample-app
 
 Clone the repository.
 
+Be sure to run install all requirements in the `init.R` file.
+
 Run `app.R`
+
+From the command line / Terminal:
+
+Run `Rscript app.R`
 
 The app will load into your default browser window. If it does not, navigate to 127.0.0.1:8050.
 
