@@ -368,7 +368,7 @@ def display_selected_data(selectedData, chart_dropdown, year):
             kind="bar", y=AGGREGATE_BY, title=title, asFigure=True
         )
 
-        fig_layout = fig['layout']
+        fig_layout = fig["layout"]
         fig_data = fig["data"]
 
         fig_data[0]["text"] = deaths_or_rate_by_fips.values.tolist()
@@ -419,7 +419,7 @@ def display_selected_data(selectedData, chart_dropdown, year):
     # Only show first 500 lines
     fig["data"] = fig["data"][0:500]
 
-    fig_layout = fig['layout']
+    fig_layout = fig["layout"]
 
     # See plot.ly/python/reference
     fig_layout["yaxis"]["title"] = "Age-adjusted death rate per county per year"
