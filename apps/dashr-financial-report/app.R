@@ -1054,7 +1054,8 @@ app$callback(output = list(id='page-content', property = 'children'),
                  return(fees_minimums_layout)
                }
               else if (pathname == '/dashr-financial-report/fullversion') {
-                 return(index_page)
+                 return(index_page) 
+               }
                else {
                  return(page_1_layout)
                }
