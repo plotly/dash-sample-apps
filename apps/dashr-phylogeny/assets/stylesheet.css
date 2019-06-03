@@ -26,54 +26,6 @@
 
 /* Banner
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-/*.banner {*/
-    /*display: block;*/
-    /*overflow: auto;*/
-    /*height: 8rem;*/
-    /*[>height: 75px;<]*/
-    /*background-color: #114073;*/
-    /*box-shadow: rgb(240, 240, 240) 5px 5px 5px 0px;*/
-    /*[>padding-top: 0px;<]*/
-    /*[>padding-left: 0px;<]*/
-    /*[>padding-right: 0px;<]*/
-    /*width: 100%;*/
-    /*[>margin-left: auto;<]*/
-    /*[>margin-right: auto;<]*/
-/*}*/
-
-/*.banner h2{*/
-    /*color: white;*/
-    /*margin-left: 1.5%;*/
-    /*display: inline-block;*/
-    /*font-family: 'Open Sans', sans-serif;*/
-    /*font-size:4rem;*/
-    /*line-height:1;*/
-/*}*/
-
-/*.banner Img{*/
-    /*position: relative;*/
-    /*float: right;*/
-    /*right: 1.5%;*/
-    /*height: 8rem;*/
-    /*[>height: 75px;<]*/
-/*}*/
-
-/*@media only screen and (max-width: 1300px) {*/
-    /*.banner .container.scalable {*/
-        /*display: flex;*/
-        /*flex-direction: column-reverse;*/
-        /*justify-content: space-between;*/
-    /*}*/
-    /*.banner h2 {*/
-        /*font-size: 4rem;*/
-    /*}*/
-    /*.banner Img {*/
-        /*height: 8rem;*/
-        /*float: left;*/
-        /*margin-bottom: 5rem;*/
-    /*}*/
-/*}*/
-
 .banner {
     display: flex;
     justify-content: center;
