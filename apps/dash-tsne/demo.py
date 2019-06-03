@@ -8,21 +8,28 @@ import dash_core_components as dcc
 import dash_html_components as html
 from PIL import Image
 from io import BytesIO
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 
 import pandas as pd
 import plotly.graph_objs as go
 import scipy.spatial.distance as spatial_distance
 
-# Import datasets here for running the Local version
-IMAGE_DATASETS = "mnist_3000"
-WORD_EMBEDDINGS = ("wikipedia_3000", "twitter_3000")
-
-
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
+
+data_dict = {
+    "mnist_3000": pd.read_csv(DATA_PATH.joinpath("mnist_3000_input.csv")),
+    "wikipedia_3000": pd.read_csv(DATA_PATH.joinpath("wikipedia_3000.csv")),
+    "twitter_3000": pd.read_csv(
+        DATA_PATH.joinpath("twitter_3000.csv"), encoding="ISO-8859-1"
+    ),
+}
+
+# Import datasets here for running the Local version
+IMAGE_DATASETS = "mnist_3000"
+WORD_EMBEDDINGS = ("wikipedia_3000", "twitter_3000")
 
 
 with open(PATH.joinpath("demo_intro.md"), "r") as file:
@@ -275,6 +282,9 @@ def create_layout(app):
 
 
 def demo_callbacks(app):
+    # def compare_pd(vector, selected_vec):
+    #     return spatial_distance.euclidean(vector, selected_vec)
+
     def generate_figure_image(groups, layout):
         data = []
 
@@ -319,6 +329,7 @@ def demo_callbacks(app):
                 def compare_pd(vector):
                     return spatial_distance.euclidean(vector, selected_vec)
 
+                # vector.apply takes compare_pd function as the first argument
                 distance_map = vector.apply(compare_pd, axis=1)
                 neighbors_idx = distance_map.sort_values()[:100].index
 
@@ -343,18 +354,6 @@ def demo_callbacks(app):
         except KeyError as error:
             print(error)
             raise PreventUpdate
-
-    @app.server.before_first_request
-    def load_image_data():
-        global data_dict
-
-        data_dict = {
-            "mnist_3000": pd.read_csv(DATA_PATH.joinpath("mnist_3000_input.csv")),
-            "wikipedia_3000": pd.read_csv(DATA_PATH.joinpath("wikipedia_3000.csv")),
-            "twitter_3000": pd.read_csv(
-                DATA_PATH.joinpath("twitter_3000.csv"), encoding="ISO-8859-1"
-            ),
-        }
 
     # Callback function for the learn-more button
     @app.callback(
@@ -576,6 +575,7 @@ def demo_callbacks(app):
                 def compare_pd(vector):
                     return spatial_distance.euclidean(vector, selected_vec)
 
+                # vector.apply takes compare_pd function as the first argument
                 distance_map = vector.apply(compare_pd, axis=1)
                 nearest_neighbors = distance_map.sort_values()[1:6]
 
