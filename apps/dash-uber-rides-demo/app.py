@@ -1,12 +1,10 @@
-import pathlib
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.plotly as py
 import pandas as pd
 import numpy as np
 
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 from plotly import graph_objs as go
 from plotly.graph_objs import *
 from datetime import datetime as dt
@@ -226,30 +224,24 @@ def update_total_rides(datePicked):
 
 # Update the total number of rides in selected times
 @app.callback(
-    Output("total-rides-selection", "children"),
+    [Output("total-rides-selection", "children"), Output("date-value", "children")],
     [Input("date-picker", "date"), Input("bar-selector", "value")],
 )
 def update_total_rides_selection(datePicked, selection):
-    date_picked = dt.strptime(datePicked, "%Y-%m-%d")
-    if selection is None or len(selection) is 0:
-        return ""
-    totalInSelection = 0
-    for x in selection:
-        totalInSelection += len(
-            totalList[date_picked.month - 4][date_picked.day - 1][
-                totalList[date_picked.month - 4][date_picked.day - 1].index.hour
-                == int(x)
-            ]
-        )
-    return "Total rides in selection: {:,d}".format(totalInSelection)
+    firstOutput = ""
 
+    if selection is not None or len(selection) is not 0:
+        date_picked = dt.strptime(datePicked, "%Y-%m-%d")
+        totalInSelection = 0
+        for x in selection:
+            totalInSelection += len(
+                totalList[date_picked.month - 4][date_picked.day - 1][
+                    totalList[date_picked.month - 4][date_picked.day - 1].index.hour
+                    == int(x)
+                ]
+            )
+        firstOutput = "Total rides in selection: {:,d}".format(totalInSelection)
 
-# Update Range of List
-@app.callback(
-    Output("date-value", "children"),
-    [Input("date-picker", "date"), Input("bar-selector", "value")],
-)
-def update_date(datePicked, selection):
     holder = []
     if (
         datePicked is None
@@ -257,7 +249,7 @@ def update_date(datePicked, selection):
         or len(selection) is 24
         or len(selection) is 0
     ):
-        return (datePicked, " - showing hour(s): All")
+        return firstOutput, (datePicked, " - showing hour(s): All")
 
     for x in selection:
         holder.append(int(x))
@@ -265,11 +257,14 @@ def update_date(datePicked, selection):
 
     if holder[len(holder) - 1] - holder[0] + 2 == len(holder) + 1 and len(holder) > 2:
         return (
-            datePicked,
-            " - showing hour(s): ",
-            holder[0],
-            "-",
-            holder[len(holder) - 1],
+            firstOutput,
+            (
+                datePicked,
+                " - showing hour(s): ",
+                holder[0],
+                "-",
+                holder[len(holder) - 1],
+            ),
         )
 
     x = ""
@@ -278,7 +273,7 @@ def update_date(datePicked, selection):
             x += str(h)
         else:
             x += str(h) + ", "
-    return (datePicked, " - showing hour(s): ", x)
+    return firstOutput, (datePicked, " - showing hour(s): ", x)
 
 
 # Update Histogram Figure based on Month, Day and Times Chosen
@@ -357,16 +352,13 @@ def getLatLonColor(selectedData, month, day):
     # No times selected, output all times for chosen month and date
     if selectedData is None or len(selectedData) is 0:
         return listCoords
-    else:
-        listStr = "listCoords["
-        for time in selectedData:
-            if selectedData.index(time) is not len(selectedData) - 1:
-                listStr += (
-                    "(totalList[month][day].index.hour==" + str(int(time)) + ") | "
-                )
-            else:
-                listStr += "(totalList[month][day].index.hour==" + str(int(time)) + ")]"
-        return eval(listStr)
+    listStr = "listCoords["
+    for time in selectedData:
+        if selectedData.index(time) is not len(selectedData) - 1:
+            listStr += "(totalList[month][day].index.hour==" + str(int(time)) + ") | "
+        else:
+            listStr += "(totalList[month][day].index.hour==" + str(int(time)) + ")]"
+    return eval(listStr)
 
 
 # Update Map Graph based on date-picker, selected data on histogram and location dropdown
