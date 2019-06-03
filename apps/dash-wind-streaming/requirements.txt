@@ -1,0 +1,5 @@
+dash==0.42.0 
+numpy==1.16.3
+pandas==0.24.2
+scipy==1.2.1
+gunicorn==19.9.0
