@@ -1,305 +1,450 @@
-# coding: utf-8
+import re
+import os
+import pathlib
+
+import pandas as pd
+import cufflinks as cf
 
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-import plotly.plotly as py
-import plotly.graph_objs as go
-import datashader as ds
-import datashader.transfer_functions as tf
-import pandas as pd
-import numpy as np
-import json
-import copy
-import xarray as xr
-from collections import OrderedDict
 
-#######################################################################################################################
-# Data generation
-#######################################################################################################################
 
-n = 1000000
-max_points = 100000
+# Initialize app
 
-np.random.seed(2)
-cols = ["Signal"]  # Column name of signal
-start = 1456297053  # Start time
-end = start + n  # End time
-
-# Generate a fake signal
-time = np.linspace(start, end, n)
-signal = np.random.normal(0, 0.3, size=n).cumsum() + 50
-
-# Generate many noisy samples from the signal
-noise = lambda var, bias, n: np.random.normal(bias, var, n)
-data = {c: signal + noise(1, 10 * (np.random.random() - 0.5), n) for c in cols}
-
-# # Pick a few samples and really blow them out
-locs = np.random.choice(n, 10)
-
-# print locs
-data["Signal"][locs] *= 2
-
-# # Default plot ranges:
-x_range = (start, end)
-y_range = (1.2 * signal.min(), 1.2 * signal.max())
-
-# Create a dataframe
-data["Time"] = np.linspace(start, end, n)
-df = pd.DataFrame(data)
-
-time_start = df["Time"].values[0]
-time_end = df["Time"].values[-1]
-
-cvs = ds.Canvas(x_range=x_range, y_range=y_range)
-
-aggs = OrderedDict((c, cvs.line(df, "Time", c)) for c in cols)
-img = tf.shade(aggs["Signal"])
-
-arr = np.array(img)
-z = arr.tolist()
-
-# axes
-dims = len(z[0]), len(z)
-
-x = np.linspace(x_range[0], x_range[1], dims[0])
-y = np.linspace(y_range[0], y_range[1], dims[0])
-
-#######################################################################################################################
-# Layout
-#######################################################################################################################
-
-external_stylesheets = [
-    "https://codepen.io/chriddyp/pen/bWLwgP.css",
-    "/assets/style.css",
-]
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 server = app.server
 
-fig1 = {
-    "data": [
-        {
-            "x": x,
-            "y": y,
-            "z": z,
-            "type": "heatmap",
-            "showscale": False,
-            "colorscale": [[0, "rgba(255, 255, 255,0)"], [1, "#a3a7b0"]],
-        }
-    ],
-    "layout": {
-        "margin": {"t": 50, "b": 20},
-        "height": 250,
-        "xaxis": {
-            "showline": True,
-            "zeroline": False,
-            "showgrid": False,
-            "showticklabels": True,
-            "color": "#a3a7b0",
-        },
-        "yaxis": {
-            "fixedrange": True,
-            "showline": False,
-            "zeroline": False,
-            "showgrid": False,
-            "showticklabels": False,
-            "ticks": "",
-            "color": "#a3a7b0",
-        },
-        "plot_bgcolor": "#23272c",
-        "paper_bgcolor": "#23272c",
-    },
-}
 
-fig2 = {
-    "data": [
-        {
-            "x": x,
-            "y": y,
-            "z": z,
-            "type": "heatmap",
-            "showscale": False,
-            "colorscale": [[0, "rgba(255, 255, 255,0)"], [1, "#75baf2"]],
-        }
-    ],
-    "layout": {
-        "margin": {"t": 50, "b": 20},
-        "height": 250,
-        "xaxis": {
-            "fixedrange": True,
-            "showline": True,
-            "zeroline": False,
-            "showgrid": False,
-            "showticklabels": True,
-            "color": "#a3a7b0",
-        },
-        "yaxis": {
-            "fixedrange": True,
-            "showline": False,
-            "zeroline": False,
-            "showgrid": False,
-            "showticklabels": False,
-            "ticks": "",
-            "color": "#a3a7b0",
-        },
-        "plot_bgcolor": "#23272c",
-        "paper_bgcolor": "#23272c",
-    },
-}
+# Load data
+
+APP_PATH = str(pathlib.Path(__file__).parent.resolve())
+
+
+df_lat_lon = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "lat_lon_counties.csv"))
+)
+df_lat_lon["FIPS "] = df_lat_lon["FIPS "].apply(lambda x: str(x).zfill(5))
+
+df_full_data = pd.read_csv(
+    os.path.join(
+        APP_PATH, os.path.join("data", "age_adjusted_death_rate_no_quotes.csv")
+    )
+)
+df_full_data["County Code"] = df_full_data["County Code"].apply(
+    lambda x: str(x).zfill(5)
+)
+df_full_data["County"] = (
+    df_full_data["Unnamed: 0"] + ", " + df_full_data.County.map(str)
+)
+
+YEARS = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
+
+BINS = [
+    "0-2",
+    "2.1-4",
+    "4.1-6",
+    "6.1-8",
+    "8.1-10",
+    "10.1-12",
+    "12.1-14",
+    "14.1-16",
+    "16.1-18",
+    "18.1-20",
+    "20.1-22",
+    "22.1-24",
+    "24.1-26",
+    "26.1-28",
+    "28.1-30",
+    ">30",
+]
+
+DEFAULT_COLORSCALE = [
+    "#f2fffb",
+    "#bbffeb",
+    "#98ffe0",
+    "#79ffd6",
+    "#6df0c8",
+    "#69e7c0",
+    "#59dab2",
+    "#45d0a5",
+    "#31c194",
+    "#2bb489",
+    "#25a27b",
+    "#1e906d",
+    "#188463",
+    "#157658",
+    "#11684d",
+    "#10523e",
+]
+
+DEFAULT_OPACITY = 0.8
+
+mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
+mapbox_style = "mapbox://styles/plotlymapbox/cjvprkf3t1kns1cqjxuxmwixz"
+
+
+# App layout
 
 app.layout = html.Div(
-    [
+    id="root",
+    children=[
         html.Div(
             id="header",
             children=[
-                html.H3("Visualize millions of points with datashader and Plotly"),
-                html.Img(id="logo", src=app.get_asset_url("dash-logo.png")),
+                html.H4(children="Rate of US Poison-Induced Deaths"),
+                html.P(
+                    id="description",
+                    children="† Deaths are classified using the International Classification of Diseases, \
+                    Tenth Revision (ICD–10). Drug-poisoning deaths are defined as having ICD–10 underlying \
+                    cause-of-death codes X40–X44 (unintentional), X60–X64 (suicide), X85 (homicide), or Y10–Y14 \
+                    (undetermined intent).",
+                ),
             ],
-            className="row",
         ),
-        html.Hr(),
         html.Div(
-            [
+            id="app-container",
+            children=[
                 html.Div(
-                    [
-                        html.P(
-                            "Click and drag on the plot for high-res view of\
-             selected data",
-                            id="header-1",
+                    id="left-column",
+                    className="seven columns",
+                    children=[
+                        html.Div(
+                            id="slider-container",
+                            children=[
+                                html.P(
+                                    id="slider-text",
+                                    children="Drag the slider to change the year:",
+                                ),
+                                dcc.Slider(
+                                    id="years-slider",
+                                    min=min(YEARS),
+                                    max=max(YEARS),
+                                    value=min(YEARS),
+                                    marks={
+                                        str(year): {
+                                            "label": str(year),
+                                            "style": {"color": "#7fafdf"},
+                                        }
+                                        for year in YEARS
+                                    },
+                                ),
+                            ],
+                        ),
+                        html.Div(
+                            id="heatmap-container",
+                            children=[
+                                html.P(
+                                    "Heatmap of age adjusted mortality rates \
+                            from poisonings in year {0}".format(
+                                        min(YEARS)
+                                    ),
+                                    id="heatmap-title",
+                                ),
+                                dcc.Graph(
+                                    id="county-choropleth",
+                                    figure=dict(
+                                        data=[
+                                            dict(
+                                                lat=df_lat_lon["Latitude "],
+                                                lon=df_lat_lon["Longitude"],
+                                                text=df_lat_lon["Hover"],
+                                                type="scattermapbox",
+                                            )
+                                        ],
+                                        layout=dict(
+                                            mapbox=dict(
+                                                layers=[],
+                                                accesstoken=mapbox_access_token,
+                                                style=mapbox_style,
+                                                center=dict(
+                                                    lat=38.72490, lon=-95.61446
+                                                ),
+                                                pitch=0,
+                                                zoom=3.5,
+                                            ),
+                                            autosize=True,
+                                        ),
+                                    ),
+                                ),
+                            ],
+                        ),
+                    ],
+                ),
+                html.Div(
+                    id="graph-container",
+                    children=[
+                        html.P(id="chart-selector", children="Select chart:"),
+                        dcc.Dropdown(
+                            options=[
+                                {
+                                    "label": "Histogram of total number of deaths (single year)",
+                                    "value": "show_absolute_deaths_single_year",
+                                },
+                                {
+                                    "label": "Histogram of total number of deaths (1999-2016)",
+                                    "value": "absolute_deaths_all_time",
+                                },
+                                {
+                                    "label": "Age-adjusted death rate (single year)",
+                                    "value": "show_death_rate_single_year",
+                                },
+                                {
+                                    "label": "Trends in age-adjusted death rate (1999-2016)",
+                                    "value": "death_rate_all_time",
+                                },
+                            ],
+                            value="show_death_rate_single_year",
+                            id="chart-dropdown",
                         ),
                         dcc.Graph(
-                            id="graph-1", figure=fig1, config={"doubleClick": "reset"}
+                            id="selected-data",
+                            figure=dict(
+                                data=[dict(x=0, y=0)],
+                                layout=dict(
+                                    paper_bgcolor="#F4F4F8",
+                                    plot_bgcolor="#F4F4F8",
+                                    autofill=True,
+                                ),
+                            ),
                         ),
                     ],
-                    className="twelve columns",
-                )
+                    className="five columns",
+                ),
             ],
-            className="row",
         ),
-        html.Div(
-            [
-                html.Div(
-                    [
-                        html.Div(
-                            children=[
-                                html.Strong(children=["0"], id="header-2-strong"),
-                                html.P(children=[" points selected"], id="header-2-p"),
-                            ],
-                            id="header-2",
-                        ),
-                        dcc.Graph(id="graph-2", figure=fig2),
-                    ],
-                    className="twelve columns",
-                )
-            ],
-            className="row",
-        ),
-    ]
+    ],
 )
-
-
-#######################################################################################################################
-# Callbacks
-#######################################################################################################################
 
 
 @app.callback(
-    [Output("header-2-strong", "children"), Output("header-2-p", "children")],
-    [Input("graph-1", "relayoutData")],
+    Output("county-choropleth", "figure"),
+    [Input("years-slider", "value")],
+    [State("county-choropleth", "figure")],
 )
-def selectionRange(selection):
-    if (
-        selection is not None
-        and "xaxis.range[0]" in selection
-        and "xaxis.range[1]" in selection
-    ):
-        x0 = selection["xaxis.range[0]"]
-        x1 = selection["xaxis.range[1]"]
-        sub_df = df[(df.Time >= x0) & (df.Time <= x1)]
-        num_pts = len(sub_df)
-        if num_pts < max_points:
-            number = "{:,}".format(
-                abs(int(selection["xaxis.range[1]"]) - int(selection["xaxis.range[0]"]))
+def display_map(year, figure):
+    cm = dict(zip(BINS, DEFAULT_COLORSCALE))
+
+    data = [
+        dict(
+            lat=df_lat_lon["Latitude "],
+            lon=df_lat_lon["Longitude"],
+            text=df_lat_lon["Hover"],
+            type="scattermapbox",
+            hoverinfo="text",
+            marker=dict(size=5, color="white", opacity=0),
+        )
+    ]
+
+    annotations = [
+        dict(
+            showarrow=False,
+            align="right",
+            text="<b>Age-adjusted death rate<br>per county per year</b>",
+            font=dict(color="#2cfec1"),
+            bgcolor="#1f2630",
+            x=0.95,
+            y=0.95,
+        )
+    ]
+
+    for i, bin in enumerate(reversed(BINS)):
+        color = cm[bin]
+        annotations.append(
+            dict(
+                arrowcolor=color,
+                text=bin,
+                x=0.95,
+                y=0.85 - (i / 20),
+                ax=-60,
+                ay=0,
+                arrowwidth=5,
+                arrowhead=0,
+                bgcolor="#1f2630",
+                font=dict(color="#2cfec1"),
             )
-            number_print = " points selected between {0:,.4} and {1:,.4}".format(
-                selection["xaxis.range[0]"], selection["xaxis.range[1]"]
-            )
-        else:
-            number = "{:,}".format(
-                abs(int(selection["xaxis.range[1]"]) - int(selection["xaxis.range[0]"]))
-            )
-            number_print = " points selected. Select less than {0:}k \
-            points to invoke high-res scattergl trace".format(
-                max_points / 1000
-            )
+        )
+
+    if "layout" in figure:
+        lat = figure["layout"]["mapbox"]["center"]["lat"]
+        lon = figure["layout"]["mapbox"]["center"]["lon"]
+        zoom = figure["layout"]["mapbox"]["zoom"]
     else:
-        number = "0"
-        number_print = " points selected"
-    return [number, number_print]
+        lat = (38.72490,)
+        lon = (-95.61446,)
+        zoom = 3.5
+
+    layout = dict(
+        mapbox=dict(
+            layers=[],
+            accesstoken=mapbox_access_token,
+            style=mapbox_style,
+            center=dict(lat=lat, lon=lon),
+            zoom=zoom,
+        ),
+        hovermode="closest",
+        margin=dict(r=0, l=0, t=0, b=0),
+        annotations=annotations,
+        dragmode="lasso",
+    )
+
+    base_url = "https://raw.githubusercontent.com/jackparmer/mapbox-counties/master/"
+    for bin in BINS:
+        geo_layer = dict(
+            sourcetype="geojson",
+            source=base_url + str(year) + "/" + bin + ".geojson",
+            type="fill",
+            color=cm[bin],
+            opacity=DEFAULT_OPACITY,
+            # CHANGE THIS
+            fill=dict(outlinecolor="#afafaf"),
+        )
+        layout["mapbox"]["layers"].append(geo_layer)
+
+    fig = dict(data=data, layout=layout)
+    return fig
 
 
-@app.callback(Output("graph-2", "figure"), [Input("graph-1", "relayoutData")])
-def selectionHighlight(selection):
-    new_fig2 = fig2.copy()
-    if (
-        selection is not None
-        and "xaxis.range[0]" in selection
-        and "xaxis.range[1]" in selection
-    ):
-        x0 = selection["xaxis.range[0]"]
-        x1 = selection["xaxis.range[1]"]
-        sub_df = df[(df.Time >= x0) & (df.Time <= x1)]
-        num_pts = len(sub_df)
-        if num_pts < max_points:
-            shape = dict(
-                type="rect",
-                xref="x",
-                yref="paper",
-                y0=0,
-                y1=1,
-                x0=x0,
-                x1=x1,
-                line={"width": 0},
-                fillcolor="rgba(165, 131, 226, 0.10)",
-            )
-
-            new_fig2["layout"]["shapes"] = [shape]
-        else:
-            new_fig2["layout"]["shapes"] = []
-    else:
-        new_fig2["layout"]["shapes"] = []
-    return new_fig2
+@app.callback(Output("heatmap-title", "children"), [Input("years-slider", "value")])
+def update_map_title(year):
+    return "Heatmap of age adjusted mortality rates \
+				from poisonings in year {0}".format(
+        year
+    )
 
 
-@app.callback(Output("graph-1", "figure"), [Input("graph-1", "relayoutData")])
-def draw_undecimated_data(selection):
-    new_fig1 = fig1.copy()
-    if (
-        selection is not None
-        and "xaxis.range[0]" in selection
-        and "xaxis.range[1]" in selection
-    ):
-        x0 = selection["xaxis.range[0]"]
-        x1 = selection["xaxis.range[1]"]
-        sub_df = df[(df.Time >= x0) & (df.Time <= x1)]
-        num_pts = len(sub_df)
-        if num_pts < max_points:
-            high_res_data = [
-                dict(
-                    x=sub_df["Time"],
-                    y=sub_df["Signal"],
-                    type="scattergl",
-                    marker=dict(sizemin=1, sizemax=30, color="#a3a7b0"),
-                )
-            ]
-            high_res_layout = new_fig1["layout"]
-            high_res = dict(data=high_res_data, layout=high_res_layout)
-        else:
-            high_res = fig1.copy()
-    else:
-        high_res = fig1.copy()
-    return high_res
+@app.callback(
+    Output("selected-data", "figure"),
+    [
+        Input("county-choropleth", "selectedData"),
+        Input("chart-dropdown", "value"),
+        Input("years-slider", "value"),
+    ],
+)
+def display_selected_data(selectedData, chart_dropdown, year):
+    print(chart_dropdown)
+    print("FIRE SELECTION")
+    if selectedData is None:
+        print("SelectedData is None")
+        return dict(
+            data=[dict(x=0, y=0)],
+            layout=dict(
+                title="Click-drag on the map to select counties",
+                paper_bgcolor="#1f2630",
+                plot_bgcolor="#1f2630",
+                font=dict(color="#2cfec1"),
+            ),
+        )
+    pts = selectedData["points"]
+    fips = [str(pt["text"].split("<br>")[-1]) for pt in pts]
+    for i in range(len(fips)):
+        if len(fips[i]) == 4:
+            fips[i] = "0" + fips[i]
+    print("FIPS", "\n", fips)
+    dff = df_full_data[df_full_data["County Code"].isin(fips)]
+    dff = dff.sort_values("Year")
+
+    regex_pat = re.compile(r"Unreliable", flags=re.IGNORECASE)
+    dff["Age Adjusted Rate"] = dff["Age Adjusted Rate"].replace(regex_pat, 0)
+
+    if chart_dropdown != "death_rate_all_time":
+        title = "Absolute deaths per county, <b>1999-2016</b>"
+        AGGREGATE_BY = "Deaths"
+        if "show_absolute_deaths_single_year" == chart_dropdown:
+            dff = dff[dff.Year == year]
+            title = "Absolute deaths per county, <b>{0}</b>".format(year)
+        elif "show_death_rate_single_year" == chart_dropdown:
+            dff = dff[dff.Year == year]
+            title = "Age-adjusted death rate per county, <b>{0}</b>".format(year)
+            AGGREGATE_BY = "Age Adjusted Rate"
+
+        dff[AGGREGATE_BY] = pd.to_numeric(dff[AGGREGATE_BY], errors="coerce")
+        deaths_or_rate_by_fips = dff.groupby("County")[AGGREGATE_BY].sum()
+        deaths_or_rate_by_fips = deaths_or_rate_by_fips.sort_values()
+        # Only look at non-zero rows:
+        deaths_or_rate_by_fips = deaths_or_rate_by_fips[deaths_or_rate_by_fips > 0]
+        fig = deaths_or_rate_by_fips.iplot(
+            kind="bar", y=AGGREGATE_BY, title=title, asFigure=True
+        )
+
+        fig_layout = fig['layout']
+        fig_data = fig["data"]
+
+        fig_data[0]["text"] = deaths_or_rate_by_fips.values.tolist()
+        fig_data[0]["marker"]["color"] = "#2cfec1"
+        fig_data[0]["marker"]["opacity"] = 1
+        fig_data[0]["marker"]["line"]["width"] = 0
+        # TODO: Why doesn't the text show up over the bars?
+        fig_data[0]["textposition"] = "outside"
+        fig_layout["paper_bgcolor"] = "#1f2630"
+        fig_layout["plot_bgcolor"] = "#1f2630"
+        fig_layout["font"]["color"] = "#2cfec1"
+        fig_layout["title"]["font"]["color"] = "#2cfec1"
+        fig_layout["xaxis"]["tickfont"]["color"] = "#2cfec1"
+        fig_layout["yaxis"]["tickfont"]["color"] = "#2cfec1"
+        fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+        fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
+        return fig
+
+    fig = dff.iplot(
+        kind="area",
+        x="Year",
+        y="Age Adjusted Rate",
+        text="County",
+        categories="County",
+        colors=[
+            "#1b9e77",
+            "#d95f02",
+            "#7570b3",
+            "#e7298a",
+            "#66a61e",
+            "#e6ab02",
+            "#a6761d",
+            "#666666",
+            "#1b9e77",
+        ],
+        vline=[year],
+        asFigure=True,
+    )
+
+    for i, trace in enumerate(fig["data"]):
+        trace["mode"] = "lines+markers"
+        trace["marker"]["size"] = 4
+        trace["marker"]["line"]["width"] = 1
+        trace["type"] = "scatter"
+        for prop in trace:
+            fig["data"][i][prop] = trace[prop]
+
+    # Only show first 500 lines
+    fig["data"] = fig["data"][0:500]
+
+    fig_layout = fig['layout']
+
+    # See plot.ly/python/reference
+    fig_layout["yaxis"]["title"] = "Age-adjusted death rate per county per year"
+    fig_layout["xaxis"]["title"] = ""
+    fig_layout["yaxis"]["fixedrange"] = True
+    fig_layout["xaxis"]["fixedrange"] = False
+    # fig['layout']['margin'] = dict(t=50, r=150, b=20, l=80)
+    fig_layout["hovermode"] = "closest"
+    fig_layout["title"] = "<b>{0}</b> counties selected".format(len(fips))
+    fig_layout["legend"] = dict(orientation="v")
+    fig_layout["autosize"] = True
+    fig_layout["paper_bgcolor"] = "#1f2630"
+    fig_layout["plot_bgcolor"] = "#1f2630"
+    fig_layout["font"]["color"] = "#2cfec1"
+    fig_layout["xaxis"]["tickfont"]["color"] = "#2cfec1"
+    fig_layout["yaxis"]["tickfont"]["color"] = "#2cfec1"
+    fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+    fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
+
+    if len(fips) > 500:
+        fig["layout"][
+            "title"
+        ] = "Age-adjusted death rate per county per year <br>(only 1st 500 shown)"
+
+    return fig
 
 
 if __name__ == "__main__":
