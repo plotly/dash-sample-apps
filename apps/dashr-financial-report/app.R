@@ -1051,10 +1051,12 @@ app$callback(output = list(id='page-content', property = 'children'),
                  return(distributions_layout)
                }
                else if (pathname == '/dashr-financial-report/fees') {
-                 return (fees_minimums_layout)
+                 return(fees_minimums_layout)
                }
-               else {
+              else if (pathname == '/dashr-financial-report/fullversion') {
                  return(index_page)
+               else {
+                 return(page_1_layout)
                }
              }
 )
