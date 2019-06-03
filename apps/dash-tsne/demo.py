@@ -282,9 +282,6 @@ def create_layout(app):
 
 
 def demo_callbacks(app):
-    # def compare_pd(vector, selected_vec):
-    #     return spatial_distance.euclidean(vector, selected_vec)
-
     def generate_figure_image(groups, layout):
         data = []
 
