@@ -256,7 +256,7 @@ def update_total_rides_selection(datePicked, selection):
 
     holder = sorted([int(x) for x in selection])
 
-    if holder == list(range(min(holder), max(holder)+1)):
+    if holder == list(range(min(holder), max(holder) + 1)):
         return (
             firstOutput,
             (
