@@ -74,12 +74,10 @@ def _sort_props_lines(props, height, width, ncols):
 def instructions():
     return html.P(children=[
     """
-    - Choose the number of rows and columns of the mosaic 
+    - Choose the number of rows and columns of the mosaic
     - Upload images 
-    - Try automatic stitching by pressing
-    the "Run stitching" button
-    - If automatic stitching did not work,
-    try adjusting the overlap parameter
+    - Try automatic stitching by pressing the "Run stitching" button
+    - If automatic stitching did not work, try adjusting the overlap parameter
     """
     ])
 
@@ -97,8 +95,9 @@ server = app.server
 app.config.suppress_callback_exceptions = True
 
 
-app.layout = html.Div([
-
+app.layout = html.Div(
+    style={"height": "100%"},
+    children=[
     html.Div([
         html.H1(
             children='Stitching App'
@@ -139,7 +138,7 @@ app.layout = html.Div([
                     style={'color': 'red'}),
         html.Br()
 
-    ], className="three columns instruction"),
+    ], className="four columns instruction"),
     html.Div([
         dcc.Tabs(
             id='stitching-tabs',
@@ -152,12 +151,9 @@ app.layout = html.Div([
                 dcc.Tab(
                     label='Stitched Image',
                     value='result-tab',
-                    ),
-                dcc.Tab(
-                    label='How to use this app',
-                    value='help-tab',
-                        )
-            ]
+                    )
+            ], 
+            className="tabs"
             ),
         html.Div(id='tabs-content-example'),
         html.Button('Upload demo data', id='demo'),
@@ -166,7 +162,7 @@ app.layout = html.Div([
 	html.Div(id='sh_x', hidden=True),
         html.Div(id='stitched-res', hidden=True),
         dcc.Store(id='memory-stitch'),
-    ], className="nine columns"),
+    ], className="eight columns result"),
    
     ])
 
