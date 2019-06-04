@@ -33,12 +33,10 @@ list_of_locations = {
 }
 
 # Initialize Dataframes that the app will use
-df = pd.read_csv("https://www.dropbox.com/s/vxe7623o7eqbe6n/output.csv?dl=1")
-df.drop("Unnamed: 0", 1, inplace=True)
-df["Date/Time"] = pd.to_datetime(df["Date/Time"], format="%Y-%m-%d %H:%M:%S")
+df = pd.read_csv("uber-rides-2014-dataset-full.csv")
+df["Date/Time"] = pd.to_datetime(df["Date/Time"], format="%Y-%m-%d %H:%M")
 df.index = df["Date/Time"]
 df.drop("Date/Time", 1, inplace=True)
-df.drop("Base", 1, inplace=True)
 totalList = []
 for month in df.groupby(df.index.month):
     dailyList = []
@@ -251,11 +249,9 @@ def update_total_rides_selection(datePicked, selection):
     ):
         return firstOutput, (datePicked, " - showing hour(s): All")
 
-    for x in selection:
-        holder.append(int(x))
-    holder.sort()
+    holder = sorted([int(x) for x in selection])
 
-    if holder[len(holder) - 1] - holder[0] + 2 == len(holder) + 1 and len(holder) > 2:
+    if holder == list(range(min(holder), max(holder)+1)):
         return (
             firstOutput,
             (
@@ -267,13 +263,8 @@ def update_total_rides_selection(datePicked, selection):
             ),
         )
 
-    x = ""
-    for h in holder:
-        if holder.index(h) == (len(holder) - 1):
-            x += str(h)
-        else:
-            x += str(h) + ", "
-    return firstOutput, (datePicked, " - showing hour(s): ", x)
+    holder_to_string = ", ".join(str(x) for x in holder)
+    return firstOutput, (datePicked, " - showing hour(s): ", holder_to_string)
 
 
 # Update Histogram Figure based on Month, Day and Times Chosen
