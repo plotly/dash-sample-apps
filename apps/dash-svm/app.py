@@ -15,7 +15,10 @@ drc = importlib.import_module("apps.dash-svm.utils.dash_reusable_components")
 figs = importlib.import_module("apps.dash-svm.utils.figures")
 
 app = dash.Dash(
-    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1.0"}]
+    __name__,
+    meta_tags=[
+        {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
+    ],
 )
 server = app.server
 
