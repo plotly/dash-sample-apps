@@ -245,7 +245,6 @@ def update_total_rides_selection(datePicked, selection):
             )
         firstOutput = "Total rides in selection: {:,d}".format(totalInSelection)
 
-    holder = []
     if (
         datePicked is None
         or selection is None
