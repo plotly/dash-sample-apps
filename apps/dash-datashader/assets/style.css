@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
 
-body{
+body {
     font-family: "Open Sans", sans-serif;
     font-weight: 300;
     color: #a3a7b0;
@@ -9,58 +9,82 @@ body{
     padding: 0;
 }
 
-hr{
+hr {
     height: 1px;
     background-color: rgba(255, 255, 255, 0.20);
     border: 0;
     margin: 0 0 6% 0;
 }
 
-h3{
+h3 {
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
 }
 
-#header{
-    padding: 1% 6%;
+#header {
+    max-width: 100%;
+    padding: 1rem 10rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
-#logo{
-    padding-top: 2%;
+@media only screen and (max-width: 800px) {
+    #header {
+        max-width: 100%;
+        padding: 4rem 5rem 2rem 5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    #logo {
+        order: 1;
+        margin-bottom: 1rem;
+    }
+
+    #header h3{
+        order: 2;
+        text-align: center;
+        font-size: 2rem;
+        max-width: none;
+    }
 }
 
-p, #header-2{
+
+p, #header-2 {
     font-family: 'Open Sans', sans-serif;
     font-size: 2rem !important;
     margin: 0 11%;
 }
 
-#graph-1, #graph-2{
+#graph-1, #graph-2 {
     margin: 0 7% 5% 7%;
 }
 
-#header-2{
+#header-2 {
     display: flex;
     flex-direction: row;
 }
 
-strong{
+strong {
     font-family: "Open Sans", sans-serif !important;
     font-weight: 600 !important;
     color: #75baf2 !important;
 }
 
-#header-2-p{
+#header-2-p {
     margin: 0 0 0 0.5rem;
     padding: 0;
 }
 
-._dash-undo-redo{
+._dash-undo-redo {
     display: none;
 }
 
-
-#logo{
-    height: 50px;
-    float: right;
+#logo {
+    height: 5rem;
+    /*float: right;*/
 }
