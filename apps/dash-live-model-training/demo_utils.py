@@ -2,83 +2,23 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 from dash.dependencies import Input, Output, State
+import pathlib
 
-# # get relative data folder
-# PATH = pathlib.Path(__file__).parent
-# DATA_PATH = PATH.joinpath("data").resolve()
+# get relative data folder
+PATH = pathlib.Path(__file__).parent
+DATA_PATH = PATH.joinpath("data").resolve()
 
 
 def demo_explanation(demo_mode):
     if demo_mode:
         # Markdown files
-        with open("demo.md", "r") as file:
+        with open(PATH.joinpath("demo.md"), "r") as file:
             demo_md = file.read()
 
         return html.Div(
             html.Div([dcc.Markdown(demo_md, className="markdown")]),
-            # className="row",
             style={"margin": "10px"},
         )
-
-
-def demo_components(demo_mode):
-    if demo_mode:
-        return [
-            # Hidden Div that will store the result of simulating a model run
-            html.Div(id="storage-simulated-run", style={"display": "none"}),
-            # Increment the simulation step count at a fixed time interval
-            dcc.Interval(
-                id="interval-simulated-step",
-                interval=125,  # Updates every 100 milliseconds, i.e. every step takes 25 ms
-                n_intervals=0,
-            ),
-            html.Div(
-                className="row",
-                style={"margin": "8px 0px"},
-                children=[
-                    html.Div(
-                        className="twelve columns",
-                        children=[
-                            html.Div(
-                                className="four columns",
-                                children=dcc.Dropdown(
-                                    id="dropdown-demo-dataset",
-                                    options=[
-                                        {"label": "CIFAR 10", "value": "cifar"},
-                                        {"label": "MNIST", "value": "mnist"},
-                                        {"label": "Fashion MNIST", "value": "fashion"},
-                                    ],
-                                    placeholder="Select a demo dataset",
-                                    searchable=False,
-                                ),
-                            ),
-                            html.Div(
-                                className="four columns",
-                                children=dcc.Dropdown(
-                                    id="dropdown-simulation-model",
-                                    options=[
-                                        {
-                                            "label": "1-Layer Neural Net",
-                                            "value": "softmax",
-                                        },
-                                        {"label": "Simple Conv Net", "value": "cnn"},
-                                    ],
-                                    placeholder="Select Model to Simulate",
-                                    searchable=False,
-                                ),
-                            ),
-                            html.Div(
-                                id="div-total-step-count", className="four columns"
-                            ),
-                        ],
-                    ),
-                    # html.Div(id="div-total-step-count", className="four columns"),
-                ],
-            ),
-        ]
-
-    else:
-        return []
 
 
 def demo_callbacks(app, demo_mode):
@@ -99,24 +39,24 @@ def demo_callbacks(app, demo_mode):
             data_dict = {
                 "softmax": {
                     "cifar": pd.read_csv(
-                        "demo_run_logs/cifar_softmax_run_log.csv", names=names
+                        DATA_PATH.joinpath("cifar_softmax_run_log.csv"), names=names
                     ),
                     "mnist": pd.read_csv(
-                        "demo_run_logs/mnist_softmax_run_log.csv", names=names
+                        DATA_PATH.joinpath("mnist_softmax_run_log.csv"), names=names
                     ),
                     "fashion": pd.read_csv(
-                        "demo_run_logs/fashion_softmax_run_log.csv", names=names
+                        DATA_PATH.joinpath("fashion_softmax_run_log.csv"), names=names
                     ),
                 },
                 "cnn": {
                     "cifar": pd.read_csv(
-                        "demo_run_logs/cifar_cnn_run_log.csv", names=names
+                        DATA_PATH.joinpath("cifar_cnn_run_log.csv"), names=names
                     ),
                     "mnist": pd.read_csv(
-                        "demo_run_logs/mnist_cnn_run_log.csv", names=names
+                        DATA_PATH.joinpath("mnist_cnn_run_log.csv"), names=names
                     ),
                     "fashion": pd.read_csv(
-                        "demo_run_logs/fashion_cnn_run_log.csv", names=names
+                        DATA_PATH.joinpath("fashion_cnn_run_log.csv"), names=names
                     ),
                 },
             }

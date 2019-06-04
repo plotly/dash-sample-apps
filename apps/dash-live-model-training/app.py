@@ -4,14 +4,13 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objs as go
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 from plotly import tools
 
-from demo_utils import demo_components, demo_callbacks, demo_explanation
+from demo_utils import demo_callbacks, demo_explanation
 
 # get relative data folder
-PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("data").resolve()
+DATA_PATH = pathlib.Path(__file__).parent.joinpath("data").resolve()
 
 LOGFILE = "examples/run_log.csv"
 
@@ -19,13 +18,13 @@ LOGFILE = "examples/run_log.csv"
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
-server = app.server
 
+server = app.server
 demo_mode = True
 
 
 def div_graph(name):
-    """Generates an html Div containing graph and control options for smoothing and display, given the name"""
+    # Generates an html Div containing graph and control options for smoothing and display, given the name
     return html.Div(
         className="row",
         children=[
@@ -70,47 +69,26 @@ def div_graph(name):
                     html.Div(
                         [
                             html.P(
-                                className="plot-display-text",
-                                children=[
-                                    "Plot Display mode:",
-                                    dcc.RadioItems(
-                                        options=[
-                                            {
-                                                "label": " Overlapping",
-                                                "value": "overlap",
-                                            },
-                                            {
-                                                "label": " Separate (Vertical)",
-                                                "value": "separate_vertical",
-                                            },
-                                            {
-                                                "label": " Separate (Horizontal)",
-                                                "value": "separate_horizontal",
-                                            },
-                                        ],
-                                        value="overlap",
-                                        id=f"radio-display-mode-{name}",
-                                        className="plot-display-radio-items",
-                                    ),
-                                ],
-                                # style={"font-weight": "bold", "margin-bottom": "0px"},
+                                # className="plot-display-text",
+                                "Plot Display mode:",
+                                style={"font-weight": "bold", "margin-bottom": "0px"},
                             ),
-                            # dcc.RadioItems(
-                            #     options=[
-                            #         {"label": " Overlapping", "value": "overlap"},
-                            #         {
-                            #             "label": " Separate (Vertical)",
-                            #             "value": "separate_vertical",
-                            #         },
-                            #         {
-                            #             "label": " Separate (Horizontal)",
-                            #             "value": "separate_horizontal",
-                            #         },
-                            #     ],
-                            #     value="overlap",
-                            #     id=f"radio-display-mode-{name}",
-                            #     className="plot-display-radio-items",
-                            # ),
+                            dcc.RadioItems(
+                                options=[
+                                    {"label": " Overlapping", "value": "overlap"},
+                                    {
+                                        "label": " Separate (Vertical)",
+                                        "value": "separate_vertical",
+                                    },
+                                    {
+                                        "label": " Separate (Horizontal)",
+                                        "value": "separate_horizontal",
+                                    },
+                                ],
+                                value="overlap",
+                                id=f"radio-display-mode-{name}",
+                                className="plot-display-radio-items",
+                            ),
                             html.Div(id=f"div-current-{name}-value"),
                         ]
                     ),
@@ -147,7 +125,7 @@ app.layout = html.Div(
             className="banner row",
         ),
         html.Div(
-            # empty child function for the callback
+            # Empty child function for the callback
             html.Div(id="demo-explanation", children=[])
         ),
         # Body
@@ -155,26 +133,109 @@ app.layout = html.Div(
             className="container",
             style={"padding": "35px 25px"},
             children=[
-                # Extract the demo components if we are in demo mode
-                *demo_components(demo_mode),
+                # Hidden Div that will store the result of simulating a model run
+                html.Div(id="storage-simulated-run", style={"display": "none"}),
+                # Increment the simulation step count at a fixed time interval
+                dcc.Interval(
+                    id="interval-simulated-step",
+                    interval=125,  # Updates every 100 milliseconds, i.e. every step takes 25 ms
+                    n_intervals=0,
+                ),
                 html.Div(
                     className="row",
-                    id="div-interval-control",
+                    style={"margin": "8px 0px"},
                     children=[
-                        dcc.Dropdown(
-                            id="dropdown-interval-control",
-                            options=[
-                                {"label": "No Updates", "value": "no"},
-                                {"label": "Slow Updates", "value": "slow"},
-                                {"label": "Regular Updates", "value": "regular"},
-                                {"label": "Fast Updates", "value": "fast"},
+                        html.Div(
+                            className="twelve columns",
+                            children=[
+                                html.Div(
+                                    className="eight columns",
+                                    children=[
+                                        html.Div(
+                                            dcc.Dropdown(
+                                                id="dropdown-demo-dataset",
+                                                options=[
+                                                    {
+                                                        "label": "CIFAR 10",
+                                                        "value": "cifar",
+                                                    },
+                                                    {
+                                                        "label": "MNIST",
+                                                        "value": "mnist",
+                                                    },
+                                                    {
+                                                        "label": "Fashion MNIST",
+                                                        "value": "fashion",
+                                                    },
+                                                ],
+                                                placeholder="Select a demo dataset",
+                                                searchable=False,
+                                            ),
+                                            className="six columns dropdown-box",
+                                        ),
+                                        html.Div(
+                                            dcc.Dropdown(
+                                                id="dropdown-simulation-model",
+                                                options=[
+                                                    {
+                                                        "label": "1-Layer Neural Net",
+                                                        "value": "softmax",
+                                                    },
+                                                    {
+                                                        "label": "Simple Conv Net",
+                                                        "value": "cnn",
+                                                    },
+                                                ],
+                                                placeholder="Select Model to Simulate",
+                                                searchable=False,
+                                            ),
+                                            className="six columns dropdown-box",
+                                        ),
+                                        html.Div(
+                                            dcc.Dropdown(
+                                                id="dropdown-interval-control",
+                                                options=[
+                                                    {
+                                                        "label": "No Updates",
+                                                        "value": "no",
+                                                    },
+                                                    {
+                                                        "label": "Slow Updates",
+                                                        "value": "slow",
+                                                    },
+                                                    {
+                                                        "label": "Regular Updates",
+                                                        "value": "regular",
+                                                    },
+                                                    {
+                                                        "label": "Fast Updates",
+                                                        "value": "fast",
+                                                    },
+                                                ],
+                                                value="regular",
+                                                className="twelve columns dropdown-box",
+                                                clearable=False,
+                                                searchable=False,
+                                            )
+                                        ),
+                                    ],
+                                ),
+                                html.Div(
+                                    className="four columns",
+                                    id="div-interval-control",
+                                    children=[
+                                        html.Div(
+                                            id="div-total-step-count",
+                                            className="twelve columns",
+                                        ),
+                                        html.Div(
+                                            id="div-step-display",
+                                            className="twelve columns",
+                                        ),
+                                    ],
+                                ),
                             ],
-                            value="regular",
-                            className="eight columns",
-                            clearable=False,
-                            searchable=False,
-                        ),
-                        html.Div(id="div-step-display", className="four columns"),
+                        )
                     ],
                 ),
                 dcc.Interval(id="interval-log-update", n_intervals=0),
@@ -225,7 +286,7 @@ def update_graph(
             last = smoothed_val
         return smoothed
 
-    if run_log_json:  # exists
+    if run_log_json:
         layout = go.Layout(
             title=graph_title,
             margin=go.layout.Margin(l=50, r=50, b=50, t=50),
@@ -309,7 +370,6 @@ demo_callbacks(app, demo_mode)
 def learn_more(n_clicks):
     if n_clicks == None:
         n_clicks = 0
-
     if (n_clicks % 2) == 1:
         n_clicks += 1
         return (
@@ -320,7 +380,6 @@ def learn_more(n_clicks):
             ),
             "Close",
         )
-
     else:
         n_clicks += 1
         return (html.Div(), "Learn More")

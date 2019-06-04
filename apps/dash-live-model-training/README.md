@@ -27,15 +27,14 @@ virtualenv dash-live-model-training-venv
 # Windows
 dash-live-model-training-venv\Scripts\activate
 # Or Linux
-source venv/bin/activate
+source dash-live-model-training-venv/bin/activate
 ```
 
 Clone the git repo, then install the requirements with pip
 
 ```
 git clone https://github.com/plotly/dash-sample-apps.git
-cd apps
-cd dash-live-model-training
+cd dash-sample-apps/apps/dash-live-model-training
 pip install -r requirements.txt
 ```
 
@@ -86,12 +85,6 @@ At the moment, the logging only works for iterative Tensorflow models. We are pl
 - **Xing Han Lu** - _Initial Work_ - [@xhlulu](https://github.com/xhlulu)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
 
 ## Screenshots
 
