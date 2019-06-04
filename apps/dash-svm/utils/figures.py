@@ -20,7 +20,7 @@ def serve_prediction_plot(
     # Colorscale
     bright_cscale = [[0, "#ff3700"], [1, "#0b8bff"]]
     cscale = [
-        [0.0000000, "ff744c"],
+        [0.0000000, "#ff744c"],
         [0.1428571, "#ff916d"],
         [0.2857143, "#ffc0a8"],
         [0.4285714, "#ffe7dc"],
