@@ -18,7 +18,7 @@ hr {
 
 h3 {
     font-family: "Open Sans", sans-serif;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 #header {
@@ -35,18 +35,16 @@ h3 {
         max-width: 100%;
         padding: 4rem 5rem 2rem 5rem;
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
         align-items: center;
         justify-content: space-evenly;
     }
 
     #logo {
-        order: 1;
         margin-bottom: 1rem;
     }
 
     #header h3{
-        order: 2;
         text-align: center;
         font-size: 2rem;
         max-width: none;
