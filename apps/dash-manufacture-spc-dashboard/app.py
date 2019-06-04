@@ -1,3 +1,7 @@
+import re
+import os
+import pathlib
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -14,14 +18,9 @@ server = app.server
 app.config['suppress_callback_exceptions'] = True
 
 
-# APP_PATH = str(pathlib.Path(__file__).parent.resolve())
-#
-#
-# df_lat_lon = pd.read_csv(
-#     os.path.join(APP_PATH, os.path.join("data", "lat_lon_counties.csv"))
-# )
-
-df = pd.read_csv("data/spc_data.csv")
+APP_PATH = str(pathlib.Path(__file__).parent.resolve())
+df = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "spc_data.csv"))
+)
 
 params = list(df)
 max_length = len(df)
