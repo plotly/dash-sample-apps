@@ -537,6 +537,10 @@ a {
   color: #dbdbdb; 
 }
 
+._dash-undo-redo {
+  display: none;
+}
+
 #date-picker{
   width: 100%;
 }
