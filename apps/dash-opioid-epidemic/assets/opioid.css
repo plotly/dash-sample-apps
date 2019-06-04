@@ -678,6 +678,9 @@ hr {
         height: 80rem;
         width: 100%;
     }
+     #header h4{
+        text-align: center;
+    }
 }
 
 @media (min-width: 1251px) {
