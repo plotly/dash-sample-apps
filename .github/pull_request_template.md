@@ -1,3 +1,5 @@
+Issue for app: #[issue number here]
+
 # App pull request
 - [ ] This is a new app
 - [ ] I am improving an existing app (redesigns/code "makeovers")
@@ -6,7 +8,6 @@
 
 - Playground deployment URL (new version):
 - Current gallery app URL: (delete this line if inapplicable)
-- Streambed issue card with link to redesign mockup:
 - Python app repository link: (delete this line if you are working on a Python app)
 
 ## Workflow
