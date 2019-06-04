@@ -13,6 +13,14 @@ app = dash.Dash(__name__)
 server = app.server
 app.config['suppress_callback_exceptions'] = True
 
+
+# APP_PATH = str(pathlib.Path(__file__).parent.resolve())
+#
+#
+# df_lat_lon = pd.read_csv(
+#     os.path.join(APP_PATH, os.path.join("data", "lat_lon_counties.csv"))
+# )
+
 df = pd.read_csv("data/spc_data.csv")
 
 params = list(df)
