@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: dash-canvas
+Version: 0.0.11
+Summary: Sketching pad for dash based on react-sketch
+Home-page: https://github.com/plotly/dash-canvas
+Author: Emmanuelle Gouillart emmanuelle.gouillart@nsup.org
+Author-email: UNKNOWN
+License: MIT
+Platform: UNKNOWN
+Requires-Dist: dash
+Requires-Dist: dash-html-components
+Requires-Dist: scikit-image
+Requires-Dist: Pillow
+Requires-Dist: scikit-learn
+Requires-Dist: plotly
+Requires-Dist: dash-core-components
+
+UNKNOWN
+
+

@@ -1,0 +1,3 @@
+[console_scripts]
+dash-generate-components = dash.development.component_generator:cli
+
