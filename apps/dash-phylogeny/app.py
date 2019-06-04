@@ -122,12 +122,6 @@ def create_title(virus, nb_genome):
         nb_genome) + " genomes colored according to region and country"
     return graph_title
 
-
-def compute_expensive_data(chemin):
-    dir = dir + chemin
-    return dir
-
-
 def create_map_bubble_year(virus_name, metadata_file_stat, map_choice, min_date, max_date):
     df = pd.read_csv(metadata_file_stat)
     # To select only the data between min_date and max_date
@@ -635,44 +629,130 @@ fig_curve_line = create_curve_line(df_stat_metadata, virus_name, min_date, max_d
 ######################################### MAIN APP #########################################
 app.layout = html.Div([
     # Banner display
-    html.Div([
-        html.H2(
-            'Phylogeny trees and global spread of 6 viruses',
-            id='title'
-        ),
-        html.Img(
-            src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png"
-        )
-    ],
-        className="banner"
+    html.Div(
+        className="header-title",
+        children=[
+            html.Img(
+                className="logo",
+                src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png"
+            ),
+            html.H2(
+                'Phylogeny trees and global spread of 6 viruses'
+            ),
+            html.Button(
+                className="btn",
+                children=['Learn More']
+            )
+        ]
     ),
 
-    # Body
+
+    # User Controls
     html.Div(
-        [
+        className="row div-row",
+        children=[
             html.Div(
-                [
+                className="six columns div-card",
+                children=[
+                    html.H6(children='Dataset'),
+                    dcc.Dropdown(
+                        id='d_virus-name',
+                        options=[{'label': species[i], 'value': species[i]} for i in
+                                    range(len(species))],
+                        value='Measles',
+                    ),
+                    html.Div(id='output-container')
+                ]
+            ),
+            html.Div(
+                className="six columns div-card",
+                children=[
+                    html.H6(children='Data Range'),
                     html.Div(
-                        [
+                        id='id-slicer', 
+                        children=[
+                            dcc.RangeSlider(
+                                id='id-year',
+                                min=min_date,
+                                max=max_date,
+                                step=1,
+                                marks=marks_data,
+                                value=min_max_date_value
+                            ),
+                        ]
+                    ),
+                ]
+            )
+        ]
+    ),
+
+    # Phylogeny and Timeline Graph
+    html.Div(
+        className="row div-row",
+        children=[
+            html.Div(
+                className="six columns div-card",
+                children=[
+                    html.Div(id='output-container-range-slider'),
+                    dcc.Graph(
+                        id='curve-line-graph',
+                        figure=fig_curve_line,
+                        style={'height': 700}
+                    ),
+                ]
+            ),
+            html.Div(
+                className="six columns div-card",
+                children=[
+                    html.Div(id='phylogeny-graph')
+                ]
+            )
+        ]
+    ),
+
+    # Graphs and Maps
+    html.Div(
+        className="row",
+        children=[
+            html.Div(
+                className='six columns',
+                children=[
+                    dcc.Graph(
+                        id='graph_map',
+                        figure=fig_map_bubble
+                    )
+                ]
+            ),
+            html.Div(
+                className='six columns',
+                children=[
+                    html.Div(id="id-histo")
+                ]
+            )
+        ]
+    ),
+
+
+    # Charts
+    html.Div(
+        className="container",
+        children=[
+            html.Div(
+                className="row",
+                children=[
+                    html.Div(
+                        className="four columns",
+                        children=[
                             html.Div(
                                 [
-                                html.H6(children='Dataset'),
-                                dcc.Dropdown(
-                                    id='d_virus-name',
-                                    options=[{'label': species[i], 'value': species[i]} for i in
-                                                range(len(species))],
-                                    value='Measles',
-                                ),
-                                html.Div(id='output-container'),
-
                                 html.Div(id='controls-container_mumps', children=[
-                                    dcc.Dropdown(
-                                        id='d_mumps',
-                                        options=[{'label': i, 'value': i} for i in ['global', 'na']],
-                                        value='global',
-                                    ),
-                                ]),
-
+                                        dcc.Dropdown(
+                                            id='d_mumps',
+                                            options=[{'label': i, 'value': i} for i in ['global', 'na']],
+                                            value='global',
+                                        ),
+                                    ]
+                                ),                                   
                                 html.Div(id='controls-container_dengue', children=[
                                     dcc.Dropdown(
                                         id='d_dengue',
@@ -724,60 +804,14 @@ app.layout = html.Div([
                                         value='3y',
                                     ),
                                 ]),
-                                html.H6(children='Data Range'),
-                                html.Div(id='id-slicer', children=[
-                                    dcc.RangeSlider(
-                                        id='id-year',
-                                        min=min_date,
-                                        max=max_date,
-                                        step=1,
-                                        marks=marks_data,
-                                        value=min_max_date_value
-                                    ),
-                                ]),
-                                html.Div(id='output-container-range-slider'),
-                                dcc.Graph(
-                                    id='curve-line-graph',
-                                    figure=fig_curve_line,
-                                    style={'height': 700}
-                                ),
+
                             ]),
                         ],
-                        className="four columns",
                         style={'margin-top': '10'}
-                    ),
-                    html.Div(
-                        className="eight columns",
-                        style={'margin-top': '10'},
-                        children=html.Div([
-                            html.Div(id='right-top-graph')
-                        ])
                     )
-                ], className="row"),
-
-            html.Div(
-                [
-                    html.Div(
-                        [
-                            dcc.Graph(
-                                id='graph_map',
-                                figure=fig_map_bubble
-                            )
-                        ],
-                        className='six columns',
-                        style={'margin-top': '10'}
-                    ),
-                    html.Div(
-                        [
-                            html.Div(id="id-histo")
-                        ],
-                        className='six columns',
-                        style={'margin-top': '10'}
-                    ),
-                ], className="row"
+                ]
             )
-        ],
-        className="container"
+        ]
     )
 ])
 
@@ -841,7 +875,7 @@ def _update_flu_option(virus_name):
 
 
 @app.callback(
-    Output('right-top-graph', 'children'),
+    Output('phylogeny-graph', 'children'),
     [Input('d_virus-name', 'value'),
      Input('d_mumps', 'value'),
      Input('d_dengue', 'value'),
@@ -1119,13 +1153,7 @@ def _update_histo(virus_name, mumps, dengue, lassa, avian_opt1, avian_opt2, flu_
 
 
 ######################################### CSS #########################################
-external_css = [
-    "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",  # Normalize the CSS
-    "https://fonts.googleapis.com/css?family=Open+Sans|Roboto"  # Fonts
-    "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
-    "https://cdn.rawgit.com/TahiriNadia/styles/faf8c1c3/stylesheet.css",
-    "https://cdn.rawgit.com/TahiriNadia/styles/b1026938/custum-styles_phyloapp.css"
-]
+external_css = ["https://fonts.googleapis.com/css?family=Lato"]
 
 for css in external_css:
     app.css.append_css({"external_url": css})
