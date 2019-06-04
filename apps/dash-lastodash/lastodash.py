@@ -26,6 +26,7 @@ server = app.server
 
 DATA_PATH = pathlib.Path(__file__)
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Launch a Dash app to view a LAS log.")
 
