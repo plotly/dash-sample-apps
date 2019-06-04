@@ -183,10 +183,12 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.Div(
+                        html.P(
                             children=[
-                                html.Strong(children=["0"], id="header-2-strong"),
-                                html.P(children=[" points selected"], id="header-2-p"),
+                                html.Span(children=["0"], id="header-2-strong"),
+                                html.Span(
+                                    children=[" points selected"], id="header-2-p"
+                                ),
                             ],
                             id="header-2",
                         ),
@@ -236,7 +238,7 @@ def selectionRange(selection):
     else:
         number = "0"
         number_print = " points selected"
-    return [number, number_print]
+    return number, number_print
 
 
 @app.callback(Output("graph-2", "figure"), [Input("graph-1", "relayoutData")])
