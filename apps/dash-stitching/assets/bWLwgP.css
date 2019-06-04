@@ -179,6 +179,7 @@ button,
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
+  margin-left: 25%;
   display: inline-block;
   height: 38px;
   padding: 0 30px;
