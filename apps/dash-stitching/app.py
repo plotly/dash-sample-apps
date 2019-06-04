@@ -72,15 +72,15 @@ def _sort_props_lines(props, height, width, ncols):
 
 
 def instructions():
-    return html.Div(children=[
-    dcc.Markdown("""
-    - Choose the number of rows and columns of the mosaic
-    - Upload images
+    return html.P(children=[
+    """
+    - Choose the number of rows and columns of the mosaic 
+    - Upload images 
     - Try automatic stitching by pressing
     the "Run stitching" button
     - If automatic stitching did not work,
     try adjusting the overlap parameter
-    """)
+    """
     ])
 
 
@@ -138,7 +138,8 @@ app.layout = html.Div([
         html.Button('Run stitching', id='button-stitch',
                     style={'color': 'red'}),
         html.Br()
-    ], className="three columns"),
+
+    ], className="three columns instruction"),
     html.Div([
         dcc.Tabs(
             id='stitching-tabs',
@@ -165,7 +166,7 @@ app.layout = html.Div([
 	html.Div(id='sh_x', hidden=True),
         html.Div(id='stitched-res', hidden=True),
         dcc.Store(id='memory-stitch'),
-    ], className="eight columns"),
+    ], className="nine columns"),
    
     ])
 
