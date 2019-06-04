@@ -6,7 +6,7 @@ This is an interactive, multi-page report which displays a variety of tables, bu
 
 Github Repo: [plotly/dash-sample-apps](https://github.com/plotly/dash-sample-apps/)
 
-
+#
 ## How to Run the App: 
 
 Clone the repository.
