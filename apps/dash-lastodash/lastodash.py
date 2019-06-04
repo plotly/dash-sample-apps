@@ -1,8 +1,9 @@
 import argparse
 import os
 import pandas
+import pathlib
+
 import dash
-import dash_daq as daq
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
@@ -23,6 +24,7 @@ app.scripts.config.serve_locally = True
 
 server = app.server
 
+DATA_PATH = pathlib.Path(__file__)
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Launch a Dash app to view a LAS log.")
@@ -41,7 +43,7 @@ def parse_args():
 
 
 if "DASH_APP_NAME" in os.environ:
-    lasfile = open("./alcor1.las")
+    lasfile = open(DATA_PATH.joinpath("alcor1.las"))
     debug = True
 else:
     lasfile, debug = parse_args()
