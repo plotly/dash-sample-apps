@@ -1,0 +1,55 @@
+{
+    "name": "dash_canvas",
+    "version": "0.0.11",
+    "description": "Sketching pad for dash based on react-sketch",
+    "main": "build/index.js",
+    "scripts": {
+        "start": "webpack-serve ./webpack.serve.config.js --open",
+        "validate-init": "python _validate_init.py",
+        "prepublish": "npm run validate-init",
+        "build:js-dev": "webpack --mode development",
+        "build:js": "webpack --mode production",
+        "build:py": "node ./extract-meta.js src/lib/components > dash_canvas/metadata.json && copyfiles package.json dash_canvas && venv/bin/python -c \"import dash; dash.development.component_loader.generate_classes('dash_canvas', 'dash_canvas/metadata.json')\"",
+        "build:all": "npm run build:js & npm run build:js-dev & npm run build:py"
+    },
+    "author": "Emmanuelle Gouillart emmanuelle.gouillart@nsup.org",
+    "license": "MIT",
+    "dependencies": {
+        "ramda": "^0.25.0",
+        "react": "15.4.2",
+        "react-dom": "15.4.2",
+        "react-sketch": ">=0.4.4",
+        "material-ui": "^0.20.0",
+        "react-color": "^2.13.8",
+        "plotly-icons": ">=1.0"
+    },
+    "devDependencies": {
+        "babel-core": "^6.26.3",
+        "babel-eslint": "^8.2.3",
+        "babel-loader": "^7.1.4",
+        "copyfiles": "^2.0.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-react": "^6.24.1",
+        "css-loader": "^0.28.11",
+        "eslint": "^4.19.1",
+        "eslint-config-prettier": "^2.9.0",
+        "eslint-plugin-import": "^2.12.0",
+        "eslint-plugin-react": "^7.9.1",
+        "npm": "^6.1.0",
+        "flexboxgrid": "^6.3.1",
+        "react-docgen": "^2.20.1",
+        "react-dropzone": "4.2.7",
+        "style-loader": "^0.21.0",
+        "webpack": "^4.20.2",
+        "webpack-cli": "^3.1.1",
+        "webpack-serve": "^1.0.2"
+    },
+    "peerDependencies": {
+        "react": ">=0.14",
+        "react-dom": ">=0.14"
+    },
+    "engines": {
+        "node": ">=8.11.0",
+        "npm": ">=6.1.0"
+    }
+}

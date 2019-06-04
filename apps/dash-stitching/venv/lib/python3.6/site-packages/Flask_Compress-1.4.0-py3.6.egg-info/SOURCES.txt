@@ -1,0 +1,17 @@
+LICENSE.txt
+MANIFEST.in
+README.md
+flask_compress.py
+setup.cfg
+setup.py
+Flask_Compress.egg-info/PKG-INFO
+Flask_Compress.egg-info/SOURCES.txt
+Flask_Compress.egg-info/dependency_links.txt
+Flask_Compress.egg-info/not-zip-safe
+Flask_Compress.egg-info/requires.txt
+Flask_Compress.egg-info/top_level.txt
+tests/__init__.py
+tests/test_flask_compress.py
+tests/static/1.png
+tests/templates/large.html
+tests/templates/small.html

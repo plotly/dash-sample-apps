@@ -73,19 +73,13 @@ def _sort_props_lines(props, height, width, ncols):
 
 def instructions():
     return html.Div(children=[
-    html.H5(children='How to use this stitching app'),
     dcc.Markdown("""
-    - Choose the number of rows and columns of the mosaic,
-    - Upload images.
+    - Choose the number of rows and columns of the mosaic
+    - Upload images
     - Try automatic stitching by pressing
-    the "Run stitching" button.
+    the "Run stitching" button
     - If automatic stitching did not work,
-    try adjusting the overlap parameter.
-
-    If shifts between different images are very diifferent,
-    draw lines to match points of interest in pairs of
-    images, then press "Estimate translation" to compute an
-    estimate of the shifts, then press "Run stitching".
+    try adjusting the overlap parameter
     """)
     ])
 
@@ -104,6 +98,47 @@ app.config.suppress_callback_exceptions = True
 
 
 app.layout = html.Div([
+
+    html.Div([
+        html.H1(
+            children='Stitching App'
+        ), 
+        instructions(),
+        html.Button('LEARN MORE'),
+        html.Label('Number of rows'),
+        dcc.Input(
+            id='nrows-stitch',
+            type='number',
+            value=1,
+            name='number of rows',
+        ),
+        html.Label('Number of columns'),
+        dcc.Input(
+            id='ncolumns-stitch',
+            type='number',
+            value=4,
+            name='number of columns',
+        ),
+    
+        html.Label('Fraction of overlap (in [0-1] range)'),
+        dcc.Input(
+            id='overlap-stitch',
+            type='number',
+            value=0.15,
+            min=0,
+            max=1
+        ),
+        html.Label('Measured shifts between images'),
+        dash_table.DataTable(
+            id='table-stitch',
+            columns=columns,
+            editable=True,
+        ),
+        html.Br(),
+        html.Button('Run stitching', id='button-stitch',
+                    style={'color': 'red'}),
+        html.Br()
+    ], className="three columns"),
     html.Div([
         dcc.Tabs(
             id='stitching-tabs',
@@ -131,56 +166,7 @@ app.layout = html.Div([
         html.Div(id='stitched-res', hidden=True),
         dcc.Store(id='memory-stitch'),
     ], className="eight columns"),
-    html.Div([
-        html.Label('Number of rows'),
-        dcc.Input(
-            id='nrows-stitch',
-            type='number',
-            value=1,
-            name='number of rows',
-            ),
-        html.Label('Number of columns'),
-        dcc.Input(
-            id='ncolumns-stitch',
-            type='number',
-            value=4,
-            name='number of columns',
-            ),
-        html.Label('Downsample factor'),
-        dcc.RadioItems(id='downsample',
-            options=[
-                {'label': '1', 'value': 1},
-                {'label': '2', 'value': 2},
-                {'label': '4', 'value': 4},
-                {'label': '8', 'value': 8},
-            ],
-            value=2,
-            labelStyle={'display': 'inline-block'}
-        ), 
-
-        html.Label('Fraction of overlap (in [0-1] range)'),
-        dcc.Input(
-            id='overlap-stitch',
-            type='float',
-            value=0.15,
-            ),
-        dcc.Checklist(
-            id='do-blending-stitch',
-            options=[{'label':'Blending images', 'value':1}],
-            values=[1],
-            ),
-        html.Label('Measured shifts between images'),
-        dash_table.DataTable(
-            id='table-stitch',
-            columns=columns,
-            editable=True,
-            ),
-        html.Br(),
-        html.Button('Run stitching', id='button-stitch',
-                                     style={'color':'red'}),
-        html.Br(),
-        instructions()
-    ], className="three columns"),
+   
     ])
 
 
@@ -279,8 +265,7 @@ def modify_result(contrast, brightness, image_string):
             State('ncolumns-stitch', 'value'),
             State('overlap-stitch', 'value'),
             State('table-stitch', 'data'),
-            State('sh_x', 'children'),
-            State('do-blending-stitch', 'values')])
+            State('sh_x', 'children')])
 def modify_content(n_cl,
                    n_rows, n_cols, overlap, estimate, image_string, vals):
     blending = 1 in vals

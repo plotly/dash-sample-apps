@@ -1,0 +1,15 @@
+AUTHORS.rst
+HISTORY.rst
+LICENSE
+MANIFEST.in
+NOTICE
+README.rst
+requirements.txt
+retrying.py
+setup.cfg
+setup.py
+retrying.egg-info/PKG-INFO
+retrying.egg-info/SOURCES.txt
+retrying.egg-info/dependency_links.txt
+retrying.egg-info/requires.txt
+retrying.egg-info/top_level.txt
