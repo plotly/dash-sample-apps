@@ -431,13 +431,16 @@ h4,
 h5 {
 	font-family: "Open Sans Semi Bold";
 	letter-spacing: 2.1px;
-	font-size: 21px;
+  font-size: 21px;
+  padding-left: 12px;
 }
+
 
 p {
 	font-family: "Open Sans Light";
 	font-weight: 400;
-	font-size: 12px;
+  font-size: 14px;
+  padding-left: 12px;
 }
 
 a {
@@ -514,12 +517,6 @@ a {
 	position: relative;
 }
 
-._dash-undo-redo {
-    background-color: #333333 !important;
-    color: #4abaff !important;
-    opacity: 1 !important;
-    border-radius: 100% !important;
-}
 
 .mapboxgl-canvas,
 .mapboxgl-map {
