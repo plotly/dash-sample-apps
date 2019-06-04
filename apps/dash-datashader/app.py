@@ -152,7 +152,6 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [html.Img(id="logo", src=app.get_asset_url("dash-logo.png"))],
-                    className="four columns",
                 ),
             ],
             className="row",
