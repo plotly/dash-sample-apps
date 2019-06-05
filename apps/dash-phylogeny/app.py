@@ -130,17 +130,6 @@ def draw_clade(
         for child in clade:
             draw_clade(child, x_curr, line_shapes, x_coords=x_coords, y_coords=y_coords)
 
-
-def read_treefile(filename):
-    tree = Phylo.read(filename, "newick")
-    return tree
-
-
-def read_metadata(filename):
-    df = pd.read_csv(filename)
-    return df
-
-
 def create_title(virus, nb_genome):
     graph_title = (
         "Phylogeny of "
@@ -353,7 +342,7 @@ def create_curve_line(df, virus_name, min_date, max_date):
 
 
 def create_tree(virus_name, tree_file, metadata_file, ord_by):
-    tree = read_treefile(tree_file)
+    tree = Phylo.read(tree_file, "newick")
     x_coords = get_x_coordinates(tree)
     y_coords = get_y_coordinates(tree)
     line_shapes = []
@@ -376,10 +365,8 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
         Y.append(y_coords[cl])
         text.append(cl.name)
 
-    df = read_metadata(metadata_file)
-    data_metadata_stat_csv = df.groupby(ord_by)["Strain"].count()
-
-    # for index_val, series_val in data_metadata_stat_csv.iteritems():
+    df = pd.read_csv(metadata_file)
+    
     df.columns
     nb_genome = len(df)
 
@@ -387,7 +374,7 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
     intermediate_node_color = "rgb(100,100,100)"
 
     NA_color = {
-        "Cuba": "rgb(252, 196, 174)",  # from cm.Reds color 0.2, ... 0.8
+        "Cuba": "rgb(252, 196, 174)",  
         "Dominican Republic": "rgb(201, 32, 32)",
         "El Salvador": "rgb(253, 202, 181)",
         "Guadeloupe": "rgb(253, 202, 181)",
@@ -624,8 +611,6 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
     layout = dict(
         title=graph_title,
         dragmode="select",
-        font=dict(family="Balto", size=14),
-        # width=1000,
         height=1000,
         autosize=True,
         showlegend=True,
@@ -635,7 +620,7 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
             showgrid=True,  # To visualize the vertical lines
             ticklen=4,
             showticklabels=True,
-            title="branch length",
+            title="Branch Length",
         ),
         yaxis=axis,
         hovermode="closest",
@@ -652,15 +637,18 @@ def split_at_n_caracter(title, n):
     return sentences
 
 
-# TO DO validation file and directory exist
+# Check if Files and Directories exist
+# Directory paths never go past 4 levels
 def create_paths_file(virus_name, level1="", level2="", level3=""):
     dir = "data/" + virus_name + "/"
-    if level1 == "" and level2 == "" and level3 == "":
+    # dir/
+    if not level1 and  not level2 and not level3:
         tree_file = dir + "nextstrain_" + virus_name + "_tree.new"
         metadata_file = dir + "nextstrain_" + virus_name + "_metadata.csv"
         stat_file = dir + "stat_year_nextstrain_" + virus_name + "_metadata.csv"
         return tree_file, metadata_file, stat_file
-    elif level2 == "" and level3 == "":
+    # dir/level1
+    elif not level2 and not level3:
         dir = dir + "/" + level1 + "/"
         tree_file = dir + "nextstrain_" + virus_name + "_" + level1 + "_tree.new"
         metadata_file = (
@@ -670,7 +658,8 @@ def create_paths_file(virus_name, level1="", level2="", level3=""):
             dir + "stat_year_nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
         )
         return tree_file, metadata_file, stat_file
-    elif level3 == "":
+    # dir/level1/level2
+    elif not level3:
         dir = dir + "/" + level1 + "/" + level2 + "/"
         tree_file = (
             dir + "nextstrain_" + virus_name + "_" + level1 + "_" + level2 + "_tree.new"
@@ -696,6 +685,7 @@ def create_paths_file(virus_name, level1="", level2="", level3=""):
             + "_metadata.csv"
         )
         return tree_file, metadata_file, stat_file
+    # dir/level1/level2/level3
     else:
         dir = dir + "/" + level1 + "/" + level2 + "/" + level3 + "/"
         tree_file = (
@@ -735,14 +725,6 @@ def create_paths_file(virus_name, level1="", level2="", level3=""):
             + "_metadata.csv"
         )
         return tree_file, metadata_file, stat_file
-
-
-def date_4_number(date):
-    if 0 <= date <= 18:
-        date = date + 2000
-    else:
-        date = date + 1900
-    return date
 
 
 def slicer(min_date, max_date):
@@ -848,40 +830,7 @@ app.layout = html.Div(
                         ),
                     ],
                 ),
-            ],
-        ),
-        # Phylogeny and Timeline Graph
-        html.Div(
-            className="row div-row",
-            children=[
-                html.Div(
-                    className="six columns div-card",
-                    children=[
-                        html.Div(id="output-container-range-slider"),
-                        dcc.Graph(id="curve-line-graph", figure=fig_curve_line),
-                    ],
-                ),
-                html.Div(
-                    className="six columns div-card",
-                    children=[html.Div(id="phylogeny-graph")],
-                ),
-            ],
-        ),
-        # Graphs and Maps
-        html.Div(
-            className="row",
-            children=[
-                html.Div(
-                    className="six columns",
-                    children=[dcc.Graph(id="graph_map", figure=fig_map_bubble)],
-                ),
-                html.Div(className="six columns", children=[html.Div(id="id-histo")]),
-            ],
-        ),
-        # Charts
-        html.Div(
-            className="container",
-            children=[
+                # Strain dropdown picker
                 html.Div(
                     className="row",
                     children=[
@@ -889,7 +838,7 @@ app.layout = html.Div(
                             className="four columns",
                             children=[
                                 html.Div(
-                                    [
+                                    children=[
                                         html.Div(
                                             id="controls-container_mumps",
                                             children=[
@@ -1006,11 +955,38 @@ app.layout = html.Div(
                                         ),
                                     ]
                                 )
-                            ],
-                            style={"margin-top": "10"},
+                            ]
                         )
                     ],
                 )
+            ],
+        ),
+        # Phylogeny and Timeline Graph
+        html.Div(
+            className="row div-row",
+            children=[
+                html.Div(
+                    className="six columns div-card",
+                    children=[
+                        html.Div(id="output-container-range-slider"),
+                        dcc.Graph(id="curve-line-graph", figure=fig_curve_line),
+                    ],
+                ),
+                html.Div(
+                    className="six columns div-card",
+                    children=[html.Div(id="phylogeny-graph")],
+                ),
+            ],
+        ),
+        # Graphs and Maps
+        html.Div(
+            className="row",
+            children=[
+                html.Div(
+                    className="six columns",
+                    children=[dcc.Graph(id="graph_map", figure=fig_map_bubble)],
+                ),
+                html.Div(className="six columns", children=[html.Div(id="id-histo")]),
             ],
         ),
     ]
@@ -1465,4 +1441,4 @@ for css in external_css:
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8051)
+    app.run_server(debug=True)
