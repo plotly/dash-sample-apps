@@ -77,7 +77,7 @@ def instructions():
     - Choose the number of rows and columns of the mosaic
     - Upload images 
     - Try automatic stitching by pressing the "Run stitching" button
-    - If automatic stitching did not work, try adjusting the overlap parameter
+    - If automatic stitching did not work, adjust the overlap parameter
     """
     ])
 
@@ -118,6 +118,17 @@ app.layout = html.Div(
             value=4,
             name='number of columns',
         ),
+        html.Label('Downsample factor'),
+        dcc.RadioItems(id='downsample',
+            options=[
+                {'label': '1', 'value': '1'},
+                {'label': '2', 'value': '2'},
+                {'label': '4', 'value': '4'},
+                {'label': '8', 'value': '8'},
+            ],
+            value='2',
+            labelStyle={'display': 'inline-block'}
+        ),
     
         html.Label('Fraction of overlap (in [0-1] range)'),
         dcc.Input(
@@ -127,15 +138,20 @@ app.layout = html.Div(
             min=0,
             max=1
         ),
+        dcc.Checklist(
+            id='do-blending-stitch',
+            options=[{'label': 'Blending images', 'value': 1}],
+            values=[1],
+        ),
         html.Label('Measured shifts between images'),
         dash_table.DataTable(
             id='table-stitch',
             columns=columns,
             editable=True,
         ),
+        html.Br(), 
         html.Br(),
-        html.Button('Run stitching', id='button-stitch',
-                    style={'color': 'red'}),
+        html.Button('Run stitching', id='button-stitch'),
         html.Br()
 
     ], className="four columns instruction"),
@@ -151,7 +167,11 @@ app.layout = html.Div(
                 dcc.Tab(
                     label='Stitched Image',
                     value='result-tab',
-                    )
+                ),
+                dcc.Tab(
+                    label='How to use this app',
+                    value='help-tab',
+                )
             ], 
             className="tabs"
             ),
@@ -170,54 +190,54 @@ app.layout = html.Div(
 @app.callback(Output('tabs-content-example', 'children'),
               [Input('stitching-tabs', 'value')])
 def fill_tab(tab):
-    if tab=='canvas-tab':
+    if tab == 'canvas-tab':
         return [dash_canvas.DashCanvas(
-                    id='canvas-stitch',
-                    width=canvas_width,
-                    height=canvas_height,
-                    scale=scale,
-                    lineWidth=2,
-                    lineColor='red',
-                    tool="line",
-                    hide_buttons=['pencil'],
-                    image_content=array_to_data_url(
-                        np.zeros((height, width), dtype=np.uint8)),
-                    goButtonTitle='Estimate translation',
-                    ),
-                ]
-    elif tab=='result-tab':
+            id='canvas-stitch',
+            width=canvas_width,
+            height=canvas_height,
+            scale=scale,
+            lineWidth=2,
+            lineColor='red',
+            tool="line",
+            hide_buttons=['pencil'],
+            image_content=array_to_data_url(
+                np.zeros((height, width), dtype=np.uint8)),
+            goButtonTitle='Estimate translation',
+        ),
+        ]
+    elif tab == 'result-tab':
         return [
-                dcc.Loading(id='loading-1', children=[
+            dcc.Loading(id='loading-1', children=[
                 html.Img(id='stitching-result',
-                    src=array_to_data_url(
-                        np.zeros((height, width), dtype=np.uint8)),
-                    width=canvas_width)],
-                type='circle'),
-                html.Div([
+                         src=array_to_data_url(
+                             np.zeros((height, width), dtype=np.uint8)),
+                         width=canvas_width)],
+                        type='circle'),
+            html.Div([
                 html.Label('Contrast'),
                 dcc.Slider(id='contrast-stitch',
-                            min=0,
-                            max=1,
-                            step=0.02,
-                            value=0.5)],
-                style={'width':'40%'}),
-                html.Div([
+                           min=0,
+                           max=1,
+                           step=0.02,
+                           value=0.5)],
+                     style={'width': '40%'}),
+            html.Div([
                 html.Label('Brightness'),
                 dcc.Slider(id='brightness-stitch',
-                            min=0,
-                            max=1,
-                            step=0.02,
-                            value=0.5,)], 
-                style={'width':'40%'}),
-                ]
-    else: 
+                           min=0,
+                           max=1,
+                           step=0.02,
+                           value=0.5,)],
+                     style={'width': '40%'}),
+        ]
+    else:
         return [html.Img(id='bla', src='assets/stitching.gif',
                             width=canvas_width),
                 ]
 
 
 @app.callback(Output('stitching-tabs', 'value'),
-            [Input('button-stitch', 'n_clicks')])
+              [Input('button-stitch', 'n_clicks')])
 def change_focus(click):
     if click:
         return 'result-tab'
@@ -225,7 +245,7 @@ def change_focus(click):
 
 
 @app.callback(Output('table-stitch', 'data'),
-            [Input('canvas-stitch', 'json_data')])
+              [Input('canvas-stitch', 'json_data')])
 def estimate_translation(string):
     props = parse_jsonstring_line(string)
     if props is not None and len(props) > 0:
@@ -235,20 +255,17 @@ def estimate_translation(string):
         raise PreventUpdate
 
 
-
-
 @app.callback(Output('memory-stitch', 'data'),
-            [Input('button-stitch', 'n_clicks')])
+              [Input('button-stitch', 'n_clicks')])
 def update_store(click):
     sleep(.1)
     return click
 
 
-
 @app.callback(Output('stitching-result', 'src'),
-            [Input('contrast-stitch', 'value'),
-             Input('brightness-stitch', 'value'),
-             Input('stitched-res', 'children')])
+              [Input('contrast-stitch', 'value'),
+               Input('brightness-stitch', 'value'),
+               Input('stitched-res', 'children')])
 def modify_result(contrast, brightness, image_string):
     img = np.asarray(image_string_to_PILImage(image_string))
     img = contrast_adjust(img, contrast)
@@ -257,12 +274,13 @@ def modify_result(contrast, brightness, image_string):
 
 
 @app.callback(Output('stitched-res', 'children'),
-            [Input('button-stitch', 'n_clicks')],
-            [State('nrows-stitch', 'value'),
-            State('ncolumns-stitch', 'value'),
-            State('overlap-stitch', 'value'),
-            State('table-stitch', 'data'),
-            State('sh_x', 'children')])
+              [Input('button-stitch', 'n_clicks')],
+              [State('nrows-stitch', 'value'),
+               State('ncolumns-stitch', 'value'),
+               State('overlap-stitch', 'value'),
+               State('table-stitch', 'data'),
+               State('sh_x', 'children'),
+               State('do-blending-stitch', 'values')])
 def modify_content(n_cl,
                    n_rows, n_cols, overlap, estimate, image_string, vals):
     blending = 1 in vals
@@ -271,7 +289,7 @@ def modify_content(n_cl,
     tiles = untile_images(image_string, n_rows, n_cols)
     if estimate is not None and len(estimate) > 0:
         overlap_dict = _sort_props_lines(estimate, tiles.shape[2],
-                                            tiles.shape[3], n_cols)
+                                         tiles.shape[3], n_cols)
     else:
         overlap_dict = None
     canvas = register_tiles(tiles, n_rows, n_cols,
@@ -283,37 +301,39 @@ def modify_content(n_cl,
 
 
 @app.callback(Output('canvas-stitch', 'image_content'),
-            [Input('sh_x', 'children')])
+              [Input('sh_x', 'children')])
 def update_canvas_image(im):
     return im
 
 
 @app.callback(Output('upload-stitch', 'contents'),
-             [Input('demo', 'n_clicks')])
+              [Input('demo', 'n_clicks')])
 def reset_contents(n_clicks):
     if n_clicks:
         return None
 
+
 @app.callback(Output('sh_x', 'children'),
-            [Input('upload-stitch', 'contents'),
-            Input('upload-stitch', 'filename'),
-            Input('demo', 'n_clicks'),
-            Input('downsample', 'value'),],
-            [State('nrows-stitch', 'value'),
-            State('ncolumns-stitch', 'value')])
+              [Input('upload-stitch', 'contents'),
+               Input('upload-stitch', 'filename'),
+               Input('demo', 'n_clicks'),
+               Input('downsample', 'value'), ],
+              [State('nrows-stitch', 'value'),
+               State('ncolumns-stitch', 'value')])
 def upload_content(list_image_string, list_filenames, click, downsample,
-                    n_rows, n_cols):
+                   n_rows, n_cols):
+    downsample = int(downsample)
     if list_image_string is not None:
         order = np.argsort(list_filenames)
         image_list = [np.asarray(image_string_to_PILImage(
-                            list_image_string[i])) for i in order]
+            list_image_string[i])) for i in order]
         if downsample > 1:
             ratio = 1. / downsample
             multichannel = image_list[0].ndim > 2
             image_list = [transform.rescale(image, ratio,
-                                    multichannel=multichannel,
-                                    preserve_range=True).astype(np.uint8)
-                                    for image in image_list]
+                                            multichannel=multichannel,
+                                            preserve_range=True).astype(np.uint8)
+                          for image in image_list]
         res = tile_images(image_list, n_rows, n_cols)
         return array_to_data_url(res)
     elif click:
@@ -326,4 +346,3 @@ def upload_content(list_image_string, list_filenames, click, downsample,
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-
