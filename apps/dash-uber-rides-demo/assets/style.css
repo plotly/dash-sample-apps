@@ -507,6 +507,10 @@ a {
 .SingleDatePicker_1 {
   display: block;
 }
+.SingleDatePicker_picker, .SingleDatePicker_picker_1, .SingleDatePicker_picker__directionLeft,
+.SingleDatePicker_picker__directionLeft_2{
+  filter:invert(100%);
+}
 /* For Mobile Phones and small screens ––––––––––––––––––––––––––––––––––––––––––––––––––*/
 @media only screen and (max-width: 768px) {
   .four, .eight {
