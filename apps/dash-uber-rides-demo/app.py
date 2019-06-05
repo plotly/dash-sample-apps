@@ -38,7 +38,7 @@ PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
 # Initialize data frame
-df = pd.read_csv(DATA_PATH.joinpath("uber-rides-2014-dataset-full.csv"))
+df = pd.read_csv(DATA_PATH.joinpath("output.csv"))
 df["Date/Time"] = pd.to_datetime(df["Date/Time"], format="%Y-%m-%d %H:%M")
 df.index = df["Date/Time"]
 df.drop("Date/Time", 1, inplace=True)
