@@ -8,7 +8,11 @@ import numpy as  np
 import json
 from textwrap import dedent as d
 
-app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__,
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+)
+
 server = app.server
 
 DEFAULT_COLORSCALE = [[0, 'rgb(12,51,131)'], [0.25, 'rgb(10,136,186)'],\
@@ -135,7 +139,7 @@ data[0]['name'] = 'human_atlas'
 
 axis_template = dict(
     showbackground=True,
-    backgroundcolor="rgb(10, 10,10)",
+    backgroundcolor="#141414",
     gridcolor="rgb(255, 255, 255)",
     zerolinecolor="rgb(255, 255, 255)")
 
@@ -143,11 +147,11 @@ plot_layout = dict(
          title = '',
          margin=dict(t=0,b=0,l=0,r=0),
          font=dict(size=12, color='white'),
-         width=700,
-         height=700,
+         width=650,
+         height=650,
          showlegend=False,
-         plot_bgcolor='black',
-         paper_bgcolor='black',
+         plot_bgcolor="#141414",
+         paper_bgcolor="#141414",
          scene=dict(xaxis=axis_template,
                     yaxis=axis_template,
                     zaxis=axis_template,
@@ -169,38 +173,52 @@ styles = {
     }
 }
 
-'''
-~~~~~~~~~~~~~~~~
-~~ APP LAYOUT ~~
-~~~~~~~~~~~~~~~~
-'''
+app.layout = html.Div([
 
-app.layout = html.Div(children=[
-    html.P(
-        children=['''
-            Click on the brain to add an annotation. \
-            Drag the black corners of the graph to rotate. ''',
-            html.A(
-                children='GitHub',
-                target= '_blank',
-                href='https://github.com/plotly/dash-brain-surface-viewer',
-                style={'color': '#F012BE'}
-            ),
-            '.'
-        ]
-    ),
     html.Div([
-        html.P(
-            children='Click colorscale to change:',
-            style={'display':'inline-block', 'fontSize':'12px'}
-        ),
         html.Div([
-    	    dcs.DashColorscales(
-    	        id='colorscale-picker',
-                colorscale=DEFAULT_COLORSCALE_NO_INDEX
-            )], style={'marginTop':'-15px', 'marginLeft':'-30px'}
-	    ),
+            html.Div([
+                html.Img(src=app.get_asset_url("dash-logo-stripe-inverted.png")),
+                html.H4("MRI Reconstruction")
+            ], className="header__title"),
+            html.Div([
+                html.P("Click on the brain to add an annotation. Drag the black corners of the graph to rotate."),
+            ], className="pb-20"),
+            html.Div([
+                html.A(
+                    "View on GitHub",
+                    href="https://www.drugbank.ca/drugs/DB01002",
+                    target="_blank",
+                ),
+            ]),
+        ], className="container header pb-20"),
+
         html.Div([
+            dcc.Graph(
+                id='brain-graph',
+                figure={
+                    'data': data,
+                    'layout': plot_layout,
+                },
+                config={'editable': True, 'scrollZoom': False},
+                style=styles['graph']
+            ),
+        ], className="graph__container"),
+
+    ], className="two-thirds column app__left__section"),
+
+    html.Div([
+        html.Div([
+            html.Div([
+                html.P("Click colorscale to change", className="subheader"),
+                dcs.DashColorscales(
+    	            id='colorscale-picker',
+                    colorscale=DEFAULT_COLORSCALE_NO_INDEX
+                ),
+            ]),
+        ], className="colorscale pb-20"),
+        html.Div([
+            html.P("Select option", className="subheader"),
             dcc.RadioItems(
                 options=[
                     {'label': 'Cortical Thickness', 'value': 'human'},
@@ -209,57 +227,52 @@ app.layout = html.Div(children=[
                 ],
                 value='human_atlas',
                 id='radio-options',
-                labelStyle={'display': 'inline-block'}
+                labelClassName="label__option",
+                inputClassName="input__option"
             )
-        ])
-	]),
-    dcc.Graph(
-        id='brain-graph',
-        figure={
-            'data': data,
-            'layout': plot_layout,
-        },
-        config={'editable': True, 'scrollZoom': False},
-        style=styles['graph']
-    ),
-    html.Div([
-        dcc.Markdown(d("""
-            **Click Data**
-
-            Click on points in the graph.
-        """)),
-        html.Pre(id='click-data', style=styles['pre']),
-    ]),
-    html.Div([
-        dcc.Markdown(d("""
-            **Relayout Data**
-
-            Drag the graph corners to rotate it.
-        """)),
-        html.Pre(id='relayout-data', style=styles['pre']),
-    ]),
-    html.P(
-        children=[
+        ], className="pb-20"),
+        html.Div([
+            html.Span("Click data", className="subheader"),
+            html.Span("  |  "),
+            html.Span("Click on points in the graph.", className="small-text"),
+            dcc.Loading(
+                html.Pre(id='click-data', className="info__container"),
+                type="dot"
+            )
+        ], className="pb-20"),
+        html.Div([
+            html.Span("Relayout data", className="subheader"),
+            html.Span("  |  "),
+            html.Span("Drag the graph corners to rotate it.", className="small-text"),
+            dcc.Loading(
+                html.Pre(id='relayout-data', className="info__container"),
+                type="dot"
+            )
+        ], className="pb-20"),
+        html.Div([
+            html.P([
             'Dash/Python code on ',
-            html.A(
-                children='GitHub',
-                target= '_blank',
-                href='https://github.com/plotly/dash-brain-surface-viewer',
-                style={'color': '#F012BE'}
-            ),
-            '. Brain data from Mcgill\'s ACE Lab  ',
-            html.A(
-                children='Surface Viewer',
-                target= '_blank',
-                href='https://brainbrowser.cbrain.mcgill.ca/surface-viewer#ct',
-                style={'color': '#F012BE'}
-            ),
-            '.'
-        ]
-    )
-], style={'margin': '0 auto'})
+                html.A(
+                    children='GitHub.',
+                    target= '_blank',
+                    href='https://github.com/plotly/dash-brain-surface-viewer',
+                    className="red-ish"
+                ),
+            ]),
+            html.P([
+            'Brain data from Mcgill\'s ACE Lab ',
+                html.A(
+                    children='Surface Viewer.',
+                    target= '_blank',
+                    href='https://brainbrowser.cbrain.mcgill.ca/surface-viewer#ct',
+                    className="red-ish"
+                ),
+            ]),
+        ], className="small-text"),
+    ], className="one-third column app__right__section"),
 
-app.css.append_css({'external_url': 'https://codepen.io/plotly/pen/YeqjLb.css'})
+
+], style={'margin': '0 auto'})
 
 @app.callback(
     Output('brain-graph', 'figure'),
