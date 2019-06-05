@@ -130,6 +130,7 @@ def draw_clade(
         for child in clade:
             draw_clade(child, x_curr, line_shapes, x_coords=x_coords, y_coords=y_coords)
 
+
 def create_title(virus, nb_genome):
     graph_title = (
         "Phylogeny of "
@@ -366,7 +367,7 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
         text.append(cl.name)
 
     df = pd.read_csv(metadata_file)
-    
+
     df.columns
     nb_genome = len(df)
 
@@ -374,7 +375,7 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
     intermediate_node_color = "rgb(100,100,100)"
 
     NA_color = {
-        "Cuba": "rgb(252, 196, 174)",  
+        "Cuba": "rgb(252, 196, 174)",
         "Dominican Republic": "rgb(201, 32, 32)",
         "El Salvador": "rgb(253, 202, 181)",
         "Guadeloupe": "rgb(253, 202, 181)",
@@ -642,7 +643,7 @@ def split_at_n_caracter(title, n):
 def create_paths_file(virus_name, level1="", level2="", level3=""):
     dir = "data/" + virus_name + "/"
     # dir/
-    if not level1 and  not level2 and not level3:
+    if not level1 and not level2 and not level3:
         tree_file = dir + "nextstrain_" + virus_name + "_tree.new"
         metadata_file = dir + "nextstrain_" + virus_name + "_metadata.csv"
         stat_file = dir + "stat_year_nextstrain_" + virus_name + "_metadata.csv"
@@ -955,10 +956,10 @@ app.layout = html.Div(
                                         ),
                                     ]
                                 )
-                            ]
+                            ],
                         )
                     ],
-                )
+                ),
             ],
         ),
         # Phylogeny and Timeline Graph
