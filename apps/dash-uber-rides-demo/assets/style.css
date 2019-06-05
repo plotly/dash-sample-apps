@@ -539,6 +539,7 @@ a {
 
 ._dash-undo-redo {
   display: none;
+  color: blue;
 }
 
 #date-picker{
