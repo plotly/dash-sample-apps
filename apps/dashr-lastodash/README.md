@@ -1,8 +1,10 @@
-# DashR Lastodash
+# DashR LAStoDash
 
 ## About this app
 
-[add a simple description of what the app does, or represents, here]
+'LAStoDash` is a sample DashR project that takes a 
+[Log ASCII Standard (LAS) file](http://www.cwls.org/las/) and builds a web app
+to view its content and ready for printing.
 
 ### [technique or field associated with the app]
 
