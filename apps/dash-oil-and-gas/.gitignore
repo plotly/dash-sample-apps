@@ -98,3 +98,4 @@ unused/
 vv
 .DS_Store
 pyvenv.cfg
+.vscode
