@@ -9,20 +9,13 @@ source("lastodf.R")
 
 app <- Dash$new(name='DashR LAS Report')
 
-las_dir <- "data/"
-las_file <- "alcor2.las"
-las_path <- paste(las_dir, las_file, sep="")
-las_data <- convert_LAS(las_path)
-
-table_cols <- list (
-  "mnemonic" = list(name="mnemonic", id="mnemonic", width="100px"),
-  "description" = list(name="description", id="description", width="300px"),
-  "unit" = list(name="unit", id="unit", width="25px"),
-  "value" = list(name="value", id="value", width="300px")
-)
+LASdir <- "data/"
+LASfile <- "alcor2.las"
+LASpath <- paste(LASdir, LASfile, sep="")
+LASdata <- convertLAS(LASpath)
 
 generate_frontpage <- function() {
-  desc <- str_trim(las_data$V[[3]][1], "left")
+  desc <- str_trim(LASdata$V[[3]][1], "left")
   return(
     list(
       htmlDiv(
@@ -36,7 +29,7 @@ generate_frontpage <- function() {
               htmlDiv(
                 id="las-file-info",
                 children=list(
-                  htmlSpan(id="las-filename", children=las_file),
+                  htmlSpan(id="las-filename", children=LASfile),
                   htmlSpan(glue(" ({desc})"))
                 )
               )
@@ -48,32 +41,7 @@ generate_frontpage <- function() {
   )
 }
 
-generate_table <- function() {
-  return(
-    dashTable::dashDataTable(
-      id="table",
-      sorting = TRUE,
-      filtering = TRUE,
-      row_deletable = TRUE,
-      style_cell = list(
-        padding="15px", 
-        width="auto", 
-        textAlign="center", 
-        border="white"
-      ),
-      style_cell_conditional = list(list(
-        'if'=list(row_index="even"), 
-        backgroundColor="#f9f9f9"
-      )),
-      columns = unname(table_cols),
-      data = dashTable::df_to_list(las_data$W[c("mnemonic", "description", "unit", "value")])
-    )
-  )
-}
-
-generate_axis_title <- function(key) {
-  desc <- get_item(df, "mnemonic", "curve description", key)
-  unit <- get_item(df, "mnemonic", "unit", key)
+generate_axis_title <- function(desc, unit) {
   axisWords <- str_split(desc, " ")
   curLine <- ""
   lines <- list()
@@ -117,9 +85,9 @@ generate_curves <- function(height=950,
   plots <- list()
   for (i in 1:length(xvals)) {
     ifelse(i==2, line_style <- 'dashdot', line_style <- 'solid')
-    p <- plot_ly(las_data$A,y=las_data$A[[yval]], width=150)
+    p <- plot_ly(LASdata$A,y=LASdata$A[[yval]])
     for (xval in xvals[[i]]) {
-      p <- add_trace(p, x=las_data$A[[xval]], name=xval, mode='lines', 
+      p <- add_trace(p, x=LASdata$A[[xval]], name=xval, mode='lines', 
                      line=list(dash=line_style, width=line_width))
     }
     plots[length(plots)+1] <- p
@@ -128,50 +96,79 @@ generate_curves <- function(height=950,
     plots[[1]], plots[[2]], plots[[3]], plots[[4]], plots[[5]], 
     plotList(5), nrows=1, shareY=TRUE, margin=0
   )
-  fig$x$data[[2]][["xaxis"]] = "x6"
-  fig$x$data[[7]][["xaxis"]] = "x7"
-  fig$x$data[[9]][["xaxis"]] = "x8"
-  fig$x$data[[12]][["xaxis"]] = "x9"
-  for (i in 1:length(xvals)) {
-    for (xval in xvals[[i]]) {
-      ifelse(i==1, xaxis <- "xaxis", xaxis <- glue("xaxis{i}"))
-      ifelse(i==2, fig$x$layout[[xaxis]]$type <- "log", fig$x$layout[[xaxis]]$type <- "linear")
-    }
-  }
-  for (i in c(6:9)) {
-    xaxis <- glue("xaxis{i}")
-    ifelse(i!=9, fig$x$layout[[xaxis]]$overlaying <- glue("x{i-5}"), fig$x$layout[[xaxis]]$overlaying <- glue("x{i-4}"))
-    fig$x$layout[[xaxis]]$anchor <- "y"
-    fig$x$layout[[xaxis]]$side <- "top"
-    fig$x$layout[[xaxis]]$title <- glue("TITLE {i}")
-  }
-  for (i in 1:9) {
-    ifelse(i %in% c(1:5), key <- xvals[[i]][[1]], ifelse(i!=9, key <- xvals[[i-5]][[length(xvals[[i-5]])]], key <- xvals[[i-4]][[length(xvals[[i-4]])]]))
-    ifelse(i==1, xaxis <- "xaxis", xaxis <- glue("xaxis{i}"))
-    fig$x$layout[[xaxis]]$mirror <- "all"
-    fig$x$layout[[xaxis]]$automargin <- TRUE
-    fig$x$layout[[xaxis]]$showline <- TRUE
-    fig$x$layout[[xaxis]]$title <- list(text=generate_axis_title(key), font=list(family="Arial, sans-serif", size=font_size))
-    fig$x$layout[[xaxis]]$tickfont <- list(family="Arial, sans-serif", size=tick_font_size)
-  }
-  # y-axis
-  fig$x$layout[["yaxis"]]$mirror <- "all"
-  fig$x$layout[["yaxis"]]$automargin <- TRUE
-  fig$x$layout[["yaxis"]]$showline <- TRUE
-  fig$x$layout[["yaxis"]]$title <- list(text=generate_axis_title("DEPT"), font=list(family="Arial, sans-serif", size=font_size))
-  fig$x$layout[["yaxis"]]$tickfont <- list(family="Arial, sans-serif", size=tick_font_size)
-  fig$x$layout[["yaxis"]]$autorange <- 'reversed'
-  # layout
-  fig$x$layout$height <- height
-  fig$x$layout$width <- width
-  fig$x$layout$plot_bgcolor <- bg_color
-  fig$x$layout$paper_bgcolor <- bg_color
-  fig$x$layout$hovermode <- "y"
-  #fig$x$layout$legend <- list("xpad"=0.0,"font"=list("size"=tick_font_size))
-  fig$x$layout$legend <- list("x"=0.85,"xpad"=0.0,"font"=list("size"=tick_font_size))
-  fig$x$layout$margin <- list(r=0, pad=0, autoexpand=FALSE)
   
+  
+  
+  fig <- layout(fig, 
+                height = height, 
+                width = width, 
+                plot_bgcolor = bg_color, 
+                paper_bgcolor = bg_color, 
+                hovermode = "y", 
+                legend = list(font = list(size = tick_font_size)), 
+                margin = list(r=100),
+                yaxis = list(
+                  title = list(text=generate_axis_title("Depth", "F"), font=list(family="Arial, sans-serif", size=font_size)), 
+                  autorange = "reversed",
+                  mirror = "all",
+                  automargin = TRUE,
+                  showline = TRUE,
+                  tickfont = list(family="Arial, sans-serif", size=tick_font_size)
+                ),
+                xaxis = list(
+                  title = list(text="TITLE 1", font=list(family="Arial, sans-serif", size=font_size))
+                ),
+                xaxis2 = list(
+                  title = list(text="TITLE 2", font=list(family="Arial, sans-serif", size=font_size)), 
+                  type="log"
+                ),
+                xaxis3 = list(
+                  title = list(text="TITLE 3", font=list(family="Arial, sans-serif", size=font_size)) 
+                ),
+                xaxis4 = list(
+                  title = list(text="TITLE 4", font=list(family="Arial, sans-serif", size=font_size)) 
+                ),
+                xaxis5 = list(
+                  title = list(text="TITLE 5", font=list(family="Arial, sans-serif", size=font_size))
+                )
+  )
+  for (i in 1:5) {
+    print(paste("RESTART FOR", i))
+    str(fig$x$layout[[paste('xaxis', i, sep="")]])
+    fig$x$layout[[paste('xaxis', i, sep="")]] <- list(
+      mirror = "all",
+      automargin = TRUE,
+      showline = TRUE,
+      tickfont = list(family="Arial, sans-serif", size=tick_font_size)
+    )
+    str(fig$x$layout[[paste('xaxis', i, sep="")]])
+  }
   return(dccGraph(figure=fig))
+}
+
+generate_table <- function() {
+  #columns <- list()
+  #for (key in names(LASdata$W)) {
+  #  columns[[length(columns)+1]] <- list(name = key, id=key)
+  #}
+  cols <- list (
+    list(name = "mnemonic", id="mnemonic"),
+    list(name = "description", id="description"),
+    list(name = "unit", id="unit"),
+    list(name = "value", id="value")
+  )
+  return(
+    dashTable::dashDataTable(
+      id="table",
+      sorting = TRUE,
+      filtering = TRUE,
+      row_deletable = TRUE,
+      style_cell = list(padding="15px", width="auto", textAlign="center", border="white"),
+      style_cell_conditional = list(list('if'=list(row_index="even"), backgroundColor="#f9f9f9")),
+      columns = cols,
+      data = dashTable::df_to_list(LASdata$W)
+    )
+  )
 }
 
 app$layout(
