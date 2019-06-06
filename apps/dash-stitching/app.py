@@ -79,7 +79,10 @@ def instructions():
     - Try automatic stitching by pressing the "Run stitching" button
     - If automatic stitching did not work, adjust the overlap parameter
     """
-    ])
+    ],
+    style={
+        'margin-top': '-10px'
+    })
 
 
 height, width = 200, 500
@@ -103,7 +106,10 @@ app.layout = html.Div(
             children='Stitching App'
         ), 
         instructions(),
-        html.Button('LEARN MORE'),
+        html.Div([
+            html.Button('LEARN MORE', className="button_instruction"),
+            html.Button('Upload demo data', id='demo', className="button_result")
+        ]),
         html.Label('Number of rows'),
         dcc.Input(
             id='nrows-stitch',
@@ -127,7 +133,10 @@ app.layout = html.Div(
                 {'label': '8', 'value': '8'},
             ],
             value='2',
-            labelStyle={'display': 'inline-block'}
+            labelStyle={'display': 'inline-block'},
+            style={
+                'margin-top': '-15px'
+            }
         ),
     
         html.Label('Fraction of overlap (in [0-1] range)'),
@@ -148,10 +157,18 @@ app.layout = html.Div(
             id='table-stitch',
             columns=columns,
             editable=True,
+            style_table={
+                'width': '260px',
+                'margin-left': '2.5%',
+                'border-radius': '4px' 
+            },
+            style_cell={
+                'text-align': 'center',
+                'font-family': 'Geneva'
+            }
         ),
         html.Br(), 
-        html.Br(),
-        html.Button('Run stitching', id='button-stitch'),
+        html.Button('Run stitching', id='button-stitch', className = "button_instruction"),
         html.Br()
 
     ], className="four columns instruction"),
@@ -175,16 +192,22 @@ app.layout = html.Div(
             ], 
             className="tabs"
             ),
-        html.Div(id='tabs-content-example'),
-        html.Button('Upload demo data', id='demo'),
-        image_upload_zone('upload-stitch', multiple=True,
-                          width=45),
-	html.Div(id='sh_x', hidden=True),
+        html.Div(
+            id='tabs-content-example',
+            style={
+                'border-style': 'solid',
+                'border-color': 'red',
+                'margin-right': '150px'
+                }
+            ),
+        
+        image_upload_zone('upload-stitch', multiple=True,width='100px'),
+	    html.Div(id='sh_x', hidden=True),
         html.Div(id='stitched-res', hidden=True),
         dcc.Store(id='memory-stitch'),
     ], className="eight columns result"),
    
-    ])
+])
 
 
 @app.callback(Output('tabs-content-example', 'children'),
@@ -202,7 +225,7 @@ def fill_tab(tab):
             hide_buttons=['pencil'],
             image_content=array_to_data_url(
                 np.zeros((height, width), dtype=np.uint8)),
-            goButtonTitle='Estimate translation',
+            goButtonTitle='Estimate translation'
         ),
         ]
     elif tab == 'result-tab':
