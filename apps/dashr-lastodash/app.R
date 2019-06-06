@@ -273,9 +273,9 @@ generate_curves <- function(height=950,
   fig$x$layout$plot_bgcolor <- bg_color
   fig$x$layout$paper_bgcolor <- bg_color
   fig$x$layout$hovermode <- "y"
-  #fig$x$layout$legend <- list("xpad"=0.0,"font"=list("size"=tick_font_size))
-  fig$x$layout$legend <- list("x"=0.85,"xpad"=0.0,"font"=list("size"=tick_font_size))
-  fig$x$layout$margin <- list(r=0, pad=0, autoexpand=FALSE)
+  fig$x$layout$legend <- list("font"=list("size"=tick_font_size))
+  #fig$x$layout$legend <- list("x"=0.85,"xpad"=0.0,"font"=list("size"=tick_font_size))
+  fig$x$layout$margin <- list(r=0.0, t=100.0, b=50.0, l=80.0, autoexpand=FALSE)
   
   return(dccGraph(figure=fig))
 }
