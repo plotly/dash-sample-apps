@@ -1,18 +1,19 @@
 library(glue)
+library(ggplot2)
 library(dashR)
 library(dashHtmlComponents)
 library(dashCoreComponents)
 library(dashTable)
 library(data.table)
 library(plotly)
-source("lastodf.R")
+source("helper.R")
 
 app <- Dash$new(name='DashR LAS Report')
 
 las_dir <- "data/"
 las_file <- "alcor2.las"
 las_path <- paste(las_dir, las_file, sep="")
-las_data <- convert_LAS(las_path)
+las_data <- convert_las(las_path)
 
 table_cols <- list (
   "mnemonic" = list(name="mnemonic", id="mnemonic", width="100px"),
@@ -71,7 +72,7 @@ generate_table <- function() {
   )
 }
 
-generate_axis_title <- function(key) {
+generate_axis_title <- function(df, key) {
   desc <- get_item(df, "mnemonic", "curve description", key)
   unit <- get_item(df, "mnemonic", "unit", key)
   axisWords <- str_split(desc, " ")
@@ -96,10 +97,6 @@ generate_axis_title <- function(key) {
   return(title)
 }
 
-plotList <- function(nplots) {
-  lapply(seq_len(nplots), function(x) plot_ly())
-}
-
 generate_curves <- function(height=950,
                             width=800,
                             bg_color="white",
@@ -117,16 +114,16 @@ generate_curves <- function(height=950,
   plots <- list()
   for (i in 1:length(xvals)) {
     ifelse(i==2, line_style <- 'dashdot', line_style <- 'solid')
-    p <- plot_ly(las_data$A,y=las_data$A[[yval]], width=150)
+    p <- plot_ly(las_data$A, y=las_data$A[[yval]])
     for (xval in xvals[[i]]) {
-      p <- add_trace(p, x=las_data$A[[xval]], name=xval, mode='lines', 
+      p <- add_trace(p, x=las_data$A[[xval]], name=xval, mode='lines', type="scatter",
                      line=list(dash=line_style, width=line_width))
     }
     plots[length(plots)+1] <- p
   }
   fig <- subplot(
     plots[[1]], plots[[2]], plots[[3]], plots[[4]], plots[[5]], 
-    plotList(5), nrows=1, shareY=TRUE, margin=0
+    get_plot_list(5), nrows=1, shareY=TRUE, margin=0
   )
   fig$x$data[[2]][["xaxis"]] = "x6"
   fig$x$data[[7]][["xaxis"]] = "x7"
@@ -151,14 +148,14 @@ generate_curves <- function(height=950,
     fig$x$layout[[xaxis]]$mirror <- "all"
     fig$x$layout[[xaxis]]$automargin <- TRUE
     fig$x$layout[[xaxis]]$showline <- TRUE
-    fig$x$layout[[xaxis]]$title <- list(text=generate_axis_title(key), font=list(family="Arial, sans-serif", size=font_size))
+    fig$x$layout[[xaxis]]$title <- list(text=generate_axis_title(las_data$C, key), font=list(family="Arial, sans-serif", size=font_size))
     fig$x$layout[[xaxis]]$tickfont <- list(family="Arial, sans-serif", size=tick_font_size)
   }
   # y-axis
   fig$x$layout[["yaxis"]]$mirror <- "all"
   fig$x$layout[["yaxis"]]$automargin <- TRUE
   fig$x$layout[["yaxis"]]$showline <- TRUE
-  fig$x$layout[["yaxis"]]$title <- list(text=generate_axis_title("DEPT"), font=list(family="Arial, sans-serif", size=font_size))
+  fig$x$layout[["yaxis"]]$title <- list(text=generate_axis_title(las_data$C, "DEPT"), font=list(family="Arial, sans-serif", size=font_size))
   fig$x$layout[["yaxis"]]$tickfont <- list(family="Arial, sans-serif", size=tick_font_size)
   fig$x$layout[["yaxis"]]$autorange <- 'reversed'
   # layout
@@ -269,8 +266,5 @@ app$callback(
     return (table_list)
   }
 )
-
-#print("TEST FUNCTION (generate axis):")
-#print(generate_axis_title("BAT comp slowness", "uspf"))
 
 app$run_server(showcase=TRUE)
