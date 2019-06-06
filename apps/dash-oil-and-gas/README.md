@@ -51,6 +51,4 @@ The following are screenshots for the app in this repo:
 
 ![Alt desc](https://cdn.rawgit.com/plotly/dash-oil-and-gas-demo/master/screenshots/Screenshot1.png?token=AK-nZHRzEppiigN44Y5izDQcSc35cqIiks5ZUq4zwA%3D%3D)
 
-```
-
-```
+![animated2](screenshots/Untitled.gif)

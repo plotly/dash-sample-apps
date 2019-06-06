@@ -167,11 +167,6 @@ app.layout = html.Div(
                                             html.H6(id="well_text", className="info_text"),
                                             html.P("No. of Wells"),
                                         ], className= "ten columns"),
-                                        # html.Img(
-                                        #     src=app.get_asset_url("well.svg"), 
-                                        #     className="two columns", 
-                                        #     style={"background-color":"#7bc7ff"}
-                                        # )
                                     ],
                                     id="wells",
                                     className="pretty_container twelve columns",
@@ -180,51 +175,24 @@ app.layout = html.Div(
                                     [
                                         html.Div(
                                             [
-                                                html.H6(
-                                                    id="gasText", className="info_text ten columns"
-                                                ),
+                                                html.H6(id="gasText"),
                                                 html.P("Gas"),
-                                                # html.Img(
-                                                #     src=app.get_asset_url("gas.svg"), 
-                                                #     className="two columns", 
-                                                #     style={"background-color":"#7bc7ff"})
                                             ],
                                             id="gas",
                                             className="pretty_container twelve columns",
                                         ),
                                         html.Div(
                                             [
-                                                 html.Div([
-                                                    html.H6(
-                                                        id="oilText", className="info_text"
-                                                    ),
-                                                    html.P("Oil"),
-                                                ], className= "ten columns"),
-                                                # html.Img(
-                                                #     src=app.get_asset_url("oil.svg"), 
-                                                #     className="two columns", 
-                                                #     style={"background-color":"#7bc7ff"}
-                                                # )
+                                                html.H6(id="oilText"),
+                                                html.P("Oil"),
                                             ],
                                             id="oil",
                                             className="pretty_container",
                                         ),
                                         html.Div(
                                             [
-
-                                                html.Div([
-                                                   html.H6(
-                                                        id="waterText",
-                                                        className="info_text",
-                                                    ),
-                                                    html.P("Water"),
-                                                ], className= "ten columns"),
-                                                html.Div([
-                                                    # html.Img(
-                                                    #     src=app.get_asset_url("water.svg"), 
-                                                    # )
-                                                ],  className="two columns", 
-                                                    style={"background-color":"#7bc7ff"})
+                                                html.H6(id="waterText"),
+                                                html.P("Water"),
                                             ],
                                             id="water",
                                             className="pretty_container",
@@ -278,6 +246,8 @@ app.layout = html.Div(
     id="mainContainer",
     style={"display": "flex", "flex-direction": "column"},
 )
+
+
 
 
 # Helper functions
