@@ -2,7 +2,11 @@
 # Import required libraries
 import pandas as pd
 import pickle
+import pathlib
 
+# get relative data folder
+PATH = pathlib.Path(__file__).parent
+DATA_PATH = PATH.joinpath("data").resolve()
 
 # In[]:
 # Load required dataframes

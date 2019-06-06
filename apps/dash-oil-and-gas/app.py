@@ -41,7 +41,7 @@ well_type_options = [
 
 
 # Load data
-df = pd.read_csv(DATA_PATH.joinpath("wellspublic.csv"))
+df = pd.read_csv(DATA_PATH.joinpath("wellspublic.csv"), low_memory=False)
 df["Date_Well_Completed"] = pd.to_datetime(df["Date_Well_Completed"])
 df = df[df["Date_Well_Completed"] > dt.datetime(1960, 1, 1)]
 
@@ -83,8 +83,7 @@ app.layout = html.Div(
                     className="eight columns",
                 ),
                 html.Img(
-                    src=app.get_asset_url("dash-logo.png"),
-                    className="two columns",
+                    src=app.get_asset_url("dash-logo.png"), className="two columns"
                 ),
                 html.A(
                     html.Button("Learn More", id="learn-more-button"),
@@ -163,10 +162,16 @@ app.layout = html.Div(
                             [
                                 html.Div(
                                     [
-                                        html.Div([
-                                            html.H6(id="well_text", className="info_text"),
-                                            html.P("No. of Wells"),
-                                        ], className= "ten columns"),
+                                        html.Div(
+                                            [
+                                                html.H6(
+                                                    id="well_text",
+                                                    className="info_text",
+                                                ),
+                                                html.P("No. of Wells"),
+                                            ],
+                                            className="ten columns",
+                                        )
                                     ],
                                     id="wells",
                                     className="pretty_container twelve columns",
@@ -174,26 +179,17 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.Div(
-                                            [
-                                                html.H6(id="gasText"),
-                                                html.P("Gas"),
-                                            ],
+                                            [html.H6(id="gasText"), html.P("Gas")],
                                             id="gas",
                                             className="pretty_container twelve columns",
                                         ),
                                         html.Div(
-                                            [
-                                                html.H6(id="oilText"),
-                                                html.P("Oil"),
-                                            ],
+                                            [html.H6(id="oilText"), html.P("Oil")],
                                             id="oil",
                                             className="pretty_container",
                                         ),
                                         html.Div(
-                                            [
-                                                html.H6(id="waterText"),
-                                                html.P("Water"),
-                                            ],
+                                            [html.H6(id="waterText"), html.P("Water")],
                                             id="water",
                                             className="pretty_container",
                                         ),
@@ -246,8 +242,6 @@ app.layout = html.Div(
     id="mainContainer",
     style={"display": "flex", "flex-direction": "column"},
 )
-
-
 
 
 # Helper functions
