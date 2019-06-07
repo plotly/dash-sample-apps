@@ -344,6 +344,8 @@ app$layout(
   )
 )
 
+
+
 app$callback(
   output = list(id="las-table-print", property="children"),
   params = list(input(id="table", property="data")),
@@ -351,8 +353,10 @@ app$callback(
     #print("------------------ PRINT DATA ------------------")
     #str(data[[2]]['mnemonic'])
     #str(data)
-    table_list <- list()
     num_tables = as.integer(length(data)/34)+1 # 34 rows max per page
+    
+    # CURRENT CODE TO OUTPUT TABLE NOT WORKING
+    table_list <- list()
     for (i in 1:num_tables) {
       table_rows <- list()
       Th <- list()
@@ -374,9 +378,38 @@ app$callback(
       }
       #print("------------------ PRINT TABLE i ------------------")
       #str(table_rows[[2]])
+      table_list[[i]] <- htmlDiv(className="tablepage", children=htmlTable(table_rows))
     }
-    table_list[[i]] <- htmlDiv(className="tablepage", children=htmlTable(table_rows))
-    return (table_list)
+    
+    # TRYING TO RESULT IN SIMILAR STRUCTURE AS DUMMY TABLE BELOW
+    handle_elements <- function(key, j1, i2) {
+      if (j1==1) {
+        element <- htmlTh(str_to_title(key), style=list(width=table_cols[[key]]$width))
+      } else {
+        element <- htmlTd(data[[(i2-1)*34+j1]][[key]])
+      }
+      return (element)
+    }
+    handle_rows <- function (j, i1) {
+      row_elements <- lapply(X=names(data[[1]], FUN=handle_elements, i2=i1, j1=j))
+      return (row_elements)
+    }
+    handle_tables <- function (i) {
+      table_rows <- lapply(X=1:35, FUN=handle_rows, i1=i)
+      return (htmlDiv(className="tablepage", children=htmlTable(table_rows)))
+    }
+    table_list2 <- lapply(X=1:num_tables, FUN=handle_tables)
+    
+    # TESTING THAT A DUMMY HTML TABLE PRINTS
+    table_list3 <- htmlDiv(className="tablepage", children=htmlTable(list(
+      htmlTr(list(htmlTh(list('t1')), htmlTh(list('t2')))),
+      htmlTr(list(htmlTd(list('a1')), htmlTd(list('a2')))),
+      htmlTr(list(htmlTd(list('b1')), htmlTd(list('b2')))),
+      htmlTr(list(htmlTd(list('c1')), htmlTd(list('c2')))),
+      htmlTr(list(htmlTd(list('d1')), htmlTd(list('d2')))),
+      htmlTr(list(htmlTd(list('e1')), htmlTd(list('e2'))))
+    )))
+    return (table_list2)
   }
 )
 
