@@ -131,6 +131,11 @@ a:hover {
     background: #F4F5FA !important;
 }
 
+#brain-graph {
+    user-select: none;
+    margin: auto;
+}
+
 ._dash-undo-redo {
     display: none;
 }
