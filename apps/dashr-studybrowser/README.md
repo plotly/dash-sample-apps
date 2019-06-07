@@ -1,5 +1,7 @@
 # Animal Study Browser
 
+This is an R version of the app implemented in python3.
+
 ## About this app
 
 
