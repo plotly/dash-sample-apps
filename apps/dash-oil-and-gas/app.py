@@ -49,7 +49,7 @@ trim = df[["API_WellNo", "Well_Type", "Well_Name"]]
 trim.index = trim["API_WellNo"]
 dataset = trim.to_dict(orient="index")
 
-points = pickle.load(open("data/points.pkl", "rb"))
+points = pickle.load(open(DATA_PATH.joinpath("points.pkl"), "rb"))
 
 
 # Create global chart template
@@ -79,7 +79,8 @@ app.layout = html.Div(
         html.Div(
             [
                 html.Div(
-                    [html.H2("New York Oil and Gas"), html.H4("Production Overview")],
+                    [html.H2("New York Oil and Gas"),
+                     html.H4("Production Overview")],
                     className="eight columns",
                 ),
                 html.Img(
@@ -109,7 +110,8 @@ app.layout = html.Div(
                             value=[1990, 2010],
                             className="dcc_control",
                         ),
-                        html.P("Filter by well status:", className="control_label"),
+                        html.P("Filter by well status:",
+                               className="control_label"),
                         dcc.RadioItems(
                             id="well_status_selector",
                             options=[
@@ -130,16 +132,19 @@ app.layout = html.Div(
                         ),
                         dcc.Checklist(
                             id="lock_selector",
-                            options=[{"label": "Lock camera", "value": "locked"}],
+                            options=[
+                                {"label": "Lock camera", "value": "locked"}],
                             values=[],
                             className="dcc_control",
                         ),
-                        html.P("Filter by well type:", className="control_label"),
+                        html.P("Filter by well type:",
+                               className="control_label"),
                         dcc.RadioItems(
                             id="well_type_selector",
                             options=[
                                 {"label": "All ", "value": "all"},
-                                {"label": "Productive only ", "value": "productive"},
+                                {"label": "Productive only ",
+                                    "value": "productive"},
                                 {"label": "Customize ", "value": "custom"},
                             ],
                             value="productive",
@@ -179,17 +184,20 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.Div(
-                                            [html.H6(id="gasText"), html.P("Gas")],
+                                            [html.H6(id="gasText"),
+                                             html.P("Gas")],
                                             id="gas",
                                             className="pretty_container twelve columns",
                                         ),
                                         html.Div(
-                                            [html.H6(id="oilText"), html.P("Oil")],
+                                            [html.H6(id="oilText"),
+                                             html.P("Oil")],
                                             id="oil",
                                             className="pretty_container",
                                         ),
                                         html.Div(
-                                            [html.H6(id="waterText"), html.P("Water")],
+                                            [html.H6(id="waterText"),
+                                             html.P("Water")],
                                             id="water",
                                             className="pretty_container",
                                         ),
@@ -492,7 +500,8 @@ def make_individual_figure(main_graph_hover):
                 name="Gas Produced (mcf)",
                 x=index,
                 y=gas,
-                line=dict(shape="spline", smoothing=2, width=1, color="#fac1b7"),
+                line=dict(shape="spline", smoothing=2,
+                          width=1, color="#fac1b7"),
                 marker=dict(symbol="diamond-open"),
             ),
             dict(
@@ -501,7 +510,8 @@ def make_individual_figure(main_graph_hover):
                 name="Oil Produced (bbl)",
                 x=index,
                 y=oil,
-                line=dict(shape="spline", smoothing=2, width=1, color="#a9bb95"),
+                line=dict(shape="spline", smoothing=2,
+                          width=1, color="#a9bb95"),
                 marker=dict(symbol="diamond-open"),
             ),
             dict(
@@ -510,7 +520,8 @@ def make_individual_figure(main_graph_hover):
                 name="Water Produced (bbl)",
                 x=index,
                 y=water,
-                line=dict(shape="spline", smoothing=2, width=1, color="#92d8d8"),
+                line=dict(shape="spline", smoothing=2,
+                          width=1, color="#92d8d8"),
                 marker=dict(symbol="diamond-open"),
             ),
         ]
