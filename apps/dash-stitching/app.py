@@ -93,7 +93,9 @@ scale = canvas_width / width
 list_columns = ['length', 'width', 'height', 'left', 'top']
 columns = [{"name": i, "id": i} for i in list_columns]
 
-app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+)
 server = app.server
 app.config.suppress_callback_exceptions = True
 
@@ -108,20 +110,20 @@ app.layout = html.Div(
         instructions(),
         html.Div([
             html.Button('LEARN MORE', className="button_instruction"),
-            html.Button('Upload demo data', id='demo', className="button_result")
+            html.Button('Upload demo data', id='demo', className="button_demo")
         ]),
         html.Label('Number of rows'),
         dcc.Input(
             id='nrows-stitch',
             type='number',
-            value=1,
+            #value=1,
             name='number of rows',
         ),
         html.Label('Number of columns'),
         dcc.Input(
             id='ncolumns-stitch',
             type='number',
-            value=4,
+            #value=4,
             name='number of columns',
         ),
         html.Label('Downsample factor'),
@@ -143,7 +145,7 @@ app.layout = html.Div(
         dcc.Input(
             id='overlap-stitch',
             type='number',
-            value=0.15,
+            #value=0.15,
             min=0,
             max=1
         ),
@@ -193,19 +195,24 @@ app.layout = html.Div(
             className="tabs"
             ),
         html.Div(
-            id='tabs-content-example',
-            style={
-                'border-style': 'solid',
-                'border-color': 'red',
-                'margin-right': '150px'
-                }
+            id='tabs-content-example'
             ),
         
-        image_upload_zone('upload-stitch', multiple=True,width='100px'),
+        html.Div(
+            image_upload_zone('upload-stitch', multiple=True, width='100px'),
+            style={
+                'font-family': 'Geneva',
+                'width': '75%',
+                'margin-top': '15px'
+            }
+        ),
+        
 	    html.Div(id='sh_x', hidden=True),
         html.Div(id='stitched-res', hidden=True),
-        dcc.Store(id='memory-stitch'),
-    ], className="eight columns result"),
+        dcc.Store(id='memory-stitch')
+        
+    ], 
+    className="eight columns result"),
    
 ])
 

@@ -151,8 +151,9 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-
+  width: 100vh;
 }
+
 
 
 /* Typography
@@ -272,7 +273,7 @@ input[type="button"] {
   box-sizing: border-box; 
 }
 
-.button_result,
+.button_demo,
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
@@ -291,7 +292,7 @@ input[type="button"] {
   text-decoration: none;
   white-space: nowrap;
   background-color: #4181FF;
-  border-radius: 4px;
+  border-radius: 30px;
   border: 1px solid;
   cursor: pointer;
   box-sizing: border-box;
@@ -333,6 +334,62 @@ input[type="button"].button-primary:focus {
   color: #FFF;
   background-color: #1EAEDB;
   border-color: #1EAEDB; }
+
+
+
+
+ #tabs-content-example>div>button:nth-child(2)>svg {
+   height: 35px;
+   padding: 0 9px;
+   margin-top: 3px;
+   ;
+ }
+
+ #tabs-content-example>div>button:nth-child(3)>svg {
+   height: 35px;
+   padding: 0 9px;
+   margin-top: 3px;
+ }
+
+ #tabs-content-example>div>button:nth-child(4)>svg {
+   height: 40px;
+   margin-top: 4px;
+ }
+
+ #tabs-content-example>div>button:nth-child(5)>svg {
+   margin-top: 4px;
+ }
+
+ #tabs-content-example>div>button:nth-child(7)>svg {
+   margin-top: 4px;
+ }
+
+ #tabs-content-example>div>button:nth-child(8)>svg {
+   margin-top: 4px;
+ }
+
+ #tabs-content-example>div>button:nth-child(9) {
+   margin-right: 20%;
+   height: 38px;
+   width: 200px;
+   padding: 0;
+   color: #FBFFFF !important;
+   text-align: center;
+   font-size: 11px;
+   font-family: 'Geneva';
+   font-weight: 200;
+   line-height: 38px;
+   letter-spacing: .1rem;
+   text-transform: uppercase;
+   text-decoration: none;
+   white-space: nowrap;
+   background-color: #4181FF;
+   border-radius: 30px;
+   border: 1px solid;
+   cursor: pointer;
+   box-sizing: border-box;
+   
+ }
 
 
 /* Forms
@@ -507,7 +564,8 @@ there.
 
 
 /* Larger than mobile */
-@media (min-width: 400px) {}
+@media (min-width: 400px) {
+}
 
 /* Larger than phablet (also point when grid becomes active) */
 @media (min-width: 550px) {}
