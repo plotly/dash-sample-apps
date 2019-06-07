@@ -1,3 +1,4 @@
+import os
 import pathlib
 import numpy as np
 import datetime as dt
@@ -11,6 +12,8 @@ from dash.dependencies import Input, Output, State
 from scipy.stats import rayleigh
 from db.api import get_wind_data, get_wind_data_by_id
 
+
+GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 5000)
 
 app = dash.Dash(
     __name__,
@@ -66,7 +69,9 @@ app.layout = html.Div(
                             ),
                         ),
                         dcc.Interval(
-                            id="wind-speed-update", interval=1000, n_intervals=0
+                            id="wind-speed-update",
+                            interval=int(GRAPH_INTERVAL),
+                            n_intervals=0,
                         ),
                     ],
                     className="two-thirds column wind__speed__container",
