@@ -1,3 +1,9 @@
+appName <- Sys.getenv("DASH_APP_NAME")
+pathPrefix <- sprintf("/%s/", appName)
+Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix, 
+           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+setwd("app/apps/dashr-studybrowser")
+
 library(jsonlite)
 library(dashR)
 library(dashCoreComponents)
@@ -9,7 +15,9 @@ library(foreach)
 library(rlist)
 library(glue)
 library(plotly)
-library(base64enc)
+
+
+
 #Syntactic sugar. just relabeling
 l. <- list
 #"Dict-List" of colors
@@ -273,5 +281,6 @@ app$callback(
 
 )
 
-app$run_server(debug=T)
+#app$run_server(debug=T)
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 
