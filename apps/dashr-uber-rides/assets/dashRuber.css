@@ -134,6 +134,11 @@ opacity: 1 !important;
 border-radius: 100% !important;
 }
 
+.SingleDatePicker_picker, .SingleDatePicker_picker_1, .SingleDatePicker_picker__directionLeft,
+.SingleDatePicker_picker__directionLeft_2{
+  filter:invert(100%);
+}
+
 /* 
 Graph Layout 
 ––––––––––––––––––––––––––––––––––––––––––––––––––*/

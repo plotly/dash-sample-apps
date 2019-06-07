@@ -1,10 +1,12 @@
 appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
-
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-
-setwd("/app/apps/dashr-uber-rides")
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
+  
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  
+  setwd(sprintf("/app/apps/%s", appName))
+}
 
 library(dashR)
 library(dashCoreComponents)
@@ -23,7 +25,6 @@ ridesRaw_3 <- fread("data/rides_raw_3.csv", stringsAsFactors = FALSE)
 ridesRaw <- rbind(ridesRaw_1, ridesRaw_2, ridesRaw_3)
 # Combine partitions of data
 
-print(head(ridesRaw))
 ridesDf <- ridesRaw[, 2:4] #c("Date.Time","Lat","Lon")]
 # Remove extra columns
 
@@ -407,7 +408,7 @@ app$callback(output = list(id = "histogram", property = "figure"),
                    color = colorMap),
                type = "bar") %>% layout(
                   title = list(
-                    text = paste("Select any of the bars",
+                    text = paste("Hold click and create rectangle  ",
                     "to section data by time", sep = ""),
                     x = 0.02,
                     y = 0.9,
@@ -512,4 +513,8 @@ app$callback(output = list(id = "total-rides", property = "children"),
   }
 )
 ####################################################################################################
-app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+if (appName != "") {
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+} else {
+  app$run_server()
+}
