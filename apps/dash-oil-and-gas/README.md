@@ -49,4 +49,4 @@ This Dash app displays oil production in western New York. There are filters at 
 
 The following are screenshots for the app in this repo:
 
-![Alt desc](https://cdn.rawgit.com/plotly/dash-oil-and-gas-demo/master/screenshots/Screenshot1.png?token=AK-nZHRzEppiigN44Y5izDQcSc35cqIiks5ZUq4zwA%3D%3D)
+![screenshot](screenshots/screenshot1.png)
