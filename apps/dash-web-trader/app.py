@@ -501,8 +501,8 @@ def get_fig(currency_pair, ask, bid, type_trace, studies, period):
 # updates figure
 def replace_fig(currency_pair, ask, bid, type_trace, period, old_fig, studies):
     fig = get_fig(currency_pair, ask, bid, type_trace, studies, period)
-    # fig["layout"]["xaxis"]["range"] = old_fig["layout"]["xaxis"]["range"]
-    return [0, 100]
+    fig["layout"]["xaxis"]["range"] = old_fig["layout"]["xaxis"]["range"]
+    return fig
 
 
 # returns chart div
@@ -905,13 +905,15 @@ def generate_figure_callback(pair):
         if pair not in pairs:
             return {
                 "layout": {},
-                "data": {},
+                "data": [],
             }  # we only update figure when the div is displayed
 
         if old_fig is None or old_fig == {"layout": {}, "data": {}}:
             return get_fig(pair, a, b, t, s, p)
 
-        return replace_fig(pair, a, b, t, p, old_fig, s)
+        # return replace_fig(pair, a, b, t, p, old_fig, s)
+
+        return get_fig(pair, a, b, t, s, p)
 
     return chart_fig_callback
 
