@@ -31,7 +31,7 @@ Run the app:
 ```
 Rscript app.R
 ```
-You can run the app on your browser at http://127.0.0.1:8080
+You can run the app on your browser at http://127.0.0.1:8050
 
 ## Screenshots
 
