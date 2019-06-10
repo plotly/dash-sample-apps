@@ -7,11 +7,12 @@ import requests
 import pandas as pd
 import flask
 import dash
-from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.plotly as py
 import plotly.graph_objs as go
+
+from dash.dependencies import Input, Output, State
 from plotly import tools
 
 
@@ -19,31 +20,22 @@ server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server)
 
 
-# loading historical tick data
+# Loading historical tick data
 EURUSD = pd.read_csv("pairs/EURUSD.csv", index_col=1, parse_dates=["Date"])
 USDJPY = pd.read_csv("pairs/USDJPY.csv", index_col=1, parse_dates=["Date"])
 GBPUSD = pd.read_csv("pairs/GBPUSD.csv", index_col=1, parse_dates=["Date"])
 USDCHF = pd.read_csv("pairs/USDCHF.csv", index_col=1, parse_dates=["Date"])
 
-# list of currencies
-currencies = ["EURUSD", "USDCHF", "USDJPY", "GBPUSD"]  
+# Currency pairs
+currencies = ["EURUSD", "USDCHF", "USDJPY", "GBPUSD"]
 
 # Generate HTML table to display the news
 # Display a maximum of ten rows
 def generate_news_table(dataframe, max_rows=10):
     return html.Div(
         children=[
-            html.P(
-                children="Headlines", 
-                style={'display':'inline-block'}
-            ),
-            html.P(
-                children=["Last update : " + datetime.datetime.now().strftime("%H:%M:%S")],
-                style={
-                    'display':'inline-block',
-                    'float':'right'
-                }
-            ),
+            html.P("Headlines"),
+            html.P("Last update : " + datetime.datetime.now().strftime("%H:%M:%S")),
             html.Table(
                 className="table-news",
                 children=[
@@ -60,19 +52,21 @@ def generate_news_table(dataframe, max_rows=10):
                         ]
                     )
                     for i in range(min(len(dataframe), max_rows))
-                ]
-            )
+                ],
+            ),
         ]
     )
 
+
 # API Call to update news
 def update_news():
-    r = requests.get('https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=da8e2e705b914f9f86ed2e9692e66012')
+    r = requests.get(
+        "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=da8e2e705b914f9f86ed2e9692e66012"
+    )
     json_data = r.json()["articles"]
     df = pd.DataFrame(json_data)
-    df = pd.DataFrame(df[["title","url"]])
+    df = pd.DataFrame(df[["title", "url"]])
     return generate_news_table(df)
-
 
 
 # Get Current Time and create header
@@ -80,20 +74,10 @@ def get_header(t=datetime.datetime.now()):
     return html.Div(
         className="header-bid-ask",
         children=[
-            html.P(
-                t.strftime("%H:%M:%S"),
-                id="live_clock",
-                className="four columns"
-            ),
-            html.P(
-                "Bid",
-                className="four columns"
-            ),
-            html.P(
-                "Ask",
-                className="four columns"
-            ),
-        ]
+            html.P(t.strftime("%H:%M:%S"), id="live_clock", className="four columns"),
+            html.P("Bid", className="four columns"),
+            html.P("Ask", className="four columns"),
+        ],
     )
 
 
@@ -111,8 +95,8 @@ def get_color(a, b):
 # for modal returns ten previous rows
 def get_ask_bid(currency_pair, index, modal=False):
     if modal == False:
-        return globals()[currency_pair].ix[index]
-    return globals()[currency_pair].ix[index - 10 : index]
+        return globals()[currency_pair].iloc[index]
+    return globals()[currency_pair].iloc[index - 10 : index]
 
 
 # returns dataset row with nearest datetime to current time
@@ -147,13 +131,13 @@ def get_row(data):
                                 current_row[1].round(5),  # Bid value
                                 id=current_row[0] + "bid",
                                 className="four columns",
-                                style={"textAlign": "center", "color": "white"},
+                                style={"textAlign": "center"},
                             ),
                             html.P(
                                 current_row[2].round(5),  # Ask value
                                 className="four columns",
                                 id=current_row[0] + "ask",
-                                style={"textAlign": "center", "color": "white"},
+                                style={"textAlign": "center"},
                             ),
                             html.Div(
                                 index,
@@ -164,27 +148,26 @@ def get_row(data):
                         ],
                         id=current_row[0] + "row",
                         className="row eleven columns",
-                        style={"height": "25","float":"right"},
-                    ),
-                ]
+                        style={"height": "25", "float": "right"},
+                    )
+                ],
             ),
-
             html.Button(
                 "Buy/Sell",
                 id=current_row[0] + "Buy",
                 n_clicks=0,
-                style={"margin": "0px 7px 7px 10px","textAlign": "center"},
+                style={"margin": "0px 7px 7px 10px", "textAlign": "center"},
             ),
             html.Button(
                 "Chart",
                 id=current_row[0] + "Button_chart",
                 n_clicks=1 if current_row[0] in ["EURUSD", "USDCHF"] else 0,
-                style={"margin": "0px 7px 7px 10px","textAlign": "center"},
+                style={"margin": "0px 7px 7px 10px", "textAlign": "center"},
             ),
         ],
         id=current_row[0] + "row_div",
         n_clicks=0,
-        style={"textAlign": "center","paddingTop":"4"},
+        style={"textAlign": "center", "paddingTop": "4"},
     )
 
 
@@ -229,7 +212,7 @@ def get_top_bar_cell(cellTitle, cellValue, color="white"):
         children=[
             html.P(className="p-top-bar", children=cellTitle),
             html.P(cellValue, id=cellTitle),
-        ]
+        ],
     )
 
 
@@ -461,9 +444,6 @@ def get_modal_fig(currency_pair, index):
     fig["layout"]["height"] = 200
     fig["layout"]["width"] = 250
     fig["layout"]["margin"] = {"b": 0, "r": 5, "l": 50, "t": 5}
-    fig["layout"].update(
-        paper_bgcolor="#18252E", plot_bgcolor="#18252E"
-    )
     return fig
 
 
@@ -489,7 +469,6 @@ def get_fig(currency_pair, ask, bid, type_trace, studies, period):
             else:
                 selected_first_row_studies.append(study)
 
-
     fig = tools.make_subplots(
         rows=row,
         shared_xaxes=True,
@@ -500,35 +479,29 @@ def get_fig(currency_pair, ask, bid, type_trace, studies, period):
     )
 
     # Add main trace (style) to figure
-    fig.append_trace(
-        globals()[type_trace](df), 1, 1  
-    )
+    fig.append_trace(globals()[type_trace](df), 1, 1)
 
-    
     # Add trace(s) on fig's first row
     for study in selected_first_row_studies:
-        fig = globals()[study](df, fig)  
-    
+        fig = globals()[study](df, fig)
+
     row = 1
     # Plot trace on new row
     for study in selected_subplots_studies:
         row += 1
-        fig.append_trace(globals()[study](df), row, 1)  
-    
+        fig.append_trace(globals()[study](df), row, 1)
 
-    fig["layout"]["margin"] = {"b": 50, "r": 5, "l": 50, "t": 5}    
+    fig["layout"]["margin"] = {"b": 50, "r": 5, "l": 50, "t": 5}
     fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
     fig["layout"]["xaxis"]["tickformat"] = "%H:%M"
-    fig["layout"].update(
-        paper_bgcolor="#18252E", plot_bgcolor="#18252E"
-    )
+    fig["layout"].update(paper_bgcolor="#18252E", plot_bgcolor="#18252E")
     return fig
 
 
 # updates figure
 def replace_fig(currency_pair, ask, bid, type_trace, period, old_fig, studies):
     fig = get_fig(currency_pair, ask, bid, type_trace, studies, period)
-#    fig["layout"]["xaxis"]["range"] = old_fig["layout"]["xaxis"]["range"]
+    # fig["layout"]["xaxis"]["range"] = old_fig["layout"]["xaxis"]["range"]
     return [0, 100]
 
 
@@ -537,7 +510,6 @@ def chart_div(pair):
     return html.Div(
         id=pair + "graph_div",
         children=[
-
             html.Span(
                 "×",
                 id=pair + "close",
@@ -551,37 +523,32 @@ def chart_div(pair):
                 },
                 className="row",
             ),
-
             # Menu for Currency Graph
             html.Div(
                 children=[
                     # stores current menu tab
                     html.Div(
                         id=pair + "menu_tab",
-                        children=["Studies"],  
-                        style={"display": "none"}
+                        children=["Studies"],
+                        style={"display": "none"},
                     ),
                     html.Span(
                         id=pair + "close_menu",
                         className="btn-close",
                         children="×",
-                        n_clicks=0
+                        n_clicks=0,
                     ),
-                    html.Span(  
+                    html.Span(
                         "Style",
                         id=pair + "style_header",
                         className="btn-style",
-                        n_clicks_timestamp=2
+                        n_clicks_timestamp=2,
                     ),
                     html.Span(
                         "Studies",
                         id=pair + "studies_header",
                         n_clicks_timestamp=1,
-                        style={
-                            "float": "left",
-                            "textDecoration": "none",
-                            "cursor": "pointer",
-                        },
+                        style={"textDecoration": "none", "cursor": "pointer"},
                     ),
                     html.Div(
                         html.Div(
@@ -623,15 +590,21 @@ def chart_div(pair):
                             dcc.RadioItems(
                                 id=pair + "chart_type",
                                 options=[
-                                    {"label": "candlestick", "value": "candlestick_trace"},
+                                    {
+                                        "label": "candlestick",
+                                        "value": "candlestick_trace",
+                                    },
                                     {"label": "line", "value": "line_trace"},
                                     {"label": "mountain", "value": "area_trace"},
                                     {"label": "bar", "value": "bar_trace"},
-                                    {"label": "colored bar", "value": "colored_bar_trace"},
+                                    {
+                                        "label": "colored bar",
+                                        "value": "colored_bar_trace",
+                                    },
                                 ],
-                                value="colored_bar_trace"
+                                value="colored_bar_trace",
                             )
-                        ]
+                        ],
                     ),
                 ],
                 id=pair + "menu",
@@ -642,20 +615,15 @@ def chart_div(pair):
                     "backgroundImage": "-webkit-linear-gradient(top,#18252e,#2a516e 63%)",
                     "zIndex": "20",
                     "width": "100%",
-                    "height": "100%"
+                    "height": "100%",
                 },
             ),
-
-            #top bar
+            # top bar
             html.Div(
                 className="row chart-top-bar",
                 children=[
                     html.Span(
-                        pair,
-                        style={"float": "left", "marginRight": "5", "color": "white"},
-                    ),
-                    html.Span(
-                        children="☰",
+                        children=f"{pair} ☰",
                         n_clicks=0,
                         id=pair + "menu_button",
                         style={"float": "left", "color": "white", "cursor": "pointer"},
@@ -663,7 +631,6 @@ def chart_div(pair):
                     html.Div(
                         dcc.Dropdown(
                             id=pair + "dropdown_period",
-                            className="period",
                             options=[
                                 {"label": "5 min", "value": "5Min"},
                                 {"label": "15 min", "value": "15Min"},
@@ -671,24 +638,22 @@ def chart_div(pair):
                             ],
                             value="15Min",
                             clearable=False,
-                            style={"width":"100px"}
+                            style={"width": "100px"},
                         ),
-                        style={"float": "right"}
+                        style={"float": "right"},
                     ),
-                ]
+                ],
             ),
-
-            # Graph div 
+            # Graph div
             html.Div(
                 dcc.Graph(
                     id=pair + "chart",
                     config={"displayModeBar": False, "scrollZoom": True},
-                    style={"width": "100%","height":"100%"},
+                    style={"width": "100%", "height": "100%"},
                 ),
                 id=pair + "graph",
-                style={"height":"100%"}
+                style={"height": "100%"},
             ),
-
         ],
         className="",
         style={"display": "none"},
@@ -698,175 +663,145 @@ def chart_div(pair):
 # bottom panel for orders
 def bottom_panel():
     return html.Div(
+        id="bottom_panel",
+        className="row div-bottom-panel",
         children=[
             dcc.Location(id="bottom_tab", refresh=False),
             dcc.Link("Open positions", id="open_positions", href="/"),
             dcc.Link("Closed positions", id="closed_positions", href="/closed"),
             html.Div(
-                dcc.Dropdown(id="closable_orders", placeholder="Close order"),
-                style={"width": "15%"},
                 id="close_orders_div",
+                children=[
+                    dcc.Dropdown(id="closable_orders", placeholder="Close order")
+                ],
             ),
             html.Div(
-                children=[html.Table(id="orders_table")],
-                className="row",
-                style={"padding": "3", "textAlign": "center"},
                 id="bottom_content",
+                className="row",
+                children=[html.Table(id="orders_table")],
+                style={"padding": "3", "textAlign": "center"},
             ),
         ],
-        id="bottom_panel",
-        className="row",
-        style={
-            "overflowY": "auto",
-            "margin": "9px 5px 0px 5px",
-            "padding": "5",
-            "height": "21%",
-            "backgroundColor": "#1a2d46",
-        },
     )
 
 
 # returns modal Buy/Sell
 def modal(pair):
     return html.Div(
-        html.Div(
-            [
-                html.Div(
-                    [
-                        html.Span(
-                            "×",
-                            id=pair + "closeModal",
-                            style={
-                                "float": "right",
-                                "cursor": "pointer",
-                                "marginTop": "0",
-                                "marginBottom": "10",
-                            },
-                        ),
-                        html.Span(
-                            pair,
-                            id="modal"+pair,
-                            style={"marginBottom": "10", "color": "#45df7e"},
-                        ),
-
-
-                        # row div with two div
-                        html.Div(
-                            [
-                                # graph div
-                                html.Div(
-                                    [
-                                        dcc.Graph(
-                                            id=pair + "modal_graph",
-                                            config={"displayModeBar": False},
-                                        )
-                                    ],
-                                    className="six columns",
-                                ),
-
-                                # order values div
-                                html.Div(
-                                    [
-                                        html.Div(
-                                            children=[
-                                                html.P(
-                                                    "Volume",
-                                                    style={"marginBottom": "0"},
-                                                ),
-                                                dcc.Input(
-                                                    id=pair + "volume",
-                                                    type="number",
-                                                    value=0.1,
-                                                    min=0,
-                                                    step=0.1,
-                                                ),
-                                            ],
-                                            style={"marginBottom": "5"},
-                                        ),
-                                        html.Div(
-                                            children=[
-                                                html.P(
-                                                    "Type", style={"marginBottom": "0"}
-                                                ),
-                                                dcc.RadioItems(
-                                                    id=pair + "trade_type",
-                                                    options=[
-                                                        {
-                                                            "label": "Buy",
-                                                            "value": "buy",
-                                                        },
-                                                        {
-                                                            "label": "Sell",
-                                                            "value": "sell",
-                                                        },
-                                                    ],
-                                                    value="buy",
-                                                    labelStyle={
-                                                        "display": "inline-block"
-                                                    },
-                                                ),
-                                            ],
-                                            style={"marginBottom": "5"},
-                                        ),
-                                        html.Div(
-                                            children=[
-                                                html.P(
-                                                    "SL TPS",
-                                                    style={"marginBottom": "0"},
-                                                ),
-                                                dcc.Input(
-                                                    id=pair + "SL",
-                                                    type="number",
-                                                    min=0,
-                                                    step=1,
-                                                ),
-                                            ],
-                                            style={"marginBottom": "5"},
-                                        ),
-                                        html.Div(
-                                            children=[
-                                                html.P(
-                                                    "TP TPS",
-                                                    style={"marginBottom": "0"},
-                                                ),
-                                                dcc.Input(
-                                                    id=pair + "TP",
-                                                    type="number",
-                                                    min=0,
-                                                    step=1,
-                                                ),
-                                            ],
-                                            style={"marginBottom": "5"},
-                                        ),
-                                    ],
-                                    className="six columns",
-                                ),
-                            ],
-                            className="row",
-                        ),
-                        html.Div(
-                            html.Button("Order", id=pair + "button_order", n_clicks=0),
-                            style={"textAlign": "center", "marginTop": "12"},
-                        ),
-                    ],
-                    className="modal-content",
-                )
-            ],
-            className="modal",
-        ),
+        className="modal",
         id=pair + "modal",
-        style={"display": "none", "color": "white"},
+        style={"display": "none"},
+        children=[
+            html.Div(
+                [
+                    html.Span(
+                        "×",
+                        id=pair + "closeModal",
+                        style={
+                            "float": "right",
+                            "cursor": "pointer",
+                            "marginTop": "0",
+                            "marginBottom": "10",
+                        },
+                    ),
+                    html.Span(
+                        pair,
+                        id="modal" + pair,
+                        style={"marginBottom": "10", "color": "#45df7e"},
+                    ),
+                    # row div with two div
+                    html.Div(
+                        [
+                            # graph div
+                            html.Div(
+                                [
+                                    dcc.Graph(
+                                        id=pair + "modal_graph",
+                                        config={"displayModeBar": False},
+                                    )
+                                ],
+                                className="six columns",
+                            ),
+                            # order values div
+                            html.Div(
+                                [
+                                    html.Div(
+                                        children=[
+                                            html.P(
+                                                "Volume", style={"marginBottom": "0"}
+                                            ),
+                                            dcc.Input(
+                                                id=pair + "volume",
+                                                type="number",
+                                                value=0.1,
+                                                min=0,
+                                                step=0.1,
+                                            ),
+                                        ],
+                                        style={"marginBottom": "5"},
+                                    ),
+                                    html.Div(
+                                        children=[
+                                            html.P("Type", style={"marginBottom": "0"}),
+                                            dcc.RadioItems(
+                                                id=pair + "trade_type",
+                                                options=[
+                                                    {"label": "Buy", "value": "buy"},
+                                                    {"label": "Sell", "value": "sell"},
+                                                ],
+                                                value="buy",
+                                                labelStyle={"display": "inline-block"},
+                                            ),
+                                        ],
+                                        style={"marginBottom": "5"},
+                                    ),
+                                    html.Div(
+                                        children=[
+                                            html.P(
+                                                "SL TPS", style={"marginBottom": "0"}
+                                            ),
+                                            dcc.Input(
+                                                id=pair + "SL",
+                                                type="number",
+                                                min=0,
+                                                step=1,
+                                            ),
+                                        ],
+                                        style={"marginBottom": "5"},
+                                    ),
+                                    html.Div(
+                                        children=[
+                                            html.P(
+                                                "TP TPS", style={"marginBottom": "0"}
+                                            ),
+                                            dcc.Input(
+                                                id=pair + "TP",
+                                                type="number",
+                                                min=0,
+                                                step=1,
+                                            ),
+                                        ],
+                                        style={"marginBottom": "5"},
+                                    ),
+                                ],
+                                className="six columns",
+                            ),
+                        ],
+                        className="row",
+                    ),
+                    html.Div(
+                        html.Button("Order", id=pair + "button_order", n_clicks=0),
+                        style={"textAlign": "center", "marginTop": "12"},
+                    ),
+                ],
+                className="modal-content",
+            )
+        ],
     )
 
 
-def orders_div():
-    return [
-        html.Div(id=pair + "orders", style={"display": "none"}) for pair in currencies
-    ]
-
-
-# returns orders table tab content
-# status is open or closed
+# Returns Orders Table Content
+# Status is either OPEN or CLOSED
 def orders_rows(list_order, status):
     headers = [
         "Order Id",
@@ -881,8 +816,9 @@ def orders_rows(list_order, status):
         "Status",
     ]
 
+    # If tab is closed
     if status == "closed":
-        headers += ["Close Time", "Close Price"]  # if closed tab
+        headers += ["Close Time", "Close Price"]
 
     if list_order is not None:
         rows = []
@@ -891,20 +827,19 @@ def orders_rows(list_order, status):
             for attr in order:
                 if order["status"] == status:
                     tr_childs.append(html.Td(order[attr]))
-            order_style = {
-                "background": "linear-gradient(to bottom, rgba(255,0,0,0), rgba(255,0,0,1))"  # set background based on profit
-                if float(order["profit"]) >= 0
-                else "linear-gradient(to bottom, rgba(0,255,0,0), rgba(0,255,0,1))"
-            }
-            rows.append(html.Tr(tr_childs, style=order_style))
+            if float(order["profit"]) >= 0:
+                rows.append(html.Tr(className="profit", children=tr_childs))
+            else:
+                rows.append(html.Tr(className="no-profit", children=tr_childs))
 
         table = [html.Tr([html.Th(title) for title in headers])] + rows
 
         return table
 
-    return [html.Tr([html.Th(title) for title in headers], style={"width": "100%"})]
+    return html.Tr([html.Th(title) for title in headers])
 
 
+# Dash App Layout
 app.layout = html.Div(
     className="row",
     children=[
@@ -916,82 +851,74 @@ app.layout = html.Div(
         dcc.Interval(id="i_tris", interval=1 * 5000, n_intervals=0),
         # Interval component for graph updates
         dcc.Interval(id="i_news", interval=1 * 60000, n_intervals=0),
-
-
         # Left Panel Div
         html.Div(
-            className="four columns div-left-panel",
+            className="three columns div-left-panel",
             children=[
-                html.Img(className="logo", src="assets/dash-logo.png"),
-                html.P(
-                    """
-                    This app continually queries csv files and updates Ask and Bid prices 
-                    for major currency pairs as well as Stock Charts. You can also virtually 
-                    buy and sell stocks and see the profit updates.
-                    """
+                html.Div(
+                    className="div-info",
+                    children=[
+                        html.Img(className="logo", src="assets/dash-logo.png"),
+                        html.P(
+                            """
+                            This app continually queries csv files and updates Ask and Bid prices 
+                            for major currency pairs as well as Stock Charts. You can also virtually 
+                            buy and sell stocks and see the profit updates.
+                            """
+                        ),
+                    ],
                 ),
                 html.Div(get_header()),
                 html.Div(
                     id="pairs",
                     className="div-bid-ask",
-                    children=[get_row(first_ask_bid(pair, datetime.datetime.now())) for pair in currencies]
+                    children=[
+                        get_row(first_ask_bid(pair, datetime.datetime.now()))
+                        for pair in currencies
+                    ],
                 ),
                 html.Div(
                     className="div-news",
-                    children=[
-                        html.Div(
-                            id="news",
-                            children=update_news()
-                        )
-                    ],
+                    children=[html.Div(id="news", children=update_news())],
                 ),
-            ]
+            ],
         ),
-
-
         # Right Panel Div
         html.Div(
-            className="eight columns div-right-panel",
+            className="nine columns div-right-panel",
             children=[
                 # Top Bar Div - Displays Balance, Equity, ... , Open P/L
                 html.Div(
-                    id="top_bar",
-                    className="row div-top-bar",
-                    children=get_top_bar()
+                    id="top_bar", className="row div-top-bar", children=get_top_bar()
                 ),
-
+                # Charts Div
                 html.Div(
-                    id="rightpanel",
-                    children=[
-                        html.Div(
-                            id="charts",
-                            className="row",
-                            children=[chart_div(pair) for pair in currencies]
-                        ),
-                        bottom_panel(),
-                    ]
+                    id="charts",
+                    className="row",
+                    children=[chart_div(pair) for pair in currencies],
                 ),
-
-
-                html.Div(
-                    id="charts_clicked",
-                    style={"display": "none"},  # hidden div that stores clicked charts
-                ),
-
-                html.Div(orders_div()),  # hidden div for each pair that stores orders
-
-                html.Div([modal(pair) for pair in currencies]),
-                html.Div(
-                    id="orders", style={"display": "none"}  # hidden div that stores all orders,
-                ),
+                # Panel for orders
+                bottom_panel(),
+            ],
+        ),
+        # Hidden div that stores all clicked charts (EURUSD, USDCHF, etc.)
+        html.Div(id="charts_clicked", style={"display": "none"}),
+        # Hidden div for each pair that stores orders
+        html.Div(
+            children=[
+                html.Div(id=pair + "orders", style={"display": "none"})
+                for pair in currencies
             ]
-        )
-    ]
+        ),
+        html.Div([modal(pair) for pair in currencies]),
+        # Hidden Div that stores all orders
+        html.Div(id="orders", style={"display": "none"}),
+    ],
 )
 
-# dynamic callbacks
+# Dynamic Callbacks
 
-# replace pair row
+# Replace currency pair row
 def generate_ask_bid_row_callback(pair):
     def output_callback(n, i, bid, ask):
         return replace_row(pair, int(i), float(bid), float(ask))
@@ -1018,6 +945,17 @@ def generate_chart_button_callback():
 # Function to update Graph Figure
 def generate_figure_callback(pair):
     def chart_fig_callback(n_i, p, t, s, pairs, a, b, old_fig):
+        """
+        n_i : Number of intervals for Ask/Bid updates
+        p: Period chosen for chart (5, 15 or 30 min)
+        t: Type of chart (candlestick, line, mountain, etc.)
+        s: Type of study ()
+        pairs: Currency pairs that were clicked to be displayed
+        a: ask
+        b: bid
+        old_fig: 
+        """
+
         if pairs is None:
             return {"layout": {}, "data": {}}
 
@@ -1059,7 +997,7 @@ def generate_open_close_menu_callback():
     return open_close_menu
 
 
-# updates hidden div that stores the last clicked menu tab
+# Updates hidden div that stores the last clicked menu tab
 def generate_active_menu_tab_callback():
     def update_current_tab_name(n_style, n_studies):
         if n_style >= n_studies:
@@ -1069,7 +1007,7 @@ def generate_active_menu_tab_callback():
     return update_current_tab_name
 
 
-# show/hide 'studies' menu content
+# Show/hide STUDIES menu for chart
 def generate_studies_content_tab_callback():
     def studies_tab(current_tab):
         if current_tab == "Studies":
@@ -1079,7 +1017,7 @@ def generate_studies_content_tab_callback():
     return studies_tab
 
 
-# show/hide 'style' menu content
+# Show/hide STYLE menu for chart
 def generate_style_content_tab_callback():
     def style_tab(current_tab):
         if current_tab == "Style":
@@ -1089,8 +1027,7 @@ def generate_style_content_tab_callback():
     return style_tab
 
 
-
-
+# Open Modal
 def generate_modal_open_callback():
     def open_modal(n):
         if n > 0:
@@ -1101,6 +1038,7 @@ def generate_modal_open_callback():
     return open_modal
 
 
+# Close Modal
 def generate_modal_close_callback():
     def close_modal(n, n2):
         return 0
@@ -1124,11 +1062,13 @@ def generate_clean_tp_callback():
     return clean_tp
 
 
+# Create figure for Buy/Sell Modal
 def generate_modal_figure_callback(pair):
-    def figure_modal(index, n,old_fig):
-        if (n == 0 and old_fig is None) or n==1:
+    def figure_modal(index, n, old_fig):
+        if (n == 0 and old_fig is None) or n == 1:
             return get_modal_fig(pair, index)
-        return old_fig #avoid to compute new figure when the modal is hidden
+        return old_fig  # avoid to compute new figure when the modal is hidden
+
     return figure_modal
 
 
@@ -1265,11 +1205,7 @@ def generate_show_hide_graph_div_callback(pair):
 
         for i in range(len_list):
             if charts_clicked[i] == pair:
-                style = {
-                    "position": "relative",
-                    "float": "left",
-                    "overflow": "hidden"
-                }
+                style = {"position": "relative", "float": "left", "overflow": "hidden"}
 
                 if i == 0 or (i == 2 and len_list == 4):
                     style["marginLeft"] = "0px"  # avoid div to overlap
@@ -1283,7 +1219,7 @@ def generate_show_hide_graph_div_callback(pair):
     return show_hide_graph_callback
 
 
-#Resize pair div according to the number of charts displayed
+# Resize pair div according to the number of charts displayed
 def generate_size_graph_div_callback(pair):
     def size_graph_div_callback(charts_clicked):
         if charts_clicked is None:
@@ -1293,7 +1229,7 @@ def generate_size_graph_div_callback(pair):
         len_list = len(charts_clicked)
         if pair not in charts_clicked:
             return ""
-            
+
         width = (
             "six columns"
             if len_list % 2 == 0
@@ -1311,15 +1247,18 @@ app.config.supress_callback_exceptions = True
 
 # Loop through all currencies
 for pair in currencies:
+
+    # Callback for style of div for graphs
     app.callback(
         Output(pair + "graph_div", "style"), [Input("charts_clicked", "children")]
     )(generate_show_hide_graph_div_callback(pair))
 
+    # Callback for class of div for graphs
     app.callback(
         Output(pair + "graph_div", "className"), [Input("charts_clicked", "children")]
     )(generate_size_graph_div_callback(pair))
 
-    # udaptes graph's figure
+    # Callback to update the actual graph
     app.callback(
         Output(pair + "chart", "figure"),
         [
@@ -1373,12 +1312,12 @@ for pair in currencies:
         ],
     )(generate_active_menu_tab_callback())
 
-    # hide/show menu tab content if clicked or not
+    # hide/show STYLE tab content if clicked or not
     app.callback(
         Output(pair + "style_tab", "style"), [Input(pair + "menu_tab", "children")]
     )(generate_style_content_tab_callback())
 
-    # hide/show menu tab content if clicked or not
+    # hide/show MENU tab content if clicked or not
     app.callback(
         Output(pair + "studies_tab", "style"), [Input(pair + "menu_tab", "children")]
     )(generate_studies_content_tab_callback())
@@ -1528,7 +1467,6 @@ def update_link_label_closed(url, orders):
     return "Closed positions (" + str(length) + ")"
 
 
-
 # hide/show div that contains 'close order' dropdown
 @app.callback(Output("close_orders_div", "style"), [Input("bottom_tab", "pathname")])
 def show_hide_close_orders(url):
@@ -1594,6 +1532,7 @@ def update_top_bar(orders):
 @app.callback(Output("live_clock", "children"), [Input("interval", "n_intervals")])
 def update_time(n):
     return datetime.datetime.now().strftime("%H:%M:%S")
+
 
 @app.callback(Output("news", "children"), [Input("i_news", "n_intervals")])
 def update_news_div(n):
