@@ -166,7 +166,8 @@ CalcPk <- function(time, conc, ivCalc = FALSE, termPoints = 3){
 }
 
 GenerateResultData <- function(records) {
-  
+# Generates results-table data
+
   dfRaw <- rbindlist(records)
   # Create df from records
   
