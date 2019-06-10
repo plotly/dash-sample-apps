@@ -136,6 +136,45 @@ a:hover {
     margin: auto;
 }
 
+@media all and (max-width: 768px) {
+    .header__title {
+        display: block;
+        margin-top: 25px;
+    }
+    .header__title h4 {
+        text-align: center;
+    }
+    .header__title img {
+        display: flex;
+        height: 30px;
+        width: auto;
+        padding-bottom: 10px;
+    }
+    .header__info p {
+        text-align: center;
+        font-size: 14px;
+    }
+    .header__button {
+        text-align: center;
+    }
+    .app__right__section {
+        border: none;
+    }
+    .graph__container {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    .app__right__section {
+        overflow-y: hidden;
+        overflow: hidden;
+        min-height:initial;
+        max-height: initial;
+    }
+    #radio-options {
+        font-size: 12px;
+    }
+}
+
 ._dash-undo-redo {
     display: none;
 }

@@ -1,14 +1,11 @@
-# -*- coding: utf-8 -*-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import dash_colorscales as dcs
-import numpy as  np
 import json
-from textwrap import dedent as d
 
-from mni import read_mniobj, plotly_triangular_mesh, create_mesh_data
+from mni import create_mesh_data
 
 app = dash.Dash(
     __name__,
@@ -46,8 +43,8 @@ plot_layout = {
         "size": 12,
         "color": "white"
     },
-    "width": 650,
-    "height": 650,
+    # "width": 650,
+    # "height": 650,
     "showlegend": False,
     "plot_bgcolor": "#141414",
     "paper_bgcolor": "#141414",
@@ -76,31 +73,33 @@ app.layout = html.Div([
     html.Div([
         html.Div([
             html.Div([
-                html.Img(src=app.get_asset_url("dash-logo-stripe-inverted.png")),
-                html.H4("MRI Reconstruction")
-            ], className="header__title"),
-            html.Div([
-                html.P("Click on the brain to add an annotation. Drag the black corners of the graph to rotate."),
-            ], className="pb-20"),
-            html.Div([
-                html.A(
-                    "View on GitHub",
-                    href="https://www.drugbank.ca/drugs/DB01002",
-                    target="_blank",
-                ),
-            ]),
-        ], className="container header pb-20"),
+                html.Div([
+                    html.Img(src=app.get_asset_url("dash-logo-stripe-inverted.png")),
+                    html.H4("MRI Reconstruction")
+                ], className="header__title"),
+                html.Div([
+                    html.P("Click on the brain to add an annotation. Drag the black corners of the graph to rotate."),
+                ], className="header__info pb-20"),
+                html.Div([
+                    html.A(
+                        "View on GitHub",
+                        href="https://www.drugbank.ca/drugs/DB01002",
+                        target="_blank",
+                    ),
+                ], className="header__button"),
+            ], className="header pb-20"),
 
-        html.Div([
-            dcc.Graph(
-                id='brain-graph',
-                figure={
-                    'data': create_mesh_data("human_atlas"),
-                    'layout': plot_layout,
-                },
-                config={'editable': True, 'scrollZoom': False}
-            ),
-        ], className="graph__container"),
+            html.Div([
+                dcc.Graph(
+                    id='brain-graph',
+                    figure={
+                        'data': create_mesh_data("human_atlas"),
+                        'layout': plot_layout,
+                    },
+                    config={'editable': True, 'scrollZoom': False}
+                ),
+            ], className="graph__container"),
+        ], className="container"),
 
     ], className="two-thirds column app__left__section"),
 
@@ -171,44 +170,49 @@ app.layout = html.Div([
 
 
 @app.callback(
-    Output('brain-graph', 'figure'),
+    Output("brain-graph", "figure"),
     [
-        Input('brain-graph', 'clickData'),
-        Input('radio-options', 'value'),
-        Input('colorscale-picker', 'colorscale')
+        Input("brain-graph", "clickData"),
+        Input("radio-options", "value"),
+        Input("colorscale-picker", "colorscale")
     ],
-    [State('brain-graph', 'figure')]
+    [State("brain-graph", "figure")]
 )
-def add_marker(click_data, val, colorscale, figure):
+def brain_graph_handler(click_data, val, colorscale, figure):
 
-    print(click_data)
-    # this code will never really execute ?!?
-    if figure['data'][0]['name'] != val:
-        figure['data'] = create_mesh_data(val)
+    # new option select
+    if figure["data"][0]["name"] != val:
+        figure["data"] = create_mesh_data(val)
         return figure
 
+    # modify graph markers
     if click_data is not None and "points" in click_data:
+
+        y_value = click_data["points"][0]["y"]
+        x_value = click_data["points"][0]["x"]
+        z_value = click_data["points"][0]["z"]
+
         marker = dict(
-            x = [click_data['points'][0]['x']],
-            y = [click_data['points'][0]['y']],
-            z = [click_data['points'][0]['z']],
+            x = [x_value],
+            y = [y_value],
+            z = [z_value],
             mode = 'markers',
-            marker = dict(size=15, line=dict(width=3)),
+            marker = dict(size=25, line=dict(width=3)),
             name = 'Marker',
             type = 'scatter3d',
             text = ['Click point to remove annotation']
         )
         anno = dict(
-            x = click_data['points'][0]['x'],
-            y = click_data['points'][0]['y'],
-            z = click_data['points'][0]['z'],
+            x = x_value,
+            y = y_value,
+            z = z_value,
             font = dict(color = 'black'),
             bgcolor = 'white',
             borderpad = 5,
             bordercolor = 'black',
             borderwidth = 1,
             captureevents = True,
-            ay = -50,
+            ay = -150,
             arrowcolor = 'white',
             arrowwidth = 2,
             arrowhead = 0,
@@ -237,22 +241,23 @@ def add_marker(click_data, val, colorscale, figure):
             figure['data'].append(marker)
             figure['layout']['scene']['annotations'].append(anno)
 
-    cs = []
-    for i, rgb in enumerate(colorscale):
-        cs.append([i/(len(colorscale)-1), rgb])
+    cs = [[i/(len(colorscale)-1), rgb] for i, rgb in enumerate(colorscale)]
+
     figure['data'][0]['colorscale'] = cs
 
     return figure
 
 @app.callback(
     Output('click-data', 'children'),
-    [Input('brain-graph', 'clickData')])
+    [Input('brain-graph', 'clickData')]
+)
 def display_click_data(click_data):
     return json.dumps(click_data, indent=4)
 
 @app.callback(
     Output('relayout-data', 'children'),
-    [Input('brain-graph', 'relayoutData')])
+    [Input('brain-graph', 'relayoutData')]
+)
 def display_relayout_data(relayout_data):
     return json.dumps(relayout_data, indent=4)
 
