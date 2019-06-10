@@ -589,13 +589,10 @@ def chart_div(pair):
                             )
                         ],
                     ),
-                ]
+                ],
             ),
             html.Span(
-                id=pair + "close",
-                className="graph-close row",
-                children="×",
-                n_clicks=0
+                id=pair + "close", className="graph-close row", children="×", n_clicks=0
             ),
             # Chart Top Bar
             html.Div(
@@ -617,7 +614,7 @@ def chart_div(pair):
                                 {"label": "30 min", "value": "30Min"},
                             ],
                             value="15Min",
-                            clearable=False
+                            clearable=False,
                         ),
                         style={"float": "right"},
                     ),
@@ -649,21 +646,21 @@ def bottom_panel():
                 id="dropdown_positions",
                 className="bottom-dropdown",
                 options=[
-                    {'label': 'Open Positions', 'value': 'open'},
-                    {'label': 'Closed Positions', 'value': 'closed'}
+                    {"label": "Open Positions", "value": "open"},
+                    {"label": "Closed Positions", "value": "closed"},
                 ],
-                value='open',
-                clearable=False
+                value="open",
+                clearable=False,
             ),
             dcc.Dropdown(
-                id="closable_orders", 
+                id="closable_orders",
                 className="bottom-dropdown",
-                placeholder="Close order"
+                placeholder="Close order",
             ),
             html.Div(
                 id="bottom_content",
                 className="row",
-                children=[html.Table(id="orders_table")]
+                children=[html.Table(id="orders_table")],
             ),
         ],
     )
@@ -1241,9 +1238,7 @@ for pair in currencies:
     # show or hide graph menu
     app.callback(
         Output(pair + "menu", "className"),
-        [
-            Input(pair + "menu_button", "n_clicks")
-        ],
+        [Input(pair + "menu_button", "n_clicks")],
         [State(pair + "menu", "className")],
     )(generate_open_close_menu_callback())
 
@@ -1335,7 +1330,7 @@ app.callback(
     Output("orders_table", "children"),
     [
         Input("orders", "children"),
-        Input("dropdown_positions", "value")
+        Input("dropdown_positions", "value"),
     ],  # returns orders table based on clicked tab
 )
 def update_order_table(orders, position):
@@ -1352,7 +1347,7 @@ def update_order_table(orders, position):
         "Status",
     ]
 
-     # If tab is closed
+    # If tab is closed
     if position == "closed":
         headers += ["Close Time", "Close Price"]
 
@@ -1372,13 +1367,10 @@ def update_order_table(orders, position):
             rows.append(html.Tr(className="no-profit", children=tr_childs))
 
     return [html.Tr([html.Th(title) for title in headers])] + rows
-    
+
 
 # Update Options in dropdown for Open and Close positions
-@app.callback(
-    Output("dropdown_positions", "options"),
-    [Input("orders", "children")],
-)
+@app.callback(Output("dropdown_positions", "options"), [Input("orders", "children")])
 def update_positions_dropdown(orders):
     closeOrders = 0
     openOrders = 0
@@ -1389,8 +1381,11 @@ def update_positions_dropdown(orders):
                 closeOrders += 1
             if order["status"] == "open":
                 openOrders += 1
-    return  [{'label': "Open positions (" + str(openOrders) + ")", 'value': 'open'},
-             {'label': "Closed positions (" + str(closeOrders) + ")", 'value': 'closed'}]
+    return [
+        {"label": "Open positions (" + str(openOrders) + ")", "value": "open"},
+        {"label": "Closed positions (" + str(closeOrders) + ")", "value": "closed"},
+    ]
+
 
 # Updates close orders dropdown options
 @app.callback(Output("closable_orders", "options"), [Input("orders", "children")])
@@ -1404,7 +1399,7 @@ def update_close_dropdown(orders):
     return options
 
 
-# Callback to update Top Bar values 
+# Callback to update Top Bar values
 @app.callback(Output("top_bar", "children"), [Input("orders", "children")])
 def update_top_bar(orders):
     if orders is None or orders is "[]":
