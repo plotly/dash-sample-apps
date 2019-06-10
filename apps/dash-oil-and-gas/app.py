@@ -8,7 +8,6 @@ import math
 
 import requests
 import pandas as pd
-from flask import Flask
 import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
@@ -21,8 +20,8 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
-app = dash.Dash(__name__)
-server = app.server
+app = dash.Dash(__name__,
+                meta_tags=[{"name": "viewport", "content": "width=device-width"}])
 
 # Create controls
 county_options = [
@@ -79,20 +78,27 @@ app.layout = html.Div(
         html.Div(
             [
                 html.Div(
-                    [html.H2("New York Oil and Gas"), html.H4("Production Overview")],
-                    className="eight columns",
+                    [html.Img(src=app.get_asset_url("dash-logo.png"), id="plotly-image",
+                              style={"height": "60px", "width": "auto", "margin-bottom": "25px"})],
+                    className="one-third column"
                 ),
-                html.Img(
-                    src=app.get_asset_url("dash-logo.png"), className="two columns"
-                ),
-                html.A(
-                    html.Button("Learn More", id="learn-more-button"),
-                    href="https://plot.ly/dash/pricing/",
-                    className="two columns",
+                html.Div([
+                    html.Div(
+                        [html.H3("New York Oil and Gas", style={"margin-bottom": "0px"}),
+                         html.H5("Production Overview", style={"margin-top": "0px"})]
+                    ),
+                ], className="one-half column", id="title"),
+                html.Div(
+                    [
+                        html.A(
+                            html.Button(
+                                "Learn More", id="learn-more-button"),
+                            href="https://plot.ly/dash/pricing/")
+                    ], className="one-third column", id="button"
                 ),
             ],
             id="header",
-            className="row",
+            className="row flex-display", style={"margin-bottom": "25px"}
         ),
         html.Div(
             [
@@ -109,7 +115,8 @@ app.layout = html.Div(
                             value=[1990, 2010],
                             className="dcc_control",
                         ),
-                        html.P("Filter by well status:", className="control_label"),
+                        html.P("Filter by well status:",
+                               className="control_label"),
                         dcc.RadioItems(
                             id="well_status_selector",
                             options=[
@@ -130,16 +137,19 @@ app.layout = html.Div(
                         ),
                         dcc.Checklist(
                             id="lock_selector",
-                            options=[{"label": "Lock camera", "value": "locked"}],
+                            options=[
+                                {"label": "Lock camera", "value": "locked"}],
                             values=[],
                             className="dcc_control",
                         ),
-                        html.P("Filter by well type:", className="control_label"),
+                        html.P("Filter by well type:",
+                               className="control_label"),
                         dcc.RadioItems(
                             id="well_type_selector",
                             options=[
                                 {"label": "All ", "value": "all"},
-                                {"label": "Productive only ", "value": "productive"},
+                                {"label": "Productive only ",
+                                    "value": "productive"},
                                 {"label": "Customize ", "value": "custom"},
                             ],
                             value="productive",
@@ -155,50 +165,39 @@ app.layout = html.Div(
                         ),
                     ],
                     className="pretty_container four columns",
+                    id="cross-filter-options"
                 ),
                 html.Div(
                     [
                         html.Div(
                             [
                                 html.Div(
-                                    [
-                                        html.Div(
-                                            [
-                                                html.H6(
-                                                    id="well_text",
-                                                    className="info_text",
-                                                ),
-                                                html.P("No. of Wells"),
-                                            ],
-                                            className="ten columns",
-                                        )
-                                    ],
+                                    [html.H6(id="well_text"),
+                                     html.P("No. of Wells")],
                                     id="wells",
-                                    className="pretty_container twelve columns",
+                                    className="mini_container",
                                 ),
                                 html.Div(
-                                    [
-                                        html.Div(
-                                            [html.H6(id="gasText"), html.P("Gas")],
-                                            id="gas",
-                                            className="pretty_container twelve columns",
-                                        ),
-                                        html.Div(
-                                            [html.H6(id="oilText"), html.P("Oil")],
-                                            id="oil",
-                                            className="pretty_container",
-                                        ),
-                                        html.Div(
-                                            [html.H6(id="waterText"), html.P("Water")],
-                                            id="water",
-                                            className="pretty_container",
-                                        ),
-                                    ],
-                                    id="tripleContainer",
+                                    [html.H6(id="gasText"),
+                                        html.P("Gas")],
+                                    id="gas",
+                                    className="mini_container",
+                                ),
+                                html.Div(
+                                    [html.H6(id="oilText"),
+                                        html.P("Oil")],
+                                    id="oil",
+                                    className="mini_container",
+                                ),
+                                html.Div(
+                                    [html.H6(id="waterText"),
+                                        html.P("Water")],
+                                    id="water",
+                                    className="mini_container",
                                 ),
                             ],
-                            id="infoContainer",
-                            className="row",
+                            id="info-container",
+                            className="row container-display",
                         ),
                         html.Div(
                             [dcc.Graph(id="count_graph")],
@@ -210,7 +209,7 @@ app.layout = html.Div(
                     className="eight columns",
                 ),
             ],
-            className="row",
+            className="row flex-display",
         ),
         html.Div(
             [
@@ -223,7 +222,7 @@ app.layout = html.Div(
                     className="pretty_container five columns",
                 ),
             ],
-            className="row",
+            className="row flex-display",
         ),
         html.Div(
             [
@@ -236,7 +235,7 @@ app.layout = html.Div(
                     className="pretty_container five columns",
                 ),
             ],
-            className="row",
+            className="row flex-display",
         ),
     ],
     id="mainContainer",
@@ -492,7 +491,8 @@ def make_individual_figure(main_graph_hover):
                 name="Gas Produced (mcf)",
                 x=index,
                 y=gas,
-                line=dict(shape="spline", smoothing=2, width=1, color="#fac1b7"),
+                line=dict(shape="spline", smoothing=2,
+                          width=1, color="#fac1b7"),
                 marker=dict(symbol="diamond-open"),
             ),
             dict(
@@ -501,7 +501,8 @@ def make_individual_figure(main_graph_hover):
                 name="Oil Produced (bbl)",
                 x=index,
                 y=oil,
-                line=dict(shape="spline", smoothing=2, width=1, color="#a9bb95"),
+                line=dict(shape="spline", smoothing=2,
+                          width=1, color="#a9bb95"),
                 marker=dict(symbol="diamond-open"),
             ),
             dict(
@@ -510,7 +511,8 @@ def make_individual_figure(main_graph_hover):
                 name="Water Produced (bbl)",
                 x=index,
                 y=water,
-                line=dict(shape="spline", smoothing=2, width=1, color="#92d8d8"),
+                line=dict(shape="spline", smoothing=2,
+                          width=1, color="#92d8d8"),
                 marker=dict(symbol="diamond-open"),
             ),
         ]
@@ -696,4 +698,4 @@ def make_count_figure(well_statuses, well_types, year_slider):
 
 # Main
 if __name__ == "__main__":
-    app.server.run(debug=True, threaded=True)
+    app.run_server(debug=True, threaded=True)

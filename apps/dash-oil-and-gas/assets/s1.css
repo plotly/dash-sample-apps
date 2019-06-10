@@ -1,5 +1,6 @@
 /* Table of contents
 ––––––––––––––––––––––––––––––––––––––––––––––––––
+- Plotly.js
 - Grid
 - Base Styles
 - Typography
@@ -14,6 +15,22 @@
 - Clearing
 - Media Queries
 */
+
+/* PLotly.js 
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+/* plotly.js's modebar's z-index is 1001 by default
+ * https://github.com/plotly/plotly.js/blob/7e4d8ab164258f6bd48be56589dacd9bdd7fded2/src/css/_modebar.scss#L5
+ * In case a dropdown is above the graph, the dropdown's options
+ * will be rendered below the modebar
+ * Increase the select option's z-index
+ */
+
+/* This was actually not quite right -
+   dropdowns were overlapping each other (edited October 26)
+
+.Select {
+    z-index: 1002;
+}*/
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -47,39 +64,37 @@
   }
   .column,
   .columns {
-    margin-left: 0.5%;
+    margin-left: 4%;
   }
   /* .column:first-child,
   .columns:first-child {
-    margin-left: 0; }
-  .column:last-child,
-  .columns:last-child {
-    margin-left: 0; } */
+    margin-left: 0;
+  } */
 
   .one.column,
   .one.columns {
-    width: 8%;
+    width: 4.66666666667%;
   }
   .two.columns {
-    width: 16.25%;
+    width: 13.3333333333%;
   }
   .three.columns {
     width: 22%;
   }
   .four.columns {
-    width: calc(100% / 3);
+    width: 30.6666666667%;
   }
   .five.columns {
-    width: calc(100% * 5 / 12);
+    width: 39.3333333333%;
   }
   .six.columns {
-    width: 49.75%;
+    width: 48%;
   }
   .seven.columns {
-    width: calc(100% * 7 / 12);
+    width: 56.6666666667%;
   }
   .eight.columns {
-    width: 66.5%;
+    width: 65.3333333333%;
   }
   .nine.columns {
     width: 74%;
@@ -88,7 +103,7 @@
     width: 82.6666666667%;
   }
   .eleven.columns {
-    width: 91.5%;
+    width: 91.3333333333%;
   }
   .twelve.columns {
     width: 100%;
@@ -182,121 +197,6 @@ body {
   font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial,
     sans-serif;
   color: rgb(50, 50, 50);
-  background-color: #f2f2f2;
-  margin: 5%;
-}
-.pretty_container {
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  margin: 10px;
-  padding: 15px;
-  position: relative;
-  box-shadow: 2px 2px 2px lightgrey;
-}
-
-.bare_container {
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
-}
-
-/* .data_text {
-    font-size;
-} */
-
-.dcc_control {
-  margin: 0;
-  padding: 5px;
-  width: calc(100%-40px);
-}
-
-.control_label {
-  margin: 0;
-  padding: 10px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-  width: calc(100%-40px);
-}
-
-.rc-slider {
-  margin-left: 0px;
-  padding-left: 0px;
-}
-
-.row {
-  display: flex;
-}
-
-#individual_graph,
-#aggregate_graph {
-  width: calc(100% - 30px);
-  position: absolute;
-}
-
-#count_graph {
-  position: absolute;
-  height: calc(100% - 30px);
-  width: calc(100% - 30px);
-}
-
-#countGraphContainer {
-  flex: 5;
-  position: relative;
-}
-
-#header {
-  align-items: center;
-}
-
-#learn-more-button {
-  text-align: center;
-  /* justify: middle; */
-  height: 100%;
-  padding: 0 20px;
-  text-transform: none;
-  font-size: 15px;
-}
-
-#right-column {
-  display: flex;
-  flex-direction: column;
-}
-
-#wells {
-  flex: 1;
-}
-
-#gas {
-  /* margin-right: 0; */
-  /* padding-right: 0; */
-  flex: 1;
-}
-
-#aggregate_data {
-  align-items: center;
-}
-
-#oil {
-  /* margin-right: 0;
-  padding-right: 0;
-  margin-left: 0;
-  padding-left: 0; */
-  flex: 1;
-}
-
-#water {
-  /* margin-left: 0;
-  padding-left: 0; */
-  flex: 1;
-}
-
-#tripleContainer {
-  display: flex;
-  flex: 3;
-}
-
-#mainContainer {
-  display: flex;
-  flex-direction: column;
 }
 
 /* Typography
@@ -321,8 +221,8 @@ h2 {
   font-size: 3.6rem;
   line-height: 1.25;
   letter-spacing: -0.1rem;
-  margin-bottom: 0px;
-  margin-top: 1rem;
+  margin-bottom: 1.8rem;
+  margin-top: 1.8rem;
 }
 h3 {
   font-size: 3rem;
@@ -336,8 +236,7 @@ h4 {
   line-height: 1.35;
   letter-spacing: -0.08rem;
   margin-bottom: 1.2rem;
-  margin-top: 0px;
-  margin-left: 1rem;
+  margin-top: 1.2rem;
 }
 h5 {
   font-size: 2.2rem;
@@ -372,6 +271,8 @@ blockquote {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a {
   color: #1eaedb;
+  text-decoration: underline;
+  cursor: pointer;
 }
 a:hover {
   color: #0fa0ce;
@@ -536,6 +437,9 @@ li {
 
 /* Tables
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+table {
+  border-collapse: collapse;
+}
 th,
 td {
   padding: 12px 15px;
@@ -623,16 +527,104 @@ on small devices, paste the mobile query code up in the buttons section and styl
 there.
 */
 
-/* Larger than mobile */
+/* Larger than mobile, screen sizes larger than 400px */
 @media (min-width: 400px) {
+  h6 {
+    font-size: 1.25rem;
+  }
 }
 
-/* Larger than phablet (also point when grid becomes active) */
+/* Larger than phablet (also point when grid becomes active), screen larger than 550px */
 @media (min-width: 550px) {
+  .one.column,
+  .one.columns {
+    width: 8%;
+  }
+  .two.columns {
+    width: 16.25%;
+  }
+  .three.columns {
+    width: 22%;
+  }
+  .four.columns {
+    width: calc(100% / 3);
+  }
+  .five.columns {
+    width: calc(100% * 5 / 12);
+  }
+  .six.columns {
+    width: 49.75%;
+  }
+  .seven.columns {
+    width: calc(100% * 7 / 12);
+  }
 }
 
-/* Larger than tablet */
-@media (min-width: 750px) {
+/* Larger than tablet, for screens smaller than 768px */
+@media (max-width: 550px) {
+  .flex-display {
+    display: block !important;
+  }
+  .pretty_container {
+    margin: 0 !important;
+    margin-bottom: 25px !important;
+  }
+  #individual_graph,
+  #count_graph,
+  #aggregate_graph {
+    position: static !important;
+  }
+  .container-display {
+    display: flex;
+  }
+  #wells,
+  #gas,
+  #oil {
+    margin-right: 10px;
+  }
+
+  #wells {
+    margin-left: 0px;
+  }
+  #water {
+    margin-right: 0px;
+  }
+  .mini_container {
+    margin-bottom: 25px !important;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    position: relative;
+    box-shadow: 2px 2px 2px lightgrey;
+  }
+  #plotly-image {
+    margin-bottom: 0px !important;
+    height: 45px !important;
+  }
+  #learn-more-button {
+    margin-top: 0px !important;
+    padding: 0 10px !important;
+    font-size: 12px !important;
+  }
+  #button {
+    display: flex;
+    justify-content: center;
+  }
+  #title {
+    margin-bottom: 10px;
+  }
+  h3 {
+    font-size: 2.5rem;
+  }
+  h5 {
+    font-size: 2rem;
+  }
+  h6 {
+    font-size: 1.25rem;
+  }
+  p {
+    font-size: 11px;
+  }
 }
 
 /* Larger than desktop */
