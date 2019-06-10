@@ -8,8 +8,11 @@ created for the Python Dash Gallery.
 You will need to run applications, and specify filenames, from the
 root directory of the repository. e.g., if the name of the app you
 want to run is `my_dash_app` and the app filename is `app.py`, you
-would need to run `python apps/my_dash_app/app.py` from the root of
-the repository.
+would need to run `python apps/my_dash_app/app.py` from the root
+of the repository.
+
+Each app has a requirements.txt, install the dependecies in a virtual 
+environment.
 
 ## Contributing to the sample apps repo
 
@@ -30,6 +33,11 @@ the same name as the app.
 
 ### Adding a new app
 
+Create an app on Dash Playground. This will be the location of the
+auto-deployment. To do this, log into the app manager on
+[dash-playground.plotly.host](https://dash-playground.plotly.host)
+and click "initialize app".
+
 Create a branch from `master` that has the _exact same_ name as the
 Dash app name. Switch to this branch, then navigate to the `apps/`
 directory and add a directory for your app.
@@ -46,24 +54,108 @@ Navigate to the directory you just created, and write a small README
 that only contains the name of the app. Stage the README and commit it
 to your app branch.
 
+See [project boilerplate!](https://github.com/plotly/dash-sample-apps#project-boilerplate)
+
 ### Making changes to an existing app
 
 Switch to the branch that has the same name as the DDS app (the "app
 branch"). Then, navigate to the directory that has the same name as
 the DDS app.
 
-Create a branch off of the app branch, and do all of your development
-in this branch (the "feature branch"). When you are finished, make a
-pull request from the feature branch to the app branch. Once you have
-passed your code review, you can merge your PR.
+When you are finished, make a pull request from the app branch to the master
+branch. Once you have passed your code review, you can merge your PR.
 
-#### Reading files from within an app
+## Dash app project structure
 
-File paths must be specified relative to the root directory. So, for
-example, if you have a file 'data.csv' in your app folder
-`my_dash_app/` you will have to refer to this data file as
-`apps/my_dash_app/data.csv` within your `app.py` file.
+#### Data
+- All data (csv, json, txt, etc) should be in a data folder
+- `/apps/{DASH_APP_NAME}/data/`
 
-#### `assets/`, `Procfile`, `requirements.txt`, `runtime.txt`
+#### Assets
+- All stylesheets and javascript should be in an assets folder
+- `/apps/{DASH_APP_NAME}/assets/`
 
-These files will still need to be present within the app folder.
+####  These files will still need to be present within the app folder.
+
+- **`Procfile`** gets run at root level for deployment
+    - Make sure python working directory is at the app level
+    - Ex. `web: gunicorn --pythonpath apps/{DASH_APP_NAME} app:server` 
+- **`requirements.txt`**
+    - Install project dependecies in a virtual environment 
+- **`runtime.txt`**
+    - App python version
+
+#### Project boilerplate
+
+    apps
+    ├── ...
+    ├── {DASH_APP_NAME}         # app project level
+    │   ├── assets/             # all stylesheets and javascript files
+    │   ├── data/               # all data (csv, json, txt, etc)
+    │   ├── app.py              # dash application entry point
+    │   ├── Procfile            # used for heroku deployment (how to run app)
+    │   ├── requirements.txt    # project dependecies 
+    │   ├── runtime.txt         # used for heroku deployment (python version)
+    │   └── ...                 
+    └── ...
+
+#### Handle relative path
+
+Since deployment happens at the root level `/` and not at the app level (`/apps/{DASH_APP_NAME}`), we need to make sure our application is able to run at both levels for flexibility.
+
+Reading from assets and data folder
+```Python
+Img(src="./assets/logo.png") will fail at root level
+```
+
+Tips
+
+-  Use [get_asset_url()](https://dash.plot.ly/dash-deployment-server/static-assets)
+-  Use [Pathlib](https://docs.python.org/3/library/pathlib.html) for more flexibility
+
+```Python
+import pathlib
+
+# get relative assets folder
+html.Img(src=app.get_asset_url('logo'))                   
+
+# get relative data folder
+DATA_PATH = pathlib.Path(__file__, "/data")      # /data
+with open(DATA_PATH.joinpath("data.csv")) as f:  # /data/data.csv
+    some_string = f.read()
+```
+
+## Developer Guide
+
+#### Creating a new project
+
+```
+# branch off master
+git checkout -b "{DASH_APP_NAME}"
+
+# create a new folder in apps/
+mkdir /apps/{DASH_APP_NAME}
+
+# push new app branch
+git push -u origin {DASH_APP_NAME}
+```
+
+#### Before committing
+
+```
+# make sure your code is linted (we use black)
+black . --exclude=venv/ --check
+
+# if black is not installed
+pip install black
+```
+
+
+#### App is ready to go!
+```
+# once your app branch is ready, make a PR into master!
+
+PR has two checkers.
+1. make sure your code passed the black linter
+2. make sure your project is deployed on dns playground
+```
