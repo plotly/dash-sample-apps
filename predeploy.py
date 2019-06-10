@@ -27,6 +27,6 @@ except FileNotFoundError:
 file_list = rfiles if "-" in app_name and app_name.split("-")[0] == "dashr" else pyfiles
 
 for f in file_list:
-    shutil.copyfile(os.path.join(app_path, file_list), file_list)
+    shutil.copyfile(os.path.join(app_path, f), f)
 
 subprocess.run("python -m pip install -r requirements.txt".split(" "))
