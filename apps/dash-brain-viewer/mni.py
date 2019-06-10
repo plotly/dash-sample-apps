@@ -38,7 +38,6 @@ def plotly_triangular_mesh(
     colorscale="Viridis",
     flatshading=False,
     showscale=False,
-    reversescale=False,
     plot_edges=False
 ):
 
@@ -84,11 +83,14 @@ def plotly_triangular_mesh(
             "len": 0.75
         }
     
-    if not plot_edges:
-        print("YESSSS")
+    if plot_edges is False:
         return [mesh]
 
-    print("NOOOOOOO")
+    lines = create_plot_edges_lines(vertices, faces)
+    return [mesh, lines]
+
+
+def create_plot_edges_lines(vertices, faces):
     tri_vertices = vertices[faces]
     Xe=[]
     Ye=[]
@@ -106,7 +108,7 @@ def plotly_triangular_mesh(
                 name='',
                 line=dict(color= 'rgb(70,70,70)', width=1)
             )
-    return [mesh, lines]
+    return lines
 
 
 def create_mesh_data(option):
