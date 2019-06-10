@@ -25,10 +25,14 @@ columns2 = [
     "Oil Produced, bbl",
     "Reporting Year",
 ]
-df1 = pd.read_csv(DATA_PATH.joinpath(
-    "Oil_and_Gas_Annual_Production__1985_-_2000.csv"), low_memory=False)[columns1]
-df2 = pd.read_csv(DATA_PATH.joinpath(
-    "Oil_and_Gas_Annual_Production__Beginning_2001.csv"), low_memory=False)[columns2]
+df1 = pd.read_csv(
+    DATA_PATH.joinpath("Oil_and_Gas_Annual_Production__1985_-_2000.csv"),
+    low_memory=False,
+)[columns1]
+df2 = pd.read_csv(
+    DATA_PATH.joinpath("Oil_and_Gas_Annual_Production__Beginning_2001.csv"),
+    low_memory=False,
+)[columns2]
 
 
 # In[]:
