@@ -494,7 +494,7 @@ def get_fig(currency_pair, ask, bid, type_trace, studies, period):
     fig["layout"]["margin"] = {"b": 50, "r": 5, "l": 50, "t": 5}
     fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
     fig["layout"]["xaxis"]["tickformat"] = "%H:%M"
-    fig["layout"].update(paper_bgcolor="#18252E", plot_bgcolor="#18252E")
+    fig["layout"].update(paper_bgcolor="#22252b", plot_bgcolor="#22252b")
     return fig
 
 
@@ -510,33 +510,16 @@ def chart_div(pair):
     return html.Div(
         id=pair + "graph_div",
         children=[
-            html.Span(
-                "×",
-                id=pair + "close",
-                n_clicks=0,
-                style={
-                    "fontSize": "16",
-                    "float": "right",
-                    "paddingRight": "5",
-                    "verticalAlign": "textTop",
-                    "cursor": "pointer",
-                },
-                className="row",
-            ),
             # Menu for Currency Graph
             html.Div(
+                id=pair + "menu",
+                className="not_visible",
                 children=[
                     # stores current menu tab
                     html.Div(
                         id=pair + "menu_tab",
                         children=["Studies"],
                         style={"display": "none"},
-                    ),
-                    html.Span(
-                        id=pair + "close_menu",
-                        className="btn-close",
-                        children="×",
-                        n_clicks=0,
                     ),
                     html.Span(
                         "Style",
@@ -606,30 +589,27 @@ def chart_div(pair):
                             )
                         ],
                     ),
-                ],
-                id=pair + "menu",
-                className="not_visible",
-                style={
-                    "overflow": "auto",
-                    "borderRight": "1px solid rgba(68,149,209,.9)",
-                    "backgroundImage": "-webkit-linear-gradient(top,#18252e,#2a516e 63%)",
-                    "zIndex": "20",
-                    "width": "100%",
-                    "height": "100%",
-                },
+                ]
             ),
-            # top bar
+            html.Span(
+                id=pair + "close",
+                className="graph-close row",
+                children="×",
+                n_clicks=0
+            ),
+            # Chart Top Bar
             html.Div(
                 className="row chart-top-bar",
                 children=[
                     html.Span(
+                        id=pair + "menu_button",
                         children=f"{pair} ☰",
                         n_clicks=0,
-                        id=pair + "menu_button",
-                        style={"float": "left", "color": "white", "cursor": "pointer"},
+                        style={"color": "white", "cursor": "pointer"},
                     ),
                     html.Div(
                         dcc.Dropdown(
+                            className="dropdown-period",
                             id=pair + "dropdown_period",
                             options=[
                                 {"label": "5 min", "value": "5Min"},
@@ -637,8 +617,7 @@ def chart_div(pair):
                                 {"label": "30 min", "value": "30Min"},
                             ],
                             value="15Min",
-                            clearable=False,
-                            style={"width": "100px"},
+                            clearable=False
                         ),
                         style={"float": "right"},
                     ),
@@ -666,20 +645,25 @@ def bottom_panel():
         id="bottom_panel",
         className="row div-bottom-panel",
         children=[
-            dcc.Location(id="bottom_tab", refresh=False),
-            dcc.Link("Open positions", id="open_positions", href="/"),
-            dcc.Link("Closed positions", id="closed_positions", href="/closed"),
-            html.Div(
-                id="close_orders_div",
-                children=[
-                    dcc.Dropdown(id="closable_orders", placeholder="Close order")
+            dcc.Dropdown(
+                id="dropdown_positions",
+                className="bottom-dropdown",
+                options=[
+                    {'label': 'Open Positions', 'value': 'open'},
+                    {'label': 'Closed Positions', 'value': 'closed'}
                 ],
+                value='open',
+                clearable=False
+            ),
+            dcc.Dropdown(
+                id="closable_orders", 
+                className="bottom-dropdown",
+                placeholder="Close order"
             ),
             html.Div(
                 id="bottom_content",
                 className="row",
-                children=[html.Table(id="orders_table")],
-                style={"padding": "3", "textAlign": "center"},
+                children=[html.Table(id="orders_table")]
             ),
         ],
     )
@@ -798,45 +782,6 @@ def modal(pair):
             )
         ],
     )
-
-
-# Returns Orders Table Content
-# Status is either OPEN or CLOSED
-def orders_rows(list_order, status):
-    headers = [
-        "Order Id",
-        "Time",
-        "Type",
-        "Volume",
-        "Symbol",
-        "TP",
-        "SL",
-        "Price",
-        "Profit",
-        "Status",
-    ]
-
-    # If tab is closed
-    if status == "closed":
-        headers += ["Close Time", "Close Price"]
-
-    if list_order is not None:
-        rows = []
-        for order in list_order:
-            tr_childs = []
-            for attr in order:
-                if order["status"] == status:
-                    tr_childs.append(html.Td(order[attr]))
-            if float(order["profit"]) >= 0:
-                rows.append(html.Tr(className="profit", children=tr_childs))
-            else:
-                rows.append(html.Tr(className="no-profit", children=tr_childs))
-
-        table = [html.Tr([html.Th(title) for title in headers])] + rows
-
-        return table
-
-    return html.Tr([html.Th(title) for title in headers])
 
 
 # Dash App Layout
@@ -986,7 +931,7 @@ def generate_close_graph_callback():
 
 
 def generate_open_close_menu_callback():
-    def open_close_menu(n, n2, className):
+    def open_close_menu(n, className):
         if n == 0:
             return "not_visible"
         if className == "visible":
@@ -1297,8 +1242,7 @@ for pair in currencies:
     app.callback(
         Output(pair + "menu", "className"),
         [
-            Input(pair + "menu_button", "n_clicks"),
-            Input(pair + "close_menu", "n_clicks"),
+            Input(pair + "menu_button", "n_clicks")
         ],
         [State(pair + "menu", "className")],
     )(generate_open_close_menu_callback())
@@ -1386,105 +1330,69 @@ app.callback(
     [State("orders", "children")],
 )(generate_update_orders_div_callback())
 
-
+# Orders Table
 @app.callback(
     Output("orders_table", "children"),
     [
         Input("orders", "children"),
-        Input("bottom_tab", "pathname"),
+        Input("dropdown_positions", "value")
     ],  # returns orders table based on clicked tab
 )
-def update_order_table(orders, url):
-    url = "open" if url == "/" else "closed"
+def update_order_table(orders, position):
+    headers = [
+        "Order Id",
+        "Time",
+        "Type",
+        "Volume",
+        "Symbol",
+        "TP",
+        "SL",
+        "Price",
+        "Profit",
+        "Status",
+    ]
+
+     # If tab is closed
+    if position == "closed":
+        headers += ["Close Time", "Close Price"]
+
     if orders is None or orders is "[]":
-        return orders_rows(None, url)
-    return orders_rows(json.loads(orders), url)
+        return html.Tr([html.Th(title) for title in headers])
 
+    rows = []
+    for order in orders:
+        tr_childs = []
+        for attr in order:
+            if order["status"] == status:
+                tr_childs.append(html.Td(order[attr]))
+        # Color row based on profitability of order
+        if float(order["profit"]) >= 0:
+            rows.append(html.Tr(className="profit", children=tr_childs))
+        else:
+            rows.append(html.Tr(className="no-profit", children=tr_childs))
 
-@app.callback(Output("open_positions", "style"), [Input("bottom_tab", "pathname")])
-def update_link_style_open(url):
-    style = (
-        {
-            "borderBottom": "2px solid" + " " + "#45df7e",
-            "textDecoration": "none",
-            "color": "white",
-        }
-        if url == "/"
-        else {
-            "borderBottom": "2px solid" + " " + "rgba(68,149,209,.9)",
-            "textDecoration": "none",
-            "color": "white",
-        }
-    )
-    return style
+    return [html.Tr([html.Th(title) for title in headers])] + rows
+    
 
-
+# Update Options in dropdown for Open and Close positions
 @app.callback(
-    Output("open_positions", "children"),
-    [Input("bottom_tab", "pathname"), Input("orders", "children")],
+    Output("dropdown_positions", "options"),
+    [Input("orders", "children")],
 )
-def update_link_label_open(url, orders):
-    length = 0
-    if orders is not None:
-        orders = json.loads(orders)
-        for order in orders:
-            if order["status"] == "open":
-                length += 1
-    return "Open positions (" + str(length) + ")"
-
-
-@app.callback(Output("closed_positions", "style"), [Input("bottom_tab", "pathname")])
-def update_link_style_closed(url):
-    style = (
-        {
-            "borderBottom": "2px solid" + " " + "#45df7e",
-            "textDecoration": "none",
-            "marginLeft": "10",
-            "color": "white",
-        }
-        if url == "/closed"
-        else {
-            "borderBottom": "2px solid" + " " + "rgba(68,149,209,.9)",
-            "textDecoration": "none",
-            "marginLeft": "10",
-            "color": "white",
-        }
-    )
-    return style
-
-
-@app.callback(
-    Output("closed_positions", "children"),
-    [Input("bottom_tab", "pathname"), Input("orders", "children")],
-)
-def update_link_label_closed(url, orders):
-    length = 0
+def update_positions_dropdown(orders):
+    closeOrders = 0
+    openOrders = 0
     if orders is not None:
         orders = json.loads(orders)
         for order in orders:
             if order["status"] == "closed":
-                length += 1
-    return "Closed positions (" + str(length) + ")"
+                closeOrders += 1
+            if order["status"] == "open":
+                openOrders += 1
+    return  [{'label': "Open positions (" + str(openOrders) + ")", 'value': 'open'},
+             {'label': "Closed positions (" + str(closeOrders) + ")", 'value': 'closed'}]
 
-
-# hide/show div that contains 'close order' dropdown
-@app.callback(Output("close_orders_div", "style"), [Input("bottom_tab", "pathname")])
-def show_hide_close_orders(url):
-    style = (
-        {
-            "float": "right",
-            "right": "5",
-            "top": "3",
-            "width": "15%",
-            "textAlign": "center",
-        }
-        if url == "/"
-        else {"display": "none"}
-    )
-    return style
-
-
-# updates close orders dropdown options
+# Updates close orders dropdown options
 @app.callback(Output("closable_orders", "options"), [Input("orders", "children")])
 def update_close_dropdown(orders):
     options = []
@@ -1496,6 +1404,7 @@ def update_close_dropdown(orders):
     return options
 
 
+# Callback to update Top Bar values 
 @app.callback(Output("top_bar", "children"), [Input("orders", "children")])
 def update_top_bar(orders):
     if orders is None or orders is "[]":
