@@ -443,7 +443,7 @@ tr{
   padding: 24px;
   margin: 0px;
   height:100%;
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
 }
 
 .div-right-panel{
