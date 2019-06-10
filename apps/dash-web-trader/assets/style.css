@@ -443,6 +443,7 @@ tr{
   padding: 24px;
   margin: 0px;
   height:100%
+  overflow-y: scroll;
 }
 
 .div-right-panel{
@@ -470,6 +471,14 @@ tr{
   background-color: #22252b;
 }
 
+.div-close-orders{
+  float: right;
+  right: 5px;
+  top: 3px;
+  width: 200px;
+  text-align: center;
+}
+
 .p-top-bar{
   color: #b2b2b2;
   font-size: 14px;
@@ -488,6 +497,10 @@ tr{
 .chart-top-bar{
   padding: 12px;
   background-color: #30333d;
+}
+
+button{
+  color: white;
 }
 
 
@@ -535,3 +548,40 @@ div.Select-value, .Select-control,div.period, .Select-input{
   z-index: 1000;
 }
 
+.visible{
+  display: block;
+  position: absolute;
+  overflow: auto;
+  z-index: 20;
+  width: 45%;
+  height: 75%;
+  background-image: -webkit-linear-gradient(top,#30333d,#18252e 63%);
+  top: 58px;
+}
+
+.not_visible{
+  display: none;
+  position: absolute;
+}
+
+.dropdown-period{
+  width: 100px;
+}
+
+.graph-close{
+  font-size: 16px;
+  color:white;
+  float: left;
+  padding-left: 15px;
+  vertical-align: text-top;
+  cursor: pointer;
+}
+
+.bottom-dropdown{
+  width: 200px;
+  padding:12px;
+}
+
+.Select-placeholder{
+  padding-left:21px;
+}
