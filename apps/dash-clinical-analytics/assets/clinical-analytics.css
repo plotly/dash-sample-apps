@@ -1,0 +1,58 @@
+@font-face {
+    font-family: Acumin;
+    font-weight: bold;
+    src: url("/assets/Acumin-BdPro.otf") format("opentype");
+}
+
+/* Remove Undo
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+._dash-undo-redo {
+    display: none;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333333;
+    font-size: 16px;
+}
+
+.banner {
+    height: 5rem;
+    margin-bottom: 1rem;
+    padding: 0rem 2rem 0rem;
+    background-color: white;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.banner Img {
+    position: relative;
+    height: 3rem;
+    width: auto;
+}
+
+H5, H3 {
+    font-family: Acumin, "Helvetica Neue", sans-serif;
+}
+
+.table-row {
+    line-height: 100px;
+    height:100px;
+    vertical-align: middle;
+}
+
+.wait_time_graph > div, .patient_score_graph > div {
+    height:100%;
+    width:100%;
+}
+
+.draglayer {
+    cursor: pointer !important;
+}
+
+#intro {
+    margin-top: 20px;
+    font-family:"Helvetica Neue", sans-serif;
+    text-align: justify;
+}
