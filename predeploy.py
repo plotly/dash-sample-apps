@@ -21,5 +21,26 @@ if "-" in app_name and app_name.split("-")[0] == "dashr":
 else:
     for f in pyfiles:
         shutil.copyfile(os.path.join(app_path, f), f)
+    lines = []
+    ga_line = 0
+    with open(os.path.join(app_path, 'app.py'), 'r') as f:
+        lines = f.readlines()
+
+    try:
+        ga_line = [i for i in range(len(lines)) if 'app.layout' in lines[i]]
+        lines.insert(
+            ga_line[0],
+            'app.index_string = \'\'\'\n{}\n\'\'\'\n\n'.format(
+                os.environ["DASH_GA_CODE"]
+            )
+        )
+    except IndexError as e:
+        pass
+
+    with open(os.path.join(app_path, 'app.py~'), 'w+') as f:
+        f.write(''.join(lines))
+
+    shutil.copyfile(os.path.join(app_path, 'app.py~'),
+                    os.path.join(app_path, 'app.py'))
 
 subprocess.run("python -m pip install -r requirements.txt".split(" "))
