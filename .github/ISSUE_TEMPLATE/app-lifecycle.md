@@ -10,11 +10,18 @@ assignees: ''
 
 # App name
 
-- [ ] This app is currently deployed on Dash Gallery: [url of deployment]
+# App
+- [ ] This app is currently deployed on Dash(R) Gallery: [deployment URL]
 - [ ] This app is new
 
+# Source code repository
+[source code repo URL]
+
 # Current appearance
-[add screenshot of current state of the app here]
+[attach screenshot of current app here]
 
 # Redesign
 [attach redesign image here]
+
+# Playground deployment 
+[url of playground deployment]
