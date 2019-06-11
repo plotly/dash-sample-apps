@@ -2,6 +2,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
 import dash_colorscales as dcs
 import json
 
@@ -37,8 +38,8 @@ plot_layout = {
     "title": "",
     "margin": {"t": 0, "b": 0, "l": 0, "r": 0},
     "font": {"size": 12, "color": "white"},
-    # "width": 650,
-    # "height": 650,
+    "width": 650,
+    "height": 650,
     "showlegend": False,
     "plot_bgcolor": "#141414",
     "paper_bgcolor": "#141414",
@@ -205,8 +206,52 @@ app.layout = html.Div(
             ],
             className="one-third column app__right__section",
         ),
+        dcc.Store(id="annotation_storage"),
     ]
 )
+
+
+def add_marker(x, y, z):
+    return {
+        "x": [x],
+        "y": [y],
+        "z": [z],
+        "mode": "markers",
+        "marker": {"size": 25, "line": {"width": 3}},
+        "name": "Marker",
+        "type": "scatter3d",
+        "text": ["Click point to remove annotation"],
+    }
+
+
+def add_annotation(x, y, z):
+    return {
+        "x": x,
+        "y": y,
+        "z": z,
+        "font": {"color": "black"},
+        "bgcolor": "white",
+        "borderpad": 5,
+        "bordercolor": "black",
+        "borderwidth": 1,
+        "captureevents": True,
+        "ay": -100,
+        "arrowcolor": "white",
+        "arrowwidth": 2,
+        "arrowhead": 0,
+        "text": "Click here to annotate<br>(Click point to remove)",
+    }
+
+
+def point_found(points, marker):
+    for index, point in enumerate(points):
+        if (
+            point["x"] == marker["x"]
+            and point["y"] == marker["y"]
+            and point["z"] == marker["z"]
+        ):
+            return index
+    return None
 
 
 @app.callback(
@@ -216,13 +261,14 @@ app.layout = html.Div(
         Input("radio-options", "value"),
         Input("colorscale-picker", "colorscale"),
     ],
-    [State("brain-graph", "figure")],
+    [State("brain-graph", "figure"), State("annotation_storage", "data")],
 )
-def brain_graph_handler(click_data, val, colorscale, figure):
+def brain_graph_handler(click_data, val, colorscale, figure, current_anno):
 
     # new option select
     if figure["data"][0]["name"] != val:
         figure["data"] = create_mesh_data(val)
+        figure["layout"] = plot_layout
         return figure
 
     # modify graph markers
@@ -232,65 +278,43 @@ def brain_graph_handler(click_data, val, colorscale, figure):
         x_value = click_data["points"][0]["x"]
         z_value = click_data["points"][0]["z"]
 
-        marker = dict(
-            x=[x_value],
-            y=[y_value],
-            z=[z_value],
-            mode="markers",
-            marker=dict(size=25, line=dict(width=3)),
-            name="Marker",
-            type="scatter3d",
-            text=["Click point to remove annotation"],
-        )
-        anno = dict(
-            x=x_value,
-            y=y_value,
-            z=z_value,
-            font=dict(color="black"),
-            bgcolor="white",
-            borderpad=5,
-            bordercolor="black",
-            borderwidth=1,
-            captureevents=True,
-            ay=-100,
-            arrowcolor="white",
-            arrowwidth=2,
-            arrowhead=0,
-            text="Click here to annotate<br>(Click point to remove)",
-        )
-        if len(figure["data"]) > 1:
-            same_point_found = False
-            for i, pt in enumerate(figure["data"]):
-                if (
-                    pt["x"] == marker["x"]
-                    and pt["y"] == marker["y"]
-                    and pt["z"] == marker["z"]
-                ):
-                    ANNO_TRACE_INDEX_OFFSET = 1
-                    if val == "mouse":
-                        ANNO_TRACE_INDEX_OFFSET = 2
-                    figure["data"].pop(i)
-                    print("DEL. MARKER", i, figure["layout"]["scene"]["annotations"])
-                    if len(figure["layout"]["scene"]["annotations"]) >= (
-                        i - ANNO_TRACE_INDEX_OFFSET
-                    ):
-                        try:
-                            figure["layout"]["scene"]["annotations"].pop(
-                                i - ANNO_TRACE_INDEX_OFFSET
-                            )
-                        except:
-                            pass
-                    same_point_found = True
-                    break
-            if same_point_found == False:
-                figure["data"].append(marker)
-                figure["layout"]["scene"]["annotations"].append(anno)
+        marker = add_marker(x_value, y_value, z_value)
+        point_index = point_found(figure["data"], marker)
+
+        # delete graph markers
+        if len(figure["data"]) > 1 and point_index is not None:
+
+            figure["data"].pop(point_index)
+            anno_index_offset = 2 if val == "mouse" else 1
+            try:
+                figure["layout"]["scene"]["annotations"].pop(
+                    point_index - anno_index_offset
+                )
+            except Exception as error:
+                print(error)
+                pass
+
+        # append graph markers
         else:
+
+            # iterate through the store annotations and save it into figure data
+            # TODO: improve performance
+            if current_anno is not None:
+                for index, annotations in enumerate(
+                    figure["layout"]["scene"]["annotations"]
+                ):
+                    for key in current_anno.keys():
+                        if str(index) in key:
+                            figure["layout"]["scene"]["annotations"][index][
+                                "text"
+                            ] = current_anno[key]
+
             figure["data"].append(marker)
-            figure["layout"]["scene"]["annotations"].append(anno)
+            figure["layout"]["scene"]["annotations"].append(
+                add_annotation(x_value, y_value, z_value)
+            )
 
     cs = [[i / (len(colorscale) - 1), rgb] for i, rgb in enumerate(colorscale)]
-
     figure["data"][0]["colorscale"] = cs
 
     return figure
@@ -306,6 +330,26 @@ def display_click_data(click_data):
 )
 def display_relayout_data(relayout_data):
     return json.dumps(relayout_data, indent=4)
+
+
+@app.callback(
+    Output("annotation_storage", "data"),
+    [Input("brain-graph", "relayoutData")],
+    [State("annotation_storage", "data")],
+)
+def save_annotations(relayout_data, current_data):
+
+    if relayout_data is None:
+        raise PreventUpdate
+
+    if current_data is None:
+        return {}
+
+    for key in relayout_data.keys():
+        if "scene.annotations" in key:
+            current_data[key] = relayout_data[key]
+
+    return current_data
 
 
 if __name__ == "__main__":
