@@ -123,11 +123,11 @@ app.layout = html.Div(
                 ),
                 # Column for app graphs and plots
                 html.Div(
-                    className="eight columns div-for-charts",
+                    className="eight columns div-for-charts bg-grey",
                     children=[
                         dcc.Graph(id="map-graph"),
                         html.Div(
-                            className="bg-grey",
+                            className="text-padding",
                             children=[
                                 "Select any of the bars on the histogram to section data by time."
                             ],
@@ -287,7 +287,7 @@ def update_histogram(datePicked, selection):
         bargap=0.01,
         bargroupgap=0,
         barmode="group",
-        margin=go.layout.Margin(l=10, r=0, t=0, b=30),
+        margin=go.layout.Margin(l=10, r=0, t=0, b=50),
         showlegend=False,
         plot_bgcolor="#323130",
         paper_bgcolor="#323130",
@@ -435,8 +435,7 @@ def update_graph(datePicked, selectedData, selectedLocation):
         ],
         layout=Layout(
             autosize=True,
-            # height=500,
-            margin=go.layout.Margin(l=0, r=0, t=0, b=0),
+            margin=go.layout.Margin(l=0, r=35, t=0, b=0),
             showlegend=False,
             mapbox=dict(
                 accesstoken=mapbox_access_token,
