@@ -1,12 +1,14 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output
+
 import numpy as np
 import pandas as pd
 import datetime
 from datetime import datetime as dt
+import pathlib
 
-from dash.dependencies import Input, Output
 
 app = dash.Dash(__name__)
 
@@ -14,10 +16,12 @@ server = app.server
 app.config.suppress_callback_exceptions = True
 
 # Path
+BASE_PATH = pathlib.Path(__file__).parent.resolve()
 
+DATA_PATH = BASE_PATH.joinpath("data").resolve()
 
 # Read data
-df = pd.read_csv("data/clinical_analytics.csv")
+df = pd.read_csv(DATA_PATH.joinpath("clinical_analytics.csv"))
 
 clinic_list = df["Clinic Name"].unique()
 
