@@ -1,2 +1,4 @@
 vv/
 *.pyc
+venv/
+.idea/
