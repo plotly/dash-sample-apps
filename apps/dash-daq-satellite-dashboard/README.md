@@ -34,9 +34,9 @@ To run this application locally, simply type the following into the command line
 ```bash
 python app.py
 ```
-You will then see the satellite dashboard.
 --
-![Satellite Dashboard](/assets/satellite-dashboard.png)
+
+![Satellite Dashboard](assets/screenshot.png)
 
 ### Controls
 * Satellite dropdown: Select which satellite to track.
