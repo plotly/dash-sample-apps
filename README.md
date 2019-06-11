@@ -64,7 +64,11 @@ Contributing an app written with Dash for R is very similar to the steps outline
 
 2. Ensure that the file containing your app code is named `app.R`.
 
-3. The `Procfile` should contain `web: R -f /app/apps/"$DASH_APP_NAME"/app.R`.
+3. The `Procfile` should contain 
+
+```
+web: R -f /app/apps/"$DASH_APP_NAME"/app.R`
+```
 
 4. Routing and request pathname prefixes should be set. One approach might be to include
 
