@@ -13,6 +13,9 @@ app = dash.Dash(__name__)
 server = app.server
 app.config.suppress_callback_exceptions = True
 
+# Path
+
+
 # Read data
 df = pd.read_csv("data/clinical_analytics.csv")
 
@@ -108,6 +111,7 @@ def generate_control_card():
 
 def generate_patient_volume_heatmap(start, end, clinic, hm_click, admit_type, reset):
     """
+
     :return: Patient volume annotated heatmap. filters: clinic name, checkin time, start_date, end_date,
     cross-filtered back from bottom-table.
     """
@@ -119,17 +123,37 @@ def generate_patient_volume_heatmap(start, end, clinic, hm_click, admit_type, re
         start:end
     ]
 
+    x_axis = [datetime.time(i).strftime("%I %p") for i in range(24)]  # 24hr time list
+    y_axis = day_list
+
     hour_of_day = ""
     weekday = ""
+    shapes = []
 
     if hm_click is not None:
         hour_of_day = hm_click["points"][0]["x"]
         weekday = hm_click["points"][0]["y"]
 
-    # Get z value : sum(number of records) based on x, y,
+        # Add shapes
+        x0 = (x_axis.index(hour_of_day)) * 1 / 24
+        x1 = x0 + 1 / 24
+        y0 = (y_axis.index(weekday)) * 1 / 7
+        y1 = y0 + 1 / 7
 
-    x_axis = [datetime.time(i).strftime("%I %p") for i in range(24)]  # 24hr time list
-    y_axis = day_list
+        shapes = [
+            dict(
+                type="rect",
+                xref="paper",
+                yref="paper",
+                x0=x0,
+                x1=x1,
+                y0=y0,
+                y1=y1,
+                line=dict(color="#ff6347"),
+            )
+        ]
+
+    # Get z value : sum(number of records) based on x, y,
 
     z = np.zeros((7, 24))
     annotations = []
@@ -177,6 +201,7 @@ def generate_patient_volume_heatmap(start, end, clinic, hm_click, admit_type, re
         margin=dict(l=70, b=50, t=50, r=50),
         font=dict(family="Open Sans"),
         annotations=annotations,
+        shapes=shapes,
         xaxis=dict(side="top", ticks=" ", ticklen=15, tickcolor="#ffffff"),
         yaxis=dict(side="left", ticks="", ticksuffix=" "),
         hovermode="closest",
