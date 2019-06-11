@@ -161,21 +161,21 @@ def get_row(data):
                         id=current_row[0] + "Buy",
                         className="button-buy-sell-chart",
                         children="Buy/Sell",
-                        n_clicks=0
+                        n_clicks=0,
                     ),
                     html.Button(
                         id=current_row[0] + "Button_chart",
                         className="button-buy-sell-chart",
                         children="Chart",
                         n_clicks=1 if current_row[0] in ["EURUSD", "USDCHF"] else 0,
-                        style={"float":"right"}
-                    )
-                ]
-            )
+                        style={"float": "right"},
+                    ),
+                ],
+            ),
         ],
         id=current_row[0] + "row_div",
         n_clicks=0,
-      # style={"textAlign": "center", "paddingTop": "4"},
+        # style={"textAlign": "center", "paddingTop": "4"},
     )
 
 
@@ -601,7 +601,6 @@ def chart_div(pair):
                     ),
                 ],
             ),
-
             # Chart Top Bar
             html.Div(
                 className="row chart-top-bar",
@@ -611,10 +610,10 @@ def chart_div(pair):
                         children=f"{pair} ☰",
                         n_clicks=0,
                         style={
-                            "color": "white", 
-                            "cursor": "pointer", 
-                            "display":"inline-block",
-                            "fontSize":"16px"
+                            "color": "white",
+                            "cursor": "pointer",
+                            "display": "inline-block",
+                            "fontSize": "16px",
                         },
                     ),
                     html.Div(
@@ -630,20 +629,20 @@ def chart_div(pair):
                                             {"label": "30 min", "value": "30Min"},
                                         ],
                                         value="15Min",
-                                        clearable=False
+                                        clearable=False,
                                     )
                                 ],
-                                style={"display":"inline-block"}
+                                style={"display": "inline-block"},
                             ),
                             html.Span(
-                                id=pair + "close", 
-                                className="graph-close row", 
-                                children="×", 
+                                id=pair + "close",
+                                className="graph-close row",
+                                children="×",
                                 n_clicks=0,
-                                style={"display":"inline-block"}
+                                style={"display": "inline-block"},
                             ),
                         ],
-                        style={"float": "right", "display":"inline-block"},
+                        style={"float": "right", "display": "inline-block"},
                     ),
                 ],
             ),
@@ -687,11 +686,7 @@ def bottom_panel():
             html.Div(
                 id="bottom_content",
                 className="row",
-                children=[
-                    html.Table(
-                        id="orders_table"
-                    )
-                ],
+                children=[html.Table(id="orders_table")],
             ),
         ],
     )
@@ -936,7 +931,7 @@ def generate_figure_callback(pair):
         if pair not in pairs:
             return {
                 "layout": {},
-                "data": []
+                "data": [],
             }  # we only update figure when the div is displayed
 
         if old_fig is None or old_fig == {"layout": {}, "data": []}:
@@ -1361,7 +1356,7 @@ app.callback(
 # Orders Table
 @app.callback(
     Output("orders_table", "children"),
-    [Input("orders", "children"), Input("dropdown_positions", "value")]
+    [Input("orders", "children"), Input("dropdown_positions", "value")],
 )
 def update_order_table(orders, position):
     headers = [
@@ -1381,7 +1376,6 @@ def update_order_table(orders, position):
     if position == "closed":
         headers += ["Close Time", "Close Price"]
 
-    
     # If there are no orders
     if orders is None or orders is "[]":
         return html.Tr(children=[html.Th(title) for title in headers])
