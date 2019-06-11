@@ -34,7 +34,6 @@ To run this application locally, simply type the following into the command line
 ```bash
 python app.py
 ```
---
 
 ![Satellite Dashboard](assets/screenshot.png)
 
