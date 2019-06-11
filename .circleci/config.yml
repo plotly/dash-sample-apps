@@ -34,6 +34,7 @@ jobs:
       - run:
           name: Deploy
           command: |
+            echo $PLOTLY_GA_CODE > ga_code.txt
             APPS_MODIFIED=$(git diff origin/master origin/$CIRCLE_BRANCH --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} } ' | sort -u)
             if [ -z "$APPS_MODIFIED" ]
             then
@@ -83,6 +84,7 @@ jobs:
       - run:
           name: Deploy
           command: |
+            echo $PLOTLY_GA_CODE > ga_code.txt
             APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }' | sort -u)
             for APP in $APPS_MODIFIED
             do
