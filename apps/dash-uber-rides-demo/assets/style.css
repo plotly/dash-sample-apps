@@ -424,6 +424,8 @@ a {
 }
 .bg-grey{
   background-color: #323130;
+}
+.text-padding{
   padding: 5px;
 }
 /* Graph Layout ––––––––––––––––––––––––––––––––––––––––––––––––––*/
@@ -444,7 +446,8 @@ a {
 }
 /* Graph Control Objects ––––––––––––––––––––––––––––––––––––––––––––––––––*/
 .div-user-controls {
-  padding: 12px;
+  padding-left: 55px;
+  padding-top: 64px;
 }
 .div-for-dropdown {
   padding: 12px;
@@ -455,11 +458,17 @@ a {
 }
 .logo {
   height: 50px;
+  padding-bottom: 12px;
 }
 .Select-control, .Select-menu-outer, .Select-multi-value-wrapper, .select-up, .is-open .Select-control {
   background-color: #1E1E1E;
   color: white;
 }
+
+.Select-control{
+  border: 0.5px solid #dbdbdb;
+}
+
 .has-value.Select--single>.Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single>.Select-control .Select-value .Select-value-label {
   color: white;
 }
@@ -467,9 +476,6 @@ a {
   overflow-x: hidden;
   overflow-y: hidden;
   position: relative;
-}
-.mapboxgl-canvas, .mapboxgl-map {
-  min-width: 100%;
 }
 .has-value.Select--single>.Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single>.Select-control .Select-value .Select-value-label{
   color: #d8d8d8;
@@ -521,13 +527,15 @@ a {
  }
   body {
       display: block;
-      margin: 8px;
- }
+      margin: 0px;
+  }
   .div-for-charts {
-      padding: 24px;
+      padding: 0px;
+      width: 100%;
       text-align: center;
  }
-  .mapboxgl-canvas, .mapboxgl-map {
-      min-width: 100%;
+
+ .div-user-controls {
+    padding: 32px;
  }
-}
+} 
