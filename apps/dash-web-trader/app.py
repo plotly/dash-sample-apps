@@ -42,12 +42,14 @@ def generate_news_table(dataframe, max_rows=10):
                     html.Tr(
                         [
                             html.Td(
-                                html.A(
-                                    className="td-link",
-                                    children=dataframe.iloc[i]["title"],
-                                    href=dataframe.iloc[i]["url"],
-                                    target="_blank",
-                                )
+                                children=[
+                                    html.A(
+                                        className="td-link",
+                                        children=dataframe.iloc[i]["title"],
+                                        href=dataframe.iloc[i]["url"],
+                                        target="_blank",
+                                    )
+                                ]
                             )
                         ]
                     )
@@ -152,22 +154,28 @@ def get_row(data):
                     )
                 ],
             ),
-            html.Button(
-                "Buy/Sell",
-                id=current_row[0] + "Buy",
-                n_clicks=0,
-                style={"margin": "0px 7px 7px 10px", "textAlign": "center"},
-            ),
-            html.Button(
-                "Chart",
-                id=current_row[0] + "Button_chart",
-                n_clicks=1 if current_row[0] in ["EURUSD", "USDCHF"] else 0,
-                style={"margin": "0px 7px 7px 10px", "textAlign": "center"},
-            ),
+            html.Div(
+                className="row",
+                children=[
+                    html.Button(
+                        id=current_row[0] + "Buy",
+                        className="button-buy-sell-chart",
+                        children="Buy/Sell",
+                        n_clicks=0
+                    ),
+                    html.Button(
+                        id=current_row[0] + "Button_chart",
+                        className="button-buy-sell-chart",
+                        children="Chart",
+                        n_clicks=1 if current_row[0] in ["EURUSD", "USDCHF"] else 0,
+                        style={"float":"right"}
+                    )
+                ]
+            )
         ],
         id=current_row[0] + "row_div",
         n_clicks=0,
-        style={"textAlign": "center", "paddingTop": "4"},
+      # style={"textAlign": "center", "paddingTop": "4"},
     )
 
 
@@ -492,6 +500,8 @@ def get_fig(currency_pair, ask, bid, type_trace, studies, period):
         fig.append_trace(globals()[study](df), row, 1)
 
     fig["layout"]["margin"] = {"b": 50, "r": 5, "l": 50, "t": 5}
+    fig["layout"]["autosize"] = True
+    fig["layout"]["height"] = 400
     fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
     fig["layout"]["xaxis"]["tickformat"] = "%H:%M"
     fig["layout"].update(paper_bgcolor="#22252b", plot_bgcolor="#22252b")
@@ -591,9 +601,7 @@ def chart_div(pair):
                     ),
                 ],
             ),
-            html.Span(
-                id=pair + "close", className="graph-close row", children="×", n_clicks=0
-            ),
+
             # Chart Top Bar
             html.Div(
                 className="row chart-top-bar",
@@ -602,21 +610,40 @@ def chart_div(pair):
                         id=pair + "menu_button",
                         children=f"{pair} ☰",
                         n_clicks=0,
-                        style={"color": "white", "cursor": "pointer"},
+                        style={
+                            "color": "white", 
+                            "cursor": "pointer", 
+                            "display":"inline-block",
+                            "fontSize":"16px"
+                        },
                     ),
                     html.Div(
-                        dcc.Dropdown(
-                            className="dropdown-period",
-                            id=pair + "dropdown_period",
-                            options=[
-                                {"label": "5 min", "value": "5Min"},
-                                {"label": "15 min", "value": "15Min"},
-                                {"label": "30 min", "value": "30Min"},
-                            ],
-                            value="15Min",
-                            clearable=False,
-                        ),
-                        style={"float": "right"},
+                        children=[
+                            html.Div(
+                                children=[
+                                    dcc.Dropdown(
+                                        className="dropdown-period",
+                                        id=pair + "dropdown_period",
+                                        options=[
+                                            {"label": "5 min", "value": "5Min"},
+                                            {"label": "15 min", "value": "15Min"},
+                                            {"label": "30 min", "value": "30Min"},
+                                        ],
+                                        value="15Min",
+                                        clearable=False
+                                    )
+                                ],
+                                style={"display":"inline-block"}
+                            ),
+                            html.Span(
+                                id=pair + "close", 
+                                className="graph-close row", 
+                                children="×", 
+                                n_clicks=0,
+                                style={"display":"inline-block"}
+                            ),
+                        ],
+                        style={"float": "right", "display":"inline-block"},
                     ),
                 ],
             ),
@@ -660,7 +687,11 @@ def bottom_panel():
             html.Div(
                 id="bottom_content",
                 className="row",
-                children=[html.Table(id="orders_table")],
+                children=[
+                    html.Table(
+                        id="orders_table"
+                    )
+                ],
             ),
         ],
     )
@@ -905,10 +936,10 @@ def generate_figure_callback(pair):
         if pair not in pairs:
             return {
                 "layout": {},
-                "data": [],
+                "data": []
             }  # we only update figure when the div is displayed
 
-        if old_fig is None or old_fig == {"layout": {}, "data": {}}:
+        if old_fig is None or old_fig == {"layout": {}, "data": []}:
             return get_fig(pair, a, b, t, s, p)
 
         # return replace_fig(pair, a, b, t, p, old_fig, s)
@@ -1330,10 +1361,7 @@ app.callback(
 # Orders Table
 @app.callback(
     Output("orders_table", "children"),
-    [
-        Input("orders", "children"),
-        Input("dropdown_positions", "value"),
-    ],  # returns orders table based on clicked tab
+    [Input("orders", "children"), Input("dropdown_positions", "value")]
 )
 def update_order_table(orders, position):
     headers = [
@@ -1353,14 +1381,17 @@ def update_order_table(orders, position):
     if position == "closed":
         headers += ["Close Time", "Close Price"]
 
+    
+    # If there are no orders
     if orders is None or orders is "[]":
-        return html.Tr([html.Th(title) for title in headers])
+        return html.Tr(children=[html.Th(title) for title in headers])
 
     rows = []
-    for order in orders:
+    list_order = json.loads(orders)
+    for order in list_order:
         tr_childs = []
         for attr in order:
-            if order["status"] == status:
+            if str(order["status"]) == position:
                 tr_childs.append(html.Td(order[attr]))
         # Color row based on profitability of order
         if float(order["profit"]) >= 0:

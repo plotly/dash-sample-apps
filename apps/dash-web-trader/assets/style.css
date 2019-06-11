@@ -421,8 +421,19 @@ body{
   border: 1px solid #b2b2b2;
 }
 
+.table-orders{
+  width: 100%;
+  
+}
+
 tr{
   padding: 12px;
+}
+
+th{
+  padding: 15px;
+  text-align: center;
+  border-bottom: none; 
 }
 
 .td-link{
@@ -571,9 +582,6 @@ div.Select-value, .Select-control,div.period, .Select-input{
 .graph-close{
   font-size: 16px;
   color:white;
-  float: left;
-  padding-left: 15px;
-  vertical-align: text-top;
   cursor: pointer;
 }
 
@@ -584,4 +592,10 @@ div.Select-value, .Select-control,div.period, .Select-input{
 
 .Select-placeholder{
   padding-left:21px;
+}
+
+.button-buy-sell-chart{
+  margin: 0px 7px 7px 10px;
+  text-align: center;
+  display: inline-block;
 }
