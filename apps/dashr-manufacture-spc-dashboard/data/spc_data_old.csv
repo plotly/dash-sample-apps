@@ -1,4 +1,4 @@
-Batch,Diameter,Etch1,Film-Thickness,Etch2,Line-Width,Overlay,Volume
+Batch,Metric1,Metric2,Metric3,Thickness1,Width1,Metric4,Para1
 1,0.429,0.43025,49512,308.75,810,1759,315.5
 2,0.421,0.433,47101,306.75,824,1746,305.5
 3,0.417,0.4285,60023,311.75,765,1482,330.5
