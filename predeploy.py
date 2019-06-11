@@ -16,10 +16,9 @@ if "DOKKU_SCALE" in os.listdir(app_path):
     shutil.copyfile(os.path.join(app_path, "DOKKU_SCALE"), "DOKKU_SCALE")
 
 try:
-    with open(
-        os.path.join(os.path.join(app_path, "assets"), "plotly_ga.js"), "w+"
-    ) as f:
-        f.write(os.environ["PLOTLY_GA_CODE"])
+    shutil.copyfile(
+        "ga_code.txt", os.path.join(os.path.join(app_path, "assets"), "plotly_ga.js")
+    )
 except FileNotFoundError:
     print("No assets/ folder found.")
     raise SystemExit
