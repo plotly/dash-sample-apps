@@ -9,13 +9,13 @@ jobs:
     steps:
       - checkout
       - run:
-	  name: install black
-	  command: |
-	    sudo pip install black
+          name: install black
+          command: |
+            sudo pip install black
       - run:
-	  name: run black
-	  command: |
-	    black . --check
+          name: run black
+          command: |
+            black . --check
   deploy_to_playground:
     docker:
       - image: circleci/python:3.6-stretch
@@ -23,54 +23,54 @@ jobs:
     steps:
       - checkout
       - run:
-	  name: Add plotly remote
-	  command: git remote add playground https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
+          name: Add plotly remote
+          command: git remote add playground https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
       - run:
-	  name: Create helper-script
-	  command: printf '#!/bin/bash\necho username=$PLAYGROUND_DEPLOY_USERNAME\necho password=$PLAYGROUND_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
+          name: Create helper-script
+          command: printf '#!/bin/bash\necho username=$PLAYGROUND_DEPLOY_USERNAME\necho password=$PLAYGROUND_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
       - run:
-	  name: Set up git config
-	  command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
+          name: Set up git config
+          command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
       - run:
-	  name: Deploy
-	  command: |
-	    APPS_MODIFIED=$(git diff origin/master origin/$CIRCLE_BRANCH --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} } ' | sort -u)
-	    if [ -z "$APPS_MODIFIED" ]
-	    then
-		  echo "No app change detected. Skipping the deploy.."
-		  exit 0
-	    fi
+          name: Deploy
+          command: |
+            APPS_MODIFIED=$(git diff origin/master origin/$CIRCLE_BRANCH --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} } ' | sort -u)
+            if [ -z "$APPS_MODIFIED" ]
+            then
+                  echo "No app change detected. Skipping the deploy.."
+                  exit 0
+            fi
 
-	    for APP in $APPS_MODIFIED
-	    do
-	      if [ "$APP" == "$CIRCLE_BRANCH" ]
-	      then
-		git config --global user.email '<>' # Leave email blank
-		git config --global user.name "Circle MonoRepo Automatic Deployer"
-		if [[ $APP =~ "dashr" ]]
-		then
-		  cp ~/dash-sample-apps/apps/"$APP"/Aptfile ~/dash-sample-apps/
-		  cp ~/dash-sample-apps/apps/"$APP"/Procfile ~/dash-sample-apps/
-		  cp ~/dash-sample-apps/apps/"$APP"/.buildpacks ~/dash-sample-apps/
-		  cp ~/dash-sample-apps/apps/"$APP"/init.R ~/dash-sample-apps/
-		  # app.json tries to call python predeploy, which is not needed for R apps:
-		  rm ~/dash-sample-apps/app.json
-		  git add . && git commit -a -m "Deployed commit: $CIRCLE_SHA1"
-		fi
-		if [ ! -d ~/dash-sample-apps/apps/"$APP"/assets/ ]
+            for APP in $APPS_MODIFIED
+            do
+              if [ "$APP" == "$CIRCLE_BRANCH" ]
+              then
+                git config --global user.email '<>' # Leave email blank
+                git config --global user.name "Circle MonoRepo Automatic Deployer"
+                if [[ $APP =~ "dashr" ]]
+                then
+                  cp ~/dash-sample-apps/apps/"$APP"/Aptfile ~/dash-sample-apps/
+                  cp ~/dash-sample-apps/apps/"$APP"/Procfile ~/dash-sample-apps/
+                  cp ~/dash-sample-apps/apps/"$APP"/.buildpacks ~/dash-sample-apps/
+                  cp ~/dash-sample-apps/apps/"$APP"/init.R ~/dash-sample-apps/
+                  # app.json tries to call python predeploy, which is not needed for R apps:
+                  rm ~/dash-sample-apps/app.json
+                  git add . && git commit -a -m "Deployed commit: $CIRCLE_SHA1"
+                fi
+                if [ ! -d ~/dash-sample-apps/apps/"$APP"/assets/ ]
                   echo "Deploy failed because there is no assets/ folder. Exiting..."
                   exit 1
                 fi
                 echo $PLOTLY_GA_CODE > ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js
                 git add ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js && git commit -m "Deployed commit: $CIRCLE_SHA1"
                 git push playground $CIRCLE_BRANCH:master --force
-		exit 0
-	      else
-		echo "appname: $APP is not same as the branchname: $CIRCLE_BRANCH. Not deploying..."
-	      fi
-	    done
-	    echo "Deploy failed because of a branchname/appname mismatch. Exiting..."
-	    exit 1
+                exit 0
+              else
+                echo "appname: $APP is not same as the branchname: $CIRCLE_BRANCH. Not deploying..."
+              fi
+            done
+            echo "Deploy failed because of a branchname/appname mismatch. Exiting..."
+            exit 1
   deploy_to_gallery:
     docker:
       - image: circleci/python:3.6-stretch
@@ -78,28 +78,28 @@ jobs:
     steps:
       - checkout
       - run:
-	  name: Add plotly remote
-	  command: git remote add gallery https://dash-gallery.plotly.host/GIT/$CIRCLE_BRANCH
+          name: Add plotly remote
+          command: git remote add gallery https://dash-gallery.plotly.host/GIT/$CIRCLE_BRANCH
       - run:
-	  name: Create helper-script
-	  command: printf '#!/bin/bash\necho username=$GALLERY_DEPLOY_USERNAME\necho password=$GALLERY_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
+          name: Create helper-script
+          command: printf '#!/bin/bash\necho username=$GALLERY_DEPLOY_USERNAME\necho password=$GALLERY_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
       - run:
-	  name: Set up git config
-	  command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
+          name: Set up git config
+          command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
       - run:
-	  name: Deploy
-	  command: |
-	    echo $PLOTLY_GA_CODE > ga_code.txt
-	    APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }' | sort -u)
-	    for APP in $APPS_MODIFIED
-	    do
-	      git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
-	      git push $APP master --force
-	    done
+          name: Deploy
+          command: |
+            echo $PLOTLY_GA_CODE > ga_code.txt
+            APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }' | sort -u)
+            for APP in $APPS_MODIFIED
+            do
+              git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
+              git push $APP master --force
+            done
       - run:
-	  name: Push to production
-	  command: |
-	      git push git@github.com:plotly/dash-sample-apps master:production
+          name: Push to production
+          command: |
+              git push git@github.com:plotly/dash-sample-apps master:production
 
 workflows:
   version: 2
@@ -107,17 +107,17 @@ workflows:
     jobs:
       - test_black
       - deploy_to_playground:
-	  requires:
-	    - test_black
-	  filters:
-	    branches:
-	      ignore:
-	      - production
-	      - master
+          requires:
+            - test_black
+          filters:
+            branches:
+              ignore:
+              - production
+              - master
       - deploy_to_gallery:
-	  requires:
-	    - test_black
-	  filters:
-	    branches:
-	      only:
-	      - master
+          requires:
+            - test_black
+          filters:
+            branches:
+              only:
+              - master
