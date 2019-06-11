@@ -66,10 +66,6 @@
   .columns {
     margin-left: 4%;
   }
-  /* .column:first-child,
-  .columns:first-child {
-    margin-left: 0;
-  } */
 
   .one.column,
   .one.columns {
@@ -529,9 +525,6 @@ there.
 
 /* Larger than mobile, screen sizes larger than 400px */
 @media (min-width: 400px) {
-  h6 {
-    font-size: 1.25rem;
-  }
 }
 
 /* Larger than phablet (also point when grid becomes active), screen larger than 550px */
