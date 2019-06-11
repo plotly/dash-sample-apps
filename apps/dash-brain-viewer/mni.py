@@ -4,7 +4,7 @@ import numpy as np
 def read_mniobj(file):
     def triangulate_polygons(list_vertex_indices):
         for k in range(0, len(list_vertex_indices), 3):
-            yield list_vertex_indices[k : k + 3]
+            yield list_vertex_indices[k: k + 3]
 
     with open(file) as fp:
 
