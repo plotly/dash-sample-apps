@@ -58,6 +58,7 @@ jobs:
                   git add . && git commit -a -m "Deployed commit: $CIRCLE_SHA1"
                 fi
                 if [ ! -d ~/dash-sample-apps/apps/"$APP"/assets/ ]
+                then
                   echo "Deploy failed because there is no assets/ folder. Exiting..."
                   exit 1
                 fi
