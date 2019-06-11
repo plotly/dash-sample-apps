@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display|Roboto');
+
+body {
+    background-color: #0f0f0f;
+    color: #f3f6fa;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.025rem;
+}
+
+#root {
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#interval {
+    display: none;
+}
+
+/**********************************************************************************************************************/
+/*Side panel*/
+/**********************************************************************************************************************/
+#panel-side {
+    display: flex;
+    flex-direction: column;
+    background-color: #0f0f0f;
+    position: relative;
+    z-index: 5;
+    width: 81%;
+}
+
+#satellite-dropdown .Select {
+    background-color: white;
+}
+.Select-control {
+    background-color: #0f0f0f !important;
+    color: #f3f6fa !important;
+}
+.Select-control .Select-value-label {
+    color: #f3f6fa !important;
+}
+#satellite-dropdown-text {
+    padding: 5px;
+    margin-left: 40px;
+    color: #f3f6fa;
+    background-color: #0f0f0f;
+    font-family: "Open Sans", sans-serif;
+    font-size: 3rem;
+    width: calc(100% - 50px);
+    font-weight: bold;
+}
+
+#panel-side-text {
+    padding: 10vh 2rem 0 2rem;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #0f0f0f;
+    color: white;
+}
+
+#satellite-name {
+    margin-bottom: 1rem;
+}
+
+#satellite-name {
+    font-family: "Open Sans", sans-serif;
+    text-align: center;
+    font-size: 1.5rem;
+    margin: -0.5rem 0 0 0;
+    letter-spacing: 0.1rem;
+}
+
+#satellite-dropdown-component{
+    color: #0f0f0f;
+    text-align: center;
+    cursor: pointer;
+}
+
+.satellite-description {
+    font-size: 10pt;
+    line-height: 12pt;
+    text-align: center;
+}
+
+._dash-undo-redo{
+    display: none;
+}
+
+/**********************************************************************************************************************/
+/*Main Panel*/
+/**********************************************************************************************************************/
+
+#panel-upper-lower {
+    display: flex;
+    flex-direction: column;
+    width: 76%;
+}
+
+#placeholder {
+    display: none;
+}
+
+/**********************************************************************************************************************/
+/*Upper Panel*/
+/**********************************************************************************************************************/
+
+#panel-upper {
+    margin-top: 10px;
+    height: 350px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    position: relative;
+    z-index: 2;
+}
+
+#world-map {
+    margin: -20px 0 0 -80px;
+    position: relative;
+    z-index: 0;
+}
+
+#graph-panel {
+    margin-left: -80px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#world-map > div > div > svg:nth-child(1) {
+    background: #0f0f0f !important;
+}
+
+/**********************************************************************************************************************/
+/*Lower Panel*/
+/**********************************************************************************************************************/
+
+#panel-lower {
+    height: 500px;
+    max-width: 100%;
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #0f0f0f;
+    padding: 75px 0;
+}
+
+#panel-lower-top-break {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: -40px;
+    padding: 0 0 20px 0;
+}
+
+#control-panel-toggle-map {
+    margin-left: 75px;
+    margin-right: 75px;
+}
+
+#control-panel-toggle-minute {
+    margin-left: 100px;
+    margin-right: 25px;
+}
+
+#panel-lower-0, #panel-lower-1 {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#panel-lower-0 {
+    margin-bottom: 10px;
+    padding-left: 30px;
+    padding-top: 20px
+}
+
+#control-panel-elevation, #control-panel-temperature, #control-panel-latitude, #control-panel-longitude,
+#control-panel-speed, #control-panel-fuel, #control-panel-battery {
+    cursor: pointer;
+    color: #f3f6fa !important;
+}
+
+
+#control-panel-speed-component {
+    margin-bottom: -35px;
+}
+
+#control-panel-latitude {
+    margin-bottom: 15px;
+}
+
+#panel-lower > div {
+    width:80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#panel-lower-indicators {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px
+}
+
+.panel-lower-indicator {
+    margin: 5px;
+}
+
+#panel-lower-indicators-0, #panel-lower-indicators-1, #panel-lower-indicators-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#panel-lower-indicators-2 {
+    margin-left: 10px
+}
+
+#control-panel-battery {
+    padding-top: 15px;
+}
+
+.kicevw {
+    background: white !important;
+}
+
+.hZlAvw .scale {
+    fill: #0f0f0f !important;
+}
+
+.hZlAvw .track {
+    stroke: white !important;
+}
+
+.hZlAvw .track.progress {
+    stroke: #0f0f0f !important;
+}
+
+.coiBuO {
+    background-color: white !important;
+}
+
+.cmSQpo {
+    background-color: black !important;
+}
