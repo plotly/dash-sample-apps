@@ -4,7 +4,6 @@
 
 Drill down into high-volume days to view how the busy environment may have affected patient experience.
 
-
 ## Requirements
 
 * Python 3
@@ -15,7 +14,8 @@ We suggest you to create a virtual environment for running this app with Python 
 and open your terminal/command prompt in the root folder.
 
 ```
-cd dash-clinical-analytics
+git clone https://github.com/plotly/dash-sample-apps
+cd dash-sample-apps/apps/dash-clinical-analytics
 python3 -m virtualenv venv
 
 ```
@@ -42,7 +42,7 @@ python app.py
 
 ## Screenshot & Screencast
 
-
+![screenshot](img/screencapture.png)
 
 ## Resources
 

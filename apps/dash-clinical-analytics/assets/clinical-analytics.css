@@ -1,7 +1,7 @@
 @font-face {
     font-family: Acumin;
     font-weight: bold;
-    src: url("/assets/Acumin-BdPro.otf") format("opentype");
+    src: url("Acumin-BdPro.otf") format("opentype");
 }
 
 /* Remove Undo
