@@ -35,6 +35,8 @@ jobs:
           name: Deploy
           command: |
             echo $PLOTLY_GA_CODE > ga_code.txt
+            cat ga_code.txt
+            pwd
             APPS_MODIFIED=$(git diff origin/master origin/$CIRCLE_BRANCH --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} } ' | sort -u)
             if [ -z "$APPS_MODIFIED" ]
             then
