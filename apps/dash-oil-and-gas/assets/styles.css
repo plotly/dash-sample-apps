@@ -143,12 +143,3 @@ div._dash-undo-redo {
   pointer-events: all;
   transform: translate(30px, 349px);
 }
-
-/* .column:first-child,
-.columns:first-child {
-  margin-left: 0;
-}
-.column:last-child,
-.columns:last-child {
-  margin-left: 0;
-} */
