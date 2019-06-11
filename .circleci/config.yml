@@ -90,10 +90,11 @@ jobs:
       - run:
           name: Deploy
           command: |
-            echo $PLOTLY_GA_CODE > ga_code.txt
             APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }' | sort -u)
             for APP in $APPS_MODIFIED
             do
+              echo $PLOTLY_GA_CODE > ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js
+              git add ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js && git commit -m "Deployed commit: $CIRCLE_SHA1"
               git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
               git push $APP master --force
             done
