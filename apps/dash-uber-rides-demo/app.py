@@ -79,6 +79,7 @@ app.layout = html.Div(
                                     initial_visible_month=dt(2014, 4, 1),
                                     date=dt(2014, 4, 1).date(),
                                     display_format="MMMM D, YYYY",
+                                    style={'border':'0px solid black'}
                                 )
                             ],
                         ),
@@ -107,15 +108,18 @@ app.layout = html.Div(
                                         dcc.Dropdown(
                                             id="bar-selector",
                                             options=[
-                                                {"label": str(n) + ":00", "value": str(n)}
+                                                {
+                                                    "label": str(n) + ":00",
+                                                    "value": str(n),
+                                                }
                                                 for n in range(24)
                                             ],
                                             multi=True,
                                             placeholder="Select certain hours",
                                         )
-                                    ]
-                                )
-                            ]
+                                    ],
+                                ),
+                            ],
                         ),
                         html.P(id="total-rides"),
                         html.P(id="total-rides-selection"),
