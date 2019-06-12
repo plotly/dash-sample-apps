@@ -4,6 +4,11 @@
     src: url("Acumin-BdPro.otf") format("opentype");
 }
 
+#app-container {
+    width: 100%;
+    max-width: none;
+}
+
 /* Remove Undo
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ._dash-undo-redo {
@@ -11,9 +16,13 @@
 }
 
 body {
-    background-color: #f4f4f4;
+    background-color: #f9f9f9;
     color: #333333;
-    font-size: 16px;
+    font-size: 15px;
+}
+
+hr {
+    margin: 0.3rem 0rem;
 }
 
 .banner {
@@ -21,7 +30,7 @@ body {
     margin-bottom: 1rem;
     padding: 0rem 2rem 0rem;
     background-color: white;
-    display:flex;
+    display: flex;
     flex-direction: row;
     align-items: center;
 }
@@ -30,21 +39,41 @@ body {
     position: relative;
     height: 3rem;
     width: auto;
+    margin-left: 2%;
+}
+
+H5 {
+    color: #2c8cff;
+    font-weight: 300;
 }
 
 H5, H3 {
     font-family: Acumin, "Helvetica Neue", sans-serif;
 }
 
+#left-column {
+    margin-top: 20px;
+    padding: 0rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#right-column {
+    margin-top: 20px;
+    background-color: #f4f4f4;
+    padding: 0rem 2rem;
+}
+
 .table-row {
-    line-height: 100px;
-    height:100px;
+    line-height: 70px;
+    height: 70px;
     vertical-align: middle;
 }
 
 .wait_time_graph > div, .patient_score_graph > div {
-    height:100%;
-    width:100%;
+    height: 100%;
+    width: 100%;
 }
 
 .draglayer {
@@ -52,7 +81,34 @@ H5, H3 {
 }
 
 #intro {
-    margin-top: 20px;
-    font-family:"Helvetica Neue", sans-serif;
+    margin: 20px 0px;
+    font-family: "Helvetica Neue", sans-serif;
     text-align: justify;
 }
+
+#control-card > p {
+    font-weight: bold;
+}
+
+#patient_volume_card, #wait_time_card {
+    background-color: #FFFFFF;
+    padding: 1rem;
+    margin: auto;
+}
+
+#patient_volume_card > b, #wait_time_card > b {
+    line-height: 2.5;
+}
+
+#wait_time_card {
+    margin: 20px 0px;
+}
+
+#patient_volume_hm {
+    height: 400px;
+}
+
+.table-row:nth-child(even) {
+    background-color: #f2f2f2 !important;
+   }
+
