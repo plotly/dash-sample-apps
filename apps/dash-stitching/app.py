@@ -76,7 +76,7 @@ def instructions():
     """
     - Choose the number of rows and columns of the mosaic
     - Upload images 
-    - Try automatic stitching by pressing the "Run stitching" button
+    - Try automatic stitching by pressing the "Run stitching" button 
     - If automatic stitching did not work, adjust the overlap parameter
     """
     ],
@@ -116,15 +116,17 @@ app.layout = html.Div(
         dcc.Input(
             id='nrows-stitch',
             type='number',
-            #value=1,
+            #value=0,
             name='number of rows',
+            step=1
         ),
         html.Label('Number of columns'),
         dcc.Input(
             id='ncolumns-stitch',
             type='number',
-            #value=4,
+            #value=0,
             name='number of columns',
+            step=1
         ),
         html.Label('Downsample factor'),
         dcc.RadioItems(id='downsample',
@@ -145,7 +147,7 @@ app.layout = html.Div(
         dcc.Input(
             id='overlap-stitch',
             type='number',
-            #value=0.15,
+            value=0.15,
             min=0,
             max=1
         ),
@@ -160,7 +162,7 @@ app.layout = html.Div(
             columns=columns,
             editable=True,
             style_table={
-                'width': '260px',
+                'width': '80%',
                 'margin-left': '2.5%',
                 'border-radius': '4px' 
             },
@@ -181,7 +183,7 @@ app.layout = html.Div(
             children=[
                 dcc.Tab(
                     label='Image tiles',
-                    value='canvas-tab',
+                    value='canvas-tab'
                 ),
                 dcc.Tab(
                     label='Stitched Image',
@@ -196,13 +198,13 @@ app.layout = html.Div(
             ),
         html.Div(
             id='tabs-content-example'
-            ),
+        ),
         
         html.Div(
             image_upload_zone('upload-stitch', multiple=True, width='100px'),
             style={
                 'font-family': 'Geneva',
-                'width': '75%',
+                'width': '80%',
                 'margin-top': '15px'
             }
         ),
