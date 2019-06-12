@@ -1,3 +1,4 @@
+library(rlist)
 library(glue)
 library(plotly)
 library(dashR)
@@ -34,9 +35,9 @@ df <- read.table(data_path, header = TRUE, sep = ",")
 params = names(df)
 max_length = nrow(df)
 
-print(params) #delete
-print(params[2:length(params)]) #delete
-print(max_length) #delete
+#print(params) #delete
+#print(params[-1]) #delete
+#print(max_length) #delete
 
 ########################################################################################################################
 # DEFINE GLOBAL VARIABLES
@@ -147,29 +148,52 @@ build_tabs <- function() {
 
 populate_ooc <- function(data, ucl, lcl) {
   ooc_count <- 0
-  ret <- list()
+  output <- list()
   for (i in 1:max_length) {
     if (data[[i]] >= ucl | data[[i]] <= lcl) {
       ooc_count <- ooc_count + 1
     }
-    ret[[length(ret)+1]] <- ooc_count / (i+1)
+    output[[length(output)+1]] <- ooc_count / (i+1)
   }
-  return(ret)
+  return(output)
 }
 
-# not done
 init_df <- function() {
-  return('')
+  output <- list()
+  for (i in 2:length(params)) {
+    col <- params[i]
+    data <- df[[col]]
+    stats <- summary(data)
+    ucl <- stats[["Mean"]]+3*sd(data)
+    lcl <- stats[["Mean"]]-3*sd(data)
+    usl <- stats[["Mean"]]+sd(data)
+    lsl <- stats[["Mean"]]-sd(data)
+    output[[col]] <- list(
+      "count" = length(data),
+      "data" = data,
+      "mean" = stats[["Mean"]],
+      "std" = sd(data),
+      "ucl" = round(ucl, 3),
+      "lcl" = round(lcl, 3),
+      "usl" = round(usl, 3),
+      "lsl" = round(lsl, 3),
+      "min" = stats[["Min."]],
+      "max" = stats[["Max."]],
+      "ooc" = populate_ooc(data, ucl, lcl)
+    )
+  }
+  return(output)
 }
 
 state_dict <- init_df()
 
 init_value_setter_store <- function() {
-  return (init_df())
+  state_dict <- init_df()
+  return(state_dict)
 }
 
 build_tab_1 <- function() {
-  tmp_list <- lapply(params[2:length(params)], function(x) {return (list(label = x, value = x))})
+  dropdown_list <- lapply(params[-1], function(x) {return(list(label = x, value = x))})
   return(
     list(
       htmlDiv(
@@ -189,7 +213,7 @@ build_tab_1 <- function() {
               htmlBr(),
               dccDropdown(
                 id = "metric-select-dropdown",
-                options = tmp_list,
+                options = dropdown_list,
                 value = params[[2]]
               )
             )
@@ -204,7 +228,7 @@ build_tab_1 <- function() {
               htmlButton(
                 children = "Update", 
                 id = "value-setter-set-btn"
-                ),
+              ),
               htmlButton(
                 children = "View current setup", 
                 id = "value-setter-view-btn", 
@@ -228,7 +252,7 @@ build_tab_2 <- function() {
       id = "status-container",
       children = list(
         build_quick_stats_panel(),
-        html.Div(
+        htmlDiv(
           id = "graphs-container",
           children = list(
             build_top_panel(),
@@ -282,7 +306,7 @@ build_value_setter_line <- function(line_num, label, value, col3) {
         htmlDiv(
           className = "four columns",
           children = col3 
-        ),
+        )
       )
     )
   )
@@ -312,7 +336,7 @@ generate_modal <- function() {
               children = dccMarkdown(
                 children = "**What is this mock app about?**
                 'dash-manufacture-spc-dashboard' is a dashboard for monitoring read-time process quality along manufacture production line. 
-                **What does this app shows**
+                **What does this app show?**
                 Click on buttons in 'Parameter' column to visualize details of measurement trendlines on the bottom panel.
                 The Sparkline on top panel and Control chart on bottom panel show Shewhart process monitor using mock data. 
                 The trend is updated every other second to simulate real-time measurements. Data falling outside of six-sigma control limit are signals indicating 'Out of Control(OOC)', and will 
@@ -435,7 +459,7 @@ generate_piechart <- function() {
       figure = list(
         "data" = list(
           list(
-            "labels" = params[2:length(params)],
+            "labels" = params[-1],
             "values" = list(1, 1, 1, 1, 1, 1, 1),
             "type" = "pie",
             "marker" = list("line" = list("color" = "white", "width" = 1)),
@@ -496,19 +520,19 @@ generate_metric_row_helper <- function(index) {
   item <- params[[index]]
   div_id <- glue("{item}{suffix_row}")
   button_id <- glue("{item}{suffix_button_id}")
-  sparkline_graph_id <- glue("{item}{suffix_sparkline_graph}")
   count_id <- glue("{item}{suffix_count}")
+  sparkline_graph_id <- glue("{item}{suffix_sparkline_graph}")
   ooc_percentage_id <- glue("{item}{suffix_ooc_n}")
   ooc_graph_id <- glue("{item}{suffix_ooc_g}")
   indicator_id <- glue("{item}{suffix_indicator}")
   return(
     generate_metric_row(
       div_id,
-      NA,
+      list(),
       list(
         "id" = item,
         "className" = "metric-row-button-text",
-        "children" = html.Button(
+        "children" = htmlButton(
           id = button_id,
           className = "metric-row-button",
           children = item,
@@ -521,7 +545,7 @@ generate_metric_row_helper <- function(index) {
         "children" = "0"
       ),
       list(
-        "id" = item + "_sparkline",
+        "id" = glue("{item}_sparkline"),
         "children" = dccGraph(
           id = sparkline_graph_id,
           style = list(
@@ -572,7 +596,7 @@ generate_metric_row_helper <- function(index) {
         "children" = "0.00%"
       ),
       list(
-        "id" = ooc_graph_id + "_container",
+        "id" = glue("{ooc_graph_id}_container"),
         "children" = daqGraduatedBar(
           id = ooc_graph_id,
           color = list(
@@ -588,7 +612,7 @@ generate_metric_row_helper <- function(index) {
         )
       ),
       list(
-        "id" = item + "_pf",
+        "id" = glue("{item}_pf"),
         "children" = daqIndicator(
           id = indicator_id, 
           value = TRUE, 
@@ -600,7 +624,7 @@ generate_metric_row_helper <- function(index) {
 }
 
 generate_metric_row <- function(id, style, col1, col2, col3, col4, col5, col6) {
-  if (is.na(style)) {
+  if (length(style) == 0) {
     style = list(
       "height" = "10rem", 
       "width" = "100%"
@@ -762,15 +786,166 @@ app$layout(
 ########################################################################################################################
 # DEFINE APP CALLBACKS
 
-# callback for switching tabs
+# callbacks to update values based on stored data and dropdown selection
+app$callback(
+  output = list(id = "value-setter-panel", property = "children"),
+  params = list(input(id = "metric-select-dropdown", property = "value")),
+  function(dd_select) {
+    return(
+      list(
+        build_value_setter_line(
+          "value-setter-panel-header",
+          "Specs",
+          "Historical Value",
+          "Set new value"
+        ),
+        build_value_setter_line(
+          "value-setter-panel-usl",
+          "Upper Specification limit",
+          state_dict[[dd_select]][["usl"]],
+          ud_usl_input
+        ),
+        build_value_setter_line(
+          "value-setter-panel-lsl",
+          "Lower Specification limit",
+          state_dict[[dd_select]][["lsl"]],
+          ud_lsl_input
+        ),
+        build_value_setter_line(
+          "value-setter-panel-ucl",
+          "Upper Control limit",
+          state_dict[[dd_select]][["ucl"]],
+          ud_ucl_input
+        ),
+        build_value_setter_line(
+          "value-setter-panel-lcl",
+          "Lower Control limit",
+          state_dict[[dd_select]][["lcl"]],
+          ud_lcl_input
+        )
+      )
+    )
+  }
+)
+app$callback(
+  output = list(id = "ud_usl_input", property = "value"),
+  params = list(
+    input(id = "metric-select-dropdown", property = "value"),
+    state(id = "value-setter-store", property = "data")
+  ),
+  function(dd_select, state_value) {
+    print(dd_select)
+    return(state_value[[dd_select]][["usl"]])
+  }
+)
+app$callback(
+  output = list(id = "ud_lsl_input", property = "value"),
+  params = list(
+    input(id = "metric-select-dropdown", property = "value"),
+    state(id = "value-setter-store", property = "data")
+  ),
+  function(dd_select, state_value) {
+    return(state_value[[dd_select]][["lsl"]])
+  }
+)
+app$callback(
+  output = list(id = "ud_ucl_input", property = "value"),
+  params = list(
+    input(id = "metric-select-dropdown", property = "value"),
+    state(id = "value-setter-store", property = "data")
+  ),
+  function(dd_select, state_value) {
+    return(state_value[[dd_select]][["ucl"]])
+  }
+)
+app$callback(
+  output = list(id = "ud_lcl_input", property = "value"),
+  params = list(
+    input(id = "metric-select-dropdown", property = "value"),
+    state(id = "value-setter-store", property = "data")
+  ),
+  function(dd_select, state_value) {
+    return(state_value[[dd_select]][["lcl"]])
+  }
+)
+
+# callbacks to update stored data when button "Update" clicked
+app$callback(
+  output = list(id = "value-setter-store", property = "data"),
+  params = list(
+    input(id = "value-setter-set-btn", property = "n_clicks"),
+    state(id = "metric-select-dropdown", property = "value"),
+    state(id = "value-setter-store", property = "data"),
+    state(id = "ud_usl_input", property = "value"),
+    state(id = "ud_lsl_input", property = "value"),
+    state(id = "ud_ucl_input", property = "value"),
+    state(id = "ud_lcl_input", property = "value")
+  ),
+  function(set_btn, param, stats, usl, lsl, ucl, lcl) {
+    if (is.integer(set_btn)) {
+      stats[[param]][["usl"]] = usl
+      stats[[param]][["lsl"]] = lsl
+      stats[[param]][["ucl"]] = ucl
+      stats[[param]][["lcl"]] = lcl
+      stats[[param]][["ooc"]] = populate_ooc(df[[param]], ucl, lcl)
+    }
+    return(stats)
+  }
+)
+
+# callbacks to show current stored data when button "View Current Set-Up" clicked
+app$callback(
+  output = list(id = "value-setter-view-output", property = "children"),
+  params = list(
+    input(id = "value-setter-view-btn", property = "n_clicks"),
+    input(id = "metric-select-dropdown", property = "value"),
+    input(id = "value-setter-store", property = "data")
+  ),
+  function(n_clicks, dd_select, store_data) {
+    if (n_clicks > 0) {
+      new_df <- data.frame(
+        "Specs" = c(
+          "Upper Specification Limit",
+          "Lower Specification Limit",
+          "Upper Control Limit",
+          "Lower Control Limit"
+        ),
+        "Current Setup" = c(
+          store_data[[dd_select]][["usl"]],
+          store_data[[dd_select]][["lsl"]],
+          store_data[[dd_select]][["ucl"]],
+          store_data[[dd_select]][["lcl"]]
+        )
+      )
+      return(
+        dashTable::dashDataTable(
+          style_header = list(
+            "backgroundColor" = "#2d3038", 
+            "fontWeight" = "bold"
+          ),
+          style_as_list_view = TRUE,
+          style_cell_conditional = lapply(list("Specs"), function(x) {return(list("if" = list("column_id" = x), "textAlign" = "left"))}),
+          style_cell = list(
+            "backgroundColor" = "#2d3038",
+            "color" = "darkgray",
+            "border" = "darkgray"
+          ),
+          data = dashTable::df_to_list(new_df),
+          columns = lapply(list("Specs", "Current Setup"), function(x) {return(list("id" = x, "name" = x))})
+        )
+      )
+    }
+  }
+)
+
+# callbacks for switching tabs
 app$callback(
   output = list(id = "app-tabs", property = "value"),
   params = list(input(id = "tab-trigger-btn", property = "n_clicks")),
   function(tab_switch) {
     if (tab_switch == 0) {
       return("tab1")
-    }
-    if (tab_switch) {
+    } else {
       return("tab2")
     }
   }
@@ -781,8 +956,7 @@ app$callback(
   function(tab_switch) {
     if (tab_switch == 0) {
       return(build_tab_1())
-    }
-    if (tab_switch) {
+    } else {
       return(build_tab_2())
     }
   }
@@ -793,8 +967,7 @@ app$callback(
   function(tab_switch) {
     if (tab_switch == 0) {
       return(FALSE)
-    }
-    if (tab_switch) {
+    } else {
       return(TRUE)
     }
   }
@@ -805,28 +978,24 @@ app$callback(
   function(tab_switch) {
     if (tab_switch == 0) {
       return(TRUE)
-    }
-    if (tab_switch) {
+    } else {
       return(FALSE)
     }
   }
 )
 app$callback(
   output = list(id = "tab-trigger-btn", property = "style"),
-  params = list(
-    input(id = "tab-trigger-btn", property = "n_clicks")
-  ),
+  params = list(input(id = "tab-trigger-btn", property = "n_clicks")),
   function(tab_switch) {
     if (tab_switch == 0) {
       return(list("display" = "inline-block", "float" = "right"))
-    }
-    if (tab_switch) {
+    } else {
       return(list("display" = "none"))
     }
   }
 )
 
-# callback for modal popup
+# callbacks for modal popup
 app$callback(
   output = list(id = "markdown", property = "style"),
   params = list(
@@ -841,6 +1010,43 @@ app$callback(
   }
 )
 
+# callbacks to update progress gauge i.e. "Time to completion"
+app$callback(
+  output = list(id = "progress-gauge", property = "value"),
+  params = list(input(id = "interval-component", property = "n_intervals")),
+  function(interval) {
+    if (interval < max_length) {
+      total_count <- interval
+    } else {
+      total_count <- max_length
+    }
+    return(as.integer(total_count))
+  }
+)
+
+# callbacks to update table i.e. "Process Control Metrics Summary"
+# app$callback(
+#   output = list(id = "", property = ""),
+#   params = list(
+#     input(id = "", property = ""),
+#     state(id = "", property = "")
+#   ),
+#   function() {
+#     
+#   }
+# )
+
+# callbacks to update piechart i.e. "% OOC per Parameter"
+# app$callback(
+#   output = list(id = "", property = ""),
+#   params = list(
+#     input(id = "", property = ""),
+#     state(id = "", property = "")
+#   ),
+#   function() {
+#     
+#   }
+# )
 
 ########################################################################################################################
 # RUN SERVER
