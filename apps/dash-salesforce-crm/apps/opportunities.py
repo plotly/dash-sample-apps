@@ -18,7 +18,7 @@ from app import app, indicator, millify, df_to_table, sf_manager
 
 
 def converted_opportunities(period, source, df):
-    df["CreatedDate"] = pd.to_datetime(df["CreatedDate"], format="%Y-%m-%d") 
+    df["CreatedDate"] = pd.to_datetime(df["CreatedDate"], format="%Y-%m-%d")
 
     # source filtering
     if source == "all_s":
@@ -39,7 +39,7 @@ def converted_opportunities(period, source, df):
     )
 
 
-    # if no results were found 
+    # if no results were found
     if df.empty:
         layout = dict(annotations=[dict(text="No results found", showarrow=False)])
         return {"data": [], "layout": layout}
@@ -88,8 +88,8 @@ def heat_map_fig(df, x, y):
     return go.Figure(data=[trace], layout=layout)
 
 
-# returns top 5 lost opportunities
-def top_lost_opportunities(df):
+# returns top 5 open opportunities
+def top_open_opportunities(df):
     df = df.sort_values("Amount", ascending=True)
     cols = ["CreatedDate", "Name", "Amount", "StageName"]
     df = df[cols].iloc[:5]
@@ -142,7 +142,7 @@ def modal():
                         ),
 
 
-                        # modal form 
+                        # modal form
                         html.Div(
                             [
 
@@ -281,7 +281,7 @@ def modal():
                                     style={"paddingRight": "15"},
                                 ),
 
-                                
+
                                 # right div
                                 html.Div(
                                     [
@@ -381,11 +381,12 @@ def modal():
 
 layout = [
 
-    # top controls
     html.Div(
-        [
+        id="opportunity_grid",
+        children=[
             html.Div(
-                dcc.Dropdown(
+                className="control pretty_container",
+                children=dcc.Dropdown(
                     id="converted_opportunities_dropdown",
                     options=[
                         {"label": "By day", "value": "D"},
@@ -395,11 +396,12 @@ layout = [
                     value="D",
                     clearable=False,
                 ),
-                className="two columns",
             ),
 
             html.Div(
-                dcc.Dropdown(
+                className="control pretty_container",
+                children=dcc.Dropdown(
+
                     id="heatmap_dropdown",
                     options=[
                         {"label": "All stages", "value": "all_s"},
@@ -410,10 +412,11 @@ layout = [
                     value="all_s",
                     clearable=False,
                 ),
-                className="two columns",
             ),
+
             html.Div(
-                dcc.Dropdown(
+                className="control pretty_container",
+                children=dcc.Dropdown(
                     id="source_dropdown",
                     options=[
                         {"label": "All sources", "value": "all_s"},
@@ -427,52 +430,19 @@ layout = [
                     value="all_s",
                     clearable=False,
                 ),
-                className="two columns",
             ),
 
-            #add button
+            html.Span(
+                "Add new",
+                id="new_opportunity",
+                n_clicks=0,
+                className="button button--primary add pretty_container"
+            ),
+
             html.Div(
-                html.Span(
-                    "Add new",
-                    id="new_opportunity",
-                    n_clicks=0,
-                    className="button button--primary add"
-                ),
-                className="two columns",
-                style={"float": "right"},
-            ),
-        ],
-        className="row",
-        style={"marginBottom": "10"},
-    ),
-
-    #indicators row
-    html.Div(
-        [
-            indicator(
-                "#00cc96",
-                "Won opportunities",
-                "left_opportunities_indicator",
-            ),
-            indicator(
-                "#119DFF",
-                "Open opportunities",
-                "middle_opportunities_indicator",
-            ),
-            indicator(
-                "#EF553B",
-                "Lost opportunities",
-                "right_opportunities_indicator",
-            ),
-        ],
-        className="row",
-    ),
-
-    #charts row div 
-    html.Div(
-        [
-            html.Div(
-                [
+                id="converted_count_container",
+                className="chart_div pretty_container",
+                children=[
                     html.P("Converted Opportunities count"),
                     dcc.Graph(
                         id="converted_count",
@@ -480,11 +450,34 @@ layout = [
                         config=dict(displayModeBar=False),
                     ),
                 ],
-                className="four columns chart_div",
-                ),
+            ),
 
             html.Div(
-                [
+                id="opportunity_indicators",
+                className="row",
+                children=[
+                    indicator(
+                        "#00cc96",
+                        "Won opportunities",
+                        "left_opportunities_indicator",
+                    ),
+                    indicator(
+                        "#119DFF",
+                        "Open opportunities",
+                        "middle_opportunities_indicator",
+                    ),
+                    indicator(
+                        "#EF553B",
+                        "Lost opportunities",
+                        "right_opportunities_indicator",
+                    ),
+                ],
+            ),
+
+            html.Div(
+                id="opportunity_heatmap",
+                className="chart_div pretty_container",
+                children=[
                     html.P("Probabilty heatmap per Stage and Type"),
                     dcc.Graph(
                         id="heatmap",
@@ -492,75 +485,221 @@ layout = [
                         config=dict(displayModeBar=False),
                     ),
                 ],
-                className="eight columns chart_div"
             ),
-        ],
-        className="row",
-        style={"marginTop": "5px"}
-    ),
 
-
-    # tables row div
-    html.Div(
-        [
             html.Div(
-                [
+                id="top_open_container",
+                className="pretty_container",
+                children=[
                     html.P(
                         "Top Open opportunities",
-                        style={
-                            "color": "#2a3f5f",
-                            "fontSize": "13px",
-                            "textAlign": "center",
-                            "marginBottom": "0",
-                        },
                     ),
                     html.Div(
                         id="top_open_opportunities",
-                        style={"padding": "0px 13px 5px 13px", "marginBottom": "5"},
                     ),
-                   
+
                 ],
-                className="six columns",
-                style={
-                    "backgroundColor": "white",
-                    "border": "1px solid #C8D4E3",
-                    "borderRadius": "3px",
-                    "height": "100%",
-                    "overflowY": "scroll",
-                },
+
             ),
+
             html.Div(
-                [
+                id="top_lost_container",
+                className="pretty_container",
+                children=[
                     html.P(
                         "Top Lost opportunities",
-                        style={
-                            "color": "#2a3f5f",
-                            "fontSize": "13px",
-                            "textAlign": "center",
-                            "marginBottom": "0",
-                        },
                     ),
                     html.Div(
                         id="top_lost_opportunities",
-                        style={"padding": "0px 13px 5px 13px", "marginBottom": "5"},
                     )
                 ],
-                className="six columns",
-                style={
-                    "backgroundColor": "white",
-                    "border": "1px solid #C8D4E3",
-                    "borderRadius": "3px",
-                    "height": "100%",
-                    "overflowY": "scroll",
-                },
             ),
-
-            
-            modal(),
-        ],
-        className="row",
-        style={"marginTop": "5px", "max height": "200px"},
+        ]
     ),
+
+    modal()
+
+    # top controls
+    # html.Div(
+    #     [
+    #         html.Div(
+    #             dcc.Dropdown(
+    #                 id="converted_opportunities_dropdown",
+    #                 options=[
+    #                     {"label": "By day", "value": "D"},
+    #                     {"label": "By week", "value": "W-MON"},
+    #                     {"label": "By month", "value": "M"},
+    #                 ],
+    #                 value="D",
+    #                 clearable=False,
+    #             ),
+    #             className="two columns",
+    #         ),
+    #
+    #         html.Div(
+    #             dcc.Dropdown(
+    #                 id="heatmap_dropdown",
+    #                 options=[
+    #                     {"label": "All stages", "value": "all_s"},
+    #                     {"label": "Cold stages", "value": "cold"},
+    #                     {"label": "Warm stages", "value": "warm"},
+    #                     {"label": "Hot stages", "value": "hot"},
+    #                 ],
+    #                 value="all_s",
+    #                 clearable=False,
+    #             ),
+    #             className="two columns",
+    #         ),
+    #         html.Div(
+    #             dcc.Dropdown(
+    #                 id="source_dropdown",
+    #                 options=[
+    #                     {"label": "All sources", "value": "all_s"},
+    #                     {"label": "Web", "value": "Web"},
+    #                     {"label": "Word of Mouth", "value": "Word of mouth"},
+    #                     {"label": "Phone Inquiry", "value": "Phone Inquiry"},
+    #                     {"label": "Partner Referral", "value": "Partner Referral"},
+    #                     {"label": "Purchased List", "value": "Purchased List"},
+    #                     {"label": "Other", "value": "Other"},
+    #                 ],
+    #                 value="all_s",
+    #                 clearable=False,
+    #             ),
+    #             className="two columns",
+    #         ),
+    #
+    #         #add button
+    #         html.Div(
+    #             html.Span(
+    #                 "Add new",
+    #                 id="new_opportunity",
+    #                 n_clicks=0,
+    #                 className="button button--primary add"
+    #             ),
+    #             className="two columns",
+    #             style={"float": "right"},
+    #         ),
+    #     ],
+    #     className="row",
+    #     style={"marginBottom": "10"},
+    # ),
+    #
+    #
+    # #indicators row
+    # html.Div(
+    #     [
+    #         indicator(
+    #             "#00cc96",
+    #             "Won opportunities",
+    #             "left_opportunities_indicator",
+    #         ),
+    #         indicator(
+    #             "#119DFF",
+    #             "Open opportunities",
+    #             "middle_opportunities_indicator",
+    #         ),
+    #         indicator(
+    #             "#EF553B",
+    #             "Lost opportunities",
+    #             "right_opportunities_indicator",
+    #         ),
+    #     ],
+    #     className="row",
+    # ),
+    #
+    # #charts row div
+    # html.Div(
+    #     [
+    #         html.Div(
+    #             [
+    #                 html.P("Converted Opportunities count"),
+    #                 dcc.Graph(
+    #                     id="converted_count",
+    #                     style={"height": "90%", "width": "98%"},
+    #                     config=dict(displayModeBar=False),
+    #                 ),
+    #             ],
+    #             className="four columns chart_div",
+    #         ),
+    #
+    #         html.Div(
+    #             [
+    #                 html.P("Probabilty heatmap per Stage and Type"),
+    #                 dcc.Graph(
+    #                     id="heatmap",
+    #                     style={"height": "90%", "width": "98%"},
+    #                     config=dict(displayModeBar=False),
+    #                 ),
+    #             ],
+    #             className="eight columns chart_div"
+    #         ),
+    #     ],
+    #     className="row",
+    #     style={"marginTop": "5px"}
+    # ),
+    #
+    #
+    # # tables row div
+    # html.Div(
+    #     [
+    #         html.Div(
+    #             [
+    #                 html.P(
+    #                     "Top Open opportunities",
+    #                     style={
+    #                         "color": "#2a3f5f",
+    #                         "fontSize": "13px",
+    #                         "textAlign": "center",
+    #                         "marginBottom": "0",
+    #                     },
+    #                 ),
+    #                 html.Div(
+    #                     id="top_open_opportunities",
+    #                     style={"padding": "0px 13px 5px 13px", "marginBottom": "5"},
+    #                 ),
+    #
+    #             ],
+    #             className="six columns",
+    #             style={
+    #                 "backgroundColor": "white",
+    #                 "border": "1px solid #C8D4E3",
+    #                 "borderRadius": "3px",
+    #                 "height": "100%",
+    #                 "overflowY": "scroll",
+    #             },
+    #         ),
+    #         html.Div(
+    #             [
+    #                 html.P(
+    #                     "Top Lost opportunities",
+    #                     style={
+    #                         "color": "#2a3f5f",
+    #                         "fontSize": "13px",
+    #                         "textAlign": "center",
+    #                         "marginBottom": "0",
+    #                     },
+    #                 ),
+    #                 html.Div(
+    #                     id="top_lost_opportunities",
+    #                     style={"padding": "0px 13px 5px 13px", "marginBottom": "5"},
+    #                 )
+    #             ],
+    #             className="six columns",
+    #             style={
+    #                 "backgroundColor": "white",
+    #                 "border": "1px solid #C8D4E3",
+    #                 "borderRadius": "3px",
+    #                 "height": "100%",
+    #                 "overflowY": "scroll",
+    #             },
+    #         ),
+    #
+    #
+    #         modal(),
+    #     ],
+    #     className="row",
+    #     style={"marginTop": "5px", "max height": "200px"},
+    # ),
 ]
 
 
@@ -693,7 +832,7 @@ def add_opportunity_callback(
             "LeadSource": source,
         }
 
-        sf_manager.add_opportunity(query) 
+        sf_manager.add_opportunity(query)
 
         df = sf_manager.get_opportunities()
 

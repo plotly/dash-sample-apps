@@ -24,7 +24,7 @@ users = sf_manager.get_users()
 
 
 # returns pie chart based on filters values
-# column makes the fonction reusable 
+# column makes the fonction reusable
 def pie_chart(df, column, priority, origin):
     df = df.dropna(subset=["Type", "Reason", "Origin"])
     nb_cases = len(df.index)
@@ -47,7 +47,7 @@ def pie_chart(df, column, priority, origin):
                 .tolist()
             )
 
-    
+
 
     # if no results were found
     if types == []:
@@ -88,11 +88,11 @@ def cases_by_period(df, period, priority, origin):
         df["CreatedDate"] = pd.to_datetime(df["CreatedDate"]) - pd.to_timedelta(
             7, unit="d"
         )
-    df = df.groupby([pd.Grouper(key="CreatedDate", freq=period), "Type"]).count() 
-    
+    df = df.groupby([pd.Grouper(key="CreatedDate", freq=period), "Type"]).count()
+
     dates = df.index.get_level_values("CreatedDate").unique()
     dates = [str(i) for i in dates]
-    
+
     co = { # colors for stages
         "Electrical": "#264e86",
         "Other": "#0074e4",
@@ -451,13 +451,13 @@ def modal():
 
 
 layout = [
-    modal(),
 
-    # top controls
     html.Div(
-        [
+        id="cases_grid",
+        children=[
             html.Div(
-                dcc.Dropdown(
+                className="control pretty_container",
+                children=dcc.Dropdown(
                     id="cases_period_dropdown",
                     options=[
                         {"label": "By day", "value": "D"},
@@ -467,11 +467,10 @@ layout = [
                     value="D",
                     clearable=False,
                 ),
-                className="two columns",
-                style={"marginBottom": "10"},
             ),
             html.Div(
-                dcc.Dropdown(
+                className="control pretty_container",
+                children=dcc.Dropdown(
                     id="priority_dropdown",
                     options=[
                         {"label": "All priority", "value": "all_p"},
@@ -482,10 +481,10 @@ layout = [
                     value="all_p",
                     clearable=False,
                 ),
-                className="two columns",
             ),
             html.Div(
-                dcc.Dropdown(
+                className="control pretty_container",
+                children=dcc.Dropdown(
                     id="origin_dropdown",
                     options=[
                         {"label": "All origins", "value": "all"},
@@ -496,53 +495,20 @@ layout = [
                     value="all",
                     clearable=False,
                 ),
-                className="two columns",
             ),
 
             # add button
+            html.Span(
+                "Add new",
+                id="new_case",
+                n_clicks=0,
+                className="button button--primary add pretty_container",
+            ),
+
             html.Div(
-                html.Span(
-                    "Add new",
-                    id="new_case",
-                    n_clicks=0,
-                    className="button button--primary add",
-                    
-                ),
-                className="two columns",
-                style={"float": "right"},
-            ),
-        ],
-        className="row",
-        style={},
-    ),
-
-    # indicators div 
-    html.Div(
-        [
-            indicator(
-                "#00cc96",
-                "Low priority cases",
-                "left_cases_indicator",
-            ),
-            indicator(
-                "#119DFF",
-                "Medium priority cases",
-                "middle_cases_indicator",
-            ),
-            indicator(
-                "#EF553B",
-                "High priority cases",
-                "right_cases_indicator",
-            ),
-        ],
-        className="row",
-    ),
-
-
-    html.Div(
-        [
-            html.Div(
-                [
+                id="cases_types_container",
+                className="pretty_container chart_div",
+                children=[
                     html.P("Cases Type"),
 
                     dcc.Graph(
@@ -552,58 +518,223 @@ layout = [
                     ),
 
                 ],
-                className="six columns chart_div",
             ),
 
             html.Div(
-                [
+                id="cases_indicators",
+                children=[
+                    indicator(
+                        "#00cc96",
+                        "Low priority cases",
+                        "left_cases_indicator",
+                    ),
+                    indicator(
+                        "#119DFF",
+                        "Medium priority cases",
+                        "middle_cases_indicator",
+                    ),
+                    indicator(
+                        "#EF553B",
+                        "High priority cases",
+                        "right_cases_indicator",
+                    ),
+                ],
+                className="row",
+            ),
+
+            html.Div(
+                id="cases_reasons_container",
+                className="chart_div pretty_container",
+                children=[
                     html.P("Cases Reasons"),
-                    
+
                     dcc.Graph(
                         id="cases_reasons",
                         config=dict(displayModeBar=False),
-                        style={"height": "89%", "width": "98%"},
                     ),
                 ],
-                className="six columns chart_div"
+
             ),
-        ],
-        className="row",
-        style={"marginTop": "5px"},
-    ),
 
-
-    html.Div(
-        [
             html.Div(
-                [
+                id="cases_by_period_container",
+                className="pretty_container chart_div",
+                children=[
                     html.P("Cases over Time"),
                     dcc.Graph(
                         id="cases_by_period",
                         config=dict(displayModeBar=False),
-                        style={"height": "89%", "width": "98%"},
                     ),
                 ],
-                className="six columns chart_div"
+
             ),
 
             html.Div(
-                [
+                id="cases_by_account_container",
+                className="pretty_container chart_div",
+                children=[
                     html.P("Cases by Company"),
                     dcc.Graph(
                         id="cases_by_account",
-                        #figure=cases_by_account(accounts, cases),
                         config=dict(displayModeBar=False),
-                        style={"height": "87%", "width": "98%"},
                     ),
                 ],
-                className="six columns chart_div"
             ),
-        ],
-        className="row",
-        style={"marginTop": "5px"},
+        ]
     ),
-    
+    modal(),
+
+    # # top controls
+    # html.Div(
+    #     [
+    #         html.Div(
+    #             dcc.Dropdown(
+    #                 id="cases_period_dropdown",
+    #                 options=[
+    #                     {"label": "By day", "value": "D"},
+    #                     {"label": "By week", "value": "W-MON"},
+    #                     {"label": "By month", "value": "M"},
+    #                 ],
+    #                 value="D",
+    #                 clearable=False,
+    #             ),
+    #             className="two columns",
+    #             style={"marginBottom": "10"},
+    #         ),
+    #         html.Div(
+    #             dcc.Dropdown(
+    #                 id="priority_dropdown",
+    #                 options=[
+    #                     {"label": "All priority", "value": "all_p"},
+    #                     {"label": "High priority", "value": "High"},
+    #                     {"label": "Medium priority", "value": "Medium"},
+    #                     {"label": "Low priority", "value": "Low"},
+    #                 ],
+    #                 value="all_p",
+    #                 clearable=False,
+    #             ),
+    #             className="two columns",
+    #         ),
+    #         html.Div(
+    #             dcc.Dropdown(
+    #                 id="origin_dropdown",
+    #                 options=[
+    #                     {"label": "All origins", "value": "all"},
+    #                     {"label": "Phone", "value": "Phone"},
+    #                     {"label": "Web", "value": "Web"},
+    #                     {"label": "Email", "value": "Email"},
+    #                 ],
+    #                 value="all",
+    #                 clearable=False,
+    #             ),
+    #             className="two columns",
+    #         ),
+    #
+    #         # add button
+    #         html.Div(
+    #             html.Span(
+    #                 "Add new",
+    #                 id="new_case",
+    #                 n_clicks=0,
+    #                 className="button button--primary add",
+    #
+    #             ),
+    #             className="two columns",
+    #             style={"float": "right"},
+    #         ),
+    #     ],
+    #     className="row",
+    #     style={},
+    # ),
+    #
+    # # indicators div
+    # html.Div(
+    #     [
+    #         indicator(
+    #             "#00cc96",
+    #             "Low priority cases",
+    #             "left_cases_indicator",
+    #         ),
+    #         indicator(
+    #             "#119DFF",
+    #             "Medium priority cases",
+    #             "middle_cases_indicator",
+    #         ),
+    #         indicator(
+    #             "#EF553B",
+    #             "High priority cases",
+    #             "right_cases_indicator",
+    #         ),
+    #     ],
+    #     className="row",
+    # ),
+    #
+    #
+    # html.Div(
+    #     [
+    #         html.Div(
+    #             [
+    #                 html.P("Cases Type"),
+    #
+    #                 dcc.Graph(
+    #                     id="cases_types",
+    #                     config=dict(displayModeBar=False),
+    #                     style={"height": "89%", "width": "98%"},
+    #                 ),
+    #
+    #             ],
+    #             className="six columns chart_div",
+    #         ),
+    #
+    #         html.Div(
+    #             [
+    #                 html.P("Cases Reasons"),
+    #
+    #                 dcc.Graph(
+    #                     id="cases_reasons",
+    #                     config=dict(displayModeBar=False),
+    #                     style={"height": "89%", "width": "98%"},
+    #                 ),
+    #             ],
+    #             className="six columns chart_div"
+    #         ),
+    #     ],
+    #     className="row",
+    #     style={"marginTop": "5px"},
+    # ),
+    #
+    #
+    # html.Div(
+    #     [
+    #         html.Div(
+    #             [
+    #                 html.P("Cases over Time"),
+    #                 dcc.Graph(
+    #                     id="cases_by_period",
+    #                     config=dict(displayModeBar=False),
+    #                     style={"height": "89%", "width": "98%"},
+    #                 ),
+    #             ],
+    #             className="six columns chart_div"
+    #         ),
+    #
+    #         html.Div(
+    #             [
+    #                 html.P("Cases by Company"),
+    #                 dcc.Graph(
+    #                     id="cases_by_account",
+    #                     #figure=cases_by_account(accounts, cases),
+    #                     config=dict(displayModeBar=False),
+    #                     style={"height": "87%", "width": "98%"},
+    #                 ),
+    #             ],
+    #             className="six columns chart_div"
+    #         ),
+    #     ],
+    #     className="row",
+    #     style={"marginTop": "5px"},
+    # ),
+
 ]
 
 

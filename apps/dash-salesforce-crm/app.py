@@ -18,12 +18,12 @@ sf_manager = sf_Manager()
 millnames = ["", " K", " M", " B", " T"] # used to convert numbers
 
 
-# return html Table with dataframe values  
+# return html Table with dataframe values
 def df_to_table(df):
     return html.Table(
         # Header
         [html.Tr([html.Th(col) for col in df.columns])] +
-        
+
         # Body
         [
             html.Tr(
@@ -54,7 +54,7 @@ def millify(n):
 def indicator(color, text, id_value):
     return html.Div(
         [
-            
+
             html.P(
                 text,
                 className="twelve columns indicator_text"
@@ -64,6 +64,6 @@ def indicator(color, text, id_value):
                 className="indicator_value"
             ),
         ],
-        className="four columns indicator",
-        
+        className="four columns indicator pretty_container",
+
     )

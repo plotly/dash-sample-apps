@@ -13,10 +13,10 @@ from plotly import graph_objs as go
 
 from app import app, indicator, millify, df_to_table, sf_manager
 
-states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
-          "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
-          "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
-          "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
+states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA",
+          "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+          "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+          "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
           "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
 
 
@@ -36,7 +36,7 @@ def choropleth_map(status, df):
         df = df[df["Status"] == "Closed - Not Converted"]
 
     df = df.groupby("State").count()
-    
+
     scl = [[0.0, "rgb(38, 78, 134)"], [1.0, "#0091D5"]] # colors scale
 
     data = [
@@ -131,7 +131,7 @@ def modal():
         html.Div(
             [
                 html.Div(
-                    [   
+                    [
 
                         # modal header
                         html.Div(
@@ -166,7 +166,7 @@ def modal():
                                 html.P(
                                     [
                                         "Company Name",
-                                        
+
                                     ],
                                     style={
                                         "float": "left",
@@ -283,10 +283,66 @@ def modal():
 layout = [
 
     # top controls
+    # html.Div(
+    #     [
+    #         html.Div(
+    #             className="two columns pretty_container",
+    #             children=dcc.Dropdown(
+    #                 id="converted_leads_dropdown",
+    #                 options=[
+    #                     {"label": "By day", "value": "D"},
+    #                     {"label": "By week", "value": "W-MON"},
+    #                     {"label": "By month", "value": "M"},
+    #                 ],
+    #                 value="D",
+    #                 clearable=False,
+    #             ),
+    #
+    #         ),
+    #         html.Div(
+    #             className="two columns pretty_container",
+    #             children=dcc.Dropdown(
+    #                 id="lead_source_dropdown",
+    #                 options=[
+    #                     {"label": "All status", "value": "all"},
+    #                     {"label": "Open leads", "value": "open"},
+    #                     {"label": "Converted leads", "value": "converted"},
+    #                     {"label": "Lost leads", "value": "lost"},
+    #                 ],
+    #                 value="all",
+    #                 clearable=False,
+    #             ),
+    #         ),
+    #
+    #         # add button
+    #         html.Div(
+    #             html.Span(
+    #                 "Add new",
+    #                 id="new_lead",
+    #                 n_clicks=0,
+    #                 className="button button--primary",
+    #                 style={
+    #                     "height": "34",
+    #                     "background": "#119DFF",
+    #                     "border": "1px solid #119DFF",
+    #                     "color": "white",
+    #                 },
+    #             ),
+    #             className="two columns",
+    #             style={"float": "right"},
+    #         ),
+    #     ],
+    #     className="row",
+    #     style={"marginBottom": "10"},
+    # ),
+
+
     html.Div(
-        [
+        id="lead_grid",
+        children=[
             html.Div(
-                dcc.Dropdown(
+                className="two columns pretty_container control",
+                children=dcc.Dropdown(
                     id="converted_leads_dropdown",
                     options=[
                         {"label": "By day", "value": "D"},
@@ -296,10 +352,11 @@ layout = [
                     value="D",
                     clearable=False,
                 ),
-                className="two columns",
+
             ),
             html.Div(
-                dcc.Dropdown(
+                className="two columns pretty_container control",
+                children=dcc.Dropdown(
                     id="lead_source_dropdown",
                     options=[
                         {"label": "All status", "value": "all"},
@@ -310,54 +367,20 @@ layout = [
                     value="all",
                     clearable=False,
                 ),
-                className="two columns",
             ),
 
             # add button
-            html.Div(
-                html.Span(
-                    "Add new",
-                    id="new_lead",
-                    n_clicks=0,
-                    className="button button--primary",
-                    style={
-                        "height": "34",
-                        "background": "#119DFF",
-                        "border": "1px solid #119DFF",
-                        "color": "white",
-                    },
-                ),
-                className="two columns",
-                style={"float": "right"},
+            html.Span(
+                "Add new",
+                id="new_lead",
+                n_clicks=0,
+                className="button button--primary pretty_container",
             ),
-        ],
-        className="row",
-        style={"marginBottom": "10"},
-    ),
 
-    # indicators row div
-    html.Div(
-        [
-            indicator(
-                "#00cc96", "Converted Leads", "left_leads_indicator"
-            ),
-            indicator(
-                "#119DFF", "Open Leads", "middle_leads_indicator"
-            ),
-            indicator(
-                "#EF553B",
-                "Conversion Rates",
-                "right_leads_indicator",
-            ),
-        ],
-        className="row",
-    ),
-
-    # charts row div
-    html.Div(
-        [
             html.Div(
-                [
+                id="leads_per_state",
+                className="chart_div pretty_container",
+                children=[
                     html.P("Leads count per state" ),
                     dcc.Graph(
                         id="map",
@@ -365,23 +388,39 @@ layout = [
                         config=dict(displayModeBar=False),
                     ),
                 ],
-                className="four columns chart_div"
             ),
-
             html.Div(
-                [
+                className='row indicators',
+                children=[
+                    indicator(
+                        "#00cc96", "Converted Leads", "left_leads_indicator"
+                    ),
+                    indicator(
+                        "#119DFF", "Open Leads", "middle_leads_indicator"
+                    ),
+                    indicator(
+                        "#EF553B",
+                        "Conversion Rates",
+                        "right_leads_indicator",
+                    ),
+                ]
+            ),
+            html.Div(
+                id="leads_source_container",
+                className="six columns chart_div pretty_container",
+                children=[
                     html.P("Leads by source"),
                     dcc.Graph(
                         id="lead_source",
                         style={"height": "90%", "width": "98%"},
                         config=dict(displayModeBar=False),
                     ),
-                ],
-                className="four columns chart_div"
+                ]
             ),
-
             html.Div(
-                [
+                id="converted_leads_container",
+                className="six columns chart_div pretty_container",
+                children=[
                     html.P("Converted Leads count"),
                     dcc.Graph(
                         id="converted_leads",
@@ -389,27 +428,100 @@ layout = [
                         config=dict(displayModeBar=False),
                     ),
                 ],
-                className="four columns chart_div"
             ),
-        ],
-        className="row",
-        style={"marginTop": "5"},
+            html.Div(
+                id="leads_table",
+                className="row pretty_container",
+                style={
+                    "maxHeight": "350px",
+                    "overflowY": "scroll",
+                },
+            ),
+        ]
     ),
+    # middle row
+    # html.Div(
+    #     id='middle_row',
+    #     children=[
+    #         html.Div(
+    #             className="four columns",
+    #             children=[
+    #                 html.Div(
+    #                     className="chart_div pretty_container",
+    #                     children=[
+    #                         html.P("Leads count per state" ),
+    #                         dcc.Graph(
+    #                             id="map",
+    #                             style={"height": "90%", "width": "98%"},
+    #                             config=dict(displayModeBar=False),
+    #                         ),
+    #                     ],
+    #                 )
+    #             ]
+    #         ),
+    #         html.Div(
+    #             className="eight columns",
+    #             children=[
+    #                 html.Div(
+    #                     className='row',
+    #                     children=[
+    #                         indicator(
+    #                             "#00cc96", "Converted Leads", "left_leads_indicator"
+    #                         ),
+    #                         indicator(
+    #                             "#119DFF", "Open Leads", "middle_leads_indicator"
+    #                         ),
+    #                         indicator(
+    #                             "#EF553B",
+    #                             "Conversion Rates",
+    #                             "right_leads_indicator",
+    #                         ),
+    #                     ]
+    #                 ),
+    #                 html.Div(
+    #                     className='row',
+    #                     children=[
+    #                         html.Div(
+    #                             className="six columns chart_div pretty_container",
+    #                             children=[
+    #                                 html.P("Leads by source"),
+    #                                 dcc.Graph(
+    #                                     id="lead_source",
+    #                                     style={"height": "90%", "width": "98%"},
+    #                                     config=dict(displayModeBar=False),
+    #                                 ),
+    #                             ]
+    #                         ),
+    #
+    #                         html.Div(
+    #                             className="six columns chart_div pretty_container",
+    #                             children=[
+    #                                 html.P("Converted Leads count"),
+    #                                 dcc.Graph(
+    #                                     id="converted_leads",
+    #                                     style={"height": "90%", "width": "98%"},
+    #                                     config=dict(displayModeBar=False),
+    #                                 ),
+    #                             ],
+    #
+    #                         ),
+    #                     ]
+    #                 )
+    #             ]
+    #         )
+    #
+    #     ]
+    # ),
 
     # table div
-    html.Div(
-        id="leads_table",
-        className="row",
-        style={
-            "maxHeight": "350px",
-            "overflowY": "scroll",
-            "padding": "8",
-            "marginTop": "5",
-            "backgroundColor":"white",
-            "border": "1px solid #C8D4E3",
-            "borderRadius": "3px"
-        },
-    ),
+    # html.Div(
+    #     id="leads_table",
+    #     className="row pretty_container",
+    #     style={
+    #         "maxHeight": "350px",
+    #         "overflowY": "scroll",
+    #     },
+    # ),
 
 
     modal(),
@@ -512,7 +624,7 @@ def display_leads_modal_callback(n):
     return {"display": "none"}
 
 
-# reset to 0 add button n_clicks property 
+# reset to 0 add button n_clicks property
 @app.callback(
     Output("new_lead", "n_clicks"),
     [Input("leads_modal_close", "n_clicks"), Input("submit_new_lead", "n_clicks")],
