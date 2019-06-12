@@ -423,7 +423,7 @@ a {
   text-decoration: none;
 }
 .bg-grey{
-  background-color: #323130;
+  background-color: #31302F;
 }
 .text-padding{
   padding: 5px;
@@ -450,7 +450,8 @@ a {
   padding-top: 64px;
 }
 .div-for-dropdown {
-  padding: 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 .div-for-slider {
   width: 97%;
@@ -465,9 +466,15 @@ a {
   color: white;
 }
 
-.Select-control{
-  border: 0.5px solid #dbdbdb;
+.Select-control, .DateInput_input, .DateInput_input_1{
+  border: 0px solid #dbdbdb;
 }
+
+.Select-placeholder{
+  border: 1px solid #dbdbdb;
+  border-radius: 5px;
+}
+
 
 .has-value.Select--single>.Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single>.Select-control .Select-value .Select-value-label {
   color: white;
@@ -501,7 +508,6 @@ a {
 }
 .SingleDatePickerInput__withBorder {
   border-radius: 3px;
-  border: 0.5px solid #dbdbdb;
   color: #dbdbdb;
   background: #1e1e1e;
   background-color: #1e1e1e;
@@ -511,6 +517,7 @@ a {
   display: block;
 }
 .SingleDatePicker_1 {
+  border: 0.0px solid #dbdbdb;
   display: block;
 }
 .SingleDatePicker_picker, .SingleDatePicker_picker_1, .SingleDatePicker_picker__directionLeft,
@@ -538,4 +545,19 @@ a {
  .div-user-controls {
     padding: 32px;
  }
+ 
+ .side-by-side{
+    display: inline-block;
+    width: 48%;
+  }
+
+   
+ .side-by-side-right{
+    display: inline-block;
+    width: 48%;
+    float:right;
+  }
+  .div-for-charts{
+    margin: 0px;
+  }
 } 

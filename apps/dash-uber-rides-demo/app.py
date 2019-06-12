@@ -82,34 +82,40 @@ app.layout = html.Div(
                                 )
                             ],
                         ),
+                        # Change to side-by-side for mobile layout
                         html.Div(
-                            className="div-for-dropdown",
+                            className="row",
                             children=[
-                                # Dropdown for locations on map
-                                dcc.Dropdown(
-                                    id="location-dropdown",
-                                    options=[
-                                        {"label": i, "value": i}
-                                        for i in list_of_locations
+                                html.Div(
+                                    className="div-for-dropdown side-by-side",
+                                    children=[
+                                        # Dropdown for locations on map
+                                        dcc.Dropdown(
+                                            id="location-dropdown",
+                                            options=[
+                                                {"label": i, "value": i}
+                                                for i in list_of_locations
+                                            ],
+                                            placeholder="Select a location",
+                                        )
                                     ],
-                                    placeholder="Select a location",
+                                ),
+                                html.Div(
+                                    className="div-for-dropdown side-by-side-right",
+                                    children=[
+                                        # Dropdown to select times
+                                        dcc.Dropdown(
+                                            id="bar-selector",
+                                            options=[
+                                                {"label": str(n) + ":00", "value": str(n)}
+                                                for n in range(24)
+                                            ],
+                                            multi=True,
+                                            placeholder="Select certain hours",
+                                        )
+                                    ]
                                 )
-                            ],
-                        ),
-                        html.Div(
-                            className="div-for-dropdown",
-                            children=[
-                                # Dropdown to select times
-                                dcc.Dropdown(
-                                    id="bar-selector",
-                                    options=[
-                                        {"label": str(n) + ":00", "value": str(n)}
-                                        for n in range(24)
-                                    ],
-                                    multi=True,
-                                    placeholder="Select certain hours",
-                                )
-                            ],
+                            ]
                         ),
                         html.P(id="total-rides"),
                         html.P(id="total-rides-selection"),
