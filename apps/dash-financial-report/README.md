@@ -1,49 +1,52 @@
-### Dash Financial Report
-###### multi-page, external_css, external_scripts, PDF      
+# Dash Financial Report
 
 This is a demo of the [Dash](https://plot.ly/products/dash/) interactive Python framework developed by [Plotly](https://plot.ly/).
 
-Dash abstracts away all of the technologies and protocols required to build an interactive web-based application and is a simple and effective way to bind a user interface around your Python code.
+Dash abstracts away all of the technologies and protocols required to build an interactive web-based application and is a simple and effective way to bind a user interface around your Python code. To learn more about Dash, take a look at our [documentation](https://dash.plot.ly). If you're interested in deploying this application, check out [Dash Deployment Server](https://dash.plot.ly/dash-deployment-server/) - Plotly's commercial offering for hosting and sharing Dash Apps on-premise or in the cloud.
 
-To learn more about Dash, take a look at our [documentation](https://dash.plot.ly). If you're interested in deploying this application, check out [Dash Deployment Server](https://dash.plot.ly/dash-deployment-server/) - Plotly's commercial offering for hosting and sharing Dash Apps on-premise or in the cloud. 
+## Getting Started
 
-##### About this repo:
+### Running the app locally
 
-For more information about the application structure, see our [Dash Deployment Server Documentation](https://dash.plot.ly/dash-deployment-server/application-structure).
+First create a virtual environment with conda or venv inside a temp folder, then activate it.
 
-##### To run this app:
-
-You can clone or download this repo:   
 ```
-git clone https://github.com/plotly/dash-financial-report.git
-```
+virtualenv venv
 
-Then cd into the repo:   
-```
-cd dash-financial-report
-```
-
-Now create and activate a virtualenv (noting the python runtime):   
-On a mac:   
-```
-virtualenv -p <python version> venv
+# Windows
+venv\Scripts\activate
+# Or Linux
 source venv/bin/activate
+
 ```
 
-On a Windows:   
-```
-virtualenv -p <python version> venv
-venv/Scripts/activate
+Clone the git repo, then install the requirements with pip
+
 ```
 
-Now that virtualenv is setup and active we can install the dependencies:   
-```
+git clone https://github.com/plotly/dash-sample-apps
+cd dash-sample-apps/apps/dash-financial-report
 pip install -r requirements.txt
+
 ```
 
-Once the dependencies have been installed, run the application:
+Run the app
+
 ```
+
 python app.py
+
 ```
 
-Then visit http://127.0.0.1:8050/
+## About the app
+
+This is an interactive, multi-page report which displays a variety of tables, bullet points, and Plotly interactive plots in a report format. The app incorporates custom local and external CSS to display distinct pages for PDF print.
+
+## Built With
+
+- [Dash](https://dash.plot.ly/) - Main server and interactive components
+- [Plotly Python](https://plot.ly/python/) - Used to create the interactive plots
+
+The following are screenshots for the app in this repo:
+
+![screenshot](screenshots/screenshot1.png)

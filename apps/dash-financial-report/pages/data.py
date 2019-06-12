@@ -1,0 +1,17 @@
+import pandas as pd
+
+df_fund_facts = pd.read_csv('../data/df_fund_facts.csv')
+df_price_perf = pd.read_csv('../data/df_price_perf.csv')
+df_current_prices = pd.read_csv('../data/df_current_prices.csv')
+df_hist_prices = pd.read_csv('../data/df_hist_prices.csv')
+df_avg_returns = pd.read_csv('../data/df_avg_returns.csv')
+df_after_tax = pd.read_csv('../data/df_after_tax.csv')
+df_recent_returns = pd.read_csv('../data/df_recent_returns.csv')
+df_equity_char = pd.read_csv('../data/df_equity_char.csv')
+df_equity_diver = pd.read_csv('../data/df_equity_diver.csv')
+df_expenses = pd.read_csv('../data/df_expenses.csv')
+df_minimums = pd.read_csv('../data/df_minimums.csv')
+df_dividend = pd.read_csv('../data/df_dividend.csv')
+df_realized = pd.read_csv('../data/df_realized.csv')
+df_unrealized = pd.read_csv('../data/df_unrealized.csv')
+df_graph = pd.read_csv("../data/df_graph.csv")
