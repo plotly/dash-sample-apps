@@ -466,15 +466,9 @@ a {
   color: white;
 }
 
-.Select-control, .DateInput_input, .DateInput_input_1{
-  border: 0px solid #dbdbdb;
+.Select-control{
+  border: 0.5px solid #dbdbdb44;
 }
-
-.Select-placeholder{
-  border: 1px solid #dbdbdb;
-  border-radius: 5px;
-}
-
 
 .has-value.Select--single>.Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single>.Select-control .Select-value .Select-value-label {
   color: white;
@@ -489,23 +483,34 @@ a {
   font-weight: 400;
   font-size: 14px;
 }
+
+
 #date {
   background-color: #1e1e1e;
   font-family: "Open Sans Light";
   font-weight: 400;
-  background: #1e1e1e;
   color: #dbdbdb;
+  border: 0.5px solid #dbdbdb44;
 }
-._dash-undo-redo {
-  display: none;
-}
+
 #date-picker{
   width: 100%;
 }
+
+._dash-undo-redo {
+  display: none;
+}
 .DateInput.DateInput_1{
-  background: #1e1e1e;
   width: 100%;
 }
+.SingleDatePickerInput__withBorder{
+  border:none;
+}
+
+.DateInput.DateInput_1 {
+  background-color: #1e1e1e;
+}
+
 .SingleDatePickerInput__withBorder {
   border-radius: 3px;
   color: #dbdbdb;
@@ -520,10 +525,12 @@ a {
   border: 0.0px solid #dbdbdb;
   display: block;
 }
+
 .SingleDatePicker_picker, .SingleDatePicker_picker_1, .SingleDatePicker_picker__directionLeft,
 .SingleDatePicker_picker__directionLeft_2{
   filter:invert(100%);
 }
+
 /* For Mobile Phones and small screens ––––––––––––––––––––––––––––––––––––––––––––––––––*/
 @media only screen and (max-width: 768px) {
   .four, .eight {
