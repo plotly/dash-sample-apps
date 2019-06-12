@@ -12,7 +12,7 @@ library(dtplyr)
 library(knitr)
 library(png)
 library(magick)
-library(base64enc)
+library(jsonlite)
 library(magrittr)
 library(Rtsne)
 library(stringr)
@@ -779,12 +779,13 @@ app$callback(
 
       if(dataset=='cifar_gray_3000'){ imageMtx <- matrix(imageVec, nrow=32)} else {imageMtx <- matrix(imageVec, nrow=28)}
       DIGIT <- writePNG(imageMtx)
-      DIGIT_B64 <- base64encode(DIGIT)
-      
-      return(htmlImg(src =  glue('data:image/png;base64, ', DIGIT_B64), style =  l.(height='25vh', display='block', margin='auto')))
+      DIGIT_B64 <- base64_enc(DIGIT)
+      I <- diag(x=1, nrow=28, ncol=28) 
+      I <- writePNG(I)
+      return(htmlImg(src =  glue('data:image/png;base64,', DIGIT_B64), style =  l.(display='block', margin='auto')))
     
     } else{
-    return(l.())
+    return(htmlImg(src =  glue('data:image/png;base64,', base64_enc(I)), style =  l.(display='block', margin='auto')))
     }
   }
 
