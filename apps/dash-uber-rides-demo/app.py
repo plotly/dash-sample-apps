@@ -79,7 +79,7 @@ app.layout = html.Div(
                                     initial_visible_month=dt(2014, 4, 1),
                                     date=dt(2014, 4, 1).date(),
                                     display_format="MMMM D, YYYY",
-                                    style={'border':'0px solid black'}
+                                    style={"border": "0px solid black"},
                                 )
                             ],
                         ),
