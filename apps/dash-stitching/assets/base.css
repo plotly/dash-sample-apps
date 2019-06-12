@@ -145,13 +145,12 @@ body {
   
 .instruction {
   background-color:#01183A;
-  width: 100%;
   margin: 0px;
   padding: 0px;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 100vh;
+  width: 100%;
 }
 
 
@@ -175,10 +174,11 @@ h6 { font-size: 2.0rem; line-height: 1.6;  letter-spacing: 0; margin-bottom: 0.7
 p {
   margin-top: 0;
   font-family: 'Geneva';
-  font-size: 1.4rem;
-  white-space: pre;
+  white-space: pre-line;
   color: #8898B2;
   overflow-wrap: normal;
+  font-size: 1.4rem;
+  margin-left: 4%;
 }
 
 
@@ -195,9 +195,9 @@ label {
 }
 
 .tabs {
-  width: 70%;
+  width: 550px;
   font-family: 'Geneva';
-  height: 50%;
+  height: 200%;
 }
 
 
@@ -277,6 +277,7 @@ input[type="button"] {
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
+  margin-top: 3%;
   margin-left: 4%;
   height: 38px;
   width: 140px;
@@ -392,6 +393,8 @@ input[type="button"].button-primary:focus {
  }
 
 
+
+
 /* Forms
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 input[type="email"],
@@ -403,9 +406,11 @@ input[type="url"],
 input[type="password"],
 textarea,
 select {
+  
   margin-left: 4%;
   height: 38px;
-  width: 230px;
+  width: 70%;
+  box-sizing: border-box;
   padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
   background-color: #fff;
   border: 1px solid #D1D1D1;
@@ -564,17 +569,42 @@ there.
 
 
 /* Larger than mobile */
-@media (min-width: 400px) {
+@media (max-width: 300px) {
+ 
+  
+  
 }
 
 /* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {}
+@media (max-width: 550px) {
+    
+}
 
 /* Larger than tablet */
-@media (min-width: 750px) {}
+@media (max-width: 750px) {
+
+    .instruction {
+      width: 141vh;
+      height: 120vh;
+    }
+
+    #e99392eb-e14e-4d33-ae72-49bbf5feff66 {
+      width: 100vh;
+    }
+
+    .tabs {
+
+    }
+}
 
 /* Larger than desktop */
-@media (min-width: 1000px) {}
+@media (max-width: 1000px) {
+   
+
+}
 
 /* Larger than Desktop HD */
-@media (min-width: 1200px) {}
+@media (max-width: 1200px) {
+  
+  
+}
