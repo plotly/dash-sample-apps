@@ -57,6 +57,31 @@ theme <- list(
   "secondary" = "#FFD15F"  # Accent
 )
 
+ud_usl_input <- daqNumericInput(
+  id = "ud_usl_input",
+  className = "setting-input",
+  size = 200,
+  max = 9999999
+)
+ud_lsl_input <- daqNumericInput(
+  id = "ud_lsl_input",
+  className = "setting-input",
+  size = 200,
+  max = 9999999
+)
+ud_ucl_input <- daqNumericInput(
+  id = "ud_ucl_input",
+  className = "setting-input",
+  size = 200,
+  max = 9999999
+)
+ud_lcl_input <- daqNumericInput(
+  id = "ud_lcl_input",
+  className = "setting-input",
+  size = 200,
+  max = 9999999
+)
+
 ########################################################################################################################
 # DEFINE FUNCTIONS FOR APP LAYOUT AND CALLBACKS
 
@@ -223,20 +248,22 @@ build_tab_1 <- function() {
             children = list(
               htmlDiv(
                 id = "value-setter-panel"
+                #children = list("HERE1")
               ),
               htmlBr(),
               htmlButton(
-                children = "Update", 
-                id = "value-setter-set-btn"
+                id = "value-setter-set-btn",
+                children = "Update"
               ),
               htmlButton(
-                children = "View current setup", 
-                id = "value-setter-view-btn", 
+                id = "value-setter-view-btn",
+                children = "View current setup",
                 n_clicks = 0
               ),
               htmlDiv(
                 id = "value-setter-view-output", 
                 className = "output-datatable"
+                #children = list("HERE2")
               )
             )
           )
@@ -263,31 +290,6 @@ build_tab_2 <- function() {
     )
   )
 }
-
-ud_usl_input <- daqNumericInput(
-  id = "ud_usl_input",
-  className = "setting-input",
-  size = 200,
-  max = 9999999
-)
-ud_lsl_input <- daqNumericInput(
-  id = "ud_lsl_input",
-  className = "setting-input",
-  size = 200,
-  max = 9999999
-)
-ud_ucl_input <- daqNumericInput(
-  id = "ud_ucl_input",
-  className = "setting-input",
-  size = 200,
-  max = 9999999
-)
-ud_lcl_input <- daqNumericInput(
-  id = "ud_lcl_input",
-  className = "setting-input",
-  size = 200,
-  max = 9999999
-)
 
 build_value_setter_line <- function(line_num, label, value, col3) {
   return(
@@ -803,71 +805,71 @@ app$callback(
           "value-setter-panel-usl",
           "Upper Specification limit",
           state_dict[[dd_select]][["usl"]],
-          ud_usl_input
+          "ud_usl_input" #unstring
         ),
         build_value_setter_line(
           "value-setter-panel-lsl",
           "Lower Specification limit",
           state_dict[[dd_select]][["lsl"]],
-          ud_lsl_input
+          "ud_lsl_input" #unstring
         ),
         build_value_setter_line(
           "value-setter-panel-ucl",
           "Upper Control limit",
           state_dict[[dd_select]][["ucl"]],
-          ud_ucl_input
+          "ud_ucl_input" #unstring
         ),
         build_value_setter_line(
           "value-setter-panel-lcl",
           "Lower Control limit",
           state_dict[[dd_select]][["lcl"]],
-          ud_lcl_input
+          "ud_lcl_input" #unstring
         )
       )
     )
   }
 )
-app$callback(
-  output = list(id = "ud_usl_input", property = "value"),
-  params = list(
-    input(id = "metric-select-dropdown", property = "value"),
-    state(id = "value-setter-store", property = "data")
-  ),
-  function(dd_select, state_value) {
-    print(dd_select)
-    return(state_value[[dd_select]][["usl"]])
-  }
-)
-app$callback(
-  output = list(id = "ud_lsl_input", property = "value"),
-  params = list(
-    input(id = "metric-select-dropdown", property = "value"),
-    state(id = "value-setter-store", property = "data")
-  ),
-  function(dd_select, state_value) {
-    return(state_value[[dd_select]][["lsl"]])
-  }
-)
-app$callback(
-  output = list(id = "ud_ucl_input", property = "value"),
-  params = list(
-    input(id = "metric-select-dropdown", property = "value"),
-    state(id = "value-setter-store", property = "data")
-  ),
-  function(dd_select, state_value) {
-    return(state_value[[dd_select]][["ucl"]])
-  }
-)
-app$callback(
-  output = list(id = "ud_lcl_input", property = "value"),
-  params = list(
-    input(id = "metric-select-dropdown", property = "value"),
-    state(id = "value-setter-store", property = "data")
-  ),
-  function(dd_select, state_value) {
-    return(state_value[[dd_select]][["lcl"]])
-  }
-)
+# app$callback(
+#   output = list(id = "ud_usl_input", property = "value"),
+#   params = list(
+#     input(id = "metric-select-dropdown", property = "value"),
+#     state(id = "value-setter-store", property = "data")
+#   ),
+#   function(dd_select, state_value) {
+#     print(dd_select)
+#     return(state_value[[dd_select]][["usl"]])
+#   }
+# )
+# app$callback(
+#   output = list(id = "ud_lsl_input", property = "value"),
+#   params = list(
+#     input(id = "metric-select-dropdown", property = "value"),
+#     state(id = "value-setter-store", property = "data")
+#   ),
+#   function(dd_select, state_value) {
+#     return(state_value[[dd_select]][["lsl"]])
+#   }
+# )
+# app$callback(
+#   output = list(id = "ud_ucl_input", property = "value"),
+#   params = list(
+#     input(id = "metric-select-dropdown", property = "value"),
+#     state(id = "value-setter-store", property = "data")
+#   ),
+#   function(dd_select, state_value) {
+#     return(state_value[[dd_select]][["ucl"]])
+#   }
+# )
+# app$callback(
+#   output = list(id = "ud_lcl_input", property = "value"),
+#   params = list(
+#     input(id = "metric-select-dropdown", property = "value"),
+#     state(id = "value-setter-store", property = "data")
+#   ),
+#   function(dd_select, state_value) {
+#     return(state_value[[dd_select]][["lcl"]])
+#   }
+# )
 
 # callbacks to update stored data when button "Update" clicked
 app$callback(
