@@ -9,7 +9,10 @@ import datetime
 from datetime import datetime as dt
 import pathlib
 
-app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
+app = dash.Dash(
+    __name__,
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+)
 
 server = app.server
 app.config.suppress_callback_exceptions = True
@@ -121,10 +124,10 @@ def generate_patient_volume_heatmap(start, end, clinic, hm_click, admit_type, re
 
     filtered_df = df[
         (df["Clinic Name"] == clinic) & (df["Admit Source"].isin(admit_type))
-        ]
+    ]
     filtered_df = filtered_df.sort_values("Check In Time").set_index("Check In Time")[
-                  start:end
-                  ]
+        start:end
+    ]
 
     x_axis = [datetime.time(i).strftime("%I %p") for i in range(24)]  # 24hr time list
     y_axis = day_list
@@ -412,7 +415,7 @@ def generate_patient_table(figure_list, departments, wait_time_xrange, score_xra
 
 
 def create_table_figure(
-        department, filtered_df, category, category_xrange, selected_index
+    department, filtered_df, category, category_xrange, selected_index
 ):
     aggregation = {
         "Wait Time Min": "mean",
@@ -424,7 +427,7 @@ def create_table_figure(
 
     df_by_department = filtered_df[
         filtered_df["Department"] == department
-        ].reset_index()
+    ].reset_index()
     grouped = (
         df_by_department.groupby("Encounter Number").agg(aggregation).reset_index()
     )
@@ -435,21 +438,21 @@ def create_table_figure(
 
     f = lambda x_val: dt.strftime(x_val, "%Y-%m-%d")
     check_in = (
-            grouped["Check In Time"].apply(f)
-            + " "
-            + grouped["Days of Wk"]
-            + " "
-            + grouped["Check In Hour"].map(str)
+        grouped["Check In Time"].apply(f)
+        + " "
+        + grouped["Days of Wk"]
+        + " "
+        + grouped["Check In Hour"].map(str)
     )
     text_wait_time = (
-            "Patient # : "
-            + patient_id_list
-            + "<br>Check in Time: "
-            + check_in
-            + "<br>Wait Time: "
-            + grouped["Wait Time Min"].map(str)
-            + " Minutes <br>Care Score : "
-            + grouped["Care Score"].map(str)
+        "Patient # : "
+        + patient_id_list
+        + "<br>Check in Time: "
+        + check_in
+        + "<br>Wait Time: "
+        + grouped["Wait Time Min"].map(str)
+        + " Minutes <br>Care Score : "
+        + grouped["Care Score"].map(str)
     )
 
     layout = dict(
@@ -488,7 +491,7 @@ def create_table_figure(
 
 
 app.layout = html.Div(
-    id='app-container',
+    id="app-container",
     children=[
         # Banner
         html.Div(
@@ -513,17 +516,21 @@ app.layout = html.Div(
                     children=[
                         html.B("Patient Volume"),
                         html.Hr(),
-                        dcc.Graph(id="patient_volume_hm")]),
+                        dcc.Graph(id="patient_volume_hm"),
+                    ],
+                ),
                 # Patient Wait time by Department
                 html.Div(
-                    id='wait_time_card',
+                    id="wait_time_card",
                     children=[
                         html.B("Patient Wait Time and Satisfactory Scores"),
                         html.Hr(),
-                        html.Div(id="wait_time_table", children=initialize_table())]),
+                        html.Div(id="wait_time_table", children=initialize_table()),
+                    ],
+                ),
             ],
         ),
-    ]
+    ],
 )
 
 
@@ -588,10 +595,10 @@ def update_table(start, end, clinic, admit_type, heatmap_click, reset_click, *ar
     # filter data
     filtered_df = df[
         (df["Clinic Name"] == clinic) & (df["Admit Source"].isin(admit_type))
-        ]
+    ]
     filtered_df = filtered_df.sort_values("Check In Time").set_index("Check In Time")[
-                  start:end
-                  ]
+        start:end
+    ]
     departments = filtered_df["Department"].unique()
 
     # Highlight click data's patients in this table
@@ -601,7 +608,7 @@ def update_table(start, end, clinic, admit_type, heatmap_click, reset_click, *ar
         clicked_df = filtered_df[
             (filtered_df["Days of Wk"] == weekday)
             & (filtered_df["Check In Hour"] == hour_of_day)
-            ]  # slice based on clicked weekday and hour
+        ]  # slice based on clicked weekday and hour
         departments = clicked_df["Department"].unique()
         filtered_df = clicked_df
 
@@ -618,7 +625,7 @@ def update_table(start, end, clinic, admit_type, heatmap_click, reset_click, *ar
     figure_list = []
 
     if prop_type != "selectedData" or (
-            prop_type == "selectedData" and triggered_value is None
+        prop_type == "selectedData" and triggered_value is None
     ):  # Default condition, all ""
 
         for department in departments:
