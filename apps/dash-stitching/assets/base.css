@@ -602,7 +602,7 @@ there.
   input[type="reset"],
   input[type="button"] {
     height: 38px;
-    width: 140px;
+    width: 155px;
     padding: 0;
     color: #FBFFFF;
     text-align: center;
@@ -619,13 +619,12 @@ there.
     cursor: pointer;
     box-sizing: border-box;
     margin-top: 15px;
-    display: inline-block !important;
     
   }
 
   .mobile_buttons {
-    margin:0 auto;
-    
+    margin:35px auto;
+    display: inherit;
     text-align: center;
   }
 
@@ -640,7 +639,7 @@ there.
   select {
 
     height: 38px;
-    width: 35%;
+    width: 80%;
     box-sizing: border-box;
     padding: 6px 10px;
     /* The 6px vertically centers text on FF, ignored by Webkit */
@@ -655,12 +654,31 @@ there.
 
   }
 
+  label {
+    margin-top: 15px;
+    color: #407DFA;
+    font-family: 'Geneva'
+  }
+
   .mobile_forms {
-    display: inline-block !important;
+    margin: 0 auto;
+    display: inherit;
+  }
+
+
+  .radio_items {
+    margin: 30px auto;
+    text-align: center;
+    width: 350px;
+  }
+
+  .shift_table {
+    margin: 30px auto;
+    width: 80%;
+    text-align: center !important;
   }
 
 }
-
 /* Larger than Desktop HD */
 @media (max-width: 1200px) {
   

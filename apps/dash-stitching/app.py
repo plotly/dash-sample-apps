@@ -113,70 +113,89 @@ app.layout = html.Div(
             html.Button('Upload demo data', id='demo', className="button_demo")
         ], className="mobile_buttons"),
 
+
         html.Div([
-            html.Label('Number of rows'),
-            dcc.Input(
-                id='nrows-stitch',
-                type='number',
-                #value=0,
-                name='number of rows',
-                step=1
+            html.Div([
+                html.Label('Number of rows'),
+                dcc.Input(
+                    id='nrows-stitch',
+                    type='number',
+                    #value=0,
+                    name='number of rows',
+                    step=1
+                )]
+
             ),
-            html.Label('Number of columns'),
-            dcc.Input(
-                id='ncolumns-stitch',
-                type='number',
-                #value=0,
-                name='number of columns',
-                step=1
-            )
-    
-        ], className = "mobile_forms"),
+
+
+            html.Div([
+                html.Label('Number of columns'),
+                dcc.Input(
+                    id='ncolumns-stitch',
+                    type='number',
+                    #value=0,
+                    name='number of columns',
+                    step=1
+                )
+
+            ]),
+
+
+        ], className="mobile_forms"),
 
         
-        html.Label('Downsample factor'),
-        dcc.RadioItems(id='downsample',
-            options=[
-                {'label': '1', 'value': '1'},
-                {'label': '2', 'value': '2'},
-                {'label': '4', 'value': '4'},
-                {'label': '8', 'value': '8'},
-            ],
-            value='2',
-            labelStyle={'display': 'inline-block'},
-            style={
-                'margin-top': '-15px'
-            }
-        ),
+        html.Div([
+            html.Label('Downsample factor'),
+            dcc.RadioItems(id='downsample',
+                options=[
+                    {'label': '1', 'value': '1'},
+                    {'label': '2', 'value': '2'},
+                    {'label': '4', 'value': '4'},
+                    {'label': '8', 'value': '8'},
+                ],
+                value='2',
+                labelStyle={'display': 'inline-block'},
+                style={
+                    'margin-top': '-15px'
+                }
+            ),
+
+            html.Label('Fraction of overlap (in [0-1] range)'),
+            dcc.Input(
+                id='overlap-stitch',
+                type='number',
+                value=0.15,
+                min=0,
+                max=1
+            ),
+            html.Br(),
+            dcc.Checklist(
+                id='do-blending-stitch',
+                options=[{'label': 'Blending images', 'value': 1}],
+                values=[1],
+            )
+
+        ], className="radio_items"),
+        
     
-        html.Label('Fraction of overlap (in [0-1] range)'),
-        dcc.Input(
-            id='overlap-stitch',
-            type='number',
-            value=0.15,
-            min=0,
-            max=1
-        ),
-        dcc.Checklist(
-            id='do-blending-stitch',
-            options=[{'label': 'Blending images', 'value': 1}],
-            values=[1],
-        ),
-        html.Label('Measured shifts between images'),
-        dash_table.DataTable(
-            id='table-stitch',
-            columns=columns,
-            editable=True,
-            style_table={
-                'width': '80%',
-                'margin-left': '2.5%',
-                'border-radius': '4px' 
-            },
-            style_cell={
-                'text-align': 'center',
-                'font-family': 'Geneva'
-            }
-        ),
+        html.Div([
+            html.Label('Measured shifts between images'),
+            dash_table.DataTable(
+                id='table-stitch',
+                columns=columns,
+                editable=True,
+                style_table={
+                    'width': '80%',
+                    'margin-left': '2.5%',
+                    'border-radius': '4px'
+                },
+                style_cell={
+                    'text-align': 'center',
+                    'font-family': 'Geneva'
+                }
+            )
+        ], className="shift_table"),
+        
         html.Br(), 
         html.Button('Run stitching', id='button-stitch', className = "button_instruction"),
         html.Br()
