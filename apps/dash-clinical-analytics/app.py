@@ -206,7 +206,7 @@ def generate_patient_volume_heatmap(start, end, clinic, hm_click, admit_type, re
         font=dict(family="Open Sans"),
         annotations=annotations,
         shapes=shapes,
-        xaxis=dict(side="top", ticks=" ", ticklen=10, tickcolor="#ffffff"),
+        xaxis=dict(side="top", ticks="", ticklen=2, tickcolor="#ffffff"),
         yaxis=dict(side="left", ticks="", ticksuffix=" "),
         hovermode="closest",
         showlegend=False,
