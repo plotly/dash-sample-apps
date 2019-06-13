@@ -138,7 +138,7 @@ app.layout = html.Div(
                         dcc.Graph(id="map-graph"),
                         html.Div(
                             className="text-padding",
-                            children=[  
+                            children=[
                                 "Select any of the bars on the histogram to section data by time."
                             ],
                         ),
