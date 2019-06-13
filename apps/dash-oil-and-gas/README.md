@@ -53,7 +53,7 @@ The following are screenshots for the app in this repo:
 
 ![animated1](screenshots/animated1.gif)
 
-<!-- ![screenshot](screenshots/screenshot1.png) -->
+![screenshot](screenshots/screenshot1.png)
 
 ![screenshot](screenshots/screenshot2.png)
 
