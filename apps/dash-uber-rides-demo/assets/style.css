@@ -464,6 +464,13 @@ a {
 .Select-control, .Select-menu-outer, .Select-multi-value-wrapper, .select-up, .is-open .Select-control {
   background-color: #1E1E1E;
   color: white;
+  
+}
+
+#bar-selector .Select-multi-value-wrapper, #bar-selector .Select-multi-value-wrapper {
+  max-height: 22px;
+  overflow-y: auto;
+  margin-top: 5px;
 }
 
 .Select-control{
@@ -568,3 +575,19 @@ a {
     margin: 0px;
   }
 } 
+
+/* width */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: transparent; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #d8d8d870; 
+}
+
