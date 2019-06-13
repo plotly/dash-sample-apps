@@ -149,6 +149,10 @@ H5, H3 {
         text-align:center;
     }
 
+    .annotation-text {
+        font-size :0.8rem !important;
+    }
+
 
 }
 
