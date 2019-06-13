@@ -7,6 +7,7 @@ window.onload = function() {
     var graphToResize = document.getElementById("count_graph");
     graphToResize.on("plotly_afterplot", triggerResize, { once: true });
   }, 1000);
+  a;
 };
 
 var triggerResize = function() {
