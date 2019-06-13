@@ -151,6 +151,7 @@ body {
   flex-direction: column;
   height: 100vh;
   width: 100%;
+  overflow: auto;
 }
 
 
@@ -250,6 +251,7 @@ input[type="button"] {
 
 
 .button_instruction,
+.button_demo,
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
@@ -273,31 +275,6 @@ input[type="button"] {
   box-sizing: border-box; 
 }
 
-.button_demo,
-input[type="submit"],
-input[type="reset"],
-input[type="button"] {
-  margin-top: 3%;
-  margin-left: 4%;
-  height: 38px;
-  width: 140px;
-  padding: 0;
-  color: #FBFFFF;
-  text-align: center;
-  font-size: 11px;
-  font-family: 'Geneva';
-  font-weight: 200;
-  line-height: 38px;
-  letter-spacing: .1rem;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-  background-color: #4181FF;
-  border-radius: 30px;
-  border: 1px solid;
-  cursor: pointer;
-  box-sizing: border-box;
-}
 
 
 
@@ -418,7 +395,9 @@ select {
   box-shadow: none;
   box-sizing: border-box; 
   font-family: 'Geneva';
-  font-size: inherit; /*https://stackoverflow.com/questions/6080413/why-doesnt-input-inherit-the-font-from-body*/}
+  font-size: inherit; /*https://stackoverflow.com/questions/6080413/why-doesnt-input-inherit-the-font-from-body*/
+
+}
 /* Removes awkward default styles on some inputs for iOS */
 input[type="email"],
 input[type="number"],
@@ -583,23 +562,102 @@ there.
 /* Larger than tablet */
 @media (max-width: 750px) {
 
-    .instruction {
-      width: 141vh;
-      height: 120vh;
-    }
-
-    #e99392eb-e14e-4d33-ae72-49bbf5feff66 {
-      width: 100vh;
-    }
-
-    .tabs {
-
-    }
+    
 }
 
 /* Larger than desktop */
 @media (max-width: 1000px) {
-   
+  .instruction {
+    width: 141vh;
+    height: 150vh;
+  }
+
+  #e99392eb-e14e-4d33-ae72-49bbf5feff66 {
+    width: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+    font-weight: 300;
+    font-family: 'Geneva';  
+  }
+
+  h1 {
+    font-size: 6.5rem;
+  }
+
+  p {
+    margin-top: 0;
+    font-family: 'Geneva';
+    white-space: pre-line;
+    color: #8898B2;
+    overflow-wrap: normal;
+    font-size: 2.4rem;
+    text-align: center;
+  }
+
+  .button_instruction,
+  .button_demo,
+  input[type="submit"],
+  input[type="reset"],
+  input[type="button"] {
+    height: 38px;
+    width: 140px;
+    padding: 0;
+    color: #FBFFFF;
+    text-align: center;
+    font-size: 11px;
+    font-family: 'Geneva';
+    font-weight: 200;
+    line-height: 38px;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: #4181FF;
+    border: 1px solid white;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin-top: 15px;
+    display: inline-block !important;
+    
+  }
+
+  .mobile_buttons {
+    margin:0 auto;
+    
+    text-align: center;
+  }
+
+  input[type="email"],
+  input[type="number"],
+  input[type="search"],
+  input[type="text"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="password"],
+  textarea,
+  select {
+
+    height: 38px;
+    width: 35%;
+    box-sizing: border-box;
+    padding: 6px 10px;
+    /* The 6px vertically centers text on FF, ignored by Webkit */
+    background-color: #fff;
+    border: 1px solid #D1D1D1;
+    border-radius: 4px;
+    box-shadow: none;
+    box-sizing: border-box;
+    font-family: 'Geneva';
+    font-size: inherit;
+    /*https://stackoverflow.com/questions/6080413/why-doesnt-input-inherit-the-font-from-body*/
+
+  }
+
+  .mobile_forms {
+    display: inline-block !important;
+  }
 
 }
 
