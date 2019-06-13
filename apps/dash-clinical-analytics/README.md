@@ -40,7 +40,7 @@ Run this app locally by:
 python app.py
 ```
 
-## Screenshot & Screencast
+## Screenshot
 
 ![screenshot](img/screencapture.png)
 
