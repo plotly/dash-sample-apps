@@ -17,7 +17,7 @@ from plotly import tools
 
 
 server = flask.Flask(__name__)
-app = dash.Dash(__name__, server=server)
+app = dash.Dash(__name__, server=server, meta_tags=[{"name": "viewport", "content": "width=device-width"}])
 
 
 # Loading historical tick data
@@ -157,25 +157,31 @@ def get_row(data):
             html.Div(
                 className="row",
                 children=[
-                    html.Button(
-                        id=current_row[0] + "Buy",
+                    html.Div(
                         className="button-buy-sell-chart",
-                        children="Buy/Sell",
-                        n_clicks=0,
+                        children=[
+                            html.Button(
+                                id=current_row[0] + "Buy",
+                                children="Buy/Sell",
+                                n_clicks=0,
+                            )
+                        ]
                     ),
-                    html.Button(
-                        id=current_row[0] + "Button_chart",
-                        className="button-buy-sell-chart",
-                        children="Chart",
-                        n_clicks=1 if current_row[0] in ["EURUSD", "USDCHF"] else 0,
-                        style={"float": "right"},
-                    ),
+                    html.Div(
+                        className="button-buy-sell-chart-right",
+                        children=[
+                            html.Button(
+                                id=current_row[0] + "Button_chart",
+                                children="Chart",
+                                n_clicks=1 if current_row[0] in ["EURUSD", "USDCHF"] else 0,
+                            )
+                        ] 
+                    )
                 ],
             ),
         ],
         id=current_row[0] + "row_div",
         n_clicks=0,
-        # style={"textAlign": "center", "paddingTop": "4"},
     )
 
 
@@ -449,9 +455,10 @@ def get_modal_fig(currency_pair, index):
     fig.append_trace(ask_modal_trace(currency_pair, index), 1, 1)
     fig.append_trace(bid_modal_trace(currency_pair, index), 2, 1)
 
-    fig["layout"]["height"] = 200
-    fig["layout"]["width"] = 250
+    fig["layout"]["height"] = 400
+    fig["layout"]["autosize"] = True
     fig["layout"]["margin"] = {"b": 0, "r": 5, "l": 50, "t": 5}
+    fig["layout"].update(paper_bgcolor="#22252b", plot_bgcolor="#22252b")
     return fig
 
 
@@ -601,6 +608,7 @@ def chart_div(pair):
                     ),
                 ],
             ),
+
             # Chart Top Bar
             html.Div(
                 className="row chart-top-bar",
@@ -609,40 +617,32 @@ def chart_div(pair):
                         id=pair + "menu_button",
                         children=f"{pair} ☰",
                         n_clicks=0,
-                        style={
-                            "color": "white",
-                            "cursor": "pointer",
-                            "display": "inline-block",
-                            "fontSize": "16px",
-                        },
+                        style={'display':'inline-block'}
                     ),
+                    # Dropdown and close button float right
                     html.Div(
+                        className="graph-top-right",
                         children=[
-                            html.Div(
-                                children=[
-                                    dcc.Dropdown(
-                                        className="dropdown-period",
-                                        id=pair + "dropdown_period",
-                                        options=[
-                                            {"label": "5 min", "value": "5Min"},
-                                            {"label": "15 min", "value": "15Min"},
-                                            {"label": "30 min", "value": "30Min"},
-                                        ],
-                                        value="15Min",
-                                        clearable=False,
-                                    )
+                            dcc.Dropdown(
+                                className="dropdown-period",
+                                id=pair + "dropdown_period",
+                                options=[
+                                    {"label": "5 min", "value": "5Min"},
+                                    {"label": "15 min", "value": "15Min"},
+                                    {"label": "30 min", "value": "30Min"},
                                 ],
-                                style={"display": "inline-block"},
+                                value="15Min",
+                                clearable=False,
+                                style={'display':'inline-block'}
                             ),
                             html.Span(
                                 id=pair + "close",
                                 className="graph-close row",
                                 children="×",
                                 n_clicks=0,
-                                style={"display": "inline-block"},
+                                style={'display':'inline-block'}
                             ),
-                        ],
-                        style={"float": "right", "display": "inline-block"},
+                        ]
                     ),
                 ],
             ),
@@ -695,12 +695,13 @@ def bottom_panel():
 # returns modal Buy/Sell
 def modal(pair):
     return html.Div(
-        className="modal",
         id=pair + "modal",
+        className="modal",
         style={"display": "none"},
         children=[
             html.Div(
-                [
+                className="modal-content",
+                children=[
                     html.Span(
                         "×",
                         id=pair + "closeModal",
@@ -718,38 +719,39 @@ def modal(pair):
                     ),
                     # row div with two div
                     html.Div(
-                        [
+                        className="row",
+                        children=[
                             # graph div
                             html.Div(
-                                [
+                                className="six columns",
+                                children=[
                                     dcc.Graph(
                                         id=pair + "modal_graph",
                                         config={"displayModeBar": False},
                                     )
-                                ],
-                                className="six columns",
+                                ]
                             ),
                             # order values div
                             html.Div(
-                                [
+                                className="six columns",
+                                children=[
                                     html.Div(
                                         children=[
-                                            html.P(
-                                                "Volume", style={"marginBottom": "0"}
-                                            ),
+                                            html.P("Volume"),
                                             dcc.Input(
                                                 id=pair + "volume",
+                                                className="modal-input",
                                                 type="number",
                                                 value=0.1,
                                                 min=0,
                                                 step=0.1,
                                             ),
                                         ],
-                                        style={"marginBottom": "5"},
+                                        #style={"marginBottom": "5"},
                                     ),
                                     html.Div(
                                         children=[
-                                            html.P("Type", style={"marginBottom": "0"}),
+                                            html.P("Type"),
                                             dcc.RadioItems(
                                                 id=pair + "trade_type",
                                                 options=[
@@ -760,13 +762,11 @@ def modal(pair):
                                                 labelStyle={"display": "inline-block"},
                                             ),
                                         ],
-                                        style={"marginBottom": "5"},
+                                        #style={"marginBottom": "5"},
                                     ),
                                     html.Div(
                                         children=[
-                                            html.P(
-                                                "SL TPS", style={"marginBottom": "0"}
-                                            ),
+                                            html.P("SL TPS"),
                                             dcc.Input(
                                                 id=pair + "SL",
                                                 type="number",
@@ -774,13 +774,11 @@ def modal(pair):
                                                 step=1,
                                             ),
                                         ],
-                                        style={"marginBottom": "5"},
+                                        #style={"marginBottom": "5"},
                                     ),
                                     html.Div(
                                         children=[
-                                            html.P(
-                                                "TP TPS", style={"marginBottom": "0"}
-                                            ),
+                                            html.P("TP TPS"),
                                             dcc.Input(
                                                 id=pair + "TP",
                                                 type="number",
@@ -788,20 +786,17 @@ def modal(pair):
                                                 step=1,
                                             ),
                                         ],
-                                        style={"marginBottom": "5"},
+                                        #style={"marginBottom": "5"},
                                     ),
                                 ],
-                                className="six columns",
                             ),
-                        ],
-                        className="row",
+                        ]
                     ),
                     html.Div(
                         html.Button("Order", id=pair + "button_order", n_clicks=0),
                         style={"textAlign": "center", "marginTop": "12"},
                     ),
-                ],
-                className="modal-content",
+                ]
             )
         ],
     )
