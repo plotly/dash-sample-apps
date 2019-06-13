@@ -66,9 +66,10 @@ H5, H3 {
 }
 
 .table-row {
-    line-height: 70px;
-    height: 70px;
+    line-height: 60px;
+    height: 60px;
     vertical-align: middle;
+    font-size:13px;
 }
 
 .wait_time_graph > div, .patient_score_graph > div {
