@@ -34,8 +34,6 @@ plot_layout = {
     "title": "",
     "margin": {"t": 0, "b": 0, "l": 0, "r": 0},
     "font": {"size": 12, "color": "white"},
-    "width": 650,
-    "height": 650,
     "showlegend": False,
     "plot_bgcolor": "#141414",
     "paper_bgcolor": "#141414",
@@ -365,4 +363,4 @@ def save_annotations(relayout_data, current_data):
 
 
 if __name__ == "__main__":
-    app.run_server()
+    app.run_server(debug=True)
