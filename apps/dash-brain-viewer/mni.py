@@ -12,13 +12,20 @@ default_colorscale = [
     [1, "rgb(217,30,30)"],
 ]
 
+
 def read_mniobj(file):
+    """
+    Parses an obj file.
+    
+    :params file: file name in data folder
+    :returns: a tuple
+    """
+
     def triangulate_polygons(list_vertex_indices):
         for k in range(0, len(list_vertex_indices), 3):
-            yield list_vertex_indices[k: k + 3]
+            yield list_vertex_indices[k : k + 3]
 
     with open(DATA_PATH.joinpath(file)) as fp:
-
         num_vertices = 0
         matrix_vertices = []
         k = 0
@@ -101,6 +108,7 @@ def create_plot_edges_lines(vertices, faces):
         Xe += [T[k % 3][0] for k in range(4)] + [None]
         Ye += [T[k % 3][1] for k in range(4)] + [None]
         Ze += [T[k % 3][2] for k in range(4)] + [None]
+        
     # define the lines to be plotted
     lines = dict(
         type="scatter3d",
