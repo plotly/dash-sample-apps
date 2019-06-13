@@ -77,6 +77,30 @@ body {
 /* Tabs
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
+#tabs .tab-container {
+    background-color: #1d202d;
+    text-transform: uppercase;
+    font-weight: bold;
+    height: 20px;
+    cursor: default;
+}
+
+#tabs .tab {
+    background-color: #1d202d;
+    color: white;
+    border: #23262E solid 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+}
+
+#tabs .tab--selected {
+    border-bottom: #91dfd2 solid 5px !important;
+}
+
+/* 
 .custom-tabs {
     background-color: #1d202d;
     text-transform: uppercase;
@@ -99,6 +123,7 @@ body {
 #Specs-tab.custom-tab--selected, #Control-chart-tab.custom-tab--selected {
     border-bottom: #91dfd2 solid 5px !important;
 }
+*/
 
 .section-banner {
     color: darkgray;
