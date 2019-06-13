@@ -1,3 +1,4 @@
+import os
 import json
 import dash
 import dash_core_components as dcc
@@ -15,7 +16,10 @@ app = dash.Dash(
 
 server = app.server
 
-GITHUB_LINK = "http://github.com"
+GITHUB_LINK = os.environ.get(
+    "GITHUB_LINK",
+    "https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-brain-viewer",
+)
 
 default_colorscale_index = [ea[1] for ea in default_colorscale]
 
@@ -204,6 +208,8 @@ app.layout = html.Div(
 
 
 def add_marker(x, y, z):
+    """ Create a plotly marker dict. """
+
     return {
         "x": [x],
         "y": [y],
@@ -217,6 +223,8 @@ def add_marker(x, y, z):
 
 
 def add_annotation(x, y, z):
+    """ Create plotly annotation dict. """
+
     return {
         "x": x,
         "y": y,
@@ -235,7 +243,15 @@ def add_annotation(x, y, z):
     }
 
 
-def point_found(points, marker):
+def marker_in_points(points, marker):
+    """ 
+    Checks if the marker is in the list of points.
+    
+    :params points: a list of dict that contains x, y, z
+    :params marker: a dict that contains x, y, z 
+    :returns: index of the matching marker in list
+    """
+
     for index, point in enumerate(points):
         if (
             point["x"] == marker["x"]
@@ -256,6 +272,7 @@ def point_found(points, marker):
     [State("brain-graph", "figure"), State("annotation_storage", "data")],
 )
 def brain_graph_handler(click_data, val, colorscale, figure, current_anno):
+    """ Listener on colorscale, option picker, and graph on click to update the graph. """
 
     # new option select
     if figure["data"][0]["name"] != val:
@@ -271,7 +288,7 @@ def brain_graph_handler(click_data, val, colorscale, figure, current_anno):
         z_value = click_data["points"][0]["z"]
 
         marker = add_marker(x_value, y_value, z_value)
-        point_index = point_found(figure["data"], marker)
+        point_index = marker_in_points(figure["data"], marker)
 
         # delete graph markers
         if len(figure["data"]) > 1 and point_index is not None:
@@ -330,6 +347,7 @@ def display_relayout_data(relayout_data):
     [State("annotation_storage", "data")],
 )
 def save_annotations(relayout_data, current_data):
+    """ Update the annotations in the dcc store. """
 
     if relayout_data is None:
         raise PreventUpdate
@@ -338,6 +356,8 @@ def save_annotations(relayout_data, current_data):
         return {}
 
     for key in relayout_data.keys():
+
+        # to determine if the relayout has to do with annotations
         if "scene.annotations" in key:
             current_data[key] = relayout_data[key]
 
@@ -345,4 +365,4 @@ def save_annotations(relayout_data, current_data):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server()
