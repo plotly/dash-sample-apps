@@ -57,31 +57,6 @@ theme <- list(
   "secondary" = "#FFD15F"  # Accent
 )
 
-ud_usl_input <- daqNumericInput(
-  id = "ud_usl_input",
-  className = "setting-input",
-  size = 200,
-  max = 9999999
-)
-ud_lsl_input <- daqNumericInput(
-  id = "ud_lsl_input",
-  className = "setting-input",
-  size = 200,
-  max = 9999999
-)
-ud_ucl_input <- daqNumericInput(
-  id = "ud_ucl_input",
-  className = "setting-input",
-  size = 200,
-  max = 9999999
-)
-ud_lcl_input <- daqNumericInput(
-  id = "ud_lcl_input",
-  className = "setting-input",
-  size = 200,
-  max = 9999999
-)
-
 ########################################################################################################################
 # DEFINE FUNCTIONS FOR APP LAYOUT AND CALLBACKS
 
@@ -102,6 +77,7 @@ build_banner <- function() {
           id = "banner-logo",
           children = list (
             htmlButton (
+              className = "trigger-button",
               id = "learn-more-button",
               children = "LEARN MORE",
               n_clicks = 0
@@ -263,6 +239,35 @@ init_df <- function() {
 }
 
 state_dict <- init_df()
+
+ud_usl_input <- daqNumericInput(
+  id = "ud_usl_input",
+  className = "setting-input",
+  #value = state_dict[["Diameter"]][["usl"]],
+  size = 200,
+  max = 9999999
+)
+ud_lsl_input <- daqNumericInput(
+  id = "ud_lsl_input",
+  className = "setting-input",
+  #value = state_dict[["Diameter"]][["lsl"]],
+  size = 200,
+  max = 9999999
+)
+ud_ucl_input <- daqNumericInput(
+  id = "ud_ucl_input",
+  className = "setting-input",
+  #value = state_dict[["Diameter"]][["ucl"]],
+  size = 200,
+  max = 9999999
+)
+ud_lcl_input <- daqNumericInput(
+  id = "ud_lcl_input",
+  className = "setting-input",
+  #value = state_dict[["Diameter"]][["lcl"]],
+  size = 200,
+  max = 9999999
+)
 
 init_value_setter_store <- function() {
   state_dict <- init_df()
@@ -899,11 +904,11 @@ app$callback(
   ),
   function(set_btn, param, stats, usl, lsl, ucl, lcl) {
     if (is.integer(set_btn)) {
-      stats[[param]][["usl"]] = usl
-      stats[[param]][["lsl"]] = lsl
-      stats[[param]][["ucl"]] = ucl
-      stats[[param]][["lcl"]] = lcl
-      stats[[param]][["ooc"]] = populate_ooc(df[[param]], ucl, lcl)
+      stats[[param]][["usl"]] <- usl
+      stats[[param]][["lsl"]] <- lsl
+      stats[[param]][["ucl"]] <- ucl
+      stats[[param]][["lcl"]] <- lcl
+      stats[[param]][["ooc"]] <- populate_ooc(df[[param]], ucl, lcl)
     }
     return(stats)
   }
@@ -954,14 +959,14 @@ app$callback(
   }
 )
 
-# callbacks for switching tabs
+# callbacks for switching tabs when button "Proceed To Measurement" clicked
 app$callback(
   output = list(id = "app-tabs", property = "value"),
   params = list(input(id = "tab-trigger-btn", property = "n_clicks")),
   function(tab_switch) {
     if (tab_switch == 0) {
       return("tab1")
-    } else {
+    } else if (tab_switch) {
       return("tab2")
     }
   }
@@ -972,7 +977,7 @@ app$callback(
   function(tab_switch) {
     if (tab_switch == 0) {
       return(build_tab_1())
-    } else {
+    } else if (tab_switch) {
       return(build_tab_2())
     }
   }
@@ -983,7 +988,7 @@ app$callback(
   function(tab_switch) {
     if (tab_switch == 0) {
       return(FALSE)
-    } else {
+    } else if (tab_switch) {
       return(TRUE)
     }
   }
@@ -994,7 +999,7 @@ app$callback(
   function(tab_switch) {
     if (tab_switch == 0) {
       return(TRUE)
-    } else {
+    } else if (tab_switch) {
       return(FALSE)
     }
   }
@@ -1003,15 +1008,44 @@ app$callback(
   output = list(id = "tab-trigger-btn", property = "style"),
   params = list(input(id = "tab-trigger-btn", property = "n_clicks")),
   function(tab_switch) {
+    ctx <- app$callback_context()
     if (tab_switch == 0) {
       return(list("display" = "inline-block", "float" = "right"))
-    } else {
+    } else if (tab_switch) {
       return(list("display" = "none"))
     }
   }
 )
+# app$callback(
+#   output = list(id = "tab-trigger-btn", property = "style"),
+#   params = list(input(id = "tab-trigger-btn", property = "n_clicks")),
+#   function(tab_switch) {
+#     if (tab_switch == 0) {
+#       return(list("display" = "inline-block", "float" = "right"))
+#     } else {
+#       return(list("display" = "none"))
+#     }
+#   }
+# )
 
 # callbacks for modal popup
+# app$callback(
+#   output = list(id = "markdown", property = "style"),
+#   params = list(
+#     input(id = "learn-more-button", property = "n_clicks"),
+#     input(id = "markdown_close", property = "n_clicks")
+#   ),
+#   function(button_click, close_click) {
+#     ctx <- app$callback_context()
+#     if (!is.null(ctx[["triggered"]][[1]])) {
+#       prop_id <- str_split(ctx[["triggered"]][[1]][["prop_id"]], "\\.")[1]
+#       if (prop_id == "learn-more-button") {
+#         return(list("display" = "block"))
+#       }
+#     }
+#     return(list("display" = "none"))
+#   }
+# )
 app$callback(
   output = list(id = "markdown", property = "style"),
   params = list(

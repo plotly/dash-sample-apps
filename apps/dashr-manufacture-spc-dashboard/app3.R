@@ -110,12 +110,26 @@ generate_modal <- function() {
             htmlDiv(
               className = "markdown-text",
               children = dccMarkdown(
+                # DELETE!
+                # children = list(
+                #   dccMarkdown("What is this mock app about?"),
+                #   htmlPre("'dash-manufacture-spc-dashboard' is a dashboard for monitoring 
+                #   real-time process quality along manufacture production line."),
+                #   dccMarkdown("What does this app show?"),
+                #   htmlPre("Click on buttons in 'Parameter' column to visualize
+                #   details of measurement trendlines on the bottom panel.
+                #   The Sparkline on top panel and Control chart on bottom panel show
+                #   Shewhart process monitor using mock data.
+                #   The trend is updated every other second to simulate real-time measurements.
+                #   Data falling outside of six-sigma control limit are signals indicating 'Out of Control(OOC)',
+                #   and will trigger alerts instantly for a detailed checkup.")
+                # )
                 children = "**What is this mock app about?**
-                'dash-manufacture-spc-dashboard' is a dashboard for monitoring read-time process quality along manufacture production line. 
+                'dash-manufacture-spc-dashboard' is a dashboard for monitoring read-time process quality along manufacture production line.
                 **What does this app show?**
                 Click on buttons in 'Parameter' column to visualize details of measurement trendlines on the bottom panel.
-                The Sparkline on top panel and Control chart on bottom panel show Shewhart process monitor using mock data. 
-                The trend is updated every other second to simulate real-time measurements. Data falling outside of six-sigma control limit are signals indicating 'Out of Control(OOC)', and will 
+                The Sparkline on top panel and Control chart on bottom panel show Shewhart process monitor using mock data.
+                The trend is updated every other second to simulate real-time measurements. Data falling outside of six-sigma control limit are signals indicating 'Out of Control(OOC)', and will
                 trigger alerts instantly for a detailed checkup."
               )
             )
@@ -140,7 +154,7 @@ populate_ooc <- function(data, ucl, lcl) {
 
 init_df <- function() {
   output <- list()
-  for (i in 2:length(params)) {
+  for (i in 1:length(params)) {
     col <- params[i]
     data <- df[[col]]
     stats <- summary(data)
@@ -165,10 +179,11 @@ init_df <- function() {
   return(output)
 }
 
-state_dict <- init_df()
+state_dict_all <- init_df()
+state_dict <- init_df()[-1]
 
 init_value_setter_store <- function() {
-  state_dict <- init_df()
+  state_dict <- init_df()[-1]
   return(state_dict)
 }
 
@@ -503,7 +518,8 @@ build_chart_panel <- function() {
           id = "interval-component",
           interval = 2 * 1000,  # in milliseconds
           n_intervals = 0,
-          disabled = TRUE
+          #disabled = TRUE
+          disabled = FALSE
         ),
         dccStore(
           id = "control-chart-state"
@@ -532,6 +548,194 @@ build_chart_panel <- function() {
       )
     )   
   )
+}
+generate_graph <- function(interval, specs_dict, col) {
+  mean <- state_dict[[col]][["mean"]]
+  ucl <- specs_dict[[col]][["ucl"]]
+  lcl <- specs_dict[[col]][["lcl"]]
+  usl <- specs_dict[[col]][["usl"]]
+  lsl <- specs_dict[[col]][["lsl"]]
+  x_array <- as.list(state_dict_all[["Batch"]][["data"]])
+  y_array <- as.list(state_dict[[col]][["data"]])
+  total_count <- 0
+  if (interval > max_length) {
+    total_count <- max_length - 1
+  } else if (interval > 0) {
+    total_count <- interval
+  }
+  x_data <- x_array[1:total_count]
+  y_data <- y_array[1:total_count]
+  ooc_trace <- list(
+    "x": list(),
+    "y": list(),
+    "name": "Out of Control",
+    "mode": "markers",
+    "marker": list(color = "rgba(210, 77, 87, 0.7)", symbol = "square", size = 11)
+  )
+  for (i in 1:length(y_data)) {
+    if (y_data[[i]] >= ucl | y_data[[i]] <= lcl) {
+      ooc_trace[["x"]][[length(ooc_trace[["x"]])+1]] <- i
+      ooc_trace[["y"]][[length(ooc_trace[["y"]])+1]] <- y_data[[i]]
+    }
+  }
+  histo_trace <- list(
+    "x" = x_data,
+    "y" = y_data,
+    "type" = "histogram",
+    "orientation" = "h",
+    "name" = "Distribution",
+    "xaxis" = "x2",
+    "yaxis" = "y2",
+    "marker" = list("color" = "#f4d44d"),
+  )
+  fig <- list(
+    "data" = list(
+      list(
+        "x" = x_data,
+        "y" = y_data,
+        "mode" = "lines+markers",
+        "name" = col,
+        "line" = list("color" = "#f4d44d"),
+      ),
+      ooc_trace,
+      histo_trace,
+    )
+  )
+  len_figure <- len(fig[["data"]][[0]][["x"]])
+  fig[["layout"]] <- list(
+    hovermode = "closest",
+    uirevision = col,
+    paper_bgcolor = "#1d202d",
+    plot_bgcolor = "#1d202d",
+    legend = list("font" = list("color" = "darkgray")),
+    font = list("color" = "darkgray"),
+    showlegend = TRUE,
+    xaxis = list(
+      "zeroline" = FALSE,
+      "title" = "Batch_Num",
+      "showline" = FALSE,
+      "domain" = list(0, 0.8),
+      "titlefont" = list("color" = "darkgray")
+    ),
+    yaxis = list(
+      "title" = col, 
+      "autorange" = TRUE, 
+      "titlefont" = list("color" = "darkgray")
+    ),
+    annotations = list(
+      list(
+        "x" = 0.75,
+        "y" = lcl,
+        "xref" = "paper",
+        "yref" = "y",
+        #"text" = "LCL:" + str(round(lcl, 3)),
+        "showarrow" = FALSE,
+        "font" = list("color" = "white"),
+      ),
+      list(
+        "x" = 0.75,
+        "y" = ucl,
+        "xref" = "paper",
+        "yref" = "y",
+        #"text" = "UCL:" + str(round(ucl, 3)),
+        "showarrow" = FALSE,
+        "font" = list("color" = "white"),
+      ),
+      list(
+        "x" = 0.75,
+        "y" = usl,
+        "xref" = "paper",
+        "yref" = "y",
+        #"text" = "USL:" + str(round(usl, 3)),
+        "showarrow" = FALSE,
+        "font" = list("color" = "white"),
+      ),
+      list(
+        "x" = 0.75,
+        "y" = lsl,
+        "xref" = "paper",
+        "yref" = "y",
+        #"text" = "LSL:" + str(round(lsl, 3)),
+        "showarrow" = FALSE,
+        "font" = list("color" = "white"),
+      ),
+      list(
+        "x" = 0.75,
+        "y" = mean,
+        "xref" = "paper",
+        "yref" = "y",
+        #"text" = "Targeted mean:" + str(round(mean, 3)),
+        "showarrow" = FALSE,
+        "font" = list("color" = "white"),
+      ),
+    ),
+    shapes = list(
+      list(
+        "type" = "line",
+        "xref" = "x",
+        "yref" = "y",
+        "x0" = 1,
+        "y0" = usl,
+        "x1" = len_figure + 1,
+        "y1" = usl,
+        "line" = list("color" = "#91dfd2", "width" = 1, "dash" = "dashdot"),
+      ),
+      list(
+        "type" = "line",
+        "xref" = "x",
+        "yref" = "y",
+        "x0" = 1,
+        "y0" = lsl,
+        "x1" = len_figure + 1,
+        "y1" = lsl,
+        "line" = list("color" = "#91dfd2", "width" = 1, "dash" = "dashdot"),
+      ),
+      list(
+        "type" = "line",
+        "xref" = "x",
+        "yref" = "y",
+        "x0" = 1,
+        "y0" = ucl,
+        "x1" = len_figure + 1,
+        "y1" = ucl,
+        "line" = list("color" = "rgb(255,127,80)", "width" = 1, "dash" = "dashdot"),
+      ),
+      list(
+        "type" = "line",
+        "xref" = "x",
+        "yref" = "y",
+        "x0" = 1,
+        "y0" = mean,
+        "x1" = len_figure + 1,
+        "y1" = mean,
+        "line" = list("color" = "rgb(255,127,80)", "width" = 2),
+      ),
+      list(
+        "type" = "line",
+        "xref" = "x",
+        "yref" = "y",
+        "x0" = 1,
+        "y0" = lcl,
+        "x1" = len_figure + 1,
+        "y1" = lcl,
+        "line" = list("color" = "rgb(255,127,80)", "width" = 1, "dash" = "dashdot"),
+      ),
+    ),
+    xaxis2 = list(
+      "title" = "count",
+      "domain" = list(0.8, 1),  # 70 to 100 % of width
+      "titlefont" = list("color" = "darkgray"),
+    ),
+    yaxis2 = list(
+      "anchor" = "free",
+      "overlaying" = "y",
+      "side" = "right",
+      "showticklabels" = FALSE,
+      "titlefont" = list("color" = "darkgray")
+    )
+  )
+    
+  return(fig)
 }
 
 build_tab_2 <- function() {
@@ -600,6 +804,43 @@ app$callback(
       return(list("display" = "block"))
     }
     return(list("display" = "none"))
+  }
+)
+
+# callbacks for stopping interval update
+app$callback(
+  output = list(id = "interval-component", property = "disabled"),
+  params = list(
+    input(id = "stop-button", property = "n_clicks"),
+    state(id = "interval-component", property = "disabled")
+  ),
+  function(n_clicks, current) {
+    return(!current)
+  }
+)
+app$callback(
+  output = list(id = "stop-button", property = "buttonText"),
+  params = list(
+    input(id = "stop-button", property = "n_clicks"),
+    state(id = "interval-component", property = "disabled")
+  ),
+  function(n_clicks, current) {
+    ifelse(current, text <- "stop", text <- "start")
+    return(text)
+  }
+)
+
+# callbacks to update progress gauge i.e. "Time to completion"
+app$callback(
+  output = list(id = "progress-gauge", property = "value"),
+  params = list(input(id = "interval-component", property = "n_intervals")),
+  function(interval) {
+    if (interval < max_length) {
+      total_count <- interval
+    } else {
+      total_count <- max_length
+    }
+    return(as.integer(total_count))
   }
 )
 

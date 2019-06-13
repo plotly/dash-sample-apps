@@ -55,20 +55,23 @@ body {
     align-items: center;
 }
 
-.banner button {
-    color: #95969A;
-    height: 5rem;
-}
-
-.banner button:hover {
-    color: #91dfd2;
-    height: 5rem;
-    border-color: whitesmoke;
-}
-
 .banner Img {
     height: 8rem;
     margin-left: 1rem;
+}
+
+.banner button {
+    margin-right: 5%;
+}
+
+.trigger-button {
+    color: white;
+    border-color: darkgray !important;
+}
+
+.trigger-button:hover {
+    color: #91dfd2;
+    border-color: whitesmoke;
 }
 
 /* Tabs
