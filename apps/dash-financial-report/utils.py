@@ -3,24 +3,7 @@ import dash_core_components as dcc
 
 
 def Header():
-    return html.Div([get_logo(), get_header(), html.Br([]), get_menu()])
-
-
-def get_logo():
-    logo = html.Div(
-        [
-            html.Div(
-                # [html.Img(src=app.get_asset_url("Logo.png"), height="40px")],
-                className="ten columns padded"
-            ),
-            html.Div(
-                [dcc.Link("Full View   ", href="/dash-financial-report/full-view")],
-                className="two columns page-view no-print",
-            ),
-        ],
-        className="row gs-header",
-    )
-    return logo
+    return html.Div([get_header(), html.Br([]), get_menu()])
 
 
 def get_header():
@@ -28,10 +11,21 @@ def get_header():
         [
             html.Div(
                 [html.H5("Calibre Financial Index Fund Investor Shares")],
-                className="twelve columns padded",
-            )
+                className="seven columns main-title",
+            ),
+            html.Div(
+                [
+                    dcc.Link(
+                        "Full View",
+                        href="/dash-financial-report/full-view",
+                        className="full-view-link",
+                    )
+                ],
+                className="five columns",
+            ),
         ],
-        className="row gs-header gs-text-header",
+        className="row",
+        style={"padding-top": "25px"},
     )
     return header
 
@@ -70,7 +64,8 @@ def get_menu():
                 className="tab",
             ),
         ],
-        className="row ",
+        className="row",
+        style={"margin-bottom": "25px"},
     )
     return menu
 

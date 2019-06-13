@@ -1,4 +1,3 @@
-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -7,11 +6,11 @@ import plotly.graph_objs as go
 from utils import Header, make_dash_table
 import pandas as pd
 
-df_current_prices = pd.read_csv('data/df_current_prices.csv')
-df_hist_prices = pd.read_csv('data/df_hist_prices.csv')
-df_avg_returns = pd.read_csv('data/df_avg_returns.csv')
-df_after_tax = pd.read_csv('data/df_after_tax.csv')
-df_recent_returns = pd.read_csv('data/df_recent_returns.csv')
+df_current_prices = pd.read_csv("data/df_current_prices.csv")
+df_hist_prices = pd.read_csv("data/df_hist_prices.csv")
+df_avg_returns = pd.read_csv("data/df_avg_returns.csv")
+df_after_tax = pd.read_csv("data/df_after_tax.csv")
+df_recent_returns = pd.read_csv("data/df_recent_returns.csv")
 
 df_graph = pd.read_csv("data/df_graph.csv")
 
@@ -20,25 +19,19 @@ layout = html.Div(
         html.Div(
             [
                 Header(),
-                # Row ``
+                # Row
                 html.Div(
                     [
                         html.Div(
                             [
-                                html.H6(
-                                    ["Current Prices"],
-                                    className="gs-header gs-table-header padded",
-                                ),
+                                html.H6(["Current Prices"], className="subtitle"),
                                 html.Table(make_dash_table(df_current_prices)),
                             ],
                             className="six columns",
                         ),
                         html.Div(
                             [
-                                html.H6(
-                                    ["Historical Prices"],
-                                    className="gs-header gs-table-header padded",
-                                ),
+                                html.H6(["Historical Prices"], className="subtitle"),
                                 html.Table(make_dash_table(df_hist_prices)),
                             ],
                             className="six columns",
@@ -51,10 +44,7 @@ layout = html.Div(
                     [
                         html.Div(
                             [
-                                html.H6(
-                                    "Performance",
-                                    className="gs-header gs-table-header padded",
-                                ),
+                                html.H6("Performance", className="subtitle"),
                                 dcc.Graph(
                                     id="graph-4",
                                     figure={
@@ -80,13 +70,10 @@ layout = html.Div(
                                             autosize=False,
                                             width=700,
                                             height=200,
-                                            font={"family": "Raleway",
-                                                  "size": 10},
-                                            margin={"r": 40, "t": 40,
-                                                    "b": 30, "l": 40},
+                                            font={"family": "Raleway", "size": 10},
+                                            margin={"r": 40, "t": 40, "b": 30, "l": 40},
                                             showlegend=True,
-                                            titlefont={
-                                                "family": "Raleway", "size": 10},
+                                            titlefont={"family": "Raleway", "size": 10},
                                             xaxis={
                                                 "autorange": True,
                                                 "range": ["2007-12-31", "2018-03-06"],
@@ -115,8 +102,7 @@ layout = html.Div(
                                                             "step": "year",
                                                             "stepmode": "backward",
                                                         },
-                                                        {"label": "All",
-                                                            "step": "all"},
+                                                        {"label": "All", "step": "all"},
                                                     ]
                                                 },
                                                 "showline": True,
@@ -149,7 +135,7 @@ layout = html.Div(
                                     [
                                         "Average annual returns--updated monthly as of 02/28/2018"
                                     ],
-                                    className="gs-header gs-table-header tiny-header",
+                                    className="subtitle",
                                 ),
                                 html.Table(
                                     make_dash_table(df_avg_returns),
@@ -170,7 +156,7 @@ layout = html.Div(
                                     [
                                         "After-tax returns--updated quarterly as of 12/31/2017"
                                     ],
-                                    className="gs-header gs-table-header tiny-header",
+                                    className="subtitle",
                                 ),
                                 html.Table(
                                     make_dash_table(df_after_tax),
@@ -188,8 +174,7 @@ layout = html.Div(
                         html.Div(
                             [
                                 html.H6(
-                                    ["Recent investment returns"],
-                                    className="gs-header gs-table-header tiny-header",
+                                    ["Recent investment returns"], className="subtitle"
                                 ),
                                 html.Table(
                                     make_dash_table(df_recent_returns),

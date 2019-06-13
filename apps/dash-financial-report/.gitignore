@@ -3,4 +3,4 @@
 venv
 venv/
 .venv
-
+.vscode/settings.json

@@ -71,7 +71,7 @@ def display_page(pathname):
         or pathname == "/"
         or pathname == "/dash-financial-report/overview"
     ):
-        return overview.layout
+        return overview.create_layout(app)
     elif pathname == "/dash-financial-report/price-performance":
         return pricePerformance.layout
     elif pathname == "/dash-financial-report/portfolio-management":
@@ -84,7 +84,7 @@ def display_page(pathname):
         return newsReviews.layout
     elif pathname == "/dash-financial-report/full-view":
         return (
-            overview.layout,
+            overview.create_layout(app),
             pricePerformance.layout,
             portfolioManagement.layout,
             feesMins.layout,
@@ -92,7 +92,7 @@ def display_page(pathname):
             newsReviews.layout,
         )
     else:
-        return overview.layout
+        return overview.create_layout(app)
 
 
 # # # # # # # # #
