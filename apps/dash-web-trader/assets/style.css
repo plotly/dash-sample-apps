@@ -425,7 +425,8 @@ body{
 
 .table-orders{
   width: 100%;
-  
+  background-color: #22252b;
+  color: #686868;
 }
 
 tr{
@@ -481,7 +482,7 @@ th{
   margin: 9px 5px 0px 5px;
   padding: 5;
   height: 21%;
-  background-color: #22252b;
+  background-color: #282b33;
 }
 
 .div-close-orders{
@@ -504,7 +505,8 @@ th{
 }
 
 .logo{
-  height: 60px;
+  width: 100%;
+  max-width: 250px;
 }
 
 
@@ -653,23 +655,25 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
 }
 
 th, td{
-  padding: 0px;
+  padding: 12px;
 }
 
 /* width */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
   background: #22252b;
-  border: 2px solid #b2b2b270;
+  border: 1px solid #b2b2b270;
+  border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #b5b5b5;
+  border-radius: 10px;
   padding: 3px;
 }
 

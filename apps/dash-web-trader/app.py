@@ -623,16 +623,20 @@ def chart_div(pair):
                     html.Div(
                         className="graph-top-right",
                         children=[
-                            dcc.Dropdown(
-                                className="dropdown-period",
-                                id=pair + "dropdown_period",
-                                options=[
-                                    {"label": "5 min", "value": "5Min"},
-                                    {"label": "15 min", "value": "15Min"},
-                                    {"label": "30 min", "value": "30Min"},
+                            html.Div(
+                                children=[
+                                    dcc.Dropdown(
+                                        className="dropdown-period",
+                                        id=pair + "dropdown_period",
+                                        options=[
+                                            {"label": "5 min", "value": "5Min"},
+                                            {"label": "15 min", "value": "15Min"},
+                                            {"label": "30 min", "value": "30Min"}
+                                        ],
+                                        value="15Min",
+                                        clearable=False,
+                                    )
                                 ],
-                                value="15Min",
-                                clearable=False,
                                 style={'display':'inline-block'}
                             ),
                             html.Span(
@@ -677,15 +681,27 @@ def bottom_panel():
                 ],
                 value="open",
                 clearable=False,
+                style={
+                    'border':'0px solid black', 
+                    'background':'transparent',
+                    'display':'inline-block'
+                }
             ),
-            dcc.Dropdown(
-                id="closable_orders",
-                className="bottom-dropdown",
-                placeholder="Close order",
+            html.Div(
+                children=[
+                    dcc.Dropdown(
+                        id="closable_orders",
+                        className="bottom-dropdown",
+                        placeholder="Close order",
+                    )
+                ],
+                style={
+                    'float':'right'
+                }
             ),
             html.Div(
                 id="bottom_content",
-                className="row",
+                className="row table-orders",
                 children=[html.Table(id="orders_table")],
             ),
         ],
@@ -929,8 +945,8 @@ def generate_figure_callback(pair):
                 "data": [],
             }  # we only update figure when the div is displayed
 
-        if old_fig is None or old_fig == {"layout": {}, "data": []}:
-            return get_fig(pair, a, b, t, s, p)
+        # if old_fig is None or old_fig == {"layout": {}, "data": []}:
+        #    return get_fig(pair, a, b, t, s, p)
 
         # return replace_fig(pair, a, b, t, p, old_fig, s)
 
