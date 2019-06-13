@@ -111,23 +111,29 @@ app.layout = html.Div(
         html.Div([
             html.Button('LEARN MORE', className="button_instruction"),
             html.Button('Upload demo data', id='demo', className="button_demo")
-        ]),
-        html.Label('Number of rows'),
-        dcc.Input(
-            id='nrows-stitch',
-            type='number',
-            #value=0,
-            name='number of rows',
-            step=1
-        ),
-        html.Label('Number of columns'),
-        dcc.Input(
-            id='ncolumns-stitch',
-            type='number',
-            #value=0,
-            name='number of columns',
-            step=1
-        ),
+        ], className="mobile_buttons"),
+
+        html.Div([
+            html.Label('Number of rows'),
+            dcc.Input(
+                id='nrows-stitch',
+                type='number',
+                #value=0,
+                name='number of rows',
+                step=1
+            ),
+            html.Label('Number of columns'),
+            dcc.Input(
+                id='ncolumns-stitch',
+                type='number',
+                #value=0,
+                name='number of columns',
+                step=1
+            )
+    
+        ], className = "mobile_forms"),
+
+        
         html.Label('Downsample factor'),
         dcc.RadioItems(id='downsample',
             options=[
