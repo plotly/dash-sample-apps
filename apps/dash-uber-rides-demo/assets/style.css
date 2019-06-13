@@ -467,10 +467,10 @@ a {
   
 }
 
-#bar-selector .Select-multi-value-wrapper, #bar-selector .Select-multi-value-wrapper {
-  max-height: 22px;
+#bar-selector .Select-multi-value-wrapper{
+  max-height: 82px;
   overflow-y: auto;
-  margin-top: 5px;
+  margin: 0px 0px -3px 0px;
 }
 
 .Select-control{
@@ -549,6 +549,7 @@ a {
   body {
       display: block;
       margin: 0px;
+      overflow-y: scroll;
   }
   .div-for-charts {
       padding: 0px;
@@ -578,7 +579,15 @@ a {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 10px !important;
+  display: block !important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #1e1e1e !important; 
+  border-radius: 10px !important;
+  display: block !important;
 }
 
 /* Handle */
@@ -588,6 +597,6 @@ a {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #d8d8d870; 
+  background: #d8d8d870 !important; 
 }
 
