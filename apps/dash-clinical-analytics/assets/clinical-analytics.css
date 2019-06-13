@@ -69,7 +69,7 @@ H5, H3 {
     line-height: 60px;
     height: 60px;
     vertical-align: middle;
-    font-size:13px;
+    font-size: 13px;
 }
 
 .wait_time_graph > div, .patient_score_graph > div {
@@ -110,6 +110,51 @@ H5, H3 {
 }
 
 .table-row:nth-child(even) {
-    background-color: #f2f2f2 !important;
-   }
+    background-color: #f2f2f2;
+}
 
+
+/*
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  */
+
+@media only screen and (max-width: 750px) {
+    #left-column, #right-column {
+        width: 100%;
+    }
+
+    .table-row > div {
+        width: 100%;
+        text-align: center;
+    }
+
+    .table-row:nth-child(even), .table-row:nth-child(odd) {
+        background-color: #FFFFFF;
+    }
+
+    #header {
+        display: none;
+    }
+
+    #wait_time_table:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    #patient_volume_card > b, #wait_time_card > b {
+        line-height: 2.5;
+        font-size: 13px;
+        display:block;
+        text-align:center;
+    }
+
+
+}
+
+/*ipad*/
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+
+
+}
