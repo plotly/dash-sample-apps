@@ -108,17 +108,17 @@ def create_plot_edges_lines(vertices, faces):
         Xe += [T[k % 3][0] for k in range(4)] + [None]
         Ye += [T[k % 3][1] for k in range(4)] + [None]
         Ze += [T[k % 3][2] for k in range(4)] + [None]
-        
+
     # define the lines to be plotted
-    lines = dict(
-        type="scatter3d",
-        x=Xe,
-        y=Ye,
-        z=Ze,
-        mode="lines",
-        name="",
-        line=dict(color="rgb(70,70,70)", width=1),
-    )
+    lines = {
+        "type": "scatter3d",
+        "x": Xe,
+        "y": Ye,
+        "z": Ze,
+        "mode": "lines",
+        "name": "",
+        "line": {"color": "rgb(70,70,70)", "width": 1},
+    }
     return lines
 
 
@@ -128,31 +128,25 @@ def create_mesh_data(option):
     if option == "human":
         vertices, faces = read_mniobj("realct.obj")
         intensities = np.loadtxt(DATA_PATH.joinpath("realct.txt"))
-        data = plotly_triangular_mesh(
-            vertices, faces, intensities, colorscale=default_colorscale
-        )
-
     elif option == "human_atlas":
         vertices, faces = read_mniobj("surf_reg_model_both.obj")
         intensities = np.loadtxt(DATA_PATH.joinpath("aal_atlas.txt"))
-        data = plotly_triangular_mesh(
-            vertices, faces, intensities, colorscale=default_colorscale
-        )
-
     elif option == "mouse":
         vertices, faces = read_mniobj("mouse_surf.obj")
         intensities = np.loadtxt(DATA_PATH.joinpath("mouse_map.txt"))
-        data = plotly_triangular_mesh(
-            vertices, faces, intensities, colorscale=default_colorscale
-        )
+    else:
+        raise ValueError
 
+    data = plotly_triangular_mesh(
+        vertices, faces, intensities, colorscale=default_colorscale
+    )
+
+    if option == "mouse":
         vertices, faces = read_mniobj("mouse_brain_outline.obj")
         outer_mesh = plotly_triangular_mesh(vertices, faces)[0]
         outer_mesh["opacity"] = 0.5
         outer_mesh["colorscale"] = "Greys"
         data.append(outer_mesh)
-    else:
-        raise ValueError
 
     data[0]["name"] = option
     return data

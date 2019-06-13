@@ -58,9 +58,6 @@ a:hover {
     justify-content: center;
 }
 
-.app__left__section {
-
-}
 
 .app__right__section {
     background-color: #1D1D1D;
@@ -90,10 +87,6 @@ a:hover {
 .subheader {
     font-size: 1.2em;
     color: #DFE3E8;
-}
-
-.colorscale {
-
 }
 
 .colorscale-block {
@@ -134,6 +127,8 @@ a:hover {
 #brain-graph {
     user-select: none;
     margin: auto;
+    height: 650px;
+    width: 650px;
 }
 
 @media all and (max-width: 768px) {
@@ -171,7 +166,11 @@ a:hover {
         max-height: initial;
     }
     #radio-options {
-        font-size: 12px;
+        font-size: 11px;
+    }
+    #brain-graph {
+        height: 350px;
+        width: 350px;
     }
 }
 
