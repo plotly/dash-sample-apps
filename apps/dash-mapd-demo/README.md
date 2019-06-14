@@ -21,7 +21,8 @@ We suggest you to create a virtual environment for running this app with Python 
 and open your terminal/command prompt in the root folder.
 
 ```
-cd dash-mapd-demo
+git clone https://github.com/plotly/dash-sample-apps.git
+cd dash-sample-apps/apps/dash-mapd-demo
 python3 -m virtualenv venv
 
 ```
