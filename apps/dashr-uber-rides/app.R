@@ -1,5 +1,5 @@
 appName <- Sys.getenv("DASH_APP_NAME")
-if (appName != ""){
+if (appName != "") {
   pathPrefix <- sprintf("/%s/", appName)
   
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
@@ -41,36 +41,36 @@ locationCoordinates <- list(
   list(40.7069, -74.0113), list(40.644987, -73.785607),
   list(40.7527, -73.9772), list(40.7589, -73.9851))
 names(locationCoordinates) <-
-             c("default", "Madison Square Garden", "Yankee Stadium",
-               "Empire State Building", "New York Stock Exchange",
-               "JFK Airport", "Grand Central Station", "Times Square")
+  c("default", "Madison Square Garden", "Yankee Stadium",
+   "Empire State Building", "New York Stock Exchange",
+   "JFK Airport", "Grand Central Station", "Times Square")
 # Location coordinates for map-graph
 
 colorMapOrj <- c("#F4EC15", "#DAF017", "#BBEC19", "#9DE81B",
-                 "#80E41D", "#66E01F", "#4CDC20", "#34D822",
-                 "#24D249", "#25D042", "#26CC58", "#28C86D",
-                 "#29C481", "#2AC093", "#2BBCA4", "#2BB5B8",
-                 "#2C99B4", "#2D7EB0", "#2D65AC", "#2E4EA4",
-                 "#2E38A4", "#3B2FA0", "#4E2F9C", "#603099")
+  "#80E41D", "#66E01F", "#4CDC20", "#34D822",
+  "#24D249", "#25D042", "#26CC58", "#28C86D",
+  "#29C481", "#2AC093", "#2BBCA4", "#2BB5B8",
+  "#2C99B4", "#2D7EB0", "#2D65AC", "#2E4EA4",
+  "#2E38A4", "#3B2FA0", "#4E2F9C", "#603099")
 # Color codes for bars
 
 csSeq <- seq(0, 1, length.out = 23)
 # Create 24 evenly spaced floats from 0 to 1:
 
 colorScale <- list(
-    c(0, "#F4EC15"),
-    list(csSeq[1], "#DAF017"), list(csSeq[2], "#BBEC19"),
-    list(csSeq[3], "#9DE81B"), list(csSeq[4], "#80E41D"),
-    list(csSeq[5], "#66E01F"), list(csSeq[6], "#4CDC20"),
-    list(csSeq[7], "#34D822"), list(csSeq[8], "#24D249"),
-    list(csSeq[9], "#25D042"), list(csSeq[10], "#26CC58"),
-    list(csSeq[11], "#28C86D"), list(csSeq[12], "#29C481"),
-    list(csSeq[13], "#2AC093"), list(csSeq[14], "#2BBCA4"),
-    list(csSeq[15], "#2BB5B8"), list(csSeq[16], "#2C99B4"),
-    list(csSeq[17], "#2D7EB0"), list(csSeq[18], "#2D65AC"),
-    list(csSeq[19], "#2E4EA4"), list(csSeq[20],  "#2E38A4"),
-    list(csSeq[21], "#3B2FA0"), list(csSeq[22], "#4E2F9C"),
-    list(csSeq[23], "#603099"))                
+  c(0, "#F4EC15"),
+  list(csSeq[1], "#DAF017"), list(csSeq[2], "#BBEC19"),
+  list(csSeq[3], "#9DE81B"), list(csSeq[4], "#80E41D"),
+  list(csSeq[5], "#66E01F"), list(csSeq[6], "#4CDC20"),
+  list(csSeq[7], "#34D822"), list(csSeq[8], "#24D249"),
+  list(csSeq[9], "#25D042"), list(csSeq[10], "#26CC58"),
+  list(csSeq[11], "#28C86D"), list(csSeq[12], "#29C481"),
+  list(csSeq[13], "#2AC093"), list(csSeq[14], "#2BBCA4"),
+  list(csSeq[15], "#2BB5B8"), list(csSeq[16], "#2C99B4"),
+  list(csSeq[17], "#2D7EB0"), list(csSeq[18], "#2D65AC"),
+  list(csSeq[19], "#2E4EA4"), list(csSeq[20],  "#2E38A4"),
+  list(csSeq[21], "#3B2FA0"), list(csSeq[22], "#4E2F9C"),
+  list(csSeq[23], "#603099"))                
 # Create custom colorScale list 
 
 ridesDf$rideHour <- as.numeric(as.POSIXlt(ridesDf$Date.Time)$hour)
@@ -79,10 +79,10 @@ ridesDf$rideHour <- as.numeric(as.POSIXlt(ridesDf$Date.Time)$hour)
 
 mapboxToken <- paste("pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaT",
                 "AxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g", sep = "")
-#mapbox token for plotly | this one is for plot_mapbox figure
+# Mapbox token for plotly | this one is for plot_mapbox figure
 
 Sys.setenv("MAPBOX_TOKEN" = mapboxToken)
-#setting mapbox token for R environment 
+# Setting mapbox token for R environment 
 
 locationOptions <- list(
   list(label = "New York Main", value = "default"),
@@ -95,39 +95,39 @@ locationOptions <- list(
   list(label = "Times Square", value = "Times Square"))
                   
 allHours <- c(" 00:00:00", " 01:00:00", " 02:00:00", " 03:00:00",
-               " 04:00:00", " 05:00:00", " 06:00:00", " 07:00:00",
-               " 08:00:00", " 09:00:00", " 10:00:00", " 11:00:00",
-               " 12:00:00", " 13:00:00", " 14:00:00", " 15:00:00",
-               " 16:00:00", " 17:00:00", " 18:00:00", " 19:00:00",
-               " 20:00:00", " 21:00:00", " 22:00:00", " 23:00:00")
+   " 04:00:00", " 05:00:00", " 06:00:00", " 07:00:00",
+   " 08:00:00", " 09:00:00", " 10:00:00", " 11:00:00",
+   " 12:00:00", " 13:00:00", " 14:00:00", " 15:00:00",
+   " 16:00:00", " 17:00:00", " 18:00:00", " 19:00:00",
+   " 20:00:00", " 21:00:00", " 22:00:00", " 23:00:00")
                
 
 hourOptions <- list(
-                  list(label = "Entire Day", value = "entire_day"),
-                  list(label = "00:00", value = " 00:00:00"),
-                  list(label = "01:00", value = " 01:00:00"),
-                  list(label = "02:00", value = " 02:00:00"),
-                  list(label = "03:00", value = " 03:00:00"),
-                  list(label = "04:00", value = " 04:00:00"),
-                  list(label = "05:00", value = " 05:00:00"),
-                  list(label = "06:00", value = " 06:00:00"),
-                  list(label = "07:00", value = " 07:00:00"),
-                  list(label = "08:00", value = " 08:00:00"),
-                  list(label = "09:00", value = " 09:00:00"),
-                  list(label = "10:00", value = " 10:00:00"),
-                  list(label = "11:00", value = " 11:00:00"),
-                  list(label = "12:00", value = " 12:00:00"),
-                  list(label = "13:00", value = " 13:00:00"),
-                  list(label = "14:00", value = " 14:00:00"),
-                  list(label = "15:00", value = " 15:00:00"),
-                  list(label = "16:00", value = " 16:00:00"),
-                  list(label = "17:00", value = " 17:00:00"),
-                  list(label = "18:00", value = " 18:00:00"),
-                  list(label = "19:00", value = " 19:00:00"),
-                  list(label = "20:00", value = " 20:00:00"),
-                  list(label = "21:00", value = " 21:00:00"),
-                  list(label = "22:00", value = " 22:00:00"),
-                  list(label = "23:00", value = " 23:00:00"))
+  list(label = "Entire Day", value = "entire_day"),
+  list(label = "00:00", value = " 00:00:00"),
+  list(label = "01:00", value = " 01:00:00"),
+  list(label = "02:00", value = " 02:00:00"),
+  list(label = "03:00", value = " 03:00:00"),
+  list(label = "04:00", value = " 04:00:00"),
+  list(label = "05:00", value = " 05:00:00"),
+  list(label = "06:00", value = " 06:00:00"),
+  list(label = "07:00", value = " 07:00:00"),
+  list(label = "08:00", value = " 08:00:00"),
+  list(label = "09:00", value = " 09:00:00"),
+  list(label = "10:00", value = " 10:00:00"),
+  list(label = "11:00", value = " 11:00:00"),
+  list(label = "12:00", value = " 12:00:00"),
+  list(label = "13:00", value = " 13:00:00"),
+  list(label = "14:00", value = " 14:00:00"),
+  list(label = "15:00", value = " 15:00:00"),
+  list(label = "16:00", value = " 16:00:00"),
+  list(label = "17:00", value = " 17:00:00"),
+  list(label = "18:00", value = " 18:00:00"),
+  list(label = "19:00", value = " 19:00:00"),
+  list(label = "20:00", value = " 20:00:00"),
+  list(label = "21:00", value = " 21:00:00"),
+  list(label = "22:00", value = " 22:00:00"),
+  list(label = "23:00", value = " 23:00:00"))
 
 externalSheets <- list("https://codepen.io/chriddyp/pen/bWLwgP.css")
 
@@ -144,8 +144,8 @@ app <- Dash$new(name = "dashr-uber-rides", external_stylesheets = externalSheets
 
 pageTitle <- htmlH2("DASH - UBER DATA APP", className = "title-left")
 firstP <- htmlP(paste("Select different dates, locations or ",
-                "hours using dropdowns below or by selecting ",
-                "different time frames on the histogram", sep = ""))
+                  "hours using dropdowns below or by selecting ",
+                  "different time frames on the histogram", sep = ""))
 plotlyLogo <- htmlA(
                   list(
                     htmlImg(src = "assets/dashR-logo-stripe.png",
@@ -173,8 +173,8 @@ datePicker <- dccDatePickerSingle(
                             
 sourceObj <- dccMarkdown(
   paste(
-      "Source: [FiveThirtyEight](https://github.com/fivethirtyeight/uber-",
-      "tlc-foil-response/tree/master/uber-trip-data)", sep = ""),
+    "Source: [FiveThirtyEight](https://github.com/fivethirtyeight/uber-",
+    "tlc-foil-response/tree/master/uber-trip-data)", sep = ""),
   className = "source-obj")
 
 ####################################################################################################
@@ -214,7 +214,7 @@ app$layout(
 #################################### HELPER FUNCS FOR CALLBACKS ####################################
 
 # Filters out the date selected by user from dataset
-FilterDay <- function(date){
+FilterDay <- function(date) {
 
   datePaste <- paste(date, " 00:00:00", sep = "")
   # Combine month-day-year to %Y-%m-%d %H:%M:%OS format
@@ -231,7 +231,7 @@ FilterDay <- function(date){
 }
 
 # Returns hour list for callbacks
-EntireDayConverter <- function(hour){
+EntireDayConverter <- function(hour) {
 
   hourVec <- unlist(hour)
 
@@ -243,7 +243,7 @@ EntireDayConverter <- function(hour){
 }
 
 # Filters out the month-day-hour selected by user from dataset
-DfToMap <- function(date, hour){
+DfToMap <- function(date, hour) {
 
   hourVec <- EntireDayConverter(hour)
 
@@ -257,20 +257,20 @@ DfToMap <- function(date, hour){
     for (h in hourVec) {
 
       hourPaste <- paste(date, h, sep = "")
-      #Combine month-day-year to %Y-%m-%d %H:%M:%OS format
+      # Combine month-day-year to %Y-%m-%d %H:%M:%OS format
 
       hourStart <- as.POSIXct(hourPaste)
       hourEnd <- hourStart + 3600
-      #Define df slicing interval
+      # Define df slicing interval
 
       ridesHour <- ridesDf[ridesDf$Date.Time >= hourStart &
                            ridesDf$Date.Time < hourEnd, ]
-      #Filter out data
+      # Filter out data
 
       dfEmpty <- rbind(dfEmpty, ridesHour)
-      #Append hours to get df to plot
+      # Append hours to get df to plot
     }
-    return(dfEmpty)
+    return (dfEmpty)
   }
 }
 
@@ -282,7 +282,7 @@ app$callback(output = list(id = "hidden-date-picker", property = "children"),
              params = list(input(id = "date-picker", property = "date")),
 
   function(date) {
-    return(as.character(date))
+    return (as.character(date))
   }
 )
 
@@ -308,7 +308,7 @@ app$callback(output = list(id = "map-graph", property = "figure"),
       if (location == "default") {
       zoom <- 12
       }
-      return(
+      return (
         plot_mapbox(dfToMap, lat = ~Lat, lon = ~Lon, split = ~rideHour,
                      mode = "markers", hoverinfo = "lat+lon+text",
                      marker = list(color = ~rideHour, cmin = 0, cmax = 23,
@@ -370,18 +370,18 @@ app$callback(output = list(id = "histogram", property = "figure"),
   function(date, hour) {
 
     dfDay <- FilterDay(date)
-    #Filter out data
+    # Filter out data
 
     dfAgg <- aggregate(Date.Time ~
               format(dfDay$Date.Time, "%Y-%m-%d %H"),
               data = dfDay, length)
-    # aggregate number of hourly rides to df
+    # Aggregate number of hourly rides to df
 
     names(dfAgg) <- c("Date-Hours", "Ride_Counts")
-    # name aggregate df appropriately
+    # Name aggregate df appropriately
 
     dfAgg$`Date-Hours` <- seq(0, 23)
-    #reformatting for getting the x-axis ticks correct
+    # Reformatting for getting the x-axis ticks correct
 
     hourVec <- EntireDayConverter(hour)
 
@@ -392,7 +392,7 @@ app$callback(output = list(id = "histogram", property = "figure"),
     if (length(numericHours) > 0 && length(numericHours) < 24) {
       colorMap[numericHours + 1] <- "FFFFFF"
     }
-    return(
+    return (
       plot_ly(
                x = dfAgg$`Date-Hours`,
                y = dfAgg$Ride_Counts,
