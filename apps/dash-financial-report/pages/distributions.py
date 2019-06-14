@@ -7,9 +7,9 @@ import plotly.graph_objs as go
 from utils import Header, make_dash_table
 import pandas as pd
 
-df_dividend = pd.read_csv('data/df_dividend.csv')
-df_realized = pd.read_csv('data/df_realized.csv')
-df_unrealized = pd.read_csv('data/df_unrealized.csv')
+df_dividend = pd.read_csv("data/df_dividend.csv")
+df_realized = pd.read_csv("data/df_realized.csv")
+df_unrealized = pd.read_csv("data/df_unrealized.csv")
 
 layout = html.Div(
     [  # page 5
@@ -21,14 +21,12 @@ layout = html.Div(
                     [
                         html.Div(
                             [
-                                html.H6(
-                                    ["Distributions"],
-                                    className="gs-header gs-table-header padded",
-                                ),
-                                html.Strong(
+                                html.H6(["Distributions"], className="subtitle padded"),
+                                html.P(
                                     [
                                         "Distributions for this fund are scheduled quaterly"
-                                    ]
+                                    ],
+                                    style={"color": "#7a7a7a"},
                                 ),
                             ],
                             className="twelve columns",
@@ -44,7 +42,7 @@ layout = html.Div(
                                 html.Br([]),
                                 html.H6(
                                     ["Dividend and capital gains distributions"],
-                                    className="gs-header gs-table-header tiny-header",
+                                    className="subtitle tiny-header padded",
                                 ),
                                 html.Table(
                                     make_dash_table(df_dividend),
@@ -63,7 +61,7 @@ layout = html.Div(
                             [
                                 html.H6(
                                     ["Realized/unrealized gains as of 01/31/2018"],
-                                    className="gs-header gs-table-header tiny-header",
+                                    className="subtitle tiny-header padded",
                                 )
                             ],
                             className=" twelve columns",

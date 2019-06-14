@@ -74,7 +74,9 @@ def create_layout(app):
                         [
                             html.Div(
                                 [
-                                    html.H6(["Fund Facts"], className="subtitle"),
+                                    html.H6(
+                                        ["Fund Facts"], className="subtitle padded"
+                                    ),
                                     html.Table(make_dash_table(df_fund_facts)),
                                 ],
                                 className="six columns",
@@ -83,7 +85,7 @@ def create_layout(app):
                                 [
                                     html.H6(
                                         "Average annual performance",
-                                        className="subtitle",
+                                        className="subtitle padded",
                                     ),
                                     dcc.Graph(
                                         id="graph-1",
@@ -192,7 +194,7 @@ def create_layout(app):
                                 [
                                     html.H6(
                                         "Hypothetical growth of $10,000",
-                                        className="subtitle",
+                                        className="subtitle padded",
                                     ),
                                     dcc.Graph(
                                         id="grpah-2",
@@ -284,7 +286,8 @@ def create_layout(app):
                             html.Div(
                                 [
                                     html.H6(
-                                        "Price & Performance (%)", className="subtitle"
+                                        "Price & Performance (%)",
+                                        className="subtitle padded",
                                     ),
                                     html.Table(make_dash_table(df_price_perf)),
                                 ],
@@ -292,7 +295,9 @@ def create_layout(app):
                             ),
                             html.Div(
                                 [
-                                    html.H6("Risk Potential", className="subtitle"),
+                                    html.H6(
+                                        "Risk Potential", className="subtitle padded"
+                                    ),
                                     html.Img(
                                         src=app.get_asset_url("risk_reward.png"),
                                         className="risk-reward",

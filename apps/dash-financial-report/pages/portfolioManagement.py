@@ -7,8 +7,8 @@ import plotly.graph_objs as go
 from utils import Header, make_dash_table
 import pandas as pd
 
-df_equity_char = pd.read_csv('data/df_equity_char.csv')
-df_equity_diver = pd.read_csv('data/df_equity_diver.csv')
+df_equity_char = pd.read_csv("data/df_equity_char.csv")
+df_equity_diver = pd.read_csv("data/df_equity_diver.csv")
 
 layout = html.Div(
     [  # page 3
@@ -19,23 +19,18 @@ layout = html.Div(
                 html.Div(
                     [
                         html.Div(
-                            [
-                                html.H6(
-                                    ["Portfolio"],
-                                    className="gs-header gs-table-header padded",
-                                )
-                            ],
+                            [html.H6(["Portfolio"], className="subtitle padded")],
                             className="twelve columns",
                         )
                     ],
-                    className="row ",
+                    className="rows",
                 ),
                 # Row 2
                 html.Div(
                     [
                         html.Div(
                             [
-                                html.Strong(["Stock style"]),
+                                html.P(["Stock style"], style={"color": "#7a7a7a"}),
                                 dcc.Graph(
                                     id="graph-5",
                                     figure={
@@ -57,8 +52,9 @@ layout = html.Div(
                                                     "y": 1.00181709504,
                                                     "align": "left",
                                                     "font": {
-                                                        "family": "Raleway",
-                                                        "size": 9,
+                                                        "family": "Raleway, sans-serif",
+                                                        "size": 7,
+                                                        "color": "#7a7a7a",
                                                     },
                                                     "showarrow": False,
                                                     "text": "<b>Market<br>Cap</b>",
@@ -69,8 +65,9 @@ layout = html.Div(
                                                     "x": 1.00001816013,
                                                     "y": 1.35907755794e-16,
                                                     "font": {
-                                                        "family": "Raleway",
-                                                        "size": 9,
+                                                        "family": "Raleway, sans-serif",
+                                                        "size": 7,
+                                                        "color": "#7a7a7a",
                                                     },
                                                     "showarrow": False,
                                                     "text": "<b>Style</b>",
@@ -83,8 +80,7 @@ layout = html.Div(
                                             width=200,
                                             height=150,
                                             hovermode="closest",
-                                            margin={"r": 30, "t": 20,
-                                                    "b": 20, "l": 30},
+                                            margin={"r": 30, "t": 20, "b": 20, "l": 30},
                                             shapes=[
                                                 {
                                                     "fillcolor": "#f9f9f9",
@@ -92,7 +88,6 @@ layout = html.Div(
                                                         "color": "#ffffff",
                                                         "width": 0,
                                                     },
-                                                    # "opacity": 1,
                                                     "type": "rect",
                                                     "x0": 0,
                                                     "x1": 0.33,
@@ -108,7 +103,6 @@ layout = html.Div(
                                                         "dash": "solid",
                                                         "width": 0,
                                                     },
-                                                    # "opacity": 0.3,
                                                     "type": "rect",
                                                     "x0": 0.33,
                                                     "x1": 0.66,
@@ -123,7 +117,6 @@ layout = html.Div(
                                                         "color": "#ffffff",
                                                         "width": 0,
                                                     },
-                                                    # "opacity": 0.3,
                                                     "type": "rect",
                                                     "x0": 0.66,
                                                     "x1": 0.99,
@@ -138,7 +131,6 @@ layout = html.Div(
                                                         "color": "#ffffff",
                                                         "width": 0,
                                                     },
-                                                    # "opacity": 0.3,
                                                     "type": "rect",
                                                     "x0": 0,
                                                     "x1": 0.33,
@@ -153,7 +145,6 @@ layout = html.Div(
                                                         "color": "#ffffff",
                                                         "width": 0,
                                                     },
-                                                    # "opacity": 0.3,
                                                     "type": "rect",
                                                     "x0": 0.33,
                                                     "x1": 0.66,
@@ -168,7 +159,6 @@ layout = html.Div(
                                                         "color": "#ffffff",
                                                         "width": 0,
                                                     },
-                                                    # "opacity": 0.3,
                                                     "type": "rect",
                                                     "x0": 0.66,
                                                     "x1": 0.99,
@@ -183,7 +173,6 @@ layout = html.Div(
                                                         "color": "#ffffff",
                                                         "width": 0,
                                                     },
-                                                    # "opacity": 0.3,
                                                     "type": "rect",
                                                     "x0": 0,
                                                     "x1": 0.33,
@@ -198,7 +187,6 @@ layout = html.Div(
                                                         "color": "#ffffff",
                                                         "width": 0,
                                                     },
-                                                    # "opacity": 0.9,
                                                     "type": "rect",
                                                     "x0": 0.33,
                                                     "x1": 0.66,
@@ -213,7 +201,6 @@ layout = html.Div(
                                                         "color": "#ffffff",
                                                         "width": 0,
                                                     },
-                                                    # "opacity": 0.3,
                                                     "type": "rect",
                                                     "x0": 0.66,
                                                     "x1": 0.99,
@@ -267,6 +254,7 @@ layout = html.Div(
                                 ),
                             ],
                             className="eight columns middle-aligned",
+                            style={"color": "#696969"},
                         ),
                     ],
                     className="row ",
@@ -279,7 +267,7 @@ layout = html.Div(
                             [
                                 html.H6(
                                     ["Equity characteristics as of 01/31/2018"],
-                                    className="gs-header gs-table-header tiny-header",
+                                    className="subtitle padded",
                                 ),
                                 html.Table(
                                     make_dash_table(df_equity_char),
@@ -298,7 +286,7 @@ layout = html.Div(
                             [
                                 html.H6(
                                     ["Equity sector diversification"],
-                                    className="gs-header gs-table-header tiny-header",
+                                    className="subtitle padded",
                                 ),
                                 html.Table(
                                     make_dash_table(df_equity_diver),

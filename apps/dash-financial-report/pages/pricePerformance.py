@@ -24,14 +24,18 @@ layout = html.Div(
                     [
                         html.Div(
                             [
-                                html.H6(["Current Prices"], className="subtitle"),
+                                html.H6(
+                                    ["Current Prices"], className="subtitle padded"
+                                ),
                                 html.Table(make_dash_table(df_current_prices)),
                             ],
                             className="six columns",
                         ),
                         html.Div(
                             [
-                                html.H6(["Historical Prices"], className="subtitle"),
+                                html.H6(
+                                    ["Historical Prices"], className="subtitle padded"
+                                ),
                                 html.Table(make_dash_table(df_hist_prices)),
                             ],
                             className="six columns",
@@ -44,7 +48,7 @@ layout = html.Div(
                     [
                         html.Div(
                             [
-                                html.H6("Performance", className="subtitle"),
+                                html.H6("Performance", className="subtitle padded"),
                                 dcc.Graph(
                                     id="graph-4",
                                     figure={
@@ -135,7 +139,7 @@ layout = html.Div(
                                     [
                                         "Average annual returns--updated monthly as of 02/28/2018"
                                     ],
-                                    className="subtitle",
+                                    className="subtitle padded",
                                 ),
                                 html.Table(
                                     make_dash_table(df_avg_returns),
@@ -156,7 +160,7 @@ layout = html.Div(
                                     [
                                         "After-tax returns--updated quarterly as of 12/31/2017"
                                     ],
-                                    className="subtitle",
+                                    className="subtitle padded",
                                 ),
                                 html.Table(
                                     make_dash_table(df_after_tax),
@@ -174,7 +178,8 @@ layout = html.Div(
                         html.Div(
                             [
                                 html.H6(
-                                    ["Recent investment returns"], className="subtitle"
+                                    ["Recent investment returns"],
+                                    className="subtitle padded",
                                 ),
                                 html.Table(
                                     make_dash_table(df_recent_returns),
