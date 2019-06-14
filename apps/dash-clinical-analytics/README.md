@@ -2,7 +2,7 @@
 
 ## About this app
 
-This dashboard allows you to explore clinic patient volume by time of the day, waiting time, and care score. Drill down into high-volume days to view how the busy environment may have affected patient experience.
+This dashboard allows you to explore clinic patient volume by time of the day, waiting time and care score. Drill down into high-volume days to view how the busy environment may have affected patient experience.
 
 ## Requirements
 
