@@ -17,7 +17,11 @@ from plotly import tools
 
 
 server = flask.Flask(__name__)
-app = dash.Dash(__name__, server=server, meta_tags=[{"name": "viewport", "content": "width=device-width"}])
+app = dash.Dash(
+    __name__,
+    server=server,
+    meta_tags=[{"name": "viewport", "content": "width=device-width"}],
+)
 
 
 # Loading historical tick data
@@ -71,18 +75,6 @@ def update_news():
     return generate_news_table(df)
 
 
-# Get Current Time and create header
-def get_header(t=datetime.datetime.now()):
-    return html.Div(
-        className="header-bid-ask",
-        children=[
-            html.P(t.strftime("%H:%M:%S"), id="live_clock", className="four columns"),
-            html.P("Bid", className="four columns"),
-            html.P("Ask", className="four columns"),
-        ],
-    )
-
-
 # color of Bid & Ask rates
 def get_color(a, b):
     if a == b:
@@ -122,24 +114,23 @@ def get_row(data):
                 className="row",
                 children=[
                     html.Div(
+                        id=current_row[0] + "row",
+                        className="row",
                         children=[
                             html.P(
                                 current_row[0],  # currency pair name
                                 id=current_row[0],
-                                className="four columns",
-                                style={"textAlign": "center"},
+                                className="three-col",
                             ),
                             html.P(
                                 current_row[1].round(5),  # Bid value
                                 id=current_row[0] + "bid",
-                                className="four columns",
-                                style={"textAlign": "center"},
+                                className="three-col",
                             ),
                             html.P(
                                 current_row[2].round(5),  # Ask value
-                                className="four columns",
                                 id=current_row[0] + "ask",
-                                style={"textAlign": "center"},
+                                className="three-col",
                             ),
                             html.Div(
                                 index,
@@ -148,9 +139,6 @@ def get_row(data):
                                 style={"display": "none"},
                             ),
                         ],
-                        id=current_row[0] + "row",
-                        className="row eleven columns",
-                        style={"height": "25", "float": "right"},
                     )
                 ],
             ),
@@ -165,7 +153,7 @@ def get_row(data):
                                 children="Buy/Sell",
                                 n_clicks=0,
                             )
-                        ]
+                        ],
                     ),
                     html.Div(
                         className="button-buy-sell-chart-right",
@@ -173,10 +161,12 @@ def get_row(data):
                             html.Button(
                                 id=current_row[0] + "Button_chart",
                                 children="Chart",
-                                n_clicks=1 if current_row[0] in ["EURUSD", "USDCHF"] else 0,
+                                n_clicks=1
+                                if current_row[0] in ["EURUSD", "USDCHF"]
+                                else 0,
                             )
-                        ] 
-                    )
+                        ],
+                    ),
                 ],
             ),
         ],
@@ -196,22 +186,19 @@ def replace_row(currency_pair, index, bid, ask):
 
     return [
         html.P(
-            currency_pair,  # currency pair name
-            id=currency_pair,
-            className="four columns",
-            style={"textAlign": "center"},
+            currency_pair, id=currency_pair, className="three-col"  # currency pair name
         ),
         html.P(
             new_row[1].round(5),  # Bid value
             id=new_row[0] + "bid",
-            className="four columns",
-            style={"textAlign": "center", "color": get_color(new_row[1], bid)},
+            className="three-col",
+            style={"color": get_color(new_row[1], bid)},
         ),
         html.P(
             new_row[2].round(5),  # Ask value
-            className="four columns",
+            className="three-col",
             id=new_row[0] + "ask",
-            style={"textAlign": "center", "color": get_color(new_row[2], ask)},
+            style={"color": get_color(new_row[2], ask)},
         ),
         html.Div(
             index, id=currency_pair + "index", style={"display": "none"}
@@ -608,7 +595,6 @@ def chart_div(pair):
                     ),
                 ],
             ),
-
             # Chart Top Bar
             html.Div(
                 className="row chart-top-bar",
@@ -617,7 +603,7 @@ def chart_div(pair):
                         id=pair + "menu_button",
                         children=f"{pair} ☰",
                         n_clicks=0,
-                        style={'display':'inline-block'}
+                        style={"display": "inline-block"},
                     ),
                     # Dropdown and close button float right
                     html.Div(
@@ -631,22 +617,22 @@ def chart_div(pair):
                                         options=[
                                             {"label": "5 min", "value": "5Min"},
                                             {"label": "15 min", "value": "15Min"},
-                                            {"label": "30 min", "value": "30Min"}
+                                            {"label": "30 min", "value": "30Min"},
                                         ],
                                         value="15Min",
                                         clearable=False,
                                     )
                                 ],
-                                style={'display':'inline-block'}
+                                style={"display": "inline-block"},
                             ),
                             html.Span(
                                 id=pair + "close",
                                 className="graph-close row",
                                 children="×",
                                 n_clicks=0,
-                                style={'display':'inline-block'}
+                                style={"display": "inline-block"},
                             ),
-                        ]
+                        ],
                     ),
                 ],
             ),
@@ -682,10 +668,10 @@ def bottom_panel():
                 value="open",
                 clearable=False,
                 style={
-                    'border':'0px solid black', 
-                    'background':'transparent',
-                    'display':'inline-block'
-                }
+                    "border": "0px solid black",
+                    "background": "transparent",
+                    "display": "inline-block",
+                },
             ),
             html.Div(
                 children=[
@@ -695,9 +681,7 @@ def bottom_panel():
                         placeholder="Close order",
                     )
                 ],
-                style={
-                    'float':'right'
-                }
+                style={"float": "right"},
             ),
             html.Div(
                 id="bottom_content",
@@ -745,7 +729,7 @@ def modal(pair):
                                         id=pair + "modal_graph",
                                         config={"displayModeBar": False},
                                     )
-                                ]
+                                ],
                             ),
                             # order values div
                             html.Div(
@@ -763,7 +747,7 @@ def modal(pair):
                                                 step=0.1,
                                             ),
                                         ],
-                                        #style={"marginBottom": "5"},
+                                        # style={"marginBottom": "5"},
                                     ),
                                     html.Div(
                                         children=[
@@ -778,7 +762,7 @@ def modal(pair):
                                                 labelStyle={"display": "inline-block"},
                                             ),
                                         ],
-                                        #style={"marginBottom": "5"},
+                                        # style={"marginBottom": "5"},
                                     ),
                                     html.Div(
                                         children=[
@@ -790,7 +774,7 @@ def modal(pair):
                                                 step=1,
                                             ),
                                         ],
-                                        #style={"marginBottom": "5"},
+                                        # style={"marginBottom": "5"},
                                     ),
                                     html.Div(
                                         children=[
@@ -802,17 +786,17 @@ def modal(pair):
                                                 step=1,
                                             ),
                                         ],
-                                        #style={"marginBottom": "5"},
+                                        # style={"marginBottom": "5"},
                                     ),
                                 ],
                             ),
-                        ]
+                        ],
                     ),
                     html.Div(
                         html.Button("Order", id=pair + "button_order", n_clicks=0),
                         style={"textAlign": "center", "marginTop": "12"},
                     ),
-                ]
+                ],
             )
         ],
     )
@@ -834,10 +818,11 @@ app.layout = html.Div(
         html.Div(
             className="three columns div-left-panel",
             children=[
+                html.Img(className="logo", src="assets/dash-logo.png"),
                 html.Div(
                     className="div-info",
                     children=[
-                        html.Img(className="logo", src="assets/dash-logo.png"),
+                        html.H6(className="title-header", children="FOREX TRADER"),
                         html.P(
                             """
                             This app continually queries csv files and updates Ask and Bid prices 
@@ -845,9 +830,22 @@ app.layout = html.Div(
                             buy and sell stocks and see the profit updates.
                             """
                         ),
+                        html.Button("Learn More"),
                     ],
                 ),
-                html.Div(get_header()),
+                # get_header()
+                html.Div(
+                    className="row",
+                    children=[
+                        html.P(
+                            id="live_clock",
+                            className="three-col",
+                            children=datetime.datetime.now().strftime("%H:%M:%S"),
+                        ),
+                        html.P(className="three-col", children="Bid"),
+                        html.P(className="three-col", children="Ask"),
+                    ],
+                ),
                 html.Div(
                     id="pairs",
                     className="div-bid-ask",
