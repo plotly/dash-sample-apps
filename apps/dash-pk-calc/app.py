@@ -7,6 +7,7 @@ Created on Thu Apr  4 17:43:39 2019
 
 import os
 import base64
+import pathlib
 import statistics
 from collections import OrderedDict
 
@@ -26,6 +27,10 @@ table_header_style = {
     "color": "white",
     "textAlign": "center",
 }
+
+BASE_ASSETS_PATH = pathlib.Path(__file__, "/assets").resolve()
+LOGO_PATH = BASE_ASSETS_PATH.joinpath("dashbio_logo_transparent.png").resolve()
+GH_LOGO_PATH = BASE_ASSETS_PATH.joinpath("GitHub-Mark-Light-64px.png").resolve()
 
 app = dash.Dash(__name__)
 
@@ -48,13 +53,7 @@ app.layout = html.Div(
                     id="dashbio-logo",
                     children=[
                         html.Img(
-                            src="data:image/png;base64,{}".format(
-                                base64.b64encode(
-                                    open(
-                                        "./assets/dashbio_logo_transparent.png", "rb"
-                                    ).read()
-                                ).decode()
-                            )
+                            src=str(LOGO_PATH)
                         )
                     ],
                     href="/Portal",
@@ -67,11 +66,7 @@ app.layout = html.Div(
                     style={"color": "white", "border": "solid 1px white"},
                 ),
                 html.Img(
-                    src="data:image/png;base64,{}".format(
-                        base64.b64encode(
-                            open("./assets/GitHub-Mark-Light-64px.png", "rb").read()
-                        ).decode()
-                    )
+                    src=str(GH_LOGO_PATH)
                 ),
             ],
         ),
