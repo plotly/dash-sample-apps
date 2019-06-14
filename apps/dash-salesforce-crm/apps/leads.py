@@ -431,11 +431,7 @@ layout = [
             ),
             html.Div(
                 id="leads_table",
-                className="row pretty_container",
-                style={
-                    "maxHeight": "500px",
-                    "overflowY": "scroll",
-                },
+                className="row pretty_container table",
             ),
         ]
     ),

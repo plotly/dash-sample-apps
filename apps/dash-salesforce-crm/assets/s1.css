@@ -121,6 +121,10 @@ table {
   font-family: Ubuntu;
 }
 
+.table {
+  overflow: scroll;
+}
+
 @media (min-width: 960px) {
   #lead_grid {
     display: grid;
