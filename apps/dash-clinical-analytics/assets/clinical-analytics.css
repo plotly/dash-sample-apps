@@ -116,13 +116,14 @@ H5, H3 {
 
 
 /*
-  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Device = Most of the Smartphones Mobiles / ipad (Portrait)
   */
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 750px), screen and (min-width: 768px) and (max-width: 1024px) {
 
     body {
         font-size: 13px;
+        margin: 0px;
     }
 
     .banner {
@@ -143,6 +144,11 @@ H5, H3 {
 
     #left-column, #right-column {
         width: 100%;
+        margin-left:0px;
+    }
+
+    #right-column {
+        padding: 0rem 0.5rem;
     }
 
     #reset-btn-outer {
@@ -150,7 +156,7 @@ H5, H3 {
     }
 
     .table-row > div {
-        width: 100%;
+        width: 100% !important;
         text-align: center;
     }
 
@@ -178,12 +184,5 @@ H5, H3 {
     .annotation-text {
         font-size: 0.8rem !important;
     }
-
-}
-
-/*ipad*/
-
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-
 
 }
