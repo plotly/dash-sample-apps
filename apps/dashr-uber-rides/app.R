@@ -16,6 +16,7 @@ library(data.table)
 library(dplyr)
 library(Hmisc)
 library(lubridate)
+
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
 
 ridesRaw_1 <- fread("data/rides_raw_1.csv", stringsAsFactors = FALSE)                     
@@ -53,7 +54,6 @@ colorMapOrj <- c("#F4EC15", "#DAF017", "#BBEC19", "#9DE81B",
                  "#2E38A4", "#3B2FA0", "#4E2F9C", "#603099")
 # Color codes for bars
 
-
 csSeq <- seq(0, 1, length.out = 23)
 # Create 24 evenly spaced floats from 0 to 1:
 
@@ -70,8 +70,7 @@ colorScale <- list(
     list(csSeq[17], "#2D7EB0"), list(csSeq[18], "#2D65AC"),
     list(csSeq[19], "#2E4EA4"), list(csSeq[20],  "#2E38A4"),
     list(csSeq[21], "#3B2FA0"), list(csSeq[22], "#4E2F9C"),
-    list(csSeq[23], "#603099"))
-                
+    list(csSeq[23], "#603099"))                
 # Create custom colorScale list 
 
 ridesDf$rideHour <- as.numeric(as.POSIXlt(ridesDf$Date.Time)$hour)
@@ -139,11 +138,6 @@ externalSheets <- list("https://codepen.io/chriddyp/pen/bWLwgP.css")
 app <- Dash$new(name = "dashr-uber-rides", external_stylesheets = externalSheets)
 # Initiate application
 
-#, meta_tags=list(list("name"= "viewport", "content"= "width=device-width, initial-scale=1")))
-# meta_tags=[
-#   {"name": "viewport", "content": "width=device-width, initial-scale=1"}
-#   ]
-  
 ####################################################################################################
 
 #################################### CREATE LAYOUT VARIABLES #######################################
@@ -177,7 +171,6 @@ datePicker <- dccDatePickerSingle(
   max_date_allowed = make_date(year = 2014L, month = 9L, day = 30L),
   className = "date-picker", style = list(display = "block"))
                             
-
 sourceObj <- dccMarkdown(
   paste(
       "Source: [FiveThirtyEight](https://github.com/fivethirtyeight/uber-",
@@ -220,11 +213,11 @@ app$layout(
 
 #################################### HELPER FUNCS FOR CALLBACKS ####################################
 
-#Filters out the date selected by user from dataset
+# Filters out the date selected by user from dataset
 FilterDay <- function(date){
 
   datePaste <- paste(date, " 00:00:00", sep = "")
-  #Combine month-day-year to %Y-%m-%d %H:%M:%OS format
+  # Combine month-day-year to %Y-%m-%d %H:%M:%OS format
 
   dayCurrent <- as.POSIXct(datePaste)
   dayNext <- as.POSIXct(datePaste) + 86400
@@ -232,19 +225,19 @@ FilterDay <- function(date){
 
   dfDay <- ridesDf[ridesDf$Date.Time >= dayCurrent &
                        ridesDf$Date.Time < dayNext, ]
-  #Filter out data
+  # Filter out data
 
   return(dfDay %>% arrange(`Date.Time`))
 }
 
-# returns hour list for callbacks
+# Returns hour list for callbacks
 EntireDayConverter <- function(hour){
 
   hourVec <- unlist(hour)
 
   if ("entire_day" %in% hourVec) {
     hourVec <- allHours
-    # assign allHours vector to hour if "entire_day" selected
+    # Assign allHours vector to hour if "entire_day" selected
   }
   return(hourVec)
 }
@@ -254,14 +247,14 @@ DfToMap <- function(date, hour){
 
   hourVec <- EntireDayConverter(hour)
 
-  if (length(hourVec) >= 24){
+  if (length(hourVec) >= 24) {
     return(FilterDay(date))
   # Avoid loop if entire day selected for faster filtering
-  }else{
+  } else {
 
     dfEmpty <- ridesDf[0, ]
 
-    for (h in hourVec){
+    for (h in hourVec) {
 
       hourPaste <- paste(date, h, sep = "")
       #Combine month-day-year to %Y-%m-%d %H:%M:%OS format
@@ -288,7 +281,7 @@ DfToMap <- function(date, hour){
 app$callback(output = list(id = "hidden-date-picker", property = "children"),
              params = list(input(id = "date-picker", property = "date")),
 
-  function(date){
+  function(date) {
     return(as.character(date))
   }
 )
@@ -300,7 +293,7 @@ app$callback(output = list(id = "map-graph", property = "figure"),
                        input(id = "location-dropdown", property = "value"),
                        state(id = "map-graph", property = "relayoutData")),
 
-  function(date, hour, location, relayout){
+  function(date, hour, location, relayout) {
 
     dfToMap <- DfToMap(date, hour)
 
@@ -312,7 +305,7 @@ app$callback(output = list(id = "map-graph", property = "figure"),
       bearing <- 0
       # Set layout variables for locations
 
-      if (location == "default"){
+      if (location == "default") {
       zoom <- 12
       }
       return(
@@ -374,7 +367,7 @@ app$callback(output = list(id = "histogram", property = "figure"),
          input(id = "hidden-date-picker", property = "children"),
          input(id = "hour-dropdown", property = "value")),
 
-  function(date, hour){
+  function(date, hour) {
 
     dfDay <- FilterDay(date)
     #Filter out data
@@ -396,7 +389,7 @@ app$callback(output = list(id = "histogram", property = "figure"),
 
     numericHours <- as.numeric(substr(hourVec, start = 2, stop = 3))
 
-    if (length(numericHours) > 0 && length(numericHours) < 24){
+    if (length(numericHours) > 0 && length(numericHours) < 24) {
       colorMap[numericHours + 1] <- "FFFFFF"
     }
     return(
@@ -446,15 +439,15 @@ app$callback(output = list(id = "hour-dropdown", property = "value"),
                input(id = "histogram", property = "selectedData"),
                input(id = "histogram", property = "clickData")),
 
-  function(select, click){
+  function(select, click) {
 
     dfSelectedHour <- rbindlist(select$points)
     # Convert select list [points] to df
 
-    if (nrow(dfSelectedHour) > 0){
+    if (nrow(dfSelectedHour) > 0) {
       dfClick <- dfSelectedHour[0, ]
      # Reset dfClick when selectedData
-    }else{
+    } else {
       dfClick <- rbindlist(click$points)
      # Add clicked data to df
     }
@@ -468,7 +461,7 @@ app$callback(output = list(id = "hour-dropdown", property = "value"),
               paste(" 0", pointNumber, ":00:00", sep = ""),
               paste(" ", pointNumber, ":00:00", sep = "")))
    # Create a new column with the right hour formatting
-   }else{
+   } else {
      dfSelectedHour$hoursToReturn <- "entire_day"
    }
    return(dfSelectedHour$hoursToReturn)
@@ -480,7 +473,7 @@ app$callback(output = list(id = "total-rides", property = "children"),
                  input(id = "hidden-date-picker", property = "children"),
                  input(id = "hour-dropdown", property = "value")),
 
-  function(date, h){
+  function(date, h) {
 
     dfDay <- FilterDay(date)
 
@@ -495,7 +488,7 @@ app$callback(output = list(id = "total-rides", property = "children"),
     dfDayHours <- dfDay[dfDay$rideHourNum %in% hoursToFilter, ]
     # Filter df
 
-    return(
+    return (
       htmlDiv(children = list(
       htmlP(paste("# Total Rides: ",
                   as.character(nrow(dfDay)), sep = ""),
@@ -512,7 +505,9 @@ app$callback(output = list(id = "total-rides", property = "children"),
     )
   }
 )
+
 ####################################################################################################
+
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
 } else {
