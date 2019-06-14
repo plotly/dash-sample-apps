@@ -110,7 +110,7 @@ def generate_control_card():
                 multi=True,
             ),
             html.Br(),
-            html.Button(id="reset-btn", children="Reset", n_clicks=0),
+            html.Div(id='reset-btn-outer', children=html.Button(id="reset-btn", children="Reset", n_clicks=0)),
         ],
     )
 
@@ -643,9 +643,8 @@ def update_table(start, end, clinic, admit_type, heatmap_click, reset_click, *ar
     elif prop_type == "selectedData":
         selected_patient = ctx.triggered[0]["value"]["points"][0]["customdata"]
         selected_index = [ctx.triggered[0]["value"]["points"][0]["pointIndex"]]
-        # print(prop_id, selected_patient, selected_index)  # e.g. Emergency_score_graph K7889C587
 
-        # [] turn on unselection for all other plots, [index] for this department
+        # [] turn on un-selection for all other plots, [index] for this department
         for department in departments:
             wait_selected_index = []
             if prop_id.split("_")[0] == department:
