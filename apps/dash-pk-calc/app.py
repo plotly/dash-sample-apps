@@ -28,9 +28,6 @@ table_header_style = {
     "textAlign": "center",
 }
 
-BASE_ASSETS_PATH = pathlib.Path(__file__, "/assets").resolve()
-LOGO_PATH = BASE_ASSETS_PATH.joinpath("dashbio_logo_transparent.png").resolve()
-GH_LOGO_PATH = BASE_ASSETS_PATH.joinpath("GitHub-Mark-Light-64px.png").resolve()
 
 app = dash.Dash(__name__)
 
@@ -51,7 +48,9 @@ app.layout = html.Div(
             children=[
                 html.A(
                     id="dashbio-logo",
-                    children=[html.Img(src=str(LOGO_PATH))],
+                    children=[
+                        html.Img(src=app.get_asset_url("dashbio_logo_transparent.png"))
+                    ],
                     href="/Portal",
                 ),
                 html.H2("Noncompartmental Pharmacokinetics Analysis"),
@@ -61,7 +60,7 @@ app.layout = html.Div(
                     href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-pk-calc",
                     style={"color": "white", "border": "solid 1px white"},
                 ),
-                html.Img(src=str(GH_LOGO_PATH)),
+                html.Img(src=app.get_asset_url("Github-Mark-Light-64px.png")),
             ],
         ),
         html.Div(
