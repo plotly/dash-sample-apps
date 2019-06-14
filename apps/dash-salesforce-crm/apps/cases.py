@@ -435,7 +435,7 @@ def modal():
                             "Submit",
                             id="submit_new_case",
                             n_clicks=0,
-                            className="button button--primary add"
+                            className="button button--primary add pretty_container"
                         ),
 
                     ],

@@ -30,6 +30,9 @@ input {
 }
 
 .button {
+  background-color: #436cff;
+  color: white;
+  display: block;
   border-radius: 10px;
   box-shadow: 4px 4px 4px lightgrey;
   transition: box-shadow 0.5s;
@@ -90,7 +93,7 @@ input {
   width: 50%;
   /* Could be more or less, depending on screen size */
   color: #506784;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 ._dash-undo-redo {
@@ -112,133 +115,135 @@ table {
   font-family: Ubuntu;
 }
 
-#lead_grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(12, 1fr);
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
+@media (min-width: 960px) {
+  #lead_grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-.control {
-  grid-column: span 2;
-  align-self: end;
-}
+  .control {
+    grid-column: span 2;
+    align-self: end;
+  }
 
-#new_lead {
-  grid-column: 12 / 13;
-  align-self: end
-}
+  #new_lead {
+    grid-column: 12 / 13;
+    align-self: end
+  }
 
-#leads_per_state {
-  grid-column: 1 / 5;
-  grid-row: 2 / 7;
-}
+  #leads_per_state {
+    grid-column: 1 / 5;
+    grid-row: 2 / 6;
+  }
 
-#lead_grid > .indicators {
-  grid-row: 2 / 3;
-  grid-column: 5 / 13;
-  display: flex;
-}
+  #lead_grid > .indicators {
+    grid-row: 2 / 3;
+    grid-column: 5 / 13;
+    display: flex;
+  }
 
-#submit_new_lead {
-  padding: 10px
-}
+  #submit_new_lead {
+    padding: 10px
+  }
 
-.indicator {
-  flex: 1;
-}
+  .indicator {
+    flex: 1;
+  }
 
-#leads_source_container {
-  grid-row: 3 / 7;
-  grid-column: 5 / 9;
-}
+  #leads_source_container {
+    grid-row: 3 / 6;
+    grid-column: 5 / 9;
+  }
 
-#converted_leads_container {
-  grid-row: 3 / 7;
-  grid-column: 9 / 13
-}
+  #converted_leads_container {
+    grid-row: 3 / 6;
+    grid-column: 9 / 13;
+  }
 
-#leads_table {
-  grid-row: 7 / 13;
-  grid-column: 1 / 13;
-}
+  #leads_table {
+    grid-row: 6 / 10;
+    grid-column: 1 / 13;
+  }
 
-#opportunity_grid {
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-}
+  #opportunity_grid {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+  }
 
-#new_opportunity {
-  grid-column: 12 / 13;
-  align-self: end;
-}
+  #new_opportunity {
+    grid-column: 12 / 13;
+    align-self: end;
+  }
 
-#converted_count_container {
-  grid-column: 1 / 5;
-  grid-row: 2 / 7;
-}
+  #converted_count_container {
+    grid-column: 1 / 5;
+    grid-row: 2 / 7;
+  }
 
-#opportunity_indicators {
-  grid-column: 5 / 13;
-  display: flex;
-}
+  #opportunity_indicators {
+    grid-column: 5 / 13;
+    display: flex;
+  }
 
-#opportunity_heatmap {
-  grid-column: 5 / 13;
-  grid-row: 3 / 7;
-}
+  #opportunity_heatmap {
+    grid-column: 5 / 13;
+    grid-row: 3 / 7;
+  }
 
-#top_open_container {
-  grid-column: 1 / 7;
-  grid-row: 7 / 11;
-}
+  #top_open_container {
+    grid-column: 1 / 7;
+    grid-row: 7 / 11;
+  }
 
-#top_lost_container {
-  grid-column: 7 / 13;
-  grid-row: 7 / 11;
-}
+  #top_lost_container {
+    grid-column: 7 / 13;
+    grid-row: 7 / 11;
+  }
 
-#cases_grid {
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(9, 1fr);
-}
+  #cases_grid {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+  }
 
-#new_case {
-  grid-column: 12 / 13;
-  align-self: end;
-}
+  #new_case {
+    grid-column: 12 / 13;
+    align-self: end;
+  }
 
-#cases_types_container {
-  grid-column: 1 / 5;
-  grid-row: 2 / 6;
-}
+  #cases_types_container {
+    grid-column: 1 / 5;
+    grid-row: 2 / 6;
+  }
 
-#cases_indicators {
-  display: flex;
-  grid-column: 5 / 13;
-}
+  #cases_indicators {
+    display: flex;
+    grid-column: 5 / 13;
+  }
 
-#cases_reasons_container {
-  grid-column: 5 / 9;
-  grid-row: 3 / 6;
-}
+  #cases_reasons_container {
+    grid-column: 5 / 9;
+    grid-row: 3 / 6;
+  }
 
-#cases_by_period_container {
-  grid-column: 9 / 13;
-  grid-row: 3 / 6;
-}
+  #cases_by_period_container {
+    grid-column: 9 / 13;
+    grid-row: 3 / 6;
+  }
 
-#cases_by_account_container {
-  grid-column: 1 / 13;
-  grid-row: 6 / 10;
+  #cases_by_account_container {
+    grid-column: 1 / 13;
+    grid-row: 6 / 10;
+  }
 }
