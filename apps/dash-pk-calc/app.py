@@ -51,11 +51,7 @@ app.layout = html.Div(
             children=[
                 html.A(
                     id="dashbio-logo",
-                    children=[
-                        html.Img(
-                            src=str(LOGO_PATH)
-                        )
-                    ],
+                    children=[html.Img(src=str(LOGO_PATH))],
                     href="/Portal",
                 ),
                 html.H2("Noncompartmental Pharmacokinetics Analysis"),
@@ -65,9 +61,7 @@ app.layout = html.Div(
                     href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-pk-calc",
                     style={"color": "white", "border": "solid 1px white"},
                 ),
-                html.Img(
-                    src=str(GH_LOGO_PATH)
-                ),
+                html.Img(src=str(GH_LOGO_PATH)),
             ],
         ),
         html.Div(
