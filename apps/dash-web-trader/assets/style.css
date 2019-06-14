@@ -398,6 +398,7 @@ body{
     background-color: #1a1c23;
     color: #b2b2b2;
     height: 100vh;
+    margin: 0;
 }
 
 .btn-close{
@@ -418,15 +419,21 @@ body{
 }
 
 .table-news{
-  border: 1px solid #b2b2b2;
+  border: 1px solid #55575D;
+  border-collapse: collapse;
   width: 100%;
   max-height: 500px;
+}
+
+.table-news td{
+  border: 1px solid #55575D;
 }
 
 .table-orders{
   width: 100%;
   background-color: #22252b;
   color: #686868;
+  overflow-x: auto;
 }
 
 tr{
@@ -454,7 +461,6 @@ th{
 .div-left-panel{
   background-color: #22252b;
   color: #b2b2b2;
-  padding: 24px;
   margin: 0px;
   height:100%;
   /*overflow-y: scroll;*/
@@ -475,11 +481,15 @@ th{
 }
 
 .div-info{
-  padding-bottom: 12px;
+  padding: 12px 32px 32px 32px;
+}
+
+.div-info p{
+  font-size: 12px;
 }
 
 .div-bottom-panel{
-  margin: 9px 5px 0px 5px;
+  margin: 24px 0px 0px 0px;
   padding: 5;
   height: 21%;
   background-color: #282b33;
@@ -493,6 +503,10 @@ th{
   text-align: center;
 }
 
+.title-header{
+  display: none;
+}
+
 .p-top-bar{
   color: #b2b2b2;
   font-size: 14px;
@@ -503,16 +517,25 @@ th{
   padding-left: 10px;
   color: #ededed;
 }
+.three-col{
+  display: inline-block;
+  width: 30%;
+  text-align: center;
+}
 
 .logo{
   width: 100%;
-  max-width: 250px;
+  max-width: 150px;
+  margin: 0px 0px 0px -10px;
+  padding: 32px 32px 0px 32px;
 }
 
 
 
 button{
-  color: white;
+  color: #EDEDED;
+  margin: 0px;
+  border-radius: 0px;
 }
 
 
@@ -620,10 +643,6 @@ div.Select-value, .Select-control,div.period, .Select-input{
   float: right;
 }
 
-button{
-  margin: 10px;
-}
-
 input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea, select{
   border: 1px solid #b4b4b4;
   background-color:#262a30;
@@ -657,10 +676,17 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
 th, td{
   padding: 12px;
 }
+th:first-child,
+td:first-child {
+  padding-left: 12px; }
+th:last-child,
+td:last-child {
+  padding-right: 12px; }
 
 /* width */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 /* Track */
@@ -680,4 +706,43 @@ th, td{
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #b5b5b570;
+}
+
+details {
+  border-radius: 4px;
+  padding: .5em .5em 0;
+}
+
+summary {
+  font-weight: bold;
+  margin: -.5em -.5em 0;
+  padding: .5em;
+  
+}
+
+details[open],
+details[open] summary {
+  background-color: #292B33;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .title-header{
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    font-size: 24px;
+    display: block;
+  }
+
+  .div-info{
+    text-align: center;
+  }
+
+
 }
