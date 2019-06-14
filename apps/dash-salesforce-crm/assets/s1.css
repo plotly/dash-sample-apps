@@ -57,7 +57,13 @@ input {
   height: 85px;
   color: black;
   padding-right: 5%;
-  padding-left: 5%
+  padding-left: 5%;
+  display: flex;
+}
+
+.header Img {
+  margin-left: auto;
+  height: 100%;
 }
 
 .control .Select-control {
@@ -102,9 +108,9 @@ input {
 
 .app-title {
   color: black;
-  font-size: 3rem;
+  font-size: 2rem;
   letter-spacing: -.1rem;
-  vertical-align: middle
+  vertical-align: middle;
 }
 
 
