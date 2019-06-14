@@ -275,6 +275,27 @@ input[type="button"] {
   box-sizing: border-box; 
 }
 
+.button_submit {
+  margin-left: 4%;
+  height: 38px;
+  width: 140px;
+  padding: 0;
+  color: #FBFFFF;
+  text-align: center;
+  font-size: 11px;
+  font-family: 'Geneva';
+  font-weight: 200;
+  line-height: 38px;
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: #4181FF;
+  border: 1px solid white;
+  cursor: pointer;
+  box-sizing: border-box;
+  
+}
 
 
 
@@ -570,6 +591,7 @@ there.
   .instruction {
     width: 141vh;
     height: 150vh;
+    text-align: center;
   }
 
   #e99392eb-e14e-4d33-ae72-49bbf5feff66 {
@@ -580,6 +602,7 @@ there.
     text-align: center;
     font-weight: 300;
     font-family: 'Geneva';  
+    margin: 10 auto;
   }
 
   h1 {
@@ -587,13 +610,14 @@ there.
   }
 
   p {
-    margin-top: 0;
+    
     font-family: 'Geneva';
     white-space: pre-line;
     color: #8898B2;
     overflow-wrap: normal;
     font-size: 2.4rem;
     text-align: center;
+    margin: 0 auto;
   }
 
   .button_instruction,
@@ -618,8 +642,13 @@ there.
     border: 1px solid white;
     cursor: pointer;
     box-sizing: border-box;
-    margin-top: 15px;
-    
+    margin: 0 10;
+
+  }
+
+
+  .button_submit {
+    margin: 0 auto;
   }
 
   .mobile_buttons {
@@ -657,7 +686,7 @@ there.
   label {
     margin-top: 15px;
     color: #407DFA;
-    font-family: 'Geneva'
+    font-family: 'Geneva';
   }
 
   .mobile_forms {
@@ -667,16 +696,22 @@ there.
 
 
   .radio_items {
-    margin: 30px auto;
+    margin: 20px auto;
     text-align: center;
     width: 350px;
   }
 
   .shift_table {
-    margin: 30px auto;
-    width: 80%;
-    text-align: center !important;
+    margin: 10 auto;
+    display: inline-block;
+    width: 135%;
   }
+
+  .canvas {
+    margin: 0 auto;
+    text-align: center;
+  }
+
 
 }
 /* Larger than Desktop HD */

@@ -177,9 +177,9 @@ app.layout = html.Div(
 
         ], className="radio_items"),
         
-    
+        html.Label('Measured shifts between images'),
         html.Div([
-            html.Label('Measured shifts between images'),
+            
             dash_table.DataTable(
                 id='table-stitch',
                 columns=columns,
@@ -197,7 +197,7 @@ app.layout = html.Div(
         ], className="shift_table"),
         
         html.Br(), 
-        html.Button('Run stitching', id='button-stitch', className = "button_instruction"),
+        html.Button('Run stitching', id='button-stitch', className = "button_submit"),
         html.Br()
 
     ], className="four columns instruction"),
@@ -222,7 +222,12 @@ app.layout = html.Div(
             className="tabs"
             ),
         html.Div(
-            id='tabs-content-example'
+            id='tabs-content-example', 
+            className="canvas", 
+            style={
+                "text-align": "center",
+                "margin":"auto"
+            }
         ),
         
         html.Div(
