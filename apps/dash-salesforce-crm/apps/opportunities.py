@@ -496,6 +496,7 @@ layout = [
                     ),
                     html.Div(
                         id="top_open_opportunities",
+                        className="table",
                     ),
 
                 ],
@@ -511,6 +512,7 @@ layout = [
                     ),
                     html.Div(
                         id="top_lost_opportunities",
+                        className="table",
                     )
                 ],
             ),
