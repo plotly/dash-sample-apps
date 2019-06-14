@@ -266,7 +266,7 @@ def modal():
                             "Submit",
                             id="submit_new_lead",
                             n_clicks=0,
-                            className="button button--primary add"
+                            className="button button--primary add pretty_container"
                         ),
                     ],
                     className="modal-content",
@@ -433,7 +433,7 @@ layout = [
                 id="leads_table",
                 className="row pretty_container",
                 style={
-                    "maxHeight": "350px",
+                    "maxHeight": "500px",
                     "overflowY": "scroll",
                 },
             ),
