@@ -8,6 +8,7 @@ import flask
 import plotly.plotly as py
 from plotly import graph_objs as go
 import math
+
 from app import app, server, sf_manager
 from apps import opportunities, cases, leads
 
