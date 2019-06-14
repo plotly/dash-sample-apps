@@ -14,16 +14,14 @@ from apps import opportunities, cases, leads
 app.layout = html.Div(
     [
         # header
-        html.Div([
+        html.Div(
+            className="row header",
+            children = [
+                html.Span("CRM App using Salesforce API", className='app-title'),
 
-            html.Span("CRM App using Salesforce API", className='app-title'),
-
-            html.Div(
                 html.Img(src='https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png',height="100%")
-                ,style={"float":"right","height":"100%"})
             ],
-            className="row header"
-            ),
+        ),
 
         # tabs
         html.Div([
