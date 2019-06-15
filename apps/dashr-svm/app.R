@@ -15,6 +15,7 @@ if (appName != ""){
 source("utils/helperFunctions.R")
 source("utils/reusableComponents.R")
 
+# Read in stored datasets (see data/getData.R to see how data was acquired)
 dataList <- readRDS("data/data.rds")
 
 app <- Dash$new(name = "DashR SVM Explorer")
@@ -39,22 +40,22 @@ app$layout(
                 )
               ),
               htmlA(
-                htmlImg(
-                  src = "https://user-images.githubusercontent.com/37411533/56820587-55d56e80-681a-11e9-91b6-026e1551b338.png"
-                  ),
+                htmlImg(src = "https://user-images.githubusercontent.com/37411533/56820587-55d56e80-681a-11e9-91b6-026e1551b338.png"),
                 href = "https://plot.ly/products/dash/"
               )
-            ))
-        )),
-        htmlDiv(
-          id = "body",
-          className = "container scalable",
-          children = list(
-            htmlDiv(
-              id = "app-container",
-              className = "row",
-              children = list(
-                htmlDiv(
+            )
+          )
+        )
+      ),
+      htmlDiv(
+        id = "body",
+        className = "container scalable",
+        children = list(
+          htmlDiv(
+            id = "app-container",
+            className = "row",
+            children = list(
+              htmlDiv(
                 id = "left-column",
                 className = "three columns",
                 style = list(
@@ -64,50 +65,57 @@ app$layout(
                   overflowX = "hidden"
                 ),
                 children = list(
+                  # card() is defined in utils/reusableComponents.R 
                   card(
                     id = "first-card",
                     children = list(
-                    namedDropdown(
-                      name = "Select Dataset",
-                      id = "dropdown-select-dataset",
-                      options = list(
-                        list(label = "Moons", value = "moons"),
-                        list(label = "Linearly Separable", value = "linear"),
-                        list(label = "Circles", value = "circles")
+                      # namedDropdown is defined in utils/reusableComponents.R
+                      namedDropdown(
+                        name = "Select Dataset",
+                        id = "dropdown-select-dataset",
+                        options = list(
+                          list(label = "Moons", value = "moons"),
+                          list(
+                            label = "Linearly Separable", 
+                            value = "linear"
+                          ),
+                          list(label = "Circles", value = "circles")
+                        ),
+                        clearable = FALSE,
+                        searchable = FALSE,
+                        value = "moons"
                       ),
-                      clearable = FALSE,
-                      searchable = FALSE,
-                      value = "moons"
-                    ),
-                    namedSlider(
-                      name = "Sample Size",
-                      id = "slider-dataset-sample-size",
-                      min = 100,
-                      max = 500,
-                      step = 100,
-                      marks = as.list(
-                        setNames(
-                          seq(100, 500, 100),
-                          seq(100, 500, 100)
-                        )
+                      # namedSlider is defined in utils/reusableComponents.R
+                      namedSlider(
+                        name = "Sample Size",
+                        id = "slider-dataset-sample-size",
+                        min = 100,
+                        max = 500,
+                        step = 100,
+                        marks = as.list(
+                          setNames(
+                            seq(100, 500, 100),
+                            seq(100, 500, 100)
+                          )
+                        ),
+                        value = 300
                       ),
-                      value = 300
-                    ),
-                    namedSlider(
-                      name = "Noise Level",
-                      id = "slider-dataset-noise-level",
-                      min = 0,
-                      max = 1,
-                      step = 0.1,
-                      marks = as.list(
-                        setNames(
-                          seq(0, 1, 0.2),
-                          seq(0, 1, 0.2)
-                        )
-                      ),
-                      value = 0.2
+                      namedSlider(
+                        name = "Noise Level",
+                        id = "slider-dataset-noise-level",
+                        min = 0,
+                        max = 1,
+                        step = 0.1,
+                        marks = as.list(
+                          setNames(
+                            seq(0, 1, 0.2),
+                            seq(0, 1, 0.2)
+                          )
+                        ),
+                        value = 0.2
+                      )
                     )
-                  )),
+                  ),
                   card(
                     id = "button-card",
                     children = list(
@@ -129,74 +137,81 @@ app$layout(
                   card(
                     id = "last-card",
                     children = list(
-                    namedDropdown(
-                      name = "Kernel",
-                      id = "dropdown-svm-parameter-kernel",
-                      options = list(
-                        list(
-                          label = "Radial basis function (RBF)",
-                          value = "rbf"
+                      namedDropdown(
+                        name = "Kernel",
+                        id = "dropdown-svm-parameter-kernel",
+                        options = list(
+                          list(
+                            label = "Radial basis function (RBF)",
+                            value = "rbf"
+                          ),
+                          list(label = "Linear", value = "linear"),
+                          list(label = "Polynomial", value = "poly"),
+                          list(label = "Sigmoid", value = "sigmoid")
                         ),
-                        list(label = "Linear", value = "linear"),
-                        list(label = "Polynomial", value = "poly"),
-                        list(label = "Sigmoid", value = "sigmoid")
+                        value = "rbf",
+                        clearable = FALSE,
+                        searchable = FALSE
                       ),
-                      value = "rbf",
-                      clearable = FALSE,
-                      searchable = FALSE
-                    ),
-                    namedSlider(
-                      name = "Cost (C)",
-                      id = "slider-svm-parameter-C-power",
-                      min = -2,
-                      max = 4,
-                      marks = as.list(setNames(10 ** (-2:4), -2:4)),
-                      value = 0
-                    ),
-                    formattedSlider(
-                      id = "slider-svm-parameter-C-coef",
-                      min = 1,
-                      max = 9,
-                      value = 1
-                    ),
-                    namedSlider(
-                      name = "Degree",
-                      id = "slider-svm-parameter-degree",
-                      min = 2,
-                      max = 10,
-                      value = 3,
-                      step = 1,
-                      marks = as.list(setNames(seq(2, 10, 2),
-                                               seq(2, 10, 2)))
-                    ),
-                    namedSlider(
-                      name = "Gamma",
-                      id = "slider-svm-parameter-gamma-power",
-                      min = -5,
-                      max = 0,
-                      value = -1,
-                      marks = as.list(setNames(10 ** (-5:0), -5:0))
-                    ),
-                    formattedSlider(
-                      id = "slider-svm-parameter-gamma-coef",
-                      min = 1,
-                      max = 9,
-                      value = 5
-                    ),
-                    namedRadioItems(
-                      name = "Shrinking",
-                      id = "radio-svm-parameter-shrinking",
-                      labelStyle = list(
-                        marginRight = "7px",
-                        display = "inline-block"
+                      namedSlider(
+                        name = "Cost (C)",
+                        id = "slider-svm-parameter-C-power",
+                        min = -2,
+                        max = 4,
+                        marks = as.list(setNames(10 ** (-2:4), -2:4)),
+                        value = 0
                       ),
-                      options = list(
-                        list(label = " Enabled", value = TRUE),
-                        list(label = " Disabled", value = FALSE)
+                      formattedSlider(
+                        id = "slider-svm-parameter-C-coef",
+                        min = 1,
+                        max = 9,
+                        value = 1
                       ),
-                      value = TRUE
+                      namedSlider(
+                        name = "Degree",
+                        id = "slider-svm-parameter-degree",
+                        min = 2,
+                        max = 10,
+                        value = 3,
+                        step = 1,
+                        marks = as.list(
+                          setNames(
+                            seq(2, 10, 2),
+                            seq(2, 10, 2)
+                          )
+                        )
+                      ),
+                      namedSlider(
+                        name = "Gamma",
+                        id = "slider-svm-parameter-gamma-power",
+                        min = -5,
+                        max = 0,
+                        value = -1,
+                        marks = as.list(setNames(10 ** (-5:0), -5:0))
+                      ),
+                      # formattedSlider is defined in utils/reusableComponents.R
+                      formattedSlider(
+                        id = "slider-svm-parameter-gamma-coef",
+                        min = 1,
+                        max = 9,
+                        value = 5
+                      ),
+                      # namedRadioItems is defined in utils/reusableComponents.R
+                      namedRadioItems(
+                        name = "Shrinking",
+                        id = "radio-svm-parameter-shrinking",
+                        labelStyle = list(
+                          marginRight = "7px",
+                          display = "inline-block"
+                        ),
+                        options = list(
+                          list(label = " Enabled", value = TRUE),
+                          list(label = " Disabled", value = FALSE)
+                        ),
+                        value = TRUE
+                      )
                     )
-                  )),
+                  ),
                   htmlDiv(
                     dccMarkdown(
                       paste0(
@@ -225,22 +240,22 @@ app$layout(
                         id = "main_figure",
                         figure = plot_ly() %>%
                           layout(
-														paper_bgcolor = "#272b38",
-														plot_bgcolor = "#272b38",
-														showgrid = FALSE,
-														xaxis = list(
-															zeroline = FALSE, 
-															showline = FALSE, 
-															showticklabels = FALSE, 
-															showgrid = FALSE
-														),
-														yaxis = list(
-															zeroline = FALSE, 
-															showline = FALSE, 
-															showticklabels = FALSE, 
-															showgrid = FALSE
-														)
-													),
+                            paper_bgcolor = "#272b38",
+                            plot_bgcolor = "#272b38",
+                            showgrid = FALSE,
+                            xaxis = list(
+                              zeroline = FALSE, 
+                              showline = FALSE, 
+                              showticklabels = FALSE, 
+                              showgrid = FALSE
+                            ),
+                            yaxis = list(
+                              zeroline = FALSE, 
+                              showline = FALSE, 
+                              showticklabels = FALSE, 
+                              showgrid = FALSE
+                            )
+                          ),
                         style = list(
                           height = "calc(100vh - 90px)",
                           margin = "0 1.66rem"
@@ -266,22 +281,22 @@ app$layout(
                         style = list(height = "40%"),
                         figure = plot_ly() %>%
                           layout(
-														paper_bgcolor = "#272b38",
-														plot_bgcolor = "#272b38",
-														showgrid = FALSE,
-														xaxis = list(
-															zeroline = FALSE, 
-															showline = FALSE, 
-															showticklabels = FALSE, 
-															showgrid = FALSE
-														),
-														yaxis = list(
-															zeroline = FALSE, 
-															showline = FALSE, 
-															showticklabels = FALSE, 
-															showgrid = FALSE
-														)
-													),
+                            paper_bgcolor = "#272b38",
+                            plot_bgcolor = "#272b38",
+                            showgrid = FALSE,
+                            xaxis = list(
+                              zeroline = FALSE, 
+                              showline = FALSE, 
+                              showticklabels = FALSE, 
+                              showgrid = FALSE
+                            ),
+                            yaxis = list(
+                              zeroline = FALSE, 
+                              showline = FALSE, 
+                              showticklabels = FALSE, 
+                              showgrid = FALSE
+                            )
+                          ),
                         config = list(displayModeBar = FALSE)
                       ),
                       dccGraph(
@@ -289,22 +304,22 @@ app$layout(
                         style = list(height = "55%", marginTop = "5%"),
                         figure = plot_ly() %>%
                           layout(
-														paper_bgcolor = "#272b38",
-														plot_bgcolor = "#272b38",
-														showgrid = FALSE,
-														xaxis = list(
-															zeroline = FALSE, 
-															showline = FALSE, 
-															showticklabels = FALSE, 
-															showgrid = FALSE
-														),
-														yaxis = list(
-															zeroline = FALSE, 
-															showline = FALSE, 
-															showticklabels = FALSE, 
-															showgrid = FALSE
-														)
-													),
+                            paper_bgcolor = "#272b38",
+                            plot_bgcolor = "#272b38",
+                            showgrid = FALSE,
+                            xaxis = list(
+                              zeroline = FALSE, 
+                              showline = FALSE, 
+                              showticklabels = FALSE, 
+                              showgrid = FALSE
+                            ),
+                            yaxis = list(
+                              zeroline = FALSE, 
+                              showline = FALSE, 
+                              showticklabels = FALSE, 
+                              showgrid = FALSE
+                            )
+                          ),
                         config = list(displayModeBar = FALSE)
                       )
                     )
@@ -324,7 +339,12 @@ app$callback(
   list(input("slider-svm-parameter-gamma-power", "value")),
   function(power){
     s <- 10 ** power
-    as.list(setNames(lapply(seq(1, 10, 2) * s, round, 8), seq(1, 10, 2)))
+    as.list(
+      setNames(
+        lapply(seq(1, 10, 2) * s, round, 8), 
+        seq(1, 10, 2)
+      )
+    )
   }
 )
 
@@ -333,7 +353,12 @@ app$callback(
   list(input("slider-svm-parameter-C-power", "value")),
   function(power){
     s <- 10 ** power
-    as.list(setNames(lapply(seq(1, 10, 2) * s, round, 8), seq(1, 10, 2)))
+    as.list(
+      setNames(
+        lapply(seq(1, 10, 2) * s, round, 8), 
+        seq(1, 10, 2)
+      )
+    )
   }
 )
 
@@ -418,6 +443,7 @@ app$callback(
     }
     C <- C_coef * 10 ** C_power
     gamma <- gamma_coef * 10 ** gamma_power
+    # functions to split data and run the svm defined in utils/helperFunctions.R
     splitData <- trainTestSplit(dat)
     svm <- runSVM(
       train_data = splitData[["train"]],
@@ -427,6 +453,7 @@ app$callback(
       C = C,
       shrinking = shrinking
     )
+    # plotting functions used here defined in utils/helperFunctions.R
     f <- generate_main_plot(splitData, svm, threshold = threshold)
     pieConf <- pieConfusionMatrix(svm, splitData, threshold = threshold)
     ROC <- rocCurve(splitData, svm)

@@ -50,7 +50,7 @@ runSVM <- function(train_data, C = 1, sigma = 0.75, degree = 3,
       shrinking = shrinking
     )
   } else if (kernel == "sigmoid"){
-    # tanh kernel is equivalent to sklearn's sigmoid kernel
+    # tanh kernel equivalent to sklearn's sigmoid kernel (with correct settings)
     svm <- ksvm(
       as.matrix(train_data[, c("X1", "X2")]),
       as.matrix(train_data$Y),

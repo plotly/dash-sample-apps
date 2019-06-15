@@ -1,4 +1,4 @@
-# Custom components to avoid too many repetitive inline style paramenters
+# Reusable components to avoid too many repetitive inline style parameters
 
 card <- function(children, ...){
   htmlSection(
