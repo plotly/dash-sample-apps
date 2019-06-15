@@ -60,7 +60,7 @@ app.layout = html.Div(
                     href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-pk-calc",
                     style={"color": "white", "border": "solid 1px white"},
                 ),
-                html.Img(src=app.get_asset_url("Github-Mark-Light-64px.png")),
+                html.Img(src=app.get_asset_url("GitHub-Mark-Light-64px.png")),
             ],
         ),
         html.Div(
