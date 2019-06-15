@@ -98,19 +98,21 @@ init_region <- as.list(
     dataList[[state_list[2]]][,
       "Hospital Referral Region (HRR) Description"
       ]
-    )
-  )[[1]]
+  )
+)[[1]]
 
 generateAggregation <- function(df, metric){
   agg <- function(x) list(min = min(x), mean = mean(x), max = max(x))
   aggRes <- df[,
     j = as.list(unlist(lapply(.SD, agg))),
     by = c("Hospital Referral Region (HRR) Description", "Provider Name"),
-    .SDcols = unlist(metric)]
+    .SDcols = unlist(metric)
+    ]
   lat_lon_add <- df[,
     j = lapply(.SD, first),
     by = "Provider Name",
-    .SDcols = c("lat", "lon", "Provider Street Address")]
+    .SDcols = c("lat", "lon", "Provider Street Address")
+    ]
   merge(aggRes, lat_lon_add, by = "Provider Name", all.x = TRUE)
 }
 
@@ -197,8 +199,6 @@ buildUpperLeftPanel <- function(){
         )
       ),
       htmlDiv(
-        #id = "middle-container",
-        #className = "row",
         children = list(
           htmlDiv(
             id = "cost-stats-outer-container",
@@ -242,7 +242,6 @@ buildUpperLeftPanel <- function(){
           )
         )
       )
-
     )
   )
 }
@@ -271,9 +270,7 @@ generateGeoMap <- function(geo_data, selected_metric,
     data  = filtered_data,
     x = ~lon, y = ~lat,
     type = "scatter", mode = "markers",
-    # Two strange issues here:
-    # Selects right hospitals only if you subtract 1 from indices
-    # Also, only selects single hospital if the length(selected_indices) > 1
+    # Only selects single hospital if the length(selected_indices) > 1
     selectedpoints = c(-1, (selected_indices - 1)),
     selected = list(marker = list(color = "#FFFF00")),
     customdata = filtered_data[["Provider Name"]],
@@ -286,7 +283,7 @@ generateGeoMap <- function(geo_data, selected_metric,
         list(0.66, "#ff6969"),
         list(1, "#ff1717")
       ),
-      # Different scaling method used here (min max scaling)
+      # Different scaling method from python app (min max scaling)
       size = 15 *
         (
           1 + (filtered_data[[co]] - dMin[[1]]) / (dMax[[1]] - dMin[[1]])
@@ -403,7 +400,7 @@ generateProcedurePlot <- function(raw_data, cost_select,
 }
 
 generateDataTable <- function(DT, type = c("procedure", "cost")){
-  # Create datatable w/ no rows if DT is empty, fixes default 2 empty rows
+  # Create datatable w/ no rows if DT is empty
   if (nrow(DT) > 0){
     d <- df_to_list(DT)
   } else {
@@ -439,7 +436,6 @@ generateDataTable <- function(DT, type = c("procedure", "cost")){
   )
 }
 
-##############################################
 app <- Dash$new(name = "DashR Medical Provider Charges")
 
 app$layout(
