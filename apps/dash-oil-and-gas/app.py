@@ -1,14 +1,11 @@
 # Import required libraries
-import os
 import pickle
 import copy
 import pathlib
-import datetime as dt
-import math
-
-import requests
-import pandas as pd
 import dash
+import math
+import datetime as dt
+import pandas as pd
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
@@ -278,35 +275,37 @@ def filter_dataframe(df, well_statuses, well_types, year_slider):
     return dff
 
 
-def fetch_individual(api):
+def produce_individual(api_well_num):
     try:
-        points[api]
+        points[api_well_num]
     except:
         return None, None, None, None
 
-    index = list(range(min(points[api].keys()), max(points[api].keys()) + 1))
+    index = list(
+        range(min(points[api_well_num].keys()), max(points[api_well_num].keys()) + 1)
+    )
     gas = []
     oil = []
     water = []
 
     for year in index:
         try:
-            gas.append(points[api][year]["Gas Produced, MCF"])
+            gas.append(points[api_well_num][year]["Gas Produced, MCF"])
         except:
             gas.append(0)
         try:
-            oil.append(points[api][year]["Oil Produced, bbl"])
+            oil.append(points[api_well_num][year]["Oil Produced, bbl"])
         except:
             oil.append(0)
         try:
-            water.append(points[api][year]["Water Produced, bbl"])
+            water.append(points[api_well_num][year]["Water Produced, bbl"])
         except:
             water.append(0)
 
     return index, gas, oil, water
 
 
-def fetch_aggregate(selected, year_slider):
+def produce_aggregate(selected, year_slider):
 
     index = list(range(max(year_slider[0], 1985), 2016))
     gas = []
@@ -317,17 +316,17 @@ def fetch_aggregate(selected, year_slider):
         count_gas = 0
         count_oil = 0
         count_water = 0
-        for api in selected:
+        for api_well_num in selected:
             try:
-                count_gas += points[api][year]["Gas Produced, MCF"]
+                count_gas += points[api_well_num][year]["Gas Produced, MCF"]
             except:
                 pass
             try:
-                count_oil += points[api][year]["Oil Produced, bbl"]
+                count_oil += points[api_well_num][year]["Oil Produced, bbl"]
             except:
                 pass
             try:
-                count_water += points[api][year]["Water Produced, bbl"]
+                count_water += points[api_well_num][year]["Water Produced, bbl"]
             except:
                 pass
         gas.append(count_gas)
@@ -350,13 +349,11 @@ def update_production_text(well_statuses, well_types, year_slider):
 
     dff = filter_dataframe(df, well_statuses, well_types, year_slider)
     selected = dff["API_WellNo"].values
-    index, gas, oil, water = fetch_aggregate(selected, year_slider)
+    index, gas, oil, water = produce_aggregate(selected, year_slider)
     return [human_format(sum(gas)), human_format(sum(oil)), human_format(sum(water))]
 
 
 # Radio -> multi
-
-
 @app.callback(
     Output("well_statuses", "value"), [Input("well_status_selector", "value")]
 )
@@ -365,8 +362,6 @@ def display_status(selector):
         return list(WELL_STATUSES.keys())
     elif selector == "active":
         return ["AC"]
-    else:
-        return []
 
 
 # Radio -> multi
@@ -376,8 +371,6 @@ def display_type(selector):
         return list(WELL_TYPES.keys())
     elif selector == "productive":
         return ["GD", "GE", "GW", "IG", "IW", "OD", "OE", "OW"]
-    else:
-        return []
 
 
 # Slider -> count graph
@@ -386,12 +379,9 @@ def update_year_slider(count_graph_selected):
 
     if count_graph_selected is None:
         return [1990, 2010]
-    else:
-        nums = []
-        for point in count_graph_selected["points"]:
-            nums.append(int(point["pointNumber"]))
 
-        return [min(nums) + 1960, max(nums) + 1961]
+    nums = [int(point["pointNumber"]) for point in count_graph_selected["points"]]
+    return [min(nums) + 1960, max(nums) + 1961]
 
 
 # Selectors -> well text
@@ -409,24 +399,19 @@ def update_well_text(well_statuses, well_types, year_slider):
     return dff.shape[0]
 
 
-@app.callback(Output("gasText", "children"), [Input("aggregate_data", "data")])
-def update_gas_text(data):
-    return data[0] + " mcf"
-
-
-@app.callback(Output("oilText", "children"), [Input("aggregate_data", "data")])
-def update_oil_text(data):
-    return data[1] + " bbl"
-
-
-@app.callback(Output("waterText", "children"), [Input("aggregate_data", "data")])
-def update_oil_text(data):
-    return data[2] + " bbl"
+@app.callback(
+    [
+        Output("gasText", "children"),
+        Output("oilText", "children"),
+        Output("waterText", "children"),
+    ],
+    [Input("aggregate_data", "data")],
+)
+def update_text(data):
+    return data[0] + " mcf", data[1] + " bbl", data[2] + " bbl"
 
 
 # Selectors -> main graph
-
-
 @app.callback(
     Output("main_graph", "figure"),
     [
@@ -463,10 +448,10 @@ def make_main_figure(
         layout["mapbox"]["center"]["lon"] = lon
         layout["mapbox"]["center"]["lat"] = lat
         layout["mapbox"]["zoom"] = zoom
-    else:
-        lon = -78.05
-        lat = 42.54
-        zoom = 7
+    # else:
+    #     lon = -78.05
+    #     lat = 42.54
+    #     zoom = 7
 
     figure = dict(data=traces, layout=layout)
     return figure
@@ -486,7 +471,7 @@ def make_individual_figure(main_graph_hover):
         }
 
     chosen = [point["customdata"] for point in main_graph_hover["points"]]
-    index, gas, oil, water = fetch_individual(chosen[0])
+    index, gas, oil, water = produce_individual(chosen[0])
 
     if index is None:
         annotation = dict(
@@ -562,7 +547,7 @@ def make_aggregate_figure(well_statuses, well_types, year_slider, main_graph_hov
     dff = filter_dataframe(df, well_statuses, well_types, year_slider)
 
     selected = dff[dff["Well_Type"] == well_type]["API_WellNo"].values
-    index, gas, oil, water = fetch_aggregate(selected, year_slider)
+    index, gas, oil, water = produce_aggregate(selected, year_slider)
 
     data = [
         dict(
@@ -612,7 +597,7 @@ def make_pie_figure(well_statuses, well_types, year_slider):
     dff = filter_dataframe(df, well_statuses, well_types, year_slider)
 
     selected = dff["API_WellNo"].values
-    index, gas, oil, water = fetch_aggregate(selected, year_slider)
+    index, gas, oil, water = produce_aggregate(selected, year_slider)
 
     aggregate = dff.groupby(["Well_Type"]).count()
 
@@ -712,4 +697,4 @@ def make_count_figure(well_statuses, well_types, year_slider):
 
 # Main
 if __name__ == "__main__":
-    app.run_server(debug=True, threaded=True)
+    app.run_server(debug=True)
