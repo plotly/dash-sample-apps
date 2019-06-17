@@ -25,20 +25,20 @@ app = dash.Dash(
 
 
 # Loading historical tick data
-currency_pair_data={
-    'EURUSD': pd.read_csv("pairs/EURUSD.csv", index_col=1, parse_dates=["Date"]),
-    'USDJPY': pd.read_csv("pairs/USDJPY.csv", index_col=1, parse_dates=["Date"]),
-    'GBPUSD': pd.read_csv("pairs/GBPUSD.csv", index_col=1, parse_dates=["Date"]),
-    'USDCHF': pd.read_csv("pairs/USDCHF.csv", index_col=1, parse_dates=["Date"])
+currency_pair_data = {
+    "EURUSD": pd.read_csv("pairs/EURUSD.csv", index_col=1, parse_dates=["Date"]),
+    "USDJPY": pd.read_csv("pairs/USDJPY.csv", index_col=1, parse_dates=["Date"]),
+    "GBPUSD": pd.read_csv("pairs/GBPUSD.csv", index_col=1, parse_dates=["Date"]),
+    "USDCHF": pd.read_csv("pairs/USDCHF.csv", index_col=1, parse_dates=["Date"]),
 }
 
 # Currency pairs
 currencies = ["EURUSD", "USDCHF", "USDJPY", "GBPUSD"]
 
-#API Requests for news div
+# API Requests for news div
 news_requests = requests.get(
-        "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=da8e2e705b914f9f86ed2e9692e66012"
-    )
+    "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=da8e2e705b914f9f86ed2e9692e66012"
+)
 
 # API Call to update news
 def update_news():
@@ -48,13 +48,11 @@ def update_news():
     max_rows = 10
     return html.Div(
         children=[
-            html.P(
-                className="p-news",
-                children="Headlines"
-            ),
+            html.P(className="p-news", children="Headlines"),
             html.P(
                 className="p-news float-right",
-                children="Last update : " + datetime.datetime.now().strftime("%H:%M:%S")  
+                children="Last update : "
+                + datetime.datetime.now().strftime("%H:%M:%S"),
             ),
             html.Table(
                 className="table-news",
@@ -78,6 +76,7 @@ def update_news():
             ),
         ]
     )
+
 
 # returns row of given index for given currency pair dataset
 # for modal returns ten previous rows
@@ -168,6 +167,7 @@ def get_row(data):
         n_clicks=0,
     )
 
+
 # color of Bid & Ask rates
 def get_color(a, b):
     if a == b:
@@ -216,7 +216,7 @@ def get_top_bar_cell(cellTitle, cellValue, color="white"):
         children=[
             html.P(className="p-top-bar", children=cellTitle),
             html.P(id=cellTitle, children=cellValue),
-        ]
+        ],
     )
 
 
@@ -447,13 +447,11 @@ def get_modal_fig(currency_pair, index):
 
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
-    fig["layout"]["margin"] = {"t": 5, "l": 50, "b": 0, "r": 5}    
+    fig["layout"]["margin"] = {"t": 5, "l": 50, "b": 0, "r": 5}
     fig["layout"]["yaxis"]["showgrid"] = True
-    fig["layout"]["yaxis"]["gridcolor"] = '#3E3F40'
+    fig["layout"]["yaxis"]["gridcolor"] = "#3E3F40"
     fig["layout"]["yaxis"]["gridwidth"] = 1
-    fig["layout"].update(
-        paper_bgcolor="#18252E", plot_bgcolor="#18252E"
-    )
+    fig["layout"].update(paper_bgcolor="#18252E", plot_bgcolor="#18252E")
 
     return fig
 
@@ -502,19 +500,18 @@ def get_fig(currency_pair, ask, bid, type_trace, studies, period):
         row += 1
         fig.append_trace(globals()[study](df), row, 1)
 
-    fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}    
+    fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
     fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
     fig["layout"]["xaxis"]["tickformat"] = "%H:%M"
     fig["layout"]["yaxis"]["showgrid"] = True
-    fig["layout"]["yaxis"]["gridcolor"] = '#3E3F40'
+    fig["layout"]["yaxis"]["gridcolor"] = "#3E3F40"
     fig["layout"]["yaxis"]["gridwidth"] = 1
-    fig["layout"].update(
-        paper_bgcolor="#21252C", plot_bgcolor="#21252C"
-    )
+    fig["layout"].update(paper_bgcolor="#21252C", plot_bgcolor="#21252C")
 
     return fig
+
 
 # returns chart div
 def chart_div(pair):
@@ -550,15 +547,27 @@ def chart_div(pair):
                             dcc.Checklist(
                                 id=pair + "studies",
                                 options=[
-                                    {"label": "Accumulation/D", "value": "accumulation_trace"},
-                                    {"label": "Bollinger bands", "value": "bollinger_trace"},
+                                    {
+                                        "label": "Accumulation/D",
+                                        "value": "accumulation_trace",
+                                    },
+                                    {
+                                        "label": "Bollinger bands",
+                                        "value": "bollinger_trace",
+                                    },
                                     {"label": "MA", "value": "moving_average_trace"},
                                     {"label": "EMA", "value": "e_moving_average_trace"},
                                     {"label": "CCI", "value": "cci_trace"},
                                     {"label": "ROC", "value": "roc_trace"},
                                     {"label": "Pivot points", "value": "pp_trace"},
-                                    {"label": "Stochastic oscillator", "value": "stoc_trace"},
-                                    {"label": "Momentum indicator","value": "mom_trace"},
+                                    {
+                                        "label": "Stochastic oscillator",
+                                        "value": "stoc_trace",
+                                    },
+                                    {
+                                        "label": "Momentum indicator",
+                                        "value": "mom_trace",
+                                    },
                                 ],
                                 values=[],
                             )
@@ -617,14 +626,14 @@ def chart_div(pair):
                                         value="15Min",
                                         clearable=False,
                                     )
-                                ]
+                                ],
                             ),
                             html.Span(
                                 id=pair + "close",
                                 className="chart-close inline-block",
                                 children="×",
                                 n_clicks=0,
-                                style={'float':'right'}
+                                style={"float": "right"},
                             ),
                         ],
                     ),
@@ -635,12 +644,13 @@ def chart_div(pair):
                 dcc.Graph(
                     id=pair + "chart",
                     className="chart-graph",
-                    config={"displayModeBar": False, "scrollZoom": True}
+                    config={"displayModeBar": False, "scrollZoom": True},
                 )
             ),
         ],
         style={"display": "none"},
     )
+
 
 # returns modal Buy/Sell
 def modal(pair):
@@ -653,14 +663,9 @@ def modal(pair):
                 className="modal-content",
                 children=[
                     html.Span(
-                        id=pair + "closeModal",
-                        className="modal-close",
-                        children="×"
+                        id=pair + "closeModal", className="modal-close", children="×"
                     ),
-                    html.P(
-                        id="modal" + pair,
-                        children=pair
-                    ),
+                    html.P(id="modal" + pair, children=pair),
                     # row div with two div
                     html.Div(
                         className="row",
@@ -758,13 +763,10 @@ app.layout = html.Div(
         dcc.Interval(id="i_tris", interval=1 * 5000, n_intervals=0),
         # Interval component for graph updates
         dcc.Interval(id="i_news", interval=1 * 60000, n_intervals=0),
-
-
         # Left Panel Div
         html.Div(
             className="three columns div-left-panel",
             children=[
-
                 # Div for Left Panel App Info
                 html.Div(
                     className="div-info",
@@ -781,7 +783,6 @@ app.layout = html.Div(
                         html.Button("Learn More"),
                     ],
                 ),
-
                 # Ask Bid Currency Div
                 html.Div(
                     className="div-currency-toggles",
@@ -800,10 +801,9 @@ app.layout = html.Div(
                                 get_row(first_ask_bid(pair, datetime.datetime.now()))
                                 for pair in currencies
                             ],
-                        )
+                        ),
                     ],
                 ),
-
                 # Div for News Headlines
                 html.Div(
                     className="div-news",
@@ -861,7 +861,7 @@ app.layout = html.Div(
                             children=[html.Table(id="orders_table")],
                         ),
                     ],
-                )
+                ),
             ],
         ),
         # Hidden div that stores all clicked charts (EURUSD, USDCHF, etc.)
@@ -1228,10 +1228,7 @@ for pair in currencies:
             Input(pair + "studies", "values"),
             Input("charts_clicked", "children"),
         ],
-        [
-            State(pair + "ask", "children"),
-            State(pair + "bid", "children")
-        ],
+        [State(pair + "ask", "children"), State(pair + "bid", "children")],
     )(generate_figure_callback(pair))
 
     # updates the ask and bid prices
@@ -1360,7 +1357,7 @@ def update_order_table(orders, position):
         "Profit",
         "Status",
         "Close Time",
-        "Close Price"
+        "Close Price",
     ]
 
     # If there are no orders
