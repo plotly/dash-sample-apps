@@ -70,29 +70,25 @@ generate_main_plot <- function(data, model, threshold){
   train_data <- data[["train"]]
   test_data <- data[["test"]]
   full_data <- rbindlist(data)
-  y_pred_train <- as.factor(
-    as.integer(
-      predict(
-        model,
-        as.matrix(train_data[, c("X1", "X2")]),
-        type = "decision"
-      ) > threshold
-    )
-  )
+  {predict(
+    model, 
+    as.matrix(train_data[, c("X1", "X2")]), 
+    type = "decision" ) > threshold} %>% 
+      as.integer() %>% 
+      as.factor() -> 
+        y_pred_train
   trainConfMatrix <- confusionMatrix(
     data = y_pred_train,
     reference = train_data$Y
   )
   train_accuracy <- trainConfMatrix$overall["Accuracy"]
-  y_pred_test <- as.factor(
-    as.integer(
-      predict(
-        model,
-        as.matrix(test_data[, c("X1", "X2")]),
-        type = "decision"
-      ) > threshold
-    )
-  )
+  {predict(
+    model, 
+    as.matrix(test_data[, c("X1", "X2")]), 
+    type = "decision" ) > threshold} %>% 
+      as.integer() %>% 
+      as.factor() -> 
+        y_pred_test
   testConfMatrix <- confusionMatrix(
     data = y_pred_test,
     reference = test_data$Y
@@ -248,15 +244,13 @@ pieConfusionMatrix <- function(model, data, threshold){
   scaled_threshold <- threshold *
                      (max(grid$decision) - min(grid$decision)) +
                      min(grid$decision)
-  y_pred_test <- as.factor(
-    as.integer(
-      predict(
-        model,
-        as.matrix(test_data[, c("X1", "X2")]),
-        type = "decision"
-      ) > scaled_threshold
-    )
-  )
+  {predict(
+    model, 
+    as.matrix(test_data[, c("X1", "X2")]), 
+    type = "decision" ) > scaled_threshold} %>% 
+      as.integer() %>% 
+      as.factor() -> 
+        y_pred_test
   testConfMatrix <- confusionMatrix(
     data = y_pred_test, reference = test_data$Y
   )

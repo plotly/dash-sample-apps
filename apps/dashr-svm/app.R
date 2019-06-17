@@ -1,6 +1,6 @@
+library(dashR)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-library(dashR)
 
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
@@ -238,11 +238,12 @@ app$layout(
                     children = list(
                       dccGraph(
                         id = "main_figure",
-                        figure = plot_ly() %>%
+                        figure = plot_ly(
+                          type = "contour"
+                        ) %>%
                           layout(
                             paper_bgcolor = "#272b38",
                             plot_bgcolor = "#272b38",
-                            showgrid = FALSE,
                             xaxis = list(
                               zeroline = FALSE, 
                               showline = FALSE, 
@@ -279,11 +280,13 @@ app$layout(
                       dccGraph(
                         id = "graph-line-roc-curve",
                         style = list(height = "40%"),
-                        figure = plot_ly() %>%
+                        figure = plot_ly(
+                            type = "scatter", 
+                            mode = "lines"
+                          ) %>%
                           layout(
                             paper_bgcolor = "#272b38",
                             plot_bgcolor = "#272b38",
-                            showgrid = FALSE,
                             xaxis = list(
                               zeroline = FALSE, 
                               showline = FALSE, 
@@ -302,11 +305,12 @@ app$layout(
                       dccGraph(
                         id = "graph-pie-confusion-matrix",
                         style = list(height = "55%", marginTop = "5%"),
-                        figure = plot_ly() %>%
+                        figure = plot_ly(
+                          type = "pie"
+                        ) %>%
                           layout(
                             paper_bgcolor = "#272b38",
                             plot_bgcolor = "#272b38",
-                            showgrid = FALSE,
                             xaxis = list(
                               zeroline = FALSE, 
                               showline = FALSE, 
@@ -355,7 +359,7 @@ app$callback(
     s <- 10 ** power
     as.list(
       setNames(
-        lapply(seq(1, 10, 2) * s, round, 8), 
+        round(seq(1, 10, 2) * s, 8),
         seq(1, 10, 2)
       )
     )
