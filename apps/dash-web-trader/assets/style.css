@@ -377,13 +377,6 @@ body{
     margin: 0;
 }
 
-.btn-close{
-  font-size: 16px;
-  float: right;
-  padding-right: 5px;
-  vertical-align: text-top;
-  cursor: pointer;
-}
 
 .btn-style{
   top: 0px;
@@ -429,9 +422,24 @@ th{
   text-align: left;
 }
 
+.text-center{
+  text-align:center;
+}
 
 .div-news{
   padding: 24px;
+}
+
+
+.p-news{
+  display:inline;
+  font-size:12px;
+  padding: 3px;
+  margin: 0;
+}
+
+.float-right{
+  float:right;
 }
 
 .div-left-panel{
@@ -495,8 +503,14 @@ th{
 }
 .three-col{
   display: inline-block;
-  width: 30%;
+  width: 33%;
   text-align: center;
+}
+
+.two-col{
+  display: inline-block;
+  width: 16.25%;
+  text-align: left;
 }
 
 .logo{
@@ -583,7 +597,12 @@ div.Select-value, .Select-control,div.period, .Select-input{
 }
 
 .chart-title{
-  margin-top: 3px
+  margin-top: 3px;
+  margin-left: 12px;
+}
+
+.chart-graph{
+  padding-bottom: 16px;
 }
 
 .inline-block{
@@ -657,6 +676,13 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   color:#b4b4b4;
 }
 
+.modal-close{
+  float: right;
+  cursor: pointer;
+  margin-top: 0;
+  margin-bottom: 10;
+}
+
 th, td{
   padding: 12px;
 }
@@ -716,6 +742,10 @@ summary::-webkit-details-marker {
 }
 
 @media only screen and (max-width: 768px) {
+  .three, .nine {
+    min-width: 100%;
+  }
+
   .title-header{
     color: white;
     font-weight: 600;
@@ -727,6 +757,26 @@ summary::-webkit-details-marker {
   .div-info{
     text-align: center;
   }
+
+  .div-right-panel{
+    padding: 32px;
+  }
+
+  .div-news{
+    padding: 24px 64px;
+    padding-bottom: 64px;
+  }
+
+  .div-currency-toggles{
+    border-bottom: 1px solid #55575D;
+  }
+
+  .two-col{
+    display: inline-block;
+    width: 33%;
+    text-align: center;
+  }
+  
 }
 
 ._dash-undo-redo {
