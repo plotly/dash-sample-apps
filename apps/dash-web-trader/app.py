@@ -49,12 +49,12 @@ def update_news():
     return html.Div(
         children=[
             html.P(
-                children="Headlines", 
-                style={'display':'inline', 'fontSize':'12px'}
+                className="p-news",
+                children="Headlines"
             ),
             html.P(
-                children="Last update : " + datetime.datetime.now().strftime("%H:%M:%S"),  
-                style={'display':'inline', 'fontSize':'12px'}
+                className="p-news float-right",
+                children="Last update : " + datetime.datetime.now().strftime("%H:%M:%S")  
             ),
             html.Table(
                 className="table-news",
@@ -212,11 +212,11 @@ def replace_row(currency_pair, index, bid, ask):
 # Returns Top cell bar for header area
 def get_top_bar_cell(cellTitle, cellValue, color="white"):
     return html.Div(
-        className="two columns",
+        className="two-col",
         children=[
             html.P(className="p-top-bar", children=cellTitle),
-            html.P(cellValue, id=cellTitle),
-        ],
+            html.P(id=cellTitle, children=cellValue),
+        ]
     )
 
 
@@ -445,10 +445,16 @@ def get_modal_fig(currency_pair, index):
     fig.append_trace(ask_modal_trace(currency_pair, index), 1, 1)
     fig.append_trace(bid_modal_trace(currency_pair, index), 2, 1)
 
-    fig["layout"]["height"] = 400
     fig["layout"]["autosize"] = True
-    fig["layout"]["margin"] = {"b": 0, "r": 5, "l": 50, "t": 5}
-    fig["layout"].update(paper_bgcolor="#22252b", plot_bgcolor="#22252b")
+    fig["layout"]["height"] = 400
+    fig["layout"]["margin"] = {"t": 5, "l": 50, "b": 0, "r": 5}    
+    fig["layout"]["yaxis"]["showgrid"] = True
+    fig["layout"]["yaxis"]["gridcolor"] = '#3E3F40'
+    fig["layout"]["yaxis"]["gridwidth"] = 1
+    fig["layout"].update(
+        paper_bgcolor="#18252E", plot_bgcolor="#18252E"
+    )
+
     return fig
 
 
@@ -496,16 +502,18 @@ def get_fig(currency_pair, ask, bid, type_trace, studies, period):
         row += 1
         fig.append_trace(globals()[study](df), row, 1)
 
-    layout = {
-        'margin':''
-    }
-
-    fig["layout"]["margin"] = {"b": 50, "r": 50, "l": 50, "t": 50}
+    fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}    
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
     fig["layout"]["xaxis"]["rangeslider"]["visible"] = False
     fig["layout"]["xaxis"]["tickformat"] = "%H:%M"
-    fig["layout"].update(paper_bgcolor="#22252b", plot_bgcolor="#22252b")
+    fig["layout"]["yaxis"]["showgrid"] = True
+    fig["layout"]["yaxis"]["gridcolor"] = '#3E3F40'
+    fig["layout"]["yaxis"]["gridwidth"] = 1
+    fig["layout"].update(
+        paper_bgcolor="#21252C", plot_bgcolor="#21252C"
+    )
+
     return fig
 
 # returns chart div
@@ -626,6 +634,7 @@ def chart_div(pair):
             html.Div(
                 dcc.Graph(
                     id=pair + "chart",
+                    className="chart-graph",
                     config={"displayModeBar": False, "scrollZoom": True}
                 )
             ),
@@ -644,19 +653,13 @@ def modal(pair):
                 className="modal-content",
                 children=[
                     html.Span(
-                        "×",
                         id=pair + "closeModal",
-                        style={
-                            "float": "right",
-                            "cursor": "pointer",
-                            "marginTop": "0",
-                            "marginBottom": "10",
-                        },
+                        className="modal-close",
+                        children="×"
                     ),
-                    html.Span(
-                        pair,
+                    html.P(
                         id="modal" + pair,
-                        style={"marginBottom": "10", "color": "#45df7e"},
+                        children=pair
                     ),
                     # row div with two div
                     html.Div(
@@ -781,7 +784,7 @@ app.layout = html.Div(
 
                 # Ask Bid Currency Div
                 html.Div(
-                    className="div-ask-bid",
+                    className="div-currency-toggles",
                     children=[
                         html.P(
                             id="live_clock",
@@ -1356,11 +1359,9 @@ def update_order_table(orders, position):
         "Price",
         "Profit",
         "Status",
+        "Close Time",
+        "Close Price"
     ]
-
-    # If tab is closed
-    if position == "closed":
-        headers += ["Close Time", "Close Price"]
 
     # If there are no orders
     if orders is None or orders is "[]":
