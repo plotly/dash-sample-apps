@@ -12,7 +12,7 @@
 - Spacing
 - Utilities
 - Clearing
-- Media Queries
+- Custom App CSS
 */
 
 
@@ -367,30 +367,6 @@
     clear: both; }
   
   
-  /* Media Queries
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  /*
-  Note: The best way to structure the use of media queries is to create the queries
-  near the relevant code. For example, if you wanted to change the styles for buttons
-  on small devices, paste the mobile query code up in the buttons section and style it
-  there.
-  */
-  
-  
-  /* Larger than mobile */
-  @media (min-width: 400px) {}
-  
-  /* Larger than phablet (also point when grid becomes active) */
-  @media (min-width: 550px) {}
-  
-  /* Larger than tablet */
-  @media (min-width: 750px) {}
-  
-  /* Larger than desktop */
-  @media (min-width: 1000px) {}
-  
-  /* Larger than Desktop HD */
-  @media (min-width: 1200px) {}
 
 /* Custom App CSS
 ---------------------------------------*/
@@ -481,7 +457,7 @@ th{
 }
 
 .div-info{
-  padding: 12px 32px 32px 32px;
+  padding: 32px;
 }
 
 .div-info p{
@@ -526,8 +502,6 @@ th{
 .logo{
   width: 100%;
   max-width: 150px;
-  margin: 0px 0px 0px -10px;
-  padding: 32px 32px 0px 32px;
 }
 
 
@@ -605,11 +579,21 @@ div.Select-value, .Select-control,div.period, .Select-input{
 
 .chart-top-bar{
   background-color: #30333d;
+  padding:12px;
 }
 
-.graph-close{
+.chart-title{
+  margin-top: 3px
+}
+
+.inline-block{
+  display: inline-block
+}
+
+.chart-close{
   cursor: pointer;
   display: inline-block;
+  padding: 5px 12px;
 }
 
 .graph-top-right{
@@ -743,6 +727,8 @@ summary::-webkit-details-marker {
   .div-info{
     text-align: center;
   }
+}
 
-
+._dash-undo-redo {
+  display: none;
 }
