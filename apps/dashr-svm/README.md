@@ -17,7 +17,7 @@ The other dropdowns and sliders lets you change the parameters of your classifie
 Clone the git repo
 
 ```
-git clone hhttps://github.com/plotly/dash-sample-apps
+git clone https://github.com/plotly/dash-sample-apps
 cd dash-sample-apps/apps/dashr-svm 
 ```
 
@@ -31,5 +31,5 @@ Run the app. From the terminal, run:
 Rscript app.R
 ```
 
-
+Open a browser at http://127.0.0.1:8050
 
