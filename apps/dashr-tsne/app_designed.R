@@ -1,7 +1,7 @@
 
 
 library(dplyr)
-library(dash)
+library(dashR)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
@@ -21,13 +21,13 @@ library(stringr)
 library(jsonlite)
 library(tictoc)
 
-appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
-
-
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-setwd(sprintf("/app/apps/%s", appName))
+# appName <- Sys.getenv("DASH_APP_NAME")
+# pathPrefix <- sprintf("/%s/", appName)
+# 
+# 
+# Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+#            DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+# setwd(sprintf("/app/apps/%s", appName))
 
 l. <- cmpfun(list)
 
@@ -35,10 +35,8 @@ IMAGE_DATASETS <- c("mnist_3000", "cifar_gray_3000", "fashion_3000")
 WORD_EMBEDDINGS <- c("wikipedia_3000", "twitter_3000", "crawler_3000")
 
 
-readme <- htmlDiv(children=l.(
-  htmlButton("Close", id='close-button', n_clicks=0)
-  ,
-  dccMarkdown("# t-SNE Explorer
+readme <- htmlDiv(l.(
+dccMarkdown("# t-SNE Explorer
 
 This is a demo of the Dash interactive R framework developed by [Plotly](https://plot.ly/).
 
@@ -46,11 +44,11 @@ Dash abstracts away all of the technologies and protocols required to build an i
 
 For an introductory and extensive explanation of t-SNE how to use it properly, please check out the [demo app](https://dash-tsne.plot.ly/).
 ")
-  #,
-  #htmlImg(id='gif1', src='assets/animated1.gif')
-  ,
-  
-  dccMarkdown("
+# ,
+# htmlImg(src='screenshots/animated1.gif')
+,
+
+dccMarkdown("
 ## Getting Started
 ### Using the demo
 To get started, choose a dataset you want to visualize. When the scatter plot appears on the graph, you can see the original image by clicking on a data point. 
@@ -120,8 +118,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 ")
-  
-  
+
 ))
 
 
@@ -262,88 +259,86 @@ app <- Dash$new(external_stylesheets = list( "https://cdnjs.cloudflare.com/ajax/
 
 app$layout(
   htmlDiv( className='row, background', children=l.(
-    htmlDiv(id='footer', children=readme)
+  htmlDiv(className='row', children=l.(
+    
+    htmlH2('t-SNE Explorer', className='title', id='app-title')
     ,
-    htmlDiv(className='row', children=l.(
-      
-      htmlH2('t-SNE Explorer', className='title', id='app-title')
-      ,
-      htmlImg(id='plotly-image', src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png", style=l.(height='90px', float='right', 'margin-top'='10px', 'margin-right'='30px'))
-      
+    htmlImg(id='plotly-image', src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png", style=l.(height='90px', float='right', 'margin-top'='10px', 'margin-right'='30px'))
+    
     )
     ,
     style=l.('background-color'='rgb(255,255,255)')
     )
-    ,
-    htmlDiv(className='row, background', l.(
-      
-      htmlDiv(className='row, background', 
-              
-              children=l.(dccMarkdown('* This is the R version of the t-SNE explorer.')                             
-                          , 
-                          dccMarkdown('* To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dash-tsne)')
-                          ,
-                          htmlButton('Learn More', id='learn-button', n_clicks=0)
-                          
-                          
-                          
-                          
-                          
-              )
-              
-              ,
-              style=l.('margin-left'='5px')
-              
-      )
-      ,
-      dccDropdown(
-        id = 'dropdown-mode-choice',
-        options=l.(
-          l.(label = 'Pre-generated data', value='demo'),
-          l.(label = 'Custom data', value = 'custom')
-          
-        ),
-        value = 'demo',
-        clearable = FALSE,
-        style = l.(width='45%', float='right')
-      )
-      ,
-      
-      htmlDiv(className='row, background', l.(   
-        
-        
-        
-        
-        
-        htmlH4( children='t-SNE Parameters', id='tsne_h4', style=l.(float='left')),
-        htmlDiv(className= 'three columns', id='control-panel', children = l.(), style=l.(width='80%'))
-        
-      ),  style=l.(float='left', display='block'))
-      ,
-      htmlH4('The Result Graph', className='six columns'),
-      htmlDiv(id='demo-graph', className='six columns', children= dccGraph(id='tsne-3d-plot', figure=defaultPlot ))
-      ,
-      htmlDiv(id='custom-graph', className='six columns', children= dccGraph(id='tsne-3d-plot-custom', figure=defaultPlot ), style=l.(display='none'))
-      ,
-      htmlDiv(l.(htmlDiv(id='KL-div',style=l.(display='none') )
-                 ,
-                 htmlDiv(id='end-time', style=l.(display='none'))
-                 , 
-                 htmlDiv(id='error-message', style=l.(display='none'))
-                 
-                 
-      ), id='plot-div', style=l.(display='none'))
-      ,
-      htmlDiv(id='custom-container', children="", style=l.(display='none'))
-      
-    ))
-    
-    
-    #(The main Graph)
-    
-  )
   ,
-  style=l.('max-width'='100%', 'font-size'='1.5rem', padding='0px 0px') )
+  htmlDiv(className='row, background', l.(
+    
+    htmlDiv(className='row, background', 
+    
+    children=l.(dccMarkdown('* This is the R version of the t-SNE explorer.')                             
+                , 
+                dccMarkdown('* To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dash-tsne)')
+                ,
+                htmlButton('Learn More', id='button')
+                
+                )
+                ,
+                style=l.('margin-left'='5px')
+            
+    )
+    ,
+    dccDropdown(
+      id = 'dropdown-mode-choice',
+      options=l.(
+        l.(label = 'Pre-generated data', value='demo'),
+        l.(label = 'Custom data', value = 'custom')
+        
+      ),
+      value = 'demo',
+      clearable = FALSE,
+      style = l.(width='45%', float='right')
+    )
+    ,
+    
+    htmlDiv(className='row, background', l.(   
+    
+      
+   
+      
+      
+      htmlH4( children='t-SNE Parameters', id='tsne_h4', style=l.(float='left')),
+      htmlDiv(className= 'three columns', id='control-panel', children = l.(), style=l.(width='80%'))
+      
+    ),  style=l.(float='left', display='block'))
+    ,
+    htmlH4('The Result Graph', className='six columns'),
+    htmlDiv(id='demo-graph', className='six columns', children= dccGraph(id='tsne-3d-plot', figure=defaultPlot ))
+    ,
+    htmlDiv(id='custom-graph', className='six columns', children= dccGraph(id='tsne-3d-plot-custom', figure=defaultPlot ), style=l.(display='none'))
+    ,
+    htmlDiv(l.(htmlDiv(id='KL-div',style=l.(display='none') )
+               ,
+               htmlDiv(id='end-time', style=l.(display='none'))
+               , 
+               htmlDiv(id='error-message', style=l.(display='none'))
+               
+               
+    ), id='plot-div', style=l.(display='none'))
+    ,
+    htmlDiv(id='custom-container', children="", style=l.(display='none'))
+    
+  ))
+  
+  
+  #(The main Graph)
+ 
+  
+  # ,
+  # htmlFooter(readme)
+
+  
+)
+,
+style=l.('max-width'='100%', 'font-size'='1.5rem', padding='0px 0px') )
 )
 ################################################################LAYOUT DONE################################################
 #
@@ -353,22 +348,6 @@ app$layout(
 #
 ################################################################CALLBACK BEGINS############################################
 #
-
-app$callback(
-  
-  output=l.(id='footer', property='style')
-  ,
-  params=l.(input(id='close-button', property='n_clicks'), input(id='learn-button', property='n_clicks'))
-  ,
-  function(c, l){
-    if(l>c){
-      return(l.(display='block', backgroundColor = '#F9F9F9'))
-    } else{
-      return(l.(display='none'))
-    }
-  }
-  
-)
 
 demoPanel <- l.(Card(l.(   
   dccDropdown(
@@ -415,10 +394,10 @@ demoPanel <- l.(Card(l.(
         val='regular'
       )
       ,
-      
+    
       htmlDiv(dccDropdown(id='dropdown-word-selected', placeholder='Select word to display its neighbors', value='')
-              
-      ))
+      
+    ))
   )
   
 )),
@@ -540,8 +519,8 @@ app$callback(
         
         
       ))
-      
-      
+ 
+     
       
       ))
     }
@@ -559,7 +538,7 @@ app$callback(
       return(l.(display='none'))
     }
   }
-)
+  )
 app$callback(
   output = l.(id='custom-graph', property='style'),
   params = l.(input(id='dropdown-mode-choice', property='value')),
@@ -592,17 +571,17 @@ datLst <<- l.(mnist_3000 = fread("data/mnist_3000_input.csv", header=T)
 )
 
 datLabels <<- l.(
-  mnist_3000 = unique(fread("data/mnist_3000_labels.csv", header=T))
-  , 
-  fashion_3000= unique( fread("data/fashion_3000_labels.csv", header=T))
-  ,
-  cifar_gray_3000 = unique(fread("data/cifar_gray_3000_labels.csv", header=T))
-  ,
-  wikipedia_3000 = unique(fread("data/wikipedia_3000.csv", header=T)[, 1])
-  ,
-  crawler_3000 = unique(fread("data/crawler_3000.csv", header=T)[, 1])
-  ,
-  twitter_3000 =  unique(fread('data/twitter_3000.csv', encoding='Latin-1', header=T)[,1])
+              mnist_3000 = unique(fread("data/mnist_3000_labels.csv", header=T))
+              , 
+              fashion_3000= unique( fread("data/fashion_3000_labels.csv", header=T))
+              ,
+              cifar_gray_3000 = unique(fread("data/cifar_gray_3000_labels.csv", header=T))
+              ,
+              wikipedia_3000 = unique(fread("data/wikipedia_3000.csv", header=T)[, 1])
+              ,
+              crawler_3000 = unique(fread("data/crawler_3000.csv", header=T)[, 1])
+              ,
+              twitter_3000 =  unique(fread('data/twitter_3000.csv', encoding='Latin-1', header=T)[,1])
 )
 
 app$callback(
@@ -650,10 +629,10 @@ app$callback(
   ,
   function(dataset){
     
-    D <- datLabels[[dataset]]
-    L <- lapply(unlist(D), labeledList)
+      D <- datLabels[[dataset]]
+      L <- lapply(unlist(D), labeledList)
     
-    return(unname(L))
+      return(unname(L))
     
     
     
@@ -679,7 +658,7 @@ eu.norm <- function(v1, v2){
 generate_figure_word_vec <- function(embedding_df, wordemb_display_mode, selected_word, datTbl){
   
   colnames(embedding_df) <- c("label", 'x', 'y', 'z')
-  
+ 
   #Regular displays the full scatter plot with only circles
   if(wordemb_display_mode == 'regular'){
     plot_mode = 'markers'
@@ -696,8 +675,8 @@ generate_figure_word_vec <- function(embedding_df, wordemb_display_mode, selecte
     plot_mode = 'text'
     #Get the nearest neighbors incides using Euclidean distance
     
-    
-    
+ 
+   
     
     selected_vector = filter(datTbl, label==selected_word)
     mtx <- as.matrix(datTbl[, -1])
@@ -732,7 +711,7 @@ app$callback(
               
   )
   ,
-  
+ 
   
   function(dataset, iterations, perplexity, pca_dim, learning_rate, selected_word, wordemb_display_mode){
     if(dataset==''|| is.null(dataset)){
@@ -747,7 +726,7 @@ app$callback(
         
         colnames(embedding_DT) <- c('label', 'x','y','z')
         p <- plot_ly(embedding_DT, type='scatter3d', x=~x, y=~y, z=~z, color=~as.factor(label), mode='markers', marker=list(symbol='circle', size=2.5))
-        
+      
         return(p)
       } else if(is.element(dataset, WORD_EMBEDDINGS)){
         figure <- generate_figure_word_vec(embedding_DT, wordemb_display_mode, selected_word, datTbl)
@@ -762,48 +741,48 @@ app$callback(
 #
 #### Returning the 5 nearest neighborhood for the point clicked
 
-app$callback(
-  output =  l.(id = 'div-plot-click-wordemb', property='children')
+ app$callback(
+output =  l.(id = 'div-plot-click-wordemb', property='children')
+,
+params = l.(
+  input(id = 'tsne-3d-plot', property='clickData')
   ,
-  params = l.(
-    input(id = 'tsne-3d-plot', property='clickData')
-    ,
-    input(id='dropdown-dataset', property='value')
-  )
-  ,
-  function(clickData, dataset){
-    if(dataset %in% WORD_EMBEDDINGS){
-      clickDat = clickData[[1]] # contains a list(character(6))
-      selected_word <- clickDat[[1]][6]
-      datTbl = datLst[[dataset]]
-      colnames(datTbl)[1] = 'label'
-      
-      selected_vector = filter(datTbl, label==selected_word)
-      mtx <- as.matrix(datTbl[, -1])
-      sel_vec <- unlist(selected_vector[, -1])
-      
-      distances <- mtx %>% apply(., 1, . %>% eu.norm(., sel_vec))
-      datTbl$distance = distances
-      sorted_DT <- datTbl[order(distance), ]
-      neighbors_label <- sorted_DT[2:6, 1]
-      p <- plot_ly(type='bar', x=neighbors_label$label, y=1:5, orientation='v' )
-      p <- p %>% layout(title =  glue('5 nearest neighbors of {selected_word}'), xaxis= l.(title='Euclidean Distance'))
-      return( dccGraph(
-        id='graph-bar-nearest-neighbors-word',
-        figure=p,
-        style=l.(height= '25vh'),
-        config=l.('displayModeBar'= F)) %>% htmlDiv(., style=l.(height='25vh', display='block', margin='auto')))
-      
-      
-      #return(htmlP(glue('{clickDat}')))
-    } else {
-      return(l.())
-    }
+  input(id='dropdown-dataset', property='value')
+)
+,
+function(clickData, dataset){
+  if(dataset %in% WORD_EMBEDDINGS){
+    clickDat = clickData[[1]] # contains a list(character(6))
+    selected_word <- clickDat[[1]][6]
+    datTbl = datLst[[dataset]]
+    colnames(datTbl)[1] = 'label'
+    
+    selected_vector = filter(datTbl, label==selected_word)
+    mtx <- as.matrix(datTbl[, -1])
+    sel_vec <- unlist(selected_vector[, -1])
+    
+    distances <- mtx %>% apply(., 1, . %>% eu.norm(., sel_vec))
+    datTbl$distance = distances
+    sorted_DT <- datTbl[order(distance), ]
+    neighbors_label <- sorted_DT[2:6, 1]
+    p <- plot_ly(type='bar', x=neighbors_label$label, y=1:5, orientation='v' )
+    p <- p %>% layout(title =  glue('5 nearest neighbors of {selected_word}'), xaxis= l.(title='Euclidean Distance'))
+    return( dccGraph(
+      id='graph-bar-nearest-neighbors-word',
+      figure=p,
+      style=l.(height= '25vh'),
+      config=l.('displayModeBar'= F)) %>% htmlDiv(., style=l.(height='25vh', display='block', margin='auto')))
+    
+
+    #return(htmlP(glue('{clickDat}')))
+  } else {
+    return(l.())
   }
-  
+}
+
 )
 
-#
+ #
 ####
 app$callback(
   output = l.(id='div-plot-click-image',property='children')
@@ -820,48 +799,48 @@ app$callback(
     input(id='slider-pca-dimensions', property='value')
     ,
     input(id='slider-learning-rate', property='value')
-    
+
   )
   ,
   function(clickData, dataset, iterations, perplexity, pca_dim, learning_rate){
-    #clickData = list(list(x=0, y=0, z=0, curveNumber=1, pointNumber=291))
+#clickData = list(list(x=0, y=0, z=0, curveNumber=1, pointNumber=291))
     if(dataset %in% IMAGE_DATASETS){
       datTbl <- datLst[[dataset]]
       path = as.character(glue('demo_embeddings/{dataset}/iterations_{iterations}/perplexity_{perplexity}/pca_{pca_dim}/learning_rate_{learning_rate}/data.csv'))
-      
+
       embedding_DT <- fread(path, encoding='Latin-1', header=T)
-      
+
       clickDat <- clickData[[1]]
-      
+
       # clickDat <- unname(clickDat)
-      
-      embedding_DT$x = embedding_DT$x %>% round(., 4)
-      embedding_DT$y = embedding_DT$y %>% round(., 4)
-      embedding_DT$z = embedding_DT$z %>% round(., 4)
-      clickPoint = c(clickDat[[1]][1], clickDat[[1]][2], clickDat[[1]][3]) %>% as.numeric(.) %>% round(., 4)
-      imageIndex <- which(embedding_DT$x== clickPoint[1] & embedding_DT$y==clickPoint[2] & embedding_DT$z==clickPoint[3])
-      
-      
-      #return(htmlP(paste(glue('{clickDat[[1]][2]}'))))
+
+        embedding_DT$x = embedding_DT$x %>% round(., 4)
+        embedding_DT$y = embedding_DT$y %>% round(., 4)
+        embedding_DT$z = embedding_DT$z %>% round(., 4)
+        clickPoint = c(clickDat[[1]][1], clickDat[[1]][2], clickDat[[1]][3]) %>% as.numeric(.) %>% round(., 4)
+        imageIndex <- which(embedding_DT$x== clickPoint[1] & embedding_DT$y==clickPoint[2] & embedding_DT$z==clickPoint[3])
+       
+        
+       #return(htmlP(paste(glue('{clickDat[[1]][2]}'))))
       # return(htmlP(paste(glue('{imageIndex}'))))
-      
-      
-      
+
+     
+
       imageVec<- as.numeric(datTbl[imageIndex, ])
       #
-      
-      
+
+
       if(dataset=='cifar_gray_3000'){ imageMtx <- matrix(imageVec, nrow=32)} else {imageMtx <- matrix(imageVec, nrow=28)}
       DIGIT <- writePNG(imageMtx)
       DIGIT_B64 <- base64encode(DIGIT)
       
       return(htmlImg(src =  glue('data:image/png;base64, ', DIGIT_B64), style =  l.(height='25vh', display='block', margin='auto')))
-      
+    
     } else{
-      return(l.())
+    return(l.())
     }
   }
-  
+
 )
 #########CALLBACKS for DEMO ends here
 #
@@ -891,15 +870,15 @@ parse_contents <- function(contents, filename){
 # Store the uploaded data to the hidden data htmlDiv container
 # 
 app$callback(
-  
+
   output = list(id='data-df-and-message', property='children')
   ,
   params = list(
-    
+
     input(id='upload-data', property='contents')
     ,
     input(id='upload-data', property='filename')
-    
+
   )
   ,
   function(contents, filename){
@@ -917,37 +896,37 @@ app$callback(
 
 
 app$callback(
-  
+
   output = list(id='upload-data-message', property='children')
   ,
   params = list(
-    
+
     input(id='data-df-and-message', property='children')
-    
-    
+
+
   )
   ,
   function(JSON){
     if(is.na(JSON)){return("NO DATA LOADED")}
-    
+
     box <- fromJSON(JSON)
-    
+
     return(box[2] %>% fromJSON)
   }
-  
+
 )
 
 
 app$callback(
-  
+
   output = list(id='label-df-and-message', property='children')
   ,
   params = list(
-    
+
     input(id='upload-label', property='contents')
     ,
     input(id='upload-label', property='filename')
-    
+
   )
   ,
   function(contents, filename){
@@ -965,26 +944,26 @@ app$callback(
 
 
 app$callback(
-  
+
   output = list(id='upload-label-message', property='children')
   ,
   params = list(
-    
+
     input(id='label-df-and-message', property='children')
-    
-    
+
+
   )
   ,
   function(JSON){
     if(is.na(JSON)){return("NO DATA LOADED")}
-    
+
     box <- fromJSON(JSON)
-    
+
     
     
     return(box[2] %>% fromJSON)
   }
-  
+
 )
 ## pre- t-SNE ends
 
@@ -1009,15 +988,15 @@ is.empty <- function(x){
 }
 
 app$callback(
-  
+
   output = list(id='custom-container', property='children')
   ,
   params = list(
-    
-    
+
+
     input(id='tsne-train-button', property= 'n_clicks')
     ,
-    
+
     # [State('perplexity-state', 'value'),
     #  State('n-iter-state', 'value'),
     #  State('lr-state', 'value'),
@@ -1039,14 +1018,14 @@ app$callback(
   )
   ,
   function(n_clicks, perplexity, n_iter, learning_rate, pca_dim, data_div, label_div){
-    
+
     #RUN THE t-SNE ALGORITHM UPLON CLICKING THE TRAINING BUTTON
-    
+
     error_message = "No error"
     # Fix up for startup post
-    
+
     if((n_clicks <= 0)|| is.empty(data_div) || is.empty(label_div) ){
-      
+
       # return(l.(
       #   htmlDiv(l.(NULL), id='KL-div', style=l.(display='none') )
       #   ,
@@ -1066,16 +1045,16 @@ app$callback(
       
       C <- c(kl_js, time_js, error_js, 'null') %>% toJSON(., raw='base64')
       return(C)
-      
+
     } else{
-      
+
       Data_DT <- fromJSON(fromJSON(data_div)[1])
       label_DT <- fromJSON(label_div)[1] %>% fromJSON()
       niter <- softBounds(n_iter, 250, 1000)
       perp <- softBounds(perplexity, 5, 50)
       lr <- softBounds(learning_rate, 10, 1000)
       initialdim <- softBounds(pca_dim, 3, dim(Data_DT)[2])
-      
+
       tic()
       # Rtsne(X, dims = 2, initial_dims = 50,
       #       perplexity = 30, theta = 0.5, check_duplicates = TRUE,
@@ -1087,7 +1066,7 @@ app$callback(
       #       momentum = 0.5, final_momentum = 0.8, eta = 200,
       #       exaggeration_factor = 12, num_threads = 1, ...)
       #
-      
+
       TSNE <- Rtsne(Data_DT, dims=3, initial_dims = initialdim, perplexity=perp, eta=lr, max_iter = niter, num_threads=4)
       KLDiv <- TSNE$itercosts %>% .[length(.)]
       OUTPUT <- data.table(cbind(label_DT,TSNE$Y))
@@ -1103,13 +1082,13 @@ app$callback(
       #   ,
       #   #style=l.(height='120vh', width='80vh',float='left')
       #   dccGraph(id='tsne-3d-plot', figure=p, style=l.(height='120vh', width='80vh',float='left')))
-      L <- list(kl=KLDiv, time=tic.log()[[1]], error=error_message, fig=OUTPUT)
+       L <- list(kl=KLDiv, time=tic.log()[[1]], error=error_message, fig=OUTPUT)
       V <- mapply(toJSON, x=L, force=TRUE, dataframe='rows')
       tic.clearlog()
       return(V %>% toJSON(., raw='base64', force=TRUE))
       
     }
-    
+
   }
 )
 # htmlDiv(l.(htmlDiv(id='KL-div',style=l.(display='none') )
@@ -1126,7 +1105,7 @@ app$callback(
   ,
   params =  l.(
     input(id='custom-container', property='children')
-  )
+    )
   ,
   function(JSON){
     L <- fromJSON(JSON) 
@@ -1179,8 +1158,8 @@ app$callback(
 ########CALLBACKS for custom data ends
 
 
-# 
-# app$run_server(port="8893")
 
-app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+app$run_server(port="8893")
+
+# app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 
