@@ -110,7 +110,7 @@ generate_main_plot <- function(data, model, threshold){
   )
   csSeq <- seq(0, 1, length.out = 8)
   colorscale <- list(
-    c(csSeq[1], "#ff744c"),
+    list(csSeq[1], "#ff744c"),
     list(csSeq[2], "#ff906d"),
     list(csSeq[3], "#ffc0a9"),
     list(csSeq[4], "#ffe7dc"),

@@ -1,4 +1,14 @@
-library(dashR)
+# This app's data and plots are heavily inspired from the scikit-learn Classifier
+# comparison tutorial. You can find it here:
+# http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html
+# The app mimics the dash for python application that can be found here:
+# https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-svm
+# The Confusion Matrix Pie Chart format was inspired by Nicolas's Dash ROC app.
+# The data used in this app were meant to generally replicate the datasets 
+# built in to scikit-learn, and were obtained using the clusterSim package
+# See data/getData.R to see how the data were obtained
+
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 
@@ -32,7 +42,7 @@ app$layout(
               htmlH2(
                 htmlA(
                   "Support Vector Machine (SVM) Explorer",
-                  href = "https://github.com/plotly/dash-svm",
+                  href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-svm",
                   style = list(
                     textDecoration = "none",
                     color = "inherit"
@@ -40,7 +50,7 @@ app$layout(
                 )
               ),
               htmlA(
-                htmlImg(src = "https://user-images.githubusercontent.com/37411533/56820587-55d56e80-681a-11e9-91b6-026e1551b338.png"),
+                htmlImg(src = "assets/dash-logo.png"),
                 href = "https://plot.ly/products/dash/"
               )
             )
@@ -215,7 +225,7 @@ app$layout(
                   htmlDiv(
                     dccMarkdown(
                       paste0(
-                         "[Click here](https://github.com/plotly/dash-svm)",
+                         "[Click here](https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-svm)",
                          " to visit the project repo, ",
                          "and learn about how to use the app"
                       )

@@ -1,10 +1,8 @@
 # The original python dash-svm-explorer pulls datasets from sklearn
 # The package clusterSim in CRAN can be used to generate moons and circles
-# However, this has a dependency from bioconductor ("genefilter")
-# Instead of relying on this dependency in the deployed app, 
 # the data is generated here and saved locally.
 
-# package installation:
+# required dependency installation:
 # BiocManager::install("genefilter")
 # install.packages("clusterSim")
 
