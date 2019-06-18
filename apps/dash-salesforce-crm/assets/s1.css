@@ -126,6 +126,16 @@ table {
 }
 
 @media (min-width: 960px) {
+  .tab {
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+  }
+
+  .tab--selected {
+    background-image: linear-gradient(white, #f9f9f9);
+  }
+
   #lead_grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -177,6 +187,7 @@ table {
   #leads_table {
     grid-row: 6 / 10;
     grid-column: 1 / 13;
+    max-height: 500px;
   }
 
   #opportunity_grid {
@@ -224,7 +235,7 @@ table {
     margin-right: auto;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: repeat(9, 1fr);
+    grid-template-rows: 1fr auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   }
 
   #new_case {
@@ -254,6 +265,11 @@ table {
 
   #cases_by_account_container {
     grid-column: 1 / 13;
-    grid-row: 6 / 10;
+    grid-row: 6 / 9;
+  }
+
+  #cases_by_account {
+    display: block;
+    height: 100%;
   }
 }
