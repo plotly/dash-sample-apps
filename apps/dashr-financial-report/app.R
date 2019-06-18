@@ -23,7 +23,7 @@ if (appName != ""){
 source("assets/FinancialFunctions.R")
 
 # Load Necessary Packages
-library('dashR')
+library('dash')
 library('dashCoreComponents')
 library('dashHtmlComponents')
 library('plyr')
