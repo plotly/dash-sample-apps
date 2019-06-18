@@ -193,7 +193,6 @@ label {
 .result {
   margin-top: 5%;
   margin-bottom: 5%;
-  
 }
 
 .tabs {
@@ -244,8 +243,8 @@ input[type="button"] {
   text-decoration: none;
   white-space: nowrap;
   background-color: #4181FF;
-  border-radius: 30px;
-  border: 1px solid white;
+  border-radius: 10px;
+  
   cursor: pointer;
   box-sizing: border-box;
 }
@@ -333,11 +332,13 @@ input[type="reset"].button-primary:focus,
 input[type="button"].button-primary:focus {
   color: #FFF;
   background-color: #1EAEDB;
-  border-color: #1EAEDB; }
+  border-color: #1EAEDB; 
+}
 
 
 
 
+/*Zoom In*/
 #tabs-content-example>div>button:nth-child(2)>svg {
   height: 35px;
   padding: 0 9px;
@@ -345,29 +346,36 @@ input[type="button"].button-primary:focus {
   ;
 }
 
+
+/*Zoom out */
 #tabs-content-example>div>button:nth-child(3)>svg {
   height: 35px;
   padding: 0 9px;
   margin-top: 3px;
 }
 
+/*Trace */
 #tabs-content-example>div>button:nth-child(4)>svg {
   height: 40px;
   margin-top: 4px;
 }
 
+/* Square */
 #tabs-content-example>div>button:nth-child(5)>svg {
   margin-top: 4px;
 }
 
+/* Left arrow */
 #tabs-content-example>div>button:nth-child(7)>svg {
   margin-top: 4px;
 }
 
+/*Tag */
 #tabs-content-example>div>button:nth-child(8)>svg {
   margin-top: 4px;
 }
 
+/*Estimate Translation */
 #tabs-content-example>div>button:nth-child(9) {
   margin-right: 20%;
   height: 38px;
@@ -391,7 +399,46 @@ input[type="button"].button-primary:focus {
   
 }
 
+#tabs-content-example>div>button:nth-child(2),
+#tabs-content-example>div>button:nth-child(3),
+#tabs-content-example>div>button:nth-child(4),
+#tabs-content-example>div>button:nth-child(5),
+#tabs-content-example>div>button:nth-child(6),
+#tabs-content-example>div>button:nth-child(7),
+#tabs-content-example>div>button:nth-child(8) {
+  height: 38px;
+  width: 140px;
+  padding: 0;
+  color: #FBFFFF;
+  text-align: center;
+  font-size: 11px;
+  font-family: 'Geneva';
+  font-weight: 200;
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: #4181FF;
+  border-radius: 30px;
+  border: 1px solid white;
+  cursor: pointer;
+  box-sizing: border-box;
+}
 
+
+  #stitching-result {
+    margin-left: -35px;
+    text-align: left;
+    
+  }
+
+  #bla {
+    margin-left: -35px;
+  }
+
+  .result_slider {
+    width: 70%;
+  }
 
 
 /* Forms
@@ -461,6 +508,7 @@ label > .label-body {
   display: inline-block;
   margin-left: .5rem;
   font-weight: normal; }
+
 
 
 /* Lists
@@ -578,21 +626,7 @@ there.
 
 /* Larger than phablet (also point when grid becomes active) */
 @media (max-width: 550px) {
-
-
-
-    
-}
-
-/* Larger than tablet */
-@media (max-width: 750px) {
-
-    
-}
-
-/* Larger than desktop */
-@media (max-width: 1000px) {
-  .instruction {
+    .instruction {
     width: 100vw;
     height: 150vh;
     text-align: center;
@@ -606,11 +640,13 @@ there.
     text-align: center;
     font-weight: 300;
     font-family: 'Geneva';  
-    margin: 10 auto;
+    margin: 0 auto;
   }
 
   h1 {
     font-size: 6.5rem;
+    margin-top: 20px;
+    margin-bottom: 2rem;
   }
 
   p {
@@ -619,7 +655,7 @@ there.
     white-space: pre-line;
     color: #8898B2;
     overflow-wrap: normal;
-    font-size: 2.4rem;
+    font-size: 1.2rem;
     text-align: center;
     margin: 0 auto;
   }
@@ -646,7 +682,10 @@ there.
     border: 1px solid white;
     cursor: pointer;
     box-sizing: border-box;
-    margin: 0 10;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: -20px;
+    margin-bottom: -50px;
 
   }
 
@@ -683,6 +722,8 @@ there.
     box-sizing: border-box;
     font-family: 'Geneva';
     font-size: inherit;
+    margin-left: 2px;
+    margin-right: 2px;
     /*https://stackoverflow.com/questions/6080413/why-doesnt-input-inherit-the-font-from-body*/
 
   }
@@ -691,10 +732,14 @@ there.
     margin-top: 15px;
     color: #407DFA;
     font-family: 'Geneva';
+    text-align: center;
+    display: inherit;
+    margin-left: 0;
   }
 
   .mobile_forms {
-    margin: 0 auto;
+    width: 100vw;
+   
     display: inherit;
   }
 
@@ -714,6 +759,7 @@ there.
   .canvas {
     margin: 0 auto;
     text-align: center;
+    margin-left: 0;
   }
 
   #tabs-content-example>div {
@@ -735,20 +781,49 @@ there.
     margin: 0 auto;
   }
 
-  #tabs-content-example>div>div{
-    width:375px !important;
+  #tabs-content-example>div>div,
+  .lower-canvas,
+  .upper-canvas,
+  .canvas-container {
+    width:100vw !important;
   }
-  .lower-canvas{
-    width:375px !important;
+  
+  #canvas-tab {
+     width: 100vw !important;
+     margin: 0 auto;
   }
-  .upper-canvas{
-    width:375px !important;
-  }
-  .canvas-container{
-    width:375px !important;
-  }
- 
 
+  #stitching-result {
+    width: 100vw !important; 
+    margin: 0 auto;
+  }
+
+  .result_slider {
+    width: 100vw !important;
+    margin: 0 auto;
+  }
+
+  #_dash-app-content>div>div.four.columns.instruction>p {
+    margin-top: 10px;
+    margin-bottom: -20px;
+
+  }
+
+  
+  #_dash-app-content>div>div.four.columns.instruction>label {
+    margin: 0 auto;
+  }
+    
+}
+
+/* Larger than tablet */
+@media (max-width: 750px) {
+
+    
+}
+
+/* Larger than desktop */
+@media (max-width: 1000px) {
 
 }
 /* Larger than Desktop HD */
