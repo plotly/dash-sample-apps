@@ -88,7 +88,7 @@ app.layout = html.Div(
                             className="row",
                             children=[
                                 html.Div(
-                                    className="div-for-dropdown side-by-side",
+                                    className="div-for-dropdown",
                                     children=[
                                         # Dropdown for locations on map
                                         dcc.Dropdown(
@@ -102,7 +102,7 @@ app.layout = html.Div(
                                     ],
                                 ),
                                 html.Div(
-                                    className="div-for-dropdown side-by-side-right",
+                                    className="div-for-dropdown",
                                     children=[
                                         # Dropdown to select times
                                         dcc.Dropdown(
