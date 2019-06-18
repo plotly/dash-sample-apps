@@ -23,7 +23,6 @@ app = dash.Dash(
     meta_tags=[{"name": "viewport", "content": "width=device-width"}],
 )
 
-
 # Loading historical tick data
 currency_pair_data = {
     "EURUSD": pd.read_csv("pairs/EURUSD.csv", index_col=1, parse_dates=["Date"]),
@@ -78,8 +77,8 @@ def update_news():
     )
 
 
-# returns row of given index for given currency pair dataset
-# for modal returns ten previous rows
+# Returns row of given index for given currency pair dataset
+# For modal returns ten previous rows
 def get_ask_bid(currency_pair, index, modal=False):
     if modal == False:
         return currency_pair_data[currency_pair].iloc[index]
@@ -138,6 +137,7 @@ def get_row(data):
             html.Div(
                 className="row",
                 children=[
+                    # Button for buy/sell modal
                     html.Div(
                         className="button-buy-sell-chart",
                         children=[
@@ -148,6 +148,7 @@ def get_row(data):
                             )
                         ],
                     ),
+                    # Button to display currency pair chart
                     html.Div(
                         className="button-buy-sell-chart-right",
                         children=[
@@ -446,17 +447,17 @@ def get_modal_fig(currency_pair, index):
     fig.append_trace(bid_modal_trace(currency_pair, index), 2, 1)
 
     fig["layout"]["autosize"] = True
-    fig["layout"]["height"] = 400
+    fig["layout"]["height"] = 375
     fig["layout"]["margin"] = {"t": 5, "l": 50, "b": 0, "r": 5}
     fig["layout"]["yaxis"]["showgrid"] = True
     fig["layout"]["yaxis"]["gridcolor"] = "#3E3F40"
     fig["layout"]["yaxis"]["gridwidth"] = 1
-    fig["layout"].update(paper_bgcolor="#18252E", plot_bgcolor="#18252E")
+    fig["layout"].update(paper_bgcolor="#21252C", plot_bgcolor="#21252C")
 
     return fig
 
 
-# returns graph figure
+# Returns graph figure
 def get_fig(currency_pair, ask, bid, type_trace, studies, period):
     df = get_OHLC_data(currency_pair, period)
     subplot_traces = [  # first row traces
@@ -541,6 +542,7 @@ def chart_div(pair):
                         n_clicks_timestamp=1,
                         style={"textDecoration": "none", "cursor": "pointer"},
                     ),
+                    # Studies Checklist
                     html.Div(
                         id=pair + "studies_tab",
                         children=[
@@ -574,6 +576,7 @@ def chart_div(pair):
                         ],
                         style={"display": "none"},
                     ),
+                    # Styles checklist
                     html.Div(
                         id=pair + "style_tab",
                         children=[
@@ -780,7 +783,6 @@ app.layout = html.Div(
                             buy and sell stocks and see the profit updates.
                             """
                         ),
-                        html.Button("Learn More"),
                     ],
                 ),
                 # Ask Bid Currency Div
@@ -908,26 +910,13 @@ def generate_chart_button_callback():
 # Function to update Graph Figure
 def generate_figure_callback(pair):
     def chart_fig_callback(n_i, p, t, s, pairs, a, b):
-        """
-        n_i : Number of intervals for Ask/Bid updates
-        p: Period chosen for chart (5, 15 or 30 min)
-        t: Type of chart (candlestick, line, mountain, etc.)
-        s: Type of study ()
-        pairs: Currency pairs that were clicked to be displayed
-        a: ask
-        b: bid
-        old_fig: REMOVED
-        """
 
         if pairs is None:
             return {"layout": {}, "data": {}}
 
-        pairs = pairs.split(",")  # list of displayed divs
+        pairs = pairs.split(",")
         if pair not in pairs:
-            return {
-                "layout": {},
-                "data": [],
-            }  # we only update figure when the div is displayed
+            return {"layout": {}, "data": []}
 
         return get_fig(pair, a, b, t, s, p)
 
@@ -1153,6 +1142,7 @@ def generate_update_orders_div_callback():
     return update_orders_callback
 
 
+# Callback to determine if currency pair chart is hidden or shown
 def generate_show_hide_graph_div_callback(pair):
     def show_hide_graph_callback(charts_clicked):
         if charts_clicked is None:
@@ -1165,10 +1155,12 @@ def generate_show_hide_graph_div_callback(pair):
 
         for i in range(len_list):
             if charts_clicked[i] == pair:
-                style = {"position": "relative", "float": "left", "overflow": "hidden"}
-
-                if i == 0 or (i == 2 and len_list == 4):
-                    style["marginLeft"] = "0px"  # avoid div to overlap
+                style = {
+                    "position": "relative",
+                    "float": "left",
+                    "paddingRight": "12px",
+                    "marginLeft": "0px",
+                }
 
                 style["height"] = "50%" if len_list == 4 else "100%"
 

@@ -510,7 +510,7 @@ th{
 .two-col{
   display: inline-block;
   width: 16.25%;
-  text-align: left;
+  text-align: center;
 }
 
 .logo{
@@ -667,13 +667,13 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
 }
 
 .modal-content {
-  background-color: #262a30;
+  background-color: #1A1C23;
   margin: 5% auto; /* 15% from the top and centered */
   padding: 20px;
-  border: 1px solid #b4b4b4;
+  border: 1px solid #b2b2b2;
   border-radius: 5px;
   width: 50%; /* Could be more or less, depending on screen size */
-  color:#b4b4b4;
+  color:#b2b2b2;
 }
 
 .modal-close{
