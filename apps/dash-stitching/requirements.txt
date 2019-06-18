@@ -1,10 +1,10 @@
-dash
-dash-core-components
-dash-html-components
+dash==0.43.0
+# dash-core-components
+# dash-html-components
 dash-canvas>=0.0.11
 dash-table
-plotly
-gunicorn
+# plotly
+gunicorn==19.9.0
 scikit-image
 pandas
 numpy
