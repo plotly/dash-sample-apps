@@ -17,12 +17,10 @@ The app will load into your default browser window. If it does not, navigate to 
 
 ## Screenshots:
 
-![vanguard.gif](assets/vanguard.gif)
+![ideogramMain.png](assets/ideogramMain.png)
 
 
-![image](assets/vanguard_screenshot2.png)
 
-![image](assets/vanguard_screenshot3.png)
 
 ## More:
 
