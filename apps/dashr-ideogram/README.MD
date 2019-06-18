@@ -20,7 +20,7 @@ The app will load into your default browser window. If it does not, navigate to 
 ![ideogramMain.png](assets/ideogramMain.png)
 
 
-
+![ideogramAnnotations.png](assets/ideogramAnnotations.png)
 
 ## More:
 
