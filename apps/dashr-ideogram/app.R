@@ -18,7 +18,7 @@ if (appName != ""){
 
 
 # Load Necessary Packages
-library('dashR')
+library('dash')
 library('dashCoreComponents')
 library('dashHtmlComponents')
 library('plyr')
@@ -32,6 +32,7 @@ app <- Dash$new()
   
   
   
+  
   listofchromosomes = (sprintf("%d",seq(1:22)))
   
   listofchromosomes = c(listofchromosomes, "X")
@@ -40,7 +41,6 @@ app <- Dash$new()
   
   
   listOfoptions <- list(
-    list('label' = 'All', 'value' = unlist(listofchromosomes)),
     list('label' = '1', 'value' = '1'),
     list('label' = '2', 'value' = '2'),
     list('label' = '3', 'value' = '3'),
@@ -280,11 +280,9 @@ app <- Dash$new()
         dccDropdown(
           className = 'ideogram-dropdown',
           id = 'displayed-chromosomes',
-          # options = listofoptions,
-          options = list(list("label" = "A", "value" = 1)),
+          options = listOfoptions,
           multi = TRUE,
-          # value = listofchromosomes
-          value = 1
+          value = listofchromosomes
         )
       ))
       
@@ -1147,11 +1145,18 @@ app <- Dash$new()
         current['sex'] = ifelse(sex_value, 'female', 'male')
       }
   
-  
       return(current)
     }
   )
   
 
 
-app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8080))
+if (appName != "") {
+  
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+  
+} else {
+  
+  app$run_server(showcase = TRUE)
+  
+}
