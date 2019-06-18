@@ -3,3 +3,4 @@ venv/
 __pycache__/
 apps/__pycache__/
 *.DS_Store
+.vscode
