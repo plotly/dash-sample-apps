@@ -81,7 +81,9 @@ def instructions():
     """
     ],
     style={
-        'margin-top': '-10px'
+        'margin-top': '-20px',
+        'margin-bottom': '20px'
+
     })
 
 
@@ -277,19 +279,21 @@ def fill_tab(tab):
             html.Div([
                 html.Label('Contrast'),
                 dcc.Slider(id='contrast-stitch',
-                           min=0,
-                           max=1,
-                           step=0.02,
-                           value=0.5)],
-                           style={'width': '40%'}),
+                        min=0,
+                        max=1,
+                        step=0.02,
+                        value=0.5)],
+                        #style={'width': '70%'},
+                        className="result_slider"),
             html.Div([
                 html.Label('Brightness'),
                 dcc.Slider(id='brightness-stitch',
-                           min=0,
-                           max=1,
-                           step=0.02,
-                           value=0.5,)],
-                     style={'width': '40%'}),
+                        min=0,
+                        max=1,
+                        step=0.02,
+                        value=0.5,)],
+                        #style={'width': '70%'},
+                        className="result_slider"),
         ]
     else:
         return [html.Img(id='bla', src='assets/stitching.gif',
