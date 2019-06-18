@@ -2,19 +2,21 @@ appName <- Sys.getenv("DASH_APP_NAME")
 
 if (appName != ""){
 
- pathPrefix <- sprintf("/%s/", appName)
+  pathPrefix <- sprintf("/%s/", appName)
 
 
 
- Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
 
-            DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
 
 
 
- setwd(sprintf("/app/apps/%s", appName))
+  setwd(sprintf("/app/apps/%s", appName))
 
 }
+
+
 
 
 #Source assets
@@ -77,7 +79,7 @@ paragraph <- htmlDiv(list(
                             The key risk for the fund is the volatility that comes with its full \
                             exposure to the stock market. Because the Calibre Index Fund is broadly \
                             diversified within the large-capitalization market, it may be \
-                            considered a core equity holding in a portfolio.")), className = 'row'
+                            considered a core equity holding in a portfolio.")), className = 'rowrow2'
   )), className = "product"
 )
 
@@ -1051,23 +1053,20 @@ app$callback(output = list(id='page-content', property = 'children'),
                  return(distributions_layout)
                }
                else if (pathname == '/dashr-financial-report/fees') {
-                 return(fees_minimums_layout)
-               }
-              else if (pathname == '/dashr-financial-report/fullversion') {
-                 return(index_page) 
+                 return (fees_minimums_layout)
                }
                else {
-                 return(page_1_layout)
+                 return(index_page)
                }
              }
 )
 
 if (appName != "") {
-
- app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
-
+  
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+  
 } else {
-
- app$run_server()
-
+  
+  app$run_server(showcase = TRUE)
+  
 }
