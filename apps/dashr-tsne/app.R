@@ -12,7 +12,7 @@ library(dtplyr)
 library(knitr)
 library(png)
 library(magick)
-library(jsonlite)
+library(base64enc)
 library(magrittr)
 library(Rtsne)
 library(stringr)
@@ -247,67 +247,87 @@ app <- Dash$new(external_stylesheets = list( "https://cdnjs.cloudflare.com/ajax/
 
 
 app$layout(
-  htmlDiv(id='container', children=l.(
-
-  htmlDiv(className='row', children=l.(htmlH2('t-SNE Explorer', id='title', style=l.(float='left', 'margin-top'='20px', 'margin-bottom'='0','margin-left'='7px'))
-                                       ,
-                                       htmlImg(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png", style=l.(height='100px', float='right'))) 
-  )
-  ,
-  htmlDiv(l.(
+  htmlDiv( className='row, background', children=l.(
+  htmlDiv(className='row', children=l.(
     
-   
-    htmlDiv(l.(   
-      dccMarkdown('* This is the R version of the t-SNE explorer.')                             
-      , 
-      dccMarkdown('* To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dash-tsne)')
-      ,
-      dccDropdown(
-        id = 'dropdown-mode-choice',
-        options=l.(
-          l.(label = 'Pre-generated data', value='demo'),
-          l.(label = 'Custom data', value = 'custom')
-          
-        ),
-        value = 'demo',
-        clearable = FALSE,
-        style = l.(width='100%')
-      ),
-      
-      
-      htmlH4('t-SNE Parameters', id='tsne_h4')
-      
-      ,
-      htmlDiv(id='control-panel', children = l.())
-      
-    ),  style=l.(float='right', display='block'))
+    htmlH2('t-SNE Explorer', className='title', id='app-title')
     ,
-    htmlH4('The Result Graph'),
+    htmlImg(id='plotly-image', src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png", style=l.(height='90px', float='right', 'margin-top'='10px', 'margin-right'='30px'))
+    
+    )
+    ,
+    style=l.('background-color'='rgb(255,255,255)')
+    )
+  ,
+  htmlDiv(className='row, background', l.(
+    
+    htmlDiv(className='row, background', 
+    
+    children=l.(dccMarkdown('* This is the R version of the t-SNE explorer.')                             
+                , 
+                dccMarkdown('* To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dash-tsne)')
+                ,
+                htmlButton('Learn More', id='button')
+                
+                )
+                ,
+                style=l.('margin-left'='5px')
+            
+    )
+    ,
+    dccDropdown(
+      id = 'dropdown-mode-choice',
+      options=l.(
+        l.(label = 'Pre-generated data', value='demo'),
+        l.(label = 'Custom data', value = 'custom')
+        
+      ),
+      value = 'demo',
+      clearable = FALSE,
+      style = l.(width='45%', float='right')
+    )
+    ,
+    
+    htmlDiv(className='row, background', l.(   
+    
+      
+   
+      
+      
+      htmlH4( children='t-SNE Parameters', id='tsne_h4', style=l.(float='left')),
+      htmlDiv(className= 'three columns', id='control-panel', children = l.(), style=l.(width='80%'))
+      
+    ),  style=l.(float='left', display='block'))
+    ,
+    htmlH4('The Result Graph', className='six columns'),
+    htmlDiv(id='demo-graph', className='six columns', children= dccGraph(id='tsne-3d-plot', figure=defaultPlot ))
+    ,
+    htmlDiv(id='custom-graph', className='six columns', children= dccGraph(id='tsne-3d-plot-custom', figure=defaultPlot ), style=l.(display='none'))
+    ,
     htmlDiv(l.(htmlDiv(id='KL-div',style=l.(display='none') )
                ,
                htmlDiv(id='end-time', style=l.(display='none'))
                , 
                htmlDiv(id='error-message', style=l.(display='none'))
-               ,
-               dccGraph(id='tsne-3d-plot', figure=defaultPlot, style=l.(height='80vh', width='80vh', float='left'))
                
-    ), id='plot-div')
+               
+    ), id='plot-div', style=l.(display='none'))
+    ,
+    htmlDiv(id='custom-container', children="", style=l.(display='none'))
     
-  ), style=l.( 'margin-top'='140px'))
+  ))
+  
+  
   #(The main Graph)
-  ,
-  htmlDiv(children="", id='custom-container')
-  ,
-  htmlDiv(style=l.(height='35vh'))
-  ,
-  htmlFooter(readme)
+ 
   
-  
-  
+  # ,
+  # htmlFooter(readme)
+
   
 )
 ,
-style=l.(width='90%', 'max-width'='none', 'font-size'='1.5rem', padding='10px 30px') )
+style=l.('max-width'='100%', 'font-size'='1.5rem', padding='0px 0px') )
 )
 ################################################################LAYOUT DONE################################################
 #
@@ -379,7 +399,7 @@ Card(kids=l.(
   ),
   htmlDiv(id='div-plot-click-image')
   ,
-  htmlDiv(id='div-plot-click-wordemb')
+  htmlDiv(id='div-plot-click-wordemb', className='three columns', style=l.(width='30vh', height='30vh'))
 ))
 )
 ############################################demo PANEL ends
@@ -399,9 +419,9 @@ app$callback(
       return(demoPanel)
     } else {
       return(l.(Card(l.(
-        htmlDiv(id='data-df-and-message', style=l.(display='none'))
+        htmlDiv(id='data-df-and-message', children = '', style=l.(display='none'))
         ,
-        htmlDiv(id='label-df-and-message', style=l.(display='none'))
+        htmlDiv(id='label-df-and-message', children = '', style=l.(display='none'))
         ,
         input_field('Number of Iterations:', "n-iter-state", 400, 1000, 250)
         ,
@@ -496,10 +516,32 @@ app$callback(
   }
   
 )
-###############################################################CALLBACK for the local/custom mode ends here################
-#
-#
-#
+app$callback(
+  output = l.(id='demo-graph', property='style'),
+  params = l.(input(id='dropdown-mode-choice', property='value')),
+  function(value){
+    if(value=='demo'){
+      return(l.())
+      
+    } else{
+      return(l.(display='none'))
+    }
+  }
+  )
+app$callback(
+  output = l.(id='custom-graph', property='style'),
+  params = l.(input(id='dropdown-mode-choice', property='value')),
+  function(value){
+    if(value=='custom'){
+      return(l.())
+      
+    } else{
+      return(l.(display='none'))
+    }
+  }
+)
+
+
 ## Global varlable for the data storage required.
 #
 #
@@ -538,7 +580,7 @@ app$callback(
   ,
   function(dataset){
     if(is.element(dataset, WORD_EMBEDDINGS)){
-      return(NULL)
+      return(l.(width='30vh', display='block'))
     } else {
       return(l.(display='none'))
     }
@@ -779,13 +821,12 @@ app$callback(
 
       if(dataset=='cifar_gray_3000'){ imageMtx <- matrix(imageVec, nrow=32)} else {imageMtx <- matrix(imageVec, nrow=28)}
       DIGIT <- writePNG(imageMtx)
-      DIGIT_B64 <- base64_enc(DIGIT)
-      I <- diag(x=1, nrow=28, ncol=28) 
-      I <- writePNG(I)
-      return(htmlImg(src =  glue('data:image/png;base64,', DIGIT_B64), style =  l.(display='block', margin='auto')))
+      DIGIT_B64 <- base64encode(DIGIT)
+      
+      return(htmlImg(src =  glue('data:image/png;base64, ', DIGIT_B64), style =  l.(height='25vh', display='block', margin='auto')))
     
     } else{
-    return(htmlImg(src =  glue('data:image/png;base64,', base64_enc(I)), style =  l.(display='block', margin='auto')))
+    return(l.())
     }
   }
 
@@ -1086,7 +1127,7 @@ app$callback(
   }
 )
 app$callback(
-  output = l.(id='tsne-3d-plot', property='figure')
+  output = l.(id='tsne-3d-plot-custom', property='figure')
   ,
   params =  l.(
     input(id='custom-container', property='children')
