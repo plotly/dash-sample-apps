@@ -69,13 +69,13 @@ getLogo <- function() {
     htmlDiv(list(
       (htmlImg(src = 'assets/Logo.png', height='100', width='131')
       )), className = 'ten columns padded'),
-
+    
     
     htmlDiv(list(htmlA( href = "/dashr-financial-report/fullversion",
-      htmlButton(list("Full Version"), className = "redbutton"
-      )))),
+                        htmlButton(list("Full Version"), className = "redbutton"
+                        )))),
     
-    htmlDiv(list(htmlA( href = 'https://github.com/plotly/dash-vanguard-report',
+    htmlDiv(list(htmlA( href = 'https://github.com/plotly/dash-financial-report',
                         htmlButton(list("Learn More"), className = "learnbutton"
                         )))),
     
@@ -84,7 +84,7 @@ getLogo <- function() {
               height='50', width='110'),
       href='https://plot.ly/products/dash/', className = 'logo')))
     
-
+    
   ), className = 'row')
   return(logo)
 }
@@ -96,7 +96,7 @@ getHeader <- function() {
       htmlP(
         'Calibre Financial Index Fund Investor Shares')
     ),
-     className = 'maintitle')
+    className = 'maintitle')
   ))
   return(header)
 }
