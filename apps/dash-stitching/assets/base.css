@@ -193,12 +193,13 @@ label {
 .result {
   margin-top: 5%;
   margin-bottom: 5%;
+  
 }
 
 .tabs {
-  width: 550px;
+  max-width: 550px;
+  width: 100%;
   font-family: 'Geneva';
-  height: 200%;
 }
 
 
@@ -337,58 +338,58 @@ input[type="button"].button-primary:focus {
 
 
 
- #tabs-content-example>div>button:nth-child(2)>svg {
-   height: 35px;
-   padding: 0 9px;
-   margin-top: 3px;
-   ;
- }
+#tabs-content-example>div>button:nth-child(2)>svg {
+  height: 35px;
+  padding: 0 9px;
+  margin-top: 3px;
+  ;
+}
 
- #tabs-content-example>div>button:nth-child(3)>svg {
-   height: 35px;
-   padding: 0 9px;
-   margin-top: 3px;
- }
+#tabs-content-example>div>button:nth-child(3)>svg {
+  height: 35px;
+  padding: 0 9px;
+  margin-top: 3px;
+}
 
- #tabs-content-example>div>button:nth-child(4)>svg {
-   height: 40px;
-   margin-top: 4px;
- }
+#tabs-content-example>div>button:nth-child(4)>svg {
+  height: 40px;
+  margin-top: 4px;
+}
 
- #tabs-content-example>div>button:nth-child(5)>svg {
-   margin-top: 4px;
- }
+#tabs-content-example>div>button:nth-child(5)>svg {
+  margin-top: 4px;
+}
 
- #tabs-content-example>div>button:nth-child(7)>svg {
-   margin-top: 4px;
- }
+#tabs-content-example>div>button:nth-child(7)>svg {
+  margin-top: 4px;
+}
 
- #tabs-content-example>div>button:nth-child(8)>svg {
-   margin-top: 4px;
- }
+#tabs-content-example>div>button:nth-child(8)>svg {
+  margin-top: 4px;
+}
 
- #tabs-content-example>div>button:nth-child(9) {
-   margin-right: 20%;
-   height: 38px;
-   width: 200px;
-   padding: 0;
-   color: #FBFFFF !important;
-   text-align: center;
-   font-size: 11px;
-   font-family: 'Geneva';
-   font-weight: 200;
-   line-height: 38px;
-   letter-spacing: .1rem;
-   text-transform: uppercase;
-   text-decoration: none;
-   white-space: nowrap;
-   background-color: #4181FF;
-   border-radius: 30px;
-   border: 1px solid;
-   cursor: pointer;
-   box-sizing: border-box;
-   
- }
+#tabs-content-example>div>button:nth-child(9) {
+  margin-right: 20%;
+  height: 38px;
+  width: 200px;
+  padding: 0;
+  color: #FBFFFF !important;
+  text-align: center;
+  font-size: 11px;
+  font-family: 'Geneva';
+  font-weight: 200;
+  line-height: 38px;
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: #4181FF;
+  border-radius: 30px;
+  border: 1px solid;
+  cursor: pointer;
+  box-sizing: border-box;
+  
+}
 
 
 
@@ -577,6 +578,9 @@ there.
 
 /* Larger than phablet (also point when grid becomes active) */
 @media (max-width: 550px) {
+
+
+
     
 }
 
@@ -589,7 +593,7 @@ there.
 /* Larger than desktop */
 @media (max-width: 1000px) {
   .instruction {
-    width: 141vh;
+    width: 100vw;
     height: 150vh;
     text-align: center;
   }
@@ -712,6 +716,39 @@ there.
     text-align: center;
   }
 
+  #tabs-content-example>div {
+    /* width: 130vh; */
+    text-align: left;
+    margin: 0 auto;
+
+  }
+
+  .tabs {
+    width: 100%;
+    margin: auto;
+    font-family: 'Geneva';
+    text-align: center;
+  }
+  
+  .result {
+    width: 100vw;
+    margin: 0 auto;
+  }
+
+  #tabs-content-example>div>div{
+    width:375px !important;
+  }
+  .lower-canvas{
+    width:375px !important;
+  }
+  .upper-canvas{
+    width:375px !important;
+  }
+  .canvas-container{
+    width:375px !important;
+  }
+ 
+
 
 }
 /* Larger than Desktop HD */
@@ -719,3 +756,4 @@ there.
   
   
 }
+

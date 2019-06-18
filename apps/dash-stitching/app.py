@@ -101,7 +101,6 @@ app.config.suppress_callback_exceptions = True
 
 
 app.layout = html.Div(
-    style={"height": "100%"},
     children=[
     html.Div([
         html.H1(
@@ -246,7 +245,7 @@ app.layout = html.Div(
     ], 
     className="eight columns result"),
    
-])
+], className="row twelve columns")
 
 
 @app.callback(Output('tabs-content-example', 'children'),
@@ -282,7 +281,7 @@ def fill_tab(tab):
                            max=1,
                            step=0.02,
                            value=0.5)],
-                     style={'width': '40%'}),
+                           style={'width': '40%'}),
             html.Div([
                 html.Label('Brightness'),
                 dcc.Slider(id='brightness-stitch',
