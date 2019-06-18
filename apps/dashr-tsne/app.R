@@ -1,5 +1,3 @@
-
-
 library(dplyr)
 library(dash)
 library(dashCoreComponents)
@@ -46,10 +44,11 @@ Dash abstracts away all of the technologies and protocols required to build an i
 
 For an introductory and extensive explanation of t-SNE how to use it properly, please check out the [demo app](https://dash-tsne.plot.ly/).
 ")
-  #,
-  #htmlImg(id='gif1', src='assets/animated1.gif')
   ,
-  
+  htmlImg(id='gif1', src='assets/animated1.gif')
+  ,
+  htmlImg(id='gif2', src='assets/animated2.gif')
+  ,
   dccMarkdown("
 ## Getting Started
 ### Using the demo
@@ -119,7 +118,17 @@ See also the list of [contributors](https://github.com/plotly/dash-svm/contribut
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
+
+##Screenshots
 ")
+  ,
+  htmlImg(id='png1', src='assets/demo_image1.png')
+  ,
+  htmlImg(id='png2', src='assets/fashion_mnist_example.png')
+  ,
+  htmlImg(id='png3', src='assets/screenshot1.png')
+  ,
+  htmlImg(id='png4', src='assets/screenshot2.png')
   
   
 ))
