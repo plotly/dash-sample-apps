@@ -2,3 +2,5 @@ dash
 requests
 pandas
 flask
+gunicorn
+fcntl
