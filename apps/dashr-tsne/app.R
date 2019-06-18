@@ -1,3 +1,5 @@
+
+
 library(dplyr)
 library(dashR)
 library(dashCoreComponents)
@@ -18,6 +20,15 @@ library(Rtsne)
 library(stringr)
 library(jsonlite)
 library(tictoc)
+
+appName <- Sys.getenv("DASH_APP_NAME")
+pathPrefix <- sprintf("/%s/", appName)
+
+
+Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+setwd(sprintf("/app/apps/%s", appName))
+
 l. <- cmpfun(list)
 
 IMAGE_DATASETS <- c("mnist_3000", "cifar_gray_3000", "fashion_3000")
@@ -1148,5 +1159,7 @@ app$callback(
 
 
 
-app$run_server(port="8893")
+#app$run_server(port="8893")
+
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 
