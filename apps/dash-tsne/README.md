@@ -79,6 +79,7 @@ See also the list of [contributors](https://github.com/plotly/dash-svm/contribut
 ## Screenshots
 
 The following are screenshots for the demo app:
+![animated](screenshots/dash-tsne-demo-1.gif)
 
 ![screenshot](screenshots/demo_screenshot_mnist.png)
 
