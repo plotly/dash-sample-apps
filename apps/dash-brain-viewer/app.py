@@ -178,7 +178,7 @@ app.layout = html.Div(
                                 html.A(
                                     children="GitHub.",
                                     target="_blank",
-                                    href="https://github.com/plotly/dash-brain-surface-viewer",
+                                    href=GITHUB_LINK,
                                     className="red-ish",
                                 ),
                             ]
@@ -195,7 +195,6 @@ app.layout = html.Div(
                             ]
                         ),
                     ],
-                    className="small-text",
                 ),
             ],
             className="one-third column app__right__section",
@@ -305,7 +304,6 @@ def brain_graph_handler(click_data, val, colorscale, figure, current_anno):
         else:
 
             # iterate through the store annotations and save it into figure data
-            # TODO: improve performance
             if current_anno is not None:
                 for index, annotations in enumerate(
                     figure["layout"]["scene"]["annotations"]
