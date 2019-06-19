@@ -1,45 +1,54 @@
-# dash-web-trader
+# Dash Web Trader
 This is a demo of the Dash interactive Python framework developed by [Plotly](https://plot.ly/).
+                            
+This app continually queries csv files and updates Ask and Bid prices for major currency 
+pairs as well as Stock Charts. You can also virtually buy and sell stocks and see the 
+profit updates.
 
-Dash abstracts away all of the technologies and protocols required to build an interactive web-based application and is a simple and effective way to bind a user interface around your Python code. To learn more check out our [documentation](https://plot.ly/dash).
+## How to run this app
 
-Try out the [demo app here](https://dash-gallery.plotly.host/dash-web-trader).
+(The following instructions apply to Windows command line.)
 
-![animated1](images/dash-web-trader2.gif)
-
-## Getting Started
-
-### Using the demo
-This demo lets you explore historical forex major pairs ticks data from Pepperstone. 
-
-The left panel displays ask and bid prices for each pair by reading the dataset on interval updates. If you click on the row, you see that you can also add charts or buy/sell pairs.
-
-You can also visualize market prices with candlesticks, line, OHLC bars and make some studies on it with the selected period in the dropdown.
-You can choose these options in the graph div menu by clicking on ☰ .
-
-Finally, top news articles from BBC are displayed on the left and updated on interval updates, using https://newsapi.org/ 
-
-### Running the app locally
-
-First create a virtual environment with conda or venv inside a temp folder, then activate it.
+To run this app first clone repository and then open a terminal to the app folder.
 
 ```
-virtualenv dash-web-trader-venv
-
-# Windows
-dash-web-trader-venv\Scripts\activate
-# Or Linux
-source venv/bin/activate
+git clone https://github.com/plotly/dash-sample-apps.git
+cd dash-sample-apps/apps/dash-web-trader
 ```
 
-Clone the git repo, then install the requirements with pip
+Create and activate a new virtual environment (recommended) by running
+the following:
+
+On Windows
+
 ```
-git clone https://github.com/amadoukane96/dash-web-trader.git
-cd dash-web-trader
+virtualenv venv 
+\venv\scripts\activate
+```
+
+Or if using linux
+
+```bash
+python3 -m venv myvenv
+source myvenv/bin/activate
+```
+
+Install the requirements:
+
+```
 pip install -r requirements.txt
 ```
+Run the app:
 
-Run the app
 ```
 python app.py
 ```
+You can run the app on your browser at http://127.0.0.1:8050
+
+## Screenshots
+
+![demo.png](demo.png)
+
+## Resources
+
+To learn more about Dash, please visit [documentation](https://plot.ly/dash).

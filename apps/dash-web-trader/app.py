@@ -77,14 +77,6 @@ def update_news():
     )
 
 
-# Returns row of given index for given currency pair dataset
-# For modal returns ten previous rows
-def get_ask_bid(currency_pair, index, modal=False):
-    if modal == False:
-        return currency_pair_data[currency_pair].iloc[index]
-    return currency_pair_data[currency_pair].iloc[index - 10 : index]
-
-
 # returns dataset row with nearest datetime to current time
 def first_ask_bid(currency_pair, t):
     t = t.replace(year=2016, month=1, day=5)
@@ -183,7 +175,7 @@ def get_color(a, b):
 def replace_row(currency_pair, index, bid, ask):
     index = index + 1  # index of new data row
     new_row = (
-        get_ask_bid(currency_pair, index)
+        currency_pair_data[currency_pair].iloc[index]
         if index != len(currency_pair_data[currency_pair])
         else first_ask_bid(currency_pair, datetime.datetime.now())
     )  # if not the end of the dataset we retrieve next dataset row
@@ -427,13 +419,13 @@ def candlestick_trace(df):
 
 # For buy/sell modal
 def ask_modal_trace(currency_pair, index):
-    df = get_ask_bid(currency_pair, index, True)  # returns ten rows
+    df = currency_pair_data[currency_pair].iloc[index - 10 : index]  # returns ten rows
     return go.Scatter(x=df.index, y=df["Ask"], mode="lines", showlegend=False)
 
 
 # For buy/sell modal
 def bid_modal_trace(currency_pair, index):
-    df = get_ask_bid(currency_pair, index, True)  # returns ten rows
+    df = currency_pair_data[currency_pair].iloc[index - 10 : index]  # returns ten rows
     return go.Scatter(x=df.index, y=df["Bid"], mode="lines", showlegend=False)
 
 
@@ -518,6 +510,7 @@ def get_fig(currency_pair, ask, bid, type_trace, studies, period):
 def chart_div(pair):
     return html.Div(
         id=pair + "graph_div",
+        className="display-none",
         children=[
             # Menu for Currency Graph
             html.Div(
@@ -651,7 +644,6 @@ def chart_div(pair):
                 )
             ),
         ],
-        style={"display": "none"},
     )
 
 
@@ -857,11 +849,7 @@ app.layout = html.Div(
                             ],
                             style={"float": "right"},
                         ),
-                        html.Div(
-                            id="bottom_content",
-                            className="row table-orders",
-                            children=[html.Table(id="orders_table")],
-                        ),
+                        html.Div(id="orders_table", className="row table-orders"),
                     ],
                 ),
             ],
@@ -1142,73 +1130,36 @@ def generate_update_orders_div_callback():
     return update_orders_callback
 
 
-# Callback to determine if currency pair chart is hidden or shown
-def generate_show_hide_graph_div_callback(pair):
-    def show_hide_graph_callback(charts_clicked):
-        if charts_clicked is None:
-            return {"display": "none"}
-
-        charts_clicked = charts_clicked.split(",")[
-            :4
-        ]  # only allow to display four charts
-        len_list = len(charts_clicked)
-
-        for i in range(len_list):
-            if charts_clicked[i] == pair:
-                style = {
-                    "position": "relative",
-                    "float": "left",
-                    "paddingRight": "12px",
-                    "marginLeft": "0px",
-                }
-
-                style["height"] = "50%" if len_list == 4 else "100%"
-
-                return style
-
-        return {"display": "none"}
-
-    return show_hide_graph_callback
-
-
 # Resize pair div according to the number of charts displayed
-def generate_size_graph_div_callback(pair):
-    def size_graph_div_callback(charts_clicked):
-        if charts_clicked is None:
-            return ""
+def generate_show_hide_graph_div_callback(pair):
+    def show_graph_div_callback(charts_clicked):
+        if pair not in charts_clicked:
+            return "display-none"
 
         charts_clicked = charts_clicked.split(",")  # [:4] max of 4 graph
         len_list = len(charts_clicked)
-        if pair not in charts_clicked:
-            return ""
 
-        width = (
-            "six columns"
-            if len_list % 2 == 0
-            else "twelve columns"
-            if len_list == 1
-            else "four columns"
-        )
-        return width
+        classes = "chart-style"
+        if len_list % 2 == 0:
+            classes = classes + " six columns"
+        elif len_list == 3:
+            classes = classes + " four columns"
+        else:
+            classes = classes + " twelve columns"
+        return classes
 
-    return size_graph_div_callback
+    return show_graph_div_callback
 
 
 app.config.supress_callback_exceptions = True
 
-
 # Loop through all currencies
 for pair in currencies:
 
-    # Callback for style of div for graphs
-    app.callback(
-        Output(pair + "graph_div", "style"), [Input("charts_clicked", "children")]
-    )(generate_show_hide_graph_div_callback(pair))
-
-    # Callback for class of div for graphs
+    # Callback for className of div for graphs
     app.callback(
         Output(pair + "graph_div", "className"), [Input("charts_clicked", "children")]
-    )(generate_size_graph_div_callback(pair))
+    )(generate_show_hide_graph_div_callback(pair))
 
     # Callback to update the actual graph
     app.callback(
@@ -1354,7 +1305,13 @@ def update_order_table(orders, position):
 
     # If there are no orders
     if orders is None or orders is "[]":
-        return html.Tr(children=[html.Th(title) for title in headers])
+        return [
+            html.Table(html.Tr(children=[html.Th(title) for title in headers])),
+            html.Div(
+                className="text-center table-orders-empty",
+                children=[html.P("No " + position + " positions data row")],
+            ),
+        ]
 
     rows = []
     list_order = json.loads(orders)
@@ -1369,7 +1326,7 @@ def update_order_table(orders, position):
         else:
             rows.append(html.Tr(className="no-profit", children=tr_childs))
 
-    return [html.Tr([html.Th(title) for title in headers])] + rows
+    return html.Table(children=[html.Tr([html.Th(title) for title in headers])] + rows)
 
 
 # Update Options in dropdown for Open and Close positions
