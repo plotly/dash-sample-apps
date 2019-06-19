@@ -861,7 +861,7 @@ app$callback(
       
       
       if(dataset=='cifar_gray_3000'){ imageMtx <- matrix(imageVec, nrow=32)} else {imageMtx <- matrix(imageVec, nrow=28)}
-      DIGIT <- writePNG(imageMtx)
+      DIGIT <- writePNG(t(imageMtx))
       DIGIT_B64 <- base64encode(DIGIT)
       
       return(htmlImg(src =  glue('data:image/png;base64, ', DIGIT_B64), style =  l.(height='25vh', display='block', margin='auto')))
