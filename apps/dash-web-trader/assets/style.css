@@ -405,6 +405,10 @@ body{
   overflow-x: auto;
 }
 
+.table-orders-empty{
+  padding: 24px;
+}
+
 tr{
   padding: 12px;
 }
@@ -489,6 +493,25 @@ th{
 
 .title-header{
   display: none;
+}
+
+.display-none{
+  display: none;
+}
+
+.chart-style{
+  position: relative;
+  float: left;
+  padding-right: 12px;
+  margin-left: 0px;
+}
+
+.height-50{
+  height: 50%;
+}
+
+.height-100{
+  height: 100%;
 }
 
 .p-top-bar{
@@ -776,7 +799,10 @@ summary::-webkit-details-marker {
     width: 33%;
     text-align: center;
   }
-  
+
+  .div-info{
+    padding: 64px;
+  }
 }
 
 ._dash-undo-redo {
