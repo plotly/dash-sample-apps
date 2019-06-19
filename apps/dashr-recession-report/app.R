@@ -552,7 +552,7 @@ Interested in what you see?
         containerProps = list("style" = list("maxWidth" = "650px"))),
     htmlDiv(
       dccSyntaxHighlighter(
-        readChar("RecessionReport.R", file.info("RecessionReport.R")$size),
+        readChar("app.R", file.info("app.R")$size),
         language = "R"),
       className = "container",
       style = list("maxWidth" = "650px", "borderLeft" = "thin solid lightgrey")
