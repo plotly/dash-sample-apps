@@ -20,7 +20,7 @@ app.layout = html.Div(
             children = [
                 html.Span("CRM App using Salesforce API", className='app-title'),
 
-                html.Img(src='https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png',height="100%")
+                html.Img(src='static/Dash Financial.svg',height="100%")
             ],
         ),
 
