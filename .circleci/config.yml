@@ -93,6 +93,8 @@ jobs:
             APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }' | sort -u)
             for APP in $APPS_MODIFIED
             do
+              git config --global user.email '<>' # Leave email blank
+              git config --global user.name "Circle MonoRepo Automatic Deployer"
               echo $PLOTLY_GA_CODE > ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js
               git add ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js && git commit -m "Deployed commit: $CIRCLE_SHA1"
               git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
