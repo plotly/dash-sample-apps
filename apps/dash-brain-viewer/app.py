@@ -194,7 +194,7 @@ app.layout = html.Div(
                                 ),
                             ]
                         ),
-                    ],
+                    ]
                 ),
             ],
             className="one-third column app__right__section",
@@ -275,6 +275,8 @@ def brain_graph_handler(click_data, val, colorscale, figure, current_anno):
     if figure["data"][0]["name"] != val:
         figure["data"] = create_mesh_data(val)
         figure["layout"] = plot_layout
+        cs = [[i / (len(colorscale) - 1), rgb] for i, rgb in enumerate(colorscale)]
+        figure["data"][0]["colorscale"] = cs
         return figure
 
     # modify graph markers
