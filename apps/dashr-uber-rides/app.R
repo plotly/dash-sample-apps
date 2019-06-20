@@ -503,13 +503,13 @@ app$callback(output = list(id = "total-rides", property = "children"),
 
     return (
       htmlDiv(children = list(
-      htmlP(paste("# Total Rides: ",
+      htmlP(paste("Total Rides: ",
                   as.character(nrow(dfDay)), sep = ""),
             className = "totalsP"),
-      htmlP(paste("# Total Selected Rides: ",
+      htmlP(paste("Total Selected Rides: ",
                   as.character(nrow(dfDayHours)), sep = ""),
             className = "totalsP"),
-      htmlP(paste("# Selected Intervals: ",
+      htmlP(paste("Selected Intervals: ",
                   as.character(length(unique(dfDayHours$rideHourNum)))
                   , sep = ""),
             className = "totalsP")
