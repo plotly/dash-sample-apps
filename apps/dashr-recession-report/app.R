@@ -409,7 +409,7 @@ But so are some high-paying sectors, such as **consulting**,
         skip_labels = c(
           "Full-service restaurants",
           "Engineering and drafting services",
-          "Beer, wine and liquor stores",
+          "Gasoline stations",
           "Supermarkets and other grocery stores",
           "Used merchandise stores"
         )
@@ -457,8 +457,9 @@ health care has added.",
         show_only = c(
           "General contractors for new homes",
           "Land subdivision",
-          "Furniture stores",
-          "Residential remodelers",
+          "For-sale home builders",
+          "Building finishing contractors (drywall, painting)",
+          "Interior design services",
           "Architectural services",
           "Wood product manufacturing",
           "For"
@@ -480,8 +481,7 @@ Many of these industries have average salaries above $70,000.",
         as.character(unlist(
           select(filter(dfJobs, alternacategory == "oil"), "cescode"))),
         skip_labels = c(
-          "Oil and gas pipeline construction",
-          "Natural gas distribution"
+          "Petroleum and coal product manufacturing"
         )
       ), id = "oil", style = list("height" = "90vh")),
     dccMarkdown(
@@ -501,7 +501,8 @@ fastest-growing industry, tripling in employment in 10 years.",
           select(filter(dfJobs, alternacategory == "media"), "cescode"))),
         skip_labels = c(
           "Video and photography services",
-          "Radio, television, cable and other broadcasting"
+          "Book publishers (and those that also publish e-books)",
+          "Data processing, web hosting and related services"
         )
       ), id = "media", style = list("height" = "90vh")),
     dccMarkdown(
@@ -518,7 +519,7 @@ were closely rivaled by pet boarding, grooming and training.",
         as.character(unlist(
           select(filter(dfJobs, alternacategory == "booming"), "cescode"))),
         skip_labels = c(
-          "Pharmacies and drug stores"
+          "Barber shops and beauty salons"
         )
       ), id = "booming", style = list("height" = "90vh")),
     dccMarkdown(
@@ -531,7 +532,7 @@ the dropdown below.",
     htmlDiv(
       dccDropdown(
         options = options,
-        value = list("Florists", "Bookstores and news dealers"),
+        value = list("Florists", "Full-service restaurants"),
         multi = TRUE,
         id = "category-filter"
       ), className = "container", style = list("maxWidth" = "650px")),
