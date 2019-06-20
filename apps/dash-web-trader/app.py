@@ -25,10 +25,10 @@ app = dash.Dash(
 
 # Loading historical tick data
 currency_pair_data = {
-    "EURUSD": pd.read_csv("pairs/EURUSD.csv", index_col=1, parse_dates=["Date"]),
-    "USDJPY": pd.read_csv("pairs/USDJPY.csv", index_col=1, parse_dates=["Date"]),
-    "GBPUSD": pd.read_csv("pairs/GBPUSD.csv", index_col=1, parse_dates=["Date"]),
-    "USDCHF": pd.read_csv("pairs/USDCHF.csv", index_col=1, parse_dates=["Date"]),
+    "EURUSD": pd.read_csv("data/EURUSD.csv", index_col=1, parse_dates=["Date"]),
+    "USDJPY": pd.read_csv("data/USDJPY.csv", index_col=1, parse_dates=["Date"]),
+    "GBPUSD": pd.read_csv("data/GBPUSD.csv", index_col=1, parse_dates=["Date"]),
+    "USDCHF": pd.read_csv("data/USDCHF.csv", index_col=1, parse_dates=["Date"]),
 }
 
 # Currency pairs
@@ -1428,4 +1428,4 @@ def update_news_div(n):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, threaded=True)
+    app.run_server(debug=True)
