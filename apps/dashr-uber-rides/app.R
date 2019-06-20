@@ -414,7 +414,7 @@ app$callback(output = list(id = "histogram", property = "figure"),
                    color = colorMap),
                type = "bar") %>% layout(
                   title = list(
-                    text = paste("Hold click and create rectangle  ",
+                    text = paste("Hold click and create rectangle ",
                     "to section data by time", sep = ""),
                     x = 0.02,
                     y = 0.9,
