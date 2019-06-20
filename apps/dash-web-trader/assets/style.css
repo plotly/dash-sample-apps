@@ -398,6 +398,11 @@ body{
   border: 1px solid #55575D;
 }
 
+.table-news tr:hover{
+  background-color: #292B33;
+  cursor: pointer;
+}
+
 .table-orders{
   width: 100%;
   background-color: #22252b;
@@ -497,6 +502,10 @@ th{
 
 .display-none{
   display: none;
+}
+
+.display-block{
+  display:block;
 }
 
 .chart-style{
@@ -753,8 +762,19 @@ summary {
   
 }
 
-details[open],
-details[open] summary {
+.summary{
+  font-weight: bold;
+  padding: .5em;
+}
+
+.summary:hover, .summary-open{
+  background-color: #292B33;
+  font-weight: bold;
+  padding: .5em;
+  cursor: pointer;
+}
+
+.details{
   background-color: #292B33;
   padding-top: 16px;
   padding-bottom: 16px;

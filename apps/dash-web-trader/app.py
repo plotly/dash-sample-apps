@@ -92,10 +92,14 @@ def first_ask_bid(currency_pair, t):
 def get_row(data):
     index = data[1]
     current_row = data[0]
-    return html.Details(
+
+    return html.Div(
         children=[
-            html.Summary(
-                className="row",
+            # Summary
+            html.Div(
+                id=current_row[0] + "summary",
+                className="row summary",
+                n_clicks=0,
                 children=[
                     html.Div(
                         id=current_row[0] + "row",
@@ -126,8 +130,10 @@ def get_row(data):
                     )
                 ],
             ),
+            # Contents
             html.Div(
-                className="row",
+                id=current_row[0] + "contents",
+                className="row details",
                 children=[
                     # Button for buy/sell modal
                     html.Div(
@@ -155,9 +161,7 @@ def get_row(data):
                     ),
                 ],
             ),
-        ],
-        id=current_row[0] + "row_div",
-        n_clicks=0,
+        ]
     )
 
 
@@ -1151,10 +1155,28 @@ def generate_show_hide_graph_div_callback(pair):
     return show_graph_div_callback
 
 
+# Generate Buy/Sell and Chart Buttons for Left Panel
+def generate_contents_for_left_panel():
+    def show_contents(n_clicks):
+        if n_clicks is None:
+            return "display-none", "row summary"
+        elif n_clicks % 2 == 0:
+            return "display-none", "row summary"
+        return "row details", "row summary-open"
+
+    return show_contents
+
+
 app.config.supress_callback_exceptions = True
 
 # Loop through all currencies
 for pair in currencies:
+
+    # Callback for Buy/Sell and Chart Buttons for Left Panel
+    app.callback(
+        [Output(pair + "contents", "className"), Output(pair + "summary", "className")],
+        [Input(pair + "summary", "n_clicks")],
+    )(generate_contents_for_left_panel())
 
     # Callback for className of div for graphs
     app.callback(
@@ -1282,7 +1304,7 @@ app.callback(
     [State("orders", "children")],
 )(generate_update_orders_div_callback())
 
-# Orders Table
+# Callback to update Orders Table
 @app.callback(
     Output("orders_table", "children"),
     [Input("orders", "children"), Input("dropdown_positions", "value")],
@@ -1347,7 +1369,7 @@ def update_positions_dropdown(orders):
     ]
 
 
-# Updates close orders dropdown options
+# Callback to close orders from dropdown options
 @app.callback(Output("closable_orders", "options"), [Input("orders", "children")])
 def update_close_dropdown(orders):
     options = []
@@ -1393,11 +1415,13 @@ def update_top_bar(orders):
     return get_top_bar(balance, equity, margin, free_margin, margin_level, open_pl)
 
 
+# Callback to update live clock
 @app.callback(Output("live_clock", "children"), [Input("interval", "n_intervals")])
 def update_time(n):
     return datetime.datetime.now().strftime("%H:%M:%S")
 
 
+# Callback to update news
 @app.callback(Output("news", "children"), [Input("i_news", "n_intervals")])
 def update_news_div(n):
     return update_news()
