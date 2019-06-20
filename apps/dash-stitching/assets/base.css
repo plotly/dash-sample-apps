@@ -426,19 +426,25 @@ input[type="button"].button-primary:focus {
 }
 
 
-  #stitching-result {
-    margin-left: -35px;
-    text-align: left;
-    
-  }
+#stitching-result {
+  margin-left: -35px;
+  text-align: left;
+  
+}
 
-  #bla {
-    margin-left: -35px;
-  }
+#bla {
+  margin-left: -35px;
+}
 
-  .result_slider {
-    width: 70%;
-  }
+.result_slider {
+  width: 70%;
+}
+
+.upload_zone {
+  font-family: 'Geneva';
+  width: 80%;
+  margin-top: 15px;
+}
 
 
 /* Forms
@@ -628,7 +634,7 @@ there.
 @media (max-width: 550px) {
     .instruction {
     width: 100vw;
-    height: 150vh;
+    height: 140vh;
     text-align: center;
   }
 
@@ -666,7 +672,7 @@ there.
   input[type="reset"],
   input[type="button"] {
     height: 38px;
-    width: 155px;
+    width: 145px;
     padding: 0;
     color: #FBFFFF;
     text-align: center;
@@ -745,9 +751,9 @@ there.
 
 
   .radio_items {
-    margin: 20px auto;
+    margin: 0 auto;
     text-align: center;
-    width: 350px;
+    width: 100;
   }
 
   .shift_table {
@@ -813,8 +819,25 @@ there.
   #_dash-app-content>div>div.four.columns.instruction>label {
     margin: 0 auto;
   }
-    
+
+  #contrast-stitch>div {
+    width: 250px;
+    margin: 0 auto;
+  }
+
+  
+  #brightness-stitch>div {
+    width: 250px;
+    margin: 0 auto;
+  }
+
+  .upload_zone {
+    width: 100vw;
+  }
+
+
 }
+
 
 /* Larger than tablet */
 @media (max-width: 750px) {

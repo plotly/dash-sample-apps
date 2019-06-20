@@ -233,11 +233,7 @@ app.layout = html.Div(
         
         html.Div(
             image_upload_zone('upload-stitch', multiple=True, width='100px'),
-            style={
-                'font-family': 'Geneva',
-                'width': '80%',
-                'margin-top': '15px'
-            }
+            className='upload_zone'
         ),
         
 	    html.Div(id='sh_x', hidden=True),
