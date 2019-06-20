@@ -17,13 +17,6 @@
 */
 
 
-/* Custom
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-._dash-undo-redo {
-    display: none;
-  }
-  
-  
   /* Banner
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
   .banner {
@@ -442,10 +435,6 @@ body{
     background-color: #f7f7f7;
 }
 
-body, h1, h2, h3, h4, h5, h6, p{
-    font-family: 'Lato', serif;
-}
-
 .btn{
     color: #FFF;
 }
@@ -473,5 +462,9 @@ body, h1, h2, h3, h4, h5, h6, p{
 .container.scalable {
     width: 90%;
     max-width: none;
+}
+
+._dash-undo-redo {
+  display: none;
 }
 

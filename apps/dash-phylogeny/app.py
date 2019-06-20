@@ -19,7 +19,169 @@ species = ["Avian", "Ebola", "Lassa", "Measles", "Mumps", "Zika"]
 tree_fig = {}
 mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
 
+NA_color = {
+    "Cuba": "rgb(252, 196, 174)",
+    "Dominican Republic": "rgb(201, 32, 32)",
+    "El Salvador": "rgb(253, 202, 181)",
+    "Guadeloupe": "rgb(253, 202, 181)",
+    "Guatemala": "rgb(252, 190, 167)",
+    "Haiti": "rgb(252, 145, 114)",
+    "Honduras": "rgb(239, 66, 49)",
+    "Jamaica": "rgb(252, 185, 161)",
+    "Martinique": "rgb(252, 190, 167)",
+    "Mexico": "rgb(247, 109, 82)",
+    "Nicaragua": "rgb(249, 121, 92)",
+    "Panama": "rgb(252, 185, 161)",
+    "Puerto Rico": "rgb(252, 174, 148)",
+    "Saint Barthelemy": "rgb(253, 202, 181)",
+    "USA": "rgb(188, 20, 26)",
+    "Canada": "rgb(188, 20, 26)",
+    "USVI": "rgb(206, 36, 34)",
+    "Dominica": "rgb(209, 39, 37)",
+    "Trinidad And Tobago": "rgb(201, 19, 51)",
+    "Belize": "rgb(241, 49, 61)",
+    "Grenada": "rgb(222, 32, 38)",
+    "Costa Rica": "rgb(211, 12, 48)",
+    "Bermuda": "rgb(231, 53, 24)",
+}
 
+SAmer_color = {
+    "Brazil": "rgb(21, 127, 59)",  
+    "Colombia": "rgb(153, 213, 149)",
+    "Ecuador": "rgb(208, 237, 202)",
+    "French Guiana": "rgb(211, 238, 205)",
+    "Peru": "rgb(208, 237, 202)",
+    "Suriname": "rgb(206, 236, 200)",
+    "Venezuela": "rgb(202, 234, 196)",
+    "Puerto Rico": "rgb(201, 235, 199)",
+    "Argentina": "rgb(203, 225, 185)",
+    "Bolivia": "rgb(217, 197, 165)",
+    "Paraguay": "rgb(154, 217, 195)",
+    "Chile": "rgb(231, 85, 168)",
+    "Aruba": "rgb(191, 35, 128)",
+}
+
+SAsia_color = {
+    "Singapore": "#0000EE",
+    "Vietnam": "#1E90FF",
+    "Malaysia": "#1E90AF",
+    "Philippines": "#1E90AE",
+    "Thailand": "#1E90AB",
+    "Myanmar": "#1E90AC",
+    "Cambodia": "#1E90AA",
+    "Indonesia": "#1E90AA",
+    "Brunei": "#1E90BA",
+    "Laos": "#1E90BF",
+}
+
+Oceania_color = {
+    "American Samoa": "rgb(209,95,238)",
+    "Fiji": "rgb(238,130, 238)",
+    "French Polynesia": "rgb(148,0,211)",
+    "Tonga": "rgb(238,130, 238)",
+    "Australia": "rgb(233,125, 235)",
+    "Micronesia": "rgb(231,123, 235)",
+    "New Caledonia": "rgb(229,119, 233)",
+    "Marshall Islands": "rgb(227,117, 231)",
+    "Guam": "rgb(267,137, 251)",
+    "Papua New Guinea": "rgb(277,187, 291)",
+    "Solomon Islands": "rgb(22,167, 251)",
+    "Cook Islands": "rgb(20,187, 211)",
+    "Samoa": "rgb(50,127, 221)",
+    "Nauru": "rgb(34, 92, 98)",
+    "Palau": "rgb(214, 132, 238)",
+    "Vanuatu": "rgb(252, 42, 128)",
+    "Niue": "rgb(272, 52, 158)",
+    "New Zealand": "rgb(242, 71, 133)",
+}
+
+China_color = {"China": "rgb(255,185,15"}
+
+JapanKorea_color = {"Japan": "#fcdd04"}
+
+SubsaharanAfrica_color = {
+    "Guinea": "rgb(209,95,238)",
+    "Liberia": "rgb(238,130, 238)",
+    "Sierra Leone": "rgb(148,0,211)",
+    "Cote D Ivoire": "rgb(145,0,209)",
+    "Angola": "rgb(143,0,207)",
+    "Seychelles": "rgb(145,10,217)",
+    "Comoros": "rgb(141,5,203)",
+    "Madagascar": "rgb(233,60, 281)",
+    "Eritrea": "rgb(202, 122, 118)",
+    "Somalia": "rgb(115,51,222)",
+    "Djibouti": "rgb(203,57, 211)",
+    "Burkina Faso": "rgb(141,21,239)",
+    "Ghana": "rgb(102,57,232)",
+    "Tanzania": "rgb(217,37, 291)",
+    "Mozambique": "rgb(213,17, 231)",
+    "Senegal": "rgb(231,133, 219)",
+    "Togo": "rgb(121,21,198)",
+}
+
+Africa_color = {
+    "Sudan": "rgb(209,95,238)",
+    "Gambia": "rgb(238,130, 238)",
+    "Nigeria": "rgb(235,135, 233)",
+    "Mali": "rgb(235,131, 229)",
+    "Senegal": "rgb(231,133, 219)",
+    "Cote D Ivoire": "rgb(145,0,209)",
+    "Burkina Faso": "rgb(141,21,239)",
+    "Seychelles": "rgb(145,10,217)",
+    "Somalia": "rgb(115,51,222)",
+    "Ghana": "rgb(102,57,232)",
+    "Tanzania": "rgb(217,37, 291)",
+    "Mozambique": "rgb(213,17, 231)",
+    "Djibouti": "rgb(203,57, 211)",
+    "Madagascar": "rgb(233,60, 281)",
+    "Comoros": "rgb(141,5,203)",
+    "Togo": "rgb(121,21,198)",
+    "Angola": "rgb(212, 92, 138)",
+    "Eritrea": "rgb(202, 122, 118)",
+    "Guinea": "rgb(209,95,238)",
+    "Sierra Leone": "rgb(148,0,211)",
+    "Liberia": "rgb(238,130, 238)",
+    "Tunisia": "rgb(228,99, 298)",
+    "Cameroon": "rgb(207,78, 199)",
+    "South Africa": "rgb(222,22, 222)",
+    "Congo": "rgb(231,41, 172)",
+    "Algeria": "rgb(237,35, 168)",
+    "Morocco": "rgb(223,27, 165)",
+    "Zambia": "rgb(218,62, 265)",
+    "Kenya": "rgb(118,2, 215)",
+    "Uganda": "rgb(128,35, 265)",
+    "Egypt": "rgb(143,52, 265)",
+    "Ethiopia": "rgb(206,36, 265)",
+    "Niger": "rgb(121,52, 187)",
+    "Mayotte": "rgb(101,32,165)",
+    "Rwanda": "rgb(325,25,144)",
+    "Gabon": "rgb(319,7,197)",
+}
+
+Europe_color = {
+    "France": "rgb(209,95,238)",
+    "Germany": "rgb(238,130, 238)",
+    "Italy": "rgb(238,130, 238)",
+    "United Kingdom": "rgb(238,130, 238)",
+    "Netherlands": "rgb(148,0,211)",
+    "Spain": "rgb(141,7,221)",
+    "Portugal": "rgb(139,11,219)",
+    "Ireland": "rgb(128,15,279)",
+    "Slovakia": "rgb(121,25,209)",
+    "Romania": "rgb(171,45,197)",
+    "Sweden": "rgb(135,96,208)",
+    "Norway": "rgb(138,56,213)",
+    "Slovenia": "rgb(138,45,265)",
+    "Denmark": "rgb(258,25,265)",
+    "Iceland": "rgb(138,7,185)",
+    "Ukraine": "rgb(298,65,265)",
+    "Czech Republic": "rgb(226,96,128)",
+    "Albania": "rgb(111,20,201)",
+    "Greece": "rgb(108,63,265)",
+    "Latvia": "rgb(121,35,299)",
+}
+
+# Give each common ancestor an x cooridnate
 def get_x_coordinates(tree):
     """Associates to  each clade an x-coord.
        returns dict {clade: x-coord}
@@ -58,7 +220,7 @@ def get_y_coordinates(tree, dist=1.3):
         calc_row(tree.root)
     return ycoords
 
-
+# Get each clade a line type for common ancestor (either vertical or horizontal)
 def get_clade_lines(
     orientation="horizontal",
     y_curr=0,
@@ -83,7 +245,7 @@ def get_clade_lines(
 
     return branch_line
 
-
+# Draw tree branches for each clade
 def draw_clade(
     clade,
     x_start,
@@ -130,7 +292,7 @@ def draw_clade(
         for child in clade:
             draw_clade(child, x_curr, line_shapes, x_coords=x_coords, y_coords=y_coords)
 
-
+# Create Title of Graph
 def create_title(virus, nb_genome):
     graph_title = (
         "Phylogeny of "
@@ -151,40 +313,6 @@ def create_map_bubble_year(
     df = df[df["Year"] <= max_date]
     # min_date, max_date = min_max_date(df)
     df.head()
-
-    cases = []
-    colors = [
-        "rgb(231,229,204)",
-        "rgb(255,255,204)",
-        "rgb(255,178,102)",
-        "rgb(255,153,51)",
-        "rgb(204,0,0)",
-        "rgb(189,215,231)",
-        "rgb(107,174,214)",
-        "rgb(33,113,181)",
-        "rgb(255,102,255)",
-        "rgb(189,15,255)",
-        "rgb(121,74,244)",
-        "rgb(133,13,181)",
-        "rgb(239,243,255)",
-        "rgb(189,215,231)",
-        "rgb(107,174,214)",
-        "rgb(33,113,181)",
-    ]
-    months = {
-        1: "Jan",
-        2: "Feb",
-        3: "Mar",
-        4: "Apr",
-        5: "May",
-        6: "Jun",
-        7: "Jul",
-        8: "Aug",
-        9: "Sept",
-        10: "Oct",
-        11: "Nov",
-        12: "Dec",
-    }
 
     if map_choice == 2:
         df_old = df
@@ -309,8 +437,6 @@ def create_curve_line(df, virus_name, min_date, max_date):
     if i < int(max_date):
         marks_data.append(str(max_date))
 
-    year = marks_data
-
     i = 0
     data = []
     for l_country in p_data:
@@ -373,170 +499,6 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
 
     graph_title = create_title(virus_name, nb_genome)
     intermediate_node_color = "rgb(100,100,100)"
-
-    NA_color = {
-        "Cuba": "rgb(252, 196, 174)",
-        "Dominican Republic": "rgb(201, 32, 32)",
-        "El Salvador": "rgb(253, 202, 181)",
-        "Guadeloupe": "rgb(253, 202, 181)",
-        "Guatemala": "rgb(252, 190, 167)",
-        "Haiti": "rgb(252, 145, 114)",
-        "Honduras": "rgb(239, 66, 49)",
-        "Jamaica": "rgb(252, 185, 161)",
-        "Martinique": "rgb(252, 190, 167)",
-        "Mexico": "rgb(247, 109, 82)",
-        "Nicaragua": "rgb(249, 121, 92)",
-        "Panama": "rgb(252, 185, 161)",
-        "Puerto Rico": "rgb(252, 174, 148)",
-        "Saint Barthelemy": "rgb(253, 202, 181)",
-        "USA": "rgb(188, 20, 26)",
-        "Canada": "rgb(188, 20, 26)",
-        "USVI": "rgb(206, 36, 34)",
-        "Dominica": "rgb(209, 39, 37)",
-        "Trinidad And Tobago": "rgb(201, 19, 51)",
-        "Belize": "rgb(241, 49, 61)",
-        "Grenada": "rgb(222, 32, 38)",
-        "Costa Rica": "rgb(211, 12, 48)",
-        "Bermuda": "rgb(231, 53, 24)",
-    }
-
-    SAmer_color = {
-        "Brazil": "rgb(21, 127, 59)",  # from cm.Greens colors 0.2, 0.4, 0.6, 0.8
-        "Colombia": "rgb(153, 213, 149)",
-        "Ecuador": "rgb(208, 237, 202)",
-        "French Guiana": "rgb(211, 238, 205)",
-        "Peru": "rgb(208, 237, 202)",
-        "Suriname": "rgb(206, 236, 200)",
-        "Venezuela": "rgb(202, 234, 196)",
-        "Puerto Rico": "rgb(201, 235, 199)",
-        "Argentina": "rgb(203, 225, 185)",
-        "Bolivia": "rgb(217, 197, 165)",
-        "Paraguay": "rgb(154, 217, 195)",
-        "Chile": "rgb(231, 85, 168)",
-        "Aruba": "rgb(191, 35, 128)",
-    }
-
-    SAsia_color = {
-        "Singapore": "#0000EE",
-        "Vietnam": "#1E90FF",
-        "Malaysia": "#1E90AF",
-        "Philippines": "#1E90AE",
-        "Thailand": "#1E90AB",
-        "Myanmar": "#1E90AC",
-        "Cambodia": "#1E90AA",
-        "Indonesia": "#1E90AA",
-        "Brunei": "#1E90BA",
-        "Laos": "#1E90BF",
-    }
-
-    pl_SAsia = [[0.0, "#1E90FF"], [0.5, "#1E90FF"], [0.5, "#0000EE"], [1.0, "#0000EE"]]
-
-    Oceania_color = {
-        "American Samoa": "rgb(209,95,238)",
-        "Fiji": "rgb(238,130, 238)",
-        "French Polynesia": "rgb(148,0,211)",
-        "Tonga": "rgb(238,130, 238)",
-        "Australia": "rgb(233,125, 235)",
-        "Micronesia": "rgb(231,123, 235)",
-        "New Caledonia": "rgb(229,119, 233)",
-        "Marshall Islands": "rgb(227,117, 231)",
-        "Guam": "rgb(267,137, 251)",
-        "Papua New Guinea": "rgb(277,187, 291)",
-        "Solomon Islands": "rgb(22,167, 251)",
-        "Cook Islands": "rgb(20,187, 211)",
-        "Samoa": "rgb(50,127, 221)",
-        "Nauru": "rgb(34, 92, 98)",
-        "Palau": "rgb(214, 132, 238)",
-        "Vanuatu": "rgb(252, 42, 128)",
-        "Niue": "rgb(272, 52, 158)",
-        "New Zealand": "rgb(242, 71, 133)",
-    }
-
-    China_color = {"China": "rgb(255,185,15"}
-
-    JapanKorea_color = {"Japan": "#fcdd04"}
-
-    SubsaharanAfrica_color = {
-        "Guinea": "rgb(209,95,238)",
-        "Liberia": "rgb(238,130, 238)",
-        "Sierra Leone": "rgb(148,0,211)",
-        "Cote D Ivoire": "rgb(145,0,209)",
-        "Angola": "rgb(143,0,207)",
-        "Seychelles": "rgb(145,10,217)",
-        "Comoros": "rgb(141,5,203)",
-        "Madagascar": "rgb(233,60, 281)",
-        "Eritrea": "rgb(202, 122, 118)",
-        "Somalia": "rgb(115,51,222)",
-        "Djibouti": "rgb(203,57, 211)",
-        "Burkina Faso": "rgb(141,21,239)",
-        "Ghana": "rgb(102,57,232)",
-        "Tanzania": "rgb(217,37, 291)",
-        "Mozambique": "rgb(213,17, 231)",
-        "Senegal": "rgb(231,133, 219)",
-        "Togo": "rgb(121,21,198)",
-    }
-
-    Africa_color = {
-        "Sudan": "rgb(209,95,238)",
-        "Gambia": "rgb(238,130, 238)",
-        "Nigeria": "rgb(235,135, 233)",
-        "Mali": "rgb(235,131, 229)",
-        "Senegal": "rgb(231,133, 219)",
-        "Cote D Ivoire": "rgb(145,0,209)",
-        "Burkina Faso": "rgb(141,21,239)",
-        "Seychelles": "rgb(145,10,217)",
-        "Somalia": "rgb(115,51,222)",
-        "Ghana": "rgb(102,57,232)",
-        "Tanzania": "rgb(217,37, 291)",
-        "Mozambique": "rgb(213,17, 231)",
-        "Djibouti": "rgb(203,57, 211)",
-        "Madagascar": "rgb(233,60, 281)",
-        "Comoros": "rgb(141,5,203)",
-        "Togo": "rgb(121,21,198)",
-        "Angola": "rgb(212, 92, 138)",
-        "Eritrea": "rgb(202, 122, 118)",
-        "Guinea": "rgb(209,95,238)",
-        "Sierra Leone": "rgb(148,0,211)",
-        "Liberia": "rgb(238,130, 238)",
-        "Tunisia": "rgb(228,99, 298)",
-        "Cameroon": "rgb(207,78, 199)",
-        "South Africa": "rgb(222,22, 222)",
-        "Congo": "rgb(231,41, 172)",
-        "Algeria": "rgb(237,35, 168)",
-        "Morocco": "rgb(223,27, 165)",
-        "Zambia": "rgb(218,62, 265)",
-        "Kenya": "rgb(118,2, 215)",
-        "Uganda": "rgb(128,35, 265)",
-        "Egypt": "rgb(143,52, 265)",
-        "Ethiopia": "rgb(206,36, 265)",
-        "Niger": "rgb(121,52, 187)",
-        "Mayotte": "rgb(101,32,165)",
-        "Rwanda": "rgb(325,25,144)",
-        "Gabon": "rgb(319,7,197)",
-    }
-
-    Europe_color = {
-        "France": "rgb(209,95,238)",
-        "Germany": "rgb(238,130, 238)",
-        "Italy": "rgb(238,130, 238)",
-        "United Kingdom": "rgb(238,130, 238)",
-        "Netherlands": "rgb(148,0,211)",
-        "Spain": "rgb(141,7,221)",
-        "Portugal": "rgb(139,11,219)",
-        "Ireland": "rgb(128,15,279)",
-        "Slovakia": "rgb(121,25,209)",
-        "Romania": "rgb(171,45,197)",
-        "Sweden": "rgb(135,96,208)",
-        "Norway": "rgb(138,56,213)",
-        "Slovenia": "rgb(138,45,265)",
-        "Denmark": "rgb(258,25,265)",
-        "Iceland": "rgb(138,7,185)",
-        "Ukraine": "rgb(298,65,265)",
-        "Czech Republic": "rgb(226,96,128)",
-        "Albania": "rgb(111,20,201)",
-        "Greece": "rgb(108,63,265)",
-        "Latvia": "rgb(121,35,299)",
-    }
 
     country = []
     region = []
@@ -762,9 +724,11 @@ def min_max_date(df):
 tree_file, metadata_file, metadata_file_stat = create_paths_file(
     virus_name, level1="", level2="", level3=""
 )
+
 # To know the minimum and the maximum values of date for slicer
 df_stat_metadata = pd.read_csv(metadata_file_stat)
 min_date, max_date = min_max_date(df_stat_metadata)
+
 # create the dictionary of slider
 marks_data = slicer(min_date, max_date)
 min_max_date_value = [min_date, max_date]
@@ -775,6 +739,7 @@ tree_fig[tree_file] = fig
 fig_map_bubble = create_map_bubble_year(
     virus_name, metadata_file_stat, 2, min_date, max_date
 )
+
 fig_curve_line = create_curve_line(df_stat_metadata, virus_name, min_date, max_date)
 
 
@@ -1432,12 +1397,6 @@ def _update_histo(
         },
     )
 
-
-######################################### CSS #########################################
-external_css = ["https://fonts.googleapis.com/css?family=Lato"]
-
-for css in external_css:
-    app.css.append_css({"external_url": css})
 
 
 # Running the server
