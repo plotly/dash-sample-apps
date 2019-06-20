@@ -7,41 +7,52 @@ import plotly.graph_objs as go
 from utils import Header, make_dash_table
 
 import pandas as pd
+import pathlib
 
-# import pathlib
-
-# # get relative data folder
-# PATH = pathlib.Path(__file__).parent
-# DATA_PATH = PATH.joinpath("../data").resolve()
+# get relative data folder
+PATH = pathlib.Path(__file__).parent
+DATA_PATH = PATH.joinpath("../data").resolve()
 
 
-# dfdf_fund_facts = pd.read_csv(DATA_PATH.joinpath("df_fund_facts.csv"))
-# df_price_perf = pd.read_csv(DATA_PATH.joinpath("df_price_perf.csv"))
-
-df_fund_facts = pd.read_csv("data/df_fund_facts.csv")
-df_price_perf = pd.read_csv("data/df_price_perf.csv")
+df_fund_facts = pd.read_csv(DATA_PATH.joinpath("df_fund_facts.csv"))
+df_price_perf = pd.read_csv(DATA_PATH.joinpath("df_price_perf.csv"))
 
 
 def create_layout(app):
     # Page layouts
     return html.Div(
-        [  # page 1
+        [
+            # html.Div(
+            #     [
+            #         html.Img(
+            #             src=app.get_asset_url("dash-financial-logo.png"),
+            #             className="logo",
+            #         ),
+            #         html.A(
+            #             html.Button("Learn More", id="learn-more-button"),
+            #             href="https://plot.ly/dash/pricing/",
+            #         ),
+            #     ],
+            #     className="row",
+            # ),
+            html.Div([Header(app)]),
+            # page 1
             html.Div(
                 [
-                    html.Div(
-                        [
-                            html.Img(
-                                src=app.get_asset_url("dash-financial-logo.png"),
-                                className="logo",
-                            ),
-                            html.A(
-                                html.Button("Learn More", id="learn-more-button"),
-                                href="https://plot.ly/dash/pricing/",
-                            ),
-                        ],
-                        className="row",
-                    ),
-                    html.Div([Header()]),
+                    # html.Div(
+                    #     [
+                    #         html.Img(
+                    #             src=app.get_asset_url("dash-financial-logo.png"),
+                    #             className="logo",
+                    #         ),
+                    #         html.A(
+                    #             html.Button("Learn More", id="learn-more-button"),
+                    #             href="https://plot.ly/dash/pricing/",
+                    #         ),
+                    #     ],
+                    #     className="row",
+                    # ),
+                    # html.Div([Header()]),
                     # Row 3
                     html.Div(
                         [
@@ -159,7 +170,7 @@ def create_layout(app):
                                                 },
                                                 showlegend=True,
                                                 title="",
-                                                width=340,
+                                                width=330,
                                                 xaxis={
                                                     "autorange": True,
                                                     "range": [-0.5, 4.5],
@@ -197,7 +208,7 @@ def create_layout(app):
                                         className="subtitle padded",
                                     ),
                                     dcc.Graph(
-                                        id="grpah-2",
+                                        id="graph-2",
                                         figure={
                                             "data": [
                                                 go.Scatter(
@@ -233,7 +244,7 @@ def create_layout(app):
                                                 )
                                             ],
                                             "layout": go.Layout(
-                                                autosize=False,
+                                                autosize=True,
                                                 title="",
                                                 font={"family": "Raleway", "size": 10},
                                                 height=200,
@@ -310,7 +321,7 @@ def create_layout(app):
                     ),
                 ],
                 className="sub_page",
-            )
+            ),
         ],
         className="page",
     )

@@ -2,30 +2,48 @@ import dash_html_components as html
 import dash_core_components as dcc
 
 
-def Header():
-    return html.Div([get_header(), html.Br([]), get_menu()])
+def Header(app):
+    return html.Div([get_header(app), html.Br([]), get_menu()])
 
 
-def get_header():
+def get_header(app):
     header = html.Div(
         [
             html.Div(
-                [html.H5("Calibre Financial Index Fund Investor Shares")],
-                className="seven columns main-title",
+                [
+                    html.Img(
+                        src=app.get_asset_url("dash-financial-logo.png"),
+                        className="logo",
+                    ),
+                    html.A(
+                        html.Button("Learn More", id="learn-more-button"),
+                        href="https://plot.ly/dash/pricing/",
+                    ),
+                ],
+                className="row",
             ),
             html.Div(
                 [
-                    dcc.Link(
-                        "Full View",
-                        href="/dash-financial-report/full-view",
-                        className="full-view-link",
-                    )
+                    html.Div(
+                        [html.H5("Calibre Financial Index Fund Investor Shares")],
+                        className="seven columns main-title",
+                    ),
+                    html.Div(
+                        [
+                            dcc.Link(
+                                "Full View",
+                                href="/dash-financial-report/full-view",
+                                className="full-view-link",
+                            )
+                        ],
+                        className="five columns",
+                    ),
                 ],
-                className="five columns",
+                className="twelve columns",
+                style={"padding-left": "0"},
             ),
         ],
         className="row",
-        style={"padding-top": "25px"},
     )
     return header
 
@@ -34,38 +52,35 @@ def get_menu():
     menu = html.Div(
         [
             dcc.Link(
-                "Overview   ",
+                "Overview",
                 href="/dash-financial-report/overview",
                 className="tab first",
             ),
             dcc.Link(
-                "Price Performance   ",
+                "Price Performance",
                 href="/dash-financial-report/price-performance",
                 className="tab",
             ),
             dcc.Link(
-                "Portfolio & Management   ",
+                "Portfolio & Management",
                 href="/dash-financial-report/portfolio-management",
                 className="tab",
             ),
             dcc.Link(
-                "Fees & Minimums   ",
-                href="/dash-financial-report/fees",
-                className="tab",
+                "Fees & Minimums", href="/dash-financial-report/fees", className="tab"
             ),
             dcc.Link(
-                "Distributions   ",
+                "Distributions",
                 href="/dash-financial-report/distributions",
                 className="tab",
             ),
             dcc.Link(
-                "News & Reviews   ",
+                "News & Reviews",
                 href="/dash-financial-report/news-and-reviews",
                 className="tab",
             ),
         ],
-        className="row",
-        style={"margin-bottom": "25px"},
+        className="row all-tabs",
     )
     return menu
 

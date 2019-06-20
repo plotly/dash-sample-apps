@@ -20,12 +20,9 @@ import pandas as pd
 
 # import pathlib
 
-app = dash.Dash(__name__)
-
-# app = dash.Dash(
-#     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
-# )
-
+app = dash.Dash(
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+)
 server = app.server
 
 # # get relative data folder
@@ -50,17 +47,12 @@ server = app.server
 # df_unrealized = pd.read_csv(DATA_PATH.joinpath("df_unrealized.csv"))
 # df_graph = pd.read_csv(DATA_PATH.joinpath("df_graph.csv"))
 
-# Describe the layout, or the UI, of the app
+# Describe the layout/ UI, of the app
 app.layout = html.Div(
     [dcc.Location(id="url", refresh=False), html.Div(id="page-content")]
 )
 
 # Update page
-# # # # # # # # #
-# detail in depth what the callback below is doing
-# # # # # # # # #
-
-
 @app.callback(
     dash.dependencies.Output("page-content", "children"),
     [dash.dependencies.Input("url", "pathname")],
@@ -73,31 +65,29 @@ def display_page(pathname):
     ):
         return overview.create_layout(app)
     elif pathname == "/dash-financial-report/price-performance":
-        return pricePerformance.layout
+        return pricePerformance.create_layout(app)
     elif pathname == "/dash-financial-report/portfolio-management":
-        return portfolioManagement.layout
+        return portfolioManagement.create_layout(app)
     elif pathname == "/dash-financial-report/fees":
-        return feesMins.layout
+        return feesMins.create_layout(app)
     elif pathname == "/dash-financial-report/distributions":
-        return distributions.layout
+        return distributions.create_layout(app)
     elif pathname == "/dash-financial-report/news-and-reviews":
-        return newsReviews.layout
+        return newsReviews.create_layout(app)
     elif pathname == "/dash-financial-report/full-view":
         return (
             overview.create_layout(app),
-            pricePerformance.layout,
-            portfolioManagement.layout,
-            feesMins.layout,
-            distributions.layout,
-            newsReviews.layout,
+            pricePerformance.create_layout(app),
+            portfolioManagement.create_layout(app),
+            feesMins.create_layout(app),
+            distributions.create_layout(app),
+            newsReviews.create_layout(app),
         )
     else:
         return overview.create_layout(app)
 
 
-# # # # # # # # #
 # detail the way that external_css and external_js work and link to alternative method locally hosted
-# # # # # # # # #
 # external_css = ["https://codepen.io/bcd/pen/KQrXdb.css"]
 
 external_css = [
@@ -109,13 +99,6 @@ external_css = [
 
 for css in external_css:
     app.css.append_css({"external_url": css})
-
-# external_js = ["https://code.jquery.com/jquery-3.2.1.min.js",
-#                "https://codepen.io/bcd/pen/YaXojL.js"]
-
-# for js in external_js:
-#     app.scripts.append_script({"external_url": js})
-
 
 if __name__ == "__main__":
     app.run_server(debug=True)
