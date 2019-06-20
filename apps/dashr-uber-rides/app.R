@@ -33,8 +33,20 @@ ridesDf <- ridesRaw[, 2:4]
 names(ridesDf) <- c("dateTime", "Lat", "Lon")
 # Rename columns
 
+posixTime1 <- as.POSIXct(ridesDf$dateTime[1], format = "%Y-%m-%d %H:%M:%OS")
+# posixTime object time
+
 ridesDf$Date.Time <- fastPOSIXct(ridesDf$dateTime)
 # Convert Date.Time column to posix type
+
+fastTime1 <- ridesDf$Date.Time[1]
+# fastTime object time
+
+timeDiff <- posixTime1 - fastTime1
+# timeDiff btw as.POSIXct & fastPOSIXct
+
+ridesDf$Date.Time <- ridesDf$Date.Time + timeDiff
+# Adjusting the time difference
 
 locationCoordinates <- list(
   list(40.7272, -73.991251), list(40.7505, -73.9934),
