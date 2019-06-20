@@ -233,7 +233,7 @@ input[type="button"] {
   height: 38px;
   width: 140px;
   padding: 0;
-  color: #FBFFFF;
+  color: rgb(42, 209, 209);
   text-align: center;
   font-size: 11px;
   font-family: 'Geneva';
@@ -243,10 +243,9 @@ input[type="button"] {
   text-decoration: none;
   white-space: nowrap;
   background-color: #4181FF;
-  border-radius: 10px;
-  
   cursor: pointer;
   box-sizing: border-box;
+  border-radius: 2px;
 }
 
 
@@ -270,9 +269,9 @@ input[type="button"] {
   text-decoration: none;
   white-space: nowrap;
   background-color: #4181FF;
-  border: 1px solid white;
   cursor: pointer;
   box-sizing: border-box; 
+  border-radius: 2px;
 }
 
 .button_submit {
@@ -291,7 +290,6 @@ input[type="button"] {
   text-decoration: none;
   white-space: nowrap;
   background-color: #4181FF;
-  border: 1px solid white;
   cursor: pointer;
   box-sizing: border-box;
   
@@ -311,7 +309,11 @@ input[type="reset"]:focus,
 input[type="button"]:focus {
   color: #333;
   border-color: #888;
-  outline: 0; }
+  outline: 0; 
+}
+
+
+
 .button.button-primary,
 button.button-primary,
 input[type="submit"].button-primary,
@@ -319,7 +321,10 @@ input[type="reset"].button-primary,
 input[type="button"].button-primary {
   color: #FFF;
   background-color: #33C3F0;
-  border-color: #33C3F0; }
+  border-color: #33C3F0; 
+}
+
+
 .button.button-primary:hover,
 button.button-primary:hover,
 input[type="submit"].button-primary:hover,
@@ -336,8 +341,6 @@ input[type="button"].button-primary:focus {
 }
 
 
-
-
 /*Zoom In*/
 #tabs-content-example>div>button:nth-child(2)>svg {
   height: 35px;
@@ -345,7 +348,6 @@ input[type="button"].button-primary:focus {
   margin-top: 3px;
   ;
 }
-
 
 /*Zoom out */
 #tabs-content-example>div>button:nth-child(3)>svg {
@@ -464,13 +466,14 @@ select {
   width: 70%;
   box-sizing: border-box;
   padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
-  background-color: #fff;
+  background-color: transparent;
   border: 1px solid #D1D1D1;
   border-radius: 4px;
   box-shadow: none;
   box-sizing: border-box; 
   font-family: 'Geneva';
-  font-size: inherit; /*https://stackoverflow.com/questions/6080413/why-doesnt-input-inherit-the-font-from-body*/
+  font-size: inherit; 
+  color: #D1D1D1;
 
 }
 /* Removes awkward default styles on some inputs for iOS */
@@ -666,6 +669,10 @@ there.
     margin: 0 auto;
   }
 
+  .instruction {
+    overflow-x: hidden !important;
+  }
+
   .button_instruction,
   .button_demo,
   input[type="submit"],
@@ -717,22 +724,29 @@ there.
   select {
 
     height: 38px;
-    width: 80%;
+    width: 150px;
     box-sizing: border-box;
     padding: 6px 10px;
-    /* The 6px vertically centers text on FF, ignored by Webkit */
-    background-color: #fff;
+    background-color: transparent;
     border: 1px solid #D1D1D1;
     border-radius: 4px;
     box-shadow: none;
-    box-sizing: border-box;
     font-family: 'Geneva';
     font-size: inherit;
-    margin-left: 2px;
-    margin-right: 2px;
-    /*https://stackoverflow.com/questions/6080413/why-doesnt-input-inherit-the-font-from-body*/
+    margin-left: 7px;
+    margin-right: 7px;
+    color: #D1D1D1;
 
   }
+
+  
+  .mobile_forms {
+    margin:0 auto;
+    display: inherit;
+    text-align: center;
+   
+  }
+
 
   label {
     margin-top: 15px;
@@ -741,12 +755,6 @@ there.
     text-align: center;
     display: inherit;
     margin-left: 0;
-  }
-
-  .mobile_forms {
-    width: 100vw;
-   
-    display: inherit;
   }
 
 
@@ -815,7 +823,6 @@ there.
 
   }
 
-  
   #_dash-app-content>div>div.four.columns.instruction>label {
     margin: 0 auto;
   }
@@ -835,6 +842,79 @@ there.
     width: 100vw;
   }
 
+  /*Zoom In svg*/
+  #tabs-content-example>div>button:nth-child(2)>svg {
+    height: 20px;
+    padding: 0 6px;
+    margin-top: 4px;
+    
+  }
+
+  /*Zoom out svg */
+  #tabs-content-example>div>button:nth-child(3)>svg {
+    height: 20px;
+    padding: 0 6px;
+    margin-top: 4px;
+  }
+
+  /* Trace svg */
+  #tabs-content-example>div>button:nth-child(4)>svg {
+    height: 20px;
+    margin-top: 4px;
+  }
+
+  /* Square svg */
+  #tabs-content-example>div>button:nth-child(5)>svg {
+    margin-top: 2px;
+    margin-left: 0.5px;
+  }
+
+  /* Left arrow svg */
+  #tabs-content-example>div>button:nth-child(7)>svg {
+    margin-top: 2px;
+  }
+
+  /* Tag svg */
+  #tabs-content-example>div>button:nth-child(8)>svg {
+    margin-top: 4px;
+  }
+
+  #tabs-content-example>div>button:nth-child(2),
+  #tabs-content-example>div>button:nth-child(3),
+  #tabs-content-example>div>button:nth-child(4),
+  #tabs-content-example>div>button:nth-child(5),
+  #tabs-content-example>div>button:nth-child(6),
+  #tabs-content-example>div>button:nth-child(7),
+  #tabs-content-example>div>button:nth-child(8) {
+    height: 30px !important;
+    width: 30px !important;
+
+  }
+  
+  /*Estimate Translation Button*/
+  #tabs-content-example>div>button:nth-child(9) {
+    height: 40px !important;
+    width: 170px;
+    padding: 0;
+    color: #FBFFFF !important;
+    text-align: center;
+    font-size: 11px;
+    font-family: 'Geneva';
+    font-weight: 200;
+    line-height: 38px;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: #4181FF;
+    border-radius: 30px;
+    border: 1px solid;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin-left: 0;
+  }
+
+  
 
 }
 

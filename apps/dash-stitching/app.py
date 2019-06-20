@@ -121,14 +121,11 @@ app.layout = html.Div(
                 dcc.Input(
                     id='nrows-stitch',
                     type='number',
-                    #value=0,
+                    value=0,
                     name='number of rows',
                     step=1
-                )]
-
-            ),
-
-
+                )
+            ]), 
             html.Div([
                 html.Label('Number of columns'),
                 dcc.Input(
@@ -138,10 +135,8 @@ app.layout = html.Div(
                     name='number of columns',
                     step=1
                 )
-
-            ]),
-
-
+            ])
+            
         ], className="mobile_forms"),
 
         
@@ -192,7 +187,9 @@ app.layout = html.Div(
                 },
                 style_cell={
                     'text-align': 'center',
-                    'font-family': 'Geneva'
+                    'font-family': 'Geneva',
+                    'backgroundColor': '#01183A',
+                    'color':  'white'
                 }
             )
         ], className="shift_table"),
