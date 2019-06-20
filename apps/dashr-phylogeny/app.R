@@ -366,7 +366,7 @@ app$layout(
                 id = "title"
               ),
               htmlImg(
-                src = "https://user-images.githubusercontent.com/37411533/56820587-55d56e80-681a-11e9-91b6-026e1551b338.png"
+                src = "assets/dash-logo.png"
               )
             )
           )
