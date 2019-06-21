@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-import math
 import json
 
 import pandas as pd
-import flask
 import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
@@ -18,10 +16,6 @@ colors = {"background": "#F3F6FA", "background_div": "white"}
 accounts = sf_manager.get_accounts()
 contacts = sf_manager.get_contacts()
 users = sf_manager.get_users()
-
-
-
-
 
 # returns pie chart based on filters values
 # column makes the fonction reusable
