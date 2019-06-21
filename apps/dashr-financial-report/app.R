@@ -18,7 +18,6 @@ if (appName != ""){
 
 
 
-
 #Source assets
 source("assets/FinancialFunctions.R")
 
@@ -160,7 +159,7 @@ hypothetical_growth <- plot_ly(hypothetical_data, x= x, y= y, type = "scatter",
                                mode = 'lines', line = list(color = '#98151B', width = 3), name = "Calibre Index Fund Inv",
                                height = 200, width = 340) %>%
   layout(yaxis = hypothetical_yaxis, xaxis = nogrid, legend=list(orientation='h', y = -0.2), showlegend=TRUE, autosize = FALSE
-         , margin = list(r=20, t=20, b=20, l=50))
+         , margin = list(r=0, t=20, b=10, l=10))
 
 
 hypothetical_graph <- htmlDiv(
@@ -733,7 +732,7 @@ dividends <- htmlDiv(list(
   htmlH6(list('Dividend and capital gains distributions'), className = 'subtitle'),
   htmlBr(),
   dividends_table
-), className = "twelve columns")
+), className = "row")
 
 
 # Realized and Unrealized Gains Table
@@ -852,8 +851,7 @@ firstpage_firstrow <- htmlDiv(list(
 #First Page Second Row
 
 firstpage_secondrow <- htmlDiv(list(
-  htmlBr(),
-  htmlBr(),
+  # htmlBr(),
   hypothetical_graph,
   price_perf
 ), className = "row")
@@ -918,6 +916,36 @@ fees_mins_row <- htmlDiv(list(
   minimums,
   fees_bars
 ), className = "row")
+
+
+after_tax_row <- htmlDiv(list(
+  after_tax
+), className = "row")
+
+
+avg_returns_row <- htmlDiv(list(
+  avg_returns
+), className = "row")
+
+performance_lines_row <- htmlDiv(list(
+  performance_lines_graph
+), className = "row")
+
+
+equity_characteristics_row <- htmlDiv(list(
+  equity_characteristics
+), className = "row")
+
+
+equity_div_row <- htmlDiv(list(
+  equity_div
+), className = "row")
+
+
+dividends_row <- htmlDiv(list(
+  dividends
+), className = "row")
+
 #################################################################################
 
 #Define pages to be selected with URL calls.
@@ -943,9 +971,9 @@ index_page <- (htmlDiv(list(
     firstpage_secondrow,
     risk_reward_proper,
     secondpage_firstrow,
-    performance_lines_graph,
-    avg_returns,
-    after_tax,
+    performance_lines_row,
+    avg_returns_row,
+    after_tax_row,
     stock_graph_noheader,
     stock_text,
     expenses_row,
@@ -975,9 +1003,9 @@ page_2_layout <- (htmlDiv(list(
   grey_line,
   htmlDiv(list(
     secondpage_firstrow,
-    performance_lines_graph,
-    avg_returns,
-    after_tax,
+    performance_lines_row,
+    avg_returns_row,
+    after_tax_row,
     recent_returns,
     htmlDiv(id='page-1-content')
   ), className='subpagetwo')
@@ -999,7 +1027,7 @@ distributions_layout <- (htmlDiv(list(
   overview,
   grey_line,
   htmlDiv(list(
-    dividends,
+    dividends_row,
     htmlBr(),
     htmlBr(),
     htmlBr(),
@@ -1014,8 +1042,8 @@ portfolio_layout <- (htmlDiv(list(
   grey_line,
   htmlDiv(list(
     portfolio_firstrow,
-    equity_characteristics,
-    equity_div
+    equity_characteristics_row,
+    equity_div_row
   ), className='subpagetwo')
 ), className = 'page'))
 
@@ -1067,6 +1095,6 @@ if (appName != "") {
   
 } else {
   
-  app$run_server(showcase = TRUE)
+  app$run_server()
   
 }
