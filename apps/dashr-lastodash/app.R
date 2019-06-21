@@ -28,14 +28,19 @@ if (appName != ""){
 app <- Dash$new(name = 'DashR LAS Report')
 
 ####################################################################################################
-# IMPORT & HANDLE DATA
+# IMPORT DATA
+
+las_dir <- "data/"
+las_file <- "alcor2.las"
+las_path <- paste(las_dir, las_file, sep = "")
+
+####################################################################################################
+# HANDLE & STORE DATA
 
 las_object <- setRefClass("las_object", fields = list(
   V = "data.frame", 
   W = "data.frame", 
   C = "data.frame", 
-  P = "data.frame", 
-  O = "data.frame", 
   A = "data.frame")
 )
 
@@ -44,7 +49,7 @@ convert_las <- function(las_path) {
   las_string <- read_file(las_path)
   las_sections <- str_split(las_string, "~")
   for (section in las_sections[[1]]) {
-    # section contains version and wrap mode information
+    # store section containing version and wrap mode information
     if (startsWith(section, "V")) {
       print("~V")
       linesV <- str_split(section, "\r\n")
@@ -53,7 +58,7 @@ convert_las <- function(las_path) {
         separate(col = x, into = c("label", "x"), sep = "\\.", extra = "merge") %>% 
         separate(col = x, into = c("value", "description"), sep = ":\\s+", extra = "merge")
     }
-    # section contains well identification
+    # store section containing well identification
     if (startsWith(section, "W")) {
       print("~W")
       linesW <- str_split(section, "\r\n")
@@ -66,7 +71,7 @@ convert_las <- function(las_path) {
         separate(col = x, into = c("unit", "x"), sep = "\\s+", extra = "merge") %>% 
         separate(col = x, into = c("value", "description"), sep = ":\\s+", extra = "merge")
     }
-    # section contains curve information
+    # store section containing curve information
     if (startsWith(section, "C")) {
       print("~C")
       linesC <- str_split(section, "\r\n")
@@ -79,14 +84,6 @@ convert_las <- function(las_path) {
         separate(col = x, into = c("unit", "x"), sep = "\\s+", extra = "merge") %>%
         separate(col = x, into = c("api code", "curve description"), sep = ":\\s+", extra = "merge")
     }
-    # section contains parameters or constants
-    if (startsWith(section, "P")) {
-      print("~P")
-    }
-    # section contains other information such as comments
-    if (startsWith(section, "O")) {
-      print("~O")
-    }
     # section contains ASCII log data
     if (startsWith(section, "A")) {
       print("~A")
@@ -97,34 +94,14 @@ convert_las <- function(las_path) {
   return (las_data)
 }
 
-las_dir <- "data/"
-las_file <- "alcor2.las"
-las_path <- paste(las_dir, las_file, sep = "")
 las_data <- convert_las(las_path)
 
-table_cols <- list (
+table_header <- list (
   "mnemonic" = list(name = "mnemonic", id = "mnemonic", width = "100px"),
   "description" = list(name = "description", id = "description", width = "300px"),
   "unit" = list(name = "unit", id = "unit", width = "25px"),
   "value" = list(name = "value", id = "value", width = "300px")
 )
-
-####################################################################################################
-# DEFINE HELPER FUNCTIONS
-
-get_item <- function(df, name1, name2, key1) {
-  key2 <- ""
-  for (i in 1:nrow(df)) {
-    if (str_trim(df[i,name1],"left") == key1) {
-      key2 <- df[i,name2]
-    }
-  }
-  return (key2)
-}
-
-get_plot_list <- function(nplots) {
-  lapply(seq_len(nplots), function(x) plot_ly())
-}
 
 ####################################################################################################
 # DEFINE FUNCTIONS FOR APP LAYOUT
@@ -173,10 +150,20 @@ generate_table <- function() {
         'if' = list(row_index = "even"), 
         backgroundColor = "#f9f9f9"
       )),
-      columns = unname(table_cols),
+      columns = unname(table_header),
       data = dashTable::df_to_list(las_data$W[c("mnemonic", "description", "unit", "value")])
     )
   )
+}
+
+get_item <- function(df, name1, name2, key1) {
+  key2 <- ""
+  for (i in 1:nrow(df)) {
+    if (str_trim(df[i,name1],"left") == key1) {
+      key2 <- df[i,name2]
+    }
+  }
+  return (key2)
 }
 
 generate_axis_title <- function(df, key) {
@@ -202,6 +189,10 @@ generate_axis_title <- function(df, key) {
   title <- paste(lines, collapse = "\n")
   title <- glue("{title}\n({unit})")
   return(title)
+}
+
+get_plot_list <- function(nplots) {
+  lapply(seq_len(nplots), function(x) plot_ly())
 }
 
 generate_curves <- function(height = 950,
@@ -272,7 +263,6 @@ generate_curves <- function(height = 950,
   fig$x$layout$paper_bgcolor <- bg_color
   fig$x$layout$hovermode <- "y"
   fig$x$layout$legend <- list("font" = list("size" = tick_font_size))
-  #fig$x$layout$legend <- list("x" = 0.85,"xpad" = 0.0,"font" = list("size" = tick_font_size))
   fig$x$layout$margin <- list(r = 0.0, t = 100.0, b = 50.0, l = 80.0, autoexpand = FALSE)
   
   return(dccGraph(figure = fig))
@@ -352,7 +342,7 @@ app$callback(
     output <- list()
     Th <- lapply(
       names(data[[1]]),
-      function(s) {return(htmlTh(str_to_title(s), style = list(width = table_cols[[s]]$width)))}
+      function(s) {return(htmlTh(str_to_title(s), style = list(width = table_header[[s]]$width)))}
     )
     header <- list(htmlTr(Th))
     for (i in 1:num_tables) {
