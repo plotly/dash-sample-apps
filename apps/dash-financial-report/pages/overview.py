@@ -22,37 +22,10 @@ def create_layout(app):
     # Page layouts
     return html.Div(
         [
-            # html.Div(
-            #     [
-            #         html.Img(
-            #             src=app.get_asset_url("dash-financial-logo.png"),
-            #             className="logo",
-            #         ),
-            #         html.A(
-            #             html.Button("Learn More", id="learn-more-button"),
-            #             href="https://plot.ly/dash/pricing/",
-            #         ),
-            #     ],
-            #     className="row",
-            # ),
             html.Div([Header(app)]),
             # page 1
             html.Div(
                 [
-                    # html.Div(
-                    #     [
-                    #         html.Img(
-                    #             src=app.get_asset_url("dash-financial-logo.png"),
-                    #             className="logo",
-                    #         ),
-                    #         html.A(
-                    #             html.Button("Learn More", id="learn-more-button"),
-                    #             href="https://plot.ly/dash/pricing/",
-                    #         ),
-                    #     ],
-                    #     className="row",
-                    # ),
-                    # html.Div([Header()]),
                     # Row 3
                     html.Div(
                         [

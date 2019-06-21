@@ -25,28 +25,6 @@ app = dash.Dash(
 )
 server = app.server
 
-# # get relative data folder
-# PATH = pathlib.Path(__file__).parent
-# DATA_PATH = PATH.joinpath("data").resolve()
-
-
-# # read data for tables (one df per table)
-# df_fund_facts = pd.read_csv(DATA_PATH.joinpath("df_fund_facts.csv"))
-# df_price_perf = pd.read_csv(DATA_PATH.joinpath("df_price_perf.csv"))
-# df_current_prices = pd.read_csv(DATA_PATH.joinpath("df_current_prices.csv"))
-# df_hist_prices = pd.read_csv(DATA_PATH.joinpath("df_hist_prices.csv"))
-# df_avg_returns = pd.read_csv(DATA_PATH.joinpath("df_avg_returns.csv"))
-# df_after_tax = pd.read_csv(DATA_PATH.joinpath("df_after_tax.csv"))
-# df_recent_returns = pd.read_csv(DATA_PATH.joinpath("df_recent_returns.csv"))
-# df_equity_char = pd.read_csv(DATA_PATH.joinpath("df_equity_char.csv"))
-# df_equity_diver = pd.read_csv(DATA_PATH.joinpath("df_equity_diver.csv"))
-# df_expenses = pd.read_csv(DATA_PATH.joinpath("df_expenses.csv"))
-# df_minimums = pd.read_csv(DATA_PATH.joinpath("df_minimums.csv"))
-# df_dividend = pd.read_csv(DATA_PATH.joinpath("df_dividend.csv"))
-# df_realized = pd.read_csv(DATA_PATH.joinpath("df_realized.csv"))
-# df_unrealized = pd.read_csv(DATA_PATH.joinpath("df_unrealized.csv"))
-# df_graph = pd.read_csv(DATA_PATH.joinpath("df_graph.csv"))
-
 # Describe the layout/ UI, of the app
 app.layout = html.Div(
     [dcc.Location(id="url", refresh=False), html.Div(id="page-content")]
@@ -88,8 +66,6 @@ def display_page(pathname):
 
 
 # detail the way that external_css and external_js work and link to alternative method locally hosted
-# external_css = ["https://codepen.io/bcd/pen/KQrXdb.css"]
-
 external_css = [
     "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",
     "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
