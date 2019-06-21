@@ -526,7 +526,7 @@ layout = [
 
 # updates left indicator based on df updates
 @app.callback(
-    Output("left_leads_indicator", "children"), [Input("leads_df", "children")]
+    Output("left_leads_indicator", "children"), [Input("leads_df", "data")]
 )
 def left_leads_indicator_callback(df):
     df = pd.read_json(df, orient="split")
@@ -536,7 +536,7 @@ def left_leads_indicator_callback(df):
 
 # updates middle indicator based on df updates
 @app.callback(
-    Output("middle_leads_indicator", "children"), [Input("leads_df", "children")]
+    Output("middle_leads_indicator", "children"), [Input("leads_df", "data")]
 )
 def middle_leads_indicator_callback(df):
     df = pd.read_json(df, orient="split")
@@ -551,7 +551,7 @@ def middle_leads_indicator_callback(df):
 
 # updates right indicator based on df updates
 @app.callback(
-    Output("right_leads_indicator", "children"), [Input("leads_df", "children")]
+    Output("right_leads_indicator", "children"), [Input("leads_df", "data")]
 )
 def right_leads_indicator_callback(df):
     df = pd.read_json(df, orient="split")
@@ -565,7 +565,7 @@ def right_leads_indicator_callback(df):
 # update pie chart figure based on dropdown's value and df updates
 @app.callback(
     Output("lead_source", "figure"),
-    [Input("lead_source_dropdown", "value"), Input("leads_df", "children")],
+    [Input("lead_source_dropdown", "value"), Input("leads_df", "data")],
 )
 def lead_source_callback(status, df):
     df = pd.read_json(df, orient="split")
@@ -575,7 +575,7 @@ def lead_source_callback(status, df):
 # update heat map figure based on dropdown's value and df updates
 @app.callback(
     Output("map", "figure"),
-    [Input("lead_source_dropdown", "value"), Input("leads_df", "children")],
+    [Input("lead_source_dropdown", "value"), Input("leads_df", "data")],
 )
 def map_callback(status, df):
     df = pd.read_json(df, orient="split")
@@ -585,7 +585,7 @@ def map_callback(status, df):
 # update table based on dropdown's value and df updates
 @app.callback(
     Output("leads_table", "children"),
-    [Input("lead_source_dropdown", "value"), Input("leads_df", "children")],
+    [Input("lead_source_dropdown", "value"), Input("leads_df", "data")],
 )
 def leads_table_callback(status, df):
     df = pd.read_json(df, orient="split")
@@ -605,7 +605,7 @@ def leads_table_callback(status, df):
 # update pie chart figure based on dropdown's value and df updates
 @app.callback(
     Output("converted_leads", "figure"),
-    [Input("converted_leads_dropdown", "value"), Input("leads_df", "children")],
+    [Input("converted_leads_dropdown", "value"), Input("leads_df", "data")],
 )
 def converted_leads_callback(period, df):
     df = pd.read_json(df, orient="split")
@@ -631,14 +631,14 @@ def close_modal_callback(n, n2):
 
 # add new lead to salesforce and stores new df in hidden div
 @app.callback(
-    Output("leads_df", "children"),
+    Output("leads_df", "data"),
     [Input("submit_new_lead", "n_clicks")],
     [
         State("new_lead_status", "value"),
         State("new_lead_state", "value"),
         State("new_lead_company", "value"),
         State("new_lead_source", "value"),
-        State("leads_df", "children"),
+        State("leads_df", "data"),
     ],
 )
 def add_lead_callback(n_clicks, status, state, company, source, current_df):
