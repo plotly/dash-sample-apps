@@ -89,7 +89,7 @@ def update_news():
     )
 
 
-# returns dataset row with nearest datetime to current time
+# Returns dataset for currency pair with nearest datetime to current time
 def first_ask_bid(currency_pair, t):
     t = t.replace(year=2016, month=1, day=5)
     items = currency_pair_data[currency_pair]
@@ -187,7 +187,7 @@ def get_color(a, b):
         return "#da5657"
 
 
-# replace ask_bid row without buttons
+# Replace ask_bid row for currency pair with colored values
 def replace_row(currency_pair, index, bid, ask):
     index = index + 1  # index of new data row
     new_row = (
@@ -244,21 +244,7 @@ def get_top_bar(
     ]
 
 
-# returns currency pair OHLC data for given period
-def get_OHLC_data(currency_pair, period="5Min"):
-    data_frame = currency_pair_data[currency_pair]
-    t = datetime.datetime.now()
-    data = data_frame.loc[
-        : t.strftime(
-            "2016-01-05 %H:%M:%S"
-        )  # all the data from the beginning until current time
-    ]
-    data_bid = data["Bid"]
-    data_bid = data_bid.resample(period).ohlc()
-    return data_bid
-
-
-#######STUDIES TRACES######
+####### STUDIES TRACES ######
 
 # Moving average
 def moving_average_trace(df, fig):
@@ -467,7 +453,17 @@ def get_modal_fig(currency_pair, index):
 
 # Returns graph figure
 def get_fig(currency_pair, ask, bid, type_trace, studies, period):
-    df = get_OHLC_data(currency_pair, period)
+    #Get OHLC data
+    data_frame = currency_pair_data[currency_pair]
+    t = datetime.datetime.now()
+    data = data_frame.loc[
+        : t.strftime(
+            "2016-01-05 %H:%M:%S"
+        )  # all the data from the beginning until current time
+    ]
+    data_bid = data["Bid"]
+    df = data_bid.resample(period).ohlc()
+
     subplot_traces = [  # first row traces
         "accumulation_trace",
         "cci_trace",
@@ -497,17 +493,17 @@ def get_fig(currency_pair, ask, bid, type_trace, studies, period):
     )
 
     # Add main trace (style) to figure
-    fig.append_trace(globals()[type_trace](df), 1, 1)
+    fig.append_trace(eval(type_trace)(df), 1, 1)
 
     # Add trace(s) on fig's first row
     for study in selected_first_row_studies:
-        fig = globals()[study](df, fig)
+        fig = eval(study)(df, fig)
 
     row = 1
     # Plot trace on new row
     for study in selected_subplots_studies:
         row += 1
-        fig.append_trace(globals()[study](df), row, 1)
+        fig.append_trace(eval(study)(df), row, 1)
 
     fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
     fig["layout"]["autosize"] = True
@@ -542,14 +538,14 @@ def chart_div(pair):
                     html.Span(
                         "Style",
                         id=pair + "style_header",
-                        className="btn-style",
+                        className="span-menu",
                         n_clicks_timestamp=2,
                     ),
                     html.Span(
                         "Studies",
                         id=pair + "studies_header",
+                        className="span-menu",
                         n_clicks_timestamp=1,
-                        style={"textDecoration": "none", "cursor": "pointer"},
                     ),
                     # Studies Checklist
                     html.Div(
@@ -928,7 +924,7 @@ def generate_figure_callback(pair):
 
     return chart_fig_callback
 
-
+# Function to close currency pair graph
 def generate_close_graph_callback():
     def close_callback(n, n2):
         if n == 0:
@@ -939,7 +935,7 @@ def generate_close_graph_callback():
 
     return close_callback
 
-
+# Function to open or close STYLE or STUDIES menu 
 def generate_open_close_menu_callback():
     def open_close_menu(n, className):
         if n == 0:
@@ -952,17 +948,18 @@ def generate_open_close_menu_callback():
     return open_close_menu
 
 
-# Updates hidden div that stores the last clicked menu tab
+# Function for hidden div that stores the last clicked menu tab
+# Also updates style and studies menu headers
 def generate_active_menu_tab_callback():
     def update_current_tab_name(n_style, n_studies):
         if n_style >= n_studies:
-            return "Style"
-        return "Studies"
+            return "Style", "span-menu selected", "span-menu"
+        return "Studies", "span-menu", "span-menu selected"
 
     return update_current_tab_name
 
 
-# Show/hide STUDIES menu for chart
+# Function show or hide studies menu for chart
 def generate_studies_content_tab_callback():
     def studies_tab(current_tab):
         if current_tab == "Studies":
@@ -971,8 +968,7 @@ def generate_studies_content_tab_callback():
 
     return studies_tab
 
-
-# Show/hide STYLE menu for chart
+# Function show or hide style menu for chart
 def generate_style_content_tab_callback():
     def style_tab(current_tab):
         if current_tab == "Style":
@@ -993,31 +989,27 @@ def generate_modal_open_callback():
     return open_modal
 
 
-# Close Modal
+# Function to close modal
 def generate_modal_close_callback():
     def close_modal(n, n2):
         return 0
-
     return close_modal
 
 
-# set modal SL value to none
+# Function for modal graph - set modal SL value to none
 def generate_clean_sl_callback():
     def clean_sl(n):
         return 0
-
     return clean_sl
 
 
-# set modal SL value to none
+# Function for modal graph - set modal SL value to none
 def generate_clean_tp_callback():
     def clean_tp(n):
         return 0
-
     return clean_tp
 
-
-# Create figure for Buy/Sell Modal
+# Function to create figure for Buy/Sell Modal
 def generate_modal_figure_callback(pair):
     def figure_modal(index, n, old_fig):
         if (n == 0 and old_fig is None) or n == 1:
@@ -1027,7 +1019,7 @@ def generate_modal_figure_callback(pair):
     return figure_modal
 
 
-# updates the pair orders div
+# Function updates the pair orders div
 def generate_order_button_callback(pair):
     def order_callback(n, vol, type_order, sl, tp, pair_orders, ask, bid):
         if n > 0:
@@ -1065,7 +1057,7 @@ def generate_order_button_callback(pair):
 
     return order_callback
 
-
+# Function to update orders
 def update_orders(orders, current_bids, current_asks, id_to_close):
     for order in orders:
         if order["status"] == "open":
@@ -1108,10 +1100,9 @@ def update_orders(orders, current_bids, current_asks, id_to_close):
                     "%Y-%m-%d %H:%M:%S"
                 )
                 order["close Price"] = price
-
     return orders
 
-
+# Function to update orders div 
 def generate_update_orders_div_callback():
     def update_orders_callback(*args):
         orders = []
@@ -1142,7 +1133,6 @@ def generate_update_orders_div_callback():
 
         # we update status and profit of orders
         orders = update_orders(orders, current_bids, current_asks, close_id)
-
         return json.dumps(orders)
 
     return update_orders_callback
@@ -1237,10 +1227,14 @@ for pair in currencies:
 
     # stores in hidden div name of clicked tab name
     app.callback(
-        Output(pair + "menu_tab", "children"),
+        [
+            Output(pair + "menu_tab", "children"),
+            Output(pair + "style_header", "className"),
+            Output(pair + "studies_header", "className")
+        ],
         [
             Input(pair + "style_header", "n_clicks_timestamp"),
-            Input(pair + "studies_header", "n_clicks_timestamp"),
+            Input(pair + "studies_header", "n_clicks_timestamp")
         ],
     )(generate_active_menu_tab_callback())
 
@@ -1254,7 +1248,7 @@ for pair in currencies:
         Output(pair + "studies_tab", "style"), [Input(pair + "menu_tab", "children")]
     )(generate_studies_content_tab_callback())
 
-    #####
+
     # show modal
     app.callback(Output(pair + "modal", "style"), [Input(pair + "Buy", "n_clicks")])(
         generate_modal_open_callback()
