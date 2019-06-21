@@ -134,7 +134,7 @@ table.tiny-header tr:first-child {
 /* .columns{ margin-left: 0 !important; } */
 
 /* .row > .columns:not(:first-child){
-  padding-left: 20px;
+padding-left: 20px;
 } */
 
 td,
@@ -205,7 +205,7 @@ a {
 }
 
 /* .tab:focus {
-  border-style: solid;
+border-style: solid;
   border-color: rgba(0,0,0,1);
   border-bottom-style: none;
   border-top-style: none;

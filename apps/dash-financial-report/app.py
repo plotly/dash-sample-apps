@@ -1,11 +1,10 @@
-# coding: utf-8
-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
-
+from utils import Header, make_dash_table
+import pandas as pd
 from pages import (
     overview,
     pricePerformance,
@@ -14,18 +13,13 @@ from pages import (
     distributions,
     newsReviews,
 )
-from utils import Header, make_dash_table
-
-import pandas as pd
-
-# import pathlib
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
 server = app.server
 
-# Describe the layout/ UI, of the app
+# Describe the layout/ UI of the app
 app.layout = html.Div(
     [dcc.Location(id="url", refresh=False), html.Div(id="page-content")]
 )
@@ -36,13 +30,7 @@ app.layout = html.Div(
     [dash.dependencies.Input("url", "pathname")],
 )
 def display_page(pathname):
-    if (
-        pathname == "/dash-financial-report"
-        or pathname == "/"
-        or pathname == "/dash-financial-report/overview"
-    ):
-        return overview.create_layout(app)
-    elif pathname == "/dash-financial-report/price-performance":
+    if pathname == "/dash-financial-report/price-performance":
         return pricePerformance.create_layout(app)
     elif pathname == "/dash-financial-report/portfolio-management":
         return portfolioManagement.create_layout(app)
@@ -65,9 +53,7 @@ def display_page(pathname):
         return overview.create_layout(app)
 
 
-# detail the way that external_css and external_js work and link to alternative method locally hosted
 external_css = [
-    "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",
     "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
     "https://codepen.io/bcd/pen/KQrXdb.css",
     "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
