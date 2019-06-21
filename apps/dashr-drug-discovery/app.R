@@ -1,3 +1,13 @@
+appName <- Sys.getenv("DASH_APP_NAME")
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
+
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+
+  setwd(sprintf("/app/apps/%s", appName))
+}
+
 library(dashR)
 library(plotly)
 library(dashCoreComponents)
@@ -5,9 +15,7 @@ library(dashHtmlComponents)
 
 app <- Dash$new('drug-discovery', external_stylesheets = list("https://codepen.io/chriddyp/pen/bWLwgP.css"))
 
-setwd("dashr-drug-discovery/")
-
-df <- read.csv('dashr-drug-discovery/data/small_molecule_drugbank.csv', header = TRUE, sep = ",")
+df <- read.csv('./dashr-drug-discovery/data/small_molecule_drugbank.csv', header = TRUE, sep = ",")
 
 ###GRAPH PLOTLY OBJECTS###
 BACKGROUND <- 'rgb(35,35,35)'
