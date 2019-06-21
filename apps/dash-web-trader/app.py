@@ -453,7 +453,7 @@ def get_modal_fig(currency_pair, index):
 
 # Returns graph figure
 def get_fig(currency_pair, ask, bid, type_trace, studies, period):
-    #Get OHLC data
+    # Get OHLC data
     data_frame = currency_pair_data[currency_pair]
     t = datetime.datetime.now()
     data = data_frame.loc[
@@ -924,6 +924,7 @@ def generate_figure_callback(pair):
 
     return chart_fig_callback
 
+
 # Function to close currency pair graph
 def generate_close_graph_callback():
     def close_callback(n, n2):
@@ -935,7 +936,8 @@ def generate_close_graph_callback():
 
     return close_callback
 
-# Function to open or close STYLE or STUDIES menu 
+
+# Function to open or close STYLE or STUDIES menu
 def generate_open_close_menu_callback():
     def open_close_menu(n, className):
         if n == 0:
@@ -968,6 +970,7 @@ def generate_studies_content_tab_callback():
 
     return studies_tab
 
+
 # Function show or hide style menu for chart
 def generate_style_content_tab_callback():
     def style_tab(current_tab):
@@ -993,6 +996,7 @@ def generate_modal_open_callback():
 def generate_modal_close_callback():
     def close_modal(n, n2):
         return 0
+
     return close_modal
 
 
@@ -1000,6 +1004,7 @@ def generate_modal_close_callback():
 def generate_clean_sl_callback():
     def clean_sl(n):
         return 0
+
     return clean_sl
 
 
@@ -1007,7 +1012,9 @@ def generate_clean_sl_callback():
 def generate_clean_tp_callback():
     def clean_tp(n):
         return 0
+
     return clean_tp
+
 
 # Function to create figure for Buy/Sell Modal
 def generate_modal_figure_callback(pair):
@@ -1057,6 +1064,7 @@ def generate_order_button_callback(pair):
 
     return order_callback
 
+
 # Function to update orders
 def update_orders(orders, current_bids, current_asks, id_to_close):
     for order in orders:
@@ -1102,7 +1110,8 @@ def update_orders(orders, current_bids, current_asks, id_to_close):
                 order["close Price"] = price
     return orders
 
-# Function to update orders div 
+
+# Function to update orders div
 def generate_update_orders_div_callback():
     def update_orders_callback(*args):
         orders = []
@@ -1230,11 +1239,11 @@ for pair in currencies:
         [
             Output(pair + "menu_tab", "children"),
             Output(pair + "style_header", "className"),
-            Output(pair + "studies_header", "className")
+            Output(pair + "studies_header", "className"),
         ],
         [
             Input(pair + "style_header", "n_clicks_timestamp"),
-            Input(pair + "studies_header", "n_clicks_timestamp")
+            Input(pair + "studies_header", "n_clicks_timestamp"),
         ],
     )(generate_active_menu_tab_callback())
 
@@ -1247,7 +1256,6 @@ for pair in currencies:
     app.callback(
         Output(pair + "studies_tab", "style"), [Input(pair + "menu_tab", "children")]
     )(generate_studies_content_tab_callback())
-
 
     # show modal
     app.callback(Output(pair + "modal", "style"), [Input(pair + "Buy", "n_clicks")])(
