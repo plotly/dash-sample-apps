@@ -377,14 +377,15 @@ body{
     margin: 0;
 }
 
-
-.btn-style{
-  top: 0px;
-  float: left;
-  margin-left: 5px;
-  margin-right: 5px;
+.span-menu{
+  padding: 5px;
   text-decoration: none;
   cursor: pointer;
+}
+
+.span-menu:hover, .selected{
+  text-decoration: underline;
+  text-decoration-color: #55575D;
 }
 
 .table-news{
@@ -631,6 +632,11 @@ div.Select-value, .Select-control,div.period, .Select-input{
 .chart-title{
   margin-top: 3px;
   margin-left: 12px;
+}
+
+.chart-title:hover{
+  background-color: #292B33;
+  cursor: pointer;
 }
 
 .chart-graph{
