@@ -708,7 +708,7 @@ layout = [
 # updates heatmap figure based on dropdowns values or df updates
 @app.callback(
     Output("heatmap", "figure"),
-    [Input("heatmap_dropdown", "value"), Input("opportunities_df", "children")],
+    [Input("heatmap_dropdown", "value"), Input("opportunities_df", "data")],
 )
 def heat_map_callback(stage, df):
     df = pd.read_json(df, orient="split")
@@ -732,7 +732,7 @@ def heat_map_callback(stage, df):
     [
         Input("converted_opportunities_dropdown", "value"),
         Input("source_dropdown", "value"),
-        Input("opportunities_df", "children"),
+        Input("opportunities_df", "data"),
     ],
 )
 def converted_opportunity_callback(period, source, df):
@@ -743,7 +743,7 @@ def converted_opportunity_callback(period, source, df):
 # updates left indicator value based on df updates
 @app.callback(
     Output("left_opportunities_indicator", "children"),
-    [Input("opportunities_df", "children")],
+    [Input("opportunities_df", "data")],
 )
 def left_opportunities_indicator_callback(df):
     df = pd.read_json(df, orient="split")
@@ -754,7 +754,7 @@ def left_opportunities_indicator_callback(df):
 # updates middle indicator value based on df updates
 @app.callback(
     Output("middle_opportunities_indicator", "children"),
-    [Input("opportunities_df", "children")],
+    [Input("opportunities_df", "data")],
 )
 def middle_opportunities_indicator_callback(df):
     df = pd.read_json(df, orient="split")
@@ -767,7 +767,7 @@ def middle_opportunities_indicator_callback(df):
 # updates right indicator value based on df updates
 @app.callback(
     Output("right_opportunities_indicator", "children"),
-    [Input("opportunities_df", "children")],
+    [Input("opportunities_df", "data")],
 )
 def right_opportunities_indicator_callback(df):
     df = pd.read_json(df, orient="split")
@@ -805,7 +805,7 @@ def close_modal_callback(n, n2):
 
 # add new opportunity to salesforce and stores new df in hidden div
 @app.callback(
-    Output("opportunities_df", "children"),
+    Output("opportunities_df", "data"),
     [Input("submit_new_opportunity", "n_clicks")],
     [
         State("new_opportunity_name", "value"),
@@ -815,7 +815,7 @@ def close_modal_callback(n, n2):
         State("new_opportunity_date", "date"),
         State("new_opportunity_type", "value"),
         State("new_opportunity_source", "value"),
-        State("opportunities_df", "children"),
+        State("opportunities_df", "data"),
     ],
 )
 def add_opportunity_callback(
@@ -846,7 +846,7 @@ def add_opportunity_callback(
 # updates top open opportunities based on df updates
 @app.callback(
     Output("top_open_opportunities", "children"),
-    [Input("opportunities_df", "children")],
+    [Input("opportunities_df", "data")],
 )
 def top_open_opportunities_callback(df):
     df = pd.read_json(df, orient="split")
@@ -857,7 +857,7 @@ def top_open_opportunities_callback(df):
 # updates top lost opportunities based on df updates
 @app.callback(
     Output("top_lost_opportunities", "children"),
-    [Input("opportunities_df", "children")],
+    [Input("opportunities_df", "data")],
 )
 def top_lost_opportunities_callback(df):
     df = pd.read_json(df, orient="split")

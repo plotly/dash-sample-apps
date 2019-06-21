@@ -739,7 +739,7 @@ layout = [
 
 
 @app.callback(
-    Output("left_cases_indicator", "children"), [Input("cases_df", "children")]
+    Output("left_cases_indicator", "children"), [Input("cases_df", "data")]
 )
 def left_cases_indicator_callback(df):
     df = pd.read_json(df, orient="split")
@@ -748,7 +748,7 @@ def left_cases_indicator_callback(df):
 
 
 @app.callback(
-    Output("middle_cases_indicator", "children"), [Input("cases_df", "children")]
+    Output("middle_cases_indicator", "children"), [Input("cases_df", "data")]
 )
 def middle_cases_indicator_callback(df):
     df = pd.read_json(df, orient="split")
@@ -757,7 +757,7 @@ def middle_cases_indicator_callback(df):
 
 
 @app.callback(
-    Output("right_cases_indicator", "children"), [Input("cases_df", "children")]
+    Output("right_cases_indicator", "children"), [Input("cases_df", "data")]
 )
 def right_cases_indicator_callback(df):
     df = pd.read_json(df, orient="split")
@@ -770,7 +770,7 @@ def right_cases_indicator_callback(df):
     [
         Input("priority_dropdown", "value"),
         Input("origin_dropdown", "value"),
-        Input("cases_df", "children"),
+        Input("cases_df", "data"),
     ],
 )
 def cases_reasons_callback(priority, origin, df):
@@ -783,7 +783,7 @@ def cases_reasons_callback(priority, origin, df):
     [
         Input("priority_dropdown", "value"),
         Input("origin_dropdown", "value"),
-        Input("cases_df", "children"),
+        Input("cases_df", "data"),
     ],
 )
 def cases_types_callback(priority, origin, df):
@@ -797,7 +797,7 @@ def cases_types_callback(priority, origin, df):
         Input("cases_period_dropdown", "value"),
         Input("origin_dropdown", "value"),
         Input("priority_dropdown", "value"),
-        Input("cases_df", "children"),
+        Input("cases_df", "data"),
     ],
 )
 def cases_period_callback(period, origin, priority, df):
@@ -808,7 +808,7 @@ def cases_period_callback(period, origin, priority, df):
 @app.callback(
     Output("cases_by_account", "figure"),
     [
-        Input("cases_df", "children"),
+        Input("cases_df", "data"),
     ],
 )
 def cases_account_callback(df):
@@ -832,7 +832,7 @@ def close_modal_callback(n, n2):
 
 
 @app.callback(
-    Output("cases_df", "children"),
+    Output("cases_df", "data"),
     [Input("submit_new_case", "n_clicks")],
     [
         State("new_case_account", "value"),
@@ -844,7 +844,7 @@ def close_modal_callback(n, n2):
         State("new_case_status", "value"),
         State("new_case_description", "value"),
         State("new_case_priority", "value"),
-        State("cases_df", "children"),
+        State("cases_df", "data"),
     ],
 )
 def add_case_callback(

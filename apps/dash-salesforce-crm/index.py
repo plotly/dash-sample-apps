@@ -44,13 +44,18 @@ app.layout = html.Div(
 
 
         # divs that save dataframe for each tab
-        html.Div(
-                sf_manager.get_opportunities().to_json(orient="split"),  # opportunities df
-                id="opportunities_df",
-                style={"display": "none"},
-            ),
-        html.Div(sf_manager.get_leads().to_json(orient="split"), id="leads_df", style={"display": "none"}), # leads df
-        html.Div(sf_manager.get_cases().to_json(orient="split"), id="cases_df", style={"display": "none"}), # cases df
+        dcc.Store( # opportunities df
+            id="opportunities_df",
+            data=sf_manager.get_opportunities().to_json(orient="split")
+        ),
+        dcc.Store( # leads df
+            id="leads_df",
+            data=sf_manager.get_leads().to_json(orient="split")
+        ), 
+        dcc.Store(
+            id="cases_df",
+            data=sf_manager.get_cases().to_json(orient="split")
+        ), # cases df
 
 
 
