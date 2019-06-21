@@ -127,8 +127,7 @@ a:hover {
 #brain-graph {
     user-select: none;
     margin: auto;
-    height: 650px;
-    width: 650px;
+    height: 60vh;
 }
 
 @media all and (max-width: 768px) {
