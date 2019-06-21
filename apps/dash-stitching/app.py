@@ -310,7 +310,11 @@ def fill_tab(tab):
             ),
         ]
     else:
-        return [html.Img(id="bla", src=app.get_asset_url("stitch_demo.gif"), width=canvas_width)]
+        return [
+            html.Img(
+                id="bla", src=app.get_asset_url("stitch_demo.gif"), width=canvas_width
+            )
+        ]
 
 
 @app.callback(Output("stitching-tabs", "value"), [Input("button-stitch", "n_clicks")])
