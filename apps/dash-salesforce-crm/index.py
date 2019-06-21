@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import dash
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
@@ -6,8 +5,6 @@ import dash_html_components as html
 import pandas as pd
 import flask
 import plotly.plotly as py
-from plotly import graph_objs as go
-import math
 
 from app import app, server, sf_manager
 from apps import opportunities, cases, leads

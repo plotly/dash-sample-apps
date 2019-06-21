@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
-import math
 
 import pandas as pd
-import flask
 import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
