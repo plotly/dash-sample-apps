@@ -339,6 +339,7 @@ text-decoration: underline;
     padding-left: 15px;
     margin: 0px;
     font-size: 13px;
+    text-align: left;
   }
   [class*="twelve columns"] {
     width: 50%;
@@ -363,7 +364,7 @@ text-decoration: underline;
   }
   [class*="rowrow2"] {
     width: 100%;
-    text-align: center;
+    text-align: left;
   }
   [class*="redbutton"] {
     display: none;
@@ -379,5 +380,14 @@ text-decoration: underline;
   [class*="logo"] {
     display: none;
   }
+  [class*="subpageone"] {
+    min-height: 400mm;
 }
+  [class*="page"] {
+    min-height: 300mm;
+}
+  [class*="subpagetwo"] {
+    min-height: 380mm;
+}
+  
 
