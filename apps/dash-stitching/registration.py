@@ -23,8 +23,15 @@ def _blending_mask(shape):
     return ndimage.distance_transform_cdt(mask) + 1
 
 
-def register_tiles(imgs, n_rows, n_cols, overlap_global=None,
-                   overlap_local=None, pad=None, blending=True):
+def register_tiles(
+    imgs,
+    n_rows,
+    n_cols,
+    overlap_global=None,
+    overlap_local=None,
+    pad=None,
+    blending=True,
+):
     """
     Stitch together overlapping tiles of a mosaic, using Fourier-based
     registration to estimate the shifts between neighboring tiles.
@@ -67,17 +74,19 @@ def register_tiles(imgs, n_rows, n_cols, overlap_global=None,
         blending_mask = np.ones((l_r, l_c))
 
     if imgs.ndim == 4:
-        canvas = np.zeros((2 * pad + n_rows * l_r, 2 * pad + n_cols * l_c),
-                      dtype=imgs.dtype)
+        canvas = np.zeros(
+            (2 * pad + n_rows * l_r, 2 * pad + n_cols * l_c), dtype=imgs.dtype
+        )
     else:
-        canvas = np.zeros((2 * pad + n_rows * l_r, 2 * pad + n_cols * l_c, 3),
-                      dtype=imgs.dtype)
-        blending_mask = np.dstack((blending_mask, )*3)
+        canvas = np.zeros(
+            (2 * pad + n_rows * l_r, 2 * pad + n_cols * l_c, 3), dtype=imgs.dtype
+        )
+        blending_mask = np.dstack((blending_mask,) * 3)
     weights = np.zeros_like(canvas)
     init_r, init_c = pad, pad
     weighted_img = imgs[0, 0] * blending_mask
-    canvas[init_r:init_r + l_r, init_c:init_c + l_c] = weighted_img
-    weights[init_r:init_r + l_r, init_c:init_c + l_c] = blending_mask
+    canvas[init_r : init_r + l_r, init_c : init_c + l_c] = weighted_img
+    weights[init_r : init_r + l_r, init_c : init_c + l_c] = blending_mask
     shifts = np.empty((n_rows, n_cols, 2), dtype=np.int)
     shifts[0, 0] = init_r, init_c
 
@@ -93,19 +102,19 @@ def register_tiles(imgs, n_rows, n_cols, overlap_global=None,
             init_r, init_c = shifts[i_rows - 1, 0]
             init_r += l_r
             shift_vert = feature.register_translation(
-                    imgs[i_rows - 1, 0, -overlap[0]:, :(l_c - overlap[1])],
-                    imgs[i_rows, 0, :overlap[0], -(l_c - overlap[1]):])[0]
-            init_r += int(shift_vert[0])  - overlap[0]
+                imgs[i_rows - 1, 0, -overlap[0] :, : (l_c - overlap[1])],
+                imgs[i_rows, 0, : overlap[0], -(l_c - overlap[1]) :],
+            )[0]
+            init_r += int(shift_vert[0]) - overlap[0]
             init_c += int(shift_vert[1]) - overlap[1]
             shifts[i_rows, 0] = init_r, init_c
             # Fill canvas and weights
             weighted_img = imgs[i_rows, 0] * blending_mask
-            canvas[init_r:init_r + l_r, init_c:init_c + l_c] += weighted_img
-            weights[init_r:init_r + l_r, init_c:init_c + l_c] += blending_mask
+            canvas[init_r : init_r + l_r, init_c : init_c + l_c] += weighted_img
+            weights[init_r : init_r + l_r, init_c : init_c + l_c] += blending_mask
         # Shifts between columns
         for j_cols in range(n_cols - 1):
-            index_orig = np.ravel_multi_index((i_rows, j_cols),
-                                              (n_rows, n_cols))
+            index_orig = np.ravel_multi_index((i_rows, j_cols), (n_rows, n_cols))
             index_target = index_orig + 1
             try:
                 overlap = overlap_local[(index_orig, index_target)]
@@ -121,19 +130,20 @@ def register_tiles(imgs, n_rows, n_cols, overlap_global=None,
             else:
                 print("down")
                 row_start_1 = None
-                row_end_1= (l_r - overlap[0])
+                row_end_1 = l_r - overlap[0]
                 row_start_2 = -(l_r - overlap[0])
                 row_end_2 = None
             shift_horiz = feature.register_translation(
-                imgs[i_rows, j_cols, row_start_1:row_end_1, -overlap[1]:],
-                imgs[i_rows, j_cols + 1, row_start_2:row_end_2, :overlap[1]])[0]
+                imgs[i_rows, j_cols, row_start_1:row_end_1, -overlap[1] :],
+                imgs[i_rows, j_cols + 1, row_start_2:row_end_2, : overlap[1]],
+            )[0]
             init_r += int(shift_horiz[0]) - (overlap[0])
             init_c += int(shift_horiz[1]) - overlap[1]
             shifts[i_rows, j_cols + 1] = init_r, init_c
             # Fill canvas and weights
             weighted_img = imgs[i_rows, j_cols + 1] * blending_mask
-            canvas[init_r:init_r + l_r, init_c:init_c + l_c] += weighted_img
-            weights[init_r:init_r + l_r, init_c:init_c + l_c] += blending_mask
+            canvas[init_r : init_r + l_r, init_c : init_c + l_c] += weighted_img
+            weights[init_r : init_r + l_r, init_c : init_c + l_c] += blending_mask
 
-    canvas /= (weights + 1.e-5)
+    canvas /= weights + 1.0e-5
     return autocrop(np.rint(canvas).astype(np.uint8))
