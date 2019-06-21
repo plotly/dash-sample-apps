@@ -154,12 +154,12 @@ app$layout(
           )
         ), className= 'two-thirds column'),
         htmlDiv(list(
-          htmlA(
-            children=STARTING_DRUG, id='chem_name', href = "https://www.drugbank.ca/drugs/DB01002",target='_blank'
-          ),
           htmlImg(
             src = DRUG_IMG , id='chem_img'
             ),
+          htmlA(
+            children=STARTING_DRUG, id='chem_name', href = "https://www.drugbank.ca/drugs/DB01002",target='_blank'
+          ),
           htmlP(
             children=DRUG_DESCRIPTION, id='chem_desc'
           )
