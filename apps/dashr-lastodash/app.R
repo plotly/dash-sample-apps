@@ -12,7 +12,8 @@ library(dashTable)
 library(data.table)
 library(plotly)
 
-########################################################################################################################
+####################################################################################################
+# INITIATE APP
 
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
@@ -24,15 +25,18 @@ if (appName != ""){
   setwd(sprintf("/app/apps/%s", appName))
 }
 
-########################################################################################################################
+app <- Dash$new(name = 'DashR LAS Report')
+
+####################################################################################################
+# IMPORT & HANDLE DATA
 
 las_object <- setRefClass("las_object", fields = list(
-  V="data.frame", 
-  W="data.frame", 
-  C="data.frame", 
-  P="data.frame", 
-  O="data.frame", 
-  A="data.frame")
+  V = "data.frame", 
+  W = "data.frame", 
+  C = "data.frame", 
+  P = "data.frame", 
+  O = "data.frame", 
+  A = "data.frame")
 )
 
 convert_las <- function(las_path) {
@@ -46,35 +50,34 @@ convert_las <- function(las_path) {
       linesV <- str_split(section, "\r\n")
       contentV <- linesV[[1]][-c(1, length(linesV[[1]]))]
       las_data$V <- data.frame(x = contentV) %>% 
-        separate(col=x, into=c("label", "x"), sep="\\.", extra="merge") %>% 
-        separate(col=x, into=c("value", "description"), sep=":\\s+", extra="merge")
+        separate(col = x, into = c("label", "x"), sep = "\\.", extra = "merge") %>% 
+        separate(col = x, into = c("value", "description"), sep = ":\\s+", extra = "merge")
     }
     # section contains well identification
     if (startsWith(section, "W")) {
       print("~W")
       linesW <- str_split(section, "\r\n")
       contentW <- linesW[[1]][-c(1, length(linesW[[1]]))]
-      if ((length(contentW) >= 2) & startsWith(contentW, "#")) {
+      if ((length(contentW) >=  2) & startsWith(contentW, "#")) {
         contentW <- contentW[-c(1, 2)]
       }
-      #las_data$W <- read.table(text=contentW, header=FALSE, sep="", strip.white=TRUE) %>%  
       las_data$W <- data.frame(x = contentW) %>%
-        separate(col=x, into=c("mnemonic", "x"), sep="\\.", extra="merge") %>% 
-        separate(col=x, into=c("unit", "x"), sep="\\s+", extra="merge") %>% 
-        separate(col=x, into=c("value", "description"), sep=":\\s+", extra="merge")
+        separate(col = x, into = c("mnemonic", "x"), sep = "\\.", extra = "merge") %>% 
+        separate(col = x, into = c("unit", "x"), sep = "\\s+", extra = "merge") %>% 
+        separate(col = x, into = c("value", "description"), sep = ":\\s+", extra = "merge")
     }
     # section contains curve information
     if (startsWith(section, "C")) {
       print("~C")
       linesC <- str_split(section, "\r\n")
       contentC <- linesC[[1]][-c(1, length(linesC[[1]]))]
-      if ((length(contentC) >= 2) & startsWith(contentC, "#")) {
+      if ((length(contentC) >=  2) & startsWith(contentC, "#")) {
         contentC <- contentC[-c(1, 2)]
       }
       las_data$C <- data.frame(x = contentC) %>%
-        separate(col=x, into=c("mnemonic", "x"), sep="\\.", extra="merge") %>%
-        separate(col=x, into=c("unit", "x"), sep="\\s+", extra="merge") %>%
-        separate(col=x, into=c("api code", "curve description"), sep=":\\s+", extra="merge")
+        separate(col = x, into = c("mnemonic", "x"), sep = "\\.", extra = "merge") %>%
+        separate(col = x, into = c("unit", "x"), sep = "\\s+", extra = "merge") %>%
+        separate(col = x, into = c("api code", "curve description"), sep = ":\\s+", extra = "merge")
     }
     # section contains parameters or constants
     if (startsWith(section, "P")) {
@@ -87,38 +90,32 @@ convert_las <- function(las_path) {
     # section contains ASCII log data
     if (startsWith(section, "A")) {
       print("~A")
-      #linesA <- str_split(section, "\r\n")
-      #contentA <- linesA[[1]][-c(1, length(linesC[[1]]))]
-      #tableA <- read.table(text=contentA, header=FALSE, sep="", col.names=as.vector(tableC['mnemonic']))
       contentA <- str_sub(section, 2, -2)
-      las_data$A <- read.table(text=contentA, header=TRUE, sep="")
-      #las_data$A <- as.data.frame(apply(dataA,2,function(x)str_trim(x,"left")))
-      #las_data$A <- sub("[[:space:]]+$","",read.table(text=contentA, header=TRUE, sep=""))
+      las_data$A <- read.table(text = contentA, header = TRUE, sep = "")
     }
   }
   return (las_data)
 }
 
-########################################################################################################################
-
 las_dir <- "data/"
 las_file <- "alcor2.las"
-las_path <- paste(las_dir, las_file, sep="")
+las_path <- paste(las_dir, las_file, sep = "")
 las_data <- convert_las(las_path)
 
 table_cols <- list (
-  "mnemonic" = list(name="mnemonic", id="mnemonic", width="100px"),
-  "description" = list(name="description", id="description", width="300px"),
-  "unit" = list(name="unit", id="unit", width="25px"),
-  "value" = list(name="value", id="value", width="300px")
+  "mnemonic" = list(name = "mnemonic", id = "mnemonic", width = "100px"),
+  "description" = list(name = "description", id = "description", width = "300px"),
+  "unit" = list(name = "unit", id = "unit", width = "25px"),
+  "value" = list(name = "value", id = "value", width = "300px")
 )
 
-########################################################################################################################
+####################################################################################################
+# DEFINE HELPER FUNCTIONS
 
 get_item <- function(df, name1, name2, key1) {
   key2 <- ""
   for (i in 1:nrow(df)) {
-    if (str_trim(df[i,name1],"left")==key1) {
+    if (str_trim(df[i,name1],"left") == key1) {
       key2 <- df[i,name2]
     }
   }
@@ -129,24 +126,25 @@ get_plot_list <- function(nplots) {
   lapply(seq_len(nplots), function(x) plot_ly())
 }
 
-########################################################################################################################
+####################################################################################################
+# DEFINE FUNCTIONS FOR APP LAYOUT
 
 generate_frontpage <- function() {
   desc <- str_trim(las_data$V[[3]][1], "left")
   return(
     list(
       htmlDiv(
-        id="las-header",
-        children=list(
-          htmlImg(id="las-logo", src="assets/logo.png"),
+        id = "las-header",
+        children = list(
+          htmlImg(id = "las-logo", src = "assets/logo.png"),
           htmlDiv(
-            id="las-header-text",
-            children=list(
+            id = "las-header-text",
+            children = list(
               htmlH1("LAS Report"),
               htmlDiv(
-                id="las-file-info",
-                children=list(
-                  htmlSpan(id="las-filename", children=las_file),
+                id = "las-file-info",
+                children = list(
+                  htmlSpan(id = "las-filename", children = las_file),
                   htmlSpan(glue(" ({desc})"))
                 )
               )
@@ -161,19 +159,19 @@ generate_frontpage <- function() {
 generate_table <- function() {
   return(
     dashTable::dashDataTable(
-      id="table",
+      id = "table",
       sorting = TRUE,
       filtering = TRUE,
       row_deletable = TRUE,
       style_cell = list(
-        padding="15px", 
-        width="auto", 
-        textAlign="center", 
-        border="white"
+        padding = "15px", 
+        width = "auto", 
+        textAlign = "center", 
+        border = "white"
       ),
       style_cell_conditional = list(list(
-        'if'=list(row_index="even"), 
-        backgroundColor="#f9f9f9"
+        'if' = list(row_index = "even"), 
+        backgroundColor = "#f9f9f9"
       )),
       columns = unname(table_cols),
       data = dashTable::df_to_list(las_data$W[c("mnemonic", "description", "unit", "value")])
@@ -196,22 +194,22 @@ generate_axis_title <- function(df, key) {
     # concatenate strings 
     ifelse (
       identical(curLine, ""), 
-      curLine <- paste(curLine, word, sep=""), 
-      curLine <- paste(curLine, word, sep=" ")
+      curLine <- paste(curLine, word, sep = ""), 
+      curLine <- paste(curLine, word, sep = " ")
     ) 
   }
   lines[[length(lines)+1]] <- curLine
-  title <- paste(lines, collapse="\n")
+  title <- paste(lines, collapse = "\n")
   title <- glue("{title}\n({unit})")
   return(title)
 }
 
-generate_curves <- function(height=950,
-                            width=800,
-                            bg_color="white",
-                            font_size=10,
-                            tick_font_size=8,
-                            line_width=0.5) {
+generate_curves <- function(height = 950,
+                            width = 800,
+                            bg_color = "white",
+                            font_size = 10,
+                            tick_font_size = 8,
+                            line_width = 0.5) {
   yval <- "DEPT"
   xvals <- list(
     list("BTVPVS", "DGRC"),
@@ -222,17 +220,17 @@ generate_curves <- function(height=950,
   )
   plots <- list()
   for (i in 1:length(xvals)) {
-    ifelse(i==2, line_style <- 'dashdot', line_style <- 'solid')
-    p <- plot_ly(las_data$A, y=las_data$A[[yval]])
+    ifelse(i == 2, line_style <- 'dashdot', line_style <- 'solid')
+    p <- plot_ly(las_data$A, y = las_data$A[[yval]])
     for (xval in xvals[[i]]) {
-      p <- add_trace(p, x=las_data$A[[xval]], name=xval, mode='lines', type="scatter",
-                     line=list(dash=line_style, width=line_width))
+      p <- add_trace(p, x = las_data$A[[xval]], name = xval, mode = 'lines', type = "scatter",
+                     line = list(dash = line_style, width = line_width))
     }
     plots[length(plots)+1] <- p
   }
   fig <- subplot(
     plots[[1]], plots[[2]], plots[[3]], plots[[4]], plots[[5]], 
-    get_plot_list(5), nrows=1, shareY=TRUE, margin=0
+    get_plot_list(5), nrows = 1, shareY = TRUE, margin = 0
   )
   fig$x$data[[2]][["xaxis"]] = "x6"
   fig$x$data[[7]][["xaxis"]] = "x7"
@@ -240,32 +238,32 @@ generate_curves <- function(height=950,
   fig$x$data[[12]][["xaxis"]] = "x9"
   for (i in 1:length(xvals)) {
     for (xval in xvals[[i]]) {
-      ifelse(i==1, xaxis <- "xaxis", xaxis <- glue("xaxis{i}"))
-      ifelse(i==2, fig$x$layout[[xaxis]]$type <- "log", fig$x$layout[[xaxis]]$type <- "linear")
+      ifelse(i == 1, xaxis <- "xaxis", xaxis <- glue("xaxis{i}"))
+      ifelse(i == 2, fig$x$layout[[xaxis]]$type <- "log", fig$x$layout[[xaxis]]$type <- "linear")
     }
   }
   for (i in c(6:9)) {
     xaxis <- glue("xaxis{i}")
-    ifelse(i!=9, fig$x$layout[[xaxis]]$overlaying <- glue("x{i-5}"), fig$x$layout[[xaxis]]$overlaying <- glue("x{i-4}"))
+    ifelse(i != 9, fig$x$layout[[xaxis]]$overlaying <- glue("x{i-5}"), fig$x$layout[[xaxis]]$overlaying <- glue("x{i-4}"))
     fig$x$layout[[xaxis]]$anchor <- "y"
     fig$x$layout[[xaxis]]$side <- "top"
     fig$x$layout[[xaxis]]$title <- glue("TITLE {i}")
   }
   for (i in 1:9) {
-    ifelse(i %in% c(1:5), key <- xvals[[i]][[1]], ifelse(i!=9, key <- xvals[[i-5]][[length(xvals[[i-5]])]], key <- xvals[[i-4]][[length(xvals[[i-4]])]]))
-    ifelse(i==1, xaxis <- "xaxis", xaxis <- glue("xaxis{i}"))
+    ifelse(i %in% c(1:5), key <- xvals[[i]][[1]], ifelse(i !=  9, key <- xvals[[i-5]][[length(xvals[[i-5]])]], key <- xvals[[i-4]][[length(xvals[[i-4]])]]))
+    ifelse(i == 1, xaxis <- "xaxis", xaxis <- glue("xaxis{i}"))
     fig$x$layout[[xaxis]]$mirror <- "all"
     fig$x$layout[[xaxis]]$automargin <- TRUE
     fig$x$layout[[xaxis]]$showline <- TRUE
-    fig$x$layout[[xaxis]]$title <- list(text=generate_axis_title(las_data$C, key), font=list(family="Arial, sans-serif", size=font_size))
-    fig$x$layout[[xaxis]]$tickfont <- list(family="Arial, sans-serif", size=tick_font_size)
+    fig$x$layout[[xaxis]]$title <- list(text = generate_axis_title(las_data$C, key), font = list(family = "Arial, sans-serif", size = font_size))
+    fig$x$layout[[xaxis]]$tickfont <- list(family = "Arial, sans-serif", size = tick_font_size)
   }
   # y-axis
   fig$x$layout[["yaxis"]]$mirror <- "all"
   fig$x$layout[["yaxis"]]$automargin <- TRUE
   fig$x$layout[["yaxis"]]$showline <- TRUE
-  fig$x$layout[["yaxis"]]$title <- list(text=generate_axis_title(las_data$C, "DEPT"), font=list(family="Arial, sans-serif", size=font_size))
-  fig$x$layout[["yaxis"]]$tickfont <- list(family="Arial, sans-serif", size=tick_font_size)
+  fig$x$layout[["yaxis"]]$title <- list(text = generate_axis_title(las_data$C, "DEPT"), font = list(family = "Arial, sans-serif", size = font_size))
+  fig$x$layout[["yaxis"]]$tickfont <- list(family = "Arial, sans-serif", size = tick_font_size)
   fig$x$layout[["yaxis"]]$autorange <- 'reversed'
   # layout
   fig$x$layout$height <- height
@@ -273,68 +271,67 @@ generate_curves <- function(height=950,
   fig$x$layout$plot_bgcolor <- bg_color
   fig$x$layout$paper_bgcolor <- bg_color
   fig$x$layout$hovermode <- "y"
-  fig$x$layout$legend <- list("font"=list("size"=tick_font_size))
-  #fig$x$layout$legend <- list("x"=0.85,"xpad"=0.0,"font"=list("size"=tick_font_size))
-  fig$x$layout$margin <- list(r=0.0, t=100.0, b=50.0, l=80.0, autoexpand=FALSE)
+  fig$x$layout$legend <- list("font" = list("size" = tick_font_size))
+  #fig$x$layout$legend <- list("x" = 0.85,"xpad" = 0.0,"font" = list("size" = tick_font_size))
+  fig$x$layout$margin <- list(r = 0.0, t = 100.0, b = 50.0, l = 80.0, autoexpand = FALSE)
   
-  return(dccGraph(figure=fig))
+  return(dccGraph(figure = fig))
 }
 
-########################################################################################################################
-
-app <- Dash$new(name='DashR LAS Report')
+####################################################################################################
+# DEFINE APP LAYOUT
 
 app$layout(
   htmlDiv(
     list(
       htmlDiv(
-        id="controls", 
-        children=list(
+        id = "controls", 
+        children = list(
           htmlButton(
             "Print", 
-            id="las-print"
+            id = "las-print"
           )
         )
       ),
       htmlDiv(
-        id="frontpage",
-        className="page",
-        children=generate_frontpage()
+        id = "frontpage",
+        className = "page",
+        children = generate_frontpage()
       ),
       htmlDiv(
-        className="section",
-        children=list(
+        className = "section",
+        children = list(
           htmlDiv(
-            className="section-title",
-            children="LAS well"
+            className = "section-title",
+            children = "LAS well"
           ),
           htmlDiv(
-            className="page",
-            children=list(
+            className = "page",
+            children = list(
               htmlDiv(
-                id="las-table", 
-                children=generate_table()
+                id = "las-table", 
+                children = generate_table()
               ),
               htmlDiv(
-                id="las-table-print"
+                id = "las-table-print"
               )
             )
           )
         )
       ),
       htmlDiv(
-        className="section",
-        children=list(
+        className = "section",
+        children = list(
           htmlDiv(
-            className="section-title", 
-            children="LAS curves"
+            className = "section-title", 
+            children = "LAS curves"
           ),
           htmlDiv(
-            className="page",
-            children=list(
+            className = "page",
+            children = list(
               htmlDiv(
-                id="las-curves", 
-                children=generate_curves()
+                id = "las-curves", 
+                children = generate_curves()
               )
             )
           )
@@ -344,76 +341,41 @@ app$layout(
   )
 )
 
-
+####################################################################################################
+# DEFINE APP CALLBACKS
 
 app$callback(
-  output = list(id="las-table-print", property="children"),
-  params = list(input(id="table", property="data")),
+  output = list(id = "las-table-print", property = "children"),
+  params = list(input(id = "table", property = "data")),
   function (data) {
-    #print("------------------ PRINT DATA ------------------")
-    #str(data[[2]]['mnemonic'])
-    #str(data)
-    num_tables = as.integer(length(data)/34)+1 # 34 rows max per page
-    
-    # CURRENT CODE TO OUTPUT TABLE NOT WORKING
-    table_list <- list()
+    num_tables <- as.integer(length(data)/34)+1
+    output <- list()
+    Th <- lapply(
+      names(data[[1]]),
+      function(s) {return(htmlTh(str_to_title(s), style = list(width = table_cols[[s]]$width)))}
+    )
+    header <- list(htmlTr(Th))
     for (i in 1:num_tables) {
-      table_rows <- list()
-      Th <- list()
-      for (key in names(data[[1]])) {
-        Th[[length(Th)+1]] <- htmlTh(str_to_title(key), style=list(width=table_cols[[key]]$width))
-      }
-      table_rows[[1]] <- htmlTr(Th)
-      for (j in 1:34) {
-        if ((i-1)*34+j > length(data)) {
-          break
+      start <- i*34-33
+      ifelse (i*34 > length(data), end <- length(data), end <- i*34)
+      rows <- lapply(
+        data[start:end], 
+        function(L) {
+          Tr <- lapply(
+            unname(L), 
+            function(s) {return(htmlTd(s))} 
+          )
+          return(htmlTr(Tr))
         }
-        Td <- list()
-        for (key in names(data[[1]])) {
-          #print("------------------ PRINT NOW ------------------")
-          #str(data[[(i-1)*34+j]])
-          Td[[length(Td)+1]] <- htmlTd(data[[(i-1)*34+j]][key])
-        }
-        table_rows[[j+1]] <- htmlTr(Td)
-      }
-      #print("------------------ PRINT TABLE i ------------------")
-      #str(table_rows[[2]])
-      table_list[[i]] <- htmlDiv(className="tablepage", children=htmlTable(table_rows))
+      )
+      output[[i]] <- htmlDiv(className = "tablepage", children = htmlTable(c(header, rows)))
     }
-    
-    # TRYING TO RESULT IN SIMILAR STRUCTURE AS DUMMY TABLE BELOW
-    handle_elements <- function(key, j1, i2) {
-      if (j1==1) {
-        element <- htmlTh(str_to_title(key), style=list(width=table_cols[[key]]$width))
-      } else {
-        element <- htmlTd(data[[(i2-1)*34+j1]][[key]])
-      }
-      return (element)
-    }
-    handle_rows <- function (j, i1) {
-      row_elements <- lapply(X=names(data[[1]], FUN=handle_elements, i2=i1, j1=j))
-      return (row_elements)
-    }
-    handle_tables <- function (i) {
-      table_rows <- lapply(X=1:35, FUN=handle_rows, i1=i)
-      return (htmlDiv(className="tablepage", children=htmlTable(table_rows)))
-    }
-    table_list2 <- lapply(X=1:num_tables, FUN=handle_tables)
-    
-    # TESTING THAT A DUMMY HTML TABLE PRINTS
-    table_list3 <- htmlDiv(className="tablepage", children=htmlTable(list(
-      htmlTr(list(htmlTh(list('t1')), htmlTh(list('t2')))),
-      htmlTr(list(htmlTd(list('a1')), htmlTd(list('a2')))),
-      htmlTr(list(htmlTd(list('b1')), htmlTd(list('b2')))),
-      htmlTr(list(htmlTd(list('c1')), htmlTd(list('c2')))),
-      htmlTr(list(htmlTd(list('d1')), htmlTd(list('d2')))),
-      htmlTr(list(htmlTd(list('e1')), htmlTd(list('e2'))))
-    )))
-    return (table_list2)
+    return (output)
   }
 )
 
-########################################################################################################################
+####################################################################################################
+# RUN SERVER
 
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
