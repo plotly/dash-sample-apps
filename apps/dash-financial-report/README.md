@@ -49,4 +49,6 @@ This is an interactive, multi-page report which displays a variety of tables, bu
 
 The following are screenshots for the app in this repo:
 
-![screenshot](screenshots/screenshot1.png)
+![animated](screenshots/dash-financial-report-demo.gif)
+
+![screenshot](screenshots/report-screenshot.png)
