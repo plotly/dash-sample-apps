@@ -167,6 +167,7 @@ app.layout = html.Div(
                 max=1
             ),
             html.Br(),
+        
             dcc.Checklist(
                 id='do-blending-stitch',
                 options=[{'label': 'Blending images', 'value': 1}],
