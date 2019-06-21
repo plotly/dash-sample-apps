@@ -23,6 +23,10 @@ from dash_canvas.utils import (
 )
 from registration import register_tiles
 from utils import StaticUrlPath
+import pathlib
+
+# get relative data folder
+PATH = pathlib.Path(__file__).parent
 
 
 def tile_images(list_of_images, n_rows, n_cols):
@@ -306,7 +310,7 @@ def fill_tab(tab):
             ),
         ]
     else:
-        return [html.Img(id="bla", src="assets/stitch_demo.gif", width=canvas_width)]
+        return [html.Img(id="bla", src=app.get_asset_url("stitch_demo.gif"), width=canvas_width)]
 
 
 @app.callback(Output("stitching-tabs", "value"), [Input("button-stitch", "n_clicks")])
