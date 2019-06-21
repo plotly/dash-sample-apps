@@ -325,4 +325,3 @@ def create_layout(app):
         ],
         className="page",
     )
-
