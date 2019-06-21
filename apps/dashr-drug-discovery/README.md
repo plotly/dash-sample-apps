@@ -11,7 +11,9 @@ Original repo: [plotly/dash-drug-discovery-demo](https://github.com/plotly/dash-
 
 ## How to run this app
 
-First, clone this repository and open a terminal inside the root folder.
+First, clone this repository and open a terminal inside the root folder:
+`git clone https://github.com/plotly/dash-sample-apps.git`
+`cd dash-sample-apps/apps/dashr-drug-discovery`
 
 Install packages (using `install.packages('PACKAGE NAME')`) that are listed in app.R
 
