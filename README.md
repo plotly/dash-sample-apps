@@ -197,3 +197,10 @@ PR has two checkers.
 1. make sure your code passed the black linter
 2. make sure your project is deployed on dns playground
 ```
+
+#### Setup pre-commit hook
+
+1. install pre-commit (https://pre-commit.com/)
+2. run `pre-commit install` to install the hooks in `.git/` folder
+
+- config is defined in .pre-commit-config.yaml
