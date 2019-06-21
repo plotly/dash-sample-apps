@@ -637,8 +637,9 @@ there.
 @media (max-width: 550px) {
     .instruction {
     width: 100vw;
-    height: 140vh;
+    height: 100vh;
     text-align: center;
+    overflow-x: hidden !important;
   }
 
   #e99392eb-e14e-4d33-ae72-49bbf5feff66 {
@@ -667,10 +668,6 @@ there.
     font-size: 1.2rem;
     text-align: center;
     margin: 0 auto;
-  }
-
-  .instruction {
-    overflow-x: hidden !important;
   }
 
   .button_instruction,
@@ -912,6 +909,11 @@ there.
     cursor: pointer;
     box-sizing: border-box;
     margin-left: 0;
+  }
+
+  #bla {
+    width: 100vw !important;
+    margin: 0 auto;
   }
 
   

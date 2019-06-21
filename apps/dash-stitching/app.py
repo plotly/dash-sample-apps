@@ -121,8 +121,9 @@ app.layout = html.Div(
                 dcc.Input(
                     id='nrows-stitch',
                     type='number',
-                    value=0,
+                    value=1,
                     name='number of rows',
+                    min=1,
                     step=1
                 )
             ]), 
@@ -131,8 +132,9 @@ app.layout = html.Div(
                 dcc.Input(
                     id='ncolumns-stitch',
                     type='number',
-                    #value=0,
+                    value=1,
                     name='number of columns',
+                    min=1,
                     step=1
                 )
             ])
@@ -205,7 +207,7 @@ app.layout = html.Div(
             value='canvas-tab',
             children=[
                 dcc.Tab(
-                    label='Image tiles',
+                    label='Image Tiles',
                     value='canvas-tab'
                 ),
                 dcc.Tab(
@@ -213,7 +215,7 @@ app.layout = html.Div(
                     value='result-tab',
                 ),
                 dcc.Tab(
-                    label='How to use this app',
+                    label='How To Use This App',
                     value='help-tab',
                 )
             ], 
@@ -325,6 +327,8 @@ def update_store(click):
                Input('brightness-stitch', 'value'),
                Input('stitched-res', 'children')])
 def modify_result(contrast, brightness, image_string):
+    if image_string is None:
+            raise PreventUpdate
     img = np.asarray(image_string_to_PILImage(image_string))
     img = contrast_adjust(img, contrast)
     img = brightness_adjust(img, brightness)
@@ -339,8 +343,7 @@ def modify_result(contrast, brightness, image_string):
                State('table-stitch', 'data'),
                State('sh_x', 'children'),
                State('do-blending-stitch', 'values')])
-def modify_content(n_cl,
-                   n_rows, n_cols, overlap, estimate, image_string, vals):
+def modify_content(n_cl, n_rows, n_cols, overlap, estimate, image_string, vals):
     blending = 1 in vals
     if image_string is None:
         raise PreventUpdate
@@ -378,8 +381,8 @@ def reset_contents(n_clicks):
                Input('downsample', 'value'), ],
               [State('nrows-stitch', 'value'),
                State('ncolumns-stitch', 'value')])
-def upload_content(list_image_string, list_filenames, click, downsample,
-                   n_rows, n_cols):
+def upload_content(list_image_string, list_filenames, click, downsample, n_rows, n_cols):
+    
     downsample = int(downsample)
     if list_image_string is not None:
         order = np.argsort(list_filenames)
