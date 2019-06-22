@@ -2,7 +2,7 @@ library(plotly)
 library(xts)
 library(httr)
 library(jsonlite)
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
@@ -1608,5 +1608,5 @@ app$callback(
 )
 
 if (appName == ""){
-  app$run_server()
+  app$run_server(debug = TRUE)
 } else {app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8080))}

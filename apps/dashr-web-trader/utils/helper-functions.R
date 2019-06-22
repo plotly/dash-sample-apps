@@ -1,6 +1,6 @@
 # This file contains functions used to generate most of
 # the divs and plots used in app.R
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
@@ -769,7 +769,7 @@ chartDiv <- function(pair){
                     label = "Momentum indicator", value = "momTrace"
                   )
                 ),
-                values = list()
+                value = list()
               ),
               style = list(marginTop = "30", textAlign = "left")
             ),
