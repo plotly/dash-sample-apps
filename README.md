@@ -46,7 +46,7 @@ There are two options when you are naming the folder:
 
 1. Make the folder have the _exact same_ name as the Dash app name.
 
-2. Select any other name, but _update the file
+2. (Python apps only) Select any other name, but _update the file
    [`apps_mapping.py`](apps_directory_mapping.py)_ with the Dash app
    name and the folder name you have selected.
 
