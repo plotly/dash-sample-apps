@@ -29,27 +29,18 @@ app.layout = html.Div(
     className="",
     children=[
         html.Div(id="error-message"),
-
         # Top Banner
         html.Div(
             className="study-browser-banner row",
             children=[
-                html.H2(
-                    className="h2-title",
-                    children="ANIMAL STUDY BROWSER"
-                ),
-                html.Img(
-                    className="logo",
-                    src=app.get_asset_url("dash-logo.png"),
-                ),
-            ]
+                html.H2(className="h2-title", children="ANIMAL STUDY BROWSER"),
+                html.Img(className="logo", src=app.get_asset_url("dash-logo.png")),
+            ],
         ),
-
         # Body of the App
         html.Div(
             className="row",
             children=[
-                
                 html.Div(
                     className="four columns card",
                     children=[
@@ -67,21 +58,22 @@ app.layout = html.Div(
                                     ],
                                     value="violin",
                                     labelStyle={
-                                        'display': 'inline-block',
-                                        'padding':'12px 12px 12px 0px'    
-                                    }
+                                        "display": "inline-block",
+                                        "padding": "12px 12px 12px 0px",
+                                    },
                                 ),
                                 html.H6("CSV File"),
                                 dcc.Upload(
                                     id="upload-data",
                                     className="upload",
-                                    children=html.Div(["Drag and Drop or ", html.A("Select Files")])
-                                )
-                            ]
+                                    children=html.Div(
+                                        ["Drag and Drop or ", html.A("Select Files")]
+                                    ),
+                                ),
+                            ],
                         )
-                    ]
+                    ],
                 ),
-
                 # Graph
                 html.Div(
                     className="eight columns card",
@@ -90,15 +82,13 @@ app.layout = html.Div(
                             className="bg-white",
                             children=[
                                 html.H5("Animal data plot"),
-                                dcc.Graph(id="plot")
-                            ]
+                                dcc.Graph(id="plot"),
+                            ],
                         )
-                    ]
-                )
-
-            ]
+                    ],
+                ),
+            ],
         ),
-
     ],
 )
 
@@ -134,10 +124,7 @@ def update_error(contents):
 
 
 @app.callback(
-    [
-        Output("study-dropdown", "options"),
-        Output("study-dropdown", "value")
-    ],
+    [Output("study-dropdown", "options"), Output("study-dropdown", "value")],
     [Input("error-message", "children")],
     [State("upload-data", "contents")],
 )
@@ -300,9 +287,7 @@ def update_output(chart_type, study, contents, error_message):
         data=chart_data[chart_type],
         layout=go.Layout(
             margin=go.layout.Margin(t=0, r=50, b=50, l=50),
-            yaxis=dict(
-                title=dict(text=reading_name)
-            ),
+            yaxis=dict(title=dict(text=reading_name)),
             annotations=annotations,
         ),
     )
