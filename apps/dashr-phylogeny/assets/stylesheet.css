@@ -398,6 +398,24 @@ ol {
 .u-pull-left {
   float: left; }
 
+/* Slider 
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.rc-slider-track {
+  background-color: #8480f8;
+}
+
+.rc-slider-dot {
+  border-color: #8480f8;
+  background-color: #8480f8;
+}
+
+.rc-slider-handle {
+  border: solid 2px #8480f8;
+}
+
+.rc-slider-handle:hover {
+  border: solid 2px #6460c4;
+}
 
 /* Misc
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

@@ -177,6 +177,7 @@ createMapBubbleYear <- function(virus_name, metadata_file_stat,
     by.x = "Country", by.y = "Country", all.y = TRUE
   )
   full_df[is.na(full_df)] <- 0
+  clr <- list(list(0, "#5641ca"), list(1, "#e2e2e2"))
   g <- list(
     showframe = FALSE,
     projection = list(type = "Mercator")
@@ -184,7 +185,8 @@ createMapBubbleYear <- function(virus_name, metadata_file_stat,
   plot_geo(full_df) %>%
     add_trace(
       z = ~count, color = ~count,
-      colorscale = "Blues", locations = ~ISO3,
+      #colorscale = "Blues", locations = ~ISO3,
+      colorscale = clr, locations = ~ISO3,
       reversescale = TRUE,
       hoverinfo = "text",
       text = ~sprintf(
@@ -279,6 +281,7 @@ createHistogram <- function(metadata_file_stat, virus_name,
   plot_ly(
     data = df, x = ~Country,
     histfunc = "count", type = "histogram",
+    marker = list(color = "#8180ff"),
     hoverinfo = "y"
   ) %>%
     layout(
