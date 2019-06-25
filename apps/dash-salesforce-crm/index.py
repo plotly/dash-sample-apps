@@ -14,55 +14,57 @@ app.layout = html.Div(
         # header
         html.Div(
             className="row header",
-            children = [
-                html.Span("CRM App using Salesforce API", className='app-title'),
-
-                html.Img(src='static/Dash Financial.svg',height="100%")
+            children=[
+                html.Span("CRM App using Salesforce API", className="app-title"),
+                html.Img(src="static/Dash Financial.svg", height="100%"),
             ],
         ),
-
         # tabs
-        html.Div([
-
-            dcc.Tabs(
-                id="tabs",
-                style={"height":"20","verticalAlign":"middle"},
-                children=[
-                    dcc.Tab(id="opportubnities_tab", label="Opportunities", value="opportunities_tab"),
-                    dcc.Tab(id="leads_tab", label="Leads", value="leads_tab"),
-                    dcc.Tab(id="cases_tab", label="Cases", value="cases_tab"),
-                ],
-                value="leads_tab",
-            )
-
+        html.Div(
+            [
+                dcc.Tabs(
+                    id="tabs",
+                    style={"height": "20", "verticalAlign": "middle"},
+                    children=[
+                        dcc.Tab(
+                            id="opportubnities_tab",
+                            label="Opportunities",
+                            value="opportunities_tab",
+                        ),
+                        dcc.Tab(id="leads_tab", label="Leads", value="leads_tab"),
+                        dcc.Tab(id="cases_tab", label="Cases", value="cases_tab"),
+                    ],
+                    value="leads_tab",
+                )
             ],
-            className="row tabs_div"
-            ),
-
-
-        # divs that save dataframe for each tab
-        dcc.Store( # opportunities df
-            id="opportunities_df",
-            data=sf_manager.get_opportunities().to_json(orient="split")
+            className="row tabs_div",
         ),
-        dcc.Store( # leads df
-            id="leads_df",
-            data=sf_manager.get_leads().to_json(orient="split")
-        ), 
+        # divs that save dataframe for each tab
+        dcc.Store(  # opportunities df
+            id="opportunities_df",
+            data=sf_manager.get_opportunities().to_json(orient="split"),
+        ),
+        dcc.Store(  # leads df
+            id="leads_df", data=sf_manager.get_leads().to_json(orient="split")
+        ),
         dcc.Store(
-            id="cases_df",
-            data=sf_manager.get_cases().to_json(orient="split")
-        ), # cases df
-
-
-
+            id="cases_df", data=sf_manager.get_cases().to_json(orient="split")
+        ),  # cases df
         # Tab content
         html.Div(id="tab_content", className="row", style={"margin": "2% 3%"}),
-
-        html.Link(href="https://use.fontawesome.com/releases/v5.2.0/css/all.css",rel="stylesheet"),
-        html.Link(href="https://fonts.googleapis.com/css?family=Dosis", rel="stylesheet"),
-        html.Link(href="https://fonts.googleapis.com/css?family=Open+Sans", rel="stylesheet"),
-        html.Link(href="https://fonts.googleapis.com/css?family=Ubuntu", rel="stylesheet"),
+        html.Link(
+            href="https://use.fontawesome.com/releases/v5.2.0/css/all.css",
+            rel="stylesheet",
+        ),
+        html.Link(
+            href="https://fonts.googleapis.com/css?family=Dosis", rel="stylesheet"
+        ),
+        html.Link(
+            href="https://fonts.googleapis.com/css?family=Open+Sans", rel="stylesheet"
+        ),
+        html.Link(
+            href="https://fonts.googleapis.com/css?family=Ubuntu", rel="stylesheet"
+        ),
     ],
     className="row",
     style={"margin": "0%"},
@@ -79,6 +81,7 @@ def render_content(tab):
         return leads.layout
     else:
         return opportunities.layout
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)
