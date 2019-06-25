@@ -3,16 +3,17 @@ from simple_salesforce.exceptions import SalesforceExpiredSession
 import pandas as pd
 import os
 from dotenv import load_dotenv
+
 load_dotenv(verbose=True)
 
 
-class sf_Manager():
+class sf_Manager:
     def __init__(self):
         # Create a free SalesForce account: https://developer.salesforce.com/signup
         self.sf = Salesforce(
             username=os.getenv("USERNAME"),
             password=os.getenv("PASSWORD"),
-            security_token=os.getenv("TOKEN")
+            security_token=os.getenv("TOKEN"),
         )
 
     def login(self):
@@ -20,7 +21,7 @@ class sf_Manager():
         self.sf = Salesforce(
             username=os.getenv("USERNAME"),
             password=os.getenv("PASSWORD"),
-            security_token=os.getenv("TOKEN")
+            security_token=os.getenv("TOKEN"),
         )
         return 0
 
@@ -29,14 +30,15 @@ class sf_Manager():
             val: dict(query_result["records"][val])
             for val in range(query_result["totalSize"])
         }
-        df = pd.DataFrame.from_dict(
-            items, orient="index").drop(["attributes"], axis=1)
+        df = pd.DataFrame.from_dict(items, orient="index").drop(["attributes"], axis=1)
 
         if date:  # date indicates if the df contains datetime column
             df["CreatedDate"] = pd.to_datetime(
-                df["CreatedDate"], format="%Y-%m-%d")  # convert to datetime
+                df["CreatedDate"], format="%Y-%m-%d"
+            )  # convert to datetime
             df["CreatedDate"] = df["CreatedDate"].dt.strftime(
-                '%Y-%m-%d')  # reset string
+                "%Y-%m-%d"
+            )  # reset string
         return df
 
     def get_leads(self):
@@ -46,8 +48,8 @@ class sf_Manager():
             self.login()
             desc = self.sf.Lead.describe()
 
-        field_names = [field['name'] for field in desc['fields']]
-        soql = "SELECT {} FROM Lead".format(','.join(field_names))
+        field_names = [field["name"] for field in desc["fields"]]
+        soql = "SELECT {} FROM Lead".format(",".join(field_names))
         query_result = self.sf.query_all(soql)
         leads = self.dict_to_df(query_result)
         return leads
