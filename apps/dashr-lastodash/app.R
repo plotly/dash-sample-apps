@@ -5,7 +5,7 @@ library(tidyr)
 library(dplyr)
 library(glue)
 library(ggplot2)
-library(dashR)
+library(dash)
 library(dashHtmlComponents)
 library(dashCoreComponents)
 library(dashTable)
@@ -51,7 +51,6 @@ convert_las <- function(las_path) {
   for (section in las_sections[[1]]) {
     # store section containing version and wrap mode information
     if (startsWith(section, "V")) {
-      print("~V")
       linesV <- str_split(section, "\r\n")
       contentV <- linesV[[1]][-c(1, length(linesV[[1]]))]
       las_data$V <- data.frame(x = contentV) %>% 
@@ -60,7 +59,6 @@ convert_las <- function(las_path) {
     }
     # store section containing well identification
     if (startsWith(section, "W")) {
-      print("~W")
       linesW <- str_split(section, "\r\n")
       contentW <- linesW[[1]][-c(1, length(linesW[[1]]))]
       if ((length(contentW) >=  2) & startsWith(contentW, "#")) {
@@ -73,7 +71,6 @@ convert_las <- function(las_path) {
     }
     # store section containing curve information
     if (startsWith(section, "C")) {
-      print("~C")
       linesC <- str_split(section, "\r\n")
       contentC <- linesC[[1]][-c(1, length(linesC[[1]]))]
       if ((length(contentC) >=  2) & startsWith(contentC, "#")) {
@@ -86,7 +83,6 @@ convert_las <- function(las_path) {
     }
     # section contains ASCII log data
     if (startsWith(section, "A")) {
-      print("~A")
       contentA <- str_sub(section, 2, -2)
       las_data$A <- read.table(text = contentA, header = TRUE, sep = "")
     }
@@ -97,10 +93,10 @@ convert_las <- function(las_path) {
 las_data <- convert_las(las_path)
 
 table_header <- list (
-  "mnemonic" = list(name = "mnemonic", id = "mnemonic", width = "100px"),
-  "description" = list(name = "description", id = "description", width = "300px"),
-  "unit" = list(name = "unit", id = "unit", width = "25px"),
-  "value" = list(name = "value", id = "value", width = "300px")
+  "mnemonic" = list(name = "mnemonic", id = "mnemonic", width = "10%"),
+  "description" = list(name = "description", id = "description", width = "40%"),
+  "unit" = list(name = "unit", id = "unit", width = "10%"),
+  "value" = list(name = "value", id = "value", width = "40%")
 )
 
 ####################################################################################################
@@ -137,12 +133,20 @@ generate_table <- function() {
   return(
     dashTable::dashDataTable(
       id = "table",
-      sorting = TRUE,
-      filtering = TRUE,
+      sort_action = TRUE,
+      filter_action = TRUE,
       row_deletable = TRUE,
+      css = list(list(
+        selector = '.dash-cell div.dash-cell-value',
+        rule = 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+      )),
+      style_data = list(
+        whiteSpace = "normal"
+      ),
       style_cell = list(
         padding = "15px", 
-        width = "auto", 
+        minWidth = "0px",
+        width = "25%",
         textAlign = "center", 
         border = "white"
       ),
