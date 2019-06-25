@@ -179,7 +179,6 @@ createMapBubbleYear <- function(virus_name, metadata_file_stat,
   full_df[is.na(full_df)] <- 0
   g <- list(
     showframe = FALSE,
-    showcoastlines = FALSE,
     projection = list(type = "Mercator")
   )
   plot_geo(full_df) %>%
@@ -336,7 +335,7 @@ slicer <- function(min_date, max_date){
   )
   marks <- as.list(
     setNames(
-      seq(min_date, max_date, by = step),
+      as.character(seq(min_date, max_date, by = step)),
       seq(min_date, max_date, by = step)
     )
   )
@@ -467,8 +466,8 @@ app$layout(
                             options = list(
                               list(
                                 label = "h7n9",
-                                value = "h7n9",
-                                display = "block"
+                                value = "h7n9"
+                                #display = "block"
                               )
                             ),
                             value = "h7n9"
@@ -931,5 +930,5 @@ app$callback(
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
 } else {
-  app$run_server()
+  app$run_server(debug = TRUE)
 }
