@@ -548,6 +548,7 @@ there.
 
 /* Larger than mobile */
 @media (max-width: 375px) {
+  /*
   #title {
     width: 30%;
     font-size: 20px;
@@ -555,16 +556,18 @@ there.
   }
   #learn-more-button {
     margin-left: 0px;
-    font-size: 10px !important;
+    font-size: 55px !important;
     padding: 0px 10px !important;
   }
   #plotly-logo {
-    padding: 10px 10px !important;
+    padding: 100px 500px !important;
   }
+  */
 }
 
 /* Larger than tablet */
 @media (max-width: 575px) {
+  /*
   #title {
     width: 40% !important;
     font-size: 15px;
@@ -572,12 +575,15 @@ there.
   }
   #learn-more-button {
     margin-left: 0px;
-    font-size: 10px !important;
+    font-size: 7.5px !important;
     padding: 0px 10px !important;
   }
   #plotly-logo {
     padding: 10px 10px !important;
   }
+
+  */
+  
 }
 
 /* Larger than phablet (also point when grid becomes active) */

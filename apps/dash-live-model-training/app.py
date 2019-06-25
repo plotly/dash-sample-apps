@@ -171,7 +171,7 @@ app.layout = html.Div(
                                                 placeholder="Select a demo dataset",
                                                 searchable=False,
                                             ),
-                                            className="six columns dropdown-box",
+                                            className="six columns dropdown-box-first",
                                         ),
                                         html.Div(
                                             dcc.Dropdown(
@@ -189,7 +189,7 @@ app.layout = html.Div(
                                                 placeholder="Select Model to Simulate",
                                                 searchable=False,
                                             ),
-                                            className="six columns dropdown-box",
+                                            className="six columns dropdown-box-second",
                                         ),
                                         html.Div(
                                             dcc.Dropdown(
@@ -213,7 +213,7 @@ app.layout = html.Div(
                                                     },
                                                 ],
                                                 value="regular",
-                                                className="twelve columns dropdown-box",
+                                                className="twelve columns dropdown-box-third",
                                                 clearable=False,
                                                 searchable=False,
                                             )

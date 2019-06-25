@@ -41,9 +41,13 @@
   width: auto;
 }
 
-.dropdown-box {
+.dropdown-box-first,
+.dropdown-box-second,
+.dropdown-box-third {
   padding: 10px 5px;
 }
+
+
 
 /* slider colors */
 
@@ -88,6 +92,90 @@
 /* overall app background color */
 #_dash-app-content > div {
   background-color: #f8f9fa;
+}
+
+@media (max-width: 550px) {
+
+  #title {
+    width: 200px;
+    font-size: 1.7rem;
+    font-weight: 400;
+    margin-top: 30px;
+    margin-left: 4% !important;
+  }
+
+  #learn-more-button {
+    width: 75px;
+    height: 30px;
+    margin-left: 12px;
+    font-size: 7.5px !important;
+    padding: 0px 8px !important;
+    margin-top: 25px;
+  }
+  #plotly-logo {
+    margin-top: 30px;
+    margin-left: 4px;
+  }
+
+  .dropdown-box-first,
+  .dropdown-box-second {
+    width: 50%;
+  }
+
+  #div-interval-control {
+    margin-top: 10px;
+  }
+
+ 
+  #div-step-display {
+    width: 50%;
+    float: right;
+  }
+   #div-total-step-count {
+     width: 50%;
+     float: left;
+   }
+
+
+  #div-total-step-count>h6 {
+    font-size: initial;
+  }
+
+  #div-step-display>h6 {
+    font-size: initial;
+  }
+
+  #checklist-smoothing-options-accuracy {
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  #checklist-smoothing-options-accuracy>label:nth-child(1),
+  #checklist-smoothing-options-accuracy>label:nth-child(2) {
+    text-align: center;
+    display: inline;
+    margin: 0 10px;
+  }
+
+  #radio-display-mode-accuracy {
+    margin: 10px 0;
+  }
+
+  #radio-display-mode-accuracy>label:nth-child(1),
+  #radio-display-mode-accuracy>label:nth-child(2),
+  #radio-display-mode-accuracy>label:nth-child(3) {
+    text-align: center;
+  }
+
+  #div-current-accuracy-value>p {
+    margin-bottom: 10px;
+  }
+  #div-current-accuracy-value>div:nth-child(2),
+  #div-current-accuracy-value>div:nth-child(3) {
+    text-align: center;
+  }
+  
+
 }
 
 /* @media (min-width: 1000px) {
