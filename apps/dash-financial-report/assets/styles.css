@@ -218,9 +218,7 @@ a:visited {
 
 /* mouse over link */
 a:hover {
-  color: lightgrey;
-  text-decoration: underline;
-  font-size: 100%;
+  opacity: 0.8;
 }
 
 /* selected link */

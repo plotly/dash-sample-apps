@@ -48,14 +48,5 @@ def display_page(pathname):
         return overview.create_layout(app)
 
 
-external_css = [
-    "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
-    "https://codepen.io/bcd/pen/KQrXdb.css",
-    "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
-]
-
-for css in external_css:
-    app.css.append_css({"external_url": css})
-
 if __name__ == "__main__":
     app.run_server(debug=True)
