@@ -1,10 +1,8 @@
+# -*- coding: utf-8 -*-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import plotly.graph_objs as go
-from utils import Header, make_dash_table
-import pandas as pd
 from pages import (
     overview,
     pricePerformance,
@@ -25,10 +23,7 @@ app.layout = html.Div(
 )
 
 # Update page
-@app.callback(
-    dash.dependencies.Output("page-content", "children"),
-    [dash.dependencies.Input("url", "pathname")],
-)
+@app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
     if pathname == "/dash-financial-report/price-performance":
         return pricePerformance.create_layout(app)
