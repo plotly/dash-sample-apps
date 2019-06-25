@@ -1,29 +1,44 @@
-# DashR LAStoDash
+# LAStoDash
 
 ## About this app
 
-'LAStoDash` is a sample DashR project that takes a 
-[Log ASCII Standard (LAS) file](http://www.cwls.org/las/) and builds a web app
-to view its content and ready for printing.
+'LAStoDash` is a sample Dash project that takes a [Log ASCII Standard (LAS) file](http://www.cwls.org/las/) and builds a web app to view its content and prepare it for printing in the form of a PDF.
 
-### [technique or field associated with the app]
+As you can see in the [hhttp://www.cwls.org/wp-content/uploads/2017/02/Las2_Update_Feb2017.pdf](LAS 2.0 Specifications), LAS files contain section that are marked by a ~. The [data/alcor2.las](LAS file) used for this app contains four of these sections, including version and wrap mode information (~V), well identification (~W), curve information (~C), and ASCII log data (~A), all of which are displayed in some format in the demo app and the PDF which can be printed. 
 
-[add a small description of the context in which this app might be
-used here]
+## How to run this app locally
 
-## How to run this app
+Clone the repository:
 
-[add the *full instructions* for someone who has cloned the repo to
-run your app; this includes setting up a virtual environment,
-activating the virtual environment, installing requirements, and
-running your app from the root directory (the instructions should all
-be in the form of shell commands)]
+```
+$ git clone https://github.com/plotly/dash-sample-apps.git
+```
+
+Redirect to the respective app directory:
+
+```
+$ cd dash-sample-apps/apps/dashr-lastodash
+```
+
+Install the requirements:
+
+```
+Rscript init.R
+```
+
+Run the app:
+
+```
+Rscript app.R
+```
+
+View in your browser at http://127.0.0.1:8050.
 
 ## Screenshots
 
-[add a screenshot or (ideally) a gif of the app in action]
+![demo.gif](demo.gif)
 
 ## Resources
 
-[add a list of references that you used here during development of the
-app; if you don't have anything to put here, delete this section]
+* [Dash documentation for R](https://dashr-docs.herokuapp.com/)
+* [Log ASCII Standard (LAS) file](http://www.cwls.org/las/)
