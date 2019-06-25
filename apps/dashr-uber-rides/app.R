@@ -161,7 +161,7 @@ firstP <- htmlP(paste("Select different dates, locations or ",
                   "different time frames on the histogram", sep = ""))
 plotlyLogo <- htmlA(
                   list(
-                    htmlImg(src = "assets/dashR-logo-stripe.png",
+                    htmlImg(src = "assets/dash-logo-new.png",
                             className = "logo")),
                   href = "https://dashr-docs.herokuapp.com/")
 totalRidesDay <- htmlDiv(id = "total-rides")
@@ -179,7 +179,7 @@ hourDropdown <- dccDropdown(id = "hour-dropdown",
 datePicker <- dccDatePickerSingle(
   id = "date-picker",
   date = make_date(year = 2014L, month = 4L, day = 1L),
-  display_format = "MMMM Y, DD",
+  display_format = "MMMM D, YYYY",
   min_date_allowed = make_date(year = 2014L, month = 4L, day = 1L),
   max_date_allowed = make_date(year = 2014L, month = 9L, day = 30L),
   className = "date-picker", style = list(display = "block"))
@@ -208,7 +208,7 @@ app$layout(
                   htmlDiv(hourDropdown, className = "div-for-dropdown"),
                   totalRidesDay,
                   sourceObj
-                ), className = "three columns div-user-controls"
+                ), className = "four columns div-user-controls"
         ),
 
         htmlDiv(list(
@@ -216,7 +216,7 @@ app$layout(
                   dccGraph(id = "histogram", className = "histogram",
                      selectedData = list(points = list(), range = NULL),
                      clickData = list(points = list(), range = NULL))
-                ), className = "div-for-charts nine columns"
+                ), className = "div-for-charts eight columns"
         )
       )
     )
