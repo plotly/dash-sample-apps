@@ -8,7 +8,7 @@ if (appName != ""){
   setwd(sprintf("/app/apps/%s", appName))
 }
 
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(dplyr)
@@ -376,7 +376,7 @@ industry by industry.
 
 ***",
       className = "container",
-      containerProps = list("style" = list("maxWidth" = "650px"))),
+      style = list("maxWidth" = "650px")),
     dccMarkdown(
       " ## A Mixed Recovery
 
@@ -389,7 +389,7 @@ is back to its pre-recession level, it hasn't added the
 roughly 10 million jobs needed to keep up with growth
 in the working-age population.",
       className = "container",
-      containerProps = list("style" = list("maxWidth" = "650px"))),
+      style = list("maxWidth" = "650px")),
     dccGraph(figure = CreateFigure(),
              id = "overview", style = list("height" = "90vh")),
     dccMarkdown(
@@ -401,7 +401,7 @@ is less than $22,000 — are growing.
 But so are some high-paying sectors, such as **consulting**,
 **computing** and **biotech**.",
       className = "container",
-      containerProps = list("style" = list("maxWidth" = "650px"))),
+      style = list("maxWidth" = "650px")),
     dccGraph(
       figure = CreateFigure(
         as.character(unlist(
@@ -425,7 +425,7 @@ and all have grown.
 But these gains have not offset losses in other middle-wage
 industries, such as airlines and construction.",
       className = "container",
-      containerProps = list("style" = list("maxWidth" = "650px"))),
+      style = list("maxWidth" = "650px")),
     dccGraph(
       figure = CreateFigure(
         as.character(unlist(
@@ -449,7 +449,7 @@ real estate have lost 19 percent of their jobs since
 the recession began — hundreds of thousands more than
 health care has added.",
       className = "container",
-      containerProps = list("style" = list("maxWidth" = "650px"))),
+      style = list("maxWidth" = "650px")),
     dccGraph(
       figure = CreateFigure(
         as.character(unlist(
@@ -475,7 +475,7 @@ transforming economies in resource-rich places like West Texas
 and North Dakota.
 Many of these industries have average salaries above $70,000.",
       className = "container",
-      containerProps = list("style" = list("maxWidth" = "650px"))),
+      style = list("maxWidth" = "650px")),
     dccGraph(
       figure = CreateFigure(
         as.character(unlist(
@@ -494,7 +494,7 @@ only a fraction of the losses, adding 76,000 jobs.
 Electronic shopping and auctions made up the
 fastest-growing industry, tripling in employment in 10 years.",
       className = "container",
-      containerProps = list("style" = list("maxWidth" = "650px"))),
+      style = list("maxWidth" = "650px")),
     dccGraph(
       figure = CreateFigure(
         as.character(unlist(
@@ -513,7 +513,7 @@ for themselves and their pets.
 Nail salons, which made up one of the most resilient industries,
 were closely rivaled by pet boarding, grooming and training.",
       className = "container",
-      containerProps = list("style" = list("maxWidth" = "650px"))),
+      style = list("maxWidth" = "650px")),
     dccGraph(
       figure = CreateFigure(
         as.character(unlist(
@@ -528,7 +528,7 @@ were closely rivaled by pet boarding, grooming and training.",
 Discover patterns yourself by filtering through industries with
 the dropdown below.",
       className = "container",
-      containerProps = list("style" = list("maxWidth" = "650px"))),
+      style = list("maxWidth" = "650px")),
     htmlDiv(
       dccDropdown(
         options = options,
@@ -550,11 +550,12 @@ markup, and interactive visualizations. See for yourself below.
 Interested in what you see?
 [Get in touch](https://plot.ly/products/consulting-and-oem/).",
         className = "container",
-        containerProps = list("style" = list("maxWidth" = "650px"))),
+        style = list("maxWidth" = "650px")),
     htmlDiv(
-      dccSyntaxHighlighter(
-        readChar("app.R", file.info("app.R")$size),
-        language = "R"),
+      dccMarkdown(children = paste("```r", "\n",
+        readChar("app.R", file.info("app.R")$size), "\n",
+        "```", sep = "")
+        ),
       className = "container",
       style = list("maxWidth" = "650px", "borderLeft" = "thin solid lightgrey")
     )
