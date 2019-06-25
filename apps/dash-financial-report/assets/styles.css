@@ -169,6 +169,7 @@ li {
   margin-left: 75%;
   width: 35%;
   text-align: center;
+  transition-duration: 1s;
 }
 .all-tabs {
   text-align: center;
@@ -218,7 +219,7 @@ a:visited {
 
 /* mouse over link */
 a:hover {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 /* selected link */
