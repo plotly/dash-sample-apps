@@ -16,7 +16,7 @@
 }
 
 body {
-    background-color: #f9f9f9;
+    background-color: #f4f4f4;
     color: #333333;
     font-size: 15px;
     margin: 0px;
@@ -67,7 +67,7 @@ H5, H3 {
 }
 
 .table-row {
-    line-height: 60px;
+    line-height: 57px;
     height: 60px;
     vertical-align: middle;
     font-size: 13px;
@@ -158,6 +158,7 @@ H5, H3 {
     .table-row > div {
         width: 100% !important;
         text-align: center;
+        margin: auto;
     }
 
     .table-row:nth-child(even), .table-row:nth-child(odd) {
