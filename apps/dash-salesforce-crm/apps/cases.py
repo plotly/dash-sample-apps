@@ -41,8 +41,6 @@ def pie_chart(df, column, priority, origin):
                 .tolist()
             )
 
-
-
     # if no results were found
     if types == []:
         layout = dict(annotations=[dict(text="No results found", showarrow=False)])
@@ -87,7 +85,7 @@ def cases_by_period(df, period, priority, origin):
     dates = df.index.get_level_values("CreatedDate").unique()
     dates = [str(i) for i in dates]
 
-    co = { # colors for stages
+    co = {  # colors for stages
         "Electrical": "#264e86",
         "Other": "#0074e4",
         "Structural": "#74dbef",
@@ -122,10 +120,16 @@ def cases_by_period(df, period, priority, origin):
 
 def cases_by_account(cases):
     cases = cases.dropna(subset=["AccountId"])
-    cases = pd.merge(cases, accounts,left_on="AccountId",right_on="Id")
-    cases = cases.groupby(["AccountId","Name"]).count()
-    cases = cases.sort_values('IsDeleted')
-    data = [go.Bar(y=cases.index.get_level_values('Name'), x=cases["IsDeleted"], orientation="h")] # x could be any column value since its a count
+    cases = pd.merge(cases, accounts, left_on="AccountId", right_on="Id")
+    cases = cases.groupby(["AccountId", "Name"]).count()
+    cases = cases.sort_values("IsDeleted")
+    data = [
+        go.Bar(
+            y=cases.index.get_level_values("Name"),
+            x=cases["IsDeleted"],
+            orientation="h",
+        )
+    ]  # x could be any column value since its a count
 
     layout = go.Layout(
         barmode="stack",
@@ -177,11 +181,9 @@ def modal():
                             className="row",
                             style={"borderBottom": "1px solid #C8D4E3"},
                         ),
-
                         # modal form
                         html.Div(
                             [
-
                                 # left Div
                                 html.Div(
                                     [
@@ -303,8 +305,6 @@ def modal():
                                     className="six columns",
                                     style={"paddingRight": "15"},
                                 ),
-
-
                                 # right Div
                                 html.Div(
                                     [
@@ -423,15 +423,13 @@ def modal():
                             style={"marginTop": "10", "textAlign": "center"},
                             className="row",
                         ),
-
                         # submit button
                         html.Span(
                             "Submit",
                             id="submit_new_case",
                             n_clicks=0,
-                            className="button button--primary add pretty_container"
+                            className="button button--primary add pretty_container",
                         ),
-
                     ],
                     className="modal-content",
                     style={"textAlign": "center", "border": "1px solid #C8D4E3"},
@@ -445,7 +443,6 @@ def modal():
 
 
 layout = [
-
     html.Div(
         id="cases_grid",
         children=[
@@ -490,7 +487,6 @@ layout = [
                     clearable=False,
                 ),
             ),
-
             # add button
             html.Span(
                 "Add new",
@@ -498,113 +494,83 @@ layout = [
                 n_clicks=0,
                 className="button button--primary add pretty_container",
             ),
-
             html.Div(
                 id="cases_types_container",
                 className="pretty_container chart_div",
                 children=[
                     html.P("Cases Type"),
-
                     dcc.Graph(
                         id="cases_types",
                         config=dict(displayModeBar=False),
                         style={"height": "89%", "width": "98%"},
                     ),
-
                 ],
             ),
-
             html.Div(
                 id="cases_indicators",
                 children=[
+                    indicator("#00cc96", "Low priority cases", "left_cases_indicator"),
                     indicator(
-                        "#00cc96",
-                        "Low priority cases",
-                        "left_cases_indicator",
+                        "#119DFF", "Medium priority cases", "middle_cases_indicator"
                     ),
                     indicator(
-                        "#119DFF",
-                        "Medium priority cases",
-                        "middle_cases_indicator",
-                    ),
-                    indicator(
-                        "#EF553B",
-                        "High priority cases",
-                        "right_cases_indicator",
+                        "#EF553B", "High priority cases", "right_cases_indicator"
                     ),
                 ],
                 className="row",
             ),
-
             html.Div(
                 id="cases_reasons_container",
                 className="chart_div pretty_container",
                 children=[
                     html.P("Cases Reasons"),
-
-                    dcc.Graph(
-                        id="cases_reasons",
-                        config=dict(displayModeBar=False),
-                    ),
+                    dcc.Graph(id="cases_reasons", config=dict(displayModeBar=False)),
                 ],
-
             ),
-
             html.Div(
                 id="cases_by_period_container",
                 className="pretty_container chart_div",
                 children=[
                     html.P("Cases over Time"),
-                    dcc.Graph(
-                        id="cases_by_period",
-                        config=dict(displayModeBar=False),
-                    ),
+                    dcc.Graph(id="cases_by_period", config=dict(displayModeBar=False)),
                 ],
-
             ),
-
             html.Div(
                 id="cases_by_account_container",
                 className="pretty_container chart_div",
                 children=[
                     html.P("Cases by Company"),
-                    dcc.Graph(
-                        id="cases_by_account",
-                        config=dict(displayModeBar=False),
-                    ),
+                    dcc.Graph(id="cases_by_account", config=dict(displayModeBar=False)),
                 ],
             ),
-        ]
+        ],
     ),
     modal(),
-
 ]
 
 
-@app.callback(
-    Output("left_cases_indicator", "children"), [Input("cases_df", "data")]
-)
+@app.callback(Output("left_cases_indicator", "children"), [Input("cases_df", "data")])
 def left_cases_indicator_callback(df):
     df = pd.read_json(df, orient="split")
     low = len(df[(df["Priority"] == "Low") & (df["Status"] == "New")]["Priority"].index)
     return low
 
 
-@app.callback(
-    Output("middle_cases_indicator", "children"), [Input("cases_df", "data")]
-)
+@app.callback(Output("middle_cases_indicator", "children"), [Input("cases_df", "data")])
 def middle_cases_indicator_callback(df):
     df = pd.read_json(df, orient="split")
-    medium = len(df[(df["Priority"] == "Medium") & (df["Status"] == "New")]["Priority"].index)
+    medium = len(
+        df[(df["Priority"] == "Medium") & (df["Status"] == "New")]["Priority"].index
+    )
     return medium
 
 
-@app.callback(
-    Output("right_cases_indicator", "children"), [Input("cases_df", "data")]
-)
+@app.callback(Output("right_cases_indicator", "children"), [Input("cases_df", "data")])
 def right_cases_indicator_callback(df):
     df = pd.read_json(df, orient="split")
-    high = len(df[(df["Priority"] == "High") & (df["Status"] == "New")]["Priority"].index)
+    high = len(
+        df[(df["Priority"] == "High") & (df["Status"] == "New")]["Priority"].index
+    )
     return high
 
 
@@ -648,12 +614,7 @@ def cases_period_callback(period, origin, priority, df):
     return cases_by_period(df, period, priority, origin)
 
 
-@app.callback(
-    Output("cases_by_account", "figure"),
-    [
-        Input("cases_df", "data"),
-    ],
-)
+@app.callback(Output("cases_by_account", "figure"), [Input("cases_df", "data")])
 def cases_account_callback(df):
     df = pd.read_json(df, orient="split")
     return cases_by_account(df)
@@ -691,8 +652,18 @@ def close_modal_callback(n, n2):
     ],
 )
 def add_case_callback(
-    n_clicks, account_id, origin, reason, subject, contact_id, case_type, status, description, priority, current_df
-    ):
+    n_clicks,
+    account_id,
+    origin,
+    reason,
+    subject,
+    contact_id,
+    case_type,
+    status,
+    description,
+    priority,
+    current_df,
+):
     if n_clicks > 0:
         query = {
             "AccountId": account_id,
