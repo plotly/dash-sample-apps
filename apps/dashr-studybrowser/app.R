@@ -5,7 +5,7 @@ Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
 setwd("app/apps/dashr-studybrowser")
 
 library(jsonlite)
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
