@@ -561,66 +561,6 @@ app$callback(
   }
 )
 
-# Generate_open_close_menu_callback
-app$callback(
-  output("EURUSDmenu", "className"),
-  list(
-    input("EURUSDmenu_button", "n_clicks"),
-    state("EURUSDmenu", "className")
-  ),
-  function(n, cn){
-    visibility <- ifelse(
-      n == 0,
-      "not_visible",
-      ifelse(
-        cn == "visible",
-        "not_visible",
-        "visible"
-      )
-    )
-    return(visibility)
-  }
-)
-app$callback(
-  output("USDCHFmenu", "className"),
-  list(
-    input("USDCHFmenu_button", "n_clicks"),
-    state("USDCHFmenu", "className")
-  ),
-  function(n, cn){
-    if (n == 0){
-      return("not_visible")
-    }
-    return(ifelse(cn == "visible", "not_visible", "visible"))
-  }
-)
-app$callback(
-  output("USDJPYmenu", "className"),
-  list(
-    input("USDJPYmenu_button", "n_clicks"),
-    state("USDJPYmenu", "className")
-  ),
-  function(n, cn){
-    if (n == 0){
-      return("not_visible")
-    }
-    return(ifelse(cn == "visible", "not_visible", "visible"))
-  }
-)
-app$callback(
-  output("GBPUSDmenu", "className"),
-  list(
-    input("GBPUSDmenu_button", "n_clicks"),
-    state("GBPUSDmenu", "className")
-  ),
-  function(n, cn){
-    if (n == 0){
-      return("not_visible")
-    }
-    return(ifelse(cn == "visible", "not_visible", "visible"))
-  }
-)
-
 # generate_close_graph_callback
 app$callback(
   output("EURUSDButton_chart", "n_clicks"),
