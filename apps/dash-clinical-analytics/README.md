@@ -35,7 +35,7 @@ Install all required packages by running:
 pip install -r requirements.txt
 ```
 
-Run this app locally by:
+Run this app locally with:
 ```
 python app.py
 ```

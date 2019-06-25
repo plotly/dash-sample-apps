@@ -19,30 +19,28 @@ app.config.suppress_callback_exceptions = True
 
 # Path
 BASE_PATH = pathlib.Path(__file__).parent.resolve()
-
 DATA_PATH = BASE_PATH.joinpath("data").resolve()
 
 # Read data
 df = pd.read_csv(DATA_PATH.joinpath("clinical_analytics.csv"))
 
 clinic_list = df["Clinic Name"].unique()
-
 df["Admit Source"] = df["Admit Source"].fillna("Not Identified")
 admit_list = df["Admit Source"].unique().tolist()
 
 # Date
 # Format checkin Time
-df["Check In Time"] = df["Check In Time"].apply(
+df["Check-In Time"] = df["Check-In Time"].apply(
     lambda x: dt.strptime(x, "%Y-%m-%d %I:%M:%S %p")
 )  # String -> Datetime
 
 # Insert weekday and hour of checkin time
-df["Days of Wk"] = df["Check In Hour"] = df["Check In Time"]
+df["Days of Wk"] = df["Check-In Hour"] = df["Check-In Time"]
 df["Days of Wk"] = df["Days of Wk"].apply(
     lambda x: dt.strftime(x, "%A")
 )  # Datetime -> weekday string
 
-df["Check In Hour"] = df["Check In Hour"].apply(
+df["Check-In Hour"] = df["Check-In Hour"].apply(
     lambda x: dt.strftime(x, "%I %p")
 )  # Datetime -> int(hour) + AM/PM
 
@@ -56,10 +54,10 @@ day_list = [
     "Sunday",
 ]
 
-check_in_duration = df["Check In Time"].describe()
+check_in_duration = df["Check-In Time"].describe()
 
 # Register all departments for callbacks
-all_departments = df["Department"].unique().tolist()  # 17
+all_departments = df["Department"].unique().tolist()
 wait_time_inputs = [
     Input((i + "_wait_time_graph"), "selectedData") for i in all_departments
 ]
@@ -67,20 +65,28 @@ score_inputs = [Input((i + "_score_graph"), "selectedData") for i in all_departm
 
 
 def description_card():
+    """
+
+    :return: A Div containing dashboard title & descriptions.
+    """
     return html.Div(
         id="description-card",
         children=[
             html.H5("Clinical Analytics"),
-            html.H3("Welcome to Clinical Analytics Dashboard"),
+            html.H3("Welcome to the Clinical Analytics Dashboard"),
             html.Div(
                 id="intro",
-                children="Explore clinic patient volume by time of the day, waiting time, and care score. Click on heatmap to visualize patient experience at different time points.",
+                children="Explore clinic patient volume by time of day, waiting time, and care score. Click on the heatmap to visualize patient experience at different time points.",
             ),
         ],
     )
 
 
 def generate_control_card():
+    """
+
+    :return: A Div containing controls for graphs.
+    """
     return html.Div(
         id="control-card",
         children=[
@@ -91,7 +97,7 @@ def generate_control_card():
                 value=clinic_list[0],
             ),
             html.Br(),
-            html.P("Select Checkin Time"),
+            html.P("Select Check-In Time"),
             dcc.DatePickerRange(
                 id="date-picker-select",
                 start_date=dt(2014, 1, 1),
@@ -120,15 +126,20 @@ def generate_control_card():
 
 def generate_patient_volume_heatmap(start, end, clinic, hm_click, admit_type, reset):
     """
+    :param: start: start date from selection.
+    :param: end: end date from selection.
+    :param: clinic: clinic from selection.
+    :param: hm_click: clickData from heatmap.
+    :param: admit_type: admission type from selection.
+    :param: reset (boolean): reset heatmap graph if True.
 
-    :return: Patient volume annotated heatmap. filters: clinic name, checkin time, start_date, end_date,
-    cross-filtered back from bottom-table.
+    :return: Patient volume annotated heatmap.
     """
 
     filtered_df = df[
         (df["Clinic Name"] == clinic) & (df["Admit Source"].isin(admit_type))
     ]
-    filtered_df = filtered_df.sort_values("Check In Time").set_index("Check In Time")[
+    filtered_df = filtered_df.sort_values("Check-In Time").set_index("Check-In Time")[
         start:end
     ]
 
@@ -144,9 +155,9 @@ def generate_patient_volume_heatmap(start, end, clinic, hm_click, admit_type, re
         weekday = hm_click["points"][0]["y"]
 
         # Add shapes
-        x0 = (x_axis.index(hour_of_day)) * 1 / 24
+        x0 = x_axis.index(hour_of_day) / 24
         x1 = x0 + 1 / 24
-        y0 = (y_axis.index(weekday)) * 1 / 7
+        y0 = y_axis.index(weekday) / 7
         y1 = y0 + 1 / 7
 
         shapes = [
@@ -170,7 +181,7 @@ def generate_patient_volume_heatmap(start, end, clinic, hm_click, admit_type, re
     for ind_y, day in enumerate(y_axis):
         filtered_day = filtered_df[filtered_df["Days of Wk"] == day]
         for ind_x, x_val in enumerate(x_axis):
-            sum_of_record = filtered_day[filtered_day["Check In Hour"] == x_val][
+            sum_of_record = filtered_day[filtered_day["Check-In Hour"] == x_val][
                 "Number of Records"
             ].sum()
             z[ind_y][ind_x] = sum_of_record
@@ -221,6 +232,14 @@ def generate_patient_volume_heatmap(start, end, clinic, hm_click, admit_type, re
 
 
 def generate_table_row(id, style, col1, col2, col3):
+    """ Generate table rows.
+
+    :param id: The ID of table row.
+    :param style: Css style of this row.
+    :param col1 (dict): Defining id and children for the first column.
+    :param col2 (dict): Defining id and children for the second column.
+    :param col3 (dict): Defining id and children for the third column.
+    """
     if style is None:
         style = {"width": "100%"}
     return html.Div(
@@ -251,6 +270,11 @@ def generate_table_row(id, style, col1, col2, col3):
 
 
 def generate_table_row_helper(department):
+    """Helper function.
+
+    :param: department (string): Name of department.
+    :return: Table row.
+    """
     return generate_table_row(
         department,
         {},
@@ -348,7 +372,6 @@ def initialize_table():
 
 def generate_patient_table(figure_list, departments, wait_time_xrange, score_xrange):
     """
-
     :param score_xrange: score plot xrange [min, max].
     :param wait_time_xrange: wait time plot xrange [min, max].
     :param figure_list:  A list of figures from current selected metrix.
@@ -382,7 +405,6 @@ def generate_patient_table(figure_list, departments, wait_time_xrange, score_xra
         row.style = {"display": "none"}
 
     # convert empty row[0] to axis row
-
     empty_rows[0].children[0].children = html.B(
         "graph_ax", style={"visibility": "hidden"}
     )
@@ -420,12 +442,21 @@ def generate_patient_table(figure_list, departments, wait_time_xrange, score_xra
 def create_table_figure(
     department, filtered_df, category, category_xrange, selected_index
 ):
+    """Create figures.
+
+    :param department: Name of department.
+    :param filtered_df: Filtered dataframe.
+    :param category: Defining category of figure, either 'wait time' or 'care score'.
+    :param category_xrange: x axis range for this figure.
+    :param selected_index: selected point index.
+    :return: Plotly figure dictionary.
+    """
     aggregation = {
         "Wait Time Min": "mean",
         "Care Score": "mean",
         "Days of Wk": "first",
-        "Check In Time": "first",
-        "Check In Hour": "first",
+        "Check-In Time": "first",
+        "Check-In Hour": "first",
     }
 
     df_by_department = filtered_df[
@@ -441,16 +472,16 @@ def create_table_figure(
 
     f = lambda x_val: dt.strftime(x_val, "%Y-%m-%d")
     check_in = (
-        grouped["Check In Time"].apply(f)
+        grouped["Check-In Time"].apply(f)
         + " "
         + grouped["Days of Wk"]
         + " "
-        + grouped["Check In Hour"].map(str)
+        + grouped["Check-In Hour"].map(str)
     )
     text_wait_time = (
         "Patient # : "
         + patient_id_list
-        + "<br>Check in Time: "
+        + "<br>Check-in Time: "
         + check_in
         + "<br>Wait Time: "
         + grouped["Wait Time Min"].map(str)
@@ -599,7 +630,7 @@ def update_table(start, end, clinic, admit_type, heatmap_click, reset_click, *ar
     filtered_df = df[
         (df["Clinic Name"] == clinic) & (df["Admit Source"].isin(admit_type))
     ]
-    filtered_df = filtered_df.sort_values("Check In Time").set_index("Check In Time")[
+    filtered_df = filtered_df.sort_values("Check-In Time").set_index("Check-In Time")[
         start:end
     ]
     departments = filtered_df["Department"].unique()
@@ -610,7 +641,7 @@ def update_table(start, end, clinic, admit_type, heatmap_click, reset_click, *ar
         weekday = heatmap_click["points"][0]["y"]
         clicked_df = filtered_df[
             (filtered_df["Days of Wk"] == weekday)
-            & (filtered_df["Check In Hour"] == hour_of_day)
+            & (filtered_df["Check-In Hour"] == hour_of_day)
         ]  # slice based on clicked weekday and hour
         departments = clicked_df["Department"].unique()
         filtered_df = clicked_df
