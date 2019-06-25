@@ -11,12 +11,59 @@ from plotly import graph_objs as go
 
 from app import app, indicator, millify, df_to_table, sf_manager
 
-states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA",
-          "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-          "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-          "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-          "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
-
+states = [
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DC",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
+]
 
 
 # returns choropleth map figure based on status filter
@@ -35,7 +82,7 @@ def choropleth_map(status, df):
 
     df = df.groupby("State").count()
 
-    scl = [[0.0, "rgb(38, 78, 134)"], [1.0, "#0091D5"]] # colors scale
+    scl = [[0.0, "rgb(38, 78, 134)"], [1.0, "#0091D5"]]  # colors scale
 
     data = [
         dict(
@@ -92,7 +139,6 @@ def lead_source(status, df):
     return dict(data=[trace], layout=layout)
 
 
-
 def converted_leads_count(period, df):
     df["CreatedDate"] = pd.to_datetime(df["CreatedDate"], format="%Y-%m-%d")
     df = df[df["Status"] == "Closed - Converted"]
@@ -130,7 +176,6 @@ def modal():
             [
                 html.Div(
                     [
-
                         # modal header
                         html.Div(
                             [
@@ -157,15 +202,11 @@ def modal():
                             className="row",
                             style={"borderBottom": "1px solid #C8D4E3"},
                         ),
-
                         # modal form
                         html.Div(
                             [
                                 html.P(
-                                    [
-                                        "Company Name",
-
-                                    ],
+                                    ["Company Name"],
                                     style={
                                         "float": "left",
                                         "marginTop": "4",
@@ -258,13 +299,12 @@ def modal():
                             className="row",
                             style={"padding": "2% 8%"},
                         ),
-
                         # submit button
                         html.Span(
                             "Submit",
                             id="submit_new_lead",
                             n_clicks=0,
-                            className="button button--primary add pretty_container"
+                            className="button button--primary add pretty_container",
                         ),
                     ],
                     className="modal-content",
@@ -279,7 +319,6 @@ def modal():
 
 
 layout = [
-
     # top controls
     # html.Div(
     #     [
@@ -333,8 +372,6 @@ layout = [
     #     className="row",
     #     style={"marginBottom": "10"},
     # ),
-
-
     html.Div(
         id="lead_grid",
         children=[
@@ -350,7 +387,6 @@ layout = [
                     value="D",
                     clearable=False,
                 ),
-
             ),
             html.Div(
                 className="two columns pretty_container control",
@@ -366,7 +402,6 @@ layout = [
                     clearable=False,
                 ),
             ),
-
             # add button
             html.Span(
                 "Add new",
@@ -374,12 +409,11 @@ layout = [
                 n_clicks=0,
                 className="button button--primary pretty_container",
             ),
-
             html.Div(
                 id="leads_per_state",
                 className="chart_div pretty_container",
                 children=[
-                    html.P("Leads count per state" ),
+                    html.P("Leads count per state"),
                     dcc.Graph(
                         id="map",
                         style={"height": "90%", "width": "98%"},
@@ -388,20 +422,12 @@ layout = [
                 ],
             ),
             html.Div(
-                className='row indicators',
+                className="row indicators",
                 children=[
-                    indicator(
-                        "#00cc96", "Converted Leads", "left_leads_indicator"
-                    ),
-                    indicator(
-                        "#119DFF", "Open Leads", "middle_leads_indicator"
-                    ),
-                    indicator(
-                        "#EF553B",
-                        "Conversion Rates",
-                        "right_leads_indicator",
-                    ),
-                ]
+                    indicator("#00cc96", "Converted Leads", "left_leads_indicator"),
+                    indicator("#119DFF", "Open Leads", "middle_leads_indicator"),
+                    indicator("#EF553B", "Conversion Rates", "right_leads_indicator"),
+                ],
             ),
             html.Div(
                 id="leads_source_container",
@@ -413,7 +439,7 @@ layout = [
                         style={"height": "90%", "width": "98%"},
                         config=dict(displayModeBar=False),
                     ),
-                ]
+                ],
             ),
             html.Div(
                 id="converted_leads_container",
@@ -427,20 +453,15 @@ layout = [
                     ),
                 ],
             ),
-            html.Div(
-                id="leads_table",
-                className="row pretty_container table",
-            ),
-        ]
+            html.Div(id="leads_table", className="row pretty_container table"),
+        ],
     ),
     modal(),
 ]
 
 
 # updates left indicator based on df updates
-@app.callback(
-    Output("left_leads_indicator", "children"), [Input("leads_df", "data")]
-)
+@app.callback(Output("left_leads_indicator", "children"), [Input("leads_df", "data")])
 def left_leads_indicator_callback(df):
     df = pd.read_json(df, orient="split")
     converted_leads = len(df[df["Status"] == "Closed - Converted"].index)
@@ -448,9 +469,7 @@ def left_leads_indicator_callback(df):
 
 
 # updates middle indicator based on df updates
-@app.callback(
-    Output("middle_leads_indicator", "children"), [Input("leads_df", "data")]
-)
+@app.callback(Output("middle_leads_indicator", "children"), [Input("leads_df", "data")])
 def middle_leads_indicator_callback(df):
     df = pd.read_json(df, orient="split")
     open_leads = len(
@@ -463,9 +482,7 @@ def middle_leads_indicator_callback(df):
 
 
 # updates right indicator based on df updates
-@app.callback(
-    Output("right_leads_indicator", "children"), [Input("leads_df", "data")]
-)
+@app.callback(Output("right_leads_indicator", "children"), [Input("leads_df", "data")])
 def right_leads_indicator_callback(df):
     df = pd.read_json(df, orient="split")
     converted_leads = len(df[df["Status"] == "Closed - Converted"].index)
