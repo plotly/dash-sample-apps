@@ -442,7 +442,7 @@ app$callback(
     input("i_tris", "n_intervals"),
     input("EURUSDdropdown_period", "value"),
     input("EURUSDchart_type", "value"),
-    input("EURUSDstudies", "values"),
+    input("EURUSDstudies", "value"),
     input("charts_clicked", "children"),
     state("EURUSDask", "children"),
     state("EURUSDbid", "children"),
@@ -464,7 +464,7 @@ app$callback(
       layout["autosize"] <- TRUE
       return(list(data = data, layout = layout))
     }
-    return(list(data = list(), layout = list()))
+    return(list(data = list(), layout = old_fig$layout))
   }
 )
 app$callback(
@@ -473,7 +473,7 @@ app$callback(
     input("i_tris", "n_intervals"),
     input("USDCHFdropdown_period", "value"),
     input("USDCHFchart_type", "value"),
-    input("USDCHFstudies", "values"),
+    input("USDCHFstudies", "value"),
     input("charts_clicked", "children"),
     state("USDCHFask", "children"),
     state("USDCHFbid", "children"),
@@ -495,7 +495,7 @@ app$callback(
       layout["autosize"] <- TRUE
       return(list(data = data, layout = layout))
     }
-    return(list(data = list(), layout = list()))
+    return(list(data = list(), layout = old_fig$layout))
   }
 )
 app$callback(
@@ -504,7 +504,7 @@ app$callback(
     input("i_tris", "n_intervals"),
     input("USDJPYdropdown_period", "value"),
     input("USDJPYchart_type", "value"),
-    input("USDJPYstudies", "values"),
+    input("USDJPYstudies", "value"),
     input("charts_clicked", "children"),
     state("USDJPYask", "children"),
     state("USDJPYbid", "children"),
@@ -526,7 +526,7 @@ app$callback(
       layout["autosize"] <- TRUE
       return(list(data = data, layout = layout))
     }
-    return(list(data = list(), layout = list()))
+    return(list(data = list(), layout = old_fig$layout))
   }
 )
 app$callback(
@@ -535,7 +535,7 @@ app$callback(
     input("i_tris", "n_intervals"),
     input("GBPUSDdropdown_period", "value"),
     input("GBPUSDchart_type", "value"),
-    input("GBPUSDstudies", "values"),
+    input("GBPUSDstudies", "value"),
     input("charts_clicked", "children"),
     state("GBPUSDask", "children"),
     state("GBPUSDbid", "children"),
@@ -557,7 +557,7 @@ app$callback(
       layout["autosize"] <- TRUE
       return(list(data = data, layout = layout))
     }
-    return(list(data = list(), layout = list()))
+    return(list(data = list(), layout = old_fig$layout))
   }
 )
 
@@ -1168,7 +1168,7 @@ app$callback(
     if (n == 1){
       return(getModalFig(EURUSD, index))
     }
-    return(old_fig)
+    return(list(data = list(), layout = old_fig$layout))
   }
 )
 app$callback(
@@ -1182,7 +1182,7 @@ app$callback(
     if (n == 1){
       return(getModalFig(USDCHF, index))
     }
-    return(old_fig)
+    return(list(data = list(), layout = old_fig$layout))
   }
 )
 app$callback(
@@ -1196,7 +1196,7 @@ app$callback(
     if (n == 1){
       return(getModalFig(USDJPY, index))
     }
-    return(old_fig)
+    return(list(data = list(), layout = old_fig$layout))
   }
 )
 app$callback(
@@ -1210,7 +1210,7 @@ app$callback(
     if (n == 1){
       return(getModalFig(GBPUSD, index))
     }
-    return(old_fig)
+    return(list(data = list(), layout = old_fig$layout))
   }
 )
 

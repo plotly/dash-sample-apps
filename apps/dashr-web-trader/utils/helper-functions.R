@@ -21,7 +21,7 @@ generateNewsTable <- function(dataframe, max_rows = 10){
       htmlTd(
         htmlA(
           dataframe[i, "title"],
-          href = dataframe[i, "url"],
+          href = as.character(dataframe[i, "url"]),
           style = list(
             textDecoration = "none"
           )
