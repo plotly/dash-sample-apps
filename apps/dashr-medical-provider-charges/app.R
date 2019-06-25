@@ -1,4 +1,4 @@
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(dashTable)
@@ -178,7 +178,7 @@ buildUpperLeftPanel <- function(){
               options = list(
                 list(label = "Select All Regions", value = "All")
               ),
-              values = list()
+              value = list()
             )
           ),
           htmlDiv(
@@ -419,20 +419,19 @@ generateDataTable <- function(DT, type = c("procedure", "cost")){
       }
     ),
     data = d,
-    filtering = TRUE,
-    sorting = ifelse(type == "cost", FALSE, TRUE),
-    sorting_type = "multi",
-    pagination_mode = "fe",
-    pagination_settings = list(
-      displayed_pages = 1, current_page = 0, page_size = 5
-    ),
-    navigation = "page",
+    filter_action = "native",
+    sort_action = ifelse(type == "cost", "none", "native"),
+    sort_mode = "multi",
+    page_action = "native",
+    page_size = 5, page_current= 0,
+    fixed_columns = list(headers = TRUE, data = 0),
     style_cell = list(
       backgroundColor = "#171b26",
-      color = "#7b7d8d",
-      textOverflow = "ellipsis"
+      color = "#7b7d8d"
     ),
-    style_header = list(backgroundColor = "#1f2536")
+    style_header = list(
+      backgroundColor = "#1f2536"
+    )
   )
 }
 
