@@ -94,15 +94,41 @@ Index_Fund <- c(21.67, 11.26, 15.62, 8.37, 11.11)
 
 performance_data <- data.frame(years, SP_Index, Index_Fund)
 
-performance_data$years <- factor(performance_data$years, levels = performance_data$years[order(c(1,2,3,4,5))])
+performance_data$years <-
+  factor(performance_data$years, levels = performance_data$years[order(c(1, 2, 3, 4, 5))])
 
-performance <- plot_ly(performance_data, x= ~years, y= ~Index_Fund, type = "bar",
-                       name = 'Calibre Index Fund', width = 340,  height = 200) %>%
-  add_trace(y= ~SP_Index, name = "S&P Index Fund") %>%
-  layout(yaxis = ax, xaxis = ax, colorway = c('#98151B', '#DCDCDC'), 
-         legend = list(x = 1.0, y =  0.95, orientation = 'h', yanchor = "top", font = list(size =9)),
-         autosize = FALSE, bargap = 0.35, hovermode = "closest",  margin = list(r=0, t=20, b=10, l=10))
-
+performance <-
+  plot_ly(
+    performance_data,
+    x = ~ years,
+    y = ~ Index_Fund,
+    type = "bar",
+    name = 'Calibre Index Fund',
+    width = 340,
+    height = 200
+  ) %>%
+  add_trace(y = ~ SP_Index, name = "S&P Index Fund") %>%
+  layout(
+    yaxis = ax,
+    xaxis = ax,
+    colorway = c('#98151B', '#DCDCDC'),
+    legend = list(
+      x = 1.0,
+      y =  0.95,
+      orientation = 'h',
+      yanchor = "top",
+      font = list(size = 9)
+    ),
+    autosize = FALSE,
+    bargap = 0.35,
+    hovermode = "closest",
+    margin = list(
+      r = 0,
+      t = 20,
+      b = 10,
+      l = 10
+    )
+  )
 
 
 performance_graph <- htmlDiv(
@@ -144,15 +170,37 @@ x = c(2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018)
 y = c(10000, 7500, 9000, 10000, 10500, 11000, 14000, 18000, 19000, 20500, 30000)
 
 
-hypothetical_data <- data.frame(x,y)
+hypothetical_data <- data.frame(x, y)
 
 
 
-hypothetical_growth <- plot_ly(hypothetical_data, x= x, y= y, type = "scatter",
-                               mode = 'lines', line = list(color = '#98151B', width = 3), name = "Calibre Index Fund Inv",
-                               height = 200, width = 340) %>%
-  layout(yaxis = hypothetical_yaxis, xaxis = nogrid, legend=list(orientation='h', y = -0.2), showlegend=TRUE, autosize = FALSE
-         , margin = list(r=0, t=20, b=10, l=10))
+hypothetical_growth <-
+  plot_ly(
+    hypothetical_data,
+    x = x,
+    y = y,
+    type = "scatter",
+    mode = 'lines',
+    line = list(color = '#98151B', width = 3),
+    name = "Calibre Index Fund Inv",
+    height = 200,
+    width = 340
+  ) %>%
+  layout(
+    yaxis = hypothetical_yaxis,
+    xaxis = nogrid,
+    legend = list(orientation = 'h', y = -0.2),
+    showlegend = TRUE,
+    autosize = FALSE
+    ,
+    margin = list(
+      r = 0,
+      t = 20,
+      b = 10,
+      l = 10
+    )
+  )
+
 
 
 hypothetical_graph <- htmlDiv(
@@ -230,22 +278,48 @@ df_graph$Date <- ymd(as.character(df_graph$Date))
 
 df_graph$Date <- floor_date(df_graph$Date, "month")
 
-
-df_graph <- ddply(df_graph, "Date", summarise, Vanguard.500.Index.Fund = mean(Vanguard.500.Index.Fund),
-                  MSCI.EAFE.Index.Fund..ETF. = mean(MSCI.EAFE.Index.Fund..ETF.))
-
-
-
-
-
-
-performance_lines <- plot_ly(df_graph, x= df_graph$Date, y= df_graph$Vanguard.500.Index.Fund, type = "scatter",
-                             mode = 'lines', line = list(color = '#98151B', width = 3), name = "Calibre Index Fund",
-                             height = 200, width = 750) %>%
-  add_trace(y= df_graph$MSCI.EAFE.Index.Fund..ETF., line = list(color = '#DCDCDC', width = 3), name = "MSCI EAFE Index Fund (ETF)") %>%
-  layout(yaxis = performance_yaxis, xaxis = performance_xaxis, autosize = FALSE, margin = list(r=40, t=40, b=30, l=40))
+df_graph <-
+  ddply(
+    df_graph,
+    "Date",
+    summarise,
+    Vanguard.500.Index.Fund = mean(Vanguard.500.Index.Fund),
+    MSCI.EAFE.Index.Fund..ETF. = mean(MSCI.EAFE.Index.Fund..ETF.)
+  )
 
 
+
+
+
+
+performance_lines <-
+  plot_ly(
+    df_graph,
+    x = df_graph$Date,
+    y = df_graph$Vanguard.500.Index.Fund,
+    type = "scatter",
+    mode = 'lines',
+    line = list(color = '#98151B', width = 3),
+    name = "Calibre Index Fund",
+    height = 200,
+    width = 750
+  ) %>%
+  add_trace(
+    y = df_graph$MSCI.EAFE.Index.Fund..ETF.,
+    line = list(color = '#DCDCDC', width = 3),
+    name = "MSCI EAFE Index Fund (ETF)"
+  ) %>%
+  layout(
+    yaxis = performance_yaxis,
+    xaxis = performance_xaxis,
+    autosize = FALSE,
+    margin = list(
+      r = 40,
+      t = 40,
+      b = 30,
+      l = 40
+    )
+  )
 
 performance_lines_graph <- htmlDiv(list(
   htmlH6(list('Performance'), className = 'subtitle'),
