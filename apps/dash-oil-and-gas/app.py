@@ -6,7 +6,7 @@ import dash
 import math
 import datetime as dt
 import pandas as pd
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_core_components as dcc
 import dash_html_components as html
 
@@ -74,6 +74,8 @@ layout = dict(
 app.layout = html.Div(
     [
         dcc.Store(id="aggregate_data"),
+        # empty Div to trigger javascript file for graph resizing
+        html.Div(id="output-clientside"),
         html.Div(
             [
                 html.Div(
@@ -337,6 +339,12 @@ def produce_aggregate(selected, year_slider):
 
 
 # Create callbacks
+app.clientside_callback(
+    ClientsideFunction(namespace="clientside", function_name="resize"),
+    Output("output-clientside", "children"),
+    [Input("count_graph", "figure")],
+)
+
 @app.callback(
     Output("aggregate_data", "data"),
     [
