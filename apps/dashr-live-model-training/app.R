@@ -28,7 +28,7 @@ data_dict <- list("softmax" = list("cifar" = fread('/data/cifar_softmax_run_log.
                                "fashion" = fread('/data/fashion_cnn_run_log.csv',col.names=namess))
 )
 
-app <- Dash$new(name="DashR Live Model Training")
+app <- Dash$new(name="dashr-live-model-training")
 
 demo_mode <- TRUE
 
