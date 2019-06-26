@@ -69,7 +69,6 @@ app <- Dash$new(external_stylesheets = list("https://cdnjs.cloudflare.com/ajax/l
                                             "https://codepen.io/bcd/pen/KQrXdb.css", 
                                             "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"))
 
-
 app$layout(htmlDiv(list(
   
   ## Page 1
@@ -79,24 +78,31 @@ app$layout(htmlDiv(list(
     htmlDiv(list(
       
       htmlDiv(list(
-        
         htmlDiv(list(
           
           htmlDiv(list(
-            htmlH6('Suscipit nibh'),
-            htmlH5('LOREM IPSUM DOLOR'),
-            htmlH6("Blandit pretium dui")
-          ), style = list('margin-left' = "10px"))
-        ), className =  "twelve columns", style = list('color' = "white", 'background-color' = color_1, 
-                                                       'margin-top' = "-38px", 'margin-left' = "-38px",
-                                                       'height' = "160px", 'padding' = "30px", 'display' = "flex")),
+            htmlDiv(
+              htmlImg(
+                src  =  "https://files.slack.com/files-pri/T06LPNGUD-FKXDDD4QG/dash-logo-new.png",
+                className = "app__menu__img", style = list('height' = "30px")
+              )
+            ),
+            htmlDiv(list(
+              htmlH6('Suscipit nibh'),
+              htmlH5('LOREM IPSUM DOLOR'),
+              htmlH6("Blandit pretium dui")
+            ), style = list('color' = "white", 'margin-left' = "40px"))
+          ), style = list('display' = "flex"))
+        ), style = list('background-color' = color_1, 'margin-top' = "-38px", 'width' = "150%",
+                        'margin-left' = "-38px", 'height' = "160px", 'padding' = "30px", 
+                        'display' = "flex")),
         
         htmlDiv(list(
           htmlH1(list(htmlSpan('03', style = list('opacity' = '0.8')), htmlSpan('19'))),
           htmlH6('Suscipit nibh vita')
-        ), className = "four columns", style = list('color' = "white", 'background-color' = color_2,
-                                                    'margin-top' = "-38px", 'margin-right' = "-38px",
-                                                    'height' = "160px", 'padding' = "30px"))
+        ), style = list('color' = "white", 'background-color' = color_2,
+                        'margin-top' = "-38px", 'margin-right' = "-38px", 'width' = "50%", 
+                        'height' = "160px", 'padding' = "30px"))
         
       ), className="header", style = list('display' = "flex")),
       
