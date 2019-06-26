@@ -1,14 +1,14 @@
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
   pathPrefix <- sprintf("/%s/", appName)
-  
+
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  
+
   setwd(sprintf("/app/apps/%s", appName))
 }
 
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(dashTable)
@@ -20,13 +20,11 @@ source("utils/utils.R")
 pkData <- read.csv("./data/pkdata.csv", stringsAsFactors = FALSE)
 # Read df
 
-externalSheets <- list("https://codepen.io/chriddyp/pen/bWLwgP.css")
-
 ####################################################################################################
 
 #################################### APP START #####################################################
 
-app <- Dash$new(external_stylesheets = externalSheets)
+app <- Dash$new()
 # Initiate application
 
 ####################################################################################################
@@ -37,14 +35,10 @@ nSubjects <- length(unique(pkData$subject_index))
 nTimes <- length(unique(pkData$time))
 # Default values for cols & rows
 
-dashBioLogo <- htmlImg(src = paste(
-  "data:image/png;base64,",
-  base64enc::base64encode("./assets/dashbio_logo_transparent.png"), sep = ""))
+dashBioLogo <- htmlImg(src = "./assets/dashbio_logo_transparent.png")
 
-githubLogo <- htmlImg(src = paste(
-  "data:image/png;base64,",
-  base64enc::base64encode("./assets/GitHub-Mark-Light-64px.png"), sep = ""),
-  className = "github-logo")
+githubLogo <- htmlImg(src = "./assets/GitHub-Mark-Light-64px.png",
+                      className = "github-logo")
 
 timePointsLabel <- htmlLabel(
   list(htmlDiv(list("Time points")),
@@ -53,7 +47,7 @@ timePointsLabel <- htmlLabel(
          placeholder = "Enter a value...",
          type = "number",
          value = nTimes,
-         min=3,
+         min = 3,
          max = 999
        )
   )
@@ -66,7 +60,7 @@ subjectsLabel <- htmlLabel(
          placeholder = "Enter a value...",
          type = "number",
          value = nSubjects,
-         min=1,
+         min = 1,
          max = 48
        )
   )
@@ -84,7 +78,7 @@ styleConditional <- list(
   )
 )
 
-tableHeaderStyle = list(
+tableHeaderStyle <- list(
   "backgroundColor" = "rgb(2,21,70)",
   "color" = "white",
   "textAlign" = "center"
@@ -126,7 +120,7 @@ app$layout(htmlDiv(
           id = "gh-link",
           children = list("View on GitHub"),
           href = paste("https://github.com/plotly/",
-                     "dash-sample-apps/tree/master/apps/dash-pk-calc", sep = ""),
+                  "dash-sample-apps/tree/master/apps/dash-pk-calc", sep = ""),
           style = list(color = "white", border = "solid 1px white")
         ),
         githubLogo
@@ -195,44 +189,44 @@ app$callback(output = list(id = "data-table", property = "data"),
                input(id = "subjects-input", property = "value"),
                state(id = "data-table", property = "data")
              ),
-             
+
   function(rows, subjects, records){
-   
+
    changeRow <- rows - length(records)
 
    if (changeRow > 0) {
-     for (i in (length(records) +1):(length(records) + changeRow)){
+     for (i in (length(records) + 1):(length(records) + changeRow)){
      #iterate through new rows
-       
-       records[[i]] <- records[[i-1]]
+
+       records[[i]] <- records[[i - 1]]
        # Copy previous row content to new
        records[[i]][1:length(records[[i]])] <- ""
        # Replace with empty string
      }
-     
+
    }else if (changeRow < 0){
      records <- records[1:rows]
    }
-   
+
    recordDf <- rbindlist(records) %>% select(time, everything())
    # Create df from records time first place
 
-   changeCol <- subjects - (ncol(recordDf) -1)
-   
+   changeCol <- subjects - (ncol(recordDf) - 1)
+
    if (changeCol > 0) {
-     
+
      numLengths <- as.numeric(names(recordDf)[2:length(recordDf)])
-     nameAppend <- numLengths[length(numLengths)] +1
+     nameAppend <- numLengths[length(numLengths)] + 1
      # Get name for new column
      recordDf <- cbind(recordDf, "")
      # Create new column
      names(recordDf)[ncol(recordDf)] <- nameAppend
      # Set the name
    }else if (changeCol < 0){
-     recordDf <- select(recordDf, 1:(subjects+1))
+     recordDf <- select(recordDf, 1:(subjects + 1))
      # Remove columns
    }
-   
+
    records <- df_to_list(recordDf)
    # convert df back to list
    return(records)
@@ -243,7 +237,7 @@ app$callback(output = list(id = "results-table", property = "columns"),
              params = list(
                input(id = "data-table", property = "data")
              ),
-             
+
   function(results){
     return(GenerateResultColumn(results))
   }
@@ -264,33 +258,34 @@ app$callback(output = list(id = "results-graph", property = "figure"),
                input(id = "data-table", property = "data")
              ),
   function(records){
-    
+
     df <- rbindlist(records)
     # Convert records to df
-    
+
     df <- as.data.frame(sapply(df, function(x) as.numeric(as.character(x))))
     # Convert anything non-numeric to NA
-    
-    df <- df[,colSums(is.na(df)) < nrow(df)]
+
+    df <- df[, colSums(is.na(df)) < nrow(df)]
     # Remove column if all NA
-    
+
     dfMelt <- melt(df, id.vars = "time")
     names(dfMelt) <- c("x", "name", "y")
-    dfMelt <- dfMelt[,c("x", "y", "name")]
+    dfMelt <- dfMelt[, c("x", "y", "name")]
     dfMelt <- mutate(dfMelt, mode = "lines+markers")
     # Reformat df to easily feed into list
 
-    figData <- list(list())
-    # Initiate figData list
-    for (i in 1:length(unique(dfMelt$name))){
-      dfSub <- dfMelt[dfMelt$name == as.character(i-1),]
-      figData[[i]] <- list(
-        "x" = as.numeric(dfSub$x),
-        "y" = as.numeric(dfSub$y),
-        "name" = paste("Subj", i, sep = ""),
-        "mode" = "lines+markers"
-      )
-    }
+    figData <- lapply(
+      1:length(unique(dfMelt$name)),
+      function(i){
+        dfSub <- dfMelt[dfMelt$name == as.character(i - 1), ]
+        list(
+          x = as.numeric(dfSub$x),
+          y = as.numeric(dfSub$y),
+          name = paste("Subj", i, sep = ""),
+          mode = "lines+markers"
+        )
+      }
+    )
     # Filled the figData list
 
     figure <- list(
@@ -322,16 +317,7 @@ app$callback(output = list(id = "results-graph", property = "figure"),
 )
 
 if (appName != "") {
-  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+  app$run_server(host = "0.0.0.0", port = Sys.getenv("PORT", 8050))
 } else {
   app$run_server()
 }
-
-
-
-
-
-
-
-
-
