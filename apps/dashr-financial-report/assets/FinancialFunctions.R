@@ -1,11 +1,3 @@
-# Install a package that is necessary and has not been installed, or load one that is.
-
-usePackage <- function(p) 
-{
-  if (!is.element(p, installed.packages()[,1]))
-    install.packages(p, dep = TRUE)
-  require(p, character.only = TRUE)
-}
 
 
 # Generate a Table Function 
