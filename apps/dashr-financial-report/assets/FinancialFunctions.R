@@ -26,16 +26,7 @@ generate_table <- function(df, nrows=20)
 
 # Remove.Factors
 
-remove.factors <- function (df) 
-{
-  for (varnum in 1:length(df)) {
-    if ("factor" %in% class(df[, varnum])) {
-      df[varnum] = as.character(df[, varnum])
-    }
-  }
-  return(df)
-}
-
+remove.factors <- function(x) as.character(levels(x))[x]
 
 
 #Create a HTML Header:
