@@ -51,4 +51,3 @@ Select state, cost metric and region to visualize average charges or payments(fo
 ## Resources
 * [Dash](https://dash.plot.ly/)
 * Inspired by [tableau template](https://www.tableau.com/solutions/workbook/improve-patient-satisfaction-improving-cycle-time)
-
