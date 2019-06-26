@@ -73,22 +73,28 @@ def div_graph(name):
                                 "Plot Display mode:",
                                 style={"font-weight": "bold", "margin-bottom": "0px"},
                             ),
-                            dcc.RadioItems(
-                                options=[
-                                    {"label": " Overlapping", "value": "overlap"},
-                                    {
-                                        "label": " Separate (Vertical)",
-                                        "value": "separate_vertical",
-                                    },
-                                    {
-                                        "label": " Separate (Horizontal)",
-                                        "value": "separate_horizontal",
-                                    },
-                                ],
-                                value="overlap",
-                                id=f"radio-display-mode-{name}",
-                                className="plot-display-radio-items",
-                            ),
+                            html.Div([
+                                dcc.RadioItems(
+                                    options=[
+                                        {
+                                            "label": " Overlapping",
+                                            "value": "overlap"
+                                        },
+                                        {
+                                            "label": " Separate (Vertical)",
+                                            "value": "separate_vertical",
+                                        },
+                                        {
+                                            "label": " Separate (Horizontal)",
+                                            "value": "separate_horizontal",
+                                        },
+                                    ],
+                                    value="overlap",
+                                    id=f"radio-display-mode-{name}",
+                                    className="plot-display-radio-items"
+                                )
+                            ], className="radio-item-div"),
+                            
                             html.Div(id=f"div-current-{name}-value"),
                         ]
                     ),

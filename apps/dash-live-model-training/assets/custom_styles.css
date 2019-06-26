@@ -37,7 +37,7 @@
   letter-spacing: 1.16px;
   font-size: 12px;
   padding: 0px 15px;
-  margin-top: 20px;
+  margin-top: 17px;
   width: auto;
 }
 
@@ -94,6 +94,67 @@
   background-color: #f8f9fa;
 }
 
+
+@media (max-width: 360px) {
+  #title {
+    width: 150px;
+    font-size: 1.2rem !important;
+    font-weight: 400;
+    margin-top: 30px;
+    margin-left: 7% !important;
+  }
+
+  #learn-more-button {
+    width: 75px;
+    height: 30px;
+    margin-left: -5px !important;
+    font-size: 7.5px !important;
+    padding: 0px 8px !important;
+    margin-top: 25px;
+  }
+
+  #plotly-logo {
+    margin-top: 30px;
+    margin-left: 4px;
+  }
+
+  .dropdown-box-first,
+  .dropdown-box-second {
+    width: 50%;
+  }
+
+  /* First page Smoothing Options */
+  #checklist-smoothing-options-accuracy {
+    text-align: center;
+    margin: 10px 0;
+    display: inline-flex;
+  }
+
+  #checklist-smoothing-options-accuracy>label:nth-child(1),
+  #checklist-smoothing-options-accuracy>label:nth-child(2) {
+    text-align: center;
+    display: inline;
+    margin: 0 20px;
+    
+  }
+
+  /* Second page Smoothing Options */
+  #checklist-smoothing-options-cross-entropy {
+    text-align: center;
+    margin: 10px 0;
+    display: inline-flex;
+
+  }
+
+  #checklist-smoothing-options-cross-entropy>label:nth-child(1),
+  #checklist-smoothing-options-cross-entropy>label:nth-child(2) {
+    text-align: center;
+    display: inline;
+    margin: 0 30px;
+  }
+
+}
+
 @media (max-width: 550px) {
 
   #title {
@@ -101,13 +162,13 @@
     font-size: 1.7rem;
     font-weight: 400;
     margin-top: 30px;
-    margin-left: 4% !important;
+    margin-left: 5% !important;
   }
 
   #learn-more-button {
     width: 75px;
     height: 30px;
-    margin-left: 12px;
+    margin-left: 10px;
     font-size: 7.5px !important;
     padding: 0px 8px !important;
     margin-top: 25px;
@@ -145,6 +206,7 @@
     font-size: initial;
   }
 
+  /* First Page Smoothing Options */
   #checklist-smoothing-options-accuracy {
     text-align: center;
     margin: 10px 0;
@@ -154,27 +216,67 @@
   #checklist-smoothing-options-accuracy>label:nth-child(2) {
     text-align: center;
     display: inline;
-    margin: 0 10px;
+    margin: 0 30px;
   }
 
+  /* Radio items */
   #radio-display-mode-accuracy {
     margin: 10px 0;
   }
 
-  #radio-display-mode-accuracy>label:nth-child(1),
-  #radio-display-mode-accuracy>label:nth-child(2),
-  #radio-display-mode-accuracy>label:nth-child(3) {
-    text-align: center;
-  }
-
-  #div-current-accuracy-value>p {
-    margin-bottom: 10px;
-  }
-  #div-current-accuracy-value>div:nth-child(2),
-  #div-current-accuracy-value>div:nth-child(3) {
+  .radio-item-div {
     text-align: center;
   }
   
+  .plot-display-radio-items {
+    text-align: left;
+    display: inline-block;
+  }
+
+  /* Current Accuracy */
+  #div-current-accuracy-value>p {
+    margin-bottom: 30px;
+  }
+
+  #div-current-accuracy-value>div:nth-child(2),
+  #div-current-accuracy-value>div:nth-child(3) {
+    text-align: center;
+    display: inline;
+    margin: 30px 15px;
+    font-size: 1.3rem;
+  }
+
+ 
+
+  /* Second page smoothing options */
+  #checklist-smoothing-options-cross-entropy {
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  #checklist-smoothing-options-cross-entropy>label:nth-child(1),
+  #checklist-smoothing-options-cross-entropy>label:nth-child(2) {
+    text-align: center;
+    display: inline;
+    margin: 0 30px;
+  }
+
+
+
+  /* Current Loss */
+
+  #div-current-cross-entropy-value {
+    margin-bottom: 5px;
+  }
+
+  #div-current-cross-entropy-value>div:nth-child(2),
+  #div-current-cross-entropy-value>div:nth-child(3) {
+    text-align: center;
+    display: inline;
+    margin: 20px 15px;
+    font-size: 1.3rem;
+  }
+
 
 }
 
