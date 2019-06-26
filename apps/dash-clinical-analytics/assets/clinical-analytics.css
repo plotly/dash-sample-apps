@@ -67,7 +67,6 @@ H5, H3 {
 }
 
 .table-row {
-    line-height: 60px;
     height: 63px;
     vertical-align: middle;
     font-size: 13px;
@@ -96,7 +95,7 @@ H5, H3 {
     background-color: #FFFFFF;
     padding: 1rem;
     margin: auto;
-    margin-top:20px;
+    margin-top: 20px;
 }
 
 #patient_volume_card > b, #wait_time_card > b {
@@ -113,6 +112,20 @@ H5, H3 {
 
 .table-row:nth-child(even) {
     background-color: #f2f2f2;
+}
+
+.row-department > b {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#header_wait_time_min, #header_care_score {
+    display: table;
+}
+
+#header_wait_time_min > b, #header_care_score > b {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 
@@ -145,7 +158,7 @@ H5, H3 {
 
     #left-column, #right-column {
         width: 100%;
-        margin-left:0px;
+        margin-left: 0px;
     }
 
     #right-column {

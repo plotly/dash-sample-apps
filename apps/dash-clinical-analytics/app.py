@@ -240,8 +240,7 @@ def generate_table_row(id, style, col1, col2, col3):
     :param col2 (dict): Defining id and children for the second column.
     :param col3 (dict): Defining id and children for the third column.
     """
-    if style is None:
-        style = {"width": "100%"}
+
     return html.Div(
         id=id,
         className="row table-row",
@@ -249,20 +248,20 @@ def generate_table_row(id, style, col1, col2, col3):
         children=[
             html.Div(
                 id=col1["id"],
-                style=style,
-                className="two columns td-content",
+                style={'display': 'table', 'height': '100%'},
+                className="two columns row-department",
                 children=col1["children"],
             ),
             html.Div(
                 id=col2["id"],
                 style={"textAlign": "center", "height": "100%"},
-                className="five columns td-content",
+                className="five columns",
                 children=col2["children"],
             ),
             html.Div(
                 id=col3["id"],
                 style={"textAlign": "center", "height": "100%"},
-                className="five columns td-content",
+                className="five columns",
                 children=col3["children"],
             ),
         ],
@@ -278,7 +277,7 @@ def generate_table_row_helper(department):
     return generate_table_row(
         department,
         {},
-        {"id": department + "_wait_time", "children": html.B(department)},
+        {"id": department + "_department", "children": html.B(department)},
         {
             "id": department + "wait_time",
             "children": dcc.Graph(
@@ -355,7 +354,7 @@ def initialize_table():
     header = [
         generate_table_row(
             "header",
-            {"lineHeight": "50px"},
+            {"height": "50px"},
             {"id": "header_department", "children": html.B("Department")},
             {"id": "header_wait_time_min", "children": html.B("Wait Time Minutes")},
             {"id": "header_care_score", "children": html.B("Care Score")},
@@ -382,7 +381,7 @@ def generate_patient_table(figure_list, departments, wait_time_xrange, score_xra
     header = [
         generate_table_row(
             "header",
-            {"lineHeight": "50px"},
+            {"height": "50px"},
             {"id": "header_department", "children": html.B("Department")},
             {"id": "header_wait_time_min", "children": html.B("Wait Time Minutes")},
             {"id": "header_care_score", "children": html.B("Care Score")},
