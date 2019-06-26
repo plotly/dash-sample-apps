@@ -53,23 +53,37 @@ h5{
 
 .alert {
   padding: 20px;
-  background-color: #f44336; /* Red */
+  background-color: #f44336; 
   color: white;
-  margin-bottom: 15px;
 }
 
 .bg-white{
   background-color: white;
   padding: 24px 32px;
+  height: 500px;
+}
+
+.app-body{
+  margin-left: 4%;
 }
 
 .card{
   padding:48px 24px 48px 24px;
+  margin-left: 4%;
 }
 
+.card-left{
+  padding:48px 24px 48px 24px;
+  margin-left: 0px;
+}
 
+.padding-top-bot{
+  padding-top: 12px;
+  padding-bottom: 18px;
+}
 
 .upload{
+  width: 100%;
   height: 60px;
   line-height: 60px;
   border-width: 1px;
@@ -79,18 +93,35 @@ h5{
   margin: 10px;
 }
 
+.upload p, .upload a {
+  display: inline;
+}
+
 .Select-control{
   border: 1px solid #203cb3;
 }
 
 @media (max-width: 768px) {
 
-  .card{
+  .card, .card-left{
     padding: 24px;  
+    margin: 0px;
   } 
+
+  .bg-white{
+    height: auto;
+  }
   
   .study-browser-banner{
     padding-left: 24px;
+  }
+
+  .logo{
+    float: left;
+  }
+
+  .app-body{
+    margin-left: 0px;
   }
 
 }

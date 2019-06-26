@@ -21,12 +21,7 @@ PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
 default_study_data = pd.read_csv(DATA_PATH.joinpath("study.csv"))
 
-error_study_data = pd.DataFrame(
-    dict(study_id=["error"], group_id=[""], group_type=[""], reading_value=[0])
-)
-
 app.layout = html.Div(
-    className="",
     children=[
         html.Div(id="error-message"),
         # Top Banner
@@ -39,36 +34,58 @@ app.layout = html.Div(
         ),
         # Body of the App
         html.Div(
-            className="row",
+            className="row app-body",
             children=[
+                # User Controls
                 html.Div(
                     className="four columns card",
                     children=[
                         html.Div(
                             className="bg-white",
                             children=[
-                                html.H6("Test Articles"),
-                                dcc.Dropdown(id="study-dropdown"),
-                                html.H6("Choose the type of plot"),
-                                dcc.RadioItems(
-                                    id="chart-type",
-                                    options=[
-                                        {"label": "Box Plot", "value": "box"},
-                                        {"label": "Violin Plot", "value": "violin"},
+                                html.Div(
+                                    className="padding-top-bot",
+                                    children=[
+                                        html.H6("Test Articles"),
+                                        dcc.Dropdown(id="study-dropdown"),
                                     ],
-                                    value="violin",
-                                    labelStyle={
-                                        "display": "inline-block",
-                                        "padding": "12px 12px 12px 0px",
-                                    },
                                 ),
-                                html.H6("CSV File"),
-                                dcc.Upload(
-                                    id="upload-data",
-                                    className="upload",
-                                    children=html.Div(
-                                        ["Drag and Drop or ", html.A("Select Files")]
-                                    ),
+                                html.Div(
+                                    className="padding-top-bot",
+                                    children=[
+                                        html.H6("Choose the type of plot"),
+                                        dcc.RadioItems(
+                                            id="chart-type",
+                                            options=[
+                                                {"label": "Box Plot", "value": "box"},
+                                                {
+                                                    "label": "Violin Plot",
+                                                    "value": "violin",
+                                                },
+                                            ],
+                                            value="violin",
+                                            labelStyle={
+                                                "display": "inline-block",
+                                                "padding": "12px 12px 12px 0px",
+                                            },
+                                        ),
+                                    ],
+                                ),
+                                html.Div(
+                                    className="padding-top-bot",
+                                    children=[
+                                        html.H6("CSV File"),
+                                        dcc.Upload(
+                                            id="upload-data",
+                                            children=html.Div(
+                                                className="upload",
+                                                children=[
+                                                    html.P("Drag and Drop or "),
+                                                    html.A("Select Files"),
+                                                ],
+                                            ),
+                                        ),
+                                    ],
                                 ),
                             ],
                         )
@@ -76,7 +93,7 @@ app.layout = html.Div(
                 ),
                 # Graph
                 html.Div(
-                    className="eight columns card",
+                    className="eight columns card-left",
                     children=[
                         html.Div(
                             className="bg-white",
@@ -89,18 +106,19 @@ app.layout = html.Div(
                 ),
             ],
         ),
-    ],
+    ]
 )
 
-
+# Callback to create error message
 @app.callback(Output("error-message", "children"), [Input("upload-data", "contents")])
 def update_error(contents):
     if contents:
-        content_type, content_string = contents.split(",")
-        decoded = base64.b64decode(content_string)
         try:
+            content_string = contents.split(",")
+            decoded = base64.b64decode(content_string)
             study_data = pd.read_csv(io.StringIO(decoded.decode("utf-8")))
-        except pd.errors.ParserError:
+        except Exception as e:
+            print(e)
             return html.Div(
                 className="alert",
                 children=["That doesn't seem to be a valid csv file!"],
@@ -123,6 +141,7 @@ def update_error(contents):
     return None
 
 
+# Callback to generate study-dropdown options and values
 @app.callback(
     [Output("study-dropdown", "options"), Output("study-dropdown", "value")],
     [Input("error-message", "children")],
@@ -130,9 +149,9 @@ def update_error(contents):
 )
 def update_dropdown(error_message, contents):
     if error_message:
-        study_data = error_study_data
+        study_data = default_study_data
     elif contents:
-        content_type, content_string = contents.split(",")
+        content_string = contents.split(",")
         decoded = base64.b64decode(content_string)
         study_data = pd.read_csv(io.StringIO(decoded.decode("utf-8")))
     else:
@@ -163,6 +182,7 @@ def update_dropdown(error_message, contents):
     return options, value
 
 
+# Callback to generate study data
 @app.callback(
     Output("plot", "figure"),
     [Input("chart-type", "value"), Input("study-dropdown", "value")],
@@ -170,9 +190,9 @@ def update_dropdown(error_message, contents):
 )
 def update_output(chart_type, study, contents, error_message):
     if error_message:
-        study_data = error_study_data
+        study_data = default_study_data
     elif contents:
-        content_type, content_string = contents.split(",")
+        content_string = contents.split(",")
         decoded = base64.b64decode(content_string)
         study_data = pd.read_csv(io.StringIO(decoded.decode("utf-8")))
         study_data["reading_value"] = pd.to_numeric(
