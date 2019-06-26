@@ -345,6 +345,7 @@ app.clientside_callback(
     [Input("count_graph", "figure")],
 )
 
+
 @app.callback(
     Output("aggregate_data", "data"),
     [
