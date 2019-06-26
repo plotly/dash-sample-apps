@@ -145,6 +145,11 @@ span.Select-clear-zone {
     display: block;
 }
 
+.mapboxgl-canvas,
+.mapboxgl-map {
+    min-width: 100%;
+}
+
 /*
   ##Device = Most of the Smartphones Mobiles (Portrait)
   */
@@ -198,8 +203,8 @@ span.Select-clear-zone {
   Hide y axis labels for mobile device
 */
     #procedure-plot {
-    margin: -300px 0px -200px -80px;
-}
+        margin: -300px 0px -200px -80px;
+    }
 
 }
 
