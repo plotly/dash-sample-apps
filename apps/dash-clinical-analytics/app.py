@@ -478,6 +478,7 @@ def create_table_figure(
         + " "
         + grouped["Check-In Hour"].map(str)
     )
+
     text_wait_time = (
         "Patient # : "
         + patient_id_list
@@ -485,7 +486,7 @@ def create_table_figure(
         + check_in
         + "<br>Wait Time: "
         + grouped["Wait Time Min"].map(str)
-        + " Minutes <br>Care Score : "
+        + " Minutes,  Care Score : "
         + grouped["Care Score"].map(str)
     )
 
