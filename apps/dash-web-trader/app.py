@@ -702,8 +702,7 @@ def modal(pair):
                                                 min=0,
                                                 step=0.1,
                                             ),
-                                        ],
-                                        # style={"marginBottom": "5"},
+                                        ]
                                     ),
                                     html.Div(
                                         children=[
@@ -717,8 +716,7 @@ def modal(pair):
                                                 value="buy",
                                                 labelStyle={"display": "inline-block"},
                                             ),
-                                        ],
-                                        # style={"marginBottom": "5"},
+                                        ]
                                     ),
                                     html.Div(
                                         children=[
@@ -729,8 +727,7 @@ def modal(pair):
                                                 min=0,
                                                 step=1,
                                             ),
-                                        ],
-                                        # style={"marginBottom": "5"},
+                                        ]
                                     ),
                                     html.Div(
                                         children=[
@@ -741,16 +738,17 @@ def modal(pair):
                                                 min=0,
                                                 step=1,
                                             ),
-                                        ],
-                                        # style={"marginBottom": "5"},
+                                        ]
                                     ),
                                 ],
                             ),
                         ],
                     ),
                     html.Div(
-                        html.Button("Order", id=pair + "button_order", n_clicks=0),
-                        style={"textAlign": "center", "marginTop": "12"},
+                        className="modal-order-btn",
+                        children=html.Button(
+                            "Order", id=pair + "button_order", n_clicks=0
+                        ),
                     ),
                 ],
             )
@@ -838,22 +836,27 @@ app.layout = html.Div(
                     id="bottom_panel",
                     className="row div-bottom-panel",
                     children=[
-                        dcc.Dropdown(
-                            id="dropdown_positions",
-                            className="bottom-dropdown",
-                            options=[
-                                {"label": "Open Positions", "value": "open"},
-                                {"label": "Closed Positions", "value": "closed"},
+                        html.Div(
+                            className="display-inlineblock",
+                            children=[
+                                dcc.Dropdown(
+                                    id="dropdown_positions",
+                                    className="bottom-dropdown",
+                                    options=[
+                                        {"label": "Open Positions", "value": "open"},
+                                        {
+                                            "label": "Closed Positions",
+                                            "value": "closed",
+                                        },
+                                    ],
+                                    value="open",
+                                    clearable=False,
+                                    style={"border": "0px solid black"},
+                                )
                             ],
-                            value="open",
-                            clearable=False,
-                            style={
-                                "border": "0px solid black",
-                                "background": "transparent",
-                                "display": "inline-block",
-                            },
                         ),
                         html.Div(
+                            className="display-inlineblock float-right",
                             children=[
                                 dcc.Dropdown(
                                     id="closable_orders",
@@ -861,7 +864,6 @@ app.layout = html.Div(
                                     placeholder="Close order",
                                 )
                             ],
-                            style={"float": "right"},
                         ),
                         html.Div(id="orders_table", className="row table-orders"),
                     ],

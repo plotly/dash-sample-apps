@@ -509,6 +509,10 @@ th{
   display:block;
 }
 
+.display-inlineblock{
+  display: inline-block;
+}
+
 .chart-style{
   position: relative;
   float: left;
@@ -719,6 +723,11 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   cursor: pointer;
   margin-top: 0;
   margin-bottom: 10;
+}
+
+.modal-order-btn{
+  text-align: center;
+  margin-top: 12px;
 }
 
 th, td{
