@@ -7,6 +7,7 @@ Created on Thu Apr  4 17:43:39 2019
 
 import os
 import base64
+import pathlib
 import statistics
 from collections import OrderedDict
 
@@ -26,6 +27,7 @@ table_header_style = {
     "color": "white",
     "textAlign": "center",
 }
+
 
 app = dash.Dash(__name__)
 
@@ -47,15 +49,7 @@ app.layout = html.Div(
                 html.A(
                     id="dashbio-logo",
                     children=[
-                        html.Img(
-                            src="data:image/png;base64,{}".format(
-                                base64.b64encode(
-                                    open(
-                                        "./assets/dashbio_logo_transparent.png", "rb"
-                                    ).read()
-                                ).decode()
-                            )
-                        )
+                        html.Img(src=app.get_asset_url("dashbio_logo_transparent.png"))
                     ],
                     href="/Portal",
                 ),
@@ -66,13 +60,7 @@ app.layout = html.Div(
                     href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-pk-calc",
                     style={"color": "white", "border": "solid 1px white"},
                 ),
-                html.Img(
-                    src="data:image/png;base64,{}".format(
-                        base64.b64encode(
-                            open("./assets/GitHub-Mark-Light-64px.png", "rb").read()
-                        ).decode()
-                    )
-                ),
+                html.Img(src=app.get_asset_url("GitHub-Mark-Light-64px.png")),
             ],
         ),
         html.Div(

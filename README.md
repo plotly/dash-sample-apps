@@ -33,6 +33,11 @@ the same name as the app.
 
 ### Adding a new app
 
+Create an app on Dash Playground. This will be the location of the
+auto-deployment. To do this, log into the app manager on
+[dash-playground.plotly.host](https://dash-playground.plotly.host)
+and click "initialize app".
+
 Create a branch from `master` that has the _exact same_ name as the
 Dash app name. Switch to this branch, then navigate to the `apps/`
 directory and add a directory for your app.
@@ -41,7 +46,7 @@ There are two options when you are naming the folder:
 
 1. Make the folder have the _exact same_ name as the Dash app name.
 
-2. Select any other name, but _update the file
+2. (Python apps only) Select any other name, but _update the file
    [`apps_mapping.py`](apps_directory_mapping.py)_ with the Dash app
    name and the folder name you have selected.
 
@@ -50,6 +55,44 @@ that only contains the name of the app. Stage the README and commit it
 to your app branch.
 
 See [project boilerplate!](https://github.com/plotly/dash-sample-apps#project-boilerplate)
+
+### Notes on adding a new Dash for R app
+
+Contributing an app written with Dash for R is very similar to the steps outlined above. 
+
+1. Make the folder have the _exact same_ name as the Dash app name.
+
+2. Ensure that the file containing your app code is named `app.R`.
+
+3. The `Procfile` should contain 
+
+```
+web: R -f /app/apps/"$DASH_APP_NAME"/app.R
+```
+
+4. Routing and request pathname prefixes should be set. One approach might be to include
+
+```
+appName <- Sys.getenv("DASH_APP_NAME")
+pathPrefix <- sprintf("/%s/", appName)
+
+Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+```
+
+at the head of your `app.R` file.
+
+5. `run_server()` should be provided the host and port information explicitly, e.g.
+
+``
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+``
+
+6. For convenience, it is probably easiest to set the working directory in `app.R` as well:
+
+``
+setwd(sprintf("/app/apps/%s", appName))
+``
 
 ### Making changes to an existing app
 
@@ -105,15 +148,14 @@ Img(src="./assets/logo.png") will fail at root level
 
 Tips
 
+-  Use [get_asset_url()](https://dash.plot.ly/dash-deployment-server/static-assets)
 -  Use [Pathlib](https://docs.python.org/3/library/pathlib.html) for more flexibility
 
 ```Python
 import pathlib
 
 # get relative assets folder
-ASSETS_PATH = pathlib.Path(__file__, "/assets")  # /assets
-IMG_PATH = ASSETS_PATH.joinpath("logo.png")      # /assets/logo.png
-Img(src=str(IMG_PATH))                           
+html.Img(src=app.get_asset_url('logo'))                   
 
 # get relative data folder
 DATA_PATH = pathlib.Path(__file__, "/data")      # /data
