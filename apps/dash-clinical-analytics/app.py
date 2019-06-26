@@ -138,10 +138,10 @@ def generate_patient_volume_heatmap(start, end, clinic, hm_click, admit_type, re
 
     filtered_df = df[
         (df["Clinic Name"] == clinic) & (df["Admit Source"].isin(admit_type))
-    ]
+        ]
     filtered_df = filtered_df.sort_values("Check-In Time").set_index("Check-In Time")[
-        start:end
-    ]
+                  start:end
+                  ]
 
     x_axis = [datetime.time(i).strftime("%I %p") for i in range(24)]  # 24hr time list
     y_axis = day_list
@@ -440,7 +440,7 @@ def generate_patient_table(figure_list, departments, wait_time_xrange, score_xra
 
 
 def create_table_figure(
-    department, filtered_df, category, category_xrange, selected_index
+        department, filtered_df, category, category_xrange, selected_index
 ):
     """Create figures.
 
@@ -461,7 +461,7 @@ def create_table_figure(
 
     df_by_department = filtered_df[
         filtered_df["Department"] == department
-    ].reset_index()
+        ].reset_index()
     grouped = (
         df_by_department.groupby("Encounter Number").agg(aggregation).reset_index()
     )
@@ -472,22 +472,22 @@ def create_table_figure(
 
     f = lambda x_val: dt.strftime(x_val, "%Y-%m-%d")
     check_in = (
-        grouped["Check-In Time"].apply(f)
-        + " "
-        + grouped["Days of Wk"]
-        + " "
-        + grouped["Check-In Hour"].map(str)
+            grouped["Check-In Time"].apply(f)
+            + " "
+            + grouped["Days of Wk"]
+            + " "
+            + grouped["Check-In Hour"].map(str)
     )
 
     text_wait_time = (
-        "Patient # : "
-        + patient_id_list
-        + "<br>Check-in Time: "
-        + check_in
-        + "<br>Wait Time: "
-        + grouped["Wait Time Min"].map(str)
-        + " Minutes,  Care Score : "
-        + grouped["Care Score"].map(str)
+            "Patient # : "
+            + patient_id_list
+            + "<br>Check-in Time: "
+            + check_in
+            + "<br>Wait Time: "
+            + grouped["Wait Time Min"].round(decimals=1).map(str)
+            + " Minutes,  Care Score : "
+            + grouped["Care Score"].round(decimals=1).map(str)
     )
 
     layout = dict(
@@ -539,11 +539,11 @@ app.layout = html.Div(
             id="left-column",
             className="four columns",
             children=[description_card(), generate_control_card()]
-            + [
-                html.Div(
-                    ["initial child"], id="output-clientside", style={"display": "none"}
-                )
-            ],
+                     + [
+                         html.Div(
+                             ["initial child"], id="output-clientside", style={"display": "none"}
+                         )
+                     ],
         ),
         # Right column
         html.Div(
@@ -642,10 +642,10 @@ def update_table(start, end, clinic, admit_type, heatmap_click, reset_click, *ar
     # filter data
     filtered_df = df[
         (df["Clinic Name"] == clinic) & (df["Admit Source"].isin(admit_type))
-    ]
+        ]
     filtered_df = filtered_df.sort_values("Check-In Time").set_index("Check-In Time")[
-        start:end
-    ]
+                  start:end
+                  ]
     departments = filtered_df["Department"].unique()
 
     # Highlight click data's patients in this table
@@ -655,7 +655,7 @@ def update_table(start, end, clinic, admit_type, heatmap_click, reset_click, *ar
         clicked_df = filtered_df[
             (filtered_df["Days of Wk"] == weekday)
             & (filtered_df["Check-In Hour"] == hour_of_day)
-        ]  # slice based on clicked weekday and hour
+            ]  # slice based on clicked weekday and hour
         departments = clicked_df["Department"].unique()
         filtered_df = clicked_df
 
@@ -672,7 +672,7 @@ def update_table(start, end, clinic, admit_type, heatmap_click, reset_click, *ar
     figure_list = []
 
     if prop_type != "selectedData" or (
-        prop_type == "selectedData" and triggered_value is None
+            prop_type == "selectedData" and triggered_value is None
     ):  # Default condition, all ""
 
         for department in departments:
