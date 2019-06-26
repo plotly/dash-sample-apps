@@ -424,9 +424,6 @@
   /* Larger than phablet (also point when grid becomes active) */
   @media (min-width: 550px) {}
   
-  /* Larger than tablet */
-  @media (min-width: 750px) {}
-  
   /* Larger than desktop */
   @media (min-width: 1000px) {}
   
@@ -436,13 +433,13 @@
 /* Custom App CSS
 ---------------------------------------*/
 
-body{
+body {
     margin: 0px;
     padding: 0px;
     background-color: #f7f7f7;
 }
 
-body, h1, h2, h3, h4, h5, h6, p{
+body, h1, h2, h3, h4, h5, h6, p {
     font-family: 'Lato', serif;
 }
 
@@ -453,21 +450,25 @@ body, h1, h2, h3, h4, h5, h6, p{
 .header-title{
     background-color: #7145ed;
     color: white;
-    padding: 64px;
-    font-size: 28px;
+    padding: 4%;
+    padding-top: 0px;
+    font-size: 1rem;
 }
 
-.logo{
-    max-width: 150px;
+.logo {
+  max-height: 100px;
 }
 
-.div-row{
+.div-row {
    padding: 32px;  
 }
 
-.div-card{
-    padding: 12px;
-    background-color: white;
+.div-card {
+  border-radius: 2px;
+  background-color: white;
+  margin: 10px;
+  padding: 15px;
+  box-shadow: 1px 1px 1px lightgrey;
 }
 
 .container.scalable {
@@ -475,3 +476,33 @@ body, h1, h2, h3, h4, h5, h6, p{
     max-width: none;
 }
 
+/* Larger than tablet */
+@media (min-width: 750px) {
+  .header-title {
+    padding: 4% 8%;
+    display: flex;
+    align-items: center;
+  }
+
+  #title {
+    flex: 10;
+  }
+
+  #learn_more {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #grid {
+    padding: 4% -8%;
+    display: grid;
+    -ms-grid-columns: (1fr)[12];
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  #controls {
+    grid-column: 1 / span 12;
+  }
+}
