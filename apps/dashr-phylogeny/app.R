@@ -177,7 +177,7 @@ createMapBubbleYear <- function(virus_name, metadata_file_stat,
     by.x = "Country", by.y = "Country", all.y = TRUE
   )
   full_df[is.na(full_df)] <- 0
-  clr <- list(list(0, "#5641ca"), list(1, "#e2e2e2"))
+  clr <- list(list(0, "#e2e2e2"), list(1, "#5641ca"))
   g <- list(
     showframe = FALSE,
     projection = list(type = "Mercator")
@@ -185,9 +185,7 @@ createMapBubbleYear <- function(virus_name, metadata_file_stat,
   plot_geo(full_df) %>%
     add_trace(
       z = ~count, color = ~count,
-      #colorscale = "Blues", locations = ~ISO3,
       colorscale = clr, locations = ~ISO3,
-      reversescale = TRUE,
       hoverinfo = "text",
       text = ~sprintf(
         "%s<br>Number of cases: %s",
@@ -368,7 +366,7 @@ app$layout(
                 id = "title"
               ),
               htmlImg(
-                src = "assets/dash-logo.png"
+                src = "assets/dash-logo-white.png"
               )
             )
           )
@@ -377,182 +375,211 @@ app$layout(
       ),
       # Body
       htmlDiv(
+        id = "controls-card",
         className = "container",
+        style = list(
+          height = "10%",
+          display = "flex",
+          justifyContent = "space-around",
+          paddingBottom = "3rem",
+          width = "80%"
+
+        ),
+        children = list(
+          htmlDiv(
+            id = "controls-dropdown",
+            style = list(width = "45%"),
+            children = list(
+              htmlH6("Dataset"),
+              dccDropdown(
+                id = "d_virus-name",
+                options = lapply(
+                  species, function(x){
+                    list(label = x, value = x)
+                  }
+                ),
+                value = "Measles"
+              ),
+              htmlDiv(
+                id = "output-container",
+                children = list(
+                  "You have selected the ", 
+                  htmlSpan(id = "v-name", style = list(color = "#8480f8")), 
+                  " Virus"
+                ) 
+              ),
+              htmlDiv(
+                id = "controls-container_mumps",
+                children = list(
+                  htmlSpan(
+                    "Region:", style = list(fontStyle = "italic")
+                  ),
+                  dccDropdown(
+                    id = "d_mumps",
+                    options = list(
+                      list(label = "Global", value = "global"),
+                      list(label = "North America", value = "na")
+                    ),
+                    value = "global"
+                  )
+                ),
+                style = list(display = "none")
+              ),
+              htmlDiv(
+                id = "controls-container_dengue",
+                children = list(
+                  htmlSpan(
+                    "Serotype:", style = list(fontStyle = "italic")
+                  ),
+                  dccDropdown(
+                    id = "d_dengue",
+                    options = lapply(
+                      list("All", "Denv1", "Denv2", "Denv3"),
+                      function(x){
+                        list(label = x, value = tolower(x))
+                      }
+                    ),
+                    value = "all"
+                  )
+                ),
+                style = list(display = "none")
+              ),
+              htmlDiv(
+                id = "controls-container_lassa",
+                children = list(
+                  htmlSpan(
+                    "RNA:", style = list(fontStyle = "italic")
+                  ),
+                  dccDropdown(
+                    id = "d_lassa",
+                    options = lapply(
+                      list("s", "l"),
+                      function(x){
+                        list(label = x, value = x)
+                      }
+                    ),
+                    value = "s"
+                  )
+                ),
+                style = list(display = "none")
+              ),
+              htmlDiv(
+                id = "controls-container_avian",
+                children = list(
+                  htmlSpan(
+                    "Subtype:", style = list(fontStyle = "italic")
+                  ),
+                  dccDropdown(
+                    id = "d_avian_opt1",
+                    options = list(
+                      list(
+                        label = "h7n9",
+                        value = "h7n9"
+                        #display = "block"
+                      )
+                    ),
+                    value = "h7n9"
+                  ),
+                  htmlSpan(
+                    "RNA segment:", style = list(fontStyle = "italic")
+                  ),
+                  dccDropdown(
+                    id = "d_avian_opt2",
+                    # RNA segments?
+                    options = lapply(
+                      list(
+                        "ha", "mp", "na", "ns",
+                        "np", "pa", "pb2", "pb1"
+                      ),
+                      function(x){
+                        list(label = x, value = x)
+                      }
+                    ),
+                    value = "ha"
+                  )
+                ),
+                style = list(display = "none")
+              ),
+              htmlDiv(
+                id = "controls-container_flu",
+                children = list(
+                  dccDropdown(
+                    id = "d_flu_opt1",
+                    options = lapply(
+                      list("h3n2", "h1n1pdm", "vic", "yam"),
+                      function(x){
+                        list(label = x, value = x)
+                      }
+                    ),
+                    value = "h3n2"
+                  ),
+                  dccDropdown(
+                    id = "d_flu_opt2",
+                    options = lapply(
+                      list("ha", "na"),
+                      function(x){
+                        list(label = x, value = x)
+                      }
+                    ),
+                    value = "ha"
+                  ),
+                  dccDropdown(
+                    id = "d_flu_opt3",
+                    options = lapply(
+                      list("2y", "3y", "6y", "12y"),
+                      function(x){
+                        list(label = x, value = x)
+                      }
+                    ),
+                    value = "3y"
+                  )
+                ),
+                style = list(display = "none")
+              )
+            )
+          ),
+          htmlDiv(
+            id = "controls-datarange",
+            style = list(width = "45%"),
+            children = list(
+              htmlH6("Data Range"),
+              htmlDiv(
+                id = "id-slicer",
+                children = list(
+                  dccRangeSlider(
+                    id = "id-year",
+                    min = min_date,
+                    max = max_date,
+                    step = 1,
+                    marks = slicer(min_date, max_date)$marks,
+                    value = list(min_date, max_date)
+                  )
+                ),
+                style = list(margin = "0 1.5rem")
+              ),
+              htmlDiv(id = "output-container-range-slider")
+            )
+          )
+        )
+      ),
+      htmlDiv(
         list(
           htmlDiv(
             id = "top-graphs",
-            style = list(display = "flex", width = "100%"),
+            style = list(
+              display = "flex", 
+              justifyContent = "space-between", 
+              width = "80%",
+              margin = "0 auto"
+            ),
             children = list(
               htmlDiv(
                 id = "left-top-graphs",
+                className = "container",
                 list(
                   htmlDiv(
                     style = list(width = "100%"),
                     list(
-                      htmlH6("Dataset"),
-                      dccDropdown(
-                        id = "d_virus-name",
-                        options = lapply(
-                          species, function(x){
-                            list(label = x, value = x)
-                          }
-                        ),
-                        value = "Measles"
-                      ),
-                      htmlDiv(
-                        id = "output-container",
-                        children = "Selected Virus"
-                      ),
-                      htmlDiv(
-                        id = "controls-container_mumps",
-                        children = list(
-                          htmlSpan(
-                            "Region:", style = list(fontStyle = "italic")
-                          ),
-                          dccDropdown(
-                            id = "d_mumps",
-                            options = list(
-                              list(label = "Global", value = "global"),
-                              list(label = "North America", value = "na")
-                            ),
-                            value = "global"
-                          )
-                        ),
-                        style = list(display = "none")
-                      ),
-                      htmlDiv(
-                        id = "controls-container_dengue",
-                        children = list(
-                          htmlSpan(
-                            "Serotype:", style = list(fontStyle = "italic")
-                          ),
-                          dccDropdown(
-                            id = "d_dengue",
-                            options = lapply(
-                              list("All", "Denv1", "Denv2", "Denv3"),
-                              function(x){
-                                list(label = x, value = tolower(x))
-                              }
-                            ),
-                            value = "all"
-                          )
-                        ),
-                        style = list(display = "none")
-                      ),
-                      htmlDiv(
-                        id = "controls-container_lassa",
-                        children = list(
-                          htmlSpan(
-                            "RNA:", style = list(fontStyle = "italic")
-                          ),
-                          dccDropdown(
-                            id = "d_lassa",
-                            options = lapply(
-                              list("s", "l"),
-                              function(x){
-                                list(label = x, value = x)
-                              }
-                            ),
-                            value = "s"
-                          )
-                        ),
-                        style = list(display = "none")
-                      ),
-                      htmlDiv(
-                        id = "controls-container_avian",
-                        children = list(
-                          htmlSpan(
-                            "Subtype:", style = list(fontStyle = "italic")
-                          ),
-                          dccDropdown(
-                            id = "d_avian_opt1",
-                            options = list(
-                              list(
-                                label = "h7n9",
-                                value = "h7n9"
-                                #display = "block"
-                              )
-                            ),
-                            value = "h7n9"
-                          ),
-                          htmlSpan(
-                            "RNA segment:", style = list(fontStyle = "italic")
-                          ),
-                          dccDropdown(
-                            id = "d_avian_opt2",
-                            # RNA segments?
-                            options = lapply(
-                              list(
-                                "ha", "mp", "na", "ns",
-                                "np", "pa", "pb2", "pb1"
-                              ),
-                              function(x){
-                                list(label = x, value = x)
-                              }
-                            ),
-                            value = "ha"
-                          )
-                        ),
-                        style = list(display = "none")
-                      ),
-                      htmlDiv(
-                        id = "controls-container_flu",
-                        children = list(
-                          dccDropdown(
-                            id = "d_flu_opt1",
-                            options = lapply(
-                              list("h3n2", "h1n1pdm", "vic", "yam"),
-                              function(x){
-                                list(label = x, value = x)
-                              }
-                            ),
-                            value = "h3n2"
-                          ),
-                          dccDropdown(
-                            id = "d_flu_opt2",
-                            options = lapply(
-                              list("ha", "na"),
-                              function(x){
-                                list(label = x, value = x)
-                              }
-                            ),
-                            value = "ha"
-                          ),
-                          dccDropdown(
-                            id = "d_flu_opt3",
-                            options = lapply(
-                              list("2y", "3y", "6y", "12y"),
-                              function(x){
-                                list(label = x, value = x)
-                              }
-                            ),
-                            value = "3y"
-                          )
-                        ),
-                        style = list(display = "none")
-                      ),
-                      htmlBr(),
-                      htmlBr(),
-                      htmlH6("Data Range"),
-                      htmlDiv(
-                        id = "id-slicer",
-                        children = list(
-                          dccRangeSlider(
-                            id = "id-year",
-                            min = min_date,
-                            max = max_date,
-                            step = 1,
-                            marks = slicer(min_date, max_date)$marks,
-                            value = list(min_date, max_date)
-                          )
-                        ),
-                        style = list(margin = "0 1.5rem")
-                      ),
-                      htmlBr(),
-                      htmlBr(),
-                      htmlDiv(id = "output-container-range-slider"),
-                      htmlBr(),
-                      htmlBr(),
                       dccGraph(
                         id = "curve-line-graph",
                         figure = createCurveLine(
@@ -561,24 +588,28 @@ app$layout(
                           min_date,
                           max_date
                         ),
-                        style = list(maxHeight = 700)
+                        style = list(maxHeight = 1000)
                       )
                     )
                   )
                 ),
                 style = list(
                   marginTop = "1rem", 
-                  width = "33%", 
+                  marginBottom = "1rem",
+                  marginLeft = 0,
+                  width = "49%", 
                   float = "left", 
                   boxSizing = "border-box"
                 )
               ),
-              htmlBr(),
               htmlDiv(
                 id = "right-top-graphs",
+                className = "container",
                 style = list(
                   marginTop = "1rem", 
-                  width = "66.5%", 
+                  marginBottom = "1rem",
+                  marginRight = 0,
+                  width = "49%", 
                   float = "left", 
                   boxSizing = "border-box"
                 ),
@@ -602,9 +633,16 @@ app$layout(
           ),
           htmlDiv(
             id = "bottom-graphs",
+            style = list(
+              display = "flex", 
+              justifyContent = "space-between", 
+              width = "80%",
+              margin = "0 auto"
+            ),
             children = list(
               htmlDiv(
                 id = "left-bottom-graphs",
+                className = "container",
                 list(
                   dccGraph(
                     id = "graph_map",
@@ -617,13 +655,16 @@ app$layout(
                   )
                 ),
                 style = list(
-                  width = "49.75%", 
+                  width = "59%", 
+                  marginLeft = 0,
+                  marginBottom = "1rem",
                   float = "left", 
                   boxSizing = "border-box"
                 )
               ),
               htmlDiv(
                 id = "right-bottom-graphs",
+                className = "container",
                 list(
                   dccGraph(
                     id = "id-histo",
@@ -636,19 +677,21 @@ app$layout(
                   )
                 ),
                 style = list(
-                  width = "49.75%", 
+                  width = "39%", 
                   float = "left", 
+                  marginBottom = "1rem",
+                  marginRight = 0,
                   boxSizing = "border-box"
                 )
               )
             ),
-            style = list(
-              display = "flex",
-              marginTop = "5rem", 
-              width = "100%", 
-              float = "left", 
-              boxSizing = "border-box"
-            )
+            #style = list(
+              #display = "flex",
+              #marginTop = "5rem", 
+              #width = "100%", 
+              #float = "left", 
+              #boxSizing = "border-box"
+            #)
           )
         )
       )
@@ -657,10 +700,10 @@ app$layout(
 )
 
 app$callback(
-  output("output-container", "children"),
+  output("v-name", "children"),
   list(input("d_virus-name", "value")),
   function(virus_name){
-    sprintf("You have selected the %s virus", virus_name)
+    virus_name
   }
 )
 

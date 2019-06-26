@@ -31,7 +31,7 @@
     justify-content: center;
     flex-direction: column;
     overflow: auto;
-    background-color: #114073;
+    /*background-color: #114073;*/
     padding: 3rem 0;
     width: 100%;
     margin-bottom: 2%;
@@ -73,7 +73,7 @@
 .container {
   position: relative;
   background-color: white;
-  border-radius: 2px 2px 5px 5px;
+  border-radius: 5px;
   font-size: 1.5rem;
   border: thin solid rgb(240, 240, 240);
   margin-left: auto;
@@ -81,9 +81,10 @@
   margin-bottom: 10px;
   color: #302F54;
   padding: 8px;
-  width: 90%;
+  /*width: 90%;*/
   max-width: none;
   box-sizing: border-box;
+  box-shadow: 2px 2px 1px #f2f2f2;
 }
 
 .column,
@@ -165,6 +166,8 @@ html {
   font-size: 62.5%; }
 body {
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
+  background: linear-gradient(#7045ed 15%, #f8f8f8 15%);
+  background-repeat: no-repeat;
   line-height: 1.6;
   font-weight: 400;
   font-family: 'Roboto', sans-serif;
@@ -448,27 +451,31 @@ there.
 */
 
 @media only screen and (max-width: 1300px){
+  #controls-card{
+    flex-direction: column;
+    align-items: center;
+  }
   #top-graphs {
     flex-direction: column;
     align-items: center;
+    width: 80% !important;
   }
   #bottom-graphs {
     flex-direction: column;
     align-items: center;
+    width: 80% !important;
   }
-  #left-top-graphs {
-    width: 100% !important;
+  #controls-dropdown, 
+  #controls-datarange {
+    width:100% !important;
   }
-  #right-top-graphs {
-    width: 100% !important;
-  }
-  #left-bottom-graphs {
-    width: 100% !important;
-  }
+  #left-top-graphs,
+  #right-top-graphs,
+  #left-bottom-graphs,
   #right-bottom-graphs {
     width: 100% !important;
+    margin: 0;
   }
-
 }
 
 /* Larger than mobile */
