@@ -638,10 +638,9 @@ def chart_div(pair):
                             ),
                             html.Span(
                                 id=pair + "close",
-                                className="chart-close inline-block",
+                                className="chart-close inline-block float-right",
                                 children="×",
-                                n_clicks=0,
-                                style={"float": "right"},
+                                n_clicks=0
                             ),
                         ],
                     ),
@@ -913,7 +912,7 @@ def generate_chart_button_callback():
 
 # Function to update Graph Figure
 def generate_figure_callback(pair):
-    def chart_fig_callback(n_i, p, t, s, pairs, a, b):
+    def chart_fig_callback(n_i, p, t, s, pairs, a, b, old_fig):
 
         if pairs is None:
             return {"layout": {}, "data": {}}
@@ -922,7 +921,17 @@ def generate_figure_callback(pair):
         if pair not in pairs:
             return {"layout": {}, "data": []}
 
-        return get_fig(pair, a, b, t, s, p)
+        if old_fig is None or old_fig == {"layout":{}, "data":{}}:
+            return get_fig(pair, a, b, t, s, p)
+
+        fig = get_fig(pair, a, b, t, s, p)
+        try:
+            print(old_fig["layout"]["xaxis"]["range"]) 
+            print('returning old fig')
+            return old_fig
+        except:
+            print(pair)
+        return fig
 
     return chart_fig_callback
 
@@ -1208,7 +1217,11 @@ for pair in currencies:
             Input(pair + "studies", "values"),
             Input("charts_clicked", "children"),
         ],
-        [State(pair + "ask", "children"), State(pair + "bid", "children")],
+        [
+            State(pair + "ask", "children"), 
+            State(pair + "bid", "children"),
+            State(pair + "chart", "figure")
+        ],
     )(generate_figure_callback(pair))
 
     # updates the ask and bid prices
