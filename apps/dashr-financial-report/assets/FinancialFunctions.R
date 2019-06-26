@@ -3,7 +3,7 @@
 # Generate a Table Function 
 generate_table <- function(df, nrows=20)
   
-  # function generates a dash table from a supplied data frame (df)
+  # function generates a html table from a supplied data frame (df)
   
   #  and number of rows (nrows) to display
 {
