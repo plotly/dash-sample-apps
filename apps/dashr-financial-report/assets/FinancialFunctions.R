@@ -59,7 +59,7 @@ getLogo <- function() {
                         htmlButton(list("Full Version"), className = "redbutton"
                         )))),
     
-    htmlDiv(list(htmlA( href = 'https://github.com/plotly/dash-financial-report',
+    htmlDiv(list(htmlA( href = 'https://github.com/plotly/dash-sample-apps/dashr-financial-report',
                         htmlButton(list("Learn More"), className = "learnbutton"
                         )))),
     
