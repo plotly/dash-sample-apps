@@ -49,7 +49,7 @@ Header <- function() {
       htmlDiv(list(
         grey_line
       )),
-      htmlBr(list()),
+      htmlBr(),
       getMenu()
     ))
   )
@@ -73,8 +73,8 @@ getLogo <- function() {
                         )))),
     
     htmlDiv(list(htmlA(
-      htmlImg(src='https://user-images.githubusercontent.com/1865834/50180824-abcc5f80-02d8-11e9-8319-8842909c3f8e.png', 
-              height='50', width='110'),
+      htmlImg(src='assets/dashLogo.png', 
+              height='50', width='190'),
       href='https://plot.ly/products/dash/', className = 'logo')))
     
     
