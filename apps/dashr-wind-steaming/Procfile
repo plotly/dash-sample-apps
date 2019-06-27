@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath apps/dash-wind-streaming app:server
+weweb: R -f /app/apps/"$DASH_APP_NAME"/app.R
