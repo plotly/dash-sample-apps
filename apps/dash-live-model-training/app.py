@@ -238,7 +238,7 @@ app.layout = html.Div(
                                             id="div-step-display",
                                             className="twelve columns",
                                         ),
-                                    ],
+                                    ]
                                 ),
                             ],
                         )

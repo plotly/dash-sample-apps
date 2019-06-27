@@ -95,7 +95,7 @@
 }
 
 
-@media (max-width: 360px) {
+@media (max-width: 375px) {
   #title {
     width: 150px;
     font-size: 1.2rem !important;
@@ -121,6 +121,21 @@
   .dropdown-box-first,
   .dropdown-box-second {
     width: 50%;
+  }
+
+
+
+  #div-interval-control {
+    text-align: center;
+    display: flex;
+  }
+
+
+  #div-total-step-count>h6,
+  #div-step-display>h6 {
+    text-align: left;
+    display: inline-block;
+    font-size: 1.4rem !important;
   }
 
   /* First page Smoothing Options */
@@ -184,27 +199,18 @@
   }
 
   #div-interval-control {
-    margin-top: 10px;
+    text-align: center;
+    display: flex;
   }
 
- 
-  #div-step-display {
-    width: 50%;
-    float: right;
-  }
-   #div-total-step-count {
-     width: 50%;
-     float: left;
-   }
 
-
-  #div-total-step-count>h6 {
-    font-size: initial;
-  }
-
+  #div-total-step-count>h6,
   #div-step-display>h6 {
-    font-size: initial;
+    text-align: left;
+    display: inline-block;
+    font-size: 1.9rem;
   }
+ 
 
   /* First Page Smoothing Options */
   #checklist-smoothing-options-accuracy {
