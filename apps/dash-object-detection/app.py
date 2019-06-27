@@ -341,15 +341,12 @@ def update_output(dropdown_value):
                     html.P(children="Confidence Level of Object Presence",
                            className='plot-title'),
                     dcc.Graph(
-                        id="heatmap-confidence",
-                        style={'height': '45vh', 'width': '100%'}),
+                        id="heatmap-confidence"),
 
                     html.P(children="Object Count",
                            className='plot-title'),
                     dcc.Graph(
-                        id="pie-object-count",
-                        style={'height': '40vh', 'width': '100%'}
-                    )
+                        id="pie-object-count")
 
                 ]
             )
@@ -373,8 +370,7 @@ def update_detection_mode(value):
                     html.P(children="Detection Score of Most Probable Objects",
                            className='plot-title'),
                     dcc.Graph(
-                        id="bar-score-graph",
-                        style={'height': '55vh'}
+                        id="bar-score-graph"
                     )
                 ]
             )
@@ -465,7 +461,7 @@ def update_object_count_pie(n, current_time, footage, threshold):
         paper_bgcolor='rgb(249,249,249)',
         plot_bgcolor='rgb(249,249,249)',
         autosize=False,
-        margin=go.layout.Margin(
+        margin=dict(
             l=10,
             r=10,
             t=15,
@@ -522,7 +518,7 @@ def update_heatmap_confidence(n, current_time, footage, threshold):
         paper_bgcolor='rgb(249,249,249)',
         plot_bgcolor='rgb(249,249,249)',
         autosize=False,
-        margin=go.layout.Margin(
+        margin=dict(
             l=10,
             r=10,
             b=20,
