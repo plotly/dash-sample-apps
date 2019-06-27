@@ -126,10 +126,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
   htmlImg(id='png3', src='assets/screenshot1.png')
   ,
   htmlImg(id='png4', src='assets/screenshot2.png')
-  
-  
 ))
-
 
 genMarks <- function(n){
   l <- list(glue('{n}'))
@@ -152,7 +149,6 @@ input_field <- function(title, state_id, state_value, state_max, state_min){
 genMark <- function(n){
   l <- list(glue('{n}'))
   names(l) <- 'label'
-  
   return(l)
 }
 
@@ -183,10 +179,7 @@ namedSlider <- function(name, short, min, max,  val, marks=NULL){
         style=list('margin-left'='5px'),
         children = dccSlider(id=glue('slider-{short}'), min=min, max=max, marks=marks, value=val)
       )
-      
-    )
-    
-  ))
+)))
 }
 
 namedRadioItems <- function(name, short, options, val, ...){
@@ -230,7 +223,6 @@ Card <- function(kids, ...){
 
 #Generate the default 3D scatter plot
 TSNE_DT <- fread('./data/tsne_3d.csv')
-
 
 colnames(TSNE_DT) <- c("Digit", "x", "y", "z")
 
