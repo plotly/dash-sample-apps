@@ -11,7 +11,6 @@ library(compiler)
 library(dtplyr)
 library(knitr)
 library(png)
-library(base64enc)
 library(magrittr)
 library(Rtsne)
 library(stringr)
@@ -187,7 +186,6 @@ namedSlider <- function(name, short, min, max,  val, marks=NULL){
         style=l.('margin-left'='5px'),
         children = dccSlider(id=glue('slider-{short}'), min=min, max=max, marks=marks, value=val)
       )
-      
     )
     
   ))
@@ -211,18 +209,14 @@ namedRadioItems <- function(name, short, options, val, ...){
                   , 
                   labelStyle=l.(
                     display = 'inline-block'
-                    # , 
-                    # 'margin-right'='7px'
-                    , 
+                    ,
+
                     'font-weight'=300
                     
                   ),
                   style = l.(
                     
                     display='inline-block'
-                    # ,
-                    # 'margin-left'='7px'
-                    
                   )
                 ))
   ))
@@ -244,13 +238,11 @@ Card <- function(kids, ...){
 
 #Generate the default 3D scatter plot
 TSNE_DT <- fread('./data/tsne_3d.csv')
-#dim(TSNE_DT) # 10000 4
-#unique(TSNE_DT$V1) #0:9\
+
 
 colnames(TSNE_DT) <- c("Digit", "x", "y", "z")
 
 defaultPlot <- plot_ly(TSNE_DT, type='scatter3d', x=~x, y=~y, z=~z, color = ~as.factor(Digit), mode='markers', marker=l.(symbol='circle', size=2.5))
-#listPlots <- mclapply.hack(0:9, genDefaultPlot)
 
 #Initialize the app
 app <- Dash$new(external_stylesheets = list( "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",
@@ -845,7 +837,7 @@ app$callback(
       
       if(dataset=='cifar_gray_3000'){ imageMtx <- matrix(imageVec, nrow=32)} else {imageMtx <- matrix(imageVec, nrow=28)}
       DIGIT <- writePNG(t(imageMtx))
-      DIGIT_B64 <- base64encode(DIGIT)
+      DIGIT_B64 <- base64_enc(DIGIT)
       
       return(htmlImg(src =  glue('data:image/png;base64, ', DIGIT_B64), style =  l.(height='25vh', display='block', margin='auto')))
       
@@ -897,7 +889,7 @@ app$callback(
   function(contents, filename){
     contents_parsed <- parse_contents(contents, filename)
     if(is.na(filename)){return(NULL)}
-    #decoded <- base64enc::base64decode(contents_parsed[2])
+
     if(is.na(contents_parsed)){return(NULL)}
     dt <-contents_parsed$dt %>% toJSON(., force=TRUE)
     message <- contents_parsed$message %>% toJSON(., force=TRUE)
