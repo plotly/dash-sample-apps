@@ -252,7 +252,9 @@ def generate_table():
         sort_action=True,
         filter_action=True,
         row_deletable=True,
-        style_cell={"padding": "15px", "width": "auto", "textAlign": "center"},
+        css={"rule": "display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;"},
+        style_data={"whiteSpace": "normal"},
+        style_cell={"padding": "15px", "midWidth": "0px", "width": "25%", "textAlign": "center", "border": "white"},
         style_cell_conditional=[
             {"if": {"row_index": "even"}, "backgroundColor": "#f9f9f9"}
         ],
