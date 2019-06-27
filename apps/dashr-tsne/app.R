@@ -58,10 +58,10 @@ Alternatively, you can explore the GloVe Word Vectors datasets, which are encode
 
 
 
-Clone the git repo, then install the requirements with pip
+Clone the git repo, then install the requirements 
 ```
-git clone https://github.com/plotly/dashr-tsne.git
-cd dashr-tsne
+git clone https://github.com/plotly/dash-sample-apps/dashr-tsne.git
+cd dash-sample-apps/dashr-tsne
 
 ```
 Download the script and run init.R
