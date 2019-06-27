@@ -40,32 +40,11 @@ app <- Dash$new()
   listofchromosomes = c(listofchromosomes, "Y")
   
   
-  listOfoptions <- list(
-    list('label' = '1', 'value' = '1'),
-    list('label' = '2', 'value' = '2'),
-    list('label' = '3', 'value' = '3'),
-    list('label' = '4', 'value' = '4'),
-    list('label' = '5', 'value' = '5'),
-    list('label' = '6', 'value' = '6'),
-    list('label' = '7', 'value' = '7'),
-    list('label' = '8', 'value' = '8'),
-    list('label' = '9', 'value' = '9'),
-    list('label' = '10', 'value' = '10'),
-    list('label' = '11', 'value' = '11'),
-    list('label' = '12', 'value' = '12'),
-    list('label' = '13', 'value' = '13'),
-    list('label' = '14', 'value' = '14'),
-    list('label' = '15', 'value' = '15'),
-    list('label' = '16', 'value' = '16'),
-    list('label' = '17', 'value' = '17'),
-    list('label' = '18', 'value' = '18'),
-    list('label' = '19', 'value' = '19'),
-    list('label' = '20', 'value' = '20'),
-    list('label' = '21', 'value' = '21'),
-    list('label' = '22', 'value' = '22'),
-    list('label' = 'X', 'value' = 'X'),
-    list('label' = 'Y', 'value' = 'Y')
-  )
+chromosomes <- c(as.character(seq(1:22)), "X", "Y")
+
+listOfOptions <- lapply(chromosomes, function(x) {
+  list(label = x, value = x)
+})
   
   chromosome_div <- function(id_tag = 'chr',
                              name_tag = 'Chr',
@@ -295,64 +274,14 @@ app <- Dash$new()
       dccDropdown(
         className = 'ideogram-dropdown',
         id = 'chr-select-1',
-        options = list(
-          list('label' = 'X', 'value' = 'X'),
-          list('label' = 'Y', 'value' = 'Y'),
-          list('label' = '1', 'value' = '1'),
-          list('label' = '2', 'value' = '2'),
-          list('label' = '3', 'value' = '3'),
-          list('label' = '4', 'value' = '4'),
-          list('label' = '5', 'value' = '5'),
-          list('label' = '6', 'value' = '6'),
-          list('label' = '7', 'value' = '7'),
-          list('label' = '8', 'value' = '8'),
-          list('label' = '9', 'value' = '9'),
-          list('label' = '10', 'value' = '10'),
-          list('label' = '11', 'value' = '11'),
-          list('label' = '12', 'value' = '12'),
-          list('label' = '13', 'value' = '13'),
-          list('label' = '14', 'value' = '14'),
-          list('label' = '15', 'value' = '15'),
-          list('label' = '16', 'value' = '16'),
-          list('label' = '17', 'value' = '17'),
-          list('label' = '18', 'value' = '18'),
-          list('label' = '19', 'value' = '19'),
-          list('label' = '20', 'value' = '20'),
-          list('label' = '21', 'value' = '21'),
-          list('label' = '22', 'value' = '22')
-        ) , value = '1'
+        options = listofOptions , value = '1'
       ),
       
       dccDropdown(
         className = 'ideogram-dropdown',
         id = 'chr-select-2',
         value = '2',
-        options = list(
-          list('label' = 'X', 'value' = 'X'),
-          list('label' = 'Y', 'value' = 'Y'),
-          list('label' = '1', 'value' = '1'),
-          list('label' = '2', 'value' = '2'),
-          list('label' = '3', 'value' = '3'),
-          list('label' = '4', 'value' = '4'),
-          list('label' = '5', 'value' = '5'),
-          list('label' = '6', 'value' = '6'),
-          list('label' = '7', 'value' = '7'),
-          list('label' = '8', 'value' = '8'),
-          list('label' = '9', 'value' = '9'),
-          list('label' = '10', 'value' = '10'),
-          list('label' = '11', 'value' = '11'),
-          list('label' = '12', 'value' = '12'),
-          list('label' = '13', 'value' = '13'),
-          list('label' = '14', 'value' = '14'),
-          list('label' = '15', 'value' = '15'),
-          list('label' = '16', 'value' = '16'),
-          list('label' = '17', 'value' = '17'),
-          list('label' = '18', 'value' = '18'),
-          list('label' = '19', 'value' = '19'),
-          list('label' = '20', 'value' = '20'),
-          list('label' = '21', 'value' = '21'),
-          list('label' = '22', 'value' = '22')
-        )
+        options = listofOptions
       ),
       
       chromosome_div(
@@ -380,32 +309,7 @@ app <- Dash$new()
         dccDropdown(
           className = 'ideogram-dropdown',
           id = 'chr-brush',
-          options = list(
-            list('label' = 'X', 'value' = 'X'),
-            list('label' = 'Y', 'value' = 'Y'),
-            list('label' = '1', 'value' = 1),
-            list('label' = '2', 'value' = 2),
-            list('label' = '3', 'value' = 3),
-            list('label' = '4', 'value' = 4),
-            list('label' = '5', 'value' = 5),
-            list('label' = '6', 'value' = 6),
-            list('label' = '7', 'value' = 7),
-            list('label' = '8', 'value' = 8),
-            list('label' = '9', 'value' = 9),
-            list('label' = '10', 'value' = 10),
-            list('label' = '11', 'value' = 11),
-            list('label' = '12', 'value' = 12),
-            list('label' = '13', 'value' = 13),
-            list('label' = '14', 'value' = 14),
-            list('label' = '15', 'value' = 15),
-            list('label' = '16', 'value' = 16),
-            list('label' = '17', 'value' = 17),
-            list('label' = '18', 'value' = 18),
-            list('label' = '19', 'value' = 19),
-            list('label' = '20', 'value' = 20),
-            list('label' = '21', 'value' = 21),
-            list('label' = '22', 'value' = 22)
-          ), value = 'X'
+          options = listofOptions, value = 'X'
         )
       )),
       
@@ -833,16 +737,16 @@ app <- Dash$new()
         
         if (annotation_select == 'overlay-1') {
           annotations_layout = 'overlay'
-          annotations_path = 'https://eweitz.github.io/ideogram/data/annotations/10_virtual_cnvs.json'
+          annotations_path = 'assets/10_virtual_cnvs.json'
         }
         
         else if (annotation_select == 'histogram') {
-          annotations_path = 'https://eweitz.github.io/ideogram/data/annotations/SRR562646.json'
+          annotations_path = 'assets/SRR562646.json'
           annotations_assembly = 'GRCh37'
         }  
         
         else if (annotations_select == 'overlay-2') {
-          annotations_path = 'https://eweitz.github.io/ideogram/data/annotations/1000_virtual_snvs.json'
+          annotations_path = 'assets/1000_virtual_snvs.json'
           annotation_tracks  = list(
             list('id' = 'pathogenicTrack',
                  'displayName' = 'Pathogenic',
