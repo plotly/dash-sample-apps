@@ -639,7 +639,8 @@ div.Select-value, .Select-control,div.period, .Select-input{
 }
 
 .chart-title:hover{
-  background-color: #292B33;
+  text-decoration: underline;
+  text-decoration-color: #55575D;
   cursor: pointer;
 }
 
