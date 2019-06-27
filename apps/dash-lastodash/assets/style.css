@@ -365,6 +365,8 @@ body {
 
 #las-table td.dash-delete-cell {
     width: 20px !important;
+    background-color: white;
+    text-align: center;
 }
 
 #las-table tr td {
