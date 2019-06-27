@@ -117,10 +117,7 @@ app.layout = html.Div(
     children=[
         html.Div(
             id='top-bar',
-            className='row',
-            style={'backgroundColor': '#fa4f56',
-                   'height': '5px',
-                   }
+            className='row'
         ),
         html.Div(
             className='container',
@@ -128,15 +125,6 @@ app.layout = html.Div(
                 html.Div(
                     id='left-side-column',
                     className='eight columns',
-                    style={'display': 'flex',
-                           'flexDirection': 'column',
-                           'flex': 1,
-                           'height': 'calc(100vh - 5px)',
-                           'backgroundColor': '#F2F2F2',
-                           'overflow-y': 'scroll',
-                           'marginLeft': '0px',
-                           'justifyContent': 'flex-start',
-                           'alignItems': 'center'},
                     children=[
                         html.Div(
                             id='header-section',
@@ -155,7 +143,7 @@ app.layout = html.Div(
                         html.Div(
                             className='video-outer-container',
                             children=html.Div(
-                                style={'width': '100%', 'paddingBottom': '56.25%', 'position': 'relative'},
+                                className='video-container',
                                 children=player.DashPlayer(
                                     id='video-display',
                                     style={'position': 'absolute', 'width': '100%',
@@ -175,7 +163,7 @@ app.layout = html.Div(
                                 html.Div(
                                     className='control-element',
                                     children=[
-                                        html.Div(children=["Minimum Confidence Threshold:"], style={'width': '40%'}),
+                                        html.Div(children=["Minimum Confidence Threshold:"]),
                                         html.Div(dcc.Slider(
                                             id='slider-minimum-confidence-threshold',
                                             min=20,
@@ -183,14 +171,15 @@ app.layout = html.Div(
                                             marks={i: f'{i}%' for i in range(20, 81, 10)},
                                             value=30,
                                             updatemode='drag'
-                                        ), style={'width': '60%'})
+                                        )
+                                        )
                                     ]
                                 ),
 
                                 html.Div(
                                     className='control-element',
                                     children=[
-                                        html.Div(children=["Footage Selection:"], style={'width': '40%'}),
+                                        html.Div(children=["Footage Selection:"]),
                                         dcc.Dropdown(
                                             id="dropdown-footage-selection",
                                             options=[
@@ -206,8 +195,7 @@ app.layout = html.Div(
                                                 {'label': 'Restaurant Robbery', 'value': 'RestaurantHoldup'}
                                             ],
                                             value='car_show_drone',
-                                            clearable=False,
-                                            style={'width': '60%'}
+                                            clearable=False
                                         )
                                     ]
                                 ),
@@ -215,7 +203,7 @@ app.layout = html.Div(
                                 html.Div(
                                     className='control-element',
                                     children=[
-                                        html.Div(children=["Video Display Mode:"], style={'width': '40%'}),
+                                        html.Div(children=["Video Display Mode:"]),
                                         dcc.Dropdown(
                                             id="dropdown-video-display-mode",
                                             options=[
@@ -224,8 +212,7 @@ app.layout = html.Div(
                                             ],
                                             value='bounding_box',
                                             searchable=False,
-                                            clearable=False,
-                                            style={'width': '60%'}
+                                            clearable=False
                                         )
                                     ]
                                 ),
@@ -233,7 +220,7 @@ app.layout = html.Div(
                                 html.Div(
                                     className='control-element',
                                     children=[
-                                        html.Div(children=["Graph View Mode:"], style={'width': '40%'}),
+                                        html.Div(children=["Graph View Mode:"]),
                                         dcc.Dropdown(
                                             id="dropdown-graph-view-mode",
                                             options=[
@@ -242,8 +229,7 @@ app.layout = html.Div(
                                             ],
                                             value='visual',
                                             searchable=False,
-                                            clearable=False,
-                                            style={'width': '60%'}
+                                            clearable=False
                                         )
                                     ]
                                 )
@@ -254,19 +240,11 @@ app.layout = html.Div(
                 html.Div(
                     id='right-side-column',
                     className='four columns',
-                    style={
-                        'height': 'calc(100vh - 5px)',
-                        'overflow-y': 'scroll',
-                        'marginLeft': '1%',
-                        'display': 'flex',
-                        'backgroundColor': '#F9F9F9',
-                        'flexDirection': 'column'
-                    },
                     children=[
                         html.Div(
                             className='img-container',
                             children=html.Img(
-                                style={'height': '100%', 'margin': '2px'},
+                                id='logo',
                                 src=app.get_asset_url('plotly_logo.png')
                             )),
                         html.Div(id="div-visual-mode"),
@@ -337,7 +315,12 @@ def select_footage(footage, display_mode):
 @app.callback(Output("markdown", "style"),
               [Input("learn-more-button", "n_clicks"), Input("markdown_close", "n_clicks")])
 def update_click_output(button_click, close_click):
-    if button_click > close_click:
+    ctx = dash.callback_context
+    prop_id = ""
+    if ctx.triggered:
+        prop_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
+    if prop_id == 'learn-more-button':
         return {"display": "block"}
     else:
         return {"display": "none"}
@@ -350,7 +333,7 @@ def update_output(dropdown_value):
         return [
             dcc.Interval(
                 id="interval-visual-mode",
-                interval=700,
+                interval=2000,
                 n_intervals=0
             ),
             html.Div(
@@ -382,7 +365,7 @@ def update_detection_mode(value):
         return [
             dcc.Interval(
                 id="interval-detection-mode",
-                interval=700,
+                interval=2000,
                 n_intervals=0
             ),
             html.Div(
