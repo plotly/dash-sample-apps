@@ -11,7 +11,6 @@ library(compiler)
 library(dtplyr)
 library(knitr)
 library(png)
-library(magick)
 library(base64enc)
 library(magrittr)
 library(Rtsne)
@@ -38,9 +37,9 @@ readme <- htmlDiv(children=l.(
   ,
   dccMarkdown("# t-SNE Explorer
 
-This is a demo of the Dash interactive R framework developed by [Plotly](https://plot.ly/).
+This is a demo of the Dash interactive R/Python framework developed by [Plotly](https://plot.ly/).
 
-Dash abstracts away all of the technologies and protocols required to build an interactive web-based application and is a simple and effective way to bind a user interface around your Python code. To learn more check out our [documentation](https://plot.ly/dash). 
+Dash abstracts away all of the technologies and protocols required to build an interactive web-based application and is a simple and effective way to bind a user interface around your R/Python code. To learn more check out our [documentation](https://plot.ly/dash). 
 
 For an introductory and extensive explanation of t-SNE how to use it properly, please check out the [demo app](https://dash-tsne.plot.ly/).
 ")
@@ -146,7 +145,7 @@ input_field <- function(title, state_id, state_value, state_max, state_min){
   # (title, state_id, state_value, state_max, state_min) :> htmlDiv(...)
   return(htmlDiv(list(
     htmlP(title), 
-    dccInput(id=state_id, type='number', value=state_value, max=state_max, min=state_min, size=7)
+    dccInput(id=state_id, type='number', value=state_value, max=state_max, min=state_min, size='7')
     
     
   ))
@@ -212,8 +211,8 @@ namedRadioItems <- function(name, short, options, val, ...){
                   , 
                   labelStyle=l.(
                     display = 'inline-block'
-                    , 
-                    'margin-right'='7px'
+                    # , 
+                    # 'margin-right'='7px'
                     , 
                     'font-weight'=300
                     
@@ -221,8 +220,8 @@ namedRadioItems <- function(name, short, options, val, ...){
                   style = l.(
                     
                     display='inline-block'
-                    ,
-                    'margin-left'='7px'
+                    # ,
+                    # 'margin-left'='7px'
                     
                   )
                 ))
@@ -277,7 +276,7 @@ app$layout(
       
       htmlH2('t-SNE Explorer', className='title', id='app-title')
       ,
-      htmlImg(id='plotly-image', src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png", style=l.(height='90px', float='right', 'margin-top'='10px', 'margin-right'='30px'))
+      htmlImg(id='plotly-image', src="assets/logo.png", style=l.(height='90px', float='right', 'margin-top'='10px', 'margin-right'='30px'))
       
     )
     ,
@@ -288,15 +287,13 @@ app$layout(
       
       htmlDiv(className='row, background', 
               
-              children=l.(dccMarkdown('* This is the R version of the t-SNE explorer.')                             
-                          , 
-                          dccMarkdown('* To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dash-tsne)')
+              children=l.(dccMarkdown("The Scatter plot above is the result of running the t-SNE algorithm on the MNIST digits, resulting in a 3D visualization of the image dataset.  For demo purposes, all the data were pre-generated using limited number of input parameters, a subset of 3000 samples, and displayed instantly.")
+                          ,
+                          dccMarkdown("You can run the t-SNE algorithm with your custom dataset and label using a dropdown at the top right. To learn more about how the t-SNE Explorer works, click on 'Learn More' below.")
+                          ,
+                          dccMarkdown('* This is the R version of the t-SNE explorer. To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dashr-tsne)')                             
                           ,
                           htmlButton('Learn More', id='learn-button', n_clicks=0)
-                          
-                          
-                          
-                          
                           
               )
               
@@ -320,19 +317,15 @@ app$layout(
       
       htmlDiv(className='row, background', l.(   
         
-        
-        
-        
-        
         htmlH4( children='t-SNE Parameters', id='tsne_h4', style=l.(float='left')),
-        htmlDiv(className= 'three columns', id='control-panel', children = l.(), style=l.(width='80%'))
+        htmlDiv(className= 'four columns', id='control-panel', children = l.(), style=l.(width='100%'))
         
       ),  style=l.(float='left', display='block'))
       ,
-      htmlH4('The Result Graph', className='six columns'),
-      htmlDiv(id='demo-graph', className='six columns', children= dccGraph(id='tsne-3d-plot', figure=defaultPlot ))
+      htmlH4('The Result Graph', className='four columns'),
+      htmlDiv(id='demo-graph', className='five columns', children= dccGraph(id='tsne-3d-plot', figure=defaultPlot ), style= )
       ,
-      htmlDiv(id='custom-graph', className='six columns', children= dccGraph(id='tsne-3d-plot-custom', figure=defaultPlot ), style=l.(display='none'))
+      htmlDiv(id='custom-graph', className='five columns', children= dccGraph(id='tsne-3d-plot-custom', figure=defaultPlot ), style=l.(display='none'))
       ,
       htmlDiv(l.(htmlDiv(id='KL-div',style=l.(display='none') )
                  ,
@@ -343,7 +336,9 @@ app$layout(
                  
       ), id='plot-div', style=l.(display='none'))
       ,
-      htmlDiv(id='custom-container', children="", style=l.(display='none'))
+      htmlDiv(id='palette', className='three columns' )
+      ,
+      htmlDiv(id='custom-container', className='three columns')
       
     ))
     
@@ -355,11 +350,7 @@ app$layout(
   style=l.('max-width'='100%', 'font-size'='1.5rem', padding='0px 0px') )
 )
 ################################################################LAYOUT DONE################################################
-#
-#
-#
-#
-#
+
 ################################################################CALLBACK BEGINS############################################
 #
 
@@ -398,7 +389,6 @@ demoPanel <- l.(Card(l.(
     style = l.(width='100%')
   )
   ,
-  #namedSlider(name, short, min, max, step, val, marks=NULL) 
   namedSlider("Number of Iterations",'iterations', 250, 1000,  500, genMarks(250, 1000, 250))
   ,
   namedSlider("Perplexity",'perplexity', 3, 100,  30, l.('3'=l.(label='3'), '10'=l.(label='10'), '30'=l.(label='30'), '50'=l.(label='50'), '100'=l.(label='100')))
@@ -424,29 +414,13 @@ demoPanel <- l.(Card(l.(
         val='regular'
       )
       ,
-      
-      htmlDiv(dccDropdown(id='dropdown-word-selected', placeholder='Select word to display its neighbors', value='')
-              
-      ))
-  )
-  
-)),
-Card(kids=l.(
-  
-  htmlDiv(
-    id='div-plot-click-message'
-    ,
-    style=l.('text-align'='center', 'margin-bottom'='7px', 'font-weight'='bold')
-  ),
-  htmlDiv(id='div-plot-click-image')
-  ,
-  htmlDiv(id='div-plot-click-wordemb', className='three columns', style=l.(width='30vh', height='30vh'))
+      htmlDiv(dccDropdown(id='dropdown-word-selected', placeholder='Select a word', value=''), style=l.(width='20vh'))
+    ))
 ))
 )
-############################################demo PANEL ends
+###########################################demo PANEL ends
 #
 #############################################custom PANEL begins
-
 
 
 #
@@ -459,100 +433,118 @@ app$callback(
     if(choice == 'demo'){
       return(demoPanel)
     } else {
-      return(l.(Card(l.(
-        htmlDiv(id='data-df-and-message', children = '', style=l.(display='none'))
-        ,
-        htmlDiv(id='label-df-and-message', children = '', style=l.(display='none'))
-        ,
-        input_field('Number of Iterations:', "n-iter-state", 400, 1000, 250)
-        ,
-        input_field('Perplexity:','perplexity-state', 20, 50, 5)
-        ,
-        input_field("Learning Rate:", "lr-state", 200, 1000, 10)
-        ,
-        input_field("Initial PCA dimensions", 'pca-state', 30, 10000, 3)
-        ,
-        htmlButton(id='tsne-train-button', n_clicks=0, children='Start Training t-SNE')
-        ,
-        dccUpload(
-          id='upload-data'
-          , 
-          children=htmlA('Upload your input data here.')
-          , 
-          style=l.(
-            height= '45px'
+      return(
+        l.(
+          htmlDiv(id='data-df-and-message', children = '', style=l.(display='none'))
+          ,
+          htmlDiv(id='label-df-and-message', children = '', style=l.(display='none'))
+          ,
+          input_field('Number of Iterations:', "n-iter-state", 400, 1000, 250)
+          ,
+          input_field('Perplexity:','perplexity-state', 20, 50, 5)
+          ,
+          input_field("Learning Rate:", "lr-state", 200, 1000, 10)
+          ,
+          input_field("Initial PCA dimensions", 'pca-state', 30, 10000, 3)
+          ,
+          htmlButton(id='tsne-train-button', n_clicks=0, children='Start Training t-SNE')
+          ,
+          dccUpload(
+            id='upload-data'
+            , 
+            children=htmlA('Upload your input data here.')
+            , 
+            style=l.(
+              height= '45px'
+              ,
+              'line-height'= '45px'
+              ,
+              'border-width'= '1px'
+              ,
+              'border-style'= 'dashed'
+              ,
+              'border-radius'= '5px'
+              ,
+              'text-align'= 'center'
+              ,
+              'margin-top'= '5px'
+              ,
+              'margin-bottom'= '5 px'
+            )
+            , 
+            multiple=F
             ,
-            'line-height'= '45px'
-            ,
-            'border-width'= '1px'
-            ,
-            'border-style'= 'dashed'
-            ,
-            'border-radius'= '5px'
-            ,
-            'text-align'= 'center'
-            ,
-            'margin-top'= '5px'
-            ,
-            'margin-bottom'= '5 px'
+            max_size = -1
           )
-          , 
-          multiple=F
           ,
-          max_size = -1
-        )
-        ,
-        dccUpload(
-          id='upload-label'
-          ,
-          children=htmlA('Upload your labels here.')
-          ,
-          style=l.(
-            height= '45px'
+          dccUpload(
+            id='upload-label'
             ,
-            'line-height'= '45px'
+            children=htmlA('Upload your labels here.')
             ,
-            'border-width'= '1px'
+            style=l.(
+              height= '45px'
+              ,
+              'line-height'= '45px'
+              ,
+              'border-width'= '1px'
+              ,
+              'border-style'= 'dashed'
+              ,
+              'border-radius'= '5px'
+              ,
+              'text-align'= 'center'
+              ,
+              'margin-top'= '5px'
+              ,
+              'margin-bottom'= '5 px'
+            )
+            , 
+            multiple=F
             ,
-            'border-style'= 'dashed'
-            ,
-            'border-radius'= '5px'
-            ,
-            'text-align'= 'center'
-            ,
-            'margin-top'= '5px'
-            ,
-            'margin-bottom'= '5 px'
+            max_size = -1
           )
-          , 
-          multiple=F
           ,
-          max_size = -1
-        )
-        ,
-        htmlDiv(l.(
-          
-          htmlP(id='upload-data-message', style = l.('margin-bpttom'='0px'))
+          htmlDiv(l.(
+            
+            htmlP(id='upload-data-message', style = l.('margin-bottom'='0px'))
+            ,
+            htmlP(id='upload-label-message', style = l.('margin-bottom'='0px'))
+            ,
+            htmlDiv(id ='training-status-message', style=l.('margin-bottom'='0px', 'margin-top'='0px'))
+            ,
+            htmlP(id='error-status-message')
+            
+          )
           ,
-          htmlP(id='upload-label-message', style = l.('margin-bpttom'='0px'))
+          id='output-messages'
           ,
-          htmlDiv(id ='training-status-message', style=l.('margin-bottom'='0px', 'margin-top'='0px'))
-          ,
-          htmlP(id='error-status-message')
-          
-        )
-        ,
-        id='output-messages'
-        ,
-        style=l.('margin-bottom'='2px', 'margin-top'='2px')
-        )
+          style=l.('margin-bottom'='2px', 'margin-top'='2px')
+          )
+        ))
+    }
+  }
+  
+)
+app$callback(
+  output = l.(id='palette', property='children'),
+  params=l.(input(id='dropdown-mode-choice', property='value')),
+  function(choice)
+  {
+    if(choice=='demo'){
+      return(l.(
         
-        
+        htmlDiv(
+          id='div-plot-click-message'
+          ,
+          style=l.('text-align'='center', 'margin-bottom'='7px', 'font-weight'='bold')
+        ),
+        htmlDiv(id='div-plot-click-image')
+        ,
+        htmlDiv(id='div-plot-click-wordemb', style=l.(width='30vh', height='30vh'))
       ))
-      
-      
-      
-      ))
+    } else{
+      return("")
     }
   }
   
@@ -562,7 +554,7 @@ app$callback(
   params = l.(input(id='dropdown-mode-choice', property='value')),
   function(value){
     if(value=='demo'){
-      return(l.())
+      return(NULL)
       
     } else{
       return(l.(display='none'))
@@ -574,7 +566,7 @@ app$callback(
   params = l.(input(id='dropdown-mode-choice', property='value')),
   function(value){
     if(value=='custom'){
-      return(l.())
+      return(NULL)
       
     } else{
       return(l.(display='none'))
@@ -621,7 +613,7 @@ app$callback(
   ,
   function(dataset){
     if(is.element(dataset, WORD_EMBEDDINGS)){
-      return(l.(width='30vh', display='block'))
+      return(l.(width='15vh', display='block'))
     } else {
       return(l.(display='none'))
     }
@@ -704,9 +696,6 @@ generate_figure_word_vec <- function(embedding_df, wordemb_display_mode, selecte
     }
     plot_mode = 'text'
     #Get the nearest neighbors incides using Euclidean distance
-    
-    
-    
     
     selected_vector = filter(datTbl, label==selected_word)
     mtx <- as.matrix(datTbl[, -1])
@@ -795,13 +784,14 @@ app$callback(
       datTbl$distance = distances
       sorted_DT <- datTbl[order(distance), ]
       neighbors_label <- sorted_DT[2:6, 1]
-      p <- plot_ly(type='bar', x=neighbors_label$label, y=1:5, orientation='v' )
-      p <- p %>% layout(title =  glue('5 nearest neighbors of {selected_word}'), xaxis= l.(title='Euclidean Distance'))
-      return( dccGraph(
+      p <- plot_ly(type='bar', y=neighbors_label$label, orientation='h' )
+      p <- p %>% layout( xaxis= l.(title='Euclidean Distance'))
+      if(selected_word==''||is.na(selected_word)){toplabel <- "Default 5-NN graph"} else{toplabel <- paste("The 5 nearest neighbors of", selected_word)}
+      return(l.(htmlH5(toplabel), dccGraph(
         id='graph-bar-nearest-neighbors-word',
         figure=p,
         style=l.(height= '25vh'),
-        config=l.('displayModeBar'= F)) %>% htmlDiv(., style=l.(height='25vh', display='block', margin='auto')))
+        config=l.('displayModeBar'= F)) %>% htmlDiv(., style=l.(height='25vh', display='block', margin='auto'))))
       
       
       #return(htmlP(glue('{clickDat}')))
@@ -850,15 +840,8 @@ app$callback(
       clickPoint = c(clickDat[[1]][1], clickDat[[1]][2], clickDat[[1]][3]) %>% as.numeric(.) %>% round(., 4)
       imageIndex <- which(embedding_DT$x== clickPoint[1] & embedding_DT$y==clickPoint[2] & embedding_DT$z==clickPoint[3])
       
-      
-      #return(htmlP(paste(glue('{clickDat[[1]][2]}'))))
-      # return(htmlP(paste(glue('{imageIndex}'))))
-      
-      
-      
       imageVec<- as.numeric(datTbl[imageIndex, ])
       #
-      
       
       if(dataset=='cifar_gray_3000'){ imageMtx <- matrix(imageVec, nrow=32)} else {imageMtx <- matrix(imageVec, nrow=28)}
       DIGIT <- writePNG(t(imageMtx))
@@ -981,7 +964,6 @@ app$callback(
     
     input(id='label-df-and-message', property='children')
     
-    
   )
   ,
   function(JSON){
@@ -1000,9 +982,6 @@ app$callback(
 ####t-SNE process
 
 # Store the uploaded data to the hidden data htmlDiv container
-
-
-
 
 softBounds <- function(c, a=c, b=c){
   if(c<a){
@@ -1023,17 +1002,8 @@ app$callback(
   ,
   params = list(
     
-    
     input(id='tsne-train-button', property= 'n_clicks')
     ,
-    
-    # [State('perplexity-state', 'value'),
-    #  State('n-iter-state', 'value'),
-    #  State('lr-state', 'value'),
-    #  State('pca-state', 'value'),
-    #  State('data-df-and-message', 'children'),
-    #  State('label-df-and-message', 'children')
-    #  ]
     state(id='perplexity-state',property='value' )
     ,
     state(id='n-iter-state',property='value' )
@@ -1056,18 +1026,6 @@ app$callback(
     
     if((n_clicks <= 0)|| is.empty(data_div) || is.empty(label_div) ){
       
-      # return(l.(
-      #   htmlDiv(l.(NULL), id='KL-div', style=l.(display='none') )
-      #   ,
-      #   htmlDiv("0 seconds elapsed", id='end-time', style=l.(display='none'))
-      #   ,
-      #   htmlDiv(error_message, id='error-message', style=l.(display='none'))
-      #   ,
-      #   #style=l.(height='120vh', width='80vh',float='left')
-      #   dccGraph(id='tsne-3d-plot', figure=defaultPlot, style=l.(height='120vh', width='80vh',float='left'))
-      # ))
-      
-      
       
       kl_js <- toJSON(NULL, null='null', force=TRUE)
       time_js <- toJSON('0 seconds elapsed')
@@ -1077,7 +1035,6 @@ app$callback(
       return(C)
       
     } else{
-      
       Data_DT <- fromJSON(fromJSON(data_div)[1])
       label_DT <- fromJSON(label_div)[1] %>% fromJSON()
       niter <- softBounds(n_iter, 250, 1000)
@@ -1086,50 +1043,21 @@ app$callback(
       initialdim <- softBounds(pca_dim, 3, dim(Data_DT)[2])
       
       tic()
-      # Rtsne(X, dims = 2, initial_dims = 50,
-      #       perplexity = 30, theta = 0.5, check_duplicates = TRUE,
-      #       pca = TRUE, partial_pca = FALSE, max_iter = 1000,
-      #       verbose = getOption("verbose", FALSE), is_distance = FALSE,
-      #       Y_init = NULL, pca_center = TRUE, pca_scale = FALSE,
-      #       normalize = TRUE, stop_lying_iter = ifelse(is.null(Y_init), 250L,
-      #                                                  0L), mom_switch_iter = ifelse(is.null(Y_init), 250L, 0L),
-      #       momentum = 0.5, final_momentum = 0.8, eta = 200,
-      #       exaggeration_factor = 12, num_threads = 1, ...)
-      #
       
       TSNE <- Rtsne(Data_DT, dims=3, initial_dims = initialdim, perplexity=perp, eta=lr, max_iter = niter, num_threads=4)
       KLDiv <- TSNE$itercosts %>% .[length(.)]
       OUTPUT <- data.table(cbind(label_DT,TSNE$Y))
       colnames(OUTPUT) <- c('label','x', 'y', 'z')
-      # p <- plotly::plot_ly(OUTPUT, type='scatter3d', x=~x, y=~y, z=~z, color = ~as.factor(label), mode='markers', marker=list(symbol='circle', size=2.5))
       toc(log=T)
-      # return(l.(
-      #   htmlDiv(l.(KLDiv), id='KL-div', style=l.(display='none') )
-      #   ,
-      #   htmlDiv(tic.log()[[1]], id='end-time', style=l.(display='none'))
-      #   ,
-      #   htmlDiv(error_message, id='error-message', style=l.(display='none'))
-      #   ,
-      #   #style=l.(height='120vh', width='80vh',float='left')
-      #   dccGraph(id='tsne-3d-plot', figure=p, style=l.(height='120vh', width='80vh',float='left')))
       L <- list(kl=KLDiv, time=tic.log()[[1]], error=error_message, fig=OUTPUT)
       V <- mapply(toJSON, x=L, force=TRUE, dataframe='rows')
       tic.clearlog()
       return(V %>% toJSON(., raw='base64', force=TRUE))
-      
     }
     
   }
 )
-# htmlDiv(l.(htmlDiv(id='KL-div',style=l.(display='none') )
-#            ,
-#            htmlDiv(id='end-time', style=l.(display='none'))
-#            , 
-#            htmlDiv(id='error-message', style=l.(display='none'))
-#            ,
-#            dccGraph(id='tsne-3d-plot', figure=defaultPlot, style=l.(height='80vh', width='80vh', float='left'))
-#            
-# ), id='plot-div')
+
 app$callback(
   output = l.(id='KL-div', property='children')
   ,
@@ -1181,7 +1109,6 @@ app$callback(
     return(p)
   }
 )
-
 
 
 #

@@ -49,5 +49,5 @@ remotes::install_github("plotly/dash-html-components")
 remotes::install_github("plotly/dash-core-components")
 
 
-install.packages(c("dplyr", 'data.table', 'plotly', 'rlist', 'glue', 'foreach', 'dtplyr', 'knitr', 'png', 'magick', 'base64enc', 'magrittr', 'Rtsne', 'stringr'))
+install.packages(c("dplyr", 'data.table', 'plotly', 'rlist', 'glue', 'foreach', 'dtplyr', 'knitr', 'png', 'base64enc', 'magrittr', 'Rtsne', 'stringr'))
 
