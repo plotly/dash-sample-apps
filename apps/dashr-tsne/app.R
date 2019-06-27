@@ -140,7 +140,7 @@ genMarks <- function(n){
 }
 
 input_field <- function(title, state_id, state_value, state_max, state_min){
-  # (title, state_id, state_value, state_max, state_min) :> htmlDiv(...)
+  #takes (title, state_id, state_value, state_max, state_min), returns htmlDiv(htmlP(title), dccInput(...))
   return(htmlDiv(list(
     htmlP(title), 
     dccInput(id=state_id, type='number', value=state_value, max=state_max, min=state_min, size='7')
@@ -149,7 +149,7 @@ input_field <- function(title, state_id, state_value, state_max, state_min){
   
   )}
 
-fn <- function(n){
+genMark <- function(n){
   l <- list(glue('{n}'))
   names(l) <- 'label'
   
@@ -158,7 +158,7 @@ fn <- function(n){
 
 genMarks <- function(min, max, by){
   s <- seq(from=min, to=max, by)
-  l <- lapply(s, fn)
+  l <- lapply(s, genMark)
   names(l) <- s
   return(l)
 }
