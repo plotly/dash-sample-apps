@@ -2,7 +2,7 @@ dash==0.43.0
 # dash-core-components
 # dash-html-components
 dash-canvas>=0.0.11
-dash-table
+dash-table==3.7.0
 # plotly
 gunicorn==19.9.0
 scikit-image

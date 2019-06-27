@@ -198,7 +198,7 @@ app.layout = html.Div(
                             columns=columns,
                             editable=True,
                             style_table={
-                                "width": "80%",
+                                "width": "81%",
                                 "margin-left": "2.5%",
                                 "border-radius": "4px",
                             },
@@ -220,35 +220,32 @@ app.layout = html.Div(
             ],
             className="four columns instruction",
         ),
-        html.Div(
-            [
-                dcc.Tabs(
-                    id="stitching-tabs",
-                    value="canvas-tab",
-                    children=[
-                        dcc.Tab(label="Image Tiles", value="canvas-tab"),
-                        dcc.Tab(label="Stitched Image", value="result-tab"),
-                        dcc.Tab(label="How To Use This App", value="help-tab"),
-                    ],
-                    className="tabs",
-                ),
-                html.Div(
-                    id="tabs-content-example",
-                    className="canvas",
-                    style={"text-align": "center", "margin": "auto"},
-                ),
-                html.Div(
-                    image_upload_zone("upload-stitch", multiple=True, width="100px"),
-                    className="upload_zone",
-                ),
-                html.Div(id="sh_x", hidden=True),
-                html.Div(id="stitched-res", hidden=True),
-                dcc.Store(id="memory-stitch"),
-            ],
-            className="eight columns result",
-        ),
-    ],
-    className="row twelve columns",
+        html.Div([
+            dcc.Tabs(
+                id="stitching-tabs",
+                value="canvas-tab",
+                children=[
+                    dcc.Tab(label="Image Tiles", value="canvas-tab"),
+                    dcc.Tab(label="Stitched Image", value="result-tab"),
+                    dcc.Tab(label="How To Use This App", value="help-tab"),
+                ],
+                className="tabs",
+            ),
+            html.Div(
+                id="tabs-content-example",
+                className="canvas",
+                style={"text-align": "center", "margin": "auto"},
+            ),
+            html.Div(
+                image_upload_zone("upload-stitch", multiple=True, width="100px"),
+                className="upload_zone",
+            ),
+            html.Div(id="sh_x", hidden=True),
+            html.Div(id="stitched-res", hidden=True),
+            dcc.Store(id="memory-stitch"),
+        ],className="eight columns result"),
+    
+    ],className="row twelve columns"
 )
 
 
