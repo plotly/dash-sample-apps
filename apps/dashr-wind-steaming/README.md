@@ -3,7 +3,7 @@
 
 This is a dash for R version of the Wind Streaming app written in python [Wind Streaming](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-wind-streaming)
 
-![assets/dashr-wind-streaming.gif] (assets/dashr-wind-streaming.gif)
+![dashr-wind-streaming.gif] (dashr-wind-streaming.gif)
 
 ## About this app:
 
