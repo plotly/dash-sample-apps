@@ -1,44 +1,38 @@
-# Dash Wind Streaming
+# dashr-wind-streaming
+# Wind streaming
 
-## About this app
+This is a dash for R version of the Wind Streaming app written in python [Wind Streaming](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-wind-streaming)
+
+![screenshot] (assets/dashr-wind-streaming.gif)
+
+## About this app:
 
 This app queries a SQL database every second and uses the data to update the wind speed diagram and the wind direction diagram. 
+
 The wind speed values are then binned in real time to generate the wind histogram plot.
 
-Original repo: [plotly/dash-wind-streaming](https://github.com/plotly/dash-wind-streaming)
+### Using the demo
 
+#### Running the app locally
 
-## How to run this app
+Clone the git repo and change to the root directory 
 
-(The following instructions apply to Posix/bash. Windows users should check
-[here](https://docs.python.org/3/library/venv.html).)
+```
+git clone https://github.com/plotly/dash-sample-apps
+cd dash-sample-apps/apps/dashr-wind-streaming 
+```
+Install the requirements. From the terminal, run the following to install the required packages in the default location:
 
-First, clone this repository and open a terminal inside the root folder.
-
-Create and activate a new virtual environment (recommended) by running
-the following:
-
-```bash
-python3 -m venv myvenv
-source myvenv/bin/activate
+```
+R -e "install.packages(c("dash", "DBI", "RSQLite", "stringr", "glue", "data.table", "plotly", "VGAM"))"
 ```
 
-Install the requirements:
+Run the app. From the terminal, run:
 
-```bash
-pip install -r requirements.txt
 ```
-Run the app:
+Rscript app.R
+```
 
-```bash
-python app.py
-```
 Open a browser at http://127.0.0.1:8050
 
-## Screenshots
 
-![demo.gif](demo.gif)
-
-## Resources
-
-- To learn more about Dash, check out our [documentation](https://plot.ly/dash).
