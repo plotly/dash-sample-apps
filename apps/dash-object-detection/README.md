@@ -29,7 +29,8 @@ source venv/bin/activate
 
 Clone the git repo, then install the requirements with pip
 ```
-cd dash-object-detection
+git clone https://github.com/plotly/dash-sample-apps.git
+cd dash-sample-apps/apps/dash-object-detection
 pip install -r requirements.txt
 ```
 
@@ -61,10 +62,6 @@ The data displayed in the app are pre-generated for demo purposes. To generate t
 
 * **Xing Han Lu** - *Initial Work* - [@xhlulu](https://github.com/xhlulu)
 * **Yi Cao** - *Restyle* - [@ycaokris](https://github.com/ycaokris)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Screenshots
 ![Screenshot1](images/Screenshot1.png)

@@ -8,16 +8,20 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
-
+import pathlib
 
 DEBUG = True
 FRAMERATE = 24.0
 
-app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__,
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+)
 server = app.server
+app.config.suppress_callback_exceptions = True
 
-app.scripts.config.serve_locally = True
-app.config['suppress_callback_exceptions'] = True
+BASE_PATH = pathlib.Path(__file__).parent.resolve()
+DATA_PATH = BASE_PATH.joinpath("data").resolve()
 
 
 def load_data(path):
@@ -27,7 +31,7 @@ def load_data(path):
     rounded."""
 
     # Load the dataframe containing all the processed object detections inside the video
-    video_info_df = pd.read_csv(path)
+    video_info_df = pd.read_csv(DATA_PATH.joinpath(path))
 
     # The list of classes, and the number of classes
     classes_list = video_info_df["class_str"].value_counts().index.tolist()
@@ -121,154 +125,154 @@ app.layout = html.Div(
         html.Div(
             className='container',
             children=[
-        html.Div(
-            id='left-side-column',
-            className='eight columns',
-            style={'display': 'flex',
-                   'flexDirection': 'column',
-                   'flex': 1,
-                   'height': 'calc(100vh - 5px)',
-                   'backgroundColor': '#F2F2F2',
-                   'overflow-y': 'scroll',
-                   'marginLeft': '0px',
-                   'justifyContent': 'flex-start',
-                   'alignItems': 'center'},
-            children=[
                 html.Div(
-                    id='header-section',
+                    id='left-side-column',
+                    className='eight columns',
+                    style={'display': 'flex',
+                           'flexDirection': 'column',
+                           'flex': 1,
+                           'height': 'calc(100vh - 5px)',
+                           'backgroundColor': '#F2F2F2',
+                           'overflow-y': 'scroll',
+                           'marginLeft': '0px',
+                           'justifyContent': 'flex-start',
+                           'alignItems': 'center'},
                     children=[
-                        html.H4(
-                            'Object Detection Explorer'
+                        html.Div(
+                            id='header-section',
+                            children=[
+                                html.H4(
+                                    'Object Detection Explorer'
+                                ),
+                                html.P(
+                                    'To get started, select a footage you want to view, and choose the display mode (with or without'
+                                    ' bounding boxes). Then, you can start playing the video, and the visualization will '
+                                    'be displayed depending on the current time.'
+                                ),
+                                html.Button("Learn More", id="learn-more-button", n_clicks=0)
+                            ]
                         ),
-                        html.P(
-                            'To get started, select a footage you want to view, and choose the display mode (with or without'
-                            ' bounding boxes). Then, you can start playing the video, and the visualization will '
-                            'be displayed depending on the current time.'
+                        html.Div(
+                            className='video-outer-container',
+                            children=html.Div(
+                                style={'width': '100%', 'paddingBottom': '56.25%', 'position': 'relative'},
+                                children=player.DashPlayer(
+                                    id='video-display',
+                                    style={'position': 'absolute', 'width': '100%',
+                                           'height': '100%', 'top': '0', 'left': '0', 'bottom': '0', 'right': '0'},
+                                    url='https://www.youtube.com/watch?v=gPtn6hD7o8g',
+                                    controls=True,
+                                    playing=False,
+                                    volume=1,
+                                    width='100%',
+                                    height='100%'
+                                )
+                            )
                         ),
-                        html.Button("Learn More", id="learn-more-button", n_clicks=0)
+                        html.Div(
+                            className='control-section',
+                            children=[
+                                html.Div(
+                                    className='control-element',
+                                    children=[
+                                        html.Div(children=["Minimum Confidence Threshold:"], style={'width': '40%'}),
+                                        html.Div(dcc.Slider(
+                                            id='slider-minimum-confidence-threshold',
+                                            min=20,
+                                            max=80,
+                                            marks={i: f'{i}%' for i in range(20, 81, 10)},
+                                            value=30,
+                                            updatemode='drag'
+                                        ), style={'width': '60%'})
+                                    ]
+                                ),
+
+                                html.Div(
+                                    className='control-element',
+                                    children=[
+                                        html.Div(children=["Footage Selection:"], style={'width': '40%'}),
+                                        dcc.Dropdown(
+                                            id="dropdown-footage-selection",
+                                            options=[
+                                                {'label': 'Drone recording of canal festival',
+                                                 'value': 'DroneCanalFestival'},
+                                                {'label': 'Drone recording of car festival', 'value': 'car_show_drone'},
+                                                {'label': 'Drone recording of car festival #2',
+                                                 'value': 'DroneCarFestival2'},
+                                                {'label': 'Drone recording of a farm', 'value': 'FarmDrone'},
+                                                {'label': 'Lion fighting Zebras', 'value': 'zebra'},
+                                                {'label': 'Man caught by a CCTV', 'value': 'ManCCTV'},
+                                                {'label': 'Man driving expensive car', 'value': 'car_footage'},
+                                                {'label': 'Restaurant Robbery', 'value': 'RestaurantHoldup'}
+                                            ],
+                                            value='car_show_drone',
+                                            clearable=False,
+                                            style={'width': '60%'}
+                                        )
+                                    ]
+                                ),
+
+                                html.Div(
+                                    className='control-element',
+                                    children=[
+                                        html.Div(children=["Video Display Mode:"], style={'width': '40%'}),
+                                        dcc.Dropdown(
+                                            id="dropdown-video-display-mode",
+                                            options=[
+                                                {'label': 'Regular Display', 'value': 'regular'},
+                                                {'label': 'Display with Bounding Boxes', 'value': 'bounding_box'},
+                                            ],
+                                            value='bounding_box',
+                                            searchable=False,
+                                            clearable=False,
+                                            style={'width': '60%'}
+                                        )
+                                    ]
+                                ),
+
+                                html.Div(
+                                    className='control-element',
+                                    children=[
+                                        html.Div(children=["Graph View Mode:"], style={'width': '40%'}),
+                                        dcc.Dropdown(
+                                            id="dropdown-graph-view-mode",
+                                            options=[
+                                                {'label': 'Visual Mode', 'value': 'visual'},
+                                                {'label': 'Detection Mode', 'value': 'detection'}
+                                            ],
+                                            value='visual',
+                                            searchable=False,
+                                            clearable=False,
+                                            style={'width': '60%'}
+                                        )
+                                    ]
+                                )
+                            ]
+                        )
                     ]
                 ),
                 html.Div(
-                    className='video-outer-container',
-                    children=html.Div(
-                        style={'width': '100%', 'paddingBottom': '56.25%', 'position': 'relative'},
-                        children=player.DashPlayer(
-                            id='video-display',
-                            style={'position': 'absolute', 'width': '100%',
-                                   'height': '100%', 'top': '0', 'left': '0', 'bottom': '0', 'right': '0'},
-                            url='https://www.youtube.com/watch?v=gPtn6hD7o8g',
-                            controls=True,
-                            playing=False,
-                            volume=1,
-                            width='100%',
-                            height='100%'
-                        )
-                    )
-                ),
-                html.Div(
-                    className='control-section',
+                    id='right-side-column',
+                    className='four columns',
+                    style={
+                        'height': 'calc(100vh - 5px)',
+                        'overflow-y': 'scroll',
+                        'marginLeft': '1%',
+                        'display': 'flex',
+                        'backgroundColor': '#F9F9F9',
+                        'flexDirection': 'column'
+                    },
                     children=[
                         html.Div(
-                            className='control-element',
-                            children=[
-                                html.Div(children=["Minimum Confidence Threshold:"], style={'width': '40%'}),
-                                html.Div(dcc.Slider(
-                                    id='slider-minimum-confidence-threshold',
-                                    min=20,
-                                    max=80,
-                                    marks={i: f'{i}%' for i in range(20, 81, 10)},
-                                    value=30,
-                                    updatemode='drag'
-                                ), style={'width': '60%'})
-                            ]
-                        ),
-
-                        html.Div(
-                            className='control-element',
-                            children=[
-                                html.Div(children=["Footage Selection:"], style={'width': '40%'}),
-                                dcc.Dropdown(
-                                    id="dropdown-footage-selection",
-                                    options=[
-                                        {'label': 'Drone recording of canal festival',
-                                         'value': 'DroneCanalFestival'},
-                                        {'label': 'Drone recording of car festival', 'value': 'car_show_drone'},
-                                        {'label': 'Drone recording of car festival #2',
-                                         'value': 'DroneCarFestival2'},
-                                        {'label': 'Drone recording of a farm', 'value': 'FarmDrone'},
-                                        {'label': 'Lion fighting Zebras', 'value': 'zebra'},
-                                        {'label': 'Man caught by a CCTV', 'value': 'ManCCTV'},
-                                        {'label': 'Man driving expensive car', 'value': 'car_footage'},
-                                        {'label': 'Restaurant Robbery', 'value': 'RestaurantHoldup'}
-                                    ],
-                                    value='car_show_drone',
-                                    clearable=False,
-                                    style={'width': '60%'}
-                                )
-                            ]
-                        ),
-
-                        html.Div(
-                            className='control-element',
-                            children=[
-                                html.Div(children=["Video Display Mode:"], style={'width': '40%'}),
-                                dcc.Dropdown(
-                                    id="dropdown-video-display-mode",
-                                    options=[
-                                        {'label': 'Regular Display', 'value': 'regular'},
-                                        {'label': 'Display with Bounding Boxes', 'value': 'bounding_box'},
-                                    ],
-                                    value='bounding_box',
-                                    searchable=False,
-                                    clearable=False,
-                                    style={'width': '60%'}
-                                )
-                            ]
-                        ),
-
-                        html.Div(
-                            className='control-element',
-                            children=[
-                                html.Div(children=["Graph View Mode:"], style={'width': '40%'}),
-                                dcc.Dropdown(
-                                    id="dropdown-graph-view-mode",
-                                    options=[
-                                        {'label': 'Visual Mode', 'value': 'visual'},
-                                        {'label': 'Detection Mode', 'value': 'detection'}
-                                    ],
-                                    value='visual',
-                                    searchable=False,
-                                    clearable=False,
-                                    style={'width': '60%'}
-                                )
-                            ]
-                        )
+                            className='img-container',
+                            children=html.Img(
+                                style={'height': '100%', 'margin': '2px'},
+                                src=app.get_asset_url('plotly_logo.png')
+                            )),
+                        html.Div(id="div-visual-mode"),
+                        html.Div(id="div-detection-mode")
                     ]
-                )
-            ]
-        ),
-        html.Div(
-            id='right-side-column',
-            className='four columns',
-            style={
-                'height': 'calc(100vh - 5px)',
-                'overflow-y': 'scroll',
-                'marginLeft': '1%',
-                'display': 'flex',
-                'backgroundColor': '#F9F9F9',
-                'flexDirection': 'column'
-            },
-            children=[
-                html.Div(
-                    className='img-container',
-                    children=html.Img(
-                        style={'height': '100%', 'margin': '2px'},
-                        src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png")
-                ),
-                html.Div(id="div-visual-mode"),
-                html.Div(id="div-detection-mode")
-            ]
-        )]),
+                )]),
         markdown_popup()
     ]
 )
@@ -281,15 +285,15 @@ def load_all_footage():
 
     # Load the dictionary containing all the variables needed for analysis
     data_dict = {
-        'james_bond': load_data("data/james_bond_object_data.csv"),
-        'zebra': load_data("data/Zebra_object_data.csv"),
-        'car_show_drone': load_data("data/CarShowDrone_object_data.csv"),
-        'car_footage': load_data("data/CarFootage_object_data.csv"),
-        'DroneCanalFestival': load_data("data/DroneCanalFestivalDetectionData.csv"),
-        'DroneCarFestival2': load_data("data/DroneCarFestival2DetectionData.csv"),
-        'FarmDrone': load_data("data/FarmDroneDetectionData.csv"),
-        'ManCCTV': load_data("data/ManCCTVDetectionData.csv"),
-        'RestaurantHoldup': load_data("data/RestaurantHoldupDetectionData.csv")
+        'james_bond': load_data("james_bond_object_data.csv"),
+        'zebra': load_data("Zebra_object_data.csv"),
+        'car_show_drone': load_data("CarShowDrone_object_data.csv"),
+        'car_footage': load_data("CarFootage_object_data.csv"),
+        'DroneCanalFestival': load_data("DroneCanalFestivalDetectionData.csv"),
+        'DroneCarFestival2': load_data("DroneCarFestival2DetectionData.csv"),
+        'FarmDrone': load_data("FarmDroneDetectionData.csv"),
+        'ManCCTV': load_data("ManCCTVDetectionData.csv"),
+        'RestaurantHoldup': load_data("RestaurantHoldupDetectionData.csv")
     }
 
     url_dict = {
@@ -460,7 +464,7 @@ def update_score_bar(n, current_time, footage, threshold):
                            'plot_bgcolor': 'rgb(249,249,249)',
                            'xaxis': {'automargin': True, 'tickangle': -45},
                            'yaxis': {'automargin': True, 'range': [0, 1], 'title': {'text': 'Score'}}}
-                }
+            }
             )
             return figure
 
@@ -646,4 +650,4 @@ def update_heatmap_confidence(n, current_time, footage, threshold):
 
 # Running the server
 if __name__ == '__main__':
-    app.run_server(dev_tools_hot_reload=False, debug=DEBUG, host='0.0.0.0')
+    app.run_server(dev_tools_hot_reload=False, debug=DEBUG)
