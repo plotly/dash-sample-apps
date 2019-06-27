@@ -249,8 +249,8 @@ def generate_table():
     df = df[cols]
     return dt.DataTable(
         id="table",
-        sorting=True,
-        filtering=True,
+        sort_action=True,
+        filter_action=True,
         row_deletable=True,
         style_cell={"padding": "15px", "width": "auto", "textAlign": "center"},
         style_cell_conditional=[
