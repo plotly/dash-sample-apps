@@ -706,9 +706,7 @@ generate_figure_word_vec <- function(embedding_df, wordemb_display_mode, selecte
     selected_vector <- filter(datTbl, label==selected_word)
     mtx <- as.matrix(datTbl[, -1])
     sel_vec <- unlist(selected_vector[, -1])
-    
-    distances <- mtx %>% apply(., 1, . %>% eu.norm(., sel_vec))
-    datTbl$distance <- distances
+    datTbl$distance <-  mtx %>% apply(., 1, . %>% eu.norm(., sel_vec))
     sorted_DT <- datTbl[order(distance), ]
     neighbors_label <- sorted_DT[1:101, 1]
     neighbors <- embedding_df[label %in% unlist(neighbors_label)]
