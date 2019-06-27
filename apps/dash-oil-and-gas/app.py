@@ -345,7 +345,6 @@ app.clientside_callback(
     [Input("count_graph", "figure")],
 )
 
-
 @app.callback(
     Output("aggregate_data", "data"),
     [
@@ -525,6 +524,8 @@ def make_individual_figure(main_graph_hover):
             ),
         ]
         layout_individual["title"] = dataset[chosen[0]]["Well_Name"]
+    
+    layout.update(dict(margin=dict(l=30, r=30, b=50, t=50)))
 
     figure = dict(data=data, layout=layout_individual)
     return figure
