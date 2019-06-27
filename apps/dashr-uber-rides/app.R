@@ -70,7 +70,7 @@ csSeq <- seq(0, 1, length.out = 23)
 # Create 24 evenly spaced floats from 0 to 1:
 
 colorScale <- list(
-  c(0, "#F4EC15"),
+  list(0, "#F4EC15"),
   list(csSeq[1], "#DAF017"), list(csSeq[2], "#BBEC19"),
   list(csSeq[3], "#9DE81B"), list(csSeq[4], "#80E41D"),
   list(csSeq[5], "#66E01F"), list(csSeq[6], "#4CDC20"),
@@ -106,48 +106,32 @@ locationOptions <- list(
   list(label = "Grand Central Station", value = "Grand Central Station"),
   list(label = "Times Square", value = "Times Square"))
                   
-allHours <- c(" 00:00:00", " 01:00:00", " 02:00:00", " 03:00:00",
-   " 04:00:00", " 05:00:00", " 06:00:00", " 07:00:00",
-   " 08:00:00", " 09:00:00", " 10:00:00", " 11:00:00",
-   " 12:00:00", " 13:00:00", " 14:00:00", " 15:00:00",
-   " 16:00:00", " 17:00:00", " 18:00:00", " 19:00:00",
-   " 20:00:00", " 21:00:00", " 22:00:00", " 23:00:00")
-               
+allHours <- c(
+  sapply(
+    0:23,
+    function(h){
+      hr <- formatC(h, width = 2, flag = "0")
+      paste0(" ", hr, ":00:00")
+    }
+  )
+)
 
-hourOptions <- list(
-  list(label = "Entire Day", value = "entire_day"),
-  list(label = "00:00", value = " 00:00:00"),
-  list(label = "01:00", value = " 01:00:00"),
-  list(label = "02:00", value = " 02:00:00"),
-  list(label = "03:00", value = " 03:00:00"),
-  list(label = "04:00", value = " 04:00:00"),
-  list(label = "05:00", value = " 05:00:00"),
-  list(label = "06:00", value = " 06:00:00"),
-  list(label = "07:00", value = " 07:00:00"),
-  list(label = "08:00", value = " 08:00:00"),
-  list(label = "09:00", value = " 09:00:00"),
-  list(label = "10:00", value = " 10:00:00"),
-  list(label = "11:00", value = " 11:00:00"),
-  list(label = "12:00", value = " 12:00:00"),
-  list(label = "13:00", value = " 13:00:00"),
-  list(label = "14:00", value = " 14:00:00"),
-  list(label = "15:00", value = " 15:00:00"),
-  list(label = "16:00", value = " 16:00:00"),
-  list(label = "17:00", value = " 17:00:00"),
-  list(label = "18:00", value = " 18:00:00"),
-  list(label = "19:00", value = " 19:00:00"),
-  list(label = "20:00", value = " 20:00:00"),
-  list(label = "21:00", value = " 21:00:00"),
-  list(label = "22:00", value = " 22:00:00"),
-  list(label = "23:00", value = " 23:00:00"))
-
-externalSheets <- list("https://codepen.io/chriddyp/pen/bWLwgP.css")
+hourOptions <- c(
+  list(list(label = "Entire Day", value = "entire_day")),
+  lapply(
+    0:23, 
+    function(h){
+      hr <- formatC(h, width = 2, flag = "0")
+      list(label = paste0(hr , ":00"), value = paste0(" ", hr, ":00:00"))
+    }
+  )
+)
 
 ####################################################################################################
 
 #################################### APP START #####################################################
 
-app <- Dash$new(name = "dashr-uber-rides", external_stylesheets = externalSheets)
+app <- Dash$new(name = "dashr-uber-rides")
 # Initiate application
 
 ####################################################################################################
