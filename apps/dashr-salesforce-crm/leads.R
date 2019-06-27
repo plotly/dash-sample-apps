@@ -1,5 +1,5 @@
 #app = Dash$new()
-leads = getAllFields('Lead')
+leads <- getAllFields('Lead')
 
 states = list("AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
               "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
@@ -7,19 +7,12 @@ states = list("AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA",
               "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
               "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY")
 
-optionstate = list()
-k = 1
-for (i in states) {
-  optionstate[[k]] = list('label' = i, 'value' = i)
-  k = k+1
-}
-
-#MY FUNCTION FOR THE LEADS TABLE
-
-datatotable = function(df){
-  df['CreatedDate'] = lapply(df$CreatedDate, function(x)as.POSIXct(x, origin="1970-01-01 00:00:00 UTC"))
+#FUNCTION FOR THE LEADS TABLE
+datatotable <- function(df){
+  df['CreatedDate'] = lapply(df$CreatedDate, 
+  function(x)as.POSIXct(x, origin="1970-01-01 00:00:00 UTC"))
+  
   df['CreatedDate'] = as.Date(format(df$CreatedDate, '%Y-%m-%d'))
-  #df = df[c(1,9,12,25,26)]
   plot_ly(
     type = 'table',
     header = list(
@@ -115,9 +108,7 @@ converted_leads_count <- function(period, df){
   if(period == 'M'){
     df$CreatedDate = substr(df$CreatedDate,1,7)
   }
-  #rows = as.data.frame(t(apply(df, 2, function(x) length(which(!is.na(x))))))
   df = count_(df %>% group_by(CreatedDate, Id, add=TRUE))
-  #df = cbind(df,rows)
   trace = df %>% group_by(CreatedDate) %>%
     plot_ly( x = ~CreatedDate, y = ~table(CreatedDate), type = 'scatter', mode="marker",fill="tozeroy",fillcolor="#e6f2ff"
     )%>%
@@ -125,8 +116,6 @@ converted_leads_count <- function(period, df){
            margin=list(l=33, r=25, b=37, t=5, pad=4),
            paper_bgcolor="white",
            plot_bgcolor="white")
-  
-  #return(list('data' = list(trace)))
   
 }
 
@@ -196,7 +185,7 @@ modal = function(){
                 ),
                 dccDropdown(
                   id="new_lead_state",
-                  options=optionstate,
+                  options=lapply(states,function(state){list(label = state, value = state)}),
                   value="NY"
                 ),
                 htmlP(
@@ -280,7 +269,7 @@ modal = function(){
     style=list("display"= "none")
   ))}
 
-leadslayout = app$layout(
+leadslayout <- app$layout(
   
   htmlDiv(toJSON(getAllFields('Lead')), id="leads_df", style=list("display"= "none")),
   
@@ -389,7 +378,6 @@ leadslayout = app$layout(
           htmlP("Converted Leads count"),
           dccGraph(
             id="converted_leads",
-            #figure = converted_leads_count(leads),
             style=list("height"= "90%", "width"= "98%"),
             config=list(displayModeBar=FALSE)
           )
@@ -404,7 +392,6 @@ leadslayout = app$layout(
   # table div
   dccGraph(id="leads_table",
            className="row",
-           #figure = datatotable(leads),
            style=list(
              "maxHeight"= "350px",
              "overflowY"= "scroll",
@@ -537,40 +524,3 @@ app$callback(output = list(id = "leads_df", property = "children"),
              })
 
 #app$run_server()   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

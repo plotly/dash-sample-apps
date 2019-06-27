@@ -1,4 +1,3 @@
-
 library(dash)
 library(dashHtmlComponents)
 library(dashCoreComponents)
@@ -6,16 +5,7 @@ library(dplyr)
 library(sqldf)
 library(plotly)
 library(lubridate)
-library(rjson)
-
-appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
-
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-
-setwd(sprintf("/app/apps/%s", appName))
-
+library(salesforcer)
 source('SFManager.R')
 source('functions.R')
 accounts = get_accounts()
@@ -25,6 +15,16 @@ cases = get_cases()
 source('cases.R')
 source('leads.R')
 source('opportunties.R')
+
+appName <- Sys.getenv("DASH_APP_NAME")
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
+  
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  
+  setwd(sprintf("/app/apps/%s", appName))
+}
 
 app$layout(htmlDiv(
   list(
