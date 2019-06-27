@@ -661,12 +661,6 @@ app$callback(
 #############CALLBACK that shows 3D plot#####
 
 
-
-## helper function
-listedDTs <- function(n, dt){
-  return(dt[dt$label==n])
-}
-#
 ### Euclidean distance
 eu.norm <- function(v1, v2){
   return(sqrt(sum((v1-v2)^2)))
@@ -798,13 +792,10 @@ app$callback(
       selected_word <- clickDat[[1]][6]
       datTbl <- datLst[[dataset]]
       colnames(datTbl)[1] = 'label'
-      
       selected_vector <- filter(datTbl, label==selected_word)
       mtx <- as.matrix(datTbl[, -1])
       sel_vec <- unlist(selected_vector[, -1])
-      
-      distances <- mtx %>% apply(., 1, . %>% eu.norm(., sel_vec))
-      datTbl$distance <- distances
+      datTbl$distance <- mtx %>% apply(., 1, . %>% eu.norm(., sel_vec))
       sorted_DT <- datTbl[order(distance), ]
       neighbors_label <- sorted_DT[2:6, 1]
       p <- plot_ly(type='bar', y=neighbors_label$label, orientation='h' ) %>% layout( xaxis= list(title='Euclidean Distance'))
