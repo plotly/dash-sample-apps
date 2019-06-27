@@ -369,6 +369,17 @@ app$layout(
                 src = "assets/dash-logo-white.png"
               )
             )
+          ),
+          htmlButton(
+            htmlA(
+              "Learn More",
+              href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-phylogeny",
+              style = list(color = "white")
+            ), 
+            style = list(
+              width = "20rem",
+              margin = "3rem 0 0 3rem"
+            )
           )
         ),
         className = "banner"
