@@ -16,6 +16,7 @@ group_colors = {"control": "light blue", "reference": "red"}
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
+server = app.server
 
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
