@@ -21,15 +21,17 @@ PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
 default_study_data = pd.read_csv(DATA_PATH.joinpath("study.csv"))
 
+# App Layout
 app.layout = html.Div(
     children=[
+        # Error Message
         html.Div(id="error-message"),
         # Top Banner
         html.Div(
             className="study-browser-banner row",
             children=[
                 html.H2(className="h2-title", children="ANIMAL STUDY BROWSER"),
-                html.Img(className="logo", src=app.get_asset_url("dash-logo.png")),
+                html.Img(className="logo", src=app.get_asset_url("dash-logo-new.png")),
             ],
         ),
         # Body of the App
