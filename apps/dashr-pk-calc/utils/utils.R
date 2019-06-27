@@ -82,7 +82,7 @@ GenerateResultColumn <- function(results) {
   return(resultList)
 }
 
-InsertAt <- function(a, pos, ...){
+InsertAt <- function(a, pos, ...) {
 # Function for inserting first position of vector
 # Helper FUN #1 for GenerateResultData
   dots <- list(...)
@@ -94,11 +94,11 @@ InsertAt <- function(a, pos, ...){
 }
 
 
-CalcPk <- function(time, conc, ivCalc = FALSE, termPoints = 3){
+CalcPk <- function(time, conc, ivCalc = FALSE, termPoints = 3) {
 # Returns 6 Pk variables
 # Helper FUN #2 for GenerateResultData
   if (min(time, na.rm = TRUE) > 0 && !ivCalc){
-  # when don't exist insert 0's to first position
+  # When doesn't exist insert 0's to first position
 
     time <- InsertAt(time, 0, 0)
     time <- time[ceiling(length(time) / 2):length(time)]
@@ -128,7 +128,7 @@ CalcPk <- function(time, conc, ivCalc = FALSE, termPoints = 3){
 
   if (checks){
     auc0t <- trapz(time, conc)
-  }else {
+  } else {
     auc0t <- NA
   }
 

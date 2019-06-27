@@ -120,7 +120,7 @@ app$layout(htmlDiv(
           id = "gh-link",
           children = list("View on GitHub"),
           href = paste("https://github.com/plotly/",
-                  "dash-sample-apps/tree/master/apps/dash-pk-calc", sep = ""),
+                  "dash-sample-apps/tree/master/apps/dashr-pk-calc", sep = ""),
           style = list(color = "white", border = "solid 1px white")
         ),
         githubLogo
@@ -204,7 +204,7 @@ app$callback(output = list(id = "data-table", property = "data"),
        # Replace with empty string
      }
 
-   }else if (changeRow < 0){
+   } else if (changeRow < 0) {
      records <- records[1:rows]
    }
 
@@ -222,13 +222,13 @@ app$callback(output = list(id = "data-table", property = "data"),
      # Create new column
      names(recordDf)[ncol(recordDf)] <- nameAppend
      # Set the name
-   }else if (changeCol < 0){
+   } else if (changeCol < 0) {
      recordDf <- select(recordDf, 1:(subjects + 1))
      # Remove columns
    }
 
    records <- df_to_list(recordDf)
-   # convert df back to list
+   # Convert df back to list
    return(records)
   }
 )
