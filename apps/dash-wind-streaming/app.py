@@ -1,3 +1,4 @@
+import os
 import pathlib
 import numpy as np
 import datetime as dt
@@ -12,7 +13,12 @@ from scipy.stats import rayleigh
 from db.api import get_wind_data, get_wind_data_by_id
 
 
-app = dash.Dash(__name__)
+GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 5000)
+
+app = dash.Dash(
+    __name__,
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+)
 
 server = app.server
 
@@ -30,7 +36,8 @@ app.layout = html.Div(
                             "This app continually queries a SQL database and displays live charts of wind speed and wind direction.",
                             className="app__header__title--grey",
                         ),
-                    ]
+                    ],
+                    className="app__header__desc",
                 ),
                 html.Div(
                     [
@@ -38,7 +45,8 @@ app.layout = html.Div(
                             src=app.get_asset_url("dash-logo-stripe-inverted.png"),
                             className="app__menu__img",
                         )
-                    ]
+                    ],
+                    className="app__header__logo",
                 ),
             ],
             className="app__header",
@@ -51,9 +59,19 @@ app.layout = html.Div(
                         html.Div(
                             [html.H6("WIND SPEED (MPH)", className="graph__title")]
                         ),
-                        dcc.Graph(id="wind-speed"),
+                        dcc.Graph(
+                            id="wind-speed",
+                            figure=go.Figure(
+                                layout=go.Layout(
+                                    plot_bgcolor=app_color["graph_bg"],
+                                    paper_bgcolor=app_color["graph_bg"],
+                                )
+                            ),
+                        ),
                         dcc.Interval(
-                            id="wind-speed-update", interval=1000, n_intervals=0
+                            id="wind-speed-update",
+                            interval=int(GRAPH_INTERVAL),
+                            n_intervals=0,
                         ),
                     ],
                     className="two-thirds column wind__speed__container",
@@ -80,6 +98,11 @@ app.layout = html.Div(
                                             step=1,
                                             value=20,
                                             updatemode="drag",
+                                            marks={
+                                                20: {"label": "20"},
+                                                40: {"label": "40"},
+                                                60: {"label": "60"},
+                                            },
                                         )
                                     ],
                                     className="slider",
@@ -103,7 +126,15 @@ app.layout = html.Div(
                                     ],
                                     className="auto__container",
                                 ),
-                                dcc.Graph(id="wind-histogram"),
+                                dcc.Graph(
+                                    id="wind-histogram",
+                                    figure=go.Figure(
+                                        layout=go.Layout(
+                                            plot_bgcolor=app_color["graph_bg"],
+                                            paper_bgcolor=app_color["graph_bg"],
+                                        )
+                                    ),
+                                ),
                             ],
                             className="graph__container first",
                         ),
@@ -117,7 +148,15 @@ app.layout = html.Div(
                                         )
                                     ]
                                 ),
-                                dcc.Graph(id="wind-direction"),
+                                dcc.Graph(
+                                    id="wind-direction",
+                                    figure=go.Figure(
+                                        layout=go.Layout(
+                                            plot_bgcolor=app_color["graph_bg"],
+                                            paper_bgcolor=app_color["graph_bg"],
+                                        )
+                                    ),
+                                ),
                             ],
                             className="graph__container second",
                         ),
@@ -391,6 +430,10 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
 )
 def deselect_auto(slider_value, wind_speed_figure):
     """ Toggle the auto checkbox. """
+
+    # prevent update if graph has no data
+    if not len(wind_speed_figure["data"]):
+        raise PreventUpdate
 
     if wind_speed_figure is not None and len(wind_speed_figure["data"][0]["y"]) > 5:
         return [""]
