@@ -30,17 +30,17 @@ a:hover {
 }
 
 .header img {
-    height: 50px;
+    height: 40px;
     width: auto;
 }
 
 .header p {
-    padding-left: 10px;
+    padding: 10px 0px;
 }
 
 .header h4 {
     font-family: "serif";
-    margin: 5px 0px 0px 10px;
+    margin: 5px 0px 0px 20px;
 }
 
 .header a {
@@ -50,7 +50,7 @@ a:hover {
     text-decoration: none;
     border-radius: 0.35rem;
     border: 1px solid #F9FAFB;;
-    margin: 15px 10px 0px 10px;
+    margin: 15px 10px 0px 0px;
 }
 
 .graph__container {
