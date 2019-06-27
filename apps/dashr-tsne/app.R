@@ -18,12 +18,14 @@ library(jsonlite)
 library(tictoc)
 
 appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
-
-
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-setwd(sprintf("/app/apps/%s", appName))
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
+  
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  
+  setwd(sprintf("/app/apps/%s", appName))
+}
 
 #Following the python notation
 IMAGE_DATASETS <- c("mnist_3000", "cifar_gray_3000", "fashion_3000")
@@ -239,11 +241,7 @@ defaultPlot <- plot_ly(
 
 
 #Initialize the app
-app <- Dash$new(external_stylesheets = list( "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",
-                                             "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
-                                             "https://fonts.googleapis.com/css?family=Raleway:400,300,600",
-                                             "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"))
-
+app <- Dash$new()
 ##############################################################################################################################
 
 ###########LAYOUT BEGINS########################################################################################################

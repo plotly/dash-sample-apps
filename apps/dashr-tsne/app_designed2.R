@@ -239,11 +239,8 @@ defaultPlot <- plot_ly(
 
 
 #Initialize the app
-app <- Dash$new(external_stylesheets = list( "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",
-                                             "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
-                                             "https://fonts.googleapis.com/css?family=Raleway:400,300,600",
-                                             "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"))
 
+app <- Dash$new()
 ##############################################################################################################################
 
 ###########LAYOUT BEGINS########################################################################################################
