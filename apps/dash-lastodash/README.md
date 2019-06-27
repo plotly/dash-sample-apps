@@ -1,21 +1,35 @@
 # LAStoDash
 
-'LAStoDash` is sample [Dash](https://plot.ly/products/dash) project that takes a
-[Log ASCII Standard (LAS) file](http://www.cwls.org/las/) and builds a web app
-to view its content and ready for printing.
+## About this app
+
+LAStoDash is a sample Dash project that takes a [Log ASCII Standard (LAS) file](http://www.cwls.org/las/) and builds a web app to view its content and print in PDF format.
+
+As indicated in the [LAS 2.0 Specifications](http://www.cwls.org/wp-content/uploads/2017/02/Las2_Update_Feb2017.pdf), LAS files contain sections that are marked by a ~. The [LAS file](data/alcor2.las) used for this app contains four of these sections, including version and wrap mode information (~V), well identification (~W), curve information (~C), and ASCII log data (~A), all of which are displayed in some format (e.g. graph, table) in the demo app and the [printable report in PDF format](demo/alcor2.pdf).
+
+## How to run this app locally
 
 ## Installation
 
+Clone the repository:
+
 ```
-$ git clone https://github.com/n-riesco/lastodash.git
-$ cd lastodash
+$ git clone https://github.com/plotly/dash-sample-apps.git
+```
+
+Redirect to the respective app directory:
+
+```
+$ cd dash-sample-apps/apps/dash-lastodash
+```
+
+Install the requirements:
+```
 $ pip3 install -r requirements.txt
 ```
 
-## Usage
-
+Find out how to run the app:
 ```
-$ ./lastodash.py -h
+$ Python3 lastodash.py -h
 usage: lastodash.py [-h] [--debug] lasfile
 
 Launch a Dash app to view a LAS log.
@@ -28,21 +42,20 @@ optional arguments:
   --debug, -d  enable debug mode
 ```
 
-## Example
-
+Run the app for the LAS file `alcor1.las`:
 ```
-$ ./lastodash.py alcor1.las 
-Header section Parameter regexp=~P was not found.
- * Serving Flask app "lastodash" (lazy loading)
- * Environment: production
-   WARNING: Do not use the development server in a production environment.
-   Use a production WSGI server instead.
- * Debug mode: off
- * Running on http://127.0.0.1:8050/ (Press CTRL+C to quit)
+$ Python3 lastodash.py alcor1.las
 ```
 
-And open http://127.0.0.1:8050/ to view the LAS file:
+View in your browser at http://127.0.0.1:8050.
+
+## Screenshots
 
 ![Screencast](alcor1.gif)
 
 See [here](alcor1.pdf) the report printed in PDF format.
+
+## Resources
+
+* [Dash documentation for Python](https://dash.plot.ly/)
+* [Log ASCII Standard (LAS) file](http://www.cwls.org/las/)
