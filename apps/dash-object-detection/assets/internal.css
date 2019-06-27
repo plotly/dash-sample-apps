@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto|Raleway');
+
 /* Remove Undo
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ._dash-undo-redo {
@@ -11,6 +13,32 @@ body {
     background-color: #F9F9F9 !important;
 }
 
+#top-bar {
+    background-color: #fa4f56;
+    height: 5px;
+}
+
+#left-side-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: calc(100vh - 5px);
+    background-color: #F2F2F2;
+    overflow-y: scroll;
+    margin-left: 0px;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem 2rem;
+}
+
+#right-side-column {
+    height: calc(100vh - 5px);
+    overflow-y: scroll;
+    margin-left: 1%;
+    display: flex;
+    flex-direction: column;
+}
+
 h4 {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
@@ -20,10 +48,6 @@ p {
     font-size: 16px;
     font-weight: 300;
 }
-
-/*.four.columns {*/
-    /*width: 32.6666666667% !important;*/
-/*}*/
 
 .model {
     display: block; /*Hidden by default */
@@ -68,7 +92,8 @@ p {
 }
 
 .closeButton:hover {
-    color: red; !important
+    color: red;
+!important
 }
 
 #header-section {
@@ -99,6 +124,12 @@ p {
     min-width: 500px;
 }
 
+.video-container {
+    width: 100%;
+    padding-bottom: 56.25%;
+    position: relative;
+}
+
 .control-section {
     width: 85%;
     display: flex;
@@ -113,6 +144,14 @@ p {
     padding: 10px;
     display: flex;
     flex-flow: row nowrap;
+}
+
+.control-element > div:nth-child(1) {
+    width: 40%;
+}
+
+.control-element > div:nth-child(2) {
+    width: 60%;
 }
 
 .Select-control {
@@ -140,14 +179,110 @@ p {
 }
 
 .img-container {
-    border-color: black;
     display: flex;
     justify-content: flex-end;
-    height: 40px;
+    height: 35px;
+    margin: 10px;
+}
+
+#logo {
+    height: 100%;
+    min-height: 30px;
+    width: auto;
+    margin: 2px;
 }
 
 .plot-title {
     margin-left: 5%;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     font-weight: 500;
+}
+
+#heatmap-confidence {
+    height: 45vh;
+    width: 100%;
+}
+
+#pie-object-count {
+    height: 40vh;
+    width: 100%;
+}
+
+#bar-score-graph {
+    height: 55vh;
+}
+
+/*
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  */
+
+@media only screen and (max-width: 750px) {
+    .container {
+        padding: 0;
+    }
+
+    h4 {
+        font-size: 16px;
+    }
+
+    #header-section {
+        text-align: center;
+    }
+
+    body {
+        font-size: 12px;
+    }
+
+    p {
+        font-size: 12px;
+    }
+
+    #learn-more-button {
+        font-size: 11px;
+        height: 20px;
+        font-weight: 400;
+        padding: 5px 25px 25px;
+        line-height: 20px;
+    }
+
+    .video-outer-container {
+        min-width: 80vw;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .control-element {
+        font-size: 12px;
+        flex-flow:column nowrap;
+        padding:10px 0px;
+    }
+
+    .control-element > div {
+        width:100% !important;
+    }
+
+    .control-element > div:nth-child(1){
+        text-align:center;
+    }
+
+    #slider-minimum-confidence-threshold {
+        margin-bottom:10px;
+    }
+
+    #div-visual-mode, #div-detection-mode {
+        text-align:center;
+    }
+
+    .annotation-text {
+        font-size: 0.8rem !important;
+    }
+
+    .img-container {
+        display:none;
+    }
+
+    #right-side-column {
+        justify-content:center;
+    }
+
 }
