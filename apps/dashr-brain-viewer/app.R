@@ -1,6 +1,6 @@
 
 library(dashColorscales)
-library(dashR)
+library(dash)
 library(plotly)
 library(rapportools)
 library(dashCoreComponents)
@@ -8,7 +8,6 @@ library(dashHtmlComponents)
 library(devtools)
 library(rjson)
 
-appName <- Sys.getenv("DASH_APP_NAME")
 
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
@@ -23,26 +22,15 @@ if (appName != ""){
 DEFAULT_COLORSCALE <- list(list(0,'#0c3383'), list(0.25,'#0a88ba'), list(0.5,'#f2d338'),
                            list(0.75,'#f28f38'), list(1,'#d91e1e'))
 
-DEFAULT_COLORSCALE_NO_INDEX <- list()
-
-for (i in 1:length(DEFAULT_COLORSCALE)) {
-  DEFAULT_COLORSCALE_NO_INDEX[i] <- DEFAULT_COLORSCALE[[i]][2] 
-}
+DEFAULT_COLORSCALE_NO_INDEX <- list("#0c3383", "#0a88ba", "#f2d338", "#f28f38", "#d91e1e")
 
 read_mniobj <- function(file){
   
   triangulate_polygons <- function(list_vertex_indices){
-    j = 1
-    otherlist = list()
-    for (k in seq(1,length(list_vertex_indices),3)) {
-      otherlist[[j]] = list_vertex_indices[k:(k+2)]
-      j = j+1
-    }
-    return(otherlist)
+    lapply(seq(1, length(list_vertex_indices), 3), function(k) x[k:(k+2)])
   }
   
   fp = readLines(con = file)
-  #fp=open(file,'r')
   n_vert <- list()
   n_poly <- list()
   k = 0
@@ -60,13 +48,11 @@ read_mniobj <- function(file){
       if (lapply(fp[i], is.empty) == TRUE){
         k = 1
       } else if (k == 1){
-        list_indices[[j]] <- strsplit(trimws(fp[i])," ")#needs to start at one
+        list_indices[[j]] <- strsplit(trimws(fp[i])," ")
         j = j+1
       }}}
   list_indices <- lapply(as.list(unlist(list_indices)),function(x){as.integer(as.list(x))})
   faces = as.array(triangulate_polygons(list_indices))
-  #vertices = as.matrix(vertices[[1]])
-  #vertices <- apply(X = vertices, FUN = function(x) as.list(c(x)), MARGIN = 1)
   return(list(vertices,faces))}
 
 standard_intensity <- function(x,y,z){
@@ -214,7 +200,7 @@ app$layout(htmlDiv(children = list(
                     htmlBr(),
                     htmlA(
                       children= 'Learn More',
-                      href= 'https://github.com/plotly/dash-brain-surface-viewer',
+                      href= 'https://github.com/plotly/dash-sample-apps',
                       style=list('color' = 'white',fontSize = '13px',
                                  'text-decoration' = 'None',
                                  fontFamily = 'Trebuchet MS',
@@ -327,7 +313,6 @@ app$layout(htmlDiv(children = list(
     
     style = list('float' = 'left', 'width' = '60%', 'height' = '50%', padding = 'None'))
 )
-#style = list('margin' = '0 auto')
 ))
 
 #CALLBACKS
@@ -365,7 +350,7 @@ app$callback(output = list(id = 'brain-graph', property = 'figure'),
                  }
                }
                
-               if(is.null(clickData[[1]]) == FALSE){
+               if(!is.null(clickData[[1]])){
       
                    marker = list(
                      x = list(clickData[['points']][[1]][['x']]),
