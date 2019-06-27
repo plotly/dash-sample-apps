@@ -231,7 +231,7 @@ def get_top_bar_cell(cellTitle, cellValue, color="white"):
 
 # Returns HTML Top Bar for app layout
 def get_top_bar(
-    balance=50000.00, equity=50000, margin=0, fm=50000, m_level="%", open_pl=0
+    balance=50000, equity=50000, margin=0, fm=50000, m_level="%", open_pl=0
 ):
     color_open_pl = get_color(float(open_pl), 0)
     return [
@@ -505,6 +505,9 @@ def get_fig(currency_pair, ask, bid, type_trace, studies, period):
         row += 1
         fig.append_trace(eval(study)(df), row, 1)
 
+    fig["layout"][
+        "uirevision"
+    ] = "The User is always right"  # Ensures zoom on graph is the same on update
     fig["layout"]["margin"] = {"t": 50, "l": 50, "b": 50, "r": 25}
     fig["layout"]["autosize"] = True
     fig["layout"]["height"] = 400
@@ -640,7 +643,7 @@ def chart_div(pair):
                                 id=pair + "close",
                                 className="chart-close inline-block float-right",
                                 children="×",
-                                n_clicks=0
+                                n_clicks=0,
                             ),
                         ],
                     ),
@@ -921,16 +924,10 @@ def generate_figure_callback(pair):
         if pair not in pairs:
             return {"layout": {}, "data": []}
 
-        if old_fig is None or old_fig == {"layout":{}, "data":{}}:
+        if old_fig is None or old_fig == {"layout": {}, "data": {}}:
             return get_fig(pair, a, b, t, s, p)
 
         fig = get_fig(pair, a, b, t, s, p)
-        try:
-            print(old_fig["layout"]["xaxis"]["range"]) 
-            print('returning old fig')
-            return old_fig
-        except:
-            print(pair)
         return fig
 
     return chart_fig_callback
@@ -1218,9 +1215,9 @@ for pair in currencies:
             Input("charts_clicked", "children"),
         ],
         [
-            State(pair + "ask", "children"), 
+            State(pair + "ask", "children"),
             State(pair + "bid", "children"),
-            State(pair + "chart", "figure")
+            State(pair + "chart", "figure"),
         ],
     )(generate_figure_callback(pair))
 
