@@ -230,7 +230,7 @@ def generate_curves(
         paper_bgcolor=bg_color,
         hovermode="y",
         legend={"font": {"size": tick_font_size}},
-        margin=go.layout.Margin(r=100),
+        margin=go.layout.Margin(r=100, t=100, b=50, l=80, autoexpand=False),
     )
 
     return dcc.Graph(figure=fig)
