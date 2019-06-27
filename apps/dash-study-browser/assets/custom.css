@@ -29,9 +29,10 @@ body{
 }
 
 .logo{
-  height: 75px;
+  height: 35px;
   float: right;
-  display: inline-block;
+  padding: 6px;
+  margin-top: 3px;
 }
 
 .h2-title{
