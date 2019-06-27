@@ -126,6 +126,10 @@ app.layout = html.Div(
                     id='left-side-column',
                     className='eight columns',
                     children=[
+                        html.Img(
+                            id='logo-mobile',
+                            src=app.get_asset_url('plotly_logo.png')
+                        ),
                         html.Div(
                             id='header-section',
                             children=[
@@ -244,7 +248,7 @@ app.layout = html.Div(
                         html.Div(
                             className='img-container',
                             children=html.Img(
-                                id='logo',
+                                id='logo-web',
                                 src=app.get_asset_url('plotly_logo.png')
                             )),
                         html.Div(id="div-visual-mode"),

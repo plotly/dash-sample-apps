@@ -185,11 +185,15 @@ p {
     margin: 10px;
 }
 
-#logo {
+#logo-web {
     height: 100%;
     min-height: 30px;
     width: auto;
     margin: 2px;
+}
+
+#logo-mobile {
+    display:none;
 }
 
 .plot-title {
@@ -281,8 +285,18 @@ p {
         display:none;
     }
 
+    #left-side-column {
+        height: auto;
+    }
+
     #right-side-column {
         justify-content:center;
+    }
+
+    #logo-mobile {
+        display:inline-flex;
+        height:30px;
+        align-self:flex-start;
     }
 
 }
