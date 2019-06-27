@@ -424,10 +424,12 @@ generateDataTable <- function(DT, type = c("procedure", "cost")){
     sort_mode = "multi",
     page_action = "native",
     page_size = 5, page_current= 0,
-    fixed_columns = list(headers = TRUE, data = 0),
     style_cell = list(
       backgroundColor = "#171b26",
-      color = "#7b7d8d"
+      color = "#7b7d8d",
+      overflow = "hidden",
+      textOverflow = "ellipsis",
+      whiteSpace = "normal"
     ),
     style_header = list(
       backgroundColor = "#1f2536"
