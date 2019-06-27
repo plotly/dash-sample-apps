@@ -70,7 +70,7 @@ Rscript init.R
 ```
 Run the app
 ```
-Rscript init.R
+Rscript app.R
 ```
 or using ctrl+shift+enter (cmd+shift+enter)
 ### How to use the local version
