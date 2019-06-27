@@ -457,10 +457,6 @@ def make_main_figure(
         layout["mapbox"]["center"]["lon"] = lon
         layout["mapbox"]["center"]["lat"] = lat
         layout["mapbox"]["zoom"] = zoom
-    # else:
-    #     lon = -78.05
-    #     lat = 42.54
-    #     zoom = 7
 
     figure = dict(data=traces, layout=layout)
     return figure
@@ -525,8 +521,6 @@ def make_individual_figure(main_graph_hover):
             ),
         ]
         layout_individual["title"] = dataset[chosen[0]]["Well_Name"]
-
-    layout.update(dict(margin=dict(l=30, r=30, b=50, t=50)))
 
     figure = dict(data=data, layout=layout_individual)
     return figure
