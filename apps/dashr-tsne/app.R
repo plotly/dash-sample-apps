@@ -197,25 +197,17 @@ namedRadioItems <- function(name, short, options, val, ...){
     , 
     style = kwargs
     , 
-    children=list(glue({name})
-                  , dccRadioItems(
-                    id= glue('radio-{short}')
-                    , 
-                    options=options
-                    , 
-                    value=val
-                    , 
+    children=list(glue({name}), 
+                    dccRadioItems(
+                      id= glue('radio-{short}'), 
+                    options=options, 
+                    value=val, 
                     labelStyle=list(
-                      display = 'inline-block'
-                      , 
+                      display = 'inline-block', 
                       'font-weight'=300
-                      
                     ),
                     style = list(
-                      
                       display='inline-block'
-                      # ,
-                      # 'margin-left'='7px'
                       
                     )
                   ))
@@ -817,8 +809,7 @@ app$callback(
       datTbl$distance <- distances
       sorted_DT <- datTbl[order(distance), ]
       neighbors_label <- sorted_DT[2:6, 1]
-      p <- plot_ly(type='bar', y=neighbors_label$label, orientation='h' )
-      p <- p %>% layout( xaxis= list(title='Euclidean Distance'))
+      p <- plot_ly(type='bar', y=neighbors_label$label, orientation='h' ) %>% layout( xaxis= list(title='Euclidean Distance'))
       if(selected_word==''||is.na(selected_word)){toplabel <- "Default 5-NN graph"} 
       else{toplabel <- paste("The 5 nearest neighbors of", selected_word)}
       return(list(htmlH5(toplabel), dccGraph(
