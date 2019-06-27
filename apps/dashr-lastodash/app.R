@@ -3,13 +3,10 @@ library(stringr)
 library(gdata)
 library(tidyr)
 library(dplyr)
-library(glue)
-library(ggplot2)
 library(dash)
 library(dashHtmlComponents)
 library(dashCoreComponents)
 library(dashTable)
-library(data.table)
 library(plotly)
 
 ####################################################################################################
@@ -37,15 +34,8 @@ las_path <- paste(las_dir, las_file, sep = "")
 ####################################################################################################
 # HANDLE & STORE DATA
 
-las_object <- setRefClass("las_object", fields = list(
-  V = "data.frame", 
-  W = "data.frame", 
-  C = "data.frame", 
-  A = "data.frame")
-)
-
 convert_las <- function(las_path) {
-  las_data <- las_object()
+  las_data <- list()
   las_string <- read_file(las_path)
   las_sections <- str_split(las_string, "~")
   for (section in las_sections[[1]]) {
@@ -53,8 +43,8 @@ convert_las <- function(las_path) {
     if (startsWith(section, "V")) {
       linesV <- str_split(section, "\r\n")
       contentV <- linesV[[1]][-c(1, length(linesV[[1]]))]
-      las_data$V <- data.frame(x = contentV) %>% 
-        separate(col = x, into = c("label", "x"), sep = "\\.", extra = "merge") %>% 
+      las_data$V <- data.frame(x = contentV) %>%
+        separate(col = x, into = c("label", "x"), sep = "\\.", extra = "merge") %>%
         separate(col = x, into = c("value", "description"), sep = ":\\s+", extra = "merge")
     }
     # store section containing well identification
@@ -65,8 +55,8 @@ convert_las <- function(las_path) {
         contentW <- contentW[-c(1, 2)]
       }
       las_data$W <- data.frame(x = contentW) %>%
-        separate(col = x, into = c("mnemonic", "x"), sep = "\\.", extra = "merge") %>% 
-        separate(col = x, into = c("unit", "x"), sep = "\\s+", extra = "merge") %>% 
+        separate(col = x, into = c("mnemonic", "x"), sep = "\\.", extra = "merge") %>%
+        separate(col = x, into = c("unit", "x"), sep = "\\s+", extra = "merge") %>%
         separate(col = x, into = c("value", "description"), sep = ":\\s+", extra = "merge")
     }
     # store section containing curve information
@@ -118,7 +108,7 @@ generate_frontpage <- function() {
                 id = "las-file-info",
                 children = list(
                   htmlSpan(id = "las-filename", children = las_file),
-                  htmlSpan(glue(" ({desc})"))
+                  htmlSpan(sprintf(" (%s)", desc))
                 )
               )
             )
@@ -131,7 +121,7 @@ generate_frontpage <- function() {
 
 generate_table <- function() {
   return(
-    dashTable::dashDataTable(
+    dashDataTable(
       id = "table",
       sort_action = TRUE,
       filter_action = TRUE,
@@ -144,18 +134,18 @@ generate_table <- function() {
         whiteSpace = "normal"
       ),
       style_cell = list(
-        padding = "15px", 
+        padding = "15px",
         minWidth = "0px",
         width = "25%",
-        textAlign = "center", 
+        textAlign = "center",
         border = "white"
       ),
       style_cell_conditional = list(list(
-        'if' = list(row_index = "even"), 
+        'if' = list(row_index = "even"),
         backgroundColor = "#f9f9f9"
       )),
       columns = unname(table_header),
-      data = dashTable::df_to_list(las_data$W[c("mnemonic", "description", "unit", "value")])
+      data = df_to_list(las_data$W[c("mnemonic", "description", "unit", "value")])
     )
   )
 }
@@ -177,21 +167,21 @@ generate_axis_title <- function(df, key) {
   curLine <- ""
   lines <- list()
   for (word in axisWords[[1]]) {
-    # create new line if needed 
+    # create new line if needed
     if ((nchar(curLine) + nchar(word)) > 15) {
       lines[[length(lines)+1]] <- curLine
       curLine <- ""
     }
-    # concatenate strings 
-    ifelse (
-      identical(curLine, ""), 
-      curLine <- paste(curLine, word, sep = ""), 
-      curLine <- paste(curLine, word, sep = " ")
-    ) 
+    # concatenate strings
+    curLine <- ifelse (
+      identical(curLine, ""),
+      paste(curLine, word, sep = ""),
+      paste(curLine, word, sep = " ")
+    )
   }
   lines[[length(lines)+1]] <- curLine
   title <- paste(lines, collapse = "\n")
-  title <- glue("{title}\n({unit})")
+  title <- sprintf("%s\n(%s)", title, unit)
   return(title)
 }
 
@@ -215,7 +205,7 @@ generate_curves <- function(height = 950,
   )
   plots <- list()
   for (i in 1:length(xvals)) {
-    ifelse(i == 2, line_style <- 'dashdot', line_style <- 'solid')
+    line_style <- ifelse(i == 2, 'dashdot', 'solid')
     p <- plot_ly(las_data$A, y = las_data$A[[yval]])
     for (xval in xvals[[i]]) {
       p <- add_trace(p, x = las_data$A[[xval]], name = xval, mode = 'lines', type = "scatter",
@@ -224,29 +214,28 @@ generate_curves <- function(height = 950,
     plots[length(plots)+1] <- p
   }
   fig <- subplot(
-    plots[[1]], plots[[2]], plots[[3]], plots[[4]], plots[[5]], 
+    plots[[1]], plots[[2]], plots[[3]], plots[[4]], plots[[5]],
     get_plot_list(5), nrows = 1, shareY = TRUE, margin = 0
   )
-  fig$x$data[[2]][["xaxis"]] = "x6"
-  fig$x$data[[7]][["xaxis"]] = "x7"
-  fig$x$data[[9]][["xaxis"]] = "x8"
-  fig$x$data[[12]][["xaxis"]] = "x9"
+  fig$x$data[[2]][["xaxis"]] <- "x6"
+  fig$x$data[[7]][["xaxis"]] <- "x7"
+  fig$x$data[[9]][["xaxis"]] <- "x8"
+  fig$x$data[[12]][["xaxis"]] <- "x9"
   for (i in 1:length(xvals)) {
     for (xval in xvals[[i]]) {
-      ifelse(i == 1, xaxis <- "xaxis", xaxis <- glue("xaxis{i}"))
-      ifelse(i == 2, fig$x$layout[[xaxis]]$type <- "log", fig$x$layout[[xaxis]]$type <- "linear")
+      xaxis <- ifelse(i == 1, "xaxis", sprintf("xaxis%i", i))
+      fig$x$layout[[xaxis]]$type <- ifelse(i == 2, "log", "linear")
     }
   }
   for (i in c(6:9)) {
-    xaxis <- glue("xaxis{i}")
-    ifelse(i != 9, fig$x$layout[[xaxis]]$overlaying <- glue("x{i-5}"), fig$x$layout[[xaxis]]$overlaying <- glue("x{i-4}"))
+    xaxis <- sprintf("xaxis%i", i)
+    fig$x$layout[[xaxis]]$overlaying <- ifelse(i != 9, sprintf("x%i", i-5), sprintf("x%i", i-4))
     fig$x$layout[[xaxis]]$anchor <- "y"
     fig$x$layout[[xaxis]]$side <- "top"
-    fig$x$layout[[xaxis]]$title <- glue("TITLE {i}")
   }
   for (i in 1:9) {
-    ifelse(i %in% c(1:5), key <- xvals[[i]][[1]], ifelse(i !=  9, key <- xvals[[i-5]][[length(xvals[[i-5]])]], key <- xvals[[i-4]][[length(xvals[[i-4]])]]))
-    ifelse(i == 1, xaxis <- "xaxis", xaxis <- glue("xaxis{i}"))
+    key <- ifelse(i %in% c(1:5), xvals[[i]][[1]], ifelse(i !=  9, xvals[[i-5]][[length(xvals[[i-5]])]], xvals[[i-4]][[length(xvals[[i-4]])]]))
+    ifelse(i == 1, xaxis <- "xaxis", xaxis <- sprintf("xaxis%i", i))
     fig$x$layout[[xaxis]]$mirror <- "all"
     fig$x$layout[[xaxis]]$automargin <- TRUE
     fig$x$layout[[xaxis]]$showline <- TRUE
@@ -268,7 +257,6 @@ generate_curves <- function(height = 950,
   fig$x$layout$hovermode <- "y"
   fig$x$layout$legend <- list("font" = list("size" = tick_font_size))
   fig$x$layout$margin <- list(r = 0.0, t = 100.0, b = 50.0, l = 80.0, autoexpand = FALSE)
-  
   return(dccGraph(figure = fig))
 }
 
@@ -279,10 +267,10 @@ app$layout(
   htmlDiv(
     list(
       htmlDiv(
-        id = "controls", 
+        id = "controls",
         children = list(
           htmlButton(
-            "Print", 
+            "Print",
             id = "las-print"
           )
         )
@@ -303,7 +291,7 @@ app$layout(
             className = "page",
             children = list(
               htmlDiv(
-                id = "las-table", 
+                id = "las-table",
                 children = generate_table()
               ),
               htmlDiv(
@@ -317,14 +305,14 @@ app$layout(
         className = "section",
         children = list(
           htmlDiv(
-            className = "section-title", 
+            className = "section-title",
             children = "LAS curves"
           ),
           htmlDiv(
             className = "page",
             children = list(
               htmlDiv(
-                id = "las-curves", 
+                id = "las-curves",
                 children = generate_curves()
               )
             )
@@ -342,7 +330,8 @@ app$callback(
   output = list(id = "las-table-print", property = "children"),
   params = list(input(id = "table", property = "data")),
   function (data) {
-    num_tables <- as.integer(length(data)/34)+1
+    num_rows <- 34
+    num_tables <- as.integer(length(data)/num_rows)+1
     output <- list()
     Th <- lapply(
       names(data[[1]]),
@@ -350,14 +339,14 @@ app$callback(
     )
     header <- list(htmlTr(Th))
     for (i in 1:num_tables) {
-      start <- i*34-33
-      ifelse (i*34 > length(data), end <- length(data), end <- i*34)
+      start <- (i-1)*num_rows+1
+      end <- ifelse (i*num_rows > length(data), length(data), i*num_rows)
       rows <- lapply(
-        data[start:end], 
+        data[start:end],
         function(L) {
           Tr <- lapply(
-            unname(L), 
-            function(s) {return(htmlTd(s))} 
+            unname(L),
+            function(s) {return(htmlTd(s))}
           )
           return(htmlTr(Tr))
         }
@@ -372,7 +361,7 @@ app$callback(
 # RUN SERVER
 
 if (appName != "") {
-  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
   app$run_server()
 }
