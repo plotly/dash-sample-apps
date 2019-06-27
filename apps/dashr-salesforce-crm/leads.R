@@ -1,12 +1,11 @@
-
 #app = Dash$new()
 leads = getAllFields('Lead')
 
 states = list("AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
-          "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
-          "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
-          "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
-          "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY")
+              "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
+              "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
+              "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
+              "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY")
 
 optionstate = list()
 k = 1
@@ -74,8 +73,8 @@ choropleth_map <- function(status, df){
   )
   
   return(list(data = data, layout = layout))
-  }
-  
+}
+
 
 
 
@@ -105,32 +104,27 @@ lead_source = function(status, df){
     type = 'pie',
     marker=list("colors" = list("#264e86", "#0074e4", "#74dbef", "#eff0f4"))
   ) %>%
-  layout(margin = list(l=15, r=10, t=0, b=65), legend=list(orientation="h"))
+    layout(margin = list(l=15, r=10, t=0, b=65), legend=list(orientation="h"))
   
   #return(list(data=list(trace)))
 }
 
-converted_leads_count <- function(df){
-  df['CreatedDate'] = lapply(df$CreatedDate, function(x)as.POSIXct(x, origin="1970-01-01 00:00:00 UTC"))
-  df['CreatedDate'] = as.Date(format(df$CreatedDate, '%Y-%m-%d'))
+converted_leads_count <- function(period, df){
   df = df[df["Status"] == "Closed - Converted",]
-  rows = as.data.frame(t(apply(df, 2, function(x) length(which(!is.na(x))))))
+  df$CreatedDate = substr(df$CreatedDate,1,10)
+  if(period == 'M'){
+    df$CreatedDate = substr(df$CreatedDate,1,7)
+  }
+  #rows = as.data.frame(t(apply(df, 2, function(x) length(which(!is.na(x))))))
   df = count_(df %>% group_by(CreatedDate, Id, add=TRUE))
   #df = cbind(df,rows)
-  
-  trace = plot_ly(
-    x=df$CreatedDate,
-    y=rows$Id,
-    name="converted leads",
-    fill="tozeroy",
-    fillcolor="#e6f2ff"
-  ) %>%
-  layout(
-    xaxis=list(showgrid=FALSE),
-    margin=list(l=33, r=25, b=37, t=5, pad=4),
-    paper_bgcolor="white",
-    plot_bgcolor="white"
-  )
+  trace = df %>% group_by(CreatedDate) %>%
+    plot_ly( x = ~CreatedDate, y = ~table(CreatedDate), type = 'scatter', mode="marker",fill="tozeroy",fillcolor="#e6f2ff"
+    )%>%
+    layout(xaxis=list(showgrid=FALSE),
+           margin=list(l=33, r=25, b=37, t=5, pad=4),
+           paper_bgcolor="white",
+           plot_bgcolor="white")
   
   #return(list('data' = list(trace)))
   
@@ -287,7 +281,7 @@ modal = function(){
   ))}
 
 leadslayout = app$layout(
-
+  
   htmlDiv(toJSON(getAllFields('Lead')), id="leads_df", style=list("display"= "none")),
   
   # top controls
@@ -395,7 +389,7 @@ leadslayout = app$layout(
           htmlP("Converted Leads count"),
           dccGraph(
             id="converted_leads",
-            figure = converted_leads_count(leads),
+            #figure = converted_leads_count(leads),
             style=list("height"= "90%", "width"= "98%"),
             config=list(displayModeBar=FALSE)
           )
@@ -408,18 +402,18 @@ leadslayout = app$layout(
   ),
   
   # table div
-    dccGraph(id="leads_table",
-             className="row",
-             #figure = datatotable(leads),
-             style=list(
-               "maxHeight"= "350px",
-               "overflowY"= "scroll",
-               "padding"= "8",
-               "marginTop"= "5",
-               "backgroundColor"="white",
-               "border"= "1px solid #C8D4E3",
-               "borderRadius"= "3px"
-             )),
+  dccGraph(id="leads_table",
+           className="row",
+           #figure = datatotable(leads),
+           style=list(
+             "maxHeight"= "350px",
+             "overflowY"= "scroll",
+             "padding"= "8",
+             "marginTop"= "5",
+             "backgroundColor"="white",
+             "border"= "1px solid #C8D4E3",
+             "borderRadius"= "3px"
+           )),
   modal()
 )
 
@@ -495,11 +489,11 @@ app$callback(output = list(id = "leads_table", property = "figure"),
 
 app$callback(output = list(id = "converted_leads", property = "figure"),
              params = list(
-               input(id = "lead_source_dropdown", property = "value"),
+               input(id = "converted_leads_dropdown", property = "value"),
                input(id = "leads_df", property = "children")),
              function(period,df){
                df = data.frame(fromJSON(df))
-               return(converted_leads_count(df)) #Fixxxx
+               return(converted_leads_count(period, df)) #Fixxxx
              })
 
 
@@ -511,7 +505,7 @@ app$callback(output = list(id = "leads_modal", property = "style"),
                if(n > 0){
                  return(list('display' = 'block'))
                }
-              return(list('display' = 'none'))
+               return(list('display' = 'none'))
              })
 
 app$callback(output = list(id = "new_lead", property = "n_clicks"),
@@ -521,43 +515,28 @@ app$callback(output = list(id = "new_lead", property = "n_clicks"),
              function(n,n2){
                return(0)
              })
-             
+
 app$callback(output = list(id = "leads_df", property = "children"),
              params = list(
                input(id = "submit_new_lead", property = "n_clicks"),
-             state("new_lead_status", "value"),
-             state("new_lead_state", "value"),
-             state("new_lead_company", "value"),
-             state("new_lead_source", "value"),
-             state("leads_df", "children")),
+               state("new_lead_status", "value"),
+               state("new_lead_state", "value"),
+               state("new_lead_company", "value"),
+               state("new_lead_source", "value"),
+               state("leads_df", "children")),
              function(n_clicks, status, state, company, source, current_df){
                if(n_clicks > 0){
                  if(company == ""){
                    company = 'Not named yet'
                  }
-               add_leads(company,status,state,source)
-               df = getAllFields('Lead')
-               return(toJSON(df))
+                 add_leads(company,status,state,source)
+                 df = getAllFields('Lead')
+                 return(toJSON(df))
                }
                return(current_df)
              })
-             
+
 #app$run_server()   
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
 
 
 
@@ -565,18 +544,33 @@ app$callback(output = list(id = "leads_df", property = "children"),
 
 
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

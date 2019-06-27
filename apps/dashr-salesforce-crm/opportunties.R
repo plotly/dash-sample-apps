@@ -3,14 +3,16 @@
 opp = get_opportunities()
 
 converted_opportunities = function(period, source, df){
-
+  
   if(source == 'all_s'){
     df = df[df["IsWon"] == 1,]
   } else{
     df = df[(df["LeadSource"] == source) & (df["IsWon"] == 1),]
   }
   if (period == "W-MON"){
-    df['CreatedDate'] = df$CreatedDate - ddays(7)
+    df['CreatedDate'] = as.Date(df$CreatedDate) - 7
+  } else if (period == "M"){
+    df$CreatedDate = format(as.Date(df$CreatedDate), "%B %Y")
   }
   df = count_(df %>% group_by(CreatedDate, add=TRUE))
   
@@ -22,7 +24,7 @@ converted_opportunities = function(period, source, df){
     #return(list('data' = list(), 'layout'=layout))
   }
   
-  df['CreatedDate'] = lapply(df$CreatedDate, function(x)as.POSIXct(x, origin="1970-01-01 00:00:00 UTC"))
+  #df['CreatedDate'] = lapply(df$CreatedDate, function(x)as.POSIXct(x, origin="1970-01-01 00:00:00 UTC"))
   trace = plot_ly(
     x=df$CreatedDate,
     y=df$n,
@@ -32,11 +34,11 @@ converted_opportunities = function(period, source, df){
     fillcolor="#e6f2ff",
     mode = 'markers'
   )%>%
-  layout(
-    xaxis=list(showgrid=FALSE),
-    margin=list(l=35, r=25, b=23, t=5, pad=4),
-    paper_bgcolor="white",
-    plot_bgcolor="white")
+    layout(
+      xaxis=list(showgrid=FALSE),
+      margin=list(l=35, r=25, b=23, t=5, pad=4),
+      paper_bgcolor="white",
+      plot_bgcolor="white")
   
   return(list(data = list(trace)))
 }
@@ -564,7 +566,7 @@ app$callback(output = list(id ="middle_opportunities_indicator", property = "chi
                input(id = "opportunities_df", property = "children")),
              function(df){
                df = as.data.frame(fromJSON(df))
-              active = sum(df[(df['IsClosed'] == 0), c('Amount')])
+               active = sum(df[(df['IsClosed'] == 0), c('Amount')])
                sprintf('%.1f M', floor(active/1000000))
              })
 

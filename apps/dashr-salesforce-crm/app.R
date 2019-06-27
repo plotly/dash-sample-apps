@@ -1,10 +1,12 @@
-library(dashR)
+
+library(dash)
 library(dashHtmlComponents)
 library(dashCoreComponents)
 library(dplyr)
 library(sqldf)
 library(plotly)
 library(lubridate)
+library(rjson)
 
 appName <- Sys.getenv("DASH_APP_NAME")
 pathPrefix <- sprintf("/%s/", appName)
@@ -14,20 +16,15 @@ Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
 
 setwd(sprintf("/app/apps/%s", appName))
 
-setwd('/Users/kevinphan/Desktop/dashr-salesforce-crm')
-
-source('functions.R')
 source('SFManager.R')
-source('cases.R')
-source('leads.R')
-source('opportunties.R')
-
+source('functions.R')
 accounts = get_accounts()
 contacts = get_contacts()
 users = get_users()
 cases = get_cases()
-
-app = Dash$new()
+source('cases.R')
+source('leads.R')
+source('opportunties.R')
 
 app$layout(htmlDiv(
   list(
