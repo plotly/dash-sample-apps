@@ -1,17 +1,16 @@
-#https://developer.salesforce.com/signup
-#Username = kevinphan@plotly.com, password = Toronto12345%
-#Security token (case-sensitive): xJNOT64rNnG7S9DQffXzOPgoU
+# # Create a free SalesForce account: https://developer.salesforce.com/signup
+
 library(devtools)
-setwd("/Users/kevinphan/Desktop/PLOTLY APPS MADE/SALESFORCE")
+setwd(sprintf("/app/apps/%s", appName))
 devtools::install_github("StevenMMortimer/salesforcer")
 
 #we dont need to create the dict_to_df function because our outputs are already in df form. 
 
 session = function() {
   sf_auth(
-  username = "kevinphan@plotly.com", 
-  password = "Toronto12345%",
-  security_token = "xJNOT64rNnG7S9DQffXzOPgoU"
+  username = "your_username", 
+  password = "your_password",
+  security_token = "your_security_token"
   ) }
 
 session = session()
