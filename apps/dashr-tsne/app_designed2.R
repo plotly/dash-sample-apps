@@ -33,7 +33,7 @@ WORD_EMBEDDINGS <- c("wikipedia_3000", "twitter_3000", "crawler_3000")
 readme <- htmlDiv(children=list(
   htmlButton("Close", id='close-button', n_clicks=0)
   ,
-dccMarkdown("# t-SNE Explorer
+  dccMarkdown("# t-SNE Explorer
 
 This is a demo of the Dash for R framework developed by Plotly [Plotly](https://plot.ly/).
 
@@ -41,12 +41,12 @@ Dash abstracts away all of the technologies and protocols required to build an i
 
 For an introductory and extensive explanation of t-SNE how to use it properly, please check out the [demo app](https://dash-tsne.plot.ly/).
 ")
-,
-htmlImg(id='gif1', src='assets/animated1.gif')
-,
-htmlImg(id='gif2', src='assets/animated2.gif')
-,
-dccMarkdown("
+  ,
+  htmlImg(id='gif1', src='assets/animated1.gif')
+  ,
+  htmlImg(id='gif2', src='assets/animated2.gif')
+  ,
+  dccMarkdown("
 ## Getting Started
 ### Using the demo
 To get started, choose a dataset you want to visualize. When the scatter plot appears on the graph, you can see the original image by clicking on a data point. 
@@ -56,12 +56,13 @@ Alternatively, you can explore the GloVe Word Vectors datasets, which are encode
 ### Running the app locally
 
 
+
 Clone the git repo, then install the requirements 
 ```
 git clone https://github.com/plotly/dash-sample-apps/dashr-tsne.git
 cd dash-sample-apps/dashr-tsne
-```
 
+```
 Download the script and run init.R
 
 ```
@@ -69,7 +70,7 @@ Rscript init.R
 ```
 Run the app
 ```
-Rscript init.R
+Rscript app.R
 ```
 or using ctrl+shift+enter (cmd+shift+enter)
 ### How to use the local version
@@ -95,7 +96,7 @@ A classical example is MNIST, a dataset of 60,000 handwritten digits, 28x28 gray
 * [DashR](https://dash.plot.ly/) - Main server and interactive components
 * [Plotly R](https://plot.ly/r/) - Used to create the interactive plots
 * [data.table](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)
-* [Rtsne](http://scikit-learn.org/stable/documentation.html) - Run the t-SNE algorithm
+* [Rtsne](https://cran.r-project.org/web/packages/tsne/tsne.pdf) - Run the t-SNE algorithm
 * [dplyr](https://www.tidyverse.org/)
 
 ## Contributing
@@ -117,18 +118,15 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ##Screenshots
 ")
-,
-htmlImg(id='png1', src='assets/demo_image1.png')
-,
-htmlImg(id='png2', src='assets/fashion_mnist_example.png')
-,
-htmlImg(id='png3', src='assets/screenshot1.png')
-,
-htmlImg(id='png4', src='assets/screenshot2.png')
-
-
+  ,
+  htmlImg(id='png1', src='assets/demo_image1.png')
+  ,
+  htmlImg(id='png2', src='assets/fashion_mnist_example.png')
+  ,
+  htmlImg(id='png3', src='assets/screenshot1.png')
+  ,
+  htmlImg(id='png4', src='assets/screenshot2.png')
 ))
-
 
 genMarks <- function(n){
   l <- list(glue('{n}'))
@@ -139,7 +137,7 @@ genMarks <- function(n){
 }
 
 input_field <- function(title, state_id, state_value, state_max, state_min){
-  # (title, state_id, state_value, state_max, state_min) :> htmlDiv(...)
+  #takes (title, state_id, state_value, state_max, state_min), returns htmlDiv(htmlP(title), dccInput(...))
   return(htmlDiv(list(
     htmlP(title), 
     dccInput(id=state_id, type='number', value=state_value, max=state_max, min=state_min, size='7')
@@ -148,16 +146,15 @@ input_field <- function(title, state_id, state_value, state_max, state_min){
   
   )}
 
-fn <- function(n){
+genMark <- function(n){
   l <- list(glue('{n}'))
   names(l) <- 'label'
-  
   return(l)
 }
 
 genMarks <- function(min, max, by){
   s <- seq(from=min, to=max, by)
-  l <- lapply(s, fn)
+  l <- lapply(s, genMark)
   names(l) <- s
   return(l)
 }
@@ -182,10 +179,7 @@ namedSlider <- function(name, short, min, max,  val, marks=NULL){
         style=list('margin-left'='5px'),
         children = dccSlider(id=glue('slider-{short}'), min=min, max=max, marks=marks, value=val)
       )
-      
-    )
-    
-  ))
+    )))
 }
 
 namedRadioItems <- function(name, short, options, val, ...){
@@ -196,26 +190,20 @@ namedRadioItems <- function(name, short, options, val, ...){
     , 
     style = kwargs
     , 
-    children=list(glue({name})
-                , dccRadioItems(
-                  id= glue('radio-{short}')
-                  , 
-                  options=options
-                  , 
-                  value=val
-                  , 
-                  labelStyle=list(
-                    display = 'inline-block'
-                    , 
-                    'font-weight'=300
-                    
-                  ),
-                  style = list(
-                    
-                    display='inline-block'
-                
-                  )
-                ))
+    children=list(glue({name}), 
+                  dccRadioItems(
+                    id= glue('radio-{short}'), 
+                    options=options, 
+                    value=val, 
+                    labelStyle=list(
+                      display = 'inline-block', 
+                      'font-weight'=300
+                    ),
+                    style = list(
+                      display='inline-block'
+                      
+                    )
+                  ))
   ))
 }
 
@@ -236,10 +224,18 @@ Card <- function(kids, ...){
 #Generate the default 3D scatter plot
 TSNE_DT <- fread('./data/tsne_3d.csv')
 
-
 colnames(TSNE_DT) <- c("Digit", "x", "y", "z")
 
-defaultPlot <- plot_ly(TSNE_DT, type='scatter3d', x=~x, y=~y, z=~z, color = ~as.factor(Digit), mode='markers', marker=list(symbol='circle', size=2.5))
+defaultPlot <- plot_ly(
+  TSNE_DT, 
+  type='scatter3d', 
+  x=~x, 
+  y=~y, 
+  z=~z, 
+  color = ~as.factor(Digit), 
+  mode='markers', 
+  marker=list(symbol='circle', size=2.5)
+)
 
 
 #Initialize the app
@@ -255,86 +251,86 @@ app <- Dash$new(external_stylesheets = list( "https://cdnjs.cloudflare.com/ajax/
 
 app$layout(
   htmlDiv( className='row, background', children=list(
-  htmlDiv(id='footer', children=readme)
-  ,
-  htmlDiv(className='row', children=list(
-    
-    htmlH2('t-SNE Explorer', className='title', id='app-title')
+    htmlDiv(id='footer', children=readme)
     ,
-    htmlImg(id='plotly-image', src="assets/logo.png", style=list(height='90px', float='right', 'margin-top'='10px', 'margin-right'='30px'))
-    
+    htmlDiv(className='row', children=list(
+      
+      htmlH2('t-SNE Explorer', className='title', id='app-title')
+      ,
+      htmlImg(id='plotly-image', src="assets/logo.png", style=list(height='90px', float='right', 'margin-top'='10px', 'margin-right'='30px'))
+      
     )
     ,
     style=list('background-color'='rgb(255,255,255)')
     )
-  ,
-  htmlDiv(className='row, background', list(
-    
-    htmlDiv(className='row, background', 
-    
-    children=list(dccMarkdown("The Scatter plot above is the result of running the t-SNE algorithm on the MNIST digits, resulting in a 3D visualization of the image dataset.  For demo purposes, all the data were pre-generated using limited number of input parameters, a subset of 3000 samples, and displayed instantly.")
-                ,
-                dccMarkdown("You can run the t-SNE algorithm with your custom dataset and label using a dropdown at the top right. To learn more about how the t-SNE Explorer works, click on 'Learn More' below.")
-                ,
-                dccMarkdown('* This is the R version of the t-SNE explorer. To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dashr-tsne)')                             
-                ,
-                htmlButton('Learn More', id='learn-button', n_clicks=0)
-                
-                )
-                ,
-                style=list('margin-left'='5px')
-    )
     ,
-    dccDropdown(
-      id = 'dropdown-mode-choice',
-      options=list(
-        list(label = 'Pre-generated data', value='demo'),
-        list(label = 'Custom data', value = 'custom')
-        
-      ),
-      value = 'demo',
-      clearable = FALSE,
-      style = list(width='45%', float='right')
-    )
-    ,
-    
-    htmlDiv(className='row, background', list(   
-    
-      htmlH4( children='t-SNE Parameters', id='tsne_h4', style=list(float='left')),
-      htmlDiv(className= 'four columns', id='control-panel', children = list(), style=list(width='100%'))
+    htmlDiv(className='row, background', list(
       
-    ),  style=list(float='left', display='block'))
-    ,
-    htmlH4('The Result Graph', className='four columns'),
-    htmlDiv(
-      id='demo-graph', 
-      className='five columns', 
-      children= dccGraph(id='tsne-3d-plot', figure=defaultPlot)
+      htmlDiv(className='row, background', 
+              
+              children=list(dccMarkdown("The Scatter plot above is the result of running the t-SNE algorithm on the MNIST digits, resulting in a 3D visualization of the image dataset.  For demo purposes, all the data were pre-generated using limited number of input parameters, a subset of 3000 samples, and displayed instantly.")
+                            ,
+                            dccMarkdown("You can run the t-SNE algorithm with your custom dataset and label using a dropdown at the top right. To learn more about how the t-SNE Explorer works, click on 'Learn More' below.")
+                            ,
+                            dccMarkdown('* This is the R version of the t-SNE explorer. To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dashr-tsne)')                             
+                            ,
+                            htmlButton('Learn More', id='learn-button', n_clicks=0)
+                            
+              )
+              ,
+              style=list('margin-left'='5px')
       )
-    ,
-    htmlDiv(
-      id='custom-graph',
-      className='five columns', 
-      children= dccGraph(id='tsne-3d-plot-custom', figure=defaultPlot ), 
-      style=list(display='none'))
-    ,
-    htmlDiv(list(htmlDiv(id='KL-div',style=list(display='none') )
-               ,
-               htmlDiv(id='end-time', style=list(display='none'))
-               , 
-               htmlDiv(id='error-message', style=list(display='none'))
-               
-               
-    ), id='plot-div', style=list(display='none'))
-    ,
-    htmlDiv(id='palette', className='three columns' )
-    ,
-    htmlDiv(id='custom-container', className='three columns')
-  ))
-
-)
-,
-style=list('max-width'='100%', 'font-size'='1.5rem', padding='0px 0px') )
+      ,
+      dccDropdown(
+        id = 'dropdown-mode-choice',
+        options=list(
+          list(label = 'Pre-generated data', value='demo'),
+          list(label = 'Custom data', value = 'custom')
+          
+        ),
+        value = 'demo',
+        clearable = FALSE,
+        style = list(width='45%', float='right')
+      )
+      ,
+      
+      htmlDiv(className='row, background', list(   
+        
+        htmlH4( children='t-SNE Parameters', id='tsne_h4', style=list(float='left')),
+        htmlDiv(className= 'four columns', id='control-panel', children = list(), style=list(width='100%'))
+        
+      ),  style=list(float='left', display='block'))
+      ,
+      htmlH4('The Result Graph', className='four columns'),
+      htmlDiv(
+        id='demo-graph', 
+        className='five columns', 
+        children= dccGraph(id='tsne-3d-plot', figure=defaultPlot)
+      )
+      ,
+      htmlDiv(
+        id='custom-graph',
+        className='five columns', 
+        children= dccGraph(id='tsne-3d-plot-custom', figure=defaultPlot ), 
+        style=list(display='none'))
+      ,
+      htmlDiv(list(htmlDiv(id='KL-div',style=list(display='none') )
+                   ,
+                   htmlDiv(id='end-time', style=list(display='none'))
+                   , 
+                   htmlDiv(id='error-message', style=list(display='none'))
+                   
+                   
+      ), id='plot-div', style=list(display='none'))
+      ,
+      htmlDiv(id='palette', className='three columns' )
+      ,
+      htmlDiv(id='custom-container', className='three columns')
+    ))
+    
+  )
+  ,
+  style=list('max-width'='100%', 'font-size'='1.5rem', padding='0px 0px') )
 )
 ################################################################LAYOUT DONE################################################
 
@@ -348,7 +344,7 @@ app$callback(
   params=list(
     input(id='close-button', property='n_clicks'), 
     input(id='learn-button', property='n_clicks')
-    )
+  )
   ,
   function(c, l){
     if(l>c){
@@ -395,14 +391,12 @@ demoPanel <- list(Card(list(
     children=list(
       
       namedRadioItems(
-        name="Display"
-        ,
-        short='wordemb-display-mode'
-        ,
+        name="Display",
+        short='wordemb-display-mode',
         options= list(
           list(label=' Regular', value='regular'), 
           list(label=' Top-100 Neighbors', value='neighbors')
-          )
+        )
         ,
         val='regular'
       )
@@ -411,7 +405,7 @@ demoPanel <- list(Card(list(
         id='dropdown-word-selected', 
         placeholder='Select a word', value=''), 
         style=list(width='20vh'))
-      ))
+    ))
 ))
 )
 ###########################################demo PANEL ends
@@ -431,99 +425,77 @@ app$callback(
     } else {
       return(
         list(
-        htmlDiv(id='data-df-and-message', children = '', style=list(display='none'))
-        ,
-        htmlDiv(id='label-df-and-message', children = '', style=list(display='none'))
-        ,
-        input_field('Number of Iterations:', "n-iter-state", 400, 1000, 250)
-        ,
-        input_field('Perplexity:','perplexity-state', 20, 50, 5)
-        ,
-        input_field("Learning Rate:", "lr-state", 200, 1000, 10)
-        ,
-        input_field("Initial PCA dimensions", 'pca-state', 30, 10000, 3)
-        ,
-        htmlButton(
-          id='tsne-train-button', 
-          n_clicks=0, 
-          children='Start Training t-SNE'
+          htmlDiv(id='data-df-and-message', children = '', style=list(display='none')),
+          htmlDiv(id='label-df-and-message', children = '', style=list(display='none')),
+          input_field('Number of Iterations:', "n-iter-state", 400, 1000, 250),
+          input_field('Perplexity:','perplexity-state', 20, 50, 5),
+          input_field("Learning Rate:", "lr-state", 200, 1000, 10),
+          input_field("Initial PCA dimensions", 'pca-state', 30, 10000, 3),
+          htmlButton(
+            id='tsne-train-button', 
+            n_clicks=0, 
+            children='Start Training t-SNE'
           )
-        ,
-        dccUpload(
-          id='upload-data'
-          , 
-          children=htmlA('Upload your input data here.')
-          , 
-          style=list(
-            height= '45px'
+          ,
+          dccUpload(
+            id='upload-data'
+            , 
+            children=htmlA('Upload your input data here.')
+            , 
+            style=list(
+              height= '45px',
+              'line-height'= '45px',
+              'border-width'= '1px',
+              'border-style'= 'dashed',
+              'border-radius'= '5px',
+              'text-align'= 'center',
+              'margin-top'= '5px',
+              'margin-bottom'= '5 px'
+            )
+            , 
+            multiple=F
             ,
-            'line-height'= '45px'
-            ,
-            'border-width'= '1px'
-            ,
-            'border-style'= 'dashed'
-            ,
-            'border-radius'= '5px'
-            ,
-            'text-align'= 'center'
-            ,
-            'margin-top'= '5px'
-            ,
-            'margin-bottom'= '5 px'
+            max_size = -1
           )
-          , 
-          multiple=F
           ,
-          max_size = -1
-        )
-        ,
-        dccUpload(
-          id='upload-label'
-          ,
-          children=htmlA('Upload your labels here.')
-          ,
-          style=list(
-            height= '45px'
+          dccUpload(
+            id='upload-label'
             ,
-            'line-height'= '45px'
+            children=htmlA('Upload your labels here.')
             ,
-            'border-width'= '1px'
+            style=list(
+              height= '45px',
+              'line-height'= '45px',
+              'border-width'= '1px',
+              'border-style'= 'dashed',
+              'border-radius'= '5px',
+              'text-align'= 'center',
+              'margin-top'= '5px',
+              'margin-bottom'= '5 px'
+            )
+            , 
+            multiple=F
             ,
-            'border-style'= 'dashed'
-            ,
-            'border-radius'= '5px'
-            ,
-            'text-align'= 'center'
-            ,
-            'margin-top'= '5px'
-            ,
-            'margin-bottom'= '5 px'
+            max_size = -1
           )
-          , 
-          multiple=F
           ,
-          max_size = -1
-        )
-        ,
-        htmlDiv(list(
-          
-          htmlP(id='upload-data-message', style = list('margin-bottom'='0px'))
+          htmlDiv(list(
+            
+            htmlP(id='upload-data-message', style = list('margin-bottom'='0px'))
+            ,
+            htmlP(id='upload-label-message', style = list('margin-bottom'='0px'))
+            ,
+            htmlDiv(
+              id ='training-status-message', 
+              style=list('margin-bottom'='0px', 'margin-top'='0px')),
+            htmlP(id='error-status-message')
+            
+          )
           ,
-          htmlP(id='upload-label-message', style = list('margin-bottom'='0px'))
-          ,
-          htmlDiv(
-            id ='training-status-message', 
-            style=list('margin-bottom'='0px', 'margin-top'='0px'))
-          ,
-          htmlP(id='error-status-message')
-          
-        )
-        ,
-        id='output-messages'
-        ,
-        style=list('margin-bottom'='2px', 'margin-top'='2px')
-        )
-      ))
+          id='output-messages',
+          style=list('margin-bottom'='2px', 'margin-top'='2px')
+          )
+        ))
     }
   }
   
@@ -535,7 +507,7 @@ app$callback(
   {
     if(choice=='demo'){
       return(list(
-      
+        
         htmlDiv(
           id='div-plot-click-message'
           ,
@@ -543,7 +515,7 @@ app$callback(
             'text-align'='center', 
             'margin-bottom'='7px', 
             'font-weight'='bold'
-            )
+          )
         ),
         htmlDiv(id='div-plot-click-image')
         ,
@@ -566,7 +538,7 @@ app$callback(
       return(list(display='none'))
     }
   }
-  )
+)
 app$callback(
   output = list(id='custom-graph', property='style'),
   params = list(input(id='dropdown-mode-choice', property='value')),
@@ -579,36 +551,24 @@ app$callback(
   }
 )
 
-
 ## Global varlable for the data storage required.
 #
 #
-datLst <<- list(mnist_3000 = fread("data/mnist_3000_input.csv", header=T)
-              , 
-              fashion_3000= fread("data/fashion_3000_input.csv", header=T)
-              ,
-              cifar_gray_3000 = fread("data/cifar_gray_3000_input.csv", header=T)
-              
-              ,
-              wikipedia_3000 = fread("data/wikipedia_3000.csv", header=T)
-              ,
-              crawler_3000 = fread("data/crawler_3000.csv", header=T)
-              ,
-              twitter_3000 = fread('data/twitter_3000.csv', encoding='Latin-1', header=T)
+datLst <<- list(mnist_3000 = fread("data/mnist_3000_input.csv", header=T), 
+                fashion_3000= fread("data/fashion_3000_input.csv", header=T),
+                cifar_gray_3000 = fread("data/cifar_gray_3000_input.csv", header=T),
+                wikipedia_3000 = fread("data/wikipedia_3000.csv", header=T),
+                crawler_3000 = fread("data/crawler_3000.csv", header=T),
+                twitter_3000 = fread('data/twitter_3000.csv', encoding='Latin-1', header=T)
 )
 
 datLabels <<- list(
-              mnist_3000 = unique(fread("data/mnist_3000_labels.csv", header=T))
-              , 
-              fashion_3000= unique( fread("data/fashion_3000_labels.csv", header=T))
-              ,
-              cifar_gray_3000 = unique(fread("data/cifar_gray_3000_labels.csv", header=T))
-              ,
-              wikipedia_3000 = unique(fread("data/wikipedia_3000.csv", header=T)[, 1])
-              ,
-              crawler_3000 = unique(fread("data/crawler_3000.csv", header=T)[, 1])
-              ,
-              twitter_3000 =  unique(fread('data/twitter_3000.csv', encoding='Latin-1', header=T)[,1])
+  mnist_3000 = unique(fread("data/mnist_3000_labels.csv", header=T)), 
+  fashion_3000= unique( fread("data/fashion_3000_labels.csv", header=T)),
+  cifar_gray_3000 = unique(fread("data/cifar_gray_3000_labels.csv", header=T)),
+  wikipedia_3000 = unique(fread("data/wikipedia_3000.csv", header=T)[, 1]),
+  crawler_3000 = unique(fread("data/crawler_3000.csv", header=T)[, 1]),
+  twitter_3000 =  unique(fread('data/twitter_3000.csv', encoding='Latin-1', header=T)[,1])
 )
 
 app$callback(
@@ -656,22 +616,16 @@ app$callback(
   ,
   function(dataset){
     
-      D <- datLabels[[dataset]]
-      L <- lapply(unlist(D), labeledList)
+    D <- datLabels[[dataset]]
+    L <- lapply(unlist(D), labeledList)
     
-      return(unname(L))
+    return(unname(L))
   }
 )
 
 #############CALLBACK that shows 3D plot#####
 
 
-
-## helper function
-listedDTs <- function(n, dt){
-  return(dt[dt$label==n])
-}
-#
 ### Euclidean distance
 eu.norm <- function(v1, v2){
   return(sqrt(sum((v1-v2)^2)))
@@ -682,7 +636,7 @@ eu.norm <- function(v1, v2){
 generate_figure_word_vec <- function(embedding_df, wordemb_display_mode, selected_word, datTbl){
   
   colnames(embedding_df) <- c("label", 'x', 'y', 'z')
- 
+  
   #Regular displays the full scatter plot with only circles
   if(wordemb_display_mode == 'regular'){
     plot_mode <- 'markers'
@@ -711,9 +665,7 @@ generate_figure_word_vec <- function(embedding_df, wordemb_display_mode, selecte
     selected_vector <- filter(datTbl, label==selected_word)
     mtx <- as.matrix(datTbl[, -1])
     sel_vec <- unlist(selected_vector[, -1])
-    
-    distances <- mtx %>% apply(., 1, . %>% eu.norm(., sel_vec))
-    datTbl$distance <- distances
+    datTbl$distance <-  mtx %>% apply(., 1, . %>% eu.norm(., sel_vec))
     sorted_DT <- datTbl[order(distance), ]
     neighbors_label <- sorted_DT[1:101, 1]
     neighbors <- embedding_df[label %in% unlist(neighbors_label)]
@@ -728,7 +680,7 @@ generate_figure_word_vec <- function(embedding_df, wordemb_display_mode, selecte
       textposition='middle-center', 
       showlegend=FALSE, 
       mode='text'
-      ))
+    ))
     
   }
 }
@@ -736,24 +688,15 @@ generate_figure_word_vec <- function(embedding_df, wordemb_display_mode, selecte
 app$callback(
   output = list(id='tsne-3d-plot', property='figure')
   ,
-  params = list(input(id='dropdown-dataset', property='value')
-              ,
-              input(id='slider-iterations',  property='value')
-              ,
-              input(id='slider-perplexity',  property='value')
-              ,
-              input(id='slider-pca-dimensions',  property='value')
-              ,
-              input(id='slider-learning-rate',  property='value')
-              ,
-              input(id='dropdown-word-selected',  property='value')
-              ,
-              input(id='radio-wordemb-display-mode',  property='value')
-              
+  params = list(input(id='dropdown-dataset', property='value'),
+                input(id='slider-iterations',  property='value'),
+                input(id='slider-perplexity',  property='value'),
+                input(id='slider-pca-dimensions',  property='value'),
+                input(id='slider-learning-rate',  property='value'),
+                input(id='dropdown-word-selected',  property='value'),
+                input(id='radio-wordemb-display-mode',  property='value')
   )
   ,
- 
-  
   function(dataset, iterations, perplexity, pca_dim, learning_rate, selected_word, wordemb_display_mode){
     if(dataset==''|| is.null(dataset)){
       return(defaultPlot)
@@ -775,10 +718,10 @@ app$callback(
           color=~as.factor(label), 
           mode='markers', 
           marker=list(symbol='circle', size=2.5))
-      
+        
         return(p)
       } else if(is.element(dataset, WORD_EMBEDDINGS)){
-figure <- generate_figure_word_vec(embedding_DT, wordemb_display_mode, selected_word, datTbl)
+        figure <- generate_figure_word_vec(embedding_DT, wordemb_display_mode, selected_word, datTbl)
         
         return(figure)
       }else{
@@ -790,54 +733,48 @@ figure <- generate_figure_word_vec(embedding_DT, wordemb_display_mode, selected_
 #
 #### Returning the 5 nearest neighborhood for the point clicked
 
- app$callback(
-output =  list(id = 'div-plot-click-wordemb', property='children')
-,
-params = list(
-  input(id = 'tsne-3d-plot', property='clickData')
+app$callback(
+  output =  list(id = 'div-plot-click-wordemb', property='children')
   ,
-  input(id='dropdown-dataset', property='value')
-)
-,
-function(clickData, dataset){
-  if(dataset %in% WORD_EMBEDDINGS){
-    clickDat <- clickData[[1]] # contains a list(character(6))
-    selected_word <- clickDat[[1]][6]
-    datTbl <- datLst[[dataset]]
-    colnames(datTbl)[1] = 'label'
-    
-    selected_vector <- filter(datTbl, label==selected_word)
-    mtx <- as.matrix(datTbl[, -1])
-    sel_vec <- unlist(selected_vector[, -1])
-    
-    distances <- mtx %>% apply(., 1, . %>% eu.norm(., sel_vec))
-    datTbl$distance <- distances
-    sorted_DT <- datTbl[order(distance), ]
-    neighbors_label <- sorted_DT[2:6, 1]
-    p <- plot_ly(type='bar', y=neighbors_label$label, orientation='h' )
-    p <- p %>% layout( xaxis= list(title='Euclidean Distance'))
-    if(selected_word==''||is.na(selected_word)){toplabel <- "Default 5-NN graph"} 
-    else{toplabel <- paste("The 5 nearest neighbors of", selected_word)}
-    return(list(htmlH5(toplabel), dccGraph(
-      id='graph-bar-nearest-neighbors-word',
-      figure=p,
-      style=list(height= '25vh'),
-      config=list('displayModeBar'= F)) %>% htmlDiv(., 
-                                                    style=list(
-                                                      height='25vh', 
-                                                      display='block', 
-                                                      margin='auto'))))
-    
-
-    #return(htmlP(glue('{clickDat}')))
-  } else {
-    return(list())
+  params = list(
+    input(id = 'tsne-3d-plot', property='clickData')
+    ,
+    input(id='dropdown-dataset', property='value')
+  )
+  ,
+  function(clickData, dataset){
+    if(dataset %in% WORD_EMBEDDINGS){
+      clickDat <- clickData[[1]] 
+      # contains a list(character(6))
+      selected_word <- clickDat[[1]][6]
+      datTbl <- datLst[[dataset]]
+      colnames(datTbl)[1] = 'label'
+      selected_vector <- filter(datTbl, label==selected_word)
+      mtx <- as.matrix(datTbl[, -1])
+      sel_vec <- unlist(selected_vector[, -1])
+      datTbl$distance <- mtx %>% apply(., 1, . %>% eu.norm(., sel_vec))
+      sorted_DT <- datTbl[order(distance), ]
+      neighbors_label <- sorted_DT[2:6, 1]
+      p <- plot_ly(type='bar', y=neighbors_label$label, orientation='h' ) %>% layout( xaxis= list(title='Euclidean Distance'))
+      if(selected_word==''||is.na(selected_word)){toplabel <- "Default 5-NN graph"} 
+      else{toplabel <- paste("The 5 nearest neighbors of", selected_word)}
+      return(list(htmlH5(toplabel), dccGraph(
+        id='graph-bar-nearest-neighbors-word',
+        figure=p,
+        style=list(height= '25vh'),
+        config=list('displayModeBar'= F)) %>% htmlDiv(., 
+                                                      style=list(
+                                                        height='25vh', 
+                                                        display='block', 
+                                                        margin='auto'))))
+    } else {
+      return(list())
+    }
   }
-}
-
+  
 )
 
- #
+#
 ####
 app$callback(
   output = list(id='div-plot-click-image',property='children')
@@ -854,23 +791,23 @@ app$callback(
     input(id='slider-pca-dimensions', property='value')
     ,
     input(id='slider-learning-rate', property='value')
-
+    
   )
   ,
   function(clickData, dataset, iterations, perplexity, pca_dim, learning_rate){
-#clickData = list(list(x=0, y=0, z=0, curveNumber=1, pointNumber=291))
+    #clickData = list(list(x=0, y=0, z=0, curveNumber=1, pointNumber=291))
     if(dataset %in% IMAGE_DATASETS){
       datTbl <- datLst[[dataset]]
       path = as.character(glue('demo_embeddings/{dataset}/iterations_{iterations}/perplexity_{perplexity}/pca_{pca_dim}/learning_rate_{learning_rate}/data.csv'))
-
+      
       embedding_DT <- fread(path, encoding='Latin-1', header=T)
-
+      
       clickDat <- clickData[[1]]
-        embedding_DT$x = embedding_DT$x %>% round(., 4)
-        embedding_DT$y = embedding_DT$y %>% round(., 4)
-        embedding_DT$z = embedding_DT$z %>% round(., 4)
-        clickPoint = c(clickDat[[1]][1], clickDat[[1]][2], clickDat[[1]][3]) %>% as.numeric(.) %>% round(., 4)
-        imageIndex <- which(embedding_DT$x== clickPoint[1] & embedding_DT$y==clickPoint[2] & embedding_DT$z==clickPoint[3])
+      embedding_DT$x = embedding_DT$x %>% round(., 4)
+      embedding_DT$y = embedding_DT$y %>% round(., 4)
+      embedding_DT$z = embedding_DT$z %>% round(., 4)
+      clickPoint = c(clickDat[[1]][1], clickDat[[1]][2], clickDat[[1]][3]) %>% as.numeric(.) %>% round(., 4)
+      imageIndex <- which(embedding_DT$x== clickPoint[1] & embedding_DT$y==clickPoint[2] & embedding_DT$z==clickPoint[3])
       
       imageVec<- as.numeric(datTbl[imageIndex, ])
       #
@@ -879,15 +816,15 @@ app$callback(
       DIGIT_B64 <- base64_enc(DIGIT)
       
       return(htmlImg(
-          src =  glue('data:image/png;base64, ', DIGIT_B64), 
-          style =  list(height='25vh', display='block', margin='auto')
-          ))
-    
+        src =  glue('data:image/png;base64, ', DIGIT_B64), 
+        style =  list(height='25vh', display='block', margin='auto')
+      ))
+      
     } else{
-    return(list())
+      return(list())
     }
   }
-
+  
 )
 #########CALLBACKS for DEMO ends here
 #
@@ -917,15 +854,15 @@ parse_contents <- function(contents, filename){
 # Store the uploaded data to the hidden data htmlDiv container
 # 
 app$callback(
-
+  
   output = list(id='data-df-and-message', property='children')
   ,
   params = list(
-
+    
     input(id='upload-data', property='contents')
     ,
     input(id='upload-data', property='filename')
-
+    
   )
   ,
   function(contents, filename){
@@ -942,35 +879,35 @@ app$callback(
 
 
 app$callback(
-
+  
   output = list(id='upload-data-message', property='children')
   ,
   params = list(
-
+    
     input(id='data-df-and-message', property='children')
   )
   ,
   function(JSON){
     if(is.na(JSON)){return("NO DATA LOADED")}
-
+    
     box <- fromJSON(JSON)
-
+    
     return(box[2] %>% fromJSON)
   }
-
+  
 )
 
 
 app$callback(
-
+  
   output = list(id='label-df-and-message', property='children')
   ,
   params = list(
-
+    
     input(id='upload-label', property='contents')
     ,
     input(id='upload-label', property='filename')
-
+    
   )
   ,
   function(contents, filename){
@@ -987,7 +924,7 @@ app$callback(
 
 
 app$callback(
-
+  
   output = list(id='upload-label-message', property='children')
   ,
   params = list(
@@ -999,7 +936,7 @@ app$callback(
     box <- fromJSON(JSON)
     return(box[2] %>% fromJSON)
   }
-
+  
 )
 ## pre- t-SNE ends
 
@@ -1021,11 +958,11 @@ is.empty <- function(x){
 }
 
 app$callback(
-
+  
   output = list(id='custom-container', property='children')
   ,
   params = list(
-
+    
     input(id='tsne-train-button', property= 'n_clicks')
     ,
     state(id='perplexity-state',property='value' )
@@ -1042,7 +979,7 @@ app$callback(
   )
   ,
   function(n_clicks, perplexity, n_iter, learning_rate, pca_dim, data_div, label_div){
-
+    
     #RUN THE t-SNE ALGORITHM UPLON CLICKING THE TRAINING BUTTON
     error_message = "No error"
     # Fix up for startup post
@@ -1052,7 +989,7 @@ app$callback(
       error_js <- toJSON('Empty')
       C <- c(kl_js, time_js, error_js, 'null') %>% toJSON(., raw='base64')
       return(C)
-
+      
     } else{
       Data_DT <- fromJSON(fromJSON(data_div)[1])
       label_DT <- fromJSON(label_div)[1] %>% fromJSON()
@@ -1078,7 +1015,7 @@ app$callback(
       tic.clearlog()
       return(V %>% toJSON(., raw='base64', force=TRUE))
     }
-
+    
   }
 )
 
@@ -1087,7 +1024,7 @@ app$callback(
   ,
   params =  list(
     input(id='custom-container', property='children')
-    )
+  )
   ,
   function(JSON){
     L <- fromJSON(JSON) 
@@ -1138,7 +1075,7 @@ app$callback(
       color = ~as.factor(label), 
       mode='markers', 
       marker=list(symbol='circle', size=2.5)
-      )
+    )
     return(p)
   }
 )

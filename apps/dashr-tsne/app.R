@@ -96,7 +96,7 @@ A classical example is MNIST, a dataset of 60,000 handwritten digits, 28x28 gray
 * [DashR](https://dash.plot.ly/) - Main server and interactive components
 * [Plotly R](https://plot.ly/r/) - Used to create the interactive plots
 * [data.table](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)
-* [Rtsne](http://scikit-learn.org/stable/documentation.html) - Run the t-SNE algorithm
+* [Rtsne](https://cran.r-project.org/web/packages/tsne/tsne.pdf) - Run the t-SNE algorithm
 * [dplyr](https://www.tidyverse.org/)
 
 ## Contributing
@@ -226,7 +226,16 @@ TSNE_DT <- fread('./data/tsne_3d.csv')
 
 colnames(TSNE_DT) <- c("Digit", "x", "y", "z")
 
-defaultPlot <- plot_ly(TSNE_DT, type='scatter3d', x=~x, y=~y, z=~z, color = ~as.factor(Digit), mode='markers', marker=list(symbol='circle', size=2.5))
+defaultPlot <- plot_ly(
+                TSNE_DT, 
+                type='scatter3d', 
+                x=~x, 
+                y=~y, 
+                z=~z, 
+                color = ~as.factor(Digit), 
+                mode='markers', 
+                marker=list(symbol='circle', size=2.5)
+                )
 
 
 #Initialize the app
@@ -382,10 +391,8 @@ demoPanel <- list(Card(list(
     children=list(
       
       namedRadioItems(
-        name="Display"
-        ,
-        short='wordemb-display-mode'
-        ,
+        name="Display",
+        short='wordemb-display-mode',
         options= list(
           list(label=' Regular', value='regular'), 
           list(label=' Top-100 Neighbors', value='neighbors')
@@ -418,18 +425,12 @@ app$callback(
     } else {
       return(
         list(
-          htmlDiv(id='data-df-and-message', children = '', style=list(display='none'))
-          ,
-          htmlDiv(id='label-df-and-message', children = '', style=list(display='none'))
-          ,
-          input_field('Number of Iterations:', "n-iter-state", 400, 1000, 250)
-          ,
-          input_field('Perplexity:','perplexity-state', 20, 50, 5)
-          ,
-          input_field("Learning Rate:", "lr-state", 200, 1000, 10)
-          ,
-          input_field("Initial PCA dimensions", 'pca-state', 30, 10000, 3)
-          ,
+          htmlDiv(id='data-df-and-message', children = '', style=list(display='none')),
+          htmlDiv(id='label-df-and-message', children = '', style=list(display='none')),
+          input_field('Number of Iterations:', "n-iter-state", 400, 1000, 250),
+          input_field('Perplexity:','perplexity-state', 20, 50, 5),
+          input_field("Learning Rate:", "lr-state", 200, 1000, 10),
+          input_field("Initial PCA dimensions", 'pca-state', 30, 10000, 3),
           htmlButton(
             id='tsne-train-button', 
             n_clicks=0, 
@@ -442,20 +443,13 @@ app$callback(
             children=htmlA('Upload your input data here.')
             , 
             style=list(
-              height= '45px'
-              ,
-              'line-height'= '45px'
-              ,
-              'border-width'= '1px'
-              ,
-              'border-style'= 'dashed'
-              ,
-              'border-radius'= '5px'
-              ,
-              'text-align'= 'center'
-              ,
-              'margin-top'= '5px'
-              ,
+              height= '45px',
+              'line-height'= '45px',
+              'border-width'= '1px',
+              'border-style'= 'dashed',
+              'border-radius'= '5px',
+              'text-align'= 'center',
+              'margin-top'= '5px',
               'margin-bottom'= '5 px'
             )
             , 
@@ -470,20 +464,13 @@ app$callback(
             children=htmlA('Upload your labels here.')
             ,
             style=list(
-              height= '45px'
-              ,
-              'line-height'= '45px'
-              ,
-              'border-width'= '1px'
-              ,
-              'border-style'= 'dashed'
-              ,
-              'border-radius'= '5px'
-              ,
-              'text-align'= 'center'
-              ,
-              'margin-top'= '5px'
-              ,
+              height= '45px',
+              'line-height'= '45px',
+              'border-width'= '1px',
+              'border-style'= 'dashed',
+              'border-radius'= '5px',
+              'text-align'= 'center',
+              'margin-top'= '5px',
               'margin-bottom'= '5 px'
             )
             , 
@@ -500,14 +487,12 @@ app$callback(
             ,
             htmlDiv(
               id ='training-status-message', 
-              style=list('margin-bottom'='0px', 'margin-top'='0px'))
-            ,
+              style=list('margin-bottom'='0px', 'margin-top'='0px')),
             htmlP(id='error-status-message')
             
           )
           ,
-          id='output-messages'
-          ,
+          id='output-messages',
           style=list('margin-bottom'='2px', 'margin-top'='2px')
           )
         ))
@@ -566,35 +551,23 @@ app$callback(
   }
 )
 
-
 ## Global varlable for the data storage required.
 #
 #
-datLst <<- list(mnist_3000 = fread("data/mnist_3000_input.csv", header=T)
-                , 
-                fashion_3000= fread("data/fashion_3000_input.csv", header=T)
-                ,
-                cifar_gray_3000 = fread("data/cifar_gray_3000_input.csv", header=T)
-                
-                ,
-                wikipedia_3000 = fread("data/wikipedia_3000.csv", header=T)
-                ,
-                crawler_3000 = fread("data/crawler_3000.csv", header=T)
-                ,
+datLst <<- list(mnist_3000 = fread("data/mnist_3000_input.csv", header=T), 
+                fashion_3000= fread("data/fashion_3000_input.csv", header=T),
+                cifar_gray_3000 = fread("data/cifar_gray_3000_input.csv", header=T),
+                wikipedia_3000 = fread("data/wikipedia_3000.csv", header=T),
+                crawler_3000 = fread("data/crawler_3000.csv", header=T),
                 twitter_3000 = fread('data/twitter_3000.csv', encoding='Latin-1', header=T)
 )
 
 datLabels <<- list(
-  mnist_3000 = unique(fread("data/mnist_3000_labels.csv", header=T))
-  , 
-  fashion_3000= unique( fread("data/fashion_3000_labels.csv", header=T))
-  ,
-  cifar_gray_3000 = unique(fread("data/cifar_gray_3000_labels.csv", header=T))
-  ,
-  wikipedia_3000 = unique(fread("data/wikipedia_3000.csv", header=T)[, 1])
-  ,
-  crawler_3000 = unique(fread("data/crawler_3000.csv", header=T)[, 1])
-  ,
+  mnist_3000 = unique(fread("data/mnist_3000_labels.csv", header=T)), 
+  fashion_3000= unique( fread("data/fashion_3000_labels.csv", header=T)),
+  cifar_gray_3000 = unique(fread("data/cifar_gray_3000_labels.csv", header=T)),
+  wikipedia_3000 = unique(fread("data/wikipedia_3000.csv", header=T)[, 1]),
+  crawler_3000 = unique(fread("data/crawler_3000.csv", header=T)[, 1]),
   twitter_3000 =  unique(fread('data/twitter_3000.csv', encoding='Latin-1', header=T)[,1])
 )
 
@@ -715,24 +688,15 @@ generate_figure_word_vec <- function(embedding_df, wordemb_display_mode, selecte
 app$callback(
   output = list(id='tsne-3d-plot', property='figure')
   ,
-  params = list(input(id='dropdown-dataset', property='value')
-                ,
-                input(id='slider-iterations',  property='value')
-                ,
-                input(id='slider-perplexity',  property='value')
-                ,
-                input(id='slider-pca-dimensions',  property='value')
-                ,
-                input(id='slider-learning-rate',  property='value')
-                ,
-                input(id='dropdown-word-selected',  property='value')
-                ,
+  params = list(input(id='dropdown-dataset', property='value'),
+                input(id='slider-iterations',  property='value'),
+                input(id='slider-perplexity',  property='value'),
+                input(id='slider-pca-dimensions',  property='value'),
+                input(id='slider-learning-rate',  property='value'),
+                input(id='dropdown-word-selected',  property='value'),
                 input(id='radio-wordemb-display-mode',  property='value')
-                
   )
   ,
-  
-  
   function(dataset, iterations, perplexity, pca_dim, learning_rate, selected_word, wordemb_display_mode){
     if(dataset==''|| is.null(dataset)){
       return(defaultPlot)
@@ -780,7 +744,8 @@ app$callback(
   ,
   function(clickData, dataset){
     if(dataset %in% WORD_EMBEDDINGS){
-      clickDat <- clickData[[1]] # contains a list(character(6))
+      clickDat <- clickData[[1]] 
+      # contains a list(character(6))
       selected_word <- clickDat[[1]][6]
       datTbl <- datLst[[dataset]]
       colnames(datTbl)[1] = 'label'
@@ -802,9 +767,6 @@ app$callback(
                                                         height='25vh', 
                                                         display='block', 
                                                         margin='auto'))))
-      
-      
-      #return(htmlP(glue('{clickDat}')))
     } else {
       return(list())
     }
