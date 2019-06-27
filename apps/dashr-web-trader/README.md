@@ -22,7 +22,7 @@ Clone the git repo
 
 ```
 git clone https://github.com/plotly/dash-sample-apps
-cd dash-sample-apps/apps/dashr-svm 
+cd dash-sample-apps/apps/dashr-web-trader
 ```
 
 Install the requirements. From the terminal, run the following to install the required packages in the default location:
