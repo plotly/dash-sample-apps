@@ -1,11 +1,10 @@
-dash==0.37.0
-dash-core-components==0.42.1
+dash==1.0.0
+dash-core-components==1.0.0
+dash-html-components==1.0.0
 dash-daq==0.1.0
-dash-html-components==0.13.2
-dash-renderer==0.17.0
-dash-table==3.1.12
+dash-table==4.0.0
+plotly==3.5.0
 lasio==0.23
 pandas==0.23.4
 pathlib==1.0.1
-plotly==3.5.0
 gunicorn
