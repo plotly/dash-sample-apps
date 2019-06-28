@@ -12,10 +12,10 @@ library(VGAM)
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
   pathPrefix <- sprintf("/%s/", appName)
-  
+
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  
+
   setwd(sprintf("/app/apps/%s", appName))
 }
 
@@ -452,16 +452,13 @@ app$callback(
     if("Auto" %in% autovalue){
       return("# of Bins: Auto")
     }else{
-      return(paste0("# of Bins: ", as.character(as.integer(slider_value))))
+      return(paste0("# of Bins = ", as.character(as.integer(slider_value))))
     }
   }
 )
 
 if (appName != "") {
-  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
 } else {
   app$run_server()
 }
-
-
-
