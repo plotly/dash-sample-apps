@@ -8,7 +8,7 @@ This is a dash for R version of the multipage report app written in python
 
 ## About this app:
 
-This app is a full multipage report it provides figures with inline text and graphs. 
+This app is a full multipage report it provides figures with inline text and graphs.
 
 ### Using the demo
 
