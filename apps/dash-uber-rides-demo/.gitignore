@@ -1,0 +1,6 @@
+venv
+.vscode
+*.pyc
+.DS_Store
+.env
+output.csv
