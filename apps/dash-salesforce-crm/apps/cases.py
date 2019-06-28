@@ -508,6 +508,7 @@ layout = [
             ),
             html.Div(
                 id="cases_indicators",
+                className="row indicators",
                 children=[
                     indicator("#00cc96", "Low priority cases", "left_cases_indicator"),
                     indicator(
@@ -516,8 +517,7 @@ layout = [
                     indicator(
                         "#EF553B", "High priority cases", "right_cases_indicator"
                     ),
-                ],
-                className="row",
+                ]
             ),
             html.Div(
                 id="cases_reasons_container",
