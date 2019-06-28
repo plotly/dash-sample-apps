@@ -687,12 +687,16 @@ def update_heatmap_confidence(n, current_time, footage, threshold):
                     "xaxis": {
                         "showticklabels": False,
                         "showgrid": False,
+                        "showline": False,
+                        "zeroline": False,
                         "side": "top",
                         "ticks": "",
                     },
                     "yaxis": {
                         "showticklabels": False,
                         "showgrid": False,
+                        "showline": False,
+                        "zeroline": False,
                         "side": "left",
                         "ticks": "",
                     },
