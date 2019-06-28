@@ -1,33 +1,32 @@
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
+library(dashTable)
 library(stringi)
 library(generator)
 library(plotly)
 library(random)
 library(data.table)
 
-appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
 
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+#set.seed(12345)
 
-setwd("/app/apps/dashr-multipage-report")
+setwd("/Users/carlonescott/Documents/dashr-multipage-report")
 
-supplyDemand <- fread("/Data/supplyDemand.csv")
-actualSeasonal <- fread("/Data/actualSeasonal.csv")
-industrailProd <- fread("/Data/industrailProd.csv")
-globalMarket <- fread("/Data/globalMarket.csv")
-oecdCommersial <- fread("/Data/oecdCommersial.csv")
-wtiPrices <- fread("/Data/wtiPrices.csv")
-epxEquity <- fread("/Data/epxEquity.csv")
-chinaSpr <- fread("/Data/chinaSpr.csv")
-oecdIndustry <- fread("/Data/oecdIndustry.csv")
-wtiOilprices <- fread("/Data/wtiOilprices.csv")
-productionCost <- fread("/Data/productionCost.csv")
-production2015 <- fread("/Data/production2015.csv")
-energyShare <- fread("/Data/energyShare.csv")
+
+supplyDemand <- fread("data/supplyDemand.csv")
+actualSeasonal <- fread("data/actualSeasonal.csv")
+industrailProd <- fread("data/industrailProd.csv")
+globalMarket <- fread("data/globalMarket.csv")
+oecdCommersial <- fread("data/oecdCommersial.csv")
+wtiPrices <- fread("data/wtiPrices.csv")
+epxEquity <- fread("data/epxEquity.csv")
+chinaSpr <- fread("data/chinaSpr.csv")
+oecdIndustry <- fread("data/oecdIndustry.csv")
+wtiOilprices <- fread("data/wtiOilprices.csv")
+productionCost <- fread("data/productionCost.csv")
+production2015 <- fread("data/production2015.csv")
+energyShare <- fread("data/energyShare.csv")
 
 set.seed(7685)
 front_phone <- r_phone_numbers(5, use_hyphens = T)
@@ -64,10 +63,8 @@ color_3 <- "#002277"
 color_b <- "#F8F8FF"
 
 
-app <- Dash$new(external_stylesheets = list("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",
-                                            "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
-                                            "https://codepen.io/bcd/pen/KQrXdb.css", 
-                                            "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"))
+app <- Dash$new()
+
 
 app$layout(htmlDiv(list(
   
@@ -83,7 +80,7 @@ app$layout(htmlDiv(list(
           htmlDiv(list(
             htmlDiv(
               htmlImg(
-                src  =  "https://files.slack.com/files-pri/T06LPNGUD-FKXDDD4QG/dash-logo-new.png",
+                src  =  "data/dash-logo-new.png",
                 className = "app__menu__img", style = list('height' = "30px")
               )
             ),
@@ -189,12 +186,12 @@ app$layout(htmlDiv(list(
         htmlP(LipP(2, F), style = list('margin-top' = "40px")),
         htmlP(LipP(1, F), style = list('margin-top' = "20px")),
         htmlP(LipP(1, F), style = list('margin-top' = "20px"))
-      ), style = list('margin-left' = "80px"), className = list("five columns")), 
+      ), style = list('margin-left' = "80px", "five columns")), 
       
       htmlDiv(list(
         htmlP(LipP(1, F), style = list('margin-top' = "40px")),
         htmlP(LipP(2, F), style = list('margin-top' = "20px"))
-      ), style = list('left-margin' = "30px"), className = list("five columns"))
+      ), style = list('left-margin' = "30px", "five columns"))
       
     ), className = "subpage")
   ), className = "page"),
@@ -619,7 +616,7 @@ app$layout(htmlDiv(list(
           
         ), className = "six columns", style = list('height' = "250px")),
         
-        htmlImg(src = "http://i.imgur.com/IJsVT9P.png", 
+        htmlImg(src = "data/IJsVT9P.png", 
                 className = "exhibit six columns", 
                 style = list('margin-top' = "20px"))
       ), className="", style = list("padding-top" = "20px", 'margin-left' = '30px'))
@@ -865,7 +862,7 @@ app$layout(htmlDiv(list(
         htmlStrong("Vehicula elementum congue penatibus massa, eu sed", className = "eleven columns",
                    style = list('color' = color_1)),
         htmlDiv(
-          htmlImg(src = "http://i.imgur.com/DBkxRT2.png", 
+          htmlImg(src = "data/DBkxRT2.png", 
                   style = list('margin-top' = "20px", 'height' = "250px"))
         )
       ), className = "eleven columns"),
@@ -909,18 +906,18 @@ app$layout(htmlDiv(list(
                   name = "Forward", 
                   type = "scatter", 
                   uid = "4e8248"
+                ),
+                list(
+                  x = wtiPrices$`May-15 forecast, x`,
+                  y = wtiPrices$`May-15 forecast, y`,
+                  line = list(
+                    color = color_3,
+                    dash = "solid"
+                  ), 
+                  mode = "lines", 
+                  name = "Forward", 
+                  type = "scatter"
                 )
-              ),
-              list(
-                x = wtiPrices$`May-15 forecast, x`,
-                y = wtiPrices$`May-15 forecast, y`,
-                line = list(
-                  color = color_3,
-                  dash = "solid"
-                ), 
-                mode = "lines", 
-                name = "Forward", 
-                type = "scatter"
               ),
               layout = list(
                 height = 250, 
@@ -1257,7 +1254,7 @@ app$layout(htmlDiv(list(
           htmlP("Aenean felis et libero nullam pretium quis est in sit. Commodo nec ante aenean a. Commodo at facilisis vestibulum cursus elementum nascetur et, placerat class aliquam convallis porttitor accumsan. Ultricies sed laoreet eleifend maximus venenatis", 
                 style = list('color' = color_1)),
           htmlStrong("Congue nisl iaculis interdum cubilia maximus"),
-          htmlImg(src = "http://i.imgur.com/wX5mQYn.png", 
+          htmlImg(src = "data/wX5mQYn.png", 
                   className = "exhibit eleven columns", style = list('height' = "250", 'margin-top' = "20px"))
         ), style = list('float' = "left")),
         
@@ -1903,7 +1900,7 @@ app$layout(htmlDiv(list(
                style = list('color' = color_1, 'margin-top' = "40px")),
         htmlP(LipP(1, F), style = list('margin-top' = "10px")),
         
-        htmlImg(src = "http://i.imgur.com/c7PM25P.png", className = "eleven columns")
+        htmlImg(src = "data/c7PM25P.png", className = "eleven columns")
       ), className = "eleven columns")
       
     ), className = "subpage")
@@ -1912,5 +1909,6 @@ app$layout(htmlDiv(list(
   
 )))
 
-app$run_server(host = "0.0.0.0", port = Sys.getenv("PORT", 8080))
+app$run_server(debug = T)
+
 
