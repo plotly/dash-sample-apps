@@ -140,7 +140,8 @@ app.layout = html.Div(
             style={"padding": "35px 25px"},
             children=[
                 # Hidden Div that will store the result of simulating a model run
-                html.Div(id="storage-simulated-run", style={"display": "none"}),
+                #html.Div(id="storage-simulated-run", style={"display": "none"}),
+                dcc.Store(id="storage-simulated-run", storage_type="memory"),
                 # Increment the simulation step count at a fixed time interval
                 dcc.Interval(
                     id="interval-simulated-step",
@@ -246,7 +247,8 @@ app.layout = html.Div(
                 ),
                 dcc.Interval(id="interval-log-update", n_intervals=0),
                 # Hidden Div Storing JSON-serialized dataframe of run log
-                html.Div(id="run-log-storage", style={"display": "none"}),
+                #html.Div(id="run-log-storage", style={"display": "none"}),
+                dcc.Store(id="run-log-storage", storage_type='memory')
                 # The html divs storing the graphs and display parameters
             ],
         ),
@@ -413,7 +415,7 @@ def update_interval_log_update(interval_rate):
 if not demo_mode:
 
     @app.callback(
-        Output("run-log-storage", "children"),
+        Output("run-log-storage", "data"),
         [Input("interval-log-update", "n_intervals")],
     )
     def get_run_log(_):
@@ -439,7 +441,7 @@ if not demo_mode:
 
 
 @app.callback(
-    Output("div-step-display", "children"), [Input("run-log-storage", "children")]
+    Output("div-step-display", "children"), [Input("run-log-storage", "data")]
 )
 def update_div_step_display(run_log_json):
     if run_log_json:
@@ -453,7 +455,7 @@ def update_div_step_display(run_log_json):
 @app.callback(
     Output("div-accuracy-graph", "children"),
     [
-        Input("run-log-storage", "children"),
+        Input("run-log-storage", "data"),
         Input("radio-display-mode-accuracy", "value"),
         Input("checklist-smoothing-options-accuracy", "values"),
         Input("slider-smoothing-accuracy", "value"),
@@ -480,6 +482,7 @@ def update_accuracy_graph(
         else:
             graph.figure.layout.yaxis1["range"] = [0, 1]
             graph.figure.layout.yaxis2["range"] = [0, 1]
+            graph.figure.layout()
 
     except AttributeError:
         pass
@@ -490,7 +493,7 @@ def update_accuracy_graph(
 @app.callback(
     Output("div-cross-entropy-graph", "children"),
     [
-        Input("run-log-storage", "children"),
+        Input("run-log-storage", "data"),
         Input("radio-display-mode-cross-entropy", "value"),
         Input("checklist-smoothing-options-cross-entropy", "values"),
         Input("slider-smoothing-cross-entropy", "value"),
@@ -515,7 +518,7 @@ def update_cross_entropy_graph(
 
 @app.callback(
     Output("div-current-accuracy-value", "children"),
-    [Input("run-log-storage", "children")],
+    [Input("run-log-storage", "data")],
 )
 def update_div_current_accuracy_value(run_log_json):
     if run_log_json:
@@ -536,7 +539,7 @@ def update_div_current_accuracy_value(run_log_json):
 
 @app.callback(
     Output("div-current-cross-entropy-value", "children"),
-    [Input("run-log-storage", "children")],
+    [Input("run-log-storage", "data")],
 )
 def update_div_current_cross_entropy_value(run_log_json):
     if run_log_json:
@@ -557,4 +560,4 @@ def update_div_current_cross_entropy_value(run_log_json):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, port=8051)

@@ -62,7 +62,7 @@ def demo_callbacks(app, demo_mode):
             }
 
         @app.callback(
-            Output("storage-simulated-run", "children"),
+            Output("storage-simulated-run", "data"),
             [Input("interval-simulated-step", "n_intervals")],
             [
                 State("dropdown-demo-dataset", "value"),
@@ -90,9 +90,9 @@ def demo_callbacks(app, demo_mode):
             return 0
 
         @app.callback(
-            Output("run-log-storage", "children"),
+            Output("run-log-storage", "data"),
             [Input("interval-log-update", "n_intervals")],
-            [State("storage-simulated-run", "children")],
+            [State("storage-simulated-run", "data")],
         )
         def get_run_log(_, simulated_run):
             if simulate_run:
