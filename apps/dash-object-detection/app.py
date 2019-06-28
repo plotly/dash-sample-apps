@@ -66,7 +66,7 @@ def load_data(path):
 def markdown_popup():
     return html.Div(
         id='markdown',
-        className="model",
+        className="modal",
         style={'display': 'none'},
         children=(
             html.Div(
@@ -78,8 +78,7 @@ def markdown_popup():
                             "Close",
                             id="markdown_close",
                             n_clicks=0,
-                            className="closeButton",
-                            style={'border': 'none', 'height': '100%'}
+                            className="closeButton"
                         )
                     ),
                     html.Div(
@@ -337,7 +336,7 @@ def update_output(dropdown_value):
         return [
             dcc.Interval(
                 id="interval-visual-mode",
-                interval=2000,
+                interval=700,
                 n_intervals=0
             ),
             html.Div(
@@ -366,7 +365,7 @@ def update_detection_mode(value):
         return [
             dcc.Interval(
                 id="interval-detection-mode",
-                interval=2000,
+                interval=700,
                 n_intervals=0
             ),
             html.Div(

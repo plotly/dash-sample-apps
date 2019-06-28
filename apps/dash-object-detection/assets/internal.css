@@ -49,7 +49,7 @@ p {
     font-weight: 300;
 }
 
-.model {
+.modal {
     display: block; /*Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1000; /* Sit on top */
@@ -78,8 +78,6 @@ p {
 }
 
 .markdown-text {
-    width: 100%;
-    margin: 0;
     padding: 0px 10px;
 }
 
@@ -89,15 +87,16 @@ p {
     font-weight: normal;
     float: right;
     font-size: 1.2rem;
+    border:none;
+    height:100%;
 }
 
 .closeButton:hover {
-    color: red;
-!important
+    color: red !important;
 }
 
 #header-section {
-    width: 90%;
+    width: 88%;
     margin-top: 2%;
 }
 
@@ -193,7 +192,7 @@ p {
 }
 
 #logo-mobile {
-    display:none;
+    display: none;
 }
 
 .plot-title {
@@ -217,12 +216,17 @@ p {
 }
 
 /*
-  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Device = Most of the Smartphones Mobiles, Ipad (Portrait)
   */
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 750px), screen and (min-width: 768px) and (max-width: 1024px) {
     .container {
         padding: 0;
+    }
+
+    .columns {
+        width:100% !important;
+        float:left;
     }
 
     h4 {
@@ -257,24 +261,24 @@ p {
 
     .control-element {
         font-size: 12px;
-        flex-flow:column nowrap;
-        padding:10px 0px;
+        flex-flow: column nowrap;
+        padding: 10px 0px;
     }
 
     .control-element > div {
-        width:100% !important;
+        width: 100% !important;
     }
 
-    .control-element > div:nth-child(1){
-        text-align:center;
+    .control-element > div:nth-child(1) {
+        text-align: center;
     }
 
     #slider-minimum-confidence-threshold {
-        margin-bottom:10px;
+        margin-bottom: 10px;
     }
 
     #div-visual-mode, #div-detection-mode {
-        text-align:center;
+        text-align: center;
     }
 
     .annotation-text {
@@ -282,7 +286,7 @@ p {
     }
 
     .img-container {
-        display:none;
+        display: none;
     }
 
     #left-side-column {
@@ -290,13 +294,18 @@ p {
     }
 
     #right-side-column {
-        justify-content:center;
+        justify-content: center;
+        margin-left:0;
+        padding: 1rem;
     }
 
     #logo-mobile {
-        display:inline-flex;
-        height:30px;
-        align-self:flex-start;
+        display: inline-flex;
+        height: 30px;
+        align-self: flex-start;
     }
 
+    h5 {
+        font-size: 1.5rem;
+    }
 }
