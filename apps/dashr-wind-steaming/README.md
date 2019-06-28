@@ -4,7 +4,7 @@
 This is a dash for R version of the Wind Streaming app written in python [Wind Streaming](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-wind-streaming)
 
 ## Screenshots
-![windspeed-demo.gif](windspeed-demo.gif)
+![/assets/windspeed-demo.gif](/assets/windspeed-demo.gif)
 
 ## About this app:
 
