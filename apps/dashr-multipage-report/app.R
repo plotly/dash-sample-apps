@@ -16,6 +16,7 @@ if (appName != ""){
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
   setwd(sprintf("/app/apps/%s", appName))
 }
+setwd("/Users/carlonescott/documents/dashr-multipage-report")
 
 supplyDemand <- fread("data/supplyDemand.csv")
 actualSeasonal <- fread("data/actualSeasonal.csv")
@@ -153,11 +154,11 @@ app$layout(htmlDiv(list(
         htmlP(LipP(2, F), style = list('margin-top' = "40px")),
         htmlP(LipP(1, F), style = list('margin-top' = "20px")),
         htmlP(LipP(1, F), style = list('margin-top' = "20px"))
-      ), style = list('margin-left' = "80px")), 
+      ), style = list('margin-left' = "80px", 'margin-right' = "40px")), 
       htmlDiv(list(
         htmlP(LipP(1, F), style = list('margin-top' = "40px")),
         htmlP(LipP(2, F), style = list('margin-top' = "20px"))
-      ), style = list('margin-left' = "80px"))
+      ), style = list('margin-left' = "80px", 'margin-right' = "40px"))
     ), className = "subpage")
   ), className = "page"),
   
