@@ -235,7 +235,7 @@ defaultPlot <- plot_ly(
   color = ~as.factor(Digit), 
   mode='markers', 
   marker=list(symbol='circle', size=2.5)
-)
+) %>% plotly::layout(.,width=850, height=600)
 
 
 #Initialize the app
@@ -265,12 +265,15 @@ app$layout(
       
       htmlDiv(className='row, background', 
               
-              children=list(dccMarkdown("The Scatter plot above is the result of running the t-SNE algorithm on the MNIST digits, resulting in a 3D visualization of the image dataset.  For demo purposes, all the data were pre-generated using limited number of input parameters, a subset of 3000 samples, and displayed instantly.")
-                            ,
-                            dccMarkdown("You can run the t-SNE algorithm with your custom dataset and label using a dropdown at the top right. To learn more about how the t-SNE Explorer works, click on 'Learn More' below.")
-                            ,
-                            dccMarkdown('* This is the R version of the t-SNE explorer. To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dashr-tsne)')                             
-                            ,
+              children=list(dccMarkdown(
+"The Scatter plot above is the result of running the t-SNE algorithm on the MNIST digits, resulting in a 3D visualization of the image dataset.
+
+For demo purposes, all the data were pre-generated using limited number of input parameters, a subset of 3000 samples, and displayed instantly.
+
+You can run the t-SNE algorithm with your custom dataset and label using a dropdown at the top right. To learn more about how the t-SNE Explorer works, click on 'Learn More' below.
+
+This is the R version of the t-SNE explorer. To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dashr-tsne)
+"),
                             htmlButton('Learn More', id='learn-button', n_clicks=0)
                             
               )
@@ -293,16 +296,17 @@ app$layout(
       
       htmlDiv(className='row, background', list(   
         
-        htmlH4( children='t-SNE Parameters', id='tsne_h4', style=list(float='left')),
-        htmlDiv(className= 'four columns', id='control-panel', children = list(), style=list(width='100%'))
+        htmlH4( children='', id='tsne_h4', style=list(float='left')),
+        htmlDiv(className= 'three columns', id='control-panel', children = list(), style=list(width='25vh'))
         
-      ),  style=list(float='left', display='block'))
+      ),  style=list(float='left', display='block', width='27vw'))
       ,
-      htmlH4('The Result Graph', className='four columns'),
+     
       htmlDiv(
         id='demo-graph', 
         className='five columns', 
-        children= dccGraph(id='tsne-3d-plot', figure=defaultPlot)
+        children= dccGraph(id='tsne-3d-plot', figure=defaultPlot),
+       
       )
       ,
       htmlDiv(
@@ -353,7 +357,7 @@ app$callback(
   
 )
 
-demoPanel <- list(Card(list(   
+demoPanel <- list(   
   dccDropdown(
     id = 'dropdown-dataset',
     options=list(
@@ -383,7 +387,7 @@ demoPanel <- list(Card(list(
   htmlDiv(
     id='div-wordemb-controls'
     ,
-    style=list(display='none')
+    style=list(display='none', float='left')
     ,
     children=list(
       
@@ -400,10 +404,11 @@ demoPanel <- list(Card(list(
       ,
       htmlDiv(dccDropdown(
         id='dropdown-word-selected', 
-        placeholder='Select a word', value=''), 
-        style=list(width='20vh'))
-    ))
-))
+        placeholder='Select a word to display its neighbors', value=''), 
+        style=list(width='25vh'))
+    )
+    )
+
 )
 ###########################################demo PANEL ends
 #
@@ -516,7 +521,7 @@ app$callback(
         ),
         htmlDiv(id='div-plot-click-image')
         ,
-        htmlDiv(id='div-plot-click-wordemb', style=list(width='30vh', height='30vh'))
+        htmlDiv(id='div-plot-click-wordemb', style=list(width='40vh', height='30vh'))
       ))
     } else{
       return("")
@@ -575,7 +580,7 @@ app$callback(
   ,
   function(dataset){
     if(is.element(dataset, WORD_EMBEDDINGS)){
-      return(list(width='15vh', display='block'))
+      return(list(width='20vh', display='block', float='left'))
     } else {
       return(list(display='none'))
     }
@@ -716,11 +721,11 @@ app$callback(
           mode='markers', 
           marker=list(symbol='circle', size=2.5))
         
-        return(p)
+        return(p %>% plotly::layout(.,width=850, height=600))
       } else if(is.element(dataset, WORD_EMBEDDINGS)){
         figure <- generate_figure_word_vec(embedding_DT, wordemb_display_mode, selected_word, datTbl)
         
-        return(figure)
+        return(figure %>% plotly::layout(.,width=850, height=600))
       }else{
         return(plot_ly(type =  'scatter3d'))}
       
@@ -755,7 +760,7 @@ app$callback(
       p <- plot_ly(type='bar', y=neighbors_label$label, orientation='h' ) %>% layout( xaxis= list(title='Euclidean Distance'))
       if(selected_word==''||is.na(selected_word)){toplabel <- "Default 5-NN graph"} 
       else{toplabel <- paste("The 5 nearest neighbors of", selected_word)}
-      return(list(htmlH5(toplabel), dccGraph(
+      return(list(htmlH5(toplabel, style=list(float='center')), dccGraph(
         id='graph-bar-nearest-neighbors-word',
         figure=p,
         style=list(height= '25vh'),
@@ -814,7 +819,7 @@ app$callback(
       
       return(htmlImg(
         src =  glue('data:image/png;base64, ', DIGIT_B64), 
-        style =  list(height='25vh', display='block', margin='auto')
+        style =  list(height='25vh', display='block', margin='auto', float='right')
       ))
       
     } else{
@@ -1072,7 +1077,7 @@ app$callback(
       color = ~as.factor(label), 
       mode='markers', 
       marker=list(symbol='circle', size=2.5)
-    )
+    )%>% plotly::layout(.,width=850, height=600)
     return(p)
   }
 )
