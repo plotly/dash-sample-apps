@@ -189,7 +189,8 @@ app$callback(
       
       study_data <- default_study_data
       test_articles <- (study_data[study_data$group_type=='test'] )$test_article %>% unique(.)
-      options = foreach(i=test_articles, combine='c') %do% returnOptions(i, study_data)
+      #options = foreach(i=test_articles, combine='c') %do% returnOptions(i, study_data)
+      options <- lapply(test_articles, returnOptions, study_data = study_data)
       return(options[[1]])
       
     } else {
@@ -198,7 +199,8 @@ app$callback(
       study_data <- contents_parsed$dt
 
       test_articles <- (study_data[study_data$group_type=='test'] )[['test_article']] %>% unique(.)
-      options = foreach(i=test_articles, combine='c') %do% returnOptions(i, study_data)
+      #options = foreach(i=test_articles, combine='c') %do% returnOptions(i, study_data)
+      options <- lapply(test_articles, returnOptions, study_data = study_data)
       return(options[[1]])
 
   }

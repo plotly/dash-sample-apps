@@ -62,12 +62,8 @@ remotes::install_github("plotly/dash-html-components")
 remotes::install_github("plotly/dash-core-components")
 install.packages("dashPlayer_0.0.1.tar.gz", type="source", repos=NULL)
 install.packages('https://cran.r-project.org/src/contrib/rlist_0.4.6.1.tar.gz', repos=NULL)
-install.packages('https://cran.r-project.org/src/contrib/data.table_1.12.2.tar.gz', repos=NULL)
-install.packages('https://cran.r-project.org/src/contrib/glue_1.3.1.tar.gz', repos=NULL)
-install.packages('https://cran.r-project.org/src/contrib/stringr_1.4.0.tar.gz', repos=NULL)
 install.packages('https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz', repos=NULL)
 install.packages('https://cran.r-project.org/src/contrib/stringi_1.4.3.tar.gz', repos=NULL)
-install.packages('https://cran.r-project.org/src/contrib/jsonlite_1.6.tar.gz', repos=NULL)
 install.packages('https://cran.r-project.org/src/contrib/foreach_1.4.4.tar.gz', repos=NULL)
 
 ##DashPlayer- install the local version inside the repo
