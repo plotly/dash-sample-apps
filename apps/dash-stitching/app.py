@@ -5,6 +5,7 @@ from skimage import io, data, transform
 from time import sleep
 
 from demo_utils import demo_explanation
+
 demo_mode = True
 
 import dash
@@ -29,8 +30,6 @@ import pathlib
 
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
-
-
 
 
 def tile_images(list_of_images, n_rows, n_cols):
@@ -128,12 +127,14 @@ app.layout = html.Div(
                 instructions(),
                 html.Div(
                     [
-                        html.Button("LEARN MORE", className="button_instruction", id="learn-more-button"),
-                        
+                        html.Button(
+                            "LEARN MORE",
+                            className="button_instruction",
+                            id="learn-more-button",
+                        ),
                         html.Button(
                             "Upload demo data", id="demo", className="button_demo"
-                        )
-                        
+                        ),
                     ],
                     className="mobile_buttons",
                 ),
@@ -230,32 +231,35 @@ app.layout = html.Div(
             ],
             className="four columns instruction",
         ),
-        html.Div([
-            dcc.Tabs(
-                id="stitching-tabs",
-                value="canvas-tab",
-                children=[
-                    dcc.Tab(label="Image Tiles", value="canvas-tab"),
-                    dcc.Tab(label="Stitched Image", value="result-tab"),
-                    dcc.Tab(label="How To Use This App", value="help-tab"),
-                ],
-                className="tabs",
-            ),
-            html.Div(
-                id="tabs-content-example",
-                className="canvas",
-                style={"text-align": "center", "margin": "auto"},
-            ),
-            html.Div(
-                image_upload_zone("upload-stitch", multiple=True, width="100px"),
-                className="upload_zone",
-            ),
-            html.Div(id="sh_x", hidden=True),
-            html.Div(id="stitched-res", hidden=True),
-            dcc.Store(id="memory-stitch"),
-        ],className="eight columns result"),
-    
-    ],className="row twelve columns"
+        html.Div(
+            [
+                dcc.Tabs(
+                    id="stitching-tabs",
+                    value="canvas-tab",
+                    children=[
+                        dcc.Tab(label="Image Tiles", value="canvas-tab"),
+                        dcc.Tab(label="Stitched Image", value="result-tab"),
+                        dcc.Tab(label="How To Use This App", value="help-tab"),
+                    ],
+                    className="tabs",
+                ),
+                html.Div(
+                    id="tabs-content-example",
+                    className="canvas",
+                    style={"text-align": "center", "margin": "auto"},
+                ),
+                html.Div(
+                    image_upload_zone("upload-stitch", multiple=True, width="100px"),
+                    className="upload_zone",
+                ),
+                html.Div(id="sh_x", hidden=True),
+                html.Div(id="stitched-res", hidden=True),
+                dcc.Store(id="memory-stitch"),
+            ],
+            className="eight columns result",
+        ),
+    ],
+    className="row twelve columns",
 )
 
 
