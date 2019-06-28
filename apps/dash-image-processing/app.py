@@ -177,6 +177,8 @@ def serve_layout():
                                     "borderRadius": "5px",
                                     "borderColor": "darkgray",
                                     "textAlign": "center",
+                                    "padding": "2rem 0",
+                                    "margin-bottom": "2rem",
                                 },
                                 accept="image/*",
                             ),
@@ -249,8 +251,15 @@ def serve_layout():
                                     ),
                                 ],
                             ),
-                            html.Button("Run Operation", id="button-run-operation"),
-                            html.Button("Undo", id="button-undo"),
+                            html.Div(
+                                id="button-group",
+                                children=[
+                                    html.Button(
+                                        "Run Operation", id="button-run-operation"
+                                    ),
+                                    html.Button("Undo", id="button-undo"),
+                                ],
+                            ),
                         ]
                     ),
                     dcc.Graph(

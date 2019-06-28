@@ -97,6 +97,14 @@ html, body {
     max-width: 100% !important;
 }
 
+@media only screen and (max-width: 1310px) {
+    #root {
+        flex-direction: column;
+        /*align-items: center;*/
+        align-items: stretch;
+    }
+}
+
 #session-id {
     display: none;
 }
@@ -110,10 +118,15 @@ html, body {
     box-sizing: border-box; /* Opera/IE 8+ */
     display: flex;
     flex-direction: column;
-    width: 66%;
-    max-width: 66%;
     padding: 3rem 5%;
     background-color: #272a31;
+}
+
+@media (min-width: 1310px) {
+    #app-container {
+        width: 66%;
+        max-width: 66%;
+    }
 }
 
 /* banner
@@ -142,6 +155,23 @@ html, body {
     color: white;
 }
 
+@media only screen and (max-width: 1310px) {
+    #banner {
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 0 0 1rem 0;
+    }
+
+    #logo {
+        align-self: flex-start;
+    }
+
+    #title {
+        padding-top: 2rem;
+        margin: 0;
+    }
+}
+
 /* image
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #image {
@@ -168,18 +198,42 @@ html, body {
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box; /* Firefox, other Gecko */
     box-sizing: border-box; /* Opera/IE 8+ */
-    align-self: stretch;
-    width: 33%;
-    max-width: 33%;
     background-color: #31343a;
     color: darkgray !important;
     padding: 7rem 2rem 0 2rem;
 }
 
+@media (min-width: 1311px) {
+    #sidebar {
+        width: 33%;
+        max-width: 33%;
+        align-self: stretch;
+    }
+}
+
+@media only screen and (max-width: 1310px) {
+    #sidebar {
+        padding: 3rem 2rem 0 2rem;
+    }
+
+    #sidebar section:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #button-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+
+    }
+}
+
 #upload-image A {
     color: #fccd61;
 }
-
 
 /*Dropdown stuff below*/
 
@@ -222,6 +276,10 @@ html, body {
 
 .has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
     color: darkgray;
+}
+
+#dropdown-enhance {
+    margin-bottom: 2rem;
 }
 
 /*Button*/
