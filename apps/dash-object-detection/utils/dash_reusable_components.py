@@ -13,15 +13,15 @@ def DemoDescriptionCard(markdown_text):
     :return: html.Div
     """
     return html.Div(
-            className='row',
-            style={
-                'padding': '15px 30px 27px',
-                'margin': '10px auto 45px',
-                'width': '80%',
-                'max-width': '1024px',
-                'borderRadius': 5,
-                'border': 'thin lightgrey solid',
-                'font-family': 'Roboto, sans-serif'
-            },
-            children=dcc.Markdown(dedent(markdown_text))
+        className="row",
+        style={
+            "padding": "15px 30px 27px",
+            "margin": "10px auto 45px",
+            "width": "80%",
+            "max-width": "1024px",
+            "borderRadius": 5,
+            "border": "thin lightgrey solid",
+            "font-family": "Roboto, sans-serif",
+        },
+        children=dcc.Markdown(dedent(markdown_text)),
     )

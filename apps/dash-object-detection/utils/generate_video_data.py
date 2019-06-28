@@ -5,7 +5,9 @@ import cv2 as cv
 import time
 import base64
 import pandas as pd
-from utils.visualization_utils import visualize_boxes_and_labels_on_image_array  # Taken from Google Research GitHub
+from utils.visualization_utils import (
+    visualize_boxes_and_labels_on_image_array,
+)  # Taken from Google Research GitHub
 from utils.mscoco_label_map import category_index
 
 ############################# MODIFY BELOW #############################
@@ -31,34 +33,40 @@ VIDEO_EXTENSION = ".mp4"
 detection_graph = tf.Graph()
 with detection_graph.as_default():
     od_graph_def = tf.GraphDef()
-    with tf.gfile.GFile("frozen_inference_graph.pb", 'rb') as fid:
+    with tf.gfile.GFile("frozen_inference_graph.pb", "rb") as fid:
         serialized_graph = fid.read()
         od_graph_def.ParseFromString(serialized_graph)
-        tf.import_graph_def(od_graph_def, name='')
+        tf.import_graph_def(od_graph_def, name="")
 
 # Loading the videocapture objects
-cap = cv.VideoCapture(f'{VIDEO_FILE_NAME}{VIDEO_EXTENSION}')
+cap = cv.VideoCapture(f"{VIDEO_FILE_NAME}{VIDEO_EXTENSION}")
 
 if WRITE_VIDEO_OUT:
     # Setup the video creation process
-    fourcc = cv.VideoWriter_fourcc(*'MP4V')
-    out = cv.VideoWriter(f'{VIDEO_FILE_NAME}WithBoundingBoxes.mp4', fourcc, OUTPUT_FPS, (1280, 720))
-    out_orig = cv.VideoWriter(f'{VIDEO_FILE_NAME}Original.mp4', fourcc, OUTPUT_FPS, (1280, 720))
+    fourcc = cv.VideoWriter_fourcc(*"MP4V")
+    out = cv.VideoWriter(
+        f"{VIDEO_FILE_NAME}WithBoundingBoxes.mp4", fourcc, OUTPUT_FPS, (1280, 720)
+    )
+    out_orig = cv.VideoWriter(
+        f"{VIDEO_FILE_NAME}Original.mp4", fourcc, OUTPUT_FPS, (1280, 720)
+    )
 
 # Start the session
 with detection_graph.as_default():
     with tf.Session(graph=detection_graph) as sess:
         # Definite input and output Tensors for detection_graph
-        image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
+        image_tensor = detection_graph.get_tensor_by_name("image_tensor:0")
         # Each box represents a part of the image where a particular object was detected.
-        detection_boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
+        detection_boxes = detection_graph.get_tensor_by_name("detection_boxes:0")
         # Each score represent how level of confidence for each of the objects.
         # Score is shown on the result image, together with the class label.
-        detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
-        detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
-        num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+        detection_scores = detection_graph.get_tensor_by_name("detection_scores:0")
+        detection_classes = detection_graph.get_tensor_by_name("detection_classes:0")
+        num_detections = detection_graph.get_tensor_by_name("num_detections:0")
 
-        frame_base64_ls = []  # The list containing the frame in base64 format and their timestamp
+        frame_base64_ls = (
+            []
+        )  # The list containing the frame in base64 format and their timestamp
         frame_info_ls = []  # The list containing the information about the frames
 
         counter = 0
@@ -77,8 +85,14 @@ with detection_graph.as_default():
 
                 # Run the algorithm, retrieve the boxes, score and classes
                 (boxes, scores, classes, num) = sess.run(
-                    [detection_boxes, detection_scores, detection_classes, num_detections],
-                    feed_dict={image_tensor: image_np_expanded})
+                    [
+                        detection_boxes,
+                        detection_scores,
+                        detection_classes,
+                        num_detections,
+                    ],
+                    feed_dict={image_tensor: image_np_expanded},
+                )
 
                 t2 = time.time()
 
@@ -95,14 +109,16 @@ with detection_graph.as_default():
                     scores,
                     category_index,
                     use_normalized_coordinates=True,
-                    line_thickness=2
+                    line_thickness=2,
                 )
 
                 # Encode the image into base64
                 if ENCODE_B64:
-                    retval, buffer = cv.imencode('.png', image_np)
+                    retval, buffer = cv.imencode(".png", image_np)
                     img_str = base64.b64encode(buffer)
-                    image_b64 = 'data:image/png;base64,{}'.format(img_str.decode('ascii'))
+                    image_b64 = "data:image/png;base64,{}".format(
+                        img_str.decode("ascii")
+                    )
 
                     # Append the image along with timestamp to the frame_base64_ls
                     frame_base64_ls.append([curr_frame, image_b64])
@@ -113,19 +129,24 @@ with detection_graph.as_default():
                     out_orig.write(image)  # Writes the original image
 
                 # Process the information about the video at that exact timestamp
-                timestamp_df = pd.DataFrame([curr_frame for _ in range(int(num))], columns=["frame"])
-                boxes_df = pd.DataFrame(boxes, columns=['y', 'x', 'bottom', 'right'])
-                classes_df = pd.DataFrame(classes, columns=['class'])
-                score_df = pd.DataFrame(scores, columns=['score'])
+                timestamp_df = pd.DataFrame(
+                    [curr_frame for _ in range(int(num))], columns=["frame"]
+                )
+                boxes_df = pd.DataFrame(boxes, columns=["y", "x", "bottom", "right"])
+                classes_df = pd.DataFrame(classes, columns=["class"])
+                score_df = pd.DataFrame(scores, columns=["score"])
                 # Maps a np array of integer to their coco index
-                coco_map = np.vectorize(lambda i: category_index[i]['name'])
-                classes_str_df = pd.DataFrame(coco_map(classes), columns=['class_str'])
+                coco_map = np.vectorize(lambda i: category_index[i]["name"])
+                classes_str_df = pd.DataFrame(coco_map(classes), columns=["class_str"])
 
                 # Concatenate all the information
-                info_df = pd.concat([timestamp_df, boxes_df, classes_df, classes_str_df, score_df], axis=1)
+                info_df = pd.concat(
+                    [timestamp_df, boxes_df, classes_df, classes_str_df, score_df],
+                    axis=1,
+                )
 
                 # Only keep the entries with a score over the threshold
-                narrow_info_df = info_df[info_df['score'] > THRESHOLD]
+                narrow_info_df = info_df[info_df["score"] > THRESHOLD]
 
                 # Append it the list of information of all the frames
                 frame_info_ls.append(narrow_info_df)
@@ -137,9 +158,9 @@ with detection_graph.as_default():
                     print(f"Algorithm runtime at frame {counter}: {t2-t1:.2f}")
 
                 if SHOW_PROCESS:
-                    cv.imshow('Object detection', image_np)
+                    cv.imshow("Object detection", image_np)
 
-                    if cv.waitKey(1) & 0xFF == ord('q'):
+                    if cv.waitKey(1) & 0xFF == ord("q"):
                         break
 
             else:
@@ -147,7 +168,7 @@ with detection_graph.as_default():
 
         if ENCODE_B64:
             # Save the frames in base64
-            frame_base64_df = pd.DataFrame(frame_base64_ls, columns=['frame', 'source'])
+            frame_base64_df = pd.DataFrame(frame_base64_ls, columns=["frame", "source"])
             frame_base64_df.to_csv("video_frames_b64.csv", index=False)
 
         frame_info_df = pd.concat(frame_info_ls)
