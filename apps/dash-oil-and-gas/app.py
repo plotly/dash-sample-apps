@@ -371,6 +371,7 @@ def display_status(selector):
         return list(WELL_STATUSES.keys())
     elif selector == "active":
         return ["AC"]
+    return []
 
 
 # Radio -> multi
@@ -380,6 +381,7 @@ def display_type(selector):
         return list(WELL_TYPES.keys())
     elif selector == "productive":
         return ["GD", "GE", "GW", "IG", "IW", "OD", "OE", "OW"]
+    return []
 
 
 # Slider -> count graph
