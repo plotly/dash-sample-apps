@@ -1,53 +1,47 @@
-
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-library(purrr)
-library(dplyr)
 library(DBI)
 library(RSQLite)
 library(glue)
 library(data.table)
 library(plotly)
-library(readr)
 library(VGAM)
 
 
 appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
 
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
 
-setwd("/app/apps/dashr-opiod-endemic")
-setwd("/app/apps/dashr-wind-streaming")
+  setwd(sprintf("/app/apps/%s", appName))
+}
 
-DB_FILE = "/app/apps/dashr-wind-streaming/db/wind-data.db" 
 
+DB_FILE = "db/wind-data.db" 
+
+# Query wind data rows between two ranges
 get_wind_data <- function(start, end) {
-  # Query wind data rows between two ranges
-  # :params start: start row id
-  # :params end: end row id
-  # :returns: pandas dataframe object
   con <- dbConnect(SQLite(), DB_FILE)
   res <- dbSendQuery(con, glue("SELECT Speed, SpeedError, Direction FROM Wind WHERE rowid > {start} AND rowid <= {end}"))
   df <- dbFetch(res)
   return(df)
 }
 
+# Query a row from the Wind Table
 get_wind_data_by_id <- function(id){
-  # Query a row from the Wind Table
-  # :params id: a row id
-  # :returns: pandas dataframe object
   con <- dbConnect(SQLite(), DB_FILE)
   res <- dbSendQuery(con, glue("SELECT * FROM Wind WHERE rowid = {id}"))
   df <- dbFetch(res)
   return(df)
 }
 
+# Helper function to get the current time in seconds
 get_current_time <- function(){
-  # Helper function to get the current time in seconds
-  total_time <- as.integer(as.numeric(Sys.time()) / 216000)
+  time <- format(Sys.time(), format = "%H:%M:%S")
+  total_time <- as.numeric(as.ITime(time))
   return(total_time)
 }
 
@@ -65,15 +59,13 @@ app$layout(htmlDiv(
             htmlP(
               "This app continually queries a SQL database and displays live charts of wind speed and wind direction.",
               className = "app__header__title--grey"
-            ),
-            htmlButton(id = "learn-more", src = "https://plot.ly", 
-                       style = list(color = "#082255"))
+            )
           ), className = "app__header__desc"
         ),
         htmlDiv(
           list(
             htmlImg(
-              src  =  "https://raw.githubusercontent.com/plotly/dash-sample-apps/master/apps/dash-wind-streaming/assets/dash-logo-stripe-inverted.png",
+              src  =  "assets/dash-logo-new.png",
               className = "app__menu__img"
             )
           ), className = "app__header__logo"
@@ -89,10 +81,16 @@ app$layout(htmlDiv(
               list(htmlH6("WIND SPEED (MPH)", className = "graph__title"))
             ),
             dccGraph(
-              id = "wind-speed"
+              id = "wind-speed",
+              figure = list(
+                layout = list(
+                  plot_bgcolor = app_color[["graph_bg"]],
+                  paper_bgcolor = app_color[["graph_bg"]]
+                )
+              )
             ),
             dccInterval(
-              id = "wind-speed-update", interval = 1000, n_intervals = 1
+              id = "wind-speed-update", interval = 1000, n_intervals = 0
             )
           ), className = "two-thirds column wind__speed__container"
         ),
@@ -118,7 +116,7 @@ app$layout(htmlDiv(
                       step = 1,
                       value = 20,
                       updatemode = "drag",
-                      marks <- list(
+                      marks <- as.list(
                         setNames(
                           seq(from = 20, to = 60, by = 20),
                           seq(from = 20, to = 60, by = 20)
@@ -132,21 +130,26 @@ app$layout(htmlDiv(
                     dccChecklist(
                       id = "bin-auto",
                       options = list(
-                        list("label" = "Auto", "value" = "Auto")
-                      ),
+                        list("label" = "Auto", "value" = "Auto")),
                       value = list("Auto"),
                       inputClassName = "auto__checkbox",
                       labelClassName = "auto__label"
                     ),
                     htmlP(
-                      "# of Bins:  Auto",
+                      "# of Bins = Auto",
                       id = "bin-size",
                       className = "auto__p"
                     )
                   ), className = "auto__container"
                 ),
                 dccGraph(
-                  id = "wind-histogram"
+                  id = "wind-histogram",
+                  figure = list(
+                    layout = list(
+                      plot_bgcolor = app_color[["graph_bg"]],
+                      paper_bgcolor = app_color[["graph_bg"]]
+                      )
+                  )
                 )
               ), className = "graph__container first"
             ),
@@ -161,7 +164,13 @@ app$layout(htmlDiv(
                   )
                 ),
                 dccGraph(
-                  id = "wind-direction"
+                  id = "wind-direction",
+                  figure = list(
+                    layout = list(
+                      plot_bgcolor = app_color[["graph_bg"]],
+                      paper_bgcolor = app_color[["graph_bg"]]
+                    )
+                  )
                 )
               ), className = "graph__container second"
             )
@@ -176,10 +185,8 @@ app$callback(
   output = list(id = "wind-speed", property = "figure"),
   params = list(input(id = "wind-speed-update", property = "n_intervals")),
   
+  # Generate the wind speed graph.
   function(interval){
-    # Generate the wind speed graph.
-    # params interval :update the graph based on an interval
-    
     total_time <- get_current_time()
     df <- get_wind_data((total_time - 200), total_time)
     
@@ -199,7 +206,7 @@ app$callback(
         plot_bgcolor = app_color[["graph_bg"]],
         paper_bgcolor = app_color[["graph_bg"]],
         font = list("color" = "#fff"),
-        xaxis <- list(
+        xaxis = list(
           range = list(0, 200),
           showline = TRUE,
           zeroline = FALSE,
@@ -208,7 +215,7 @@ app$callback(
           ticktext = list("200", "150", "100", "50", "0"),
           title = "Time Elapsed (sec)"
         ),
-        yaxis <- list(
+        yaxis = list(
           range = list(
             min(0, min(df$Speed)),
             max(45, max(df$Speed) + max(df$SpeedError))
@@ -229,10 +236,8 @@ app$callback(
   output = list(id = "wind-direction", property = "figure"),
   params = list(input(id = "wind-speed-update", property = "n_intervals")),
   
+  # Generate the wind direction graph.
   function(interval){
-    # Generate the wind direction graph.
-    # params interval: update the graph based on an interval
-    
     total_time <- get_current_time()
     df <- get_wind_data_by_id(total_time)
     val <- tail(df$Speed, n=1)
@@ -274,6 +279,13 @@ app$callback(
           "radialaxis" = list("range" = c(0, 45), "angle" = 45, "dtick" = 10),
           "angularaxis" = list("showline" = FALSE, "tickcolor" = "white")
         ),
+        margin = list(
+          r = 10, 
+          t = 50, 
+          b = -1, 
+          l = 30, 
+          pad = 2
+        ), 
         showlegend = FALSE
       )
     return(fig)
@@ -284,51 +296,43 @@ app$callback(
   output = list(id = "wind-histogram", property = "figure"),
   params = list(
     input(id = "wind-speed-update", property = "n_intervals"),
-    list(state(id = "wind-speed", property = "figure"),
-         state(id = "bin-slider", property = "value"),
-         state(id = "bin-auto", property = "values"))
+    state(id = "wind-speed", property = "figure"),
+    state(id = "bin-slider", property = "value"),
+    state(id = "bin-auto", property = "value")
   ),
   
+  # Generate the histogram figure
   function(interval, wind_speed_figure, slider_value, auto_state) {
-
-    try(
-      expr = {
-        if(!is.null(wind_speed_figure)){
-          wind_val <- wind_speed_figure[['x']]$attrs[[1]]$y 
-        }
-        if("Auto" %in% auto_state){
-          bin_val <- hist(
-            wind_val,
-            breaks = round(max(unlist(wind_val)))
-          )
-        }else{
-          bin_val <- hist(wind_val, breaks = slider_value)
-        }
-      },
-      error = function(e){
-        e <- suppressWarnings()
-      }
-    )
-  
-    avg_val <- as.numeric(sum(wind_val)) / length(wind_val)
-    median_val <- median(unlist(wind_val))
+    wind_val <- unlist(wind_speed_figure[['data']][[1]][['y']])
     
+    if("Auto" %in% auto_state){
+      bin_val <- hist(
+        wind_val,
+        breaks = round(max(unlist(wind_val)))
+      )
+    }else{
+      bin_val <- hist(wind_val, breaks = slider_value)
+    }
+    avg_val <- mean(wind_val, na.rm = TRUE) 
+    median_val <- median(wind_val, na.rm = TRUE)
     pdf_fitted <- drayleigh(bin_val[[4]], ((tail(bin_val[[1]], n= 1) - bin_val[[1]][1]) / 3))
-    y_val <- c(0, (pdf_fitted * max(bin_val[[2]]) * 20))
-    y_val_max <- max(y_val)
-    bin_val_max <- max(bin_val[[2]])
+    y_val <- c(0, (pdf_fitted * max(bin_val[[2]], na.rm = TRUE) * 20))
+    y_val_max <- max(y_val, na.rm = TRUE)
+    bin_val_max <- max(bin_val[[2]], na.rm = TRUE)
     
     fig <- plot_ly(
-      x = bin_val[[1]][2:length(bin_val[[1]])],
-      y = bin_val[[2]],
-      marker = list(color = app_color[["graph_line"]]),
-      showlegend = FALSE,
-      hoverinfo = "x+y",
-      type = "bar",
       height = 350
     ) %>%
+      add_trace(
+        x = bin_val[[1]][2:length(bin_val[[1]])],
+        y = bin_val[[2]],
+        marker = list(color = app_color[["graph_line"]]),
+        showlegend = FALSE,
+        hoverinfo = "x+y",
+        type = "bar"
+      ) %>%
       add_lines(
-        x = bin_val$breaks, #list(bin_val[as.integer(length(bin_val) / 2)]),
+        x = bin_val$breaks,
         y = list(0),
         mode = "lines",
         line = list(dash = "dash", color = "#2E5266"),
@@ -351,7 +355,8 @@ app$callback(
         mode = "lines",
         line = list(color = "#42C4F7"),
         name = "Rayleigh Fit",
-        marker = list(opacity = 0)
+        marker = list(opacity = 0),
+        visible = TRUE
       )  %>%
       layout(
         plot_bgcolor = app_color[["graph_bg"]],
@@ -372,15 +377,23 @@ app$callback(
         ),
         autosize = TRUE,
         bargap = 0.01,
-        #bargroupgap = 0, 
         hovermode = "closest",
         legend = list(
           orientation = "h",
           yanchor = "bottom",
           xanchor = "center",
+          borderwidth = -1,
           y = 1,
-          x = 0.5
+          x = 0.4
         ),
+        margin = list(
+          r = 30, 
+          t = -1, 
+          b = -1, 
+          l = -1, 
+          pad = 2
+        ), 
+        showlegend = TRUE,
         shapes = list(
           list(
             xref = "x",
@@ -408,23 +421,27 @@ app$callback(
   }
 )
 
+# Manage and test for bin auto for histogram
 app$callback(
   output = list(id = "bin-auto", property = "values"),
   params = list(
-    input(id = "wind-speed", property = "figure")),
-  
-  function(wind_speed_figure){
-    
-    if(!length(wind_speed_figure[["x"]])){
-      return("")
-    }
-    if(!is.null(wind_speed_figure) && (length(wind_speed_figure[["x"]]$attrs[[1]]$y) > 5)){
+    input(id = "bin-slider", property = "value"),
+    state(id = "wind-speed", property = "figure")
+    ),
+  function(slider_value, wind_speed_figure){
+    if(!length(wind_speed_figure[['data']][[1]][['y']])){
       return(list(""))
     }
-    return(list("Auto"))
+    print(slider)
+    if(!is.null(wind_speed_figure) && (length(wind_speed_figure[['data']][[1]][['y']]) > 5)){
+      return(list(""))
+    }else{
+      return(list("Auto"))
+    }
   }
 )
 
+# Manage bin size for histogram
 app$callback(
   output = list(id = "bin-size", property = "children"),
   params = list(
@@ -435,9 +452,14 @@ app$callback(
   function(autoValue, slider_value){
     if("Auto" %in% autovalue){
       return("# of Bins: Auto")
+    }else{
+      return(paste0("# of Bins = ", as.character(as.integer(slider_value))))
     }
-    return(paste("# of Bins = ", as.character(as.integer(slider_value))))
   }
 )
 
-app$run_server(host = "0.0.0.0", port = Sys.getenv("PORT", 8080))
+if (appName != "") {
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+} else {
+  app$run_server()
+}
