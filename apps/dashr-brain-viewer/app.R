@@ -1,4 +1,3 @@
-
 library(dashColorscales)
 library(dash)
 library(plotly)
@@ -18,6 +17,9 @@ if (appName != ""){
   
   setwd(sprintf("/app/apps/%s", appName))
 }
+
+
+app = Dash$new()
 
 DEFAULT_COLORSCALE <- list(list(0,'#0c3383'), list(0.25,'#0a88ba'), list(0.5,'#f2d338'),
                            list(0.75,'#f28f38'), list(1,'#d91e1e'))
@@ -351,63 +353,63 @@ app$callback(output = list(id = 'brain-graph', property = 'figure'),
                }
                
                if(!is.null(clickData[[1]])){
-      
-                   marker = list(
-                     x = list(clickData[['points']][[1]][['x']]),
-                     y = list(clickData[['points']][[1]][['y']]),
-                     z = list(clickData[['points']][[1]][['z']]),
-                     mode = 'markers',
-                     marker = list(size=15, line=list(width=3)),
-                     name = 'Marker',
-                     type = 'scatter3d',
-                     text = 'Click point to remove annotation'
-                   )
-                   
-                   anno = list(list(
-                     x = clickData[['points']][[1]][['x']],
-                     y = clickData[['points']][[1]][['y']],
-                     z = clickData[['points']][[1]][['z']],
-                     font = list(color = 'black'),
-                     bgcolor = 'white',
-                     borderpad = 5,
-                     bordercolor = 'black',
-                     borderwidth = 1,
-                     captureevents = TRUE,
-                     ay = -50,
-                     arrowcolor = 'white',
-                     arrowwidth = 2,
-                     arrowhead = 0,
-                     text = 'Click here to annotate<br>(Click point to remove)'
-                   ))
-                   if(length(figure[['data']]) > 0){
-                     same_point_found = FALSE
-                     for (i in 1:length(figure[['data']])) {
-                       for (point in figure['data']) {
-                         #browser()
-                         if(unlist(point[[i]]['x']) == marker[['x']][[1]] & unlist(point[[i]]['y']) == marker[['y']][[1]] & unlist(point[[i]]['z']) == marker[['z']][[1]]){
-                           ANNO_TRACE_INDEX_OFFSET = 1
-                           if (val == 'mouse'){
-                             ANNO_TRACE_INDEX_OFFSET = 2
-                           }
-                           figure[['data']][i] <- NULL
-                           print(list('DEL. MARKER', i, figure[['layout']][['scene']][['annotations']]))
-                           if (length(figure[['layout']][['scene']][['annotations']]) >= (i-ANNO_TRACE_INDEX_OFFSET)){
-                             figure[['layout']][['scene']][['annotations']][i-ANNO_TRACE_INDEX_OFFSET] = NULL
-                           } 
-                           same_point_found = TRUE
-                         }}}
-                     if (same_point_found == FALSE){
-                       figure[['data']] <- append(figure[['data']], list(marker))
-                       figure[['layout']][['scene']][['annotations']] <- 
-                         append(figure[['layout']][['scene']][['annotations']], anno)
-                     }}
-                else{
+                 
+                 marker = list(
+                   x = list(clickData[['points']][[1]][['x']]),
+                   y = list(clickData[['points']][[1]][['y']]),
+                   z = list(clickData[['points']][[1]][['z']]),
+                   mode = 'markers',
+                   marker = list(size=15, line=list(width=3)),
+                   name = 'Marker',
+                   type = 'scatter3d',
+                   text = 'Click point to remove annotation'
+                 )
+                 
+                 anno = list(list(
+                   x = clickData[['points']][[1]][['x']],
+                   y = clickData[['points']][[1]][['y']],
+                   z = clickData[['points']][[1]][['z']],
+                   font = list(color = 'black'),
+                   bgcolor = 'white',
+                   borderpad = 5,
+                   bordercolor = 'black',
+                   borderwidth = 1,
+                   captureevents = TRUE,
+                   ay = -50,
+                   arrowcolor = 'white',
+                   arrowwidth = 2,
+                   arrowhead = 0,
+                   text = 'Click here to annotate<br>(Click point to remove)'
+                 ))
+                 if(length(figure[['data']]) > 0){
+                   same_point_found = FALSE
+                   for (i in 1:length(figure[['data']])) {
+                     for (point in figure['data']) {
+                       #browser()
+                       if(unlist(point[[i]]['x']) == marker[['x']][[1]] & unlist(point[[i]]['y']) == marker[['y']][[1]] & unlist(point[[i]]['z']) == marker[['z']][[1]]){
+                         ANNO_TRACE_INDEX_OFFSET = 1
+                         if (val == 'mouse'){
+                           ANNO_TRACE_INDEX_OFFSET = 2
+                         }
+                         figure[['data']][i] <- NULL
+                         print(list('DEL. MARKER', i, figure[['layout']][['scene']][['annotations']]))
+                         if (length(figure[['layout']][['scene']][['annotations']]) >= (i-ANNO_TRACE_INDEX_OFFSET)){
+                           figure[['layout']][['scene']][['annotations']][i-ANNO_TRACE_INDEX_OFFSET] = NULL
+                         } 
+                         same_point_found = TRUE
+                       }}}
+                   if (same_point_found == FALSE){
+                     figure[['data']] <- append(figure[['data']], list(marker))
+                     figure[['layout']][['scene']][['annotations']] <- 
+                       append(figure[['layout']][['scene']][['annotations']], anno)
+                   }}
+                 else{
                    figure[['data']] <- append(figure[['data']], list(marker))
                    figure[['layout']][['scene']][['annotations']] <- 
                      append(figure[['layout']][['scene']][['annotations']], anno)
-                }
+                 }
                }
-
+               
                cs = list()
                for (i in seq_along(colorrs)) {
                  cs[[i]] <- list(i/(length(colorrs)-1)-.20,colorrs[[i]])
@@ -431,10 +433,9 @@ app$callback(output = list(id = 'relayout-data', property = 'children'),
 
 
 if (appName != "") {
-  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
   app$run_server()}
-
 
 
 
