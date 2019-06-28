@@ -421,7 +421,7 @@ layout = [
             ),
             html.Div(
                 id="opportunity_indicators",
-                className="row",
+                className="row indicators",
                 children=[
                     indicator(
                         "#00cc96", "Won opportunities", "left_opportunities_indicator"
