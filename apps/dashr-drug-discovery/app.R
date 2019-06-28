@@ -17,7 +17,7 @@ app <- Dash$new()
 
 setwd(sprintf("/app/apps/%s", appName))
 
-df <- read.csv('/dashr-drug-discovery/data/small_molecule_drugbank.csv', header = TRUE, sep = ",")
+df <- read.csv('./data/small_molecule_drugbank.csv', header = TRUE, sep = ",")
 
 
 ###GRAPH PLOTLY OBJECTS###
