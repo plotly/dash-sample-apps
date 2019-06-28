@@ -27,6 +27,7 @@ if (appName != ""){
   setwd(sprintf("/app/apps/%s", appName))
 }
 
+#Following the python notation
 IMAGE_DATASETS <- c("mnist_3000", "cifar_gray_3000", "fashion_3000")
 WORD_EMBEDDINGS <- c("wikipedia_3000", "twitter_3000", "crawler_3000")
 
@@ -267,14 +268,10 @@ app$layout(
       htmlDiv(className='row, background', 
               
               children=list(dccMarkdown(
-                "The Scatter plot above is the result of running the t-SNE algorithm on the MNIST digits, resulting in a 3D visualization of the image dataset.
-
-For demo purposes, all the data were pre-generated using limited number of input parameters, a subset of 3000 samples, and displayed instantly.
-
-You can run the t-SNE algorithm with your custom dataset and label using a dropdown at the top right. To learn more about how the t-SNE Explorer works, click on 'Learn More' below.
-
-This is the R version of the t-SNE explorer. To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dashr-tsne)
-"),
+                "The Scatter plot above is the result of running the t-SNE algorithm on the MNIST digits, resulting in a 3D visualization of the image dataset.   
+For demo purposes, all the data were pre-generated using limited number of input parameters, a subset of 3000 samples, and displayed instantly.   
+You can run the t-SNE algorithm with your custom dataset and label using a dropdown at the top right. To learn more about how the t-SNE Explorer works, click on 'Learn More' below.  
+This is the R version of the t-SNE explorer. To view the source code, please visit the [GitHub Repository](https://github.com/plotly/dashr-tsne)"),
                 htmlButton('Learn More', id='learn-button', n_clicks=0)
                 
               )
