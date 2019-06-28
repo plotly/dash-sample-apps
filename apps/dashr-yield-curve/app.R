@@ -33,7 +33,7 @@ genMarksEmpty <- function(n){
 
 safemerge <- function(v1, v2){
   #for columns for vectors use mapply(safemerge, v1, v2)
-  if(is.na(v1)||is.null(v1)||rlang::is_empty(value)){
+  if(is.na(v1)||is.null(v1)||rlang::is_empty(v1)){
     return(v2)
   } else{
     return(v1)
@@ -44,7 +44,7 @@ safemerge <- function(v1, v2){
 
 safelabel <- function(v1){
   
-  if(is.na(v1)|| is.null(v1)||rlang::is_empty(value)){
+  if(is.na(v1)|| is.null(v1)||rlang::is_empty(v1)){
     return("3-month")
   } else{
     return('1-month')
@@ -237,7 +237,9 @@ app$layout(
 app$callback(
   output=list(id='bucket', property='children')
   ,
-  params = list(input(id='back', property='n_clicks'), input(id='next', property='n_clicks'))
+  params = list(
+    input(id='back', property='n_clicks'), 
+    input(id='next', property='n_clicks'))
   ,
   function(beta, nu)
   {
@@ -358,7 +360,15 @@ app$callback(
     }
     
     if(v %in% 0:4){
-      p <- plotly::add_trace(graph, type='scatter3d', mode='lines', x=x_snd, y=y_snd, z=z_snd, hoverinfo='x+y+z', line=list(color='#444444'))
+      p <- plotly::add_trace(
+        graph, 
+        type='scatter3d', 
+        mode='lines', 
+        x=x_snd, 
+        y=y_snd, 
+        z=z_snd, 
+        hoverinfo='x+y+z', 
+        line=list(color='#444444'))
      
       
     } else{
@@ -368,7 +378,11 @@ app$callback(
                            y=rev(labels), 
                            z=t(DM),  
                            hoverinfo='x+y+z', 
-                           lighting=list('ambient'=0.95, 'diffuse'=0.99, 'fresnel'=0.01, 'roughness'=0.01, 'specular'=0.01 ), 
+                           lighting=list('ambient'=0.95, 
+                                         'diffuse'=0.99, 
+                                         'fresnel'=0.01, 
+                                         'roughness'=0.01, 
+                                         'specular'=0.01 ), 
                            colorscale=list(list(0, 'rgb(230,245,254)'), list(0.4,'rgb(123,171,203)'), list(0.8, 'rgb(40,119,174)'), list(1, 'rgb(37,61,81)')), 
                            zmax=9.18, 
                            zmin=0, 
@@ -382,12 +396,13 @@ app$callback(
                               font=list(size=12, color='#CCCCCC'), 
                               margin=list(t=5, l=5, b=5, r=5), 
                               showlegend=F, hovermode='closest',
-                              scene=list(aspectmode='manual', 
-                                         aspectratio=list(x=2,y=5,z=1.5), 
-                                         camera=list(up=UPS[[v+1]], 
-                                                     center=CENTERS[[v+1]], 
-                                                     eye=EYES[[v+1]]),   
-                                         annotations=list(list(
+                              scene=list(
+                                aspectmode='manual', 
+                                aspectratio=list(x=2,y=5,z=1.5), 
+                                camera=list(up=UPS[[v+1]], 
+                                center=CENTERS[[v+1]], 
+                                eye=EYES[[v+1]]),   
+                                annotations=list(list(
                                 showarrow=F,
                                 y="2015-03-18",
                                 x="1-month",
