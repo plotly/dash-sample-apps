@@ -1,1 +1,1 @@
-web: gunicorn index:server
+web: gunicorn --pythonpath apps/dash-salesforce-crm index:server
