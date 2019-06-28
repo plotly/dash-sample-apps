@@ -24,7 +24,6 @@ library(plotly)
 #"Dict-List" of colors
 group_colors <- list('negative'='light blue', 'test'='green', 'positive'='red')
 
-
 returnOptions <- function(test_articles, study_data){ 
   studies <- (study_data[study_data$test_article==test_articles])$study_id %>% unique(.)
   foreach(i=studies) %do% list('label'=glue('{test_articles} (study: {i})'), 'value'=i)
@@ -49,7 +48,7 @@ default_study_data <- fread('assets/study.csv')
 default_studyid <- "AS100"
 default_study_input <- default_study_data[study_id==default_studyid]
 default_test_articles <- (default_study_data[default_study_data$group_type=='test'] )$test_article %>% unique(.)
-default_options <- lapply(default_test_articles, returnOptions,study_data=default_study_data))
+default_options <- lapply(default_test_articles, returnOptions,study_data=default_study_data)
 default_options <- default_options[[1]]
 app <- Dash$new()
 
