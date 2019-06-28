@@ -19,5 +19,3 @@ def demo_explanation(demo_mode):
             html.Div([dcc.Markdown(demo_md, className="markdown")]),
             style={"margin": "10px"},
         )
-
-
