@@ -1,5 +1,4 @@
 from textwrap import dedent
-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -98,7 +97,7 @@ def markdown_popup():
                                 
                                 The purpose of this demo is to explore alternative visualization methods for Object Detection. Therefore,
                                 the visualizations, predictions and videos are not generated in real time, but done beforehand. To read
-                                more about it, please visit the [project repo](https://github.com/plotly/dash-object-detection).
+                                more about it, please visit the [project repo](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-object-detection).
 
                                 """
                                 )
