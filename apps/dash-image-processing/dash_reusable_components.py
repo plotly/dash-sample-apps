@@ -10,7 +10,7 @@ import plotly.graph_objs as go
 from PIL import Image
 
 # Variables
-HTML_IMG_SRC_PARAMETERS = 'data:image/png;base64, '
+HTML_IMG_SRC_PARAMETERS = "data:image/png;base64, "
 
 
 # Display utility functions
@@ -23,7 +23,7 @@ def _omit(omitted_keys, d):
 
 
 # Image utility functions
-def pil_to_b64(im, enc_format='png', verbose=False, **kwargs):
+def pil_to_b64(im, enc_format="png", verbose=False, **kwargs):
     """
     Converts a PIL Image into base64 string for HTML displaying
     :param im: PIL Image object
@@ -44,7 +44,7 @@ def pil_to_b64(im, enc_format='png', verbose=False, **kwargs):
     return encoded
 
 
-def numpy_to_b64(np_array, enc_format='png', scalar=True, **kwargs):
+def numpy_to_b64(np_array, enc_format="png", scalar=True, **kwargs):
     """
     Converts a numpy image into base 64 string for HTML displaying
     :param np_array:
@@ -76,7 +76,7 @@ def b64_to_numpy(string, to_scalar=True):
     np_array = np.asarray(im)
 
     if to_scalar:
-        np_array = np_array / 255.
+        np_array = np_array / 255.0
 
     return np_array
 
@@ -103,12 +103,12 @@ def pil_to_bytes_string(im):
     size = im.size
     mode = im.mode
     im_bytes = im.tobytes()
-    encoding_string = base64.b64encode(im_bytes).decode('ascii')
+    encoding_string = base64.b64encode(im_bytes).decode("ascii")
 
     return encoding_string, size, mode
 
 
-def bytes_string_to_pil(encoding_string, size, mode='RGB'):
+def bytes_string_to_pil(encoding_string, size, mode="RGB"):
     """
     Converts the ASCII string representation of a PIL Image bytes into the original PIL Image object. This
     function is only recommended for its speed, and takes more space than any encoding. The following are
@@ -134,9 +134,11 @@ def bytes_string_to_pil(encoding_string, size, mode='RGB'):
         size = eval(size)
 
     if type(size) not in [tuple, list]:
-        raise ValueError("Incorrect Size type when trying to convert from bytes to PIL Image.")
+        raise ValueError(
+            "Incorrect Size type when trying to convert from bytes to PIL Image."
+        )
 
-    encoding_bytes = encoding_string.encode('ascii')
+    encoding_bytes = encoding_string.encode("ascii")
     decoded = base64.b64decode(encoding_bytes)
 
     im = Image.frombytes(mode, size, decoded)
@@ -148,17 +150,19 @@ def bytes_string_to_pil(encoding_string, size, mode='RGB'):
 def Card(children, **kwargs):
     return html.Section(
         children,
-        style=_merge({
-            'padding': 20,
-            'margin': 5,
-
-            # Remove possibility to select the text for better UX
-            'user-select': 'none',
-            '-moz-user-select': 'none',
-            '-webkit-user-select': 'none',
-            '-ms-user-select': 'none'
-        }, kwargs.get('style', {})),
-        **_omit(['style'], kwargs)
+        style=_merge(
+            {
+                "padding": 20,
+                "margin": 5,
+                # Remove possibility to select the text for better UX
+                "user-select": "none",
+                "-moz-user-select": "none",
+                "-webkit-user-select": "none",
+                "-ms-user-select": "none",
+            },
+            kwargs.get("style", {}),
+        ),
+        **_omit(["style"], kwargs),
     )
 
 
@@ -169,65 +173,54 @@ def NamedSlider(name, id, min, max, step, value, marks=None):
         marks = {i: i for i in range(min, max + 1, step)}
 
     return html.Div(
-        style={'margin': '25px 5px 30px 0px'},
+        style={"margin": "25px 5px 30px 0px"},
         children=[
             f"{name}:",
-
             html.Div(
-                style={'margin-left': '5px'},
+                style={"margin-left": "5px"},
                 children=dcc.Slider(
-                    id=id,
-                    min=min,
-                    max=max,
-                    marks=marks,
-                    step=step,
-                    value=value
-                )
-            )
-        ]
+                    id=id, min=min, max=max, marks=marks, step=step, value=value
+                ),
+            ),
+        ],
     )
 
 
 def NamedInlineRadioItems(name, short, options, val, **kwargs):
     return html.Div(
-        id=f'div-{short}',
-        style=_merge({
-            'display': 'block',
-            'margin-bottom': '5px',
-            'margin-top': '5px'
-        }, kwargs.get('style', {})),
+        id=f"div-{short}",
+        style=_merge(
+            {"display": "block", "margin-bottom": "5px", "margin-top": "5px"},
+            kwargs.get("style", {}),
+        ),
         children=[
-            f'{name}:',
+            f"{name}:",
             dcc.RadioItems(
-                id=f'radio-{short}',
+                id=f"radio-{short}",
                 options=options,
                 value=val,
                 labelStyle={
-                    'display': 'inline-block',
-                    'margin-right': '7px',
-                    'font-weight': 300
+                    "display": "inline-block",
+                    "margin-right": "7px",
+                    "font-weight": 300,
                 },
-                style={
-                    'display': 'inline-block',
-                    'margin-left': '7px'
-                }
-            )
+                style={"display": "inline-block", "margin-left": "7px"},
+            ),
         ],
-        **_omit(['style'], kwargs)
+        **_omit(["style"], kwargs),
     )
 
 
 # Custom Image Components
-def InteractiveImagePIL(image_id,
-                        image,
-                        enc_format='png',
-                        dragmode='select',
-                        verbose=False,
-                        **kwargs):
-    if enc_format == 'jpeg':
-        if image.mode == 'RGBA':
-            image = image.convert('RGB')
-        encoded_image = pil_to_b64(image, enc_format=enc_format, verbose=verbose, quality=80)
+def InteractiveImagePIL(
+    image_id, image, enc_format="png", dragmode="select", verbose=False, **kwargs
+):
+    if enc_format == "jpeg":
+        if image.mode == "RGBA":
+            image = image.convert("RGB")
+        encoded_image = pil_to_b64(
+            image, enc_format=enc_format, verbose=verbose, quality=80
+        )
     else:
         encoded_image = pil_to_b64(image, enc_format=enc_format, verbose=verbose)
 
@@ -236,70 +229,69 @@ def InteractiveImagePIL(image_id,
     return dcc.Graph(
         id=image_id,
         figure={
-            'data': [],
-            'layout': {
-                'autosize': True,
-                'paper_bgcolor': '#272a31',
-                'plot_bgcolor': '#272a31',
-                'margin': go.Margin(l=40, b=40, t=26, r=10),
-                'xaxis': {
-                    'range': (0, width),
-                    'scaleanchor': 'y',
-                    'scaleratio': 1,
-                    'color': 'white',
-                    'gridcolor': '#43454a',
-                    'tickwidth': 1,
+            "data": [],
+            "layout": {
+                "autosize": True,
+                "paper_bgcolor": "#272a31",
+                "plot_bgcolor": "#272a31",
+                "margin": go.Margin(l=40, b=40, t=26, r=10),
+                "xaxis": {
+                    "range": (0, width),
+                    "scaleanchor": "y",
+                    "scaleratio": 1,
+                    "color": "white",
+                    "gridcolor": "#43454a",
+                    "tickwidth": 1,
                 },
-                'yaxis': {
-                    'range': (0, height),
-                    'color': 'white',
-                    'gridcolor': '#43454a',
-                    'tickwidth': 1,
+                "yaxis": {
+                    "range": (0, height),
+                    "color": "white",
+                    "gridcolor": "#43454a",
+                    "tickwidth": 1,
                 },
-                'images': [{
-                    'xref': 'x',
-                    'yref': 'y',
-                    'x': 0,
-                    'y': 0,
-                    'yanchor': 'bottom',
-                    'sizing': 'stretch',
-                    'sizex': width,
-                    'sizey': height,
-                    'layer': 'below',
-                    'source': HTML_IMG_SRC_PARAMETERS + encoded_image,
-                }],
-                'dragmode': dragmode,
-            }
+                "images": [
+                    {
+                        "xref": "x",
+                        "yref": "y",
+                        "x": 0,
+                        "y": 0,
+                        "yanchor": "bottom",
+                        "sizing": "stretch",
+                        "sizex": width,
+                        "sizey": height,
+                        "layer": "below",
+                        "source": HTML_IMG_SRC_PARAMETERS + encoded_image,
+                    }
+                ],
+                "dragmode": dragmode,
+            },
         },
-
         config={
-            'modeBarButtonsToRemove': [
-                'sendDataToCloud',
-                'autoScale2d',
-                'toggleSpikelines',
-                'hoverClosestCartesian',
-                'hoverCompareCartesian',
-                'zoom2d'
+            "modeBarButtonsToRemove": [
+                "sendDataToCloud",
+                "autoScale2d",
+                "toggleSpikelines",
+                "hoverClosestCartesian",
+                "hoverCompareCartesian",
+                "zoom2d",
             ]
         },
-
-        **_omit(['style'], kwargs)
+        **_omit(["style"], kwargs),
     )
 
 
 def DisplayImagePIL(id, image, **kwargs):
-    encoded_image = pil_to_b64(image, enc_format='png')
+    encoded_image = pil_to_b64(image, enc_format="png")
 
     return html.Img(
-        id=f'img-{id}',
+        id=f"img-{id}",
         src=HTML_IMG_SRC_PARAMETERS + encoded_image,
-        width='100%',
-        **kwargs
+        width="100%",
+        **kwargs,
     )
 
 
 def CustomDropdown(**kwargs):
     return html.Div(
-        dcc.Dropdown(**kwargs),
-        style={'margin-top': '5px', 'margin-bottom': '5px'}
+        dcc.Dropdown(**kwargs), style={"margin-top": "5px", "margin-bottom": "5px"}
     )
