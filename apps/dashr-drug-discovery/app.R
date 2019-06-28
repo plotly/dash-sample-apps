@@ -1,25 +1,27 @@
-appName <- Sys.getenv("DASH_APP_NAME")
-if (appName != ""){
-  pathPrefix <- sprintf("/%s/", appName)
-
-  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-
-  setwd(sprintf("/app/apps/%s", appName))
-}
-
-library(dashR)
+library(dash)
 library(plotly)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 
-app <- Dash$new('drug-discovery', external_stylesheets = list("https://codepen.io/chriddyp/pen/bWLwgP.css"))
+appName <- Sys.getenv("DASH_APP_NAME")
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
+  
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  
+  setwd(sprintf("./app/apps/%s", appName))
+}
 
-df <- read.csv('./dashr-drug-discovery/data/small_molecule_drugbank.csv', header = TRUE, sep = ",")
+app <- Dash$new()
+
+setwd(sprintf("/app/apps/%s", appName))
+
+df <- read.csv('/dashr-drug-discovery/data/small_molecule_drugbank.csv', header = TRUE, sep = ",")
+
 
 ###GRAPH PLOTLY OBJECTS###
-BACKGROUND <- 'rgb(35,35,35)'
-COLORSCALE <- list(list(0, 'rgb(54,50,153)'), list(0.3, 'rgb(17,123,215)'), list(0.4, 'rgb(37,180,167)'),
+colorscale <- list(list(0, 'rgb(54,50,153)'), list(0.3, 'rgb(17,123,215)'), list(0.4, 'rgb(37,180,167)'),
                    list(0.5, 'rgb(134,191,118)'), list(0.65, 'rgb(249,210,41)'), list(1, 'rgb(244,236,21'))
 
 
@@ -38,7 +40,7 @@ subtitle2 <- htmlSpan(
 three_d <- plot_ly(df, x = ~PKA, z = ~LOGP, y = ~SOL, size = ~MW, text = df$NAME,
                    marker = list(color = ~MW, 
                                  sizeref= 2.5,
-                                 colorscale = COLORSCALE, 
+                                 colorscale = colorscale, 
                                  colorbar = list(title = 'Molecular<br>Weight'),
                                  showscale = TRUE, 
                                  symbol = 'circle', 
@@ -54,7 +56,7 @@ three_d <- plot_ly(df, x = ~PKA, z = ~LOGP, y = ~SOL, size = ~MW, text = df$NAME
 histo <- plot_ly(df, x=~PKA, y = ~LOGP, text = df$NAME,size = ~MW, type = 'histogram2d', colorscale = 'Greys', showscale = FALSE,
                  marker= list(color = ~MW,
                               sizeref= 2.5,
-                              colorscale = COLORSCALE, 
+                              colorscale = colorscale, 
                               showscale = TRUE,
                               colorbar = list(title = 'Molecular<br>Weight'),
                               symbol = 'circle', 
@@ -71,7 +73,7 @@ histo <- plot_ly(df, x=~PKA, y = ~LOGP, text = df$NAME,size = ~MW, type = 'histo
 scatter_graph <- plot_ly(df, x=~PKA, y=~LOGP, size = ~MW, text = df$NAME,
                          marker= list(color = ~MW,
                                       sizeref= 2.5,
-                                      colorscale = COLORSCALE,
+                                      colorscale = colorscale,
                                       colorbar = list(title = 'Molecular<br>Weight'),
                                       showscale = TRUE,
                                       symbol = 'circle', 
@@ -86,32 +88,31 @@ scatter_graph <- plot_ly(df, x=~PKA, y=~LOGP, size = ~MW, text = df$NAME,
 
 make_dash_table <- function(selection){
   #get subset of dataframe where the only the selected drug names are included
-  df_subset = df[is.element(df$NAME, selection),]
-  table = list()
+  df_subset <- df[is.element(df$NAME, selection),]
+  table <- list()
   for(i in 1:length(selection)){
     
-    table[[i]] <- htmlTr(children= list(
-      htmlTd(toString(df_subset$NAME[[i]])),
-      htmlTd(toString(df_subset$FORM[[i]])),
-      htmlTd(htmlTd(htmlImg(src=toString(df_subset$IMG_URL[[i]])))),
-      htmlTd(htmlA(href=toString(df_subset$PAGE[[i]]), children = "Datasheet")))
-    )
+    table <- lapply(1:length(selection), 
+                    function(i) { 
+                      htmlTr( 
+                        children= list( htmlTd(toString(df_subset$NAME[[i]])), 
+                                        htmlTd(toString(df_subset$FORM[[i]])), 
+                                        htmlTd(htmlTd(htmlImg(src=toString(df_subset$IMG_URL[[i]])))), 
+                                        htmlTd(htmlA(href=toString(df_subset$PAGE[[i]]), children = "Datasheet"))) 
+                        ) })
   }
   return(table)
 }
 #for dccDropDown options
 drug_names <- unique(df$NAME)
-drug_options <- list()
-for (i in 1:length(drug_names)){
-  drug_options[[i]] <- list(label = drug_names[i], value = drug_names[i])
-}
+drug_options <- lapply(unique(df$NAME), function(drug_name){ list(label = drug_name, value = drug_name) })
 
-FIGURE = three_d #initial figure
-STARTING_DRUG = 'Levobupivacaine'
+figure <- three_d #initial figure
+starting_drug <- 'Levobupivacaine'
 #get img url from csv, initalized with starting drug
-DRUG_DESCRIPTION = df$DESC[df$NAME == STARTING_DRUG]
+drug_description <- df$DESC[df$NAME == starting_drug]
 #get desc from csv, initalized with starting drug
-DRUG_IMG = df$IMG_URL[df$NAME == STARTING_DRUG]
+drug_img <- df$IMG_URL[df$NAME == starting_drug]
 
 app$layout(
   htmlDiv(list(
@@ -138,7 +139,7 @@ app$layout(
         dccDropdown(
           id = 'chem_dropdown',
           multi = TRUE,
-          value = STARTING_DRUG, 
+          value = starting_drug, 
           options = drug_options
         )
       ), className = "app__dropdown"),
@@ -158,25 +159,25 @@ app$layout(
           dccGraph(
             id = 'clickable-graph',
             hoverData = list(points = list(), range=NULL),
-            figure = FIGURE
+            figure = figure
           )
         ), className= 'two-thirds column'),
         htmlDiv(list(
           htmlImg(
-            src = DRUG_IMG , id='chem_img'
-            ),
+            src = drug_img , id='chem_img'
+          ),
           htmlA(
-            children=STARTING_DRUG, id='chem_name', href = "https://www.drugbank.ca/drugs/DB01002",target='_blank'
+            children=starting_drug, id='chem_name', href = "https://www.drugbank.ca/drugs/DB01002",target='_blank'
           ),
           htmlP(
-            children=DRUG_DESCRIPTION, id='chem_desc'
+            children=drug_description, id='chem_desc'
           )
         ),className = "chem__desc__container")
       ), className = "container card app__content bg-white"),
       htmlDiv(list(
         htmlTable(
           id = 'table-element',
-          children=make_dash_table(STARTING_DRUG),
+          children=make_dash_table(starting_drug),
           className = "table__container"
         )
       ), className = "container bg-white p-0")
@@ -185,22 +186,16 @@ app$layout(
 )
 
 
-#####CALL BACKS#####
+#####CALLBACKS#####
 
 #change graph due to radio button
 app$callback(
   output = list(id = 'clickable-graph', property = 'figure'),
   params = list(input(id = 'charts_radio', property = 'value')),
   display_graph <- function(plot_type){
-    if(plot_type == 'scatter3d'){
-      return(three_d)
-    }
-    if(plot_type == 'scatter'){
-      return(scatter_graph)
-    }
-    if(plot_type == 'histogram2d'){
-      return(histo)
-    }
+    switch(plot_type, 'scatter3d' = return(three_d), 
+           'scatter' = return(scatter_graph), 
+           'histogram2d' = return(histo), list() )
   }
 )
 
@@ -210,7 +205,7 @@ app$callback(
   params = list(input(id = 'clickable-graph', property = 'hoverData')),
   function(hover){
     info <- hover$points[[1]]$text
-    description = df$DESC[df$NAME == info]
+    description <- df$DESC[df$NAME == info]
     return(description)
   }
 )
@@ -221,8 +216,19 @@ app$callback(
   params = list(input(id = 'clickable-graph', property = 'hoverData')),
   function(hover){
     info <- hover$points[[1]]$text
-    img = df$IMG_URL[df$NAME == info]
+    img <- df$IMG_URL[df$NAME == info]
     return(img)
+  }
+)
+
+#callback for name URL
+app$callback(
+  output = list(id = 'chem_name', property = 'href'),
+  params = list(input(id = 'clickable-graph', property = 'hoverData')),
+  function(hover){
+    info <- hover$points[[1]]$text
+    page_url <- df$PAGE[df$NAME==info]
+    return(page_url)
   }
 )
 
@@ -232,28 +238,17 @@ app$callback(
   params = list(input(id = 'clickable-graph', property = 'hoverData')),
   function(hover){
     info <- hover$points[[1]]$text
-    page_url = df$PAGE[df$NAME==info]
-    return(page_url)
-  }
-)
-
-#update name
-app$callback(
-  output = list(id = 'chem_name', property = 'children'),
-  params = list(input(id = 'clickable-graph', property = 'hoverData')),
-  function(hover){
-    info <- hover$points[[1]]$text
-    name = df$NAME[df$NAME==info]
+    name <- df$NAME[df$NAME==info]
     return(name)
   }
 )
 
-#append to table
+#callback to append to table
 app$callback(
   output = list(id = 'table-element', property = 'children'),
   params = list(input(id = 'chem_dropdown', property ='value')),
   function(chem_dropdown_value){
-    table1 = make_dash_table(chem_dropdown_value)
+    table1 <- make_dash_table(chem_dropdown_value)
     return(table1)
   }
 )
