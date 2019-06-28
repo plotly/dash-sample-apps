@@ -5,8 +5,6 @@ library(dashTable)
 library(plotly)
 library(data.table)
 
-rm(list = ls())
-
 appName <- Sys.getenv("DASH_APP_NAME")
 
 if (!appName == "") {
@@ -503,7 +501,6 @@ app$layout(
   )
 )
 
-# TODO: implement the following 2 callbacks as a multi-output callback
 app$callback(
   output("region-select-dropdown-outer", "children"),
   list(input("state-select", "value")),
