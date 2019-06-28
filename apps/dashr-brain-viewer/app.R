@@ -392,7 +392,6 @@ app$callback(output = list(id = 'brain-graph', property = 'figure'),
                            ANNO_TRACE_INDEX_OFFSET = 2
                          }
                          figure[['data']][i] <- NULL
-                         print(list('DEL. MARKER', i, figure[['layout']][['scene']][['annotations']]))
                          if (length(figure[['layout']][['scene']][['annotations']]) >= (i-ANNO_TRACE_INDEX_OFFSET)){
                            figure[['layout']][['scene']][['annotations']][i-ANNO_TRACE_INDEX_OFFSET] = NULL
                          } 

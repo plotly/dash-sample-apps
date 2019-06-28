@@ -2,7 +2,7 @@
 
 ## About this App:
 
-An interactive mesh app that allows the user to maneouver between different brain images and choose points, change position, choose colour and analyze. 
+An interactive mesh app that allows the user to maneuver between different brain images and choose points, change position, choose colour and analyze. 
 
 Github Repo: [plotly/dash-sample-apps](https://github.com/plotly/dash-sample-apps/)
 
