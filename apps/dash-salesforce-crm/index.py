@@ -16,7 +16,7 @@ app.layout = html.Div(
             className="row header",
             children=[
                 html.Span("CRM App using Salesforce API", className="app-title"),
-                html.Img(src="static/logo.png", height="100%"),
+                html.Img(src="static/logo.png"),
             ],
         ),
         # tabs
