@@ -10,9 +10,6 @@ library(dashCoreComponents)
 library(dashHtmlComponents)
 library(glue)
 library(jsonlite)
-library(rlang)
-
-#setwd("~/Dash apps/dashr-yield-curve")
 
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
@@ -427,17 +424,12 @@ app$callback(
   }
 
 )
-
-
-
-
 #
 
 ###################################################
-#CALLBACK ENDS
+#CALLBACKW END
 ###################################################
- 
-#app$run_server()
+
 app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 
 
