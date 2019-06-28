@@ -47,8 +47,8 @@ There are two options when you are naming the folder:
 1. Make the folder have the _exact same_ name as the Dash app name.
 
 2. (Python apps only) Select any other name, but _update the file
-   [`apps_mapping.py`](apps_directory_mapping.py)_ with the Dash app
-   name and the folder name you have selected.
+[`apps_mapping.py`](apps_directory_mapping.py)_ with the Dash app
+name and the folder name you have selected.
 
 Navigate to the directory you just created, and write a small README
 that only contains the name of the app. Stage the README and commit it
@@ -77,7 +77,7 @@ appName <- Sys.getenv("DASH_APP_NAME")
 pathPrefix <- sprintf("/%s/", appName)
 
 Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
 ```
 
 at the head of your `app.R` file.
@@ -116,26 +116,26 @@ branch. Once you have passed your code review, you can merge your PR.
 ####  These files will still need to be present within the app folder.
 
 - **`Procfile`** gets run at root level for deployment
-    - Make sure python working directory is at the app level
-    - Ex. `web: gunicorn --pythonpath apps/{DASH_APP_NAME} app:server` 
+- Make sure python working directory is at the app level
+- Ex. `web: gunicorn --pythonpath apps/{DASH_APP_NAME} app:server` 
 - **`requirements.txt`**
-    - Install project dependecies in a virtual environment 
+- Install project dependecies in a virtual environment 
 - **`runtime.txt`**
-    - App python version
+- App python version
 
 #### Project boilerplate
 
-    apps
-    ├── ...
-    ├── {DASH_APP_NAME}         # app project level
-    │   ├── assets/             # all stylesheets and javascript files
-    │   ├── data/               # all data (csv, json, txt, etc)
-    │   ├── app.py              # dash application entry point
-    │   ├── Procfile            # used for heroku deployment (how to run app)
-    │   ├── requirements.txt    # project dependecies 
-    │   ├── runtime.txt         # used for heroku deployment (python version)
-    │   └── ...                 
-    └── ...
+apps
+├── ...
+├── {DASH_APP_NAME}         # app project level
+│   ├── assets/             # all stylesheets and javascript files
+│   ├── data/               # all data (csv, json, txt, etc)
+│   ├── app.py              # dash application entry point
+│   ├── Procfile            # used for heroku deployment (how to run app)
+│   ├── requirements.txt    # project dependecies 
+│   ├── runtime.txt         # used for heroku deployment (python version)
+│   └── ...                 
+└── ...
 
 #### Handle relative path
 
@@ -160,7 +160,7 @@ html.Img(src=app.get_asset_url('logo'))
 # get relative data folder
 DATA_PATH = pathlib.Path(__file__, "/data")      # /data
 with open(DATA_PATH.joinpath("data.csv")) as f:  # /data/data.csv
-    some_string = f.read()
+some_string = f.read()
 ```
 
 ## Developer Guide
