@@ -21,8 +21,8 @@ if (appName != ""){
 setwd(sprintf("/app/apps/%s", appName))
 
 app <- Dash$new()
-#source("points.R")
-#source("controls.R")
+source("points.R") #Ensure you are able to source these and run. 
+source("controls.R")
 
 # Create global chart template
 mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w'
