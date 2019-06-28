@@ -4,7 +4,7 @@
 This is a dash for R version of the multipage report app written in python
 
 ## Screenshots
-![assets/multipage-demo.gif](assets/multipage-demo.gif)
+![assets/multipage-demo.png](assets/multipage-demo.png)
 
 ## About this app:
 
