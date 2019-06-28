@@ -217,6 +217,7 @@ def replace_row(currency_pair, index, bid, ask):
         ),  # save index in hidden div
     ]
 
+
 # Display big numbers in readable format
 def human_format(num):
     try:
@@ -1469,6 +1470,7 @@ def update_time(n):
 @app.callback(Output("news", "children"), [Input("i_news", "n_intervals")])
 def update_news_div(n):
     return update_news()
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)
