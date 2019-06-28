@@ -4,7 +4,7 @@ import base64
 import datetime
 import requests
 import pathlib
-
+import math
 import pandas as pd
 import flask
 import dash
@@ -217,14 +217,31 @@ def replace_row(currency_pair, index, bid, ask):
         ),  # save index in hidden div
     ]
 
+# Display big numbers in readable format
+def human_format(num):
+    try:
+        num = float(num)
+        # If value is 0
+        if num == 0:
+            return 0
+        # Else value is a number
+        if num < 1000000:
+            return num
+        magnitude = int(math.log(num, 1000))
+        mantissa = str(int(num / (1000 ** magnitude)))
+        return mantissa + ["", "K", "M", "G", "T", "P"][magnitude]
+    except:
+        return num
+
 
 # Returns Top cell bar for header area
-def get_top_bar_cell(cellTitle, cellValue, color="white"):
+def get_top_bar_cell(cellTitle, cellValue):
     return html.Div(
         className="two-col",
         children=[
             html.P(className="p-top-bar", children=cellTitle),
-            html.P(id=cellTitle, children=cellValue),
+            html.P(id=cellTitle, className="display-none", children=cellValue),
+            html.P(children=human_format(cellValue)),
         ],
     )
 
@@ -233,14 +250,13 @@ def get_top_bar_cell(cellTitle, cellValue, color="white"):
 def get_top_bar(
     balance=50000, equity=50000, margin=0, fm=50000, m_level="%", open_pl=0
 ):
-    color_open_pl = get_color(float(open_pl), 0)
     return [
         get_top_bar_cell("Balance", balance),
         get_top_bar_cell("Equity", equity),
         get_top_bar_cell("Margin", margin),
         get_top_bar_cell("Free Margin", fm),
         get_top_bar_cell("Margin Level", m_level),
-        get_top_bar_cell("Open P/L", open_pl, color=color_open_pl),
+        get_top_bar_cell("Open P/L", open_pl),
     ]
 
 
@@ -1453,7 +1469,6 @@ def update_time(n):
 @app.callback(Output("news", "children"), [Input("i_news", "n_intervals")])
 def update_news_div(n):
     return update_news()
-
 
 if __name__ == "__main__":
     app.run_server(debug=True)
