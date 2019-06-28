@@ -8,11 +8,14 @@ library(plotly)
 library(random)
 library(data.table)
 
-
-#set.seed(12345)
-
-setwd("/Users/carlonescott/Documents/dashr-multipage-report")
-
+appName <- Sys.getenv("DASH_APP_NAME")
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
+  
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  setwd(sprintf("/app/apps/%s", appName))
+}
 
 supplyDemand <- fread("data/supplyDemand.csv")
 actualSeasonal <- fread("data/actualSeasonal.csv")
@@ -32,29 +35,11 @@ set.seed(7685)
 front_phone <- r_phone_numbers(5, use_hyphens = T)
 front_email <- r_email_addresses(5)
 
-
+# Generates and lorem ipsum script takes input number of paragraphs (n)
+# and a logical input (l) TRUE of FALSE  for start point of lorem TRUE being from 
+# the beginining
 LipP <- function(n, l){
-  # function generates and lorem ipsum script takes input number of paragraphs (n)
-  # and a logical input (l) TRUE of FALSE  for start point of lorem TRUE being from 
-  # the beginining 
   stri_rand_lipsum(nparagraphs = n, start_lipsum = l)
-}
-
-generate_table <- function(df, nrows=10)
-  # function generates a dash table from a supplied data frame (df)
-  #  and number of rows (nrows) to display 
-{
-  n <- min(nrows, nrow(df))
-  rows <- lapply(seq(1, n), function(i) {
-    htmlTr(children = lapply(as.character(df[i,]), htmlTd))
-  })
-  
-  header <- htmlTr(children = lapply(names(df), htmlTh))
-  
-  htmlTable(
-    children = c(list(header), rows)
-  )
-  
 }
 
 color_1 <- "#003399"
@@ -62,26 +47,21 @@ color_2 <- "#00ffff"
 color_3 <- "#002277"
 color_b <- "#F8F8FF"
 
-
-app <- Dash$new()
-
-
+app <- Dash$new(external_stylesheets = list("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",
+                                            "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
+                                            "https://codepen.io/bcd/pen/KQrXdb.css", 
+                                            "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"))
 app$layout(htmlDiv(list(
-  
   ## Page 1
-  
   htmlDiv(list(
-    
     htmlDiv(list(
-      
       htmlDiv(list(
         htmlDiv(list(
-          
           htmlDiv(list(
             htmlDiv(
               htmlImg(
-                src  =  "data/dash-logo-new.png",
-                className = "app__menu__img", style = list('height' = "30px")
+                src  =  "assets/dash-logo-new.png",
+                className = "", style = list('height' = "30px")
               )
             ),
             htmlDiv(list(
@@ -93,19 +73,14 @@ app$layout(htmlDiv(list(
         ), style = list('background-color' = color_1, 'margin-top' = "-38px", 'width' = "150%",
                         'margin-left' = "-38px", 'height' = "160px", 'padding' = "30px", 
                         'display' = "flex")),
-        
         htmlDiv(list(
           htmlH1(list(htmlSpan('03', style = list('opacity' = '0.8')), htmlSpan('19'))),
           htmlH6('Suscipit nibh vita')
         ), style = list('color' = "white", 'background-color' = color_2,
                         'margin-top' = "-38px", 'margin-right' = "-38px", 'width' = "50%", 
                         'height' = "160px", 'padding' = "30px"))
-        
       ), className="header", style = list('display' = "flex")),
-      
-      
       htmlDiv(list(
-        
         htmlDiv(list(
           htmlH6("Felecia Conroy", style = list('color' = "#003399")),
           htmlP(front_phone[1]),
@@ -135,9 +110,6 @@ app$layout(htmlDiv(list(
                       'width' = "250px", 'float' = "left", 'text-align' = "justify", 'padding-bottom' = "30px",
                       'horizontal-align' = "middle", 'padding-left' = "40px", 'padding-top' = "20px", 
                       'margin-left' = "15px", 'margin-top' = "30px")),
-      
-      
-      
       htmlDiv(list(
         htmlDiv(list(
           htmlH6('Viverra, imperdiet, praesent pellentesque', style = list('color' = "#003399")),
@@ -166,54 +138,42 @@ app$layout(htmlDiv(list(
         
       ), style = list('display' = "block", 'float' = "right", 'width' = "400px", 'margin-left' = "10px",
                       'margin-right' = "15px"))
-      
     ), className = "subpage")
   ), className = "page"),
   
   ## Page 2
   htmlDiv(list(
-    
     htmlDiv(list(
-      
-      # Heading ... creat function
       htmlDiv(list(
         htmlH1('LOREM IPSUM')
       ), style = list('background-color' = color_1, 'color' = "white", 'width' = "200px",
                       'height' = "160px", 'padding' = "20px", 'margin-left' = "50px",
                       'margin-top' = "-38px")),  #'float' = "left"
-      
       htmlDiv(list(
         htmlP(LipP(2, F), style = list('margin-top' = "40px")),
         htmlP(LipP(1, F), style = list('margin-top' = "20px")),
         htmlP(LipP(1, F), style = list('margin-top' = "20px"))
-      ), style = list('margin-left' = "80px", "five columns")), 
-      
+      ), style = list('margin-left' = "80px")), 
       htmlDiv(list(
         htmlP(LipP(1, F), style = list('margin-top' = "40px")),
         htmlP(LipP(2, F), style = list('margin-top' = "20px"))
-      ), style = list('left-margin' = "30px", "five columns"))
-      
+      ), style = list('margin-left' = "80px"))
     ), className = "subpage")
   ), className = "page"),
   
   ## Page 3
-  
   htmlDiv(list(
     htmlDiv(list(
-      
-      # Heading
       htmlDiv(list(
         htmlH1('LOREM IPSUM')
       ), style = list('background-color' = color_2, 'color' = "white", 'width' = "200px",
                       'height' = "160px", 'padding' = "20px", 'margin-left' = "50px",
                       'margin-top' = "-38px")),
-      
       htmlDiv(list(
         htmlDiv(list(
           htmlH6('Mauris feugiat quis lobortis nisl sed', style = list('color' = color_1, 'margin-top' = "40px")),
           htmlP(LipP(1, T), style = list('margin-top' = "15px"))
         )),
-        
         htmlDiv(list(
           htmlDiv(list(
             htmlP(LipP(1, F), style = list('margin-left' = "20px"))
@@ -232,22 +192,16 @@ app$layout(htmlDiv(list(
                           "border-left-width" = "7px"))
         ), style = list('background-color' = "#F8F8FF", 'padding-top' = "10px", 
                         'padding-bottom' = "10px", 'padding-right' = "20px")),
-        
         htmlDiv(list(
           htmlP(LipP(1, T), style = list('margin-top' = "20px"))
         ))
-        
       ), className = "seven columns", style = list('margin-left' = "250px", 'margin-bottom' = "15px"))
-      
     ), className = "subpage")
   ), className = "page"),
   
   ## Page 4
-  
   htmlDiv(list(
     htmlDiv(list(
-      
-      ## Page 4 Exhibit 1
       htmlDiv(list(
         htmlDiv(list(
           htmlStrong("Ultricies fusce vel, ad ultricies enim, at, egestas", 
@@ -255,14 +209,12 @@ app$layout(htmlDiv(list(
           htmlP("Quis mauris dolor amet cubilia mattis, finibus magnis lacus",
                 style = list('font-size' = "11"))
         ), className = "title six columns"),
-        
         htmlDiv(list(
           htmlStrong("Feugiat justo, aliquam feugiat justo suspendisse leo blandit", 
                      style = list('color' = color_1)),
           htmlP("Praesent, morbi, rhoncus habitant at maximus mauris",
                 style = list('font-size' = "11"))
         ), className = "title six columns")
-        
       ), className = "thirdPage first row", style = list('position' = 'relative', 'margin-top' = '40px', 
                                                          'margin-left' = '30px')),
       htmlDiv(list(
@@ -350,7 +302,6 @@ app$layout(htmlDiv(list(
               )
             ))
         ), className = "six columns", style = list('height' = "250px")),
-        
         htmlDiv(list(
           dccGraph(
             figure = list(
@@ -399,12 +350,12 @@ app$layout(htmlDiv(list(
                 )
               ),
               layout = list(
-                'barmode' =  'relative', 
-                'dragmode' = "pan", 
-                'height' = 250, 
-                'width' = 310,
-                'hovermode' = "closest", 
-                'legend' = list(
+                barmode =  'relative', 
+                dragmode = "pan", 
+                height = 250, 
+                width = 310,
+                hovermode = "closest", 
+                legend = list(
                   x = -0.06413301662707839, 
                   y = -0.05555227415846632, 
                   bgcolor = "rgba(255, 255, 255, 0)", 
@@ -413,7 +364,7 @@ app$layout(htmlDiv(list(
                   orientation = "h", 
                   traceorder = "reversed"
                 ), 
-                'margin' = list(
+                margin = list(
                   r = 10, 
                   t = 5, 
                   b = -1, 
@@ -473,18 +424,15 @@ app$layout(htmlDiv(list(
                 )
               )
             )
-            
           )
         ), className = "two columns", style = list('height' = "250px"))
       ), className="thirdPage row", style = list("padding-top" = "20px", 'margin-left' = '30px')),
-      
       htmlDiv(list(
         htmlP("Bibendum tellus phasellus turpis sapien:"),
         htmlP(LipP(1, F), style = list('border-left' = "5px", 'border-left-style' = "solid", 'padding' = "30px",
                                        "border-left-color" = color_1, 'padding-left' = "20px", 
                                        "border-left-width" = "7px", 'background-color' = color_b))
       ), style = list('float' = "left", 'margin-top' = "20px", 'margin-left' = "30px"), className = "eleven columns"),
-      
       htmlDiv(list(
         htmlDiv(list(
           htmlStrong("Ultricies fusce vel, ad ultricies enim, at, egestas", 
@@ -492,16 +440,13 @@ app$layout(htmlDiv(list(
           htmlP("Quis mauris dolor amet cubilia mattis, finibus magnis lacus",
                 style = list('font-size' = "11"))
         ), className = "title six columns"),
-        
         htmlDiv(list(
           htmlStrong("Feugiat justo, aliquam feugiat justo suspendisse leo blandit", 
                      style = list('color' = color_1)),
           htmlP("Praesent, morbi, rhoncus habitant at maximus mauris",
                 style = list('font-size' = "11"))
         ), className = "title six columns")
-        
       ), className = "thirdPage first row", style = list('position' = 'relative', 'top' = '20px', 'margin-left' = '30px')),
-      
       htmlDiv(list(
         htmlDiv(list(
           dccGraph(
@@ -613,10 +558,8 @@ app$layout(htmlDiv(list(
               )
             )
           )
-          
         ), className = "six columns", style = list('height' = "250px")),
-        
-        htmlImg(src = "data/IJsVT9P.png", 
+        htmlImg(src = "assets/IJsVT9P.png", 
                 className = "exhibit six columns", 
                 style = list('margin-top' = "20px"))
       ), className="", style = list("padding-top" = "20px", 'margin-left' = '30px'))
@@ -624,12 +567,9 @@ app$layout(htmlDiv(list(
   ), className = "page"),
   
   # Page 5
-  
   htmlDiv(list(
     htmlDiv(list(
-      
       htmlDiv(list(
-        
         htmlDiv(list(
           htmlP(LipP(1, F))
         ), style = list('border-left' = "5px", 'border-left-style' = "solid",
@@ -647,11 +587,8 @@ app$layout(htmlDiv(list(
                         "border-left-width" = "7px", 'margin-top' = "20px"))
       ), style = list('background-color' = color_b, 'margin-left' = "25px", 'margin-top' = "40px"
       ), className = "eleven columns row"),
-      
-      
       htmlP(LipP(1, F), style = list('margin-left' = "5px", 'margin-top' = "20px", 'margin-bottom' = "20px"), 
             className = "twelve columns row"),
-      
       htmlDiv(list(
         htmlDiv(list(
           htmlStrong("Ultricies fusce vel, ad ultricies enim, at, egestas", 
@@ -659,7 +596,6 @@ app$layout(htmlDiv(list(
           htmlP("Quis mauris dolor amet cubilia mattis, finibus magnis lacus",
                 style = list('font-size' = "11"))
         ), className = "title six columns"),
-        
         htmlDiv(list(
           htmlStrong("Feugiat justo, aliquam feugiat justo suspendisse leo blandit", 
                      style = list('color' = color_1)),
@@ -670,7 +606,6 @@ app$layout(htmlDiv(list(
                                                          'margin-bottom' = "40px")),
       
       htmlDiv(list(
-        
         htmlDiv(list(
           dccGraph(
             figure = list(
@@ -736,10 +671,8 @@ app$layout(htmlDiv(list(
                 )
               )
             )
-            
           )
         ), className = "six columns", style = list('height' = "250px")),
-        
         htmlDiv(list(
           dccGraph(
             figure = list(
@@ -846,11 +779,8 @@ app$layout(htmlDiv(list(
   ), className = "page"),
   
   # Page 6
-  
   htmlDiv(list(
-    
     htmlDiv(list(
-      
       htmlDiv(list(
         htmlP(LipP(1, F), style = list('float' = "left"), 
               className = "six columns"),
@@ -862,11 +792,10 @@ app$layout(htmlDiv(list(
         htmlStrong("Vehicula elementum congue penatibus massa, eu sed", className = "eleven columns",
                    style = list('color' = color_1)),
         htmlDiv(
-          htmlImg(src = "data/DBkxRT2.png", 
+          htmlImg(src = "assets/DBkxRT2.png", 
                   style = list('margin-top' = "20px", 'height' = "250px"))
         )
       ), className = "eleven columns"),
-      
       htmlDiv(list(
         htmlStrong("At velit pharetra ac fusce sit dictum pellentesque", className = "eleven columns", 
                    style = list('color' = color_1)),
@@ -991,11 +920,8 @@ app$layout(htmlDiv(list(
   ), className = "page"),
   
   # Page 7
-  
   htmlDiv(list(
-    
     htmlDiv(list(
-      
       htmlDiv(list(
         htmlDiv(list(
           htmlP(LipP(1, F), style = list('float' = "left")),
@@ -1004,12 +930,10 @@ app$layout(htmlDiv(list(
           htmlP(LipP(1, F), style = list('float' = "left"))
         ), className = "seven columns", style = list('position' = 'relative', 'margin-top' = '40px',
                                                      'margin-left' = "5px")),
-        
         htmlDiv(list(
           htmlDiv(list(
             htmlStrong("Vehicula elementum congue penatibus massa, eu sed sed dolor", style = list('color' = color_1)),
             htmlDiv(list(
-              
               dccGraph(figure=list(
                 data=list(
                   list(
@@ -1070,10 +994,8 @@ app$layout(htmlDiv(list(
               ))
             ))
           ), style = list('margin-top' = "5px", height="250")),
-          
           htmlDiv(list(
             htmlStrong("At velit pharetra ac fusce sit dictum pellentesque, dictumst", style = list('color' = color_1)),
-            
             htmlDiv(
               dccGraph(
                 figure = list(
@@ -1186,25 +1108,19 @@ app$layout(htmlDiv(list(
                   )
                 ))
             )
-            
           ), style = list('margin-top' = "30px"))
-          
         ), className="eight columns", style = list('padding' = "30px", 'margin-bottom' = "30px", 
                                                    'position' = 'relative', 'margin-top' = '10px', 
                                                    'margin-left' = "30px", 'border-left' = "10px",
                                                    'border-left-style' = "solid", 'border-left-color' = color_b,
                                                    'border-left-width' = "2px"))
       ), style = list('display' = "flex"))
-      
     ), className = "subpage")
   ), className = "page"),
   
   # Page 8
-  
   htmlDiv(list(
-    
     htmlDiv(list(
-      
       htmlDiv(list(
         htmlDiv(list(
           htmlH6('Aliquet ut mauris nostra habitant egestas, massa vulputate. Magnis nullam leo eget ullamcorper lacus congue laoreet ex sed', 
@@ -1212,7 +1128,6 @@ app$layout(htmlDiv(list(
           htmlP(LipP(1, F), style = list('margin-top' = "15px")),
           htmlP(LipP(1, F), style = list('margin-top' = "15px", 'color' = color_1))
         )),
-        
         htmlDiv(list(
           htmlDiv(list(
             htmlP(LipP(1, F), style = list('margin-left' = "20px"))
@@ -1231,38 +1146,28 @@ app$layout(htmlDiv(list(
                           "border-left-width" = "7px"))
         ), style = list('background-color' = "#F8F8FF", 'padding-top' = "10px", 
                         'padding-bottom' = "10px", 'padding-right' = "20px")),
-        
         htmlDiv(list(
           htmlP(LipP(1, F), style = list('margin-top' = "20px"))
         ))
-        
       ), className = "nine columns", style = list('margin-left' = "100px"))
-      
     ), className = "subpage")
-    
   ), style = list('margin-top' = "50px"), className = "page"),
   
   # Page 9
-  
   htmlDiv(list(
-    
     htmlDiv(list(
-      
       htmlDiv(list(
-        
         htmlDiv(list(
           htmlP("Aenean felis et libero nullam pretium quis est in sit. Commodo nec ante aenean a. Commodo at facilisis vestibulum cursus elementum nascetur et, placerat class aliquam convallis porttitor accumsan. Ultricies sed laoreet eleifend maximus venenatis", 
                 style = list('color' = color_1)),
           htmlStrong("Congue nisl iaculis interdum cubilia maximus"),
-          htmlImg(src = "data/wX5mQYn.png", 
+          htmlImg(src = "assets/wX5mQYn.png", 
                   className = "exhibit eleven columns", style = list('height' = "250", 'margin-top' = "20px"))
         ), style = list('float' = "left")),
-        
         htmlDiv(list(
           htmlP("Id nulla sollicitudin taciti ac tempus amet ligula accumsan. Elementum, nullam dui ligula ut. Adipiscing sed ultricies ut vitae augue etiam nostra nibh.", 
                 style = list(color = color_1)),
           htmlStrong("Convallis et eu habitant leo leo luctus venenatis"),
-          
           htmlDiv(list(
             dccGraph(
               figure = list(
@@ -1374,22 +1279,17 @@ app$layout(htmlDiv(list(
               ))
           ), style = list('margin-top' = "30px"))
         ), style = list('margin-top' = "50px", 'float' = "left"))
-        
       ), style = list('margin-left' = "30px", 'margin-top' = "40px", 'margin-left' = "30px"), className = "exibit six columns"),
-      
       htmlDiv(list(
         htmlP(LipP(1, F)),
         htmlP(LipP(1, F)),
         htmlP(LipP(1, F)),
         htmlP(LipP(1, F))
       ), className = "five columns", style = list('margin-top' = "40px"))
-      
     ), style =  list('display' = "flex", 'flex-wrop' = "wrap"),  className = "subpage")
-    
   ), className = "page"),
   
   # Page 10
-  
   htmlDiv(list(
     htmlDiv(list(
       htmlDiv(list(
@@ -1515,7 +1415,6 @@ app$layout(htmlDiv(list(
             )
           ))
         ), className = "thirdPage first row", style = list('margin-top' = '0px')),
-        
         htmlDiv(list(
           htmlStrong("Risus amet quam, eget, lacus, orci, dui facilisis dolor sodales arcu facilisi consectetur",
                      style = list('color' = color_1)),
@@ -1611,7 +1510,6 @@ app$layout(htmlDiv(list(
           ))
         ), className = "thirdPage first row", style = list('margin-top' = '20px'))
       ), style = list('margin-top' = '40px')),
-      
       htmlDiv(list(
         htmlDiv(list(
           htmlStrong("Porttitor felis eget nibh quam duis et at a massa varius.",
@@ -1670,7 +1568,6 @@ app$layout(htmlDiv(list(
             )
           ))
         ), className = "six columns"),
-        
         htmlDiv(list(
           htmlStrong("Arcu aenean litora quam dignissim penatibus sem ultrices",
                      style = list('color' = color_1)),
@@ -1769,11 +1666,8 @@ app$layout(htmlDiv(list(
   ), className = "page"),
   
   # Page 11
-  
   htmlDiv(list(
-    
     htmlDiv(list(
-      
       htmlDiv(list(
         htmlH6('In tempor mauris non, maximus non odio. Lacus mi arcu, ut parturient ac sed curae sed litora amet quam, massa purus condimentum', 
                style = list('color' = color_1, 'margin-top' = "40px")),
@@ -1781,7 +1675,6 @@ app$layout(htmlDiv(list(
         htmlP(LipP(1, F), style = list('margin-top' = "10px", 'color' = color_1)),
         htmlP(LipP(1, F), style = list('margin-top' = "10px"))
       ), className = "eleven columns"),
-      
       htmlDiv(list(
         htmlP('Non amet tempor pellentesque facilisis velit, dui nulla hendrerit sociosqu fusce', 
               style = list('color' = color_1, 'margin-top' = "10px")),
@@ -1884,31 +1777,27 @@ app$layout(htmlDiv(list(
           )
         )
       ), className = "eleven columns")
-      
     ), className = "subpage")
-    
   ), style = list('margin-top' = "50px"), className = "page"),
   
   # Page 12
-  
   htmlDiv(list(
-    
     htmlDiv(list(
-      
       htmlDiv(list(
         htmlH6("Erat cras porta inceptos nibh sociis justo. Natoque mauris nunc etiam, dis quam, tempor consectetur ac", 
                style = list('color' = color_1, 'margin-top' = "40px")),
-        htmlP(LipP(1, F), style = list('margin-top' = "10px")),
-        
-        htmlImg(src = "data/c7PM25P.png", className = "eleven columns")
+        htmlP(LipP(1, F), style = list('margin-top' = "30px")),
+        htmlImg(src = "assets/c7PM25P.png", style = list('margin-top' = "30px"))
       ), className = "eleven columns")
-      
     ), className = "subpage")
-    
   ), style = list('margin-top' = "50px"), className = "page")
-  
 )))
 
-app$run_server(debug = T)
+if (appName != "") {
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+} else {
+  app$run_server(debug = T)
+}
+
 
 
