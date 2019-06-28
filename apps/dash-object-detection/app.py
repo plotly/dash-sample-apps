@@ -10,7 +10,6 @@ import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
 import pathlib
 
-DEBUG = True
 FRAMERATE = 24.0
 
 app = dash.Dash(
@@ -57,7 +56,7 @@ def load_data(path):
         "root_round": root_round,
     }
 
-    if DEBUG:
+    if True:
         print(f"{path} loaded.")
 
     return data_dict
@@ -113,7 +112,6 @@ def markdown_popup():
 
 
 # Main App
-
 app.layout = html.Div(
     children=[
         html.Div(id="top-bar", className="row"),
@@ -125,7 +123,8 @@ app.layout = html.Div(
                     className="eight columns",
                     children=[
                         html.Img(
-                            id="logo-mobile", src=app.get_asset_url("plotly_logo.png")
+                            id="logo-mobile",
+                            src=app.get_asset_url("dash-logo-stripe.png"),
                         ),
                         html.Div(
                             id="header-section",
@@ -289,7 +288,8 @@ app.layout = html.Div(
                         html.Div(
                             className="img-container",
                             children=html.Img(
-                                id="logo-web", src=app.get_asset_url("plotly_logo.png")
+                                id="logo-web",
+                                src=app.get_asset_url("dash-logo-stripe.png"),
                             ),
                         ),
                         html.Div(id="div-visual-mode"),
@@ -397,8 +397,7 @@ def update_output(dropdown_value):
                 ]
             ),
         ]
-    else:
-        return []
+    return []
 
 
 @app.callback(
@@ -419,8 +418,7 @@ def update_detection_mode(value):
                 ]
             ),
         ]
-    else:
-        return []
+    return []
 
 
 # Updating Figures
@@ -711,4 +709,4 @@ def update_heatmap_confidence(n, current_time, footage, threshold):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(dev_tools_hot_reload=False, debug=DEBUG)
+    app.run_server(dev_tools_hot_reload=False, debug=True)
