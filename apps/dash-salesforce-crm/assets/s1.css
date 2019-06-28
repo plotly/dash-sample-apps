@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f9f9f9;
-  font-family: 'asap', serif;
+  font-family: 'Asap', sans-serif;
   color: #506784;
   -webkit-user-select: none;
   /* Chrome all / Safari all */
@@ -125,7 +125,15 @@ table {
   overflow: scroll;
 }
 
-@media (min-width: 960px) {
+.indicators {
+  display: flex;
+}
+
+.indicator {
+  flex: 1;
+}
+
+@media (min-width: 854px) {
   .tab {
     border-left: none !important;
     border-right: none !important;
@@ -169,15 +177,10 @@ table {
     -ms-grid-column: 3;
     -ms-grid-column-span: 4;
     grid-column: 3 / 7;
-    display: flex;
   }
 
   #submit_new_lead {
     padding: 10px
-  }
-
-  .indicator {
-    flex: 1;
   }
 
   #leads_source_container {
@@ -238,7 +241,6 @@ table {
     -ms-grid-column: 3;
     -ms-grid-column-span: 4;
     grid-column: 3 / 7;
-    display: flex;
   }
 
   #opportunity_heatmap {
@@ -298,7 +300,6 @@ table {
     -ms-grid-column: 3;
     -ms-grid-column-span: 4;
     grid-column: 3 / 7;
-    display: flex;
   }
 
   #cases_reasons_container {
