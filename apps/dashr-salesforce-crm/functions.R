@@ -1,4 +1,4 @@
-library(dashR)
+library(dash)
 library(dashHtmlComponents)
 library(dashCoreComponents)
 library(dplyr)

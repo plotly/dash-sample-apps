@@ -19,12 +19,14 @@ source('opportunties.R')
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
   pathPrefix <- sprintf("/%s/", appName)
-  
+
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  
+
   setwd(sprintf("/app/apps/%s", appName))
 }
+
+app = Dash$new()
 
 app$layout(htmlDiv(
   list(
@@ -34,7 +36,7 @@ app$layout(htmlDiv(
       htmlSpan("CRM App using Salesforce API", className='app-title'),
       
       htmlDiv(
-        htmlImg(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png",height="100%")
+        htmlImg(src="/assets/dash-logo.png" ,height="100%")
         ,style=list("float"="right","height"="100%"))
     ),
     className="row header"
@@ -76,8 +78,9 @@ app$callback(output=list(id="tab_content", property="children"),
              })
 
 if (appName != "") {
-  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
   app$run_server()}
+
 
 
