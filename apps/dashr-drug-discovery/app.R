@@ -118,7 +118,7 @@ app$layout(
   htmlDiv(list(
     htmlDiv(list(
       #Dash icon
-      htmlImg(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png",
+      htmlImg(src="https://dash.plot.ly/assets/images/logo.png",
               style = list(height = '60px', float ='left', position = 'relative', right = '10px'))
     ),className = 'app-banner'),
     
