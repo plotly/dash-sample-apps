@@ -4,6 +4,8 @@ import pandas as pd
 from skimage import io, data, transform
 from time import sleep
 
+from demo_utils import demo_explanation
+demo_mode = True
 
 import dash
 from dash.exceptions import PreventUpdate
@@ -27,6 +29,8 @@ import pathlib
 
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
+
+
 
 
 def tile_images(list_of_images, n_rows, n_cols):
@@ -124,12 +128,18 @@ app.layout = html.Div(
                 instructions(),
                 html.Div(
                     [
-                        html.Button("LEARN MORE", className="button_instruction"),
+                        html.Button("LEARN MORE", className="button_instruction", id="learn-more-button"),
+                        
                         html.Button(
                             "Upload demo data", id="demo", className="button_demo"
-                        ),
+                        )
+                        
                     ],
                     className="mobile_buttons",
+                ),
+                html.Div(
+                    # Empty child function for the callback
+                    html.Div(id="demo-explanation", children=[])
                 ),
                 html.Div(
                     [
@@ -437,6 +447,28 @@ def upload_content(
         return tmp
     else:
         raise PreventUpdate
+
+
+@app.callback(
+    [Output("demo-explanation", "children"), Output("learn-more-button", "children")],
+    [Input("learn-more-button", "n_clicks")],
+)
+def learn_more(n_clicks):
+    if n_clicks == None:
+        n_clicks = 0
+    if (n_clicks % 2) == 1:
+        n_clicks += 1
+        return (
+            html.Div(
+                className="demo_container",
+                style={"margin-bottom": "30px"},
+                children=[demo_explanation(demo_mode)],
+            ),
+            "Close",
+        )
+    else:
+        n_clicks += 1
+        return (html.Div(), "Learn More")
 
 
 if __name__ == "__main__":
