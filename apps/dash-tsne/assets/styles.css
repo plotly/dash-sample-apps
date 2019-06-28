@@ -92,7 +92,7 @@ body {
   color: #6c7182;
 }
 
-#learn-more-button > div > div:nth-child(2) > div > p:nth-child(11) > img {
+#demo-explanation > div > div:nth-child(2) > div > p:nth-child(11) > img {
   width: 40%;
 }
 #graph-3d-plot-tsne > div > div > svg:nth-child(1) {
@@ -137,7 +137,7 @@ body {
   fill: #f2f3f4 !important;
 }
 
-#learn-more-button #button {
+#demo-explanation #learn-more-button {
   text-transform: none;
   font-size: 14px;
   font-weight: 400;
@@ -187,20 +187,18 @@ body {
     margin: 0;
   }
 
-  #learn-more-button {
+  #demo-explanation {
     text-align: center;
     padding-right: 0 !important;
   }
 
-  #learn-more-button > div > div:nth-child(1) {
+  #demo-explanation > div > div:nth-child(1) {
     padding-right: 7%;
   }
-
-  #learn-more-button > div > div:nth-child(2) {
+  #demo-explanation > div:nth-child(2) {
     padding-right: 15%;
   }
-
-  #learn-more-button > div > div:nth-child(3) {
+  #demo-explanation > div > div:nth-child(3) {
     padding-right: 15%;
   }
 }
