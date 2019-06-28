@@ -8,7 +8,6 @@ library(data.table)
 library(plotly)
 library(VGAM)
 
-
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
   pathPrefix <- sprintf("/%s/", appName)
@@ -18,7 +17,6 @@ if (appName != ""){
 
   setwd(sprintf("/app/apps/%s", appName))
 }
-
 
 DB_FILE = "db/wind-data.db" 
 
