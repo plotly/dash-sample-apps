@@ -27,7 +27,7 @@ dash-object-detection\Scripts\activate
 source venv/bin/activate
 ```
 
-Clone the git repository, then install the requirements with pip
+Clone the git repository, and install the requirements with pip
 ```
 git clone https://github.com/plotly/dash-sample-apps.git
 cd dash-sample-apps/apps/dash-object-detection
