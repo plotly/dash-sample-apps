@@ -1,3 +1,4 @@
+
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
@@ -11,10 +12,10 @@ library(VGAM)
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
   pathPrefix <- sprintf("/%s/", appName)
-
+  
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-
+  
   setwd(sprintf("/app/apps/%s", appName))
 }
 
@@ -114,10 +115,10 @@ app$layout(htmlDiv(
                       step = 1,
                       value = 20,
                       updatemode = "drag",
-                      marks <- as.list(
+                      marks = as.list(
                         setNames(
-                          seq(from = 20, to = 60, by = 20),
-                          seq(from = 20, to = 60, by = 20)
+                          as.character(c(20, 40, 60)),
+                          as.character(c(20, 40, 60))
                         )
                       )
                     )
@@ -146,7 +147,7 @@ app$layout(htmlDiv(
                     layout = list(
                       plot_bgcolor = app_color[["graph_bg"]],
                       paper_bgcolor = app_color[["graph_bg"]]
-                      )
+                    )
                   )
                 )
               ), className = "graph__container first"
@@ -188,7 +189,8 @@ app$callback(
     total_time <- get_current_time()
     df <- get_wind_data((total_time - 200), total_time)
     
-    fig <- plot_ly(df, y = df$Speed, 
+    fig <- plot_ly(df, 
+                   y = df$Speed, 
                    type = "scatter", 
                    mode = "lines",
                    line = list(color = "#42C4F7"), 
@@ -302,120 +304,133 @@ app$callback(
   # Generate the histogram figure
   function(interval, wind_speed_figure, slider_value, auto_state) {
     wind_val <- unlist(wind_speed_figure[['data']][[1]][['y']])
-    
-    if("Auto" %in% auto_state){
-      bin_val <- hist(
-        wind_val,
-        breaks = round(max(unlist(wind_val)))
-      )
+    if(is.null(wind_val)){
+      # This empty ploty object is used to elliminate an error during initialization 
+      return(
+        fig <- plot_ly(
+          type = "scatter",
+          mode = "lines",
+          height = 350
+        ) %>% 
+          layout(
+            plot_bgcolor = app_color[["graph_bg"]],
+            paper_bgcolor=app_color[["graph_bg"]]
+          ))
     }else{
-      bin_val <- hist(wind_val, breaks = slider_value)
-    }
-    avg_val <- mean(wind_val, na.rm = TRUE) 
-    median_val <- median(wind_val, na.rm = TRUE)
-    pdf_fitted <- drayleigh(bin_val[[4]], ((tail(bin_val[[1]], n= 1) - bin_val[[1]][1]) / 3))
-    y_val <- c(0, (pdf_fitted * max(bin_val[[2]], na.rm = TRUE) * 20))
-    y_val_max <- max(y_val, na.rm = TRUE)
-    bin_val_max <- max(bin_val[[2]], na.rm = TRUE)
-    
-    fig <- plot_ly(
-      height = 350
-    ) %>%
-      add_trace(
-        x = bin_val[[1]][2:length(bin_val[[1]])],
-        y = bin_val[[2]],
-        marker = list(color = app_color[["graph_line"]]),
-        showlegend = FALSE,
-        hoverinfo = "x+y",
-        type = "bar"
+      if("Auto" %in% auto_state){
+        bin_val <- hist(
+          wind_val,
+          breaks = round(max(unlist(wind_val)))
+        )
+      }else{
+        bin_val <- hist(wind_val, breaks = slider_value)
+      }
+      avg_val <- mean(wind_val, na.rm = TRUE) 
+      median_val <- median(wind_val, na.rm = TRUE)
+      pdf_fitted <- drayleigh(bin_val[[4]], ((tail(bin_val[[1]], n= 1) - bin_val[[1]][1]) / 3))
+      y_val <- c(0, (pdf_fitted * max(bin_val[[2]], na.rm = TRUE) * 20))
+      y_val_max <- max(y_val, na.rm = TRUE)
+      bin_val_max <- max(bin_val[[2]], na.rm = TRUE)
+      
+      fig <- plot_ly(
+        height = 350
       ) %>%
-      add_lines(
-        x = bin_val$breaks,
-        y = list(0),
-        mode = "lines",
-        line = list(dash = "dash", color = "#2E5266"),
-        marker = list(opacity = 0),
-        visible = TRUE,
-        name = "Average"
-      ) %>%
-      add_lines(
-        x = bin_val$breaks,
-        y = list(0),
-        mode = "lines",
-        line = list(dash = "dot", color = "#BD9391"),
-        marker = list(opacity = 0),
-        visible = TRUE,
-        name = "Median"
-      ) %>%
-      add_lines(
-        x = bin_val$breaks,
-        y = y_val,
-        mode = "lines",
-        line = list(color = "#42C4F7"),
-        name = "Rayleigh Fit",
-        marker = list(opacity = 0),
-        visible = TRUE
-      )  %>%
-      layout(
-        plot_bgcolor = app_color[["graph_bg"]],
-        paper_bgcolor = app_color[["graph_bg"]],
-        font = list("color"= "#fff"),
-        xaxis = list(
-          title = "Wind Speed (mph)",
-          showgrid = FALSE,
-          showline = FALSE,
-          fixedrange = TRUE
-        ),
-        yaxis = list(
-          showgrid = FALSE,
-          showline = FALSE,
-          zeroline = FALSE,
-          title = "Number of Samples",
-          fixedrange = TRUE
-        ),
-        autosize = TRUE,
-        bargap = 0.01,
-        hovermode = "closest",
-        legend = list(
-          orientation = "h",
-          yanchor = "bottom",
-          xanchor = "center",
-          borderwidth = -1,
-          y = 1,
-          x = 0.4
-        ),
-        margin = list(
-          r = 30, 
-          t = -1, 
-          b = -1, 
-          l = -1, 
-          pad = 2
-        ), 
-        showlegend = TRUE,
-        shapes = list(
-          list(
-            xref = "x",
-            yref = "y",
-            y1 = as.integer(max(bin_val_max, y_val_max)) + 0.5,
-            y0 = 0,
-            x0 = avg_val,
-            x1 = avg_val,
-            type = "line",
-            line = list(dash = "dash", color = "#2E5266", width = 5)
+        add_trace(
+          x = bin_val[[1]][2:length(bin_val[[1]])],
+          y = bin_val[[2]],
+          marker = list(color = app_color[["graph_line"]]),
+          showlegend = FALSE,
+          hoverinfo = "x+y",
+          type = "bar"
+        ) %>%
+        add_lines(
+          x = bin_val$breaks,
+          y = list(0),
+          mode = "lines",
+          line = list(dash = "dash", color = "#2E5266"),
+          marker = list(opacity = 0),
+          visible = TRUE,
+          name = "Average"
+        ) %>%
+        add_lines(
+          x = bin_val$breaks,
+          y = list(0),
+          mode = "lines",
+          line = list(dash = "dot", color = "#BD9391"),
+          marker = list(opacity = 0),
+          visible = TRUE,
+          name = "Median"
+        ) %>%
+        add_lines(
+          x = bin_val$breaks,
+          y = y_val,
+          mode = "lines",
+          line = list(color = "#42C4F7"),
+          name = "Rayleigh Fit",
+          marker = list(opacity = 0),
+          visible = TRUE
+        )  %>%
+        layout(
+          plot_bgcolor = app_color[["graph_bg"]],
+          paper_bgcolor = app_color[["graph_bg"]],
+          font = list("color"= "#fff"),
+          xaxis = list(
+            title = "Wind Speed (mph)",
+            showgrid = FALSE,
+            showline = FALSE,
+            fixedrange = TRUE
           ),
-          list(
-            xref = "x",
-            yref = "y",
-            y1 = as.integer(max(bin_val_max, y_val_max)) + 0.5,
-            y0 = 0,
-            x0 = median_val,
-            x1 = median_val,
-            type = "line",
-            line = list("dash"= "dot", "color"= "#BD9391", "width"= 5)
+          yaxis = list(
+            showgrid = FALSE,
+            showline = FALSE,
+            zeroline = FALSE,
+            title = "Number of Samples",
+            fixedrange = TRUE
+          ),
+          autosize = TRUE,
+          bargap = 0.01,
+          hovermode = "closest",
+          legend = list(
+            orientation = "h",
+            yanchor = "bottom",
+            xanchor = "center",
+            borderwidth = -1,
+            y = 1,
+            x = 0.4
+          ),
+          margin = list(
+            r = 30, 
+            t = -1, 
+            b = -1, 
+            l = -1, 
+            pad = 2
+          ), 
+          showlegend = TRUE,
+          shapes = list(
+            list(
+              xref = "x",
+              yref = "y",
+              y1 = as.integer(max(bin_val_max, y_val_max)) + 0.5,
+              y0 = 0,
+              x0 = avg_val,
+              x1 = avg_val,
+              type = "line",
+              line = list(dash = "dash", color = "#2E5266", width = 5)
+            ),
+            list(
+              xref = "x",
+              yref = "y",
+              y1 = as.integer(max(bin_val_max, y_val_max)) + 0.5,
+              y0 = 0,
+              x0 = median_val,
+              x1 = median_val,
+              type = "line",
+              line = list("dash"= "dot", "color"= "#BD9391", "width"= 5)
+            )
           )
         )
-      )
-    return(fig)
+      return(fig)
+    }
   }
 )
 
@@ -425,7 +440,7 @@ app$callback(
   params = list(
     input(id = "bin-slider", property = "value"),
     state(id = "wind-speed", property = "figure")
-    ),
+  ),
   function(slider_value, wind_speed_figure){
     if(!length(wind_speed_figure[['data']][[1]][['y']])){
       return(list(""))
@@ -446,7 +461,6 @@ app$callback(
     input(id = "bin-auto", property = "values"),
     state(id = "bin-slider", property = "value")
   ),
-  
   function(autoValue, slider_value){
     if("Auto" %in% autovalue){
       return("# of Bins: Auto")
@@ -459,5 +473,5 @@ app$callback(
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
 } else {
-  app$run_server()
+  app$run_server(debug = T)
 }
