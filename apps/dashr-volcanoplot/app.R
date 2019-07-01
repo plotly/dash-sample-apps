@@ -22,7 +22,7 @@ DATASETS <- list(
     dataprops = list(
       effect_size = "log2_.L3i.L1._signal_ratio",
       p = "p.value",
-      #SNP column is required, although the volcanor documentation is a bit contradictory
+      #SNP column is required, although the volcanor documentation is unclear 
       snp = "X",
       gene = "PFAM_database_id",
       annotation1 = "annotation"
@@ -36,11 +36,14 @@ for (dataset in names(DATASETS)){
   )
 }
 
-# Right now the only way to get this to work is to rename the column to `EFFECTSIZE`
+# Right now the only way is to rename the column to `EFFECTSIZE`
 colnames(DATASETS[["SET2"]][["dataframe"]])[[3]] <- "EFFECTSIZE"
 
 description <- function(){
-  "Interactively identify clinically meaningful markers in genomic experiments with this volcano plot"
+  paste(
+    "Interactively identify clinically meaningful markers",
+    "in genomic experiments with this volcano plot"
+  )
 }
 
 header_colors <- function(){
@@ -57,9 +60,9 @@ app$layout(
   htmlDiv(
     children = list(
       htmlDiv(
-        # From aspp_wrapper.app_page_layout
         id = "app-page-header",
         style = list(
+          width = "100%",
           background = header_colors()[["bg_color"]],
           color = header_colors()[["font_color"]]
         ),
@@ -77,7 +80,7 @@ app$layout(
           htmlA(
             id = "gh-link",
             children = list("View on GitHub"),
-            href = "http://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_volcano_plot.py",
+            href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-volcanoplot"
             style = list(color = "white", border = "solid 1px white")
           ),
           htmlImg(
@@ -88,6 +91,7 @@ app$layout(
       htmlBr(),
       htmlDiv(
         id = "vp-page-content",
+        style = list(paddingTop = "50px", minHeight = "calc(100vh - 70px)"),
         className = "app-body",
         children = list(
           dccLoading(
@@ -213,7 +217,10 @@ app$layout(
                               min = 0,
                               step = 0.1,
                               marks = as.list(
-                                setNames(seq(0, 10, by = 2), seq(0, 10, by = 2))
+                                setNames(
+                                  seq(0, 10, by = 2), 
+                                  seq(0, 10, by = 2)
+                                )
                               )
                             )
                           )
@@ -324,18 +331,31 @@ app$callback(
     hover_data <- "Hover over a data point to see it here."
     if (!is.null(unlist(hover))){
       hovered_point <- hover[["points"]][[1]]
-      hovered_text <- unlist(strsplit(gsub("<br>+$", "", hovered_point["text"]), "<br>"))
+      hovered_text <- unlist(strsplit(
+        gsub("<br>+$", "", hovered_point["text"]), 
+        "<br>"
+      ))
+      hovered_text2 <- do.call(strsplit, list(hovered_text, ":"))
+      hovered_text2 <- ifelse(
+        length(hovered_text) > 1,
+        sprintf(
+          "GENE: %s (%s)", 
+          trimws(hovered_text2[[2]][2]), 
+          trimws(hovered_text2[[3]][2])
+        ),
+        hovered_text
+      )
       hover_data <- list(
         sprintf("x: %s", hovered_point[["x"]]),
         htmlBr(),
         sprintf("y: %s", hovered_point[["y"]]),
         htmlBr(),
-        sprintf("%s (%s)", hovered_text[1], hovered_text[2])
+        hovered_text2
       )
     }
     hover_data_div <- c(
       hover_data_div,
-      htmlDiv(className = "vp-event-data-display", children = hover_data)
+      list(htmlDiv(className = "vp-event-data-display", children = hover_data))
     )
 
     click_data_div <- list(
@@ -344,19 +364,31 @@ app$callback(
     click_data <- "Click on a data point to see it here."
     if (!is.null(unlist(click))){
       clicked_point <- click[["points"]][[1]]
-      clicked_text <- unlist(strsplit(gsub("<br>+$", "", clicked_point["text"]), "<br>"))
-
+      clicked_text <- unlist(strsplit(
+        gsub("<br>+$", "", clicked_point["text"]), 
+        "<br>"
+      ))
+      clicked_text2 <- do.call(strsplit, list(clicked_text, ":"))
+      clicked_text2 <- ifelse(
+        length(clicked_text) > 1,
+        sprintf(
+          "GENE: %s (%s)", 
+          trimws(clicked_text2[[2]][2]), 
+          trimws(clicked_text2[[3]][2])
+        ),
+        clicked_text
+      )
       click_data <- list(
         sprintf("x: %s", clicked_point[["x"]]),
         htmlBr(),
         sprintf("y: %s", clicked_point[["y"]]),
         htmlBr(),
-        sprintf("%s (%s)", clicked_text[1], clicked_text[2])
+        clicked_text2
       )
     }
     click_data_div <- c(
       click_data_div,
-      htmlDiv(className = "vp-event-data-display", children = click_data)
+      list(htmlDiv(className = "vp-event-data-display", children = click_data))
     )
 
     htmlDiv(
@@ -406,6 +438,5 @@ app$callback(
   }
 )
 
-x <- c(1,2,3,4,5)
 app$run_server()
 
