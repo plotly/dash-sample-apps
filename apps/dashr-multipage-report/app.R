@@ -17,19 +17,19 @@ if (appName != ""){
   setwd(sprintf("/app/apps/%s", appName))
 }
 
-supplyDemand <- fread("data/supplyDemand.csv")
-actualSeasonal <- fread("data/actualSeasonal.csv")
-industrailProd <- fread("data/industrailProd.csv")
-globalMarket <- fread("data/globalMarket.csv")
+supplyDemand <- fread("Data/supplyDemand.csv")
+actualSeasonal <- fread("Data/actualSeasonal.csv")
+industrailProd <- fread("Data/industrailProd.csv")
+globalMarket <- fread("Data/globalMarket.csv")
 oecdCommersial <- fread("data/oecdCommersial.csv")
-wtiPrices <- fread("data/wtiPrices.csv")
-epxEquity <- fread("data/epxEquity.csv")
-chinaSpr <- fread("data/chinaSpr.csv")
-oecdIndustry <- fread("data/oecdIndustry.csv")
-wtiOilprices <- fread("data/wtiOilprices.csv")
-productionCost <- fread("data/productionCost.csv")
-production2015 <- fread("data/production2015.csv")
-energyShare <- fread("data/energyShare.csv")
+wtiPrices <- fread("Data/wtiPrices.csv")
+epxEquity <- fread("Data/epxEquity.csv")
+chinaSpr <- fread("Data/chinaSpr.csv")
+oecdIndustry <- fread("Data/oecdIndustry.csv")
+wtiOilprices <- fread("Data/wtiOilprices.csv")
+productionCost <- fread("Data/productionCost.csv")
+production2015 <- fread("Data/production2015.csv")
+energyShare <- fread("Data/energyShare.csv")
 
 set.seed(7685)
 front_phone <- r_phone_numbers(5, use_hyphens = T)
@@ -1616,8 +1616,8 @@ app$layout(htmlDiv(list(
                   autosize = TRUE, 
                   hovermode = "closest", 
                   legend = list(
-                    x = -0.05843857634902412, 
-                    y = -0.1664057062373996, 
+                    x = -0.06, 
+                    y = -0.36, 
                     font = list(size = 9), 
                     orientation = "h"
                   ), 
@@ -1669,7 +1669,8 @@ app$layout(htmlDiv(list(
   htmlDiv(list(
     htmlDiv(list(
       htmlDiv(list(
-        htmlH6('In tempor mauris non, maximus non odio. Lacus mi arcu, ut parturient ac sed curae sed litora amet quam, massa purus condimentum', 
+        htmlH6('In tempor mauris non, maximus non odio. Lacus mi arcu, ut parturient ac sed curae \
+               sed litora amet quam, massa purus condimentum', 
                style = list('color' = color_1, 'margin-top' = "40px")),
         htmlP(LipP(1, F), style = list('margin-top' = "10px")),
         htmlP(LipP(1, F), style = list('margin-top' = "10px", 'color' = color_1)),
@@ -1784,11 +1785,16 @@ app$layout(htmlDiv(list(
   htmlDiv(list(
     htmlDiv(list(
       htmlDiv(list(
-        htmlH6("Erat cras porta inceptos nibh sociis justo. Natoque mauris nunc etiam, dis quam, tempor consectetur ac", 
+        htmlH6("Erat cras porta inceptos nibh sociis justo. Natoque mauris nunc etiam, dis quam, tempor consectetur ac \
+               Pulvinar nunc vitae dui elit hac ante, facilisi, primis nascetur. Non nostra torquent ipsum ac amet", 
                style = list('color' = color_1, 'margin-top' = "40px")),
         htmlP(LipP(1, F), style = list('margin-top' = "30px")),
-        htmlImg(src = "assets/c7PM25P.png", style = list('margin-top' = "30px"))
-      ), className = "eleven columns")
+        htmlP(LipP(2, F), style = list('margin-top' = "30px")),
+        htmlH6("Ultrices phasellus dignissim, accumsan platea volutpat, sapien mi enim. Pharetra ipsum netus in turpis, \
+               lorem tempus et. Eget sed. Eu porta cum tempor convallis sed nostra, pellentesque eros.",
+               style = list('color' = color_1, 'margin-top' = "30px")),
+        htmlImg(src = "assets/c7PM25P.png", style = list('margin-top' = "30px"), className = "twelve columns")
+      ), className = "twelve columns")
     ), className = "subpage")
   ), style = list('margin-top' = "50px"), className = "page")
 )))
