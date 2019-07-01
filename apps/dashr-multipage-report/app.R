@@ -1797,7 +1797,7 @@ app$layout(htmlDiv(list(
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
 } else {
-  app$run_server(debug = T)
+  app$run_server()
 }
 
 
