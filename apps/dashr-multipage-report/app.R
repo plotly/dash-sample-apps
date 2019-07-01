@@ -16,7 +16,6 @@ if (appName != ""){
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
   setwd(sprintf("/app/apps/%s", appName))
 }
-setwd("/Users/carlonescott/documents/dashr-multipage-report")
 
 supplyDemand <- fread("data/supplyDemand.csv")
 actualSeasonal <- fread("data/actualSeasonal.csv")
