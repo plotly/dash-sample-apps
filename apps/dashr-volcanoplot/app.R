@@ -80,7 +80,7 @@ app$layout(
           htmlA(
             id = "gh-link",
             children = list("View on GitHub"),
-            href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-volcanoplot"
+            href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-volcanoplot",
             style = list(color = "white", border = "solid 1px white")
           ),
           htmlImg(
