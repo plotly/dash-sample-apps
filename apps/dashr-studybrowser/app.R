@@ -21,8 +21,10 @@ library(rlist)
 library(glue)
 library(plotly)
 
+
 #"Dict-List" of colors
 group_colors <- list('negative'='light blue', 'test'='green', 'positive'='red')
+
 
 returnOptions <- function(test_articles, study_data){ 
   studies <- (study_data[study_data$test_article==test_articles])$study_id %>% unique(.)
@@ -48,7 +50,7 @@ default_study_data <- fread('assets/study.csv')
 default_studyid <- "AS100"
 default_study_input <- default_study_data[study_id==default_studyid]
 default_test_articles <- (default_study_data[default_study_data$group_type=='test'] )$test_article %>% unique(.)
-default_options <- lapply(default_test_articles, returnOptions,study_data=default_study_data)
+default_options <- foreach(i=default_test_articles, combine='c') %do% returnOptions(i, default_study_data)
 default_options <- default_options[[1]]
 app <- Dash$new()
 
@@ -151,8 +153,10 @@ app$callback(
   params=list(input(id='upload-data', property='filename'))
   ,
   function(filename){
-    if(is.na(filename)|| is.null(filename)||(filename=='')){
+    if(is.na(filename)|| is.null(filename)){
       return("No file")
+    } else if(filename==""){
+      return("Default File study.csv")
     } else{
       return(glue('Data {filename} has been successfully uploaded'))
     }
@@ -192,7 +196,8 @@ app$callback(
       
       study_data <- default_study_data
       test_articles <- (study_data[study_data$group_type=='test'] )$test_article %>% unique(.)
-      options <- lapply(test_articles, returnOptions, study_data = study_data)      return(options[[1]])
+      #options = foreach(i=test_articles, combine='c') %do% returnOptions(i, study_data)
+      options <- lapply(test_articles, returnOptions, study_data = study_data)
       return(options[[1]])
       
     } else {
@@ -201,7 +206,9 @@ app$callback(
       study_data <- contents_parsed$dt
       
       test_articles <- (study_data[study_data$group_type=='test'] )[['test_article']] %>% unique(.)
-      options <- lapply(test_articles, returnOptions, study_data = study_data)      return(options[[1]])
+      #options = foreach(i=test_articles, combine='c') %do% returnOptions(i, study_data)
+      options <- lapply(test_articles, returnOptions, study_data = study_data)
+      return(options[[1]])
       
     }
   }
@@ -235,18 +242,14 @@ app$callback(
     vehicle <- study_data[study_data$group_type == 'negative']
     study_data <- study_data[study_data$study_id == study]
     
-    Y_DATA <- study_data %>% 
-      split(., study_data$group_id) %>% mapply(getElement, ., 'reading_value', SIMPLIFY = F)
+    Y_DATA <- study_data %>% split(., study_data$group_id) %>% mapply(getElement, ., 'reading_value', SIMPLIFY = F)
     vehicle_readings <- vehicle[study_id==study]$reading_value
     
-    T_TESTS <- ( Y_DATA ) %>% 
-      mapply(t.test,  ., lapply(1:length(.), function(n){return(vehicle_readings)}), SIMPLIFY=FALSE)
+    T_TESTS <- ( Y_DATA ) %>% mapply(t.test,  ., lapply(1:length(.), function(n){return(vehicle_readings)}), SIMPLIFY=FALSE)
     
-    T_stats <- T_TESTS %>% 
-      mapply(getElement, ., lapply(1:length(.),function(n){return('statistic')}), SIMPLIFY=F)
+    T_stats <- T_TESTS %>% mapply(getElement, ., lapply(1:length(.),function(n){return('statistic')}), SIMPLIFY=F)
     
-    P_values <- T_TESTS %>% 
-      mapply(getElement, ., lapply(1:length(.),function(n){return('p.value')}), SIMPLIFY=F)
+    P_values <- T_TESTS %>% mapply(getElement, ., lapply(1:length(.),function(n){return('p.value')}), SIMPLIFY=F)
     
     
     P_ast<-study_data$group_id %>% lapply(., function(n){return(P_values[[n]])}) %>% lapply(., asterisks) %>% unlist(.)
@@ -256,31 +259,10 @@ app$callback(
     
     study_data$group_title = group_title
     study_data$Total_Scores <- study_data$reading_value
-    p1 <- plot_ly(
-      study_data, 
-      type='box', 
-      y= ~Total_Scores, 
-      name=~group_title, 
-      text=~subject_id, 
-      hoveron='points', 
-      boxmean=TRUE, 
-      showlegend=FALSE, 
-      boxpoints='all', 
-      pointpos=0,
-      height=500)
+    p1 <- plot_ly(study_data, type='box', y= ~Total_Scores, name=~group_title, text=~subject_id, hoveron='points', boxmean=TRUE, showlegend=FALSE, boxpoints='all', pointpos=0, height=500)
     
-    p2 <- plot_ly(
-      study_data, 
-      type='violin', 
-      y= ~Total_Scores, 
-      name=~group_title, 
-      text=~subject_id, 
-      hoveron='points',  
-      meanline=list("visible"= T), 
-      showlegend=F,
-      points='all',
-      pointpos=0, 
-      height=500)
+    p2 <- plot_ly(study_data, type='violin', y= ~Total_Scores, name=~group_title, text=~subject_id, hoveron='points',  meanline=list("visible"= T), showlegend=F,points='all',
+                  pointpos=0, height=500)
     chart_data <- list('box'= p1, 'violin'=p2)
     return(chart_data[[chart_type]])
   }
