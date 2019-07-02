@@ -27,7 +27,7 @@ load(file = "pairs/currencyPairs.RData")
 currencyPairs <- list(EURUSD, USDCHF, USDJPY, GBPUSD)
 
 # ensure timezone is correct in the data tables
-myTZ <- format(Sys.time(), "%Z")
+myTZ <- Sys.timezone(location = TRUE)
 
 for (df in currencyPairs){
   df[, Date := fastPOSIXct(Date, tz = myTZ)]
