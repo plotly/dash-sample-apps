@@ -34,7 +34,9 @@ app.layout = html.Div(
                 html.H2(className="h2-title", children="ANIMAL STUDY BROWSER"),
                 html.Div(
                     className="div-logo",
-                    children=html.Img(className="logo", src=app.get_asset_url("dash-logo-new.png"))
+                    children=html.Img(
+                        className="logo", src=app.get_asset_url("dash-logo-new.png")
+                    ),
                 ),
                 html.H2(className="h2-title-mobile", children="ANIMAL STUDY BROWSER"),
             ],
@@ -111,31 +113,27 @@ app.layout = html.Div(
                         )
                     ],
                 ),
-                dcc.Store(
-                    id='stored-data', 
-                    storage_type='memory'
-                )
+                dcc.Store(id="stored-data", storage_type="memory"),
             ],
         ),
     ]
 )
 
 # Callback to generate error message
-# Also sets the data to be used 
+# Also sets the data to be used
 # If there is an error use default data else use uploaded data
 @app.callback(
     [
-        Output("error-message", "children"), 
-        Output("study-dropdown", "options"), 
+        Output("error-message", "children"),
+        Output("study-dropdown", "options"),
         Output("study-dropdown", "value"),
     ],
-    [Input("upload-data", "contents")]
+    [Input("upload-data", "contents")],
 )
 def update_error(contents):
 
     error_message = None
     study_data = default_study_data
-
 
     # Check if there is uploaded content
     if contents:
@@ -156,10 +154,11 @@ def update_error(contents):
 
             if missing_columns:
                 error_message = html.Div(
-                    className="alert", children=["Missing columns: " + str(missing_columns)]
+                    className="alert",
+                    children=["Missing columns: " + str(missing_columns)],
                 )
                 study_data = default_study_data
-                
+
         # Data is invalid
         except Exception as error:
             error_message = html.Div(
@@ -168,18 +167,16 @@ def update_error(contents):
             )
             study_data = default_study_data
 
-    
-    # Update Dropdown 
+    # Update Dropdown
     options = []
     if "test_article" in study_data.columns:
         test_articles = study_data.test_article.unique()
         for test_article in test_articles:
-            for study in study_data.study_id[study_data.test_article == test_article].unique():
+            for study in study_data.study_id[
+                study_data.test_article == test_article
+            ].unique():
                 options.append(
-                    {
-                        "label": f"{test_article} (study: {study})",
-                        "value": study,
-                    }
+                    {"label": f"{test_article} (study: {study})", "value": study}
                 )
     else:
         for study in study_data.study_id.unique():
@@ -194,14 +191,8 @@ def update_error(contents):
 # Callback to generate study data
 @app.callback(
     Output("plot", "figure"),
-    [
-        Input("chart-type", "value"), 
-        Input("study-dropdown", "value")
-    ],
-    [
-        State("upload-data", "contents"),
-        State("error-message", "children")
-    ]
+    [Input("chart-type", "value"), Input("study-dropdown", "value")],
+    [State("upload-data", "contents"), State("error-message", "children")],
 )
 def update_output(chart_type, study, contents, error):
     if error or not contents:
@@ -219,7 +210,9 @@ def update_output(chart_type, study, contents, error):
         study = study_data.study_id[0]
 
     study_data = study_data[study_data.study_id == study]
-    vehicle_readings = study_data["reading_value"][study_data["group_type"] == "control"]
+    vehicle_readings = study_data["reading_value"][
+        study_data["group_type"] == "control"
+    ]
     data_range = study_data["reading_value"].max() - study_data["reading_value"].min()
 
     test_stats = {}
@@ -287,7 +280,11 @@ def update_output(chart_type, study, contents, error):
 
     chart_data = {"box": box_data, "violin": violin_data}
 
-    reading_name = study_data["reading_name"].unique()[0] if "reading_name" in study_data.columns else None
+    reading_name = (
+        study_data["reading_name"].unique()[0]
+        if "reading_name" in study_data.columns
+        else None
+    )
 
     if not vehicle_readings.empty:
         ref_groups = set(
