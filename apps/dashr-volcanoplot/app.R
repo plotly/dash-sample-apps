@@ -199,7 +199,7 @@ app$layout(
                               max = 4,
                               value = list(-1, 1),
                               step = 0.01,
-                              marks = as.list(setNames( -4:5, -4:5))
+                              marks = as.list(setNames( -4:4, -4:4))
                             )
                           )
                         ),
@@ -332,25 +332,21 @@ app$callback(
     if (!is.null(unlist(hover))){
       hovered_point <- hover[["points"]][[1]]
       hovered_text <- unlist(strsplit(
-        gsub("<br>+$", "", hovered_point["text"]), 
+        gsub("<br />", "<br>", 
+        gsub("<br>+$", "", hovered_point["text"])), 
         "<br>"
       ))
-      hovered_text2 <- do.call(strsplit, list(hovered_text, ":"))
-      hovered_text2 <- ifelse(
-        length(hovered_text) > 1,
-        sprintf(
-          "GENE: %s (%s)", 
-          trimws(hovered_text2[[2]][2]), 
-          trimws(hovered_text2[[3]][2])
-        ),
-        hovered_text
-      )
+      idx <- length(hovered_text)
       hover_data <- list(
         sprintf("x: %s", hovered_point[["x"]]),
         htmlBr(),
         sprintf("y: %s", hovered_point[["y"]]),
         htmlBr(),
-        hovered_text2
+        sprintf(
+          "%s, (%s)", 
+          hovered_text[[idx - 1]], 
+          hovered_text[[idx]]
+        )
       )
     }
     hover_data_div <- c(
@@ -365,25 +361,21 @@ app$callback(
     if (!is.null(unlist(click))){
       clicked_point <- click[["points"]][[1]]
       clicked_text <- unlist(strsplit(
-        gsub("<br>+$", "", clicked_point["text"]), 
+        gsub("<br />", "<br>", 
+        gsub("<br>+$", "", clicked_point["text"])), 
         "<br>"
       ))
-      clicked_text2 <- do.call(strsplit, list(clicked_text, ":"))
-      clicked_text2 <- ifelse(
-        length(clicked_text) > 1,
-        sprintf(
-          "GENE: %s (%s)", 
-          trimws(clicked_text2[[2]][2]), 
-          trimws(clicked_text2[[3]][2])
-        ),
-        clicked_text
-      )
+      idx <- length(clicked_text)
       click_data <- list(
         sprintf("x: %s", clicked_point[["x"]]),
         htmlBr(),
         sprintf("y: %s", clicked_point[["y"]]),
         htmlBr(),
-        clicked_text2
+        sprintf(
+          "%s, (%s)", 
+          clicked_text[[idx - 1]], 
+          clicked_text[[idx]]
+        )
       )
     }
     click_data_div <- c(
