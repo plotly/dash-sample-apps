@@ -196,7 +196,7 @@ app$layout(htmlDiv(children = list(
   
   
   htmlDiv(list(
-    htmlImg(src="https://plotly.cdn.prismic.io/plotly/41a4661495f29a955d38a998e2d3de914cbe9bd3_dash-logo-stripe.png", "height"="43px"),
+    htmlImg(src="assets/dash-logo.png", "height"="50px"),
     htmlP('MRI Reconstruction', style = list(color = '#506784', fontSize = '29px', fontFamily = 'Script'))
   ), style=list("float"="top", 'display' = "flex")),
   
