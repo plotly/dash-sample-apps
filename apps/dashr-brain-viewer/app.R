@@ -4,7 +4,6 @@ library(plotly)
 library(rapportools)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-library(devtools)
 library(rjson)
 
 
@@ -150,7 +149,7 @@ DEFAULT_COLORSCALE <- list(list(0,'#0c3383'), list(0.25,'#0a88ba'), list(0.5,'#f
 
 DEFAULT_COLORSCALE_NO_INDEX <- list("#0c3383", "#0a88ba", "#f2d338", "#f28f38", "#d91e1e")
 
-source('brainDATA.R')
+# The following data are created using source('brainDATA.R')
 
 load('data/alldata.RData', verbose = TRUE)
 

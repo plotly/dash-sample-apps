@@ -49,9 +49,3 @@ remotes::install_github("plotly/dash-html-components")
 remotes::install_github("plotly/dash-core-components")
 
 remotes::install_github('plotly/dashColorscales')
-library('rapportools')
-library('rjson')
-
-
-
-
