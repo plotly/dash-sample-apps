@@ -33,7 +33,7 @@ returnOptions <- function(test_articles, study_data){
 
 asterisks <- function(n){
   if(0.1<=n){
-    return(glue('! \n '))
+    return(glue(''))
   } else if(0.05<=n && n<0.1){
     return(glue('. \n '))    
   } else if(0.01<=n && n<0.05){
@@ -128,7 +128,7 @@ app$layout(
                               filename = ''
                     ),#####
                     #htmlDiv(id='file-checker', children='None'),
-                    htmlH5(" 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 '!' 1 ", style=list(display='block', width='100%'))
+                    htmlH5(" 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ", style=list(display='block', width='100%'))
                     
                   ))####
               ))###
@@ -269,5 +269,6 @@ app$callback(
   
 )
 
-app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+# app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+app$run_server()
 
