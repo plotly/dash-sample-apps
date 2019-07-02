@@ -11,7 +11,12 @@ import os
 
 app = dash.Dash(
     __name__,
-    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"}],
+    meta_tags=[
+        {
+            "name": "viewport",
+            "content": "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no",
+        }
+    ],
 )
 server = app.server
 
@@ -615,8 +620,12 @@ def update_hospital_datatable(geo_select, procedure_select, cost_select, state_s
 
 @app.callback(
     Output("procedure-stats-container", "children"),
-    [Input("procedure-plot", "selectedData"), Input("geo-map", "selectedData"), Input("metric-select", "value")],
-    [State('state-select', "value")]
+    [
+        Input("procedure-plot", "selectedData"),
+        Input("geo-map", "selectedData"),
+        Input("metric-select", "value"),
+    ],
+    [State("state-select", "value")],
 )
 def update_procedure_stats(procedure_select, geo_select, cost_select, state_select):
     procedure_dict = {
@@ -643,18 +652,28 @@ def update_procedure_stats(procedure_select, geo_select, cost_select, state_sele
     provider_select = []
 
     if prop_id == "geo-map" and geo_select is not None:
-        for point in geo_select['points']:
+        for point in geo_select["points"]:
             provider = point["customdata"][0]
             provider_select.append(provider)
 
         state_raw_data = data_dict[state_select]
-        provider_filtered = state_raw_data[state_raw_data['Provider Name'].isin(provider_select)]
+        provider_filtered = state_raw_data[
+            state_raw_data["Provider Name"].isin(provider_select)
+        ]
 
         for i in range(len(provider_filtered)):
-            procedure_dict['DRG'].append(provider_filtered.iloc[i]['DRG Definition'].split(" - ")[0])
-            procedure_dict['Procedure'].append(provider_filtered.iloc[i]['DRG Definition'].split(" - ")[1])
-            procedure_dict['Provider Name'].append(provider_filtered.iloc[i]['Provider Name'])
-            procedure_dict["Cost Summary"].append("${:,.2f}".format(provider_filtered.iloc[0][cost_select]))
+            procedure_dict["DRG"].append(
+                provider_filtered.iloc[i]["DRG Definition"].split(" - ")[0]
+            )
+            procedure_dict["Procedure"].append(
+                provider_filtered.iloc[i]["DRG Definition"].split(" - ")[1]
+            )
+            procedure_dict["Provider Name"].append(
+                provider_filtered.iloc[i]["Provider Name"]
+            )
+            procedure_dict["Cost Summary"].append(
+                "${:,.2f}".format(provider_filtered.iloc[0][cost_select])
+            )
 
     procedure_data_df = pd.DataFrame(data=procedure_dict)
 
