@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: omnisci-node
+  name: omnisci-node
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        name: omnisci-node
+    spec:
+      containers:
+      - image: gcr.io/plotly-hosting/omnisci_db
+        name: omnisci-node
+        ports:
+        - containerPort: 6274
+
