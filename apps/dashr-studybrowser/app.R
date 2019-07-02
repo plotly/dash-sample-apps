@@ -266,12 +266,21 @@ app$callback(
       boxmean=TRUE, 
       showlegend=FALSE, 
       boxpoints='all', 
-      pointpos=0)
+      pointpos=0,
+      height=500)
     
-    p2 <- plot_ly(study_data, type='violin', y= ~Total_Scores, name=~group_title, text=~subject_id, hoveron='points',  meanline=list("visible"= T), showlegend=F,points='all',
-                  pointpos=0)
-    p1 <- p1 %>% plotly::layout(height=500)
-    p2 <- p2 %>% plotly::layout(height=500)
+    p2 <- plot_ly(
+      study_data, 
+      type='violin', 
+      y= ~Total_Scores, 
+      name=~group_title, 
+      text=~subject_id, 
+      hoveron='points',  
+      meanline=list("visible"= T), 
+      showlegend=F,
+      points='all',
+      pointpos=0, 
+      height=500)
     chart_data <- list('box'= p1, 'violin'=p2)
     return(chart_data[[chart_type]])
   }
