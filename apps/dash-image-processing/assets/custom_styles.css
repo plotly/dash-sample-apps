@@ -100,7 +100,6 @@ html, body {
 @media only screen and (max-width: 1310px) {
     #root {
         flex-direction: column;
-        /*align-items: center;*/
         align-items: stretch;
     }
 }
