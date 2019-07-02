@@ -615,9 +615,10 @@ def update_hospital_datatable(geo_select, procedure_select, cost_select, state_s
 
 @app.callback(
     Output("procedure-stats-container", "children"),
-    [Input("procedure-plot", "selectedData"), Input("geo-map", "selectedData")],
+    [Input("procedure-plot", "selectedData"), Input("geo-map", "selectedData"), Input("metric-select", "value")],
+    [State('state-select', "value")]
 )
-def update_procedure_stats(procedure_select, geo_select):
+def update_procedure_stats(procedure_select, geo_select, cost_select, state_select):
     procedure_dict = {
         "DRG": [],
         "Procedure": [],
@@ -626,6 +627,7 @@ def update_procedure_stats(procedure_select, geo_select):
     }
 
     ctx = dash.callback_context
+    prop_id = ""
     if ctx.triggered:
         prop_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
@@ -636,6 +638,23 @@ def update_procedure_stats(procedure_select, geo_select):
 
             procedure_dict["Provider Name"].append(point["customdata"])
             procedure_dict["Cost Summary"].append(("${:,.2f}".format(point["x"])))
+
+    # Display all procedures at selected hospital
+    provider_select = []
+
+    if prop_id == "geo-map" and geo_select is not None:
+        for point in geo_select['points']:
+            provider = point["customdata"][0]
+            provider_select.append(provider)
+
+        state_raw_data = data_dict[state_select]
+        provider_filtered = state_raw_data[state_raw_data['Provider Name'].isin(provider_select)]
+
+        for i in range(len(provider_filtered)):
+            procedure_dict['DRG'].append(provider_filtered.iloc[i]['DRG Definition'].split(" - ")[0])
+            procedure_dict['Procedure'].append(provider_filtered.iloc[i]['DRG Definition'].split(" - ")[1])
+            procedure_dict['Provider Name'].append(provider_filtered.iloc[i]['Provider Name'])
+            procedure_dict["Cost Summary"].append("${:,.2f}".format(provider_filtered.iloc[0][cost_select]))
 
     procedure_data_df = pd.DataFrame(data=procedure_dict)
 
