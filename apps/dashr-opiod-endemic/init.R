@@ -11,4 +11,4 @@ remotes::install_github("plotly/dash-core-components")
 remotes::install_github("plotly/dash-table")
 remotes::install_github("plotly/dashR")
 
-install.packages(c("dplyr", "stringr", "glue", "data.table", "plotly"))
+install.packages(c("stringr", "glue"))
