@@ -200,7 +200,7 @@ app$layout(htmlDiv(children = list(
     htmlP('MRI Reconstruction', style = list(color = '#506784', fontSize = '29px', fontFamily = 'Script'))
   ), style=list("float"="top", 'display' = "flex")),
   
-  
+  https://github.com/plotly/dash-sample-apps/tree/dashr-brain-viewer
   htmlP(
     children = list(htmlP('Click on the brain to add an annotation.
                           Drag the black corners of the graph to rotate.',
@@ -282,7 +282,7 @@ app$layout(htmlDiv(children = list(
   style = list('background-color' = '#282828')),
   htmlP(
     children = list(
-      'Dash/Python code on ',
+      'Dash/R code on ',
       htmlA(
         children='GitHub',
         target= '_blank',
