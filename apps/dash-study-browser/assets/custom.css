@@ -28,19 +28,27 @@ body{
   padding-left: 48px;
 }
 
+.div-logo{
+  display: inline-block;
+  float: right;
+}
+
 .logo{
   height: 35px;
-  float: right;
   padding: 6px;
   margin-top: 3px;
 }
 
-.h2-title{
+.h2-title, .h2-title-mobile{
   font-family: 'Roboto Black';
   display: inline-block;
   letter-spacing: 3.8px;
   font-weight: bold;
   font-size: 20px;
+}
+
+.h2-title-mobile{
+  display: none;
 }
 
 h5, h6{
@@ -102,7 +110,11 @@ h5{
   border: 1px solid #203cb3;
 }
 
-@media (max-width: 768px) {
+@media only screen and (max-width: 768px) {
+
+  .columns{
+    width: 100%;
+  }
 
   .card, .card-left{
     padding: 24px;  
@@ -118,11 +130,38 @@ h5{
   }
 
   .logo{
+    height: 28px;
+    padding-left:0px;
+    padding-bottom:0px;
+  }
+
+  .div-logo{
     float: left;
+    display: block;
+    width: 100%;
+  }
+
+  .h2-title{
+    display:none;
+  }
+
+  .h2-title-mobile{
+    display:block;
+    float:left;
   }
 
   .app-body{
     margin-left: 0px;
   }
 
+  .four.columns                   { width: 100%; }
+  .eight.columns                  { width: 100%; }
+
+  .columns{
+    text-align: center;
+  }
+
+  .user-control{
+    padding: 24px 64px;
+  }
 }

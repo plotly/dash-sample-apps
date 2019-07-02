@@ -32,7 +32,11 @@ app.layout = html.Div(
             className="study-browser-banner row",
             children=[
                 html.H2(className="h2-title", children="ANIMAL STUDY BROWSER"),
-                html.Img(className="logo", src=app.get_asset_url("dash-logo-new.png")),
+                html.Div(
+                    className="div-logo",
+                    children=html.Img(className="logo", src=app.get_asset_url("dash-logo-new.png"))
+                ),
+                html.H2(className="h2-title-mobile", children="ANIMAL STUDY BROWSER"),
             ],
         ),
         # Body of the App
@@ -44,7 +48,7 @@ app.layout = html.Div(
                     className="four columns card",
                     children=[
                         html.Div(
-                            className="bg-white",
+                            className="bg-white user-control",
                             children=[
                                 html.Div(
                                     className="padding-top-bot",
@@ -107,110 +111,115 @@ app.layout = html.Div(
                         )
                     ],
                 ),
+                dcc.Store(
+                    id='stored-data', 
+                    storage_type='memory'
+                )
             ],
         ),
     ]
 )
 
-# Callback to create error message
-@app.callback(Output("error-message", "children"), [Input("upload-data", "contents")])
+# Callback to generate error message
+# Also sets the data to be used 
+# If there is an error use default data else use uploaded data
+@app.callback(
+    [
+        Output("error-message", "children"), 
+        Output("study-dropdown", "options"), 
+        Output("study-dropdown", "value"),
+    ],
+    [Input("upload-data", "contents")]
+)
 def update_error(contents):
+
+    error_message = None
+    study_data = default_study_data
+
+
+    # Check if there is uploaded content
     if contents:
+        content_type, content_string = contents.split(",")
+        decoded = base64.b64decode(content_string)
+
+        # Try reading uploaded file
         try:
-            content_string = contents.split(",")
-            decoded = base64.b64decode(content_string)
             study_data = pd.read_csv(io.StringIO(decoded.decode("utf-8")))
-        except Exception as e:
-            print(e)
-            return html.Div(
+
+            # Missing columns
+            missing_columns = {
+                "group_id",
+                "group_type",
+                "reading_value",
+                "study_id",
+            }.difference(study_data.columns)
+
+            if missing_columns:
+                error_message = html.Div(
+                    className="alert", children=["Missing columns: " + str(missing_columns)]
+                )
+                study_data = default_study_data
+                
+        # Data is invalid
+        except Exception as error:
+            error_message = html.Div(
                 className="alert",
                 children=["That doesn't seem to be a valid csv file!"],
             )
-    else:
-        study_data = default_study_data
+            study_data = default_study_data
 
-    missing_columns = {
-        "group_id",
-        "group_type",
-        "reading_value",
-        "study_id",
-    }.difference(study_data.columns)
-
-    if missing_columns:
-        return html.Div(
-            className="alert", children=["Missing columns: " + str(missing_columns)]
-        )
-
-    return None
-
-
-# Callback to generate study-dropdown options and values
-@app.callback(
-    [Output("study-dropdown", "options"), Output("study-dropdown", "value")],
-    [Input("error-message", "children")],
-    [State("upload-data", "contents")],
-)
-def update_dropdown(error_message, contents):
-    if error_message:
-        study_data = default_study_data
-    elif contents:
-        content_string = contents.split(",")
-        decoded = base64.b64decode(content_string)
-        study_data = pd.read_csv(io.StringIO(decoded.decode("utf-8")))
-    else:
-        study_data = default_study_data
-
+    
+    # Update Dropdown 
     options = []
     if "test_article" in study_data.columns:
         test_articles = study_data.test_article.unique()
         for test_article in test_articles:
-            studies = study_data.study_id[
-                study_data.test_article == test_article
-            ].unique()
-            for study in studies:
+            for study in study_data.study_id[study_data.test_article == test_article].unique():
                 options.append(
                     {
-                        "label": "{} (study: {})".format(test_article, study),
+                        "label": f"{test_article} (study: {study})",
                         "value": study,
                     }
                 )
     else:
-        studies = study_data.study_id.unique()
-        for study in studies:
+        for study in study_data.study_id.unique():
             options.append({"label": study, "value": study})
 
     options.sort(key=lambda item: item["label"])
     value = options[0]["value"]
 
-    return options, value
+    return error_message, options, value
 
 
 # Callback to generate study data
 @app.callback(
     Output("plot", "figure"),
-    [Input("chart-type", "value"), Input("study-dropdown", "value")],
-    [State("upload-data", "contents"), State("error-message", "children")],
+    [
+        Input("chart-type", "value"), 
+        Input("study-dropdown", "value")
+    ],
+    [
+        State("upload-data", "contents"),
+        State("error-message", "children")
+    ]
 )
-def update_output(chart_type, study, contents, error_message):
-    if error_message:
+def update_output(chart_type, study, contents, error):
+    if error or not contents:
         study_data = default_study_data
-    elif contents:
-        content_string = contents.split(",")
+    else:
+        content_type, content_string = contents.split(",")
         decoded = base64.b64decode(content_string)
         study_data = pd.read_csv(io.StringIO(decoded.decode("utf-8")))
-        study_data["reading_value"] = pd.to_numeric(
-            study_data["reading_value"], errors="coerce"
-        )
-    else:
-        study_data = default_study_data
+
+    study_data["reading_value"] = pd.to_numeric(
+        study_data["reading_value"], errors="coerce"
+    )
 
     if study is None:
         study = study_data.study_id[0]
 
     study_data = study_data[study_data.study_id == study]
-    vehicle_readings = study_data["reading_value"][
-        study_data["group_type"] == "control"
-    ]
+    vehicle_readings = study_data["reading_value"][study_data["group_type"] == "control"]
     data_range = study_data["reading_value"].max() - study_data["reading_value"].min()
 
     test_stats = {}
@@ -261,6 +270,7 @@ def update_output(chart_type, study, contents, error_message):
                 line={"color": group_colors.get(group_type, "green")},
             )
         )
+
         violin_data.append(
             go.Violin(
                 y=y_data,
@@ -277,10 +287,7 @@ def update_output(chart_type, study, contents, error_message):
 
     chart_data = {"box": box_data, "violin": violin_data}
 
-    if "reading_name" in study_data.columns:
-        reading_name = study_data["reading_name"].unique()[0]
-    else:
-        reading_name = None
+    reading_name = study_data["reading_name"].unique()[0] if "reading_name" in study_data.columns else None
 
     if not vehicle_readings.empty:
         ref_groups = set(
