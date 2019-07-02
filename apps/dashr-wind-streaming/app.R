@@ -306,6 +306,7 @@ app$callback(
     wind_val <- unlist(wind_speed_figure[['data']][[1]][['y']])
     if(is.null(wind_val)){
       # This empty ploty object is used to elliminate an error during initialization 
+      
       return(
         fig <- plot_ly(
           type = "scatter",
@@ -445,7 +446,6 @@ app$callback(
     if(!length(wind_speed_figure[['data']][[1]][['y']])){
       return(list(""))
     }
-    print(slider)
     if(!is.null(wind_speed_figure) && (length(wind_speed_figure[['data']][[1]][['y']]) > 5)){
       return(list(""))
     }else{
@@ -462,7 +462,7 @@ app$callback(
     state(id = "bin-slider", property = "value")
   ),
   function(autoValue, slider_value){
-    if("Auto" %in% autovalue){
+    if("Auto" %in% autoValue){
       return("# of Bins: Auto")
     }else{
       return(paste0("# of Bins = ", as.character(as.integer(slider_value))))
