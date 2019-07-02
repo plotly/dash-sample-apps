@@ -22,8 +22,6 @@ realct <- plotly_triangular_mesh(
 realct <- realct[[1]]
 realct[c(2,3,4,8,9,10)] = lapply(realct[c(2,3,4,8,9,10)], unlist)
 
-saveRDS(data,file = 'data/realct.RData')
-
 pts <- read_mniobj('data/surf_reg_model_both.obj')[1]
 tri <- read_mniobj('data/surf_reg_model_both.obj')[2]
 intensities <- lapply(as.list(read.table('data/aal_atlas.txt')),as.list)[[1]]
