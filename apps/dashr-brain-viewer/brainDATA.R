@@ -1,57 +1,52 @@
-pts <- read_mniobj("surf_reg_model_both.obj")[1]
-tri <- read_mniobj("surf_reg_model_both.obj")[2]
-intensities <- lapply(as.list(read.table('aal_atlas.txt')),as.list)[[1]]
+pts <- read_mniobj("data/surf_reg_model_both.obj")[1]
+tri <- read_mniobj("data/surf_reg_model_both.obj")[2]
+intensities <- lapply(as.list(read.table('data/aal_atlas.txt')),as.list)[[1]]
 
-data <- plotly_triangular_mesh(
+initialGraphdata <- plotly_triangular_mesh(
   pts, tri, intensities,
   colorscale=DEFAULT_COLORSCALE, flatshading=FALSE,
   showscale=FALSE, reversescale=FALSE, plot_edges=FALSE)
 
-data = data[[1]]
-data['name'] = 'human_atlas'
-data[c(2,3,4,8,9,10)] = lapply(data[c(2,3,4,8,9,10)], unlist)
+initialGraphdata = initialGraphdata[[1]]
+initialGraphdata['name'] = 'human_atlas'
+initialGraphdata[c(2,3,4,8,9,10)] = lapply(initialGraphdata[c(2,3,4,8,9,10)], unlist)
 
-
-saveRDS(data,file = 'initialGraphdata.RData')
-
-pts <- read_mniobj('realct.obj')[1]
-tri <- read_mniobj('realct.obj')[2]
-intensities <- lapply(as.list(read.table('realct.txt')),as.list)[[1]]
-data <- plotly_triangular_mesh(
+pts <- read_mniobj('data/realct.obj')[1]
+tri <- read_mniobj('data/realct.obj')[2]
+intensities <- lapply(as.list(read.table('data/realct.txt')),as.list)[[1]]
+realct <- plotly_triangular_mesh(
   pts,tri,intensities,
   colorscale = DEFAULT_COLORSCALE, flatshading=FALSE,
   showscale = FALSE, reversescale=FALSE, plot_edges=FALSE)
 
-data <- data[[1]]
-data[c(2,3,4,8,9,10)] = lapply(data[c(2,3,4,8,9,10)], unlist)
+realct <- realct[[1]]
+realct[c(2,3,4,8,9,10)] = lapply(realct[c(2,3,4,8,9,10)], unlist)
 
-saveRDS(data,file = 'realct.RData')
+saveRDS(data,file = 'data/realct.RData')
 
-pts <- read_mniobj('surf_reg_model_both.obj')[1]
-tri <- read_mniobj('surf_reg_model_both.obj')[2]
-intensities <- lapply(as.list(read.table('aal_atlas.txt')),as.list)[[1]]
-data = plotly_triangular_mesh(
+pts <- read_mniobj('data/surf_reg_model_both.obj')[1]
+tri <- read_mniobj('data/surf_reg_model_both.obj')[2]
+intensities <- lapply(as.list(read.table('data/aal_atlas.txt')),as.list)[[1]]
+surfreg = plotly_triangular_mesh(
   pts,tri,intensities,
   colorscale=DEFAULT_COLORSCALE, flatshading=FALSE,
   showscale=FALSE, reversescale=FALSE, plot_edges=FALSE)
 
-data <- data[[1]]
-data[c(2,3,4,8,9,10)] = lapply(data[c(2,3,4,8,9,10)], unlist)
+surfreg <- surfreg[[1]]
+surfreg[c(2,3,4,8,9,10)] = lapply(surfreg[c(2,3,4,8,9,10)], unlist)
 
-saveRDS(data,file = 'surfreg.RData')
-
-pts <- read_mniobj('mouse_surf.obj')[1]
-tri <- read_mniobj('mouse_surf.obj')[2]
-intensities <- lapply(as.list(read.table('mouse_map.txt')),as.list)[[1]]
-data <- plotly_triangular_mesh(
+pts <- read_mniobj('data/mouse_surf.obj')[1]
+tri <- read_mniobj('data/mouse_surf.obj')[2]
+intensities <- lapply(as.list(read.table('data/mouse_map.txt')),as.list)[[1]]
+mouse_map <- plotly_triangular_mesh(
   pts,tri,intensities,
   colorscale=DEFAULT_COLORSCALE, flatshading=FALSE,
   showscale=FALSE, reversescale=FALSE, plot_edges=FALSE)
 
-data[[1]][c(2,3,4,8,9,10)] = lapply(data[[1]][c(2,3,4,8,9,10)], unlist)
+mouse_map[[1]][c(2,3,4,8,9,10)] = lapply(mouse_map[[1]][c(2,3,4,8,9,10)], unlist)
 
-pts <- read_mniobj('mouse_brain_outline.obj')[1]
-tri <- read_mniobj('mouse_brain_outline.obj')[2]
+pts <- read_mniobj('data/mouse_brain_outline.obj')[1]
+tri <- read_mniobj('data/mouse_brain_outline.obj')[2]
 outer_mesh <- plotly_triangular_mesh(
   pts,tri,intensities,
   colorscale=DEFAULT_COLORSCALE, flatshading=FALSE,
@@ -60,6 +55,7 @@ outer_mesh <- plotly_triangular_mesh(
 outer_mesh[[1]]['opacity'] = 0.5
 outer_mesh[[1]]['colorscale'] = 'Greys'
 outer_mesh[[1]][c(2,3,4,8,9,10)] = lapply(outer_mesh[[1]][c(2,3,4,8,9,10)], unlist)
-data[[2]] = outer_mesh[[1]]
+mouse_map[[2]] = outer_mesh[[1]]
 
-saveRDS(data,file = 'mouse.RData')
+save('initialGraphdata','realct','surfreg','mouse_map', file='alldata.RData', compress=TRUE, version=2)
+

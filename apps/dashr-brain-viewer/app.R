@@ -18,18 +18,16 @@ if (appName != ""){
   setwd(sprintf("/app/apps/%s", appName))
 }
 
-
-app = Dash$new()
-
-DEFAULT_COLORSCALE <- list(list(0,'#0c3383'), list(0.25,'#0a88ba'), list(0.5,'#f2d338'),
-                           list(0.75,'#f28f38'), list(1,'#d91e1e'))
-
-DEFAULT_COLORSCALE_NO_INDEX <- list("#0c3383", "#0a88ba", "#f2d338", "#f28f38", "#d91e1e")
-
 read_mniobj <- function(file){
   
   triangulate_polygons <- function(list_vertex_indices){
-    lapply(seq(1, length(list_vertex_indices), 3), function(k) x[k:(k+2)])
+    j = 1
+    otherlist = list()
+    for (k in seq(1,length(list_vertex_indices),3)) {
+      otherlist[[j]] = list_vertex_indices[k:(k+2)]
+      j = j+1
+    }
+    return(otherlist)
   }
   
   fp = readLines(con = file)
@@ -147,7 +145,16 @@ plotly_triangular_mesh <- function(vertices, faces, intensities=NULL, colorscale
   
 }
 
-data = readRDS('initialGraphdata.RData')
+DEFAULT_COLORSCALE <- list(list(0,'#0c3383'), list(0.25,'#0a88ba'), list(0.5,'#f2d338'),
+                           list(0.75,'#f28f38'), list(1,'#d91e1e'))
+
+DEFAULT_COLORSCALE_NO_INDEX <- list("#0c3383", "#0a88ba", "#f2d338", "#f28f38", "#d91e1e")
+
+source('brainDATA.R')
+
+load('alldata.RData', verbose = TRUE)
+
+data = initialGraphdata
 
 axis_template = list(
   showbackground=TRUE,
@@ -318,9 +325,6 @@ app$layout(htmlDiv(children = list(
 ))
 
 #CALLBACKS
-
-
-
 app$callback(output = list(id = 'brain-graph', property = 'figure'),
              params = list(input(id = 'brain-graph', property = 'clickData'),
                            input(id = 'radio-options', property = 'value'),
@@ -329,22 +333,19 @@ app$callback(output = list(id = 'brain-graph', property = 'figure'),
              function(clickData,val, colorrs, figure){
                if (data[['name']] != val){
                  if (val == 'human'){
-                   data = readRDS('realct.RData')
-                   traces = data
+                   traces = realct
                    figure = list(
                      data = list(traces),
                      layout = plot_layout
                    )
                  } else if (val == 'human_atlas'){
-                   data = readRDS('surfreg.RData')
-                   traces = data
+                   traces = surfreg
                    figure = list(
                      data = list(traces),
                      layout = plot_layout
                    )
                  } else if (val == 'mouse'){
-                   data = readRDS('mouse.RData')
-                   traces = data
+                   traces = mouse_map
                    figure = list(
                      data = traces,
                      layout = plot_layout
@@ -392,6 +393,7 @@ app$callback(output = list(id = 'brain-graph', property = 'figure'),
                            ANNO_TRACE_INDEX_OFFSET = 2
                          }
                          figure[['data']][i] <- NULL
+                         print(list('DEL. MARKER', i, figure[['layout']][['scene']][['annotations']]))
                          if (length(figure[['layout']][['scene']][['annotations']]) >= (i-ANNO_TRACE_INDEX_OFFSET)){
                            figure[['layout']][['scene']][['annotations']][i-ANNO_TRACE_INDEX_OFFSET] = NULL
                          } 
@@ -435,6 +437,3 @@ if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
   app$run_server()}
-
-
-
