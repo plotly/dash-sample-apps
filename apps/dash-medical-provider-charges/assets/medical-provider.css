@@ -12,7 +12,7 @@
 body {
   background-color: #171b26;
   color: #9fa6b7;
-  margin: 0;
+  overflow-x: hidden;
 }
 
 .banner {
