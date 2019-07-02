@@ -1,0 +1,4 @@
+*.swp
+notes/
+.ipynb_checkpoints/
+.ropeproject/
