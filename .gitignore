@@ -2,5 +2,3 @@ vv/
 *.pyc
 venv/
 .idea/
-.DS_Store
-/apps/.DS_Store
