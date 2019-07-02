@@ -1,4 +1,4 @@
-library(dash)
+library(dashR)
 library(plotly)
 library(dashCoreComponents)
 library(dashHtmlComponents)
@@ -6,18 +6,18 @@ library(dashHtmlComponents)
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
   pathPrefix <- sprintf("/%s/", appName)
-  
+
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  
+
   setwd(sprintf("./app/apps/%s", appName))
 }
 
 app <- Dash$new()
 
-setwd(sprintf("/app/apps/%s", appName))
+setwd(sprintf("./app/apps/%s", appName))
 
-df <- read.csv('./data/small_molecule_drugbank.csv', header = TRUE, sep = ",")
+df <- read.csv('./dashr-drug-discovery/data/small_molecule_drugbank.csv', header = TRUE, sep = ",")
 
 
 ###GRAPH PLOTLY OBJECTS###
@@ -37,50 +37,51 @@ subtitle2 <- htmlSpan(
   "a drug in the dropdown to add it to the drug candidates at the bottom."
 )
 
-three_d <- plot_ly(df, x = ~PKA, z = ~LOGP, y = ~SOL, size = ~MW, text = df$NAME,
+three_d <- plot_ly(df, x = ~PKA, z = ~LOGP, y = ~SOL, text = df$NAME, mode = 'markers',
                    marker = list(color = ~MW, 
-                                 sizeref= 2.5,
+                                 sizeref = 55,
+                                 size = ~MW,
                                  colorscale = colorscale, 
                                  colorbar = list(title = 'Molecular<br>Weight'),
                                  showscale = TRUE, 
                                  symbol = 'circle', 
-                                 sizemode='diameter', 
-                                 line = list( color = '#444'))) %>%
-  add_markers() %>%
+                                 sizemode='diameter',
+                                 line = list( color = '#444')
+                   )) %>%
   layout(scene = list(xaxis = list(title = 'pkA'),
                       yaxis = list(title = 'LogP', type = 'log'),
                       zaxis = list(title = 'Solubility (mg/ml)')),
          plot_bgcolor = '#d8d8d8')
 
-
-histo <- plot_ly(df, x=~PKA, y = ~LOGP, text = df$NAME,size = ~MW, type = 'histogram2d', colorscale = 'Greys', showscale = FALSE,
-                 marker= list(color = ~MW,
-                              sizeref= 2.5,
-                              colorscale = colorscale, 
-                              showscale = TRUE,
-                              colorbar = list(title = 'Molecular<br>Weight'),
-                              symbol = 'circle', 
-                              opacity = 0.7,
-                              sizemode='diameter', 
-                              line = list( color = '#444'))) %>%
-  add_markers()%>%                      
+histo <- plot_ly(df, x=~PKA, y = ~LOGP) %>% add_histogram2d(colorscale = 'Greys', showscale = FALSE)%>%
+  add_trace(df, x=~PKA, y=~LOGP, text = df$NAME,
+            type = 'scatter', mode = 'markers',
+            marker= list(color = ~MW,
+                         sizeref= 55,
+                         size = ~MW,
+                         colorscale = colorscale,
+                         colorbar = list(title = 'Molecular<br>Weight'),
+                         symbol = 'circle', 
+                         opacity = 0.7,
+                         sizemode='diameter', 
+                         line = list( color = '#444'))) %>%
   layout(xaxis = list(tickcolor ='rgb(250, 250, 250)',title = 'pkA', titlefont = list(color = 'rgb(0,0,0)'),zeroline=FALSE,  showticklabels = FALSE, showline = FALSE, showgrid = FALSE ),
          yaxis = list(tickcolor ='rgb(250, 250, 250)',title = 'LogP', titlefont = list(color = 'rgb(0,0,0)'),zeroline=FALSE,  showticklabels=FALSE, showline = FALSE, showgrid=FALSE),
          plot_bgcolor = 'rgb(0, 0, 0)',
          showlegend = FALSE
   )
 
-scatter_graph <- plot_ly(df, x=~PKA, y=~LOGP, size = ~MW, text = df$NAME,
+scatter_graph <- plot_ly(df, x=~PKA, y=~LOGP, text = df$NAME,
+                         type = 'scatter', mode = 'markers',
                          marker= list(color = ~MW,
-                                      sizeref= 2.5,
+                                      sizeref= 55,
+                                      size = ~MW,
                                       colorscale = colorscale,
                                       colorbar = list(title = 'Molecular<br>Weight'),
-                                      showscale = TRUE,
                                       symbol = 'circle', 
                                       opacity = 0.7,
                                       sizemode='diameter', 
                                       line = list( color = '#444'))) %>%
-  add_markers()%>%                      
   layout(xaxis = list( zeroline=FALSE, gridcolor = 'rgb(255, 255, 255)', showticklabels = FALSE,title = 'pkA' ),
          yaxis = list( zeroline=FALSE, gridcolor = 'rgb(255, 255, 255)', showticklabels = FALSE,title = 'LogP'),
          plot_bgcolor = '#d8d8d8'
@@ -99,7 +100,7 @@ make_dash_table <- function(selection){
                                         htmlTd(toString(df_subset$FORM[[i]])), 
                                         htmlTd(htmlTd(htmlImg(src=toString(df_subset$IMG_URL[[i]])))), 
                                         htmlTd(htmlA(href=toString(df_subset$PAGE[[i]]), children = "Datasheet"))) 
-                        ) })
+                      ) })
   }
   return(table)
 }
@@ -109,24 +110,22 @@ drug_options <- lapply(unique(df$NAME), function(drug_name){ list(label = drug_n
 
 figure <- three_d #initial figure
 starting_drug <- 'Levobupivacaine'
-#get img url from csv, initalized with starting drug
+#get idescription from csv, initalized with starting drug
 drug_description <- df$DESC[df$NAME == starting_drug]
-#get desc from csv, initalized with starting drug
+#get img url from csv, initalized with starting drug
 drug_img <- df$IMG_URL[df$NAME == starting_drug]
 
 app$layout(
   htmlDiv(list(
     htmlDiv(list(
       #Dash icon
-      htmlImg(src="https://dash.plot.ly/assets/images/logo.png",
-              style = list(height = '60px', float ='left', position = 'relative', right = '10px'))
-    ),className = 'app-banner'),
+      htmlImg(src="https://dash.plot.ly/assets/images/logo.png")
+    ),className = 'app__banner'),
     
     htmlDiv(list(
       htmlDiv(list(
         htmlDiv(list(
           #title + subtitles
-          htmlBr(),
           title,
           subtitle1_bold,
           subtitle1,
@@ -158,7 +157,7 @@ app$layout(
           ),
           dccGraph(
             id = 'clickable-graph',
-            hoverData = list(points = list(), range=NULL),
+            hoverData = list(points= list(), range = NULL),
             figure = figure
           )
         ), className= 'two-thirds column'),
@@ -199,11 +198,15 @@ app$callback(
   }
 )
 
+
 #callback for description
 app$callback(
   output = list(id = 'chem_desc', property = 'children'),
   params = list(input(id = 'clickable-graph', property = 'hoverData')),
   function(hover){
+    if(length(hover)==2){
+      return(drug_description)
+    }
     info <- hover$points[[1]]$text
     description <- df$DESC[df$NAME == info]
     return(description)
@@ -215,9 +218,12 @@ app$callback(
   output = list(id = 'chem_img', property = 'src'),
   params = list(input(id = 'clickable-graph', property = 'hoverData')),
   function(hover){
-    info <- hover$points[[1]]$text
-    img <- df$IMG_URL[df$NAME == info]
-    return(img)
+    if(length(hover)==2){
+      return(drug_img)
+    }
+      info <- hover$points[[1]]$text
+      img <- df$IMG_URL[df$NAME == info]
+      return(img)
   }
 )
 
@@ -226,8 +232,12 @@ app$callback(
   output = list(id = 'chem_name', property = 'href'),
   params = list(input(id = 'clickable-graph', property = 'hoverData')),
   function(hover){
-    info <- hover$points[[1]]$text
-    page_url <- df$PAGE[df$NAME==info]
+    if(length(hover)==2){
+      return("https://www.drugbank.ca/drugs/DB01002")
+    }
+      info <- hover$points[[1]]$text
+      page_url <- df$PAGE[df$NAME==info]
+   
     return(page_url)
   }
 )
@@ -237,8 +247,11 @@ app$callback(
   output = list(id = 'chem_name', property = 'children'),
   params = list(input(id = 'clickable-graph', property = 'hoverData')),
   function(hover){
-    info <- hover$points[[1]]$text
-    name <- df$NAME[df$NAME==info]
+    if(length(hover)==2){
+      return(starting_drug)
+    }
+      info <- hover$points[[1]]$text
+      name <- df$NAME[df$NAME==info]
     return(name)
   }
 )
