@@ -156,7 +156,7 @@ app$callback(
     if(is.na(filename)|| is.null(filename)){
       return("No file")
     } else if(filename==""){
-      return("Default File study.csv")
+      return("")
     } else{
       return(glue('Data {filename} has been successfully uploaded'))
     }
