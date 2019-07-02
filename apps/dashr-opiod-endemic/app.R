@@ -1,43 +1,39 @@
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-library(purrr)
 library(dplyr)
 library(stringr)
 library(glue)
 library(data.table)
 library(plotly)
-library(readr)
+
 
 appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
 
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
 
-setwd("/app/apps/dashr-opiod-endemic")
+  setwd(sprintf("/app/apps/%s", appName))
+}
 
 app <- Dash$new()
 
 # get lat long data and transform
-df_lat_lon <- as.data.frame(fread("lat_lon_counties.csv"))
+df_lat_lon <- fread("lat_lon_counties.csv")
 df_lat_lon$FIPS <- str_pad(df_lat_lon$FIPS, 5, pad = "0")
 
-# get lat long data and transform
-df_full_data <- as.data.frame(fread("age_adjusted_death_rate_no_quotes.csv"))
+# get age adjusted  data and transform
+df_full_data <- fread("age_adjusted_death_rate_no_quotes.csv")
 df_full_data$`County Code` <- str_pad(df_full_data$`County Code`, 5, pad = "0")
-df_full_data$County <- paste0(df_full_data$V2, ", ", df_full_data$County)
-df_full_data <- df_full_data[, -c(1,2)]
-df_full_data$`Age Adjusted Rate` <- replace(df_full_data$`Age Adjusted Rate`, 
-                                            df_full_data$`Age Adjusted Rate` == "Missing", "")
-df_full_data$Deaths <- replace(df_full_data$Deaths, df_full_data$Deaths == "Missing", "")
-df_full_data$`Age Adjusted Rate` <- sub("(Unreliable)", "", df_full_data$`Age Adjusted Rate`, 
-                                       ignore.case = TRUE)
-df_full_data$`Age Adjusted Rate` <- parse_number(as.character(df_full_data$`Age Adjusted Rate`))
-df_full_data$Deaths <- parse_number(as.character(df_full_data$Deaths))
-df_full_data$Deaths <- replace(df_full_data$Deaths , is.na(df_full_data$Deaths), 0)
-df_full_data$`Age Adjusted Rate` <- replace(df_full_data$`Age Adjusted Rate`, 
-                                            is.na(df_full_data$`Age Adjusted Rate`), 0)
+df_full_data$County <- paste0(df_full_data$County, ", ", df_full_data$State)
+df_full_data <- df_full_data[, -c(1,3)]
+df_full_data$`Age Adjusted Rate` <- gsub("[(Unreliable)]", "", df_full_data$`Age Adjusted Rate`, 
+                                        ignore.case = TRUE)
+df_full_data$`Age Adjusted Rate` <- as.numeric(df_full_data$`Age Adjusted Rate`, silent = F) 
+df_full_data$Deaths <- as.numeric(df_full_data$Deaths, silent = T)
+df_full_data$Year <- as.numeric(df_full_data$Year)
 
 YEARS = c(2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015)
 
@@ -62,7 +58,14 @@ mapbox_style <- "mapbox://styles/yunke0123/cjvo2m87d07mk1cpdbo3lvw3j"
 app$layout(htmlDiv(
   id ="root",
   children = list(
-    htmlH4(children = "Rate of US Poison-Induced Deaths"),
+    htmlDiv(list(
+      htmlH4(children = "Rate of US Poison-Induced Deaths"),
+      
+      htmlImg(
+        src  =  "assets/dash-logo-new.png",
+        style  = list('float' = "right", 'height' = "50px")
+      )
+    )),
     htmlP(id = "description", 
           children = "† Deaths are classified using the International Classification of Diseases, \
           Tenth Revision (ICD–10). Drug-poisoning deaths are defined as having ICD–10 underlying \
@@ -89,8 +92,8 @@ app$layout(htmlDiv(
                   value = min(YEARS),
                   marks <- as.list(
                     setNames(
-                      seq(from = min(YEARS), to = max(YEARS), by = 1),
-                      seq(from = min(YEARS), to = max(YEARS), by = 1)
+                      as.character(seq(from = min(YEARS), to = max(YEARS), by = 1)),
+                      as.character(seq(from = min(YEARS), to = max(YEARS), by = 1))
                     )
                   )
                 )
@@ -102,7 +105,6 @@ app$layout(htmlDiv(
                 htmlP(glue("Heatmap of age adjusted mortality rates from poisonings in year {min(YEARS)}"), 
                       id = "heatmap-title"
                 ),
-                
                 dccGraph(
                   id = "county-choropleth",
                   figure = list(
@@ -150,7 +152,7 @@ app$layout(htmlDiv(
               id="chart-dropdown"
             ),
             dccGraph(
-              id = "selected-data",
+              id = "selected-data", #style = list('padding' = "30px"),
               figure = list(
                 data = list(list(x = 0, y = 0)),
                 layout = list(
@@ -165,8 +167,6 @@ app$layout(htmlDiv(
       ))
   )
 ))
-
-
 app$callback(
   output = list("id" = "county-choropleth", "property" = "figure"),
   params = list(
@@ -175,9 +175,7 @@ app$callback(
   ),
   
   function(year, figure){
-    
     cm <- mapply(c, BINS, DEFAULT_COLORSCALE, SIMPLIFY = FALSE) 
-    
     data <- list(list(
       lat = df_lat_lon[["Latitude"]],
       lon = df_lat_lon[["Longitude"]],
@@ -186,7 +184,6 @@ app$callback(
       hoverinfo = "text",
       marker = list(size = 5, color = "white", opacity = 0)
     ))
-    
     annotations <- list(list(
       showarrow = FALSE,
       align = "right",
@@ -197,11 +194,11 @@ app$callback(
       y = 0.95
     ))
     
-    X <- rev(BINS)
+    Bin_Rev <- rev(BINS)
     cm_name <- sapply(cm, function(n) n[1])
-    annotations_1 <- lapply(1:length(X), 
+    annotations_1 <- lapply(1:length(Bin_Rev), 
                             function(i) {
-                              index <- which(cm_name %in% X[[i]])
+                              index <- which(cm_name %in% Bin_Rev[[i]])
                               color <- cm[[index]][2]
                               bin <- cm[[index]][1]
                               list(
@@ -246,7 +243,6 @@ app$callback(
     
     base_url = "https://raw.githubusercontent.com/jackparmer/mapbox-counties/master/"
     
-    ### CHeck this function
     cm_name <- sapply(cm, function(n) n[1])
     geo_layer <- lapply(1:length(BINS),
                         function(i){
@@ -261,13 +257,9 @@ app$callback(
                             fill = list(outlinecolor = "#afafaf")
                           )
                         })
-    
     layout$mapbox$layers = geo_layer 
-    
     fig <- list("data" = data, "layout" = layout)
-    
     return(fig)
-    
   }
 )
 
@@ -276,10 +268,9 @@ app$callback(
   params = list(input("id" = "years-slider", property = "value")),
   
   function(year){
-    # Functio prints year selected from range slider
+    # Function prints year selected from range slider
     return(glue("Heatmap of age adjusted mortality rates from poisonings in year {year}"))
   }
-  
 )
 
 app$callback(
@@ -306,27 +297,26 @@ app$callback(
         )
       )
     }else{
-      
       pts <- selectedData[["points"]]
-      
       fips <- lapply(1:length(pts),
                      function(i){
                        as.character(parse_number(as.character(pts[[i]]["text"])))
-                       })
-      
+                     })
       fips <- sapply(1:length(fips),
                      function(i){
+                       
                        if(is.na(fips[[i]])){
-                         0
+                         "0" #fips <- fips[-fips[[i]]]
                        }else{
                          if(nchar(fips[[i]]) == 4){
                            fips[[i]] = paste0("0", fips[[i]])
                          }else{fips[[i]] = fips[[i]]}
                        }
                      })
+      
+      fips <- fips[fips %in% "0" == FALSE]
       dff <- filter(df_full_data, df_full_data$`County Code` %in% fips)
       dff <- dff[with(dff, order(Year)), ] 
-      
       if(chart_dropdown != "death_rate_all_time"){
         title <- "Absolute deaths per county, <b>1999-2016</b>"
         AGGREGATE_BY <- "Deaths"
@@ -339,23 +329,42 @@ app$callback(
           AGGREGATE_BY <- "Age Adjusted Rate"
         }
         
-        deaths_or_rate_by_fips <- aggregate(x = dff[[AGGREGATE_BY]], by=list(County=dff$County), FUN = sum) 
+        deaths_or_rate_by_fips <- aggregate(x = dff[[AGGREGATE_BY]], by = list(County=dff$County), 
+                                            FUN = function(x){sum((x[!is.na(x)]))}) 
+        #print(deaths_or_rate_by_fips)
         # Only look at non-zero rows:
         deaths_or_rate_by_fips <- filter(deaths_or_rate_by_fips, deaths_or_rate_by_fips[[2]] > 0)
         deaths_or_rate_by_fips <- deaths_or_rate_by_fips[with(deaths_or_rate_by_fips, order(x)), ]
+        deaths_or_rate_by_fips <- filter(deaths_or_rate_by_fips, !is.null(deaths_or_rate_by_fips[2]))
         # plot for histograms (Death by year)
         x <- deaths_or_rate_by_fips[,1]
         y <- deaths_or_rate_by_fips[,2]
         
-        fig <- plot_ly(deaths_or_rate_by_fips, x = x, y = y, type = "bar",
+
+        fig <- plot_ly(x = x, y = y, type = "bar",
                        marker = list(color = "#2cfec1", size = 4, line = list(width = 0)),
                        textposition = "outside", opacity = 1) %>%
-          layout(title = title, autosize = TRUE, 
-                 paper_bgcolor = "#1f2630", plot_bgcolor = "#1f2630",
+          layout(title = title, 
+                 autosize = TRUE, 
+                 paper_bgcolor = "#1f2630", 
+                 plot_bgcolor = "#1f2630",
                  font = list(color = "#2cfec1"),
-                 xaxis = list(title = "", tickfont = list(color = "#2cfec1"), gridcolor = "#5b5b5b",
-                              categoryorder = "array", categoryarray = c(sort(deaths_or_rate_by_fips[,2]))),
-                 yaxis = list(title = "", tickfont = list(color = "#2cfec1"), gridcolor = "#5b5b5b"))
+                 xaxis = list(title = "", 
+                              tickfont = list(color = "#2cfec1"), 
+                              gridcolor = "#5b5b5b", 
+                              categoryorder = "array", 
+                              categoryarray = c(sort(deaths_or_rate_by_fips[,2]))
+                 ),
+                 yaxis = list(title = "", 
+                              tickfont = list(color = "#2cfec1"), 
+                              gridcolor = "#5b5b5b"),
+                 margin = list(
+                   r = 30, 
+                   t = 40, 
+                   b = 0, 
+                   l = 30
+                 )
+          )
         return(fig)
       }
       
@@ -365,19 +374,37 @@ app$callback(
                      textposition = "outside", opacity = 1,  mode = "markers+lines",
                      marker = list(size = 4, line = list(width = 1))) %>%
         layout(title = list(glue("<b>{length(fips)} counties selected")), 
-               paper_bgcolor = "#1f2630", plot_bgcolor = "#1f2630", font = list(color = "#2cfec1"),
-               autosize = TRUE, hovermode = "closest", 
-               xaxis = list(title = "", tickfont = list(color = "#2cfec1"), gridcolor = "#5b5b5b", 
+               paper_bgcolor = "#1f2630", 
+               plot_bgcolor = "#1f2630", 
+               font = list(color = "#2cfec1"),
+               autosize = TRUE, 
+               hovermode = "closest", 
+               xaxis = list(title = "", 
+                            tickfont = list(color = "#2cfec1"), 
+                            gridcolor = "#5b5b5b", 
                             fixedrange = FALSE),
                yaxis = list(title = "Age-adjusted death rate per county per year",
-                            tickfont = list(color = "#2cfec1"), gridcolor = "#5b5b5b",
-                            fixedrange = TRUE))
-      fig$sizingPolicy$padding = "20px"
+                            tickfont = list(color = "#2cfec1"), 
+                            gridcolor = "#5b5b5b",
+                            fixedrange = TRUE),
+               margin = list(
+                 r = 30, 
+                 t = 40, 
+                 b = 0, 
+                 l = 30
+               )
+        )
+      #fig$sizingPolicy$padding = "20px"
       return(fig)
     }
   }
 )
-app$run_server(host = "0.0.0.0", port = Sys.getenv("PORT", 8080))
+
+if (appName != "") {
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+} else {
+  app$run_server()
+}
 
 
 
