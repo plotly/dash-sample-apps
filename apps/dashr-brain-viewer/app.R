@@ -152,7 +152,7 @@ DEFAULT_COLORSCALE_NO_INDEX <- list("#0c3383", "#0a88ba", "#f2d338", "#f28f38", 
 
 source('brainDATA.R')
 
-load('alldata.RData', verbose = TRUE)
+load('data/alldata.RData', verbose = TRUE)
 
 data = initialGraphdata
 
