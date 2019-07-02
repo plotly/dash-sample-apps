@@ -99,7 +99,7 @@ createTree <- function(virus_name, tree_file, metadata_file){
   nb_genome <- DT2[Clade == TRUE, .N]
   graph_title <- sprintf(
     paste0(
-      "phylogeny of %s Virus<br>",
+      "Phylogeny of %s Virus<br>",
       " %s genomes colored according to region and country"
     ),
     paste0(
