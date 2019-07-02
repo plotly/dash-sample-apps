@@ -12,7 +12,7 @@ Try out the [demo app here](https://dash-gallery.plotly.host/dash-object-detecti
 
 ### Using the demo
 
-To get started, select a footage you want to view, and choose the display mode (with or without bounding boxes). Then, you can start playing the video, and the visualization will be displayed depending on the current time.
+To get started, select the footage you want to view, and choose the display mode (with or without bounding boxes). Then, you can start playing the video, and the result of objects detected will be displayed in accordance to the current video-playing time.
 
 ### Running the app locally
 
@@ -43,7 +43,7 @@ python app.py
 
 ## About this app
 
-The videos are displayed using a community-maintained Dash video component. It is made by two Plotly community contributors. You can find the [source code here](https://github.com/SkyRatInd/Video-Engine-Dash).
+The videos are displayed using a community-created Dash video component. You can find reference to the [source code here](https://github.com/plotly/dash-player).
 
 All videos used are open-sourced under Creative Commons. The [original links can be found here](data/original_footage.md).
 
@@ -59,6 +59,7 @@ The data displayed in the app are pre-generated for demo purposes. To generate t
 
 - [Dash](https://dash.plot.ly/) - Main server and interactive components
 - [Plotly Python](https://plot.ly/python/) - Used to create the interactive plots
+- [Dash Player](https://github.com/plotly/dash-player) - Used to control and play videos using Dash
 - [OpenCV](https://docs.opencv.org/) - Create the video with bounding boxes
 - [Tensorflow](https://www.tensorflow.org/api_docs/) - Generate the bounding box data
 

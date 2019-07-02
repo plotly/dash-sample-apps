@@ -93,9 +93,9 @@ def markdown_popup():
                                 lets you interpret how the object classes are divided, which is useful when analyzing videos with numerous
                                 and differing objects.
 
-                                ##### More about this dash app
+                                ##### More about this Dash app
                                 
-                                The purpose of this demo is to explore alternative visualization methods for Object Detection. Therefore,
+                                The purpose of this demo is to explore alternative visualization methods for object detection. Therefore,
                                 the visualizations, predictions and videos are not generated in real time, but done beforehand. To read
                                 more about it, please visit the [project repo](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-object-detection).
 
@@ -130,9 +130,9 @@ app.layout = html.Div(
                             children=[
                                 html.H4("Object Detection Explorer"),
                                 html.P(
-                                    "To get started, select a footage you want to view, and choose the display mode (with or without"
-                                    " bounding boxes). Then, you can start playing the video, and the visualization will "
-                                    "be displayed depending on the current time."
+                                    "To get started, select the footage you want to view, and choose the display mode (with or without "
+                                    "bounding boxes). Then, you can start playing the video, and the result of objects detected "
+                                    "will be displayed in accordance to the current video-playing time."
                                 ),
                                 html.Button(
                                     "Learn More", id="learn-more-button", n_clicks=0
@@ -145,15 +145,6 @@ app.layout = html.Div(
                                 className="video-container",
                                 children=player.DashPlayer(
                                     id="video-display",
-                                    style={
-                                        "position": "absolute",
-                                        "width": "100%",
-                                        "height": "100%",
-                                        "top": "0",
-                                        "left": "0",
-                                        "bottom": "0",
-                                        "right": "0",
-                                    },
                                     url="https://www.youtube.com/watch?v=gPtn6hD7o8g",
                                     controls=True,
                                     playing=False,
@@ -708,4 +699,4 @@ def update_heatmap_confidence(n, current_time, footage, threshold):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(dev_tools_hot_reload=False, debug=True)
+    app.run_server(debug=True, port=8053)
