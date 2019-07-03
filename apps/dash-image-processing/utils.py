@@ -1,8 +1,17 @@
-import dash_core_components as dcc
+import os
+import pathlib
 import json
+
+import dash_core_components as dcc
 import plotly.graph_objs as go
-import dash_reusable_components as drc
+# import dash_reusable_components as drc
+
 from PIL import Image, ImageFilter, ImageDraw, ImageEnhance
+
+# drc = importlib.import_module("apps.dash-iamge-processing.dash_reusable_components")
+
+#
+APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
 # [filename, image_signature, action_stack]
 STORAGE_PLACEHOLDER = json.dumps(
@@ -10,7 +19,7 @@ STORAGE_PLACEHOLDER = json.dumps(
 )
 
 IMAGE_STRING_PLACEHOLDER = drc.pil_to_b64(
-    Image.open("images/default.jpg").copy(), enc_format="jpeg"
+    Image.open( os.path.join(APP_PATH, os.path.join("images", "default.jpg"))).copy(), enc_format="jpeg"
 )
 
 GRAPH_PLACEHOLDER = dcc.Graph(
