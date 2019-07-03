@@ -30,42 +30,38 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    overflow: auto;
+    overflow: hidden;
     /*background-color: #114073;*/
     padding: 3rem 0;
-    width: 100%;
-    margin-bottom: 2%;
+    width: 80%;
+    margin: 2rem auto;
 }
 
 .banner h2 {
     color: white;
-    margin: 0 3rem;
+    margin: 2rem 0;
     display: inline-block;
     font-family: 'Open Sans', sans-serif;
-    font-size: 4rem;
-    padding: 2rem;
+    font-size: 3rem;
 }
 
 .banner Img {
     position: relative;
     float: right;
     height: 8rem;
-    margin: 0 3rem;
+    margin: 0 -1rem 0 48px;
   }
 
 
-@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 1100px) {
     .banner .container.scalable {
         flex-direction: column-reverse;
         justify-content: space-between;
     }
-    .banner h2 {
-        font-size: 4rem;
-    }
     .banner Img {
         height: 8rem;
         float: left;
-        margin-bottom: 2rem;
+        margin: 0 48px 0 -1rem;
     }
 }
 /* Grid
@@ -80,7 +76,7 @@
   margin-right: auto;
   margin-bottom: 10px;
   color: #302F54;
-  padding: 8px;
+  padding: 1rem;
   /*width: 90%;*/
   max-width: none;
   box-sizing: border-box;
