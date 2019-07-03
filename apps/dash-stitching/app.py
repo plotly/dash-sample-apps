@@ -131,10 +131,7 @@ app.layout = html.Div(
                             "LEARN MORE",
                             className="button_instruction",
                             id="learn-more-button",
-                        ),
-                        html.Button(
-                            "Upload demo data", id="demo", className="button_demo"
-                        ),
+                        )
                     ],
                     className="mobile_buttons",
                 ),
@@ -210,14 +207,16 @@ app.layout = html.Div(
                             editable=True,
                             style_table={
                                 "width": "81%",
-                                "margin-left": "2.5%",
+                                "margin-left": "4.5%",
                                 "border-radius": "4px",
+                                
                             },
                             style_cell={
                                 "text-align": "center",
                                 "font-family": "Geneva",
                                 "backgroundColor": "#01183A",
-                                "color": "white",
+                                "color": "#8898B2",
+                                'border': '1px solid #8898B2'
                             },
                         )
                     ],
@@ -237,16 +236,19 @@ app.layout = html.Div(
                     id="stitching-tabs",
                     value="canvas-tab",
                     children=[
-                        dcc.Tab(label="Image Tiles", value="canvas-tab"),
-                        dcc.Tab(label="Stitched Image", value="result-tab"),
-                        dcc.Tab(label="How To Use This App", value="help-tab"),
+                        dcc.Tab(label="IMAGE TILES", value="canvas-tab"),
+                        dcc.Tab(label="STITCHED IMAGE", value="result-tab"),
+                        dcc.Tab(label="HOW TO USE THIS APP", value="help-tab"),
                     ],
                     className="tabs",
                 ),
                 html.Div(
                     id="tabs-content-example",
                     className="canvas",
-                    style={"text-align": "center", "margin": "auto"},
+                    style={"text-align": "left", "margin": "auto"},
+                ),
+                html.Button(
+                    "Upload demo data", id="demo", className="button_demo"
                 ),
                 html.Div(
                     image_upload_zone("upload-stitch", multiple=True, width="100px"),
@@ -283,6 +285,7 @@ def fill_tab(tab):
                 ),
                 goButtonTitle="Estimate translation",
             )
+            
         ]
     elif tab == "result-tab":
         return [
