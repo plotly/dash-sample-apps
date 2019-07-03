@@ -5,6 +5,7 @@ import dash_html_components as html
 import pandas as pd
 import flask
 import plotly.plotly as py
+import pathlib
 
 from app import app, server, sf_manager
 from apps import opportunities, cases, leads
@@ -16,7 +17,7 @@ app.layout = html.Div(
             className="row header",
             children=[
                 html.Span("CRM App using Salesforce API", className="app-title"),
-                html.Img(src="static/logo.png"),
+                html.Img(src=app.get_asset_url("assets/logo.png")),
             ],
         ),
         # tabs
