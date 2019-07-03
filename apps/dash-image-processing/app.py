@@ -6,6 +6,7 @@ from copy import deepcopy
 import csv
 import sys
 import shutil
+import pathlib
 
 import boto3
 import dash
@@ -22,6 +23,7 @@ from utils import apply_filters, show_histogram, generate_lasso_mask, apply_enha
 
 DEBUG = True
 LOCAL = False
+APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
 app = dash.Dash(__name__)
 server = app.server
@@ -48,7 +50,7 @@ secret_access_key = os.environ.get("SECRET_ACCESS_KEY")
 bucket_name = os.environ.get("BUCKET_NAME")
 
 # Empty cache directory before running the app
-folder = "data/cache-directory/"
+folder = os.path.join(APP_PATH, os.path.join("data","cache-directory/"))
 for the_file in os.listdir(folder):
     file_path = os.path.join(folder, the_file)
     try:
