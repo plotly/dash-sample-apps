@@ -249,8 +249,8 @@ def generate_table():
     df = df[cols]
     return dt.DataTable(
         id="table",
-        sort_action=True,
-        filter_action=True,
+        sort_action='native',
+        filter_action='native',
         row_deletable=True,
         css={"rule": "display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;"},
         style_data={"whiteSpace": "normal"},
