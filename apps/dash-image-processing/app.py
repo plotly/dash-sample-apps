@@ -39,7 +39,7 @@ if "BUCKET_NAME" in os.environ:
 else:
     LOCAL = True
     # Caching with filesystem when served locally
-    cache_config = {"CACHE_TYPE": "filesystem", "CACHE_DIR": "data/cache-directory"}
+    cache_config = {"CACHE_TYPE": "filesystem", "CACHE_DIR": os.path.join(APP_PATH, "cache-directory")}
 
 # S3 Client. It is used to store user images. The bucket name
 # is stored inside the utils file, the key is
@@ -48,9 +48,9 @@ else:
 access_key_id = os.environ.get("ACCESS_KEY_ID")
 secret_access_key = os.environ.get("SECRET_ACCESS_KEY")
 bucket_name = os.environ.get("BUCKET_NAME")
-print(os.listdir(APP_PATH))
+
 # Empty cache directory before running the app
-folder = os.path.join(APP_PATH, os.path.join("data", "cache-directory"))
+folder = os.path.join(APP_PATH, "cache-directory")
 for the_file in os.listdir(folder):
     file_path = os.path.join(folder, the_file)
     try:
