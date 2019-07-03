@@ -361,12 +361,11 @@ app$layout(
         list(
           htmlDiv(
             list(
-              htmlH2(
-                "Phylogeny trees and global spread of 6 viruses",
-                id = "title"
-              ),
               htmlImg(
                 src = "assets/dash-logo-white.png"
+              ),
+              htmlH2(
+                "Phylogeny trees and global spread of 6 viruses",
               )
             )
           ),
@@ -374,11 +373,14 @@ app$layout(
             htmlA(
               "Learn More",
               href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-phylogeny",
-              style = list(color = "white")
+              style = list(
+                color = "white",
+                textDecoration = "none"
+              )
             ), 
             style = list(
-              width = "20rem",
-              margin = "3rem 0 0 3rem"
+              width = "15rem",
+              border = "1px white solid"
             )
           )
         ),
@@ -394,7 +396,6 @@ app$layout(
           justifyContent = "space-around",
           paddingBottom = "3rem",
           width = "80%"
-
         ),
         children = list(
           htmlDiv(
@@ -574,6 +575,9 @@ app$layout(
         )
       ),
       htmlDiv(
+        style = list(
+          marginBottom = "5rem"
+        ),
         list(
           htmlDiv(
             id = "top-graphs",
@@ -668,6 +672,7 @@ app$layout(
                 style = list(
                   width = "59%", 
                   marginLeft = 0,
+                  marginTop = "1rem",
                   marginBottom = "1rem",
                   float = "left", 
                   boxSizing = "border-box"
@@ -690,6 +695,7 @@ app$layout(
                 style = list(
                   width = "39%", 
                   float = "left", 
+                  marginTop = "1rem",
                   marginBottom = "1rem",
                   marginRight = 0,
                   boxSizing = "border-box"
