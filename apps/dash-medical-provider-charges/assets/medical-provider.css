@@ -113,10 +113,12 @@ span.Select-clear-zone {
   border-top: 1px solid #1f2536;
   height: 800px;
   overflow-y: scroll;
+  overflow-x: scroll;
 }
 
 #procedure-plot {
   height: 6000px;
+  min-width: 1200px;
 }
 
 #geo-map-loading-outer {
@@ -200,11 +202,17 @@ span.Select-clear-zone {
     margin-left: 0;
   }
 
-  /*
-Hide y axis labels for mobile device
-*/
+  #lower-container {
+    position: relative;
+  }
+
+  /* position procedure plot relative to outer div in mobile layout  */
   #procedure-plot {
-    margin: -300px 0px -200px -80px;
+    position: absolute;
+  }
+
+  g.yaxislayer-above > g > text {
+    font-size: 10px !important;
   }
 
 }
