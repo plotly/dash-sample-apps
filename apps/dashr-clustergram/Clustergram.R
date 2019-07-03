@@ -60,7 +60,43 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
             value = 'prostatecancer'
           ),
           
-          a
+          htmlBr(),
+          
+          htmlDiv(
+            'Upload dataset',
+            title = 'Upload your own dataset below',
+            className = 'app-controls-name'
+          ),
+          
+          htmlDiv(
+            id = 'file-upload-name'
+          ),
+          
+          htmlDiv(
+            id = 'clustergram-file-upload-container',
+            title = 'Upload your own dataset here.',
+            children = list(
+              dccUpload(
+                id = 'file-upload',
+                className = 'control-upload',
+                children = htmlDiv(list(
+                  "Drag and drop .soft files, or click to select files."
+                )),
+                accept = '.soft'
+              )
+            )
+          ),
+          
+          htmlDiv(list(
+            htmlA(
+              htmlButton(
+                'Download sample .soft data',
+                id = 'clustergram-download-sample-data',
+                className = 'control-download'
+              ),
+              href = ("assets/sample_data/clustergram_GDS5826.soft")
+            )
+          ))
         ))
       )
     ))
