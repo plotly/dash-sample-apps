@@ -48,7 +48,7 @@ else:
 access_key_id = os.environ.get("ACCESS_KEY_ID")
 secret_access_key = os.environ.get("SECRET_ACCESS_KEY")
 bucket_name = os.environ.get("BUCKET_NAME")
-
+print(os.listdir(APP_PATH))
 # Empty cache directory before running the app
 folder = os.path.join(APP_PATH, os.path.join("data", "cache-directory"))
 for the_file in os.listdir(folder):
