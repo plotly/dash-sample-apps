@@ -614,7 +614,7 @@ def update_hospital_datatable(geo_select, procedure_select, cost_select, state_s
         navigation="page",
         style_cell={"background-color": "#242a3b", "color": "#7b7d8d"},
         style_as_list_view=False,
-        style_header={"background-color": "#1f2536", 'padding': "0px 5px"},
+        style_header={"background-color": "#1f2536", "padding": "0px 5px"},
     )
 
 
