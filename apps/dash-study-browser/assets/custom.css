@@ -97,10 +97,14 @@ h5{
   border: 1px solid #203cb3;
 }
 
+@media only screen and (max-width: 320px){
+  .Select-menu-outer, .Select-value{
+    font-size: 10.5px;
+  }
+}
+
 /* mobile */
 @media only screen and (max-width: 768px) {
-
-    
   .upload{
     line-height: 60px;
     border-width: 1px;
@@ -161,6 +165,7 @@ h5{
   }
 
   .user-control{
-    padding: 24px 64px;
+    padding-top: 24px;
+    padding-bottom: 24px;
   }
 }
