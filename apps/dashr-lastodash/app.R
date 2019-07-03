@@ -123,8 +123,8 @@ generate_table <- function() {
   return(
     dashDataTable(
       id = "table",
-      sort_action = TRUE,
-      filter_action = TRUE,
+      sort_action = 'native',
+      filter_action = 'native',
       row_deletable = TRUE,
       css = list(list(
         selector = '.dash-cell div.dash-cell-value',
