@@ -155,7 +155,7 @@ body {
 }
 
 #_dash-app-content>div {
-  background-color: #e9e7e7;
+  background-color: #f8f2f2;
 }
 
 #_dash-app-content>div>div.eight.columns.result {
@@ -289,27 +289,6 @@ input[type="button"] {
 }
 
 
-.button_demo {
-  height: 34px;
-  width: 115px;
-  padding-bottom: 10px;
-  color: white;
-  text-align: center;
-  font-size: 9px;
-  font-family: 'Geneva';
-  font-weight: 200;
-  line-height: 38px;
-  letter-spacing: .1rem;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-  background-color: green;
-  cursor: pointer;
-  box-sizing: border-box;
-  border-radius: 2px;
-  border:transparent !important;
-}
-
 .button_submit {
   margin-left: 9%;
   height: 38px;
@@ -431,10 +410,10 @@ input[type="button"].button-primary:focus {
   margin-top: 4px;
 }
 
+
 /*Estimate Translation */
 #tabs-content-example>div>button:nth-child(9) {
   margin-left: 0;
-  height: 38px;
   width: 200px;
   padding: 0;
   color: #FBFFFF !important;
@@ -452,6 +431,33 @@ input[type="button"].button-primary:focus {
   border: 1px solid;
   cursor: pointer;
   box-sizing: border-box;
+}
+
+/* Upload Demo Button*/
+#demo>button {
+  margin-left: 0;
+  height: 50px !important;
+  width: 200px;
+  padding: 0;
+  color: #FBFFFF !important;
+  text-align: center;
+  font-size: 11px;
+  font-family: 'Geneva';
+  font-weight: 200;
+  line-height: 38px;
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: turquoise;
+  border-radius: 4px;
+  border: 1px solid;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.demo_button {
+  display: inline;
   
 }
 
@@ -570,6 +576,29 @@ label > .label-body {
   margin-left: .5rem;
   font-weight: normal; }
 
+
+#downsample>label:nth-child(1),
+#downsample>label:nth-child(2),
+#downsample>label:nth-child(3),
+#downsample>label:nth-child(4) {
+  color: white;
+}
+
+#downsample>label:nth-child(1)>input[type=radio] {
+  margin-right: 10px;
+}
+
+#downsample>label:nth-child(2)>input[type=radio] {
+  margin-right: 10px;
+}
+
+#downsample>label:nth-child(3)>input[type=radio] {
+  margin-right: 10px;
+}
+
+#downsample>label:nth-child(4)>input[type=radio] {
+  margin-right: 10px;
+}
 
 
 /* Lists
@@ -849,6 +878,8 @@ there.
     text-align: center;
     width: 100;
   }
+
+
 
   .shift_table {
     margin: 10 auto;
