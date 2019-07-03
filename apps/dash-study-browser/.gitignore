@@ -3,3 +3,5 @@ venv
 *.pyc
 .DS_Store
 .env
+empty.csv
+test.csv
