@@ -614,7 +614,7 @@ def update_hospital_datatable(geo_select, procedure_select, cost_select, state_s
         navigation="page",
         style_cell={"background-color": "#242a3b", "color": "#7b7d8d"},
         style_as_list_view=False,
-        style_header={"background-color": "#1f2536"},
+        style_header={"background-color": "#1f2536", 'padding': "0px 5px"},
     )
 
 
@@ -693,7 +693,7 @@ def update_procedure_stats(procedure_select, geo_select, cost_select, state_sele
         pagination_settings={"displayed_pages": 1, "current_page": 0, "page_size": 5},
         navigation="page",
         style_as_list_view=False,
-        style_header={"background-color": "#1f2536"},
+        style_header={"background-color": "#1f2536", "padding": "2px 12px 0px 12px"},
     )
 
 
