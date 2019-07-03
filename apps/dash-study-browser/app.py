@@ -86,13 +86,14 @@ app.layout = html.Div(
                                         html.H6("CSV File"),
                                         dcc.Upload(
                                             id="upload-data",
+                                            className="upload",
                                             children=html.Div(
-                                                className="upload",
                                                 children=[
                                                     html.P("Drag and Drop or "),
                                                     html.A("Select Files"),
                                                 ],
                                             ),
+                                            accept=".csv"
                                         ),
                                     ],
                                 ),
@@ -113,7 +114,7 @@ app.layout = html.Div(
                         )
                     ],
                 ),
-                dcc.Store(id="stored-data", storage_type="memory"),
+                dcc.Store(id="error", storage_type="memory"),
             ],
         ),
     ]
@@ -124,6 +125,7 @@ app.layout = html.Div(
 # If there is an error use default data else use uploaded data
 @app.callback(
     [
+        Output("error", "data"),
         Output("error-message", "children"),
         Output("study-dropdown", "options"),
         Output("study-dropdown", "value"),
@@ -132,6 +134,7 @@ app.layout = html.Div(
 )
 def update_error(contents):
 
+    error_status = False
     error_message = None
     study_data = default_study_data
 
@@ -144,7 +147,6 @@ def update_error(contents):
         try:
             study_data = pd.read_csv(io.StringIO(decoded.decode("utf-8")))
 
-            # Missing columns
             missing_columns = {
                 "group_id",
                 "group_type",
@@ -157,14 +159,16 @@ def update_error(contents):
                     className="alert",
                     children=["Missing columns: " + str(missing_columns)],
                 )
+                error_status = True
                 study_data = default_study_data
 
         # Data is invalid
-        except Exception as error:
+        except Exception as e:
             error_message = html.Div(
                 className="alert",
                 children=["That doesn't seem to be a valid csv file!"],
             )
+            error_status = True
             study_data = default_study_data
 
     # Update Dropdown
@@ -183,18 +187,21 @@ def update_error(contents):
             options.append({"label": study, "value": study})
 
     options.sort(key=lambda item: item["label"])
-    value = options[0]["value"]
+    value = options[0]["value"] if options else None
 
-    return error_message, options, value
+    return error_status, error_message, options, value
 
 
 # Callback to generate study data
 @app.callback(
     Output("plot", "figure"),
     [Input("chart-type", "value"), Input("study-dropdown", "value")],
-    [State("upload-data", "contents"), State("error-message", "children")],
+    [State("upload-data", "contents"), State("error", "data")],
 )
 def update_output(chart_type, study, contents, error):
+    if study is None:
+        return {}   
+
     if error or not contents:
         study_data = default_study_data
     else:
@@ -205,9 +212,6 @@ def update_output(chart_type, study, contents, error):
     study_data["reading_value"] = pd.to_numeric(
         study_data["reading_value"], errors="coerce"
     )
-
-    if study is None:
-        study = study_data.study_id[0]
 
     study_data = study_data[study_data.study_id == study]
     vehicle_readings = study_data["reading_value"][
@@ -297,7 +301,7 @@ def update_output(chart_type, study, contents, error):
         groups_to_annotate = all_groups - ref_groups - control_groups
         annotations = [
             dict(
-                x=test_stats[group_id]["index"],
+                x=test_stats.get(group_id, {'index':'None'})["index"],
                 y=test_stats[group_id]["max_y"]
                 + data_range / (4 if chart_type == "violin" else 10),
                 text="{}<br>{}".format(

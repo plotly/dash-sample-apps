@@ -1,17 +1,5 @@
-
 /*Fonts ––––––––––––––––––––––––––––––––––––––––––––––––––*/
-@font-face {
-  font-family: "Roboto Black";
-  src: url("Roboto-Black.ttf") format('opentype');
-}
-@font-face {
-  font-family: "Roboto Medium";
-  src: url("Roboto-Medium.ttf") format('opentype');
-}
-@font-face{
-  font-family: "Roboto";
-  src: url("Roboto-Regular.ttf") format('opentype');
-}
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 body{
   margin: 0px;
@@ -40,10 +28,10 @@ body{
 }
 
 .h2-title, .h2-title-mobile{
-  font-family: 'Roboto Black';
+  font-family: 'Roboto';
   display: inline-block;
   letter-spacing: 3.8px;
-  font-weight: bold;
+  font-weight: 800;
   font-size: 20px;
 }
 
@@ -52,7 +40,8 @@ body{
 }
 
 h5, h6{
-  font-family: 'Roboto Medium';
+  font-family: 'Roboto';
+  font-weight: 600;
   font-size: 16px;
 }
 
@@ -93,13 +82,11 @@ h5{
 
 .upload{
   width: 100%;
-  height: 60px;
   line-height: 60px;
   border-width: 1px;
   border-style: dashed;
   border-radius: 5px;
   text-align: center;
-  margin: 10px;
 }
 
 .upload p, .upload a {
@@ -110,7 +97,19 @@ h5{
   border: 1px solid #203cb3;
 }
 
+/* mobile */
 @media only screen and (max-width: 768px) {
+
+    
+  .upload{
+    line-height: 60px;
+    border-width: 1px;
+    border-style: dashed;
+    border-radius: 5px;
+    text-align: center;
+    font-size: small;
+    padding: 5px;
+  }
 
   .columns{
     width: 100%;
