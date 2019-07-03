@@ -25,7 +25,7 @@ cd dash-sample-apps/apps/dashr-opioid-endemic
 Install the requirements. From the terminal, run the following to install the required packages in the default location:
 
 ```
-R -e "install.packages(c("dash", "dplyr", "stringr", "glue", "data.table", "plotly"))"
+R -e "install.packages(c("dash", "dplyr", "stringr", "glue", "data.table", "plotly", "tidyr"))"
 ```
 
 Run the app. From the terminal, run:
