@@ -13,3 +13,4 @@ data/cifar_3000*
 *.pyc
 .vscode/
 env
+.DS_Store
