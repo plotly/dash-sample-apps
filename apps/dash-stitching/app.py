@@ -208,15 +208,14 @@ app.layout = html.Div(
                             style_table={
                                 "width": "81%",
                                 "margin-left": "4.5%",
-                                "border-radius": "4px",
-                                
+                                "border-radius": "20px",
                             },
                             style_cell={
                                 "text-align": "center",
                                 "font-family": "Geneva",
                                 "backgroundColor": "#01183A",
                                 "color": "#8898B2",
-                                'border': '1px solid #8898B2'
+                                "border": "1px solid #8898B2",
                             },
                         )
                     ],
@@ -247,9 +246,7 @@ app.layout = html.Div(
                     className="canvas",
                     style={"text-align": "left", "margin": "auto"},
                 ),
-                html.Button(
-                    "Upload demo data", id="demo", className="button_demo"
-                ),
+                html.Div(id="demo", children=[]),
                 html.Div(
                     image_upload_zone("upload-stitch", multiple=True, width="100px"),
                     className="upload_zone",
@@ -284,8 +281,12 @@ def fill_tab(tab):
                     np.zeros((height, width), dtype=np.uint8)
                 ),
                 goButtonTitle="Estimate translation",
-            )
-            
+            ),
+            html.Div(
+                children=[html.Button("Upload demo data")],
+                id="demo",
+                className="demo_button",
+            ),
         ]
     elif tab == "result-tab":
         return [
