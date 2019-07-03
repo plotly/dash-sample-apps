@@ -82,6 +82,9 @@ convert_las <- function(las_path) {
 
 las_data <- convert_las(las_path)
 
+####################################################################################################
+# DEFINE GLOBAL VARIABLES
+
 table_header <- list (
   "mnemonic" = list(name = "mnemonic", id = "mnemonic", width = "10%"),
   "description" = list(name = "description", id = "description", width = "40%"),
