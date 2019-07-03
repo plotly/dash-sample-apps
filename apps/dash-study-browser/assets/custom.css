@@ -101,6 +101,9 @@ h5{
   .Select-menu-outer, .Select-value{
     font-size: 10.5px;
   }
+  .upload{
+    padding: 5px;
+  }
 }
 
 /* mobile */
@@ -112,7 +115,6 @@ h5{
     border-radius: 5px;
     text-align: center;
     font-size: small;
-    padding: 5px;
   }
 
   .columns{
