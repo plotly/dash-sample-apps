@@ -1,5 +1,4 @@
 import dash
-import pathlib
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
@@ -33,12 +32,20 @@ list_of_locations = {
     "United Nations HQ": {"lat": 40.7489, "lon": -73.9680},
 }
 
-# Get relative data folder
-PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("data").resolve()
-
 # Initialize data frame
-df = pd.read_csv(DATA_PATH.joinpath("output.csv"), dtype=object)
+df1 = pd.read_csv(
+    "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv",
+    dtype=object,
+)
+df2 = pd.read_csv(
+    "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv",
+    dtype=object,
+)
+df3 = pd.read_csv(
+    "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv",
+    dtype=object,
+)
+df = pd.concat([df1, df2, df3], axis=0)
 df["Date/Time"] = pd.to_datetime(df["Date/Time"], format="%Y-%m-%d %H:%M")
 df.index = df["Date/Time"]
 df.drop("Date/Time", 1, inplace=True)
