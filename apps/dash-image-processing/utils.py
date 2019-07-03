@@ -4,7 +4,7 @@ import json
 
 import dash_core_components as dcc
 import plotly.graph_objs as go
-# import dash_reusable_components as drc
+import dash_reusable_components as drc
 
 from PIL import Image, ImageFilter, ImageDraw, ImageEnhance
 
