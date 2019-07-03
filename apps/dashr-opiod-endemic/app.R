@@ -6,6 +6,7 @@ library(stringr)
 library(glue)
 library(data.table)
 library(plotly)
+library(tidyr)
 
 
 appName <- Sys.getenv("DASH_APP_NAME")
@@ -29,11 +30,8 @@ df_full_data <- fread("age_adjusted_death_rate_no_quotes.csv")
 df_full_data$`County Code` <- str_pad(df_full_data$`County Code`, 5, pad = "0")
 df_full_data$County <- paste0(df_full_data$County, ", ", df_full_data$State)
 df_full_data <- df_full_data[, -c(1,3)]
-df_full_data$`Age Adjusted Rate` <- gsub("[(Unreliable)]", "", df_full_data$`Age Adjusted Rate`, 
-                                        ignore.case = TRUE)
-df_full_data$`Age Adjusted Rate` <- as.numeric(df_full_data$`Age Adjusted Rate`, silent = F) 
-df_full_data$Deaths <- as.numeric(df_full_data$Deaths, silent = T)
-df_full_data$Year <- as.numeric(df_full_data$Year)
+df_full_data$`Age Adjusted Rate` <- as.numeric(gsub("[^0-9.]", "", df_full_data$`Age Adjusted Rate`))
+df_full_data$Deaths <- as.numeric(gsub("[^0-9.]", "", df_full_data$Deaths))
 
 YEARS = c(2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015)
 
@@ -300,8 +298,9 @@ app$callback(
       pts <- selectedData[["points"]]
       fips <- lapply(1:length(pts),
                      function(i){
-                       as.character(parse_number(as.character(pts[[i]]["text"])))
+                       gsub("[^0-9.]", "", pts[[i]]["text"])
                      })
+
       fips <- sapply(1:length(fips),
                      function(i){
                        
@@ -328,19 +327,19 @@ app$callback(
           title <- glue("Absolute deaths per county, <b>{year}</b>")
           AGGREGATE_BY <- "Age Adjusted Rate"
         }
-        
+
         deaths_or_rate_by_fips <- aggregate(x = dff[[AGGREGATE_BY]], by = list(County=dff$County), 
                                             FUN = function(x){sum((x[!is.na(x)]))}) 
-        #print(deaths_or_rate_by_fips)
+        
         # Only look at non-zero rows:
         deaths_or_rate_by_fips <- filter(deaths_or_rate_by_fips, deaths_or_rate_by_fips[[2]] > 0)
         deaths_or_rate_by_fips <- deaths_or_rate_by_fips[with(deaths_or_rate_by_fips, order(x)), ]
         deaths_or_rate_by_fips <- filter(deaths_or_rate_by_fips, !is.null(deaths_or_rate_by_fips[2]))
+        
         # plot for histograms (Death by year)
         x <- deaths_or_rate_by_fips[,1]
         y <- deaths_or_rate_by_fips[,2]
         
-
         fig <- plot_ly(x = x, y = y, type = "bar",
                        marker = list(color = "#2cfec1", size = 4, line = list(width = 0)),
                        textposition = "outside", opacity = 1) %>%
@@ -394,7 +393,6 @@ app$callback(
                  l = 30
                )
         )
-      #fig$sizingPolicy$padding = "20px"
       return(fig)
     }
   }
