@@ -50,7 +50,7 @@ secret_access_key = os.environ.get("SECRET_ACCESS_KEY")
 bucket_name = os.environ.get("BUCKET_NAME")
 
 # Empty cache directory before running the app
-folder = os.path.join(APP_PATH, os.path.join("data","cache-directory/"))
+folder = os.path.join(APP_PATH, os.path.join("data", "cache-directory"))
 for the_file in os.listdir(folder):
     file_path = os.path.join(folder, the_file)
     try:
@@ -440,19 +440,19 @@ def update_histogram(figure):
     ],
 )
 def update_graph_interactive_image(
-    content,
-    undo_clicks,
-    n_clicks,
-    # new_win_width,
-    selectedData,
-    filters,
-    enhance,
-    enhancement_factor,
-    new_filename,
-    dragmode,
-    enc_format,
-    storage,
-    session_id,
+        content,
+        undo_clicks,
+        n_clicks,
+        # new_win_width,
+        selectedData,
+        filters,
+        enhance,
+        enhancement_factor,
+        new_filename,
+        dragmode,
+        enc_format,
+        storage,
+        session_id,
 ):
     t_start = time.time()
 
