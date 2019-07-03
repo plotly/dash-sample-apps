@@ -91,9 +91,9 @@ app.layout = html.Div(
                                                 children=[
                                                     html.P("Drag and Drop or "),
                                                     html.A("Select Files"),
-                                                ],
+                                                ]
                                             ),
-                                            accept=".csv"
+                                            accept=".csv",
                                         ),
                                     ],
                                 ),
@@ -200,7 +200,7 @@ def update_error(contents):
 )
 def update_output(chart_type, study, contents, error):
     if study is None:
-        return {}   
+        return {}
 
     if error or not contents:
         study_data = default_study_data
@@ -301,7 +301,7 @@ def update_output(chart_type, study, contents, error):
         groups_to_annotate = all_groups - ref_groups - control_groups
         annotations = [
             dict(
-                x=test_stats.get(group_id, {'index':'None'})["index"],
+                x=test_stats.get(group_id, {"index": "None"})["index"],
                 y=test_stats[group_id]["max_y"]
                 + data_range / (4 if chart_type == "violin" else 10),
                 text="{}<br>{}".format(
