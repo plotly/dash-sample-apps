@@ -155,7 +155,6 @@ def modal():
             [
                 html.Div(
                     [
-                        # modal header
                         html.Div(
                             [
                                 html.Span(
@@ -181,10 +180,8 @@ def modal():
                             className="row",
                             style={"borderBottom": "1px solid #C8D4E3"},
                         ),
-                        # modal form
                         html.Div(
                             [
-                                # left Div
                                 html.Div(
                                     [
                                         html.P(
@@ -305,7 +302,6 @@ def modal():
                                     className="six columns",
                                     style={"paddingRight": "15"},
                                 ),
-                                # right Div
                                 html.Div(
                                     [
                                         html.P(
@@ -423,7 +419,6 @@ def modal():
                             style={"marginTop": "10", "textAlign": "center"},
                             className="row",
                         ),
-                        # submit button
                         html.Span(
                             "Submit",
                             id="submit_new_case",
@@ -487,7 +482,6 @@ layout = [
                     clearable=False,
                 ),
             ),
-            # add button
             html.Span(
                 "Add new",
                 id="new_case",

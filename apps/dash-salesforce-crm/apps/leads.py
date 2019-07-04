@@ -176,7 +176,6 @@ def modal():
             [
                 html.Div(
                     [
-                        # modal header
                         html.Div(
                             [
                                 html.Span(
@@ -202,7 +201,6 @@ def modal():
                             className="row",
                             style={"borderBottom": "1px solid #C8D4E3"},
                         ),
-                        # modal form
                         html.Div(
                             [
                                 html.P(
@@ -216,7 +214,7 @@ def modal():
                                 ),
                                 dcc.Input(
                                     id="new_lead_company",
-                                    # placeholder="Enter company name",
+                                    placeholder="Enter company name",
                                     type="text",
                                     value="",
                                     style={"width": "100%"},
@@ -299,7 +297,6 @@ def modal():
                             className="row",
                             style={"padding": "2% 8%"},
                         ),
-                        # submit button
                         html.Span(
                             "Submit",
                             id="submit_new_lead",
@@ -319,59 +316,6 @@ def modal():
 
 
 layout = [
-    # top controls
-    # html.Div(
-    #     [
-    #         html.Div(
-    #             className="two columns pretty_container",
-    #             children=dcc.Dropdown(
-    #                 id="converted_leads_dropdown",
-    #                 options=[
-    #                     {"label": "By day", "value": "D"},
-    #                     {"label": "By week", "value": "W-MON"},
-    #                     {"label": "By month", "value": "M"},
-    #                 ],
-    #                 value="D",
-    #                 clearable=False,
-    #             ),
-    #
-    #         ),
-    #         html.Div(
-    #             className="two columns pretty_container",
-    #             children=dcc.Dropdown(
-    #                 id="lead_source_dropdown",
-    #                 options=[
-    #                     {"label": "All status", "value": "all"},
-    #                     {"label": "Open leads", "value": "open"},
-    #                     {"label": "Converted leads", "value": "converted"},
-    #                     {"label": "Lost leads", "value": "lost"},
-    #                 ],
-    #                 value="all",
-    #                 clearable=False,
-    #             ),
-    #         ),
-    #
-    #         # add button
-    #         html.Div(
-    #             html.Span(
-    #                 "Add new",
-    #                 id="new_lead",
-    #                 n_clicks=0,
-    #                 className="button button--primary",
-    #                 style={
-    #                     "height": "34",
-    #                     "background": "#119DFF",
-    #                     "border": "1px solid #119DFF",
-    #                     "color": "white",
-    #                 },
-    #             ),
-    #             className="two columns",
-    #             style={"float": "right"},
-    #         ),
-    #     ],
-    #     className="row",
-    #     style={"marginBottom": "10"},
-    # ),
     html.Div(
         id="lead_grid",
         children=[
@@ -402,7 +346,6 @@ layout = [
                     clearable=False,
                 ),
             ),
-            # add button
             html.Span(
                 "Add new",
                 id="new_lead",
