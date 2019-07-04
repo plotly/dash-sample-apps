@@ -65,4 +65,4 @@ python app.py
 
 ## Screenshots
 
-![Satellite Dashboard](assets/screenshot.png)
+![Satellite Dashboard](screenshots/screenshot.png)
