@@ -42,7 +42,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Img(
-                            src=app.get_asset_url("dash-logo-stripe-inverted.png"),
+                            src=app.get_asset_url("dash-logo.png"),
                             className="app__menu__img",
                         )
                     ],
