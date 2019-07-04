@@ -596,7 +596,7 @@ def chart_div(pair):
                                         "value": "mom_trace",
                                     },
                                 ],
-                                values=[],
+                                value=[],
                             )
                         ],
                         style={"display": "none"},
@@ -1205,8 +1205,6 @@ def generate_contents_for_left_panel():
     return show_contents
 
 
-app.config.supress_callback_exceptions = True
-
 # Loop through all currencies
 for pair in currencies:
 
@@ -1228,7 +1226,7 @@ for pair in currencies:
             Input("i_tris", "n_intervals"),
             Input(pair + "dropdown_period", "value"),
             Input(pair + "chart_type", "value"),
-            Input(pair + "studies", "values"),
+            Input(pair + "studies", "value"),
             Input("charts_clicked", "children"),
         ],
         [
