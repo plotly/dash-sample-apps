@@ -1,8 +1,1 @@
-vv/
-*.pyc
-<<<<<<< HEAD
-*.DS_Store
-=======
-venv/
-.idea/
->>>>>>> master
+https://github.com/plotly/heroku-buildpack-r#heroku-18
