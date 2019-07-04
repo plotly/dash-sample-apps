@@ -108,7 +108,6 @@ def modal():
             [
                 html.Div(
                     [
-                        # modal header
                         html.Div(
                             [
                                 html.Span(
@@ -134,10 +133,8 @@ def modal():
                             className="row",
                             style={"borderBottom": "1px solid #C8D4E3"},
                         ),
-                        # modal form
                         html.Div(
                             [
-                                # left div
                                 html.Div(
                                     [
                                         html.P(
@@ -261,7 +258,6 @@ def modal():
                                     className="six columns",
                                     style={"paddingRight": "15"},
                                 ),
-                                # right div
                                 html.Div(
                                     [
                                         html.P(
@@ -334,7 +330,6 @@ def modal():
                             className="row",
                             style={"paddingTop": "2%"},
                         ),
-                        # submit button
                         html.Span(
                             "Submit",
                             id="submit_new_opportunity",

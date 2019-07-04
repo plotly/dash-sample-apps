@@ -20,11 +20,8 @@ millnames = ["", " K", " M", " B", " T"]  # used to convert numbers
 # return html Table with dataframe values
 def df_to_table(df):
     return html.Table(
-        # Header
         [html.Tr([html.Th(col) for col in df.columns])]
-        +
-        # Body
-        [
+        + [
             html.Tr([html.Td(df.iloc[i][col]) for col in df.columns])
             for i in range(len(df))
         ]

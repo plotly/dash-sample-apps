@@ -12,7 +12,6 @@ from apps import opportunities, cases, leads
 
 app.layout = html.Div(
     [
-        # header
         html.Div(
             className="row header",
             children=[
@@ -20,7 +19,6 @@ app.layout = html.Div(
                 html.Img(src=app.get_asset_url("logo.png")),
             ],
         ),
-        # tabs
         html.Div(
             [
                 dcc.Tabs(
@@ -40,7 +38,6 @@ app.layout = html.Div(
             ],
             className="row tabs_div",
         ),
-        # divs that save dataframe for each tab
         dcc.Store(  # opportunities df
             id="opportunities_df",
             data=sf_manager.get_opportunities().to_json(orient="split"),
