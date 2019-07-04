@@ -800,6 +800,15 @@ summary::-webkit-details-marker {
   display: none;
 }
 
+@media only screen and (max-width: 548px) {
+  .chart-style{
+    padding-right: 0px;
+  }
+  .div-top-bar{
+    margin-bottom: 22px;
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .three, .nine {
     min-width: 100%;
