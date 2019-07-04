@@ -49,13 +49,7 @@ jobs:
                 git config --global user.name "Circle MonoRepo Automatic Deployer"
                 if [[ $APP =~ "dashr" ]]
                 then
-                  cp ~/dash-sample-apps/apps/"$APP"/Aptfile ~/dash-sample-apps/
-                  cp ~/dash-sample-apps/apps/"$APP"/Procfile ~/dash-sample-apps/
-                  cp ~/dash-sample-apps/apps/"$APP"/.buildpacks ~/dash-sample-apps/
-                  cp ~/dash-sample-apps/apps/"$APP"/init.R ~/dash-sample-apps/
-                  # app.json tries to call python predeploy, which is not needed for R apps:
-                  rm ~/dash-sample-apps/app.json
-                  git add . && git commit -a -m "Deployed commit: $CIRCLE_SHA1"
+                  continue
                 fi
                 if [ ! -d ~/dash-sample-apps/apps/"$APP"/assets/ ]
                 then
