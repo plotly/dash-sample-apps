@@ -138,10 +138,6 @@ p {
     opacity: 0.6;
 }
 
-._dash-undo-redo {
-    display: none;
-}
-
 @media only screen and (max-width: 600px) {
 
     .app__header span {
