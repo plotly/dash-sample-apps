@@ -708,7 +708,7 @@ def modal(pair):
                             ),
                             # order values div
                             html.Div(
-                                className="six columns",
+                                className="six columns modal-user-control",
                                 children=[
                                     html.Div(
                                         children=[

@@ -783,6 +783,10 @@ summary {
   padding: .5em;
 }
 
+.modal-user-control{
+  padding-left: 12px;
+}
+
 .summary:hover, .summary-open{
   background-color: #292B33;
   font-weight: bold;
@@ -820,6 +824,10 @@ summary::-webkit-details-marker {
     text-align: center;
     font-size: 24px;
     display: block;
+  }
+
+  .modal-user-control{
+    padding-left: 0px;
   }
 
   .div-info{
