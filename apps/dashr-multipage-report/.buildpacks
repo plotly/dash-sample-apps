@@ -1,6 +1,8 @@
 vv/
 *.pyc
+<<<<<<< HEAD
+*.DS_Store
+=======
 venv/
 .idea/
-.DS_Store
-/apps/.DS_Store
+>>>>>>> master
