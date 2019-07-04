@@ -1,5 +1,9 @@
 library(jsonvalidate)
 library(jsonlite)
+library(httr)
+# to make loading gff files easier:
+library(ape)
+library(plyr)
 
 EMPTY_MUT_DATA <- list(
   x = list(),
@@ -8,7 +12,7 @@ EMPTY_MUT_DATA <- list(
   domains = list()
 )
 
-PFAM_DOM_SCHEMAr<-'{
+PFAM_DOM_SCHEMA <-'{
     "type": "array",
     "items": {
         "type": "object",
@@ -89,6 +93,140 @@ load_mutation_data <- function(json_fname = NULL){
   }
 }
 
+query_fields <- list(
+  "accession",
+  "active",
+  "annotation",
+  "author",
+  "cdantigen",
+  "citation",
+  "cluster",
+  "count",
+  "created",
+  "database",
+  "ec",
+  "evidence",
+  "existence",
+  "family",
+  "fragment",
+  "gene",
+  "gene_exact",
+  "goa",
+  "host",
+  "id",
+  "inn",
+  "interactor",
+  "keyword",
+  "length",
+  "lineage",
+  "mass",
+  "method",
+  "mnemonic",
+  "modified",
+  "name",
+  "organelle",
+  "organism",
+  "plasmid",
+  "proteome",
+  "proteomecomponent",
+  "replaces",
+  "reviewed",
+  "scope",
+  "sequence",
+  "sequence_modified",
+  "source",
+  "strain",
+  "taxonomy",
+  "tissue",
+  "web"
+)
+
+query_parameters <- list(
+  format = list(
+    "html",
+    "tab",
+    "xls",
+    "fasta",
+    "gff",
+    "txt",
+    "xml",
+    "rdf",
+    "list",
+    "rss"
+  ),
+  columns = list(
+		"citation",
+		"clusters",
+		"comments",
+		"domains",
+		"domain",
+		"ec",
+		"id",
+		"entry name",
+		"existence",
+		"families",
+		"features",
+		"genes",
+		"go",
+		"go-id",
+		"interactor",
+		"keywords",
+		"last-modified",
+		"length",
+		"organism",
+		"organism-id",
+		"pathway",
+		"protein names",
+		"reviewed",
+		"sequence",
+		"3d",
+		"version",
+		"virus hosts"
+  ),
+	sort = list("score"),
+	include = list("yes", "no"),
+	compress = list("yes", "no"),
+	limit = "int",
+	offset = "int"
+)
+
+validate_query_parameters <- function(parameters = NULL){
+  if (is.null(parameters)){
+    parameters = list()
+  }
+  validated_parameters <- list()
+  for (param in names(parameters)){
+    if (param %in% names(query_parameters)){
+      if (param %in% list("limit", "offset")){
+        if (is.numeric(parameters[[param]])){
+          validated_parameters[[param]] <- as.character(parameters[[param]])
+        }
+      } else if (param == "format"){
+        if (parameters[[param]] %in% query_parameters[[param]]){
+          validated_parameters[[param]] <- parameters[[param]] 
+        }
+      } else if (param == "columns"){
+        column_entry <- unlist(strsplit(gsub("+", "", parameters[[param]], fixed = TRUE), ","))
+        set_a <- unlist(unique(query_parameters[[param]]))
+        set_b <- unlist(unique(column_entry))
+        validated_items <- intersect(set_a, set_b)
+        validated_column_entry <- list()
+        for (i in 1:length(column_entry)){
+          if (column_entry[[i]] %in% validated_items){
+            validated_column_entry[[i]] <- column_entry[[i]]
+          }
+        }
+        validated_parameters[[param]] <- paste(unlist(validated_column_entry), collapse = ",")
+      } else if (param %in% list("include", "compress", "sort")){
+        if (parameters[[param]] %in% query_parameters[[param]]){
+          validated_parameters[[param]]  <- parameters[[param]]
+        }
+      }
+    }
+  }
+  validated_parameters
+}
+
 # Functions apdapted from the UniprotQueryBuilder class defined in dash_bio_utils:
 build_query <- function(query, fields = NULL, parameters = NULL){
   base_url <- "https://www.uniprot.org/uniprot/"
@@ -101,6 +239,134 @@ build_query <- function(query, fields = NULL, parameters = NULL){
   if (is.null(parameters)){
     parameters <- list()
   }
-
+  URL <- paste0(base_url, sprintf(base_query, query))
+  for (fieldname in names(fields)){
+    if (fieldname %in% query_fields){
+      if (is.character(fields[[fieldname]])){
+        URL <- paste0(URL, field_separator, fieldname, ":", fields[[fieldname]])
+      } else {
+        stop(sprintf("In build_query: The value of the field %s is not a string format", fieldname))
+      }
+    }
+  }
+  validated_parameters <- validate_query_parameters(parameters)
+  for (param in names(validated_parameters)){
+    URL <- paste0(URL, parameter_separator, param, "=", validated_parameters[[param]])
+  }
+  URL
 }
+
+query_into_dataframe <- function(query, fields = NULL, parameters = NULL, names = NULL){
+  target_url <- build_query(query, fields = fields, parameters = parameters)
+  col_id <- "columns"
+  col_names <- NULL
+  if (is.null(names)){
+    db <- read.csv(URLencode(target_url), sep = "\t")
+  } else {
+    #db <- read.csv(URLencode(target_url), sep = "\t", col.names = names, row.names = NULL)
+    db <- ape::read.gff(file = URLencode(target_url))
+    colnames(db) <- names
+  }
+  db
+}
+
+
+#test_accession <- "O00571"
+#test_domain_data <- pfam_domain_parser(test_accession)
+
+pfam_domain_parser <- function(accession){
+  URL <- sprintf("http://pfam.xfam.org/protein/%s/graphic", accession)  
+  r <- GET(URL)
+  jsonData <- content(r, "parsed")
+  toJSON(jsonData)
+}
+
+#test_domain_data
+
+parse_protein_domains_data <- function(domain_data){
+  region_key <- "regions"
+  region_name_key <- "text"
+  region_start_key <- "start"
+  region_stop_key <- "end"
+  formatted_data <- list()
+
+  if (json_validate(domain_data, PFAM_DOM_SCHEMA)){
+    regionlist <- fromJSON(domain_data, simplifyVector = FALSE)[[1]][[region_key]]
+    for (i in 1:length(regionlist)){
+      #print(regionlist[[i]][[region_name_key]])
+      formatted_data[[i]] <- list(
+        name = unlist(regionlist[[i]][[region_name_key]]),
+        coord = sprintf(
+          "%s-%s",
+          regionlist[[i]][[region_start_key]],
+          regionlist[[i]][[region_stop_key]]
+        )
+      )
+    }
+  } else if (json_validate(domain_data, PROT_DOM_SCHEMA)){
+    formatted_data <- domain_data
+  }
+  formatted_data
+}
+
+load_protein_domains <- function(accession){
+  domain_data <- pfam_domain_parser(accession)
+  parse_protein_domains_data(domain_data)
+}
+
+parse_mutations_uniprot_data <- function(gff_data, start = "start", stop = "end", mut_types_to_skip = NULL){
+  if (is.null(mut_types_to_skip)){
+    mut_types_to_skip <- list(
+      "Chain",
+      "Region"
+    )
+  }
+  if (!"Chain" %in% mut_types_to_skip){
+    mut_types_to_skip <- c(mut_types_to_skip, list("Chain"))
+  }
+  # Selects the various mutations types in the dataset, except types contained in the above list
+  mut_types <- as.character(unique(gff_data[!gff_data$mut %in% mut_types_to_skip, "mut"]))
+  x <- list()
+  y <- list()
+  mutationgroups <- list()
+
+  for (mut in mut_types){
+    data_coord <- gff_data[gff_data$mut == mut, c(start, stop)]
+    # split between single and multi-site coordinates
+    single_sites <- data_coord[data_coord[,start] == data_coord[,stop],]
+    multi_sites <- data_coord[data_coord[,start] != data_coord[,stop],]
+
+    multi_sites[,start] <- paste(
+      as.character(multi_sites[,start]),
+      as.character(multi_sites[,stop]),
+      sep = "-"
+    )
+    sorted_data <- plyr::count(c(single_sites[,start], multi_sites[,start]))
+
+    x <- c(x, as.character(sorted_data[,"x"])) 
+    y <- c(y, sorted_data[,"freq"])
+    mutationgroups <- c(mutationgroups, rep_len(mut, nrow(sorted_data)))
+  }
+
+  order_df <- as.data.frame(sort(table(unlist(mutationgroups)), decreasing = TRUE))
+  order_df <- merge(
+    data.frame(
+      mut = unlist(mutationgroups),
+      x = unlist(x),
+      y = unlist(y)
+    ),
+    order_df,
+    by.x = "mut", by.y = "Var1" 
+  )
+  order_df <- order_df[order(order_df$Freq, decreasing = TRUE),]
+  
+  formatted_data = list(
+    "x" = order_df[, "x"],
+    "y" = order_df[, "y"],
+    "mutationGroups" = unlist(order_df[, "mut"]),
+    domains = list()
+  )
+  formatted_data
+}
+
 

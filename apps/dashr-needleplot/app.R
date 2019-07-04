@@ -924,7 +924,8 @@ app$callback(
     fname <- sprintf("%s_data.json", dl_data_choice)
     write_json(
       stored_data[["plot"]], 
-      path = sprintf("%s%s", stored_data[["info"]][["dl_data_path"]], fname)
+      path = sprintf("%s%s", stored_data[["info"]][["dl_data_path"]], fname),
+      auto_unbox = TRUE
     )
     stored_data[["plot"]]
   }
@@ -986,16 +987,50 @@ app$callback(
       # accession number, to get more than one number, 
       # change the limit parameter
       if (query != ""){
-        ##############
-        # BEGIN HERE #
-        ##############
-        
+        gene_search <- query_into_dataframe(
+          query, 
+          fields = list(revieved = "yes", database = "pfam"),
+          parameters = list(
+            limit = 1, 
+            columns = "id,entry name,length,genes,organism",
+            sort = "score",
+            format = "tab"
+          )
+        )
+        stored_data[["info"]][[DATABASE_KEY]] <- toString(gene_search)
+        accession <- gene_search[1, "Entry"]
+
+        domains <- load_protein_domains(accession = accession)
+        stored_data[["plot"]][["domains"]] <- domains
+
+        stored_data[[INDIV_DOMS_KEY]] <- list(
+          "domains" = domains,
+          "accession" = accession
+        )
+        gff_data <- query_into_dataframe(
+          query,
+          fields = list(
+            revieved = "yes",
+            database = "pfam",
+            accession = as.character(accession)
+          ),
+          parameters = list(
+            format = "gff"
+          ),
+          names = c("name", "db", "mut", "start", "end", "x1", "x2", "x3", "note")
+        )
+        formatted_data <- parse_mutations_uniprot_data(gff_data = gff_data)
+        stored_data[["plot"]][["x"]] <- as.character(formatted_data[["x"]])
+        stored_data[["plot"]][["y"]] <- as.integer(formatted_data[["y"]])
+        stored_data[["plot"]][["mutationGroups"]] <- as.character(formatted_data[["mutationGroups"]])
+        stored_data[["info"]][[DB_LAST_QUERY_KEY]] <- query
       }
     }
-
+    #print(stored_data[["plot"]])
   stored_data
   }
 )
+
 
 # GRAPH OPTIONS CALLBACKS=========
 app$callback(
@@ -1006,5 +1041,52 @@ app$callback(
   }
 )
 
+app$callback(
+  output("needle-plot", "needleStyle"),
+  list(
+    input("needle-stem-height-radioitems", "value"),
+    input("needle-stem-thick-input", "value"),
+    input("needle-stem-color-dropdown", "value"),
+    input("needle-head-size-input", "value"),
+    input("needle-head-color-dropdown", "value"),
+    input("needle-head-symbol-dropdown", "value"),
+    state("needle-plot", "needleStyle")
+  ),
+  function(
+    const_height,
+    stem_thick,
+    stem_color,
+    head_size,
+    head_colors,
+    head_symbols,
+    needle_sty){
+    if (is.null(unlist(needle_sty))){
+      needle_sty <- list()
+    }
+    needle_sty[["stemConstHeight"]] <- const_height
+    needle_sty[["stemThickness"]] <- stem_thick 
+    needle_sty[["stemColor"]] <- stem_color 
+    needle_sty[["headSize"]] <- head_size 
+    needle_sty[["headColor"]] <- head_colors 
+    needle_sty[["headSymbol"]] <- head_symbols 
+    needle_sty
+  }
+)
+
+app$callback(
+  output("needle-plot", "domainStyle"),
+  list(
+    input("needle-domains-color-dropdown", "value"),
+    state("needle-plot", "domainStyle")
+  ),
+  function(small_domains_colors, domains_sty){
+    if (is.null(unlist(domains_sty))){
+      domains_sty <- list()
+    }
+    domains_sty[["domainColor"]] <- small_domains_colors
+    domains_sty
+  }
+)
 
 app$run_server()
+
