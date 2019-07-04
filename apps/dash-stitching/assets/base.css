@@ -454,6 +454,7 @@ input[type="button"].button-primary:focus {
   border: 1px solid;
   cursor: pointer;
   box-sizing: border-box;
+  float: right;
 }
 
 .demo_button {
