@@ -1,0 +1,10 @@
+# virtualenv
+.venv
+venv/
+
+# Added
+unused/
+vv
+.DS_Store
+pyvenv.cfg
+.vscode/
