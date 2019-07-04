@@ -511,7 +511,7 @@ layout = [
                     indicator(
                         "#EF553B", "High priority cases", "right_cases_indicator"
                     ),
-                ]
+                ],
             ),
             html.Div(
                 id="cases_reasons_container",
