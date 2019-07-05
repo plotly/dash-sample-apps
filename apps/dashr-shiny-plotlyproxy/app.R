@@ -983,6 +983,11 @@ styleDropDown <- dccDropdown(id = "style-dropdown",
                              multi = TRUE,
                              value = "circle")
 
+layoutOptions <- dccDropdown(id = "layout-dropdown",
+                             options = layoutOptions,
+                             multi = TRUE,
+                             value = "circle")
+
 ####################################################################################################
 
 if (appName != "") {
