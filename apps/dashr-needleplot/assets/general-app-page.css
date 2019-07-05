@@ -128,7 +128,7 @@
     margin-right: 0px;
     font-size: 10pt;
     float: left;
-    background-color: #FFFAF1;           /* Change in individual app stylesheet */
+    background-color: #FFFFFF;           /* Change in individual app stylesheet */
     border-style: solid;
     border-width: 1px;
     border-color: #F2F2F2;
@@ -140,7 +140,7 @@
 
 .control-tab {
     height: 415px;
-    overflow-y: auto;
+    overflow-y: scroll;
     padding-right: 20px;
     margin: 20px;
     margin-right: 0px;
@@ -168,7 +168,7 @@
     display: block;
     margin-top: 20px;
     margin-bottom: 40px;
-    background-color: #FFFAF1;
+    /*background-color: #FFFAF1;*/
 }
 .app-controls-name {
     display: inline-block;

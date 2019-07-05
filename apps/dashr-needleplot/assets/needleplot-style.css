@@ -1,8 +1,9 @@
 #needleplot-body {
     background-color: #E8F0F9 !important;
     color: #5b5b5b !important;
-    padding-top: 50px;
-    min-height: calc(100vh - 7px);
+    padding-top: 40px;
+    min-height: calc(100vh - 75px);
+    overflow: auto;
 }
 
 #needleplot-body ::-webkit-scrollbar {
@@ -21,9 +22,25 @@
     transform: scale(1.2222);
 }
 
+.control-upload, .needle-upload{
+    display: block;
+    border: dotted 1px #119DFF;
+    border-radius: 5px;
+    padding: 30px;
+    font-size: 9pt;
+    text-align: center;
+}
+.control-download {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 7pt;
+    transition-duration: 500ms;
+}
+
 #needleplot-control-tabs .tab {
-    background-color: #F3F3F3
-    color: #5B5B5B;
+    /*background-color: #F3F3F3;*/
+    color: #000000;
     font-weight: 200;
     font-size: 9pt;
     border: solid 1px #DDDDDD;
@@ -31,8 +48,10 @@
     padding: 15px;
 }
 #needleplot-control-tabs .tab--selected {
-    border-color: #76D5FF !important;
+    /*border-color: #76D5FF !important;*/
     color: #76D5FF !important;
+    border-top: 2px solid #76D5FF;
+    border-bottom: none;
 }
 #needle-stem-thick-input, #needle-head-size-input {
     display: inline-block;
@@ -79,8 +98,11 @@
     display: inline-block;
     padding-top: 5px;
 }
-a#needle-download-data-button-link {
+#needle-download-data-button-link {
     display: block;
+}
+#needle-download-data-button{
+    width: 100%;
 }
 #needle-download-data-button:hover {
     color: #76D5FF !important;
