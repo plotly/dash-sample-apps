@@ -256,7 +256,7 @@ app$layout(
       
       htmlH2('t-SNE Explorer', className='title', id='app-title')
       ,
-      htmlImg(id='plotly-image', src="assets/logo.png")
+      htmlImg(id='plotly-image', className='logo', src="assets/logo.png")
       
     )
     ,
