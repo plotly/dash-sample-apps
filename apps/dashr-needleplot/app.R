@@ -213,203 +213,218 @@ app$layout(
                             dccDropdown(
                               id = "needle-dataset-select-dropdown",
                               options = list(
-                                list(label = "Demo dataset", value = DEMO_KEY),
-                                list(label = "Upload dataset", value = FILE_KEY),
-                                list(label = "UniProt dataset", value = DATABASE_KEY)
+                                list(
+                                  label = "Demo dataset", 
+                                  value = DEMO_KEY
+                                ),
+                                list(
+                                  label = "Upload dataset", 
+                                  value = FILE_KEY
+                                ),
+                                list(
+                                  label = "UniProt dataset", 
+                                  value = DATABASE_KEY
+                                )
                               ),
                               value = DEMO_KEY
-                            ),
-                            htmlHr(),
+                            )
+                          )
+                        ),
+                        htmlHr(),
+                        htmlDiv(
+                          id = sprintf("needle-%s-div", DEMO_KEY),
+                          className = "app-controls-block",
+                          children = list(
                             htmlDiv(
-                              id = sprintf("needle-%s-div", DEMO_KEY),
-                              className = "app-controls-block",
-                              children = list(
-                                htmlDiv(
-                                  className = "app-controls-name",
-                                  children = "Dataset:"
+                              className = "app-controls-name",
+                              children = "Dataset:"
+                            ),
+                            dccDropdown(
+                              id = "needle-dataset-dropdown",
+                              options = lapply(
+                                1:length(DEMO_DATA),
+                                function(i){
+                                  list(
+                                    label = DEMO_DATA[[i]][["label"]],
+                                    value = i
+                                  )
+                                }
+                              ),
+                              value = 1
+                            )
+                          )
+                        ),
+                        htmlDiv(
+                          id = "needle-protein-domains-select-div",
+                          className = "app-controls-block",
+                          title = paste(
+                            "Check this box to enable loading of",
+                            "mutation data such as the protein coordinate",
+                            "(x), mutation number (y) and mutation type",
+                            "(mutationGroups), individually from the protein",
+                            "domains"
+                          ),
+                          children = list(
+                            htmlDiv(
+                              className = "app-controls-name",
+                              children = "Load protein domains:"
+                            ),
+                            dccChecklist(
+                              id = "needle-protein-domains-select-checklist",
+                              className = "needle-checklist",
+                              options = list(
+                                list(
+                                  label = "Individually", 
+                                  value = INDIV_DOMS_KEY
                                 ),
-                                dccDropdown(
-                                  id = "needle-dataset-dropdown",
-                                  options = lapply(
-                                    1:length(DEMO_DATA),
-                                    function(i){
-                                      list(
-                                        label = DEMO_DATA[[i]][["label"]],
-                                        value = i
-                                      )
-                                    }
-                                  ),
-                                  value = 1
+                                list(
+                                  label = "From UniProt only", 
+                                  value = UNIPROT_DOMS_KEY
                                 )
-                              )
-                            ),
+                              ),
+                              value = list()
+                            )
+                          )
+                        ),
+                        htmlDiv(
+                          id = sprintf("needle-%s-div", DATABASE_KEY),
+                          className = "app-controls-block",
+                          children = list(
+                            htmlH5("Search UniProt"),
                             htmlDiv(
-                              id = "needle-protein-domains-select-div",
-                              className = "app-controls-block",
                               title = paste(
-                                "Check this box to enable loading of",
-                                "mutation data such as the protein coordinate",
-                                "(x), mutation number (y) and mutation type",
-                                "(mutationGroups), individually from the protein",
-                                "domains"
+                                "Enter the UniProt accession key",
+                                "of the gene you want to display.\n",
+                                "More information on https://www.uniprot.org/"
                               ),
                               children = list(
+                                dccInput(
+                                  id = "needle-sequence-input",
+                                  value = "",
+                                  type = "text",
+                                  placeholder = "TP53, DDX3X, SMARCA4, ..."
+                                ),
+                                htmlButton(
+                                  id = "needle-search-sequence-button",
+                                  children = "submit",
+                                  n_clicks = 0,
+                                  n_clicks_timestamp = 0
+                                )
+                              )
+                            ),
+                            htmlDiv(id = "needle-uniprot-div")
+                          )
+                        ),
+                        htmlDiv(
+                          id = sprintf("needle-%s-div", FILE_KEY),
+                          className = "app-controls-block",
+                          children = list(
+                            htmlDiv(
+                              id = "needle-mutdata-file-div",
+                              title = paste(
+                                "Mutation data files are JSON files containing",
+                                "the following fields :\n",
+                                "- \"x\" (protein coordinate of the mutation); \n",
+                                "- \"y\" (number of recorded mutations); \n",
+                                "- \"mutationGroups\" (type of mutations); \n",
+                                "- \"domains\" (protein domains).\n",
+                                "\"x\", \"y\", and \"mutationGroups\" are arrays, they",
+                                "must have the same length.",
+                                "\"x\" is required. \"domains\" is an array of",
+                                "JSON objects with required fields \"name\"",
+                                "and \"coord\"; \"name\" can be any string (think",
+                                "of it as a label), whereas \"coord\" should be",
+                                "a string formatted like",
+                                "\"<start_coord>-<stop_coord>\" where integer",
+                                "<start_coord> is less than integer <stop_coord>",
+                                "(e.g., \"23-34\"), giving the domain in protein",
+                                "coordinates."
+                              ),
+                              children = list(
+                                htmlH5("Upload mutation data JSON file"),
+                                dccUpload(
+                                  id = "needle-mutdata-file-upload",
+                                  className = "control-upload",
+                                  children = htmlDiv(
+                                    list(
+                                      "Drag and drop or ",
+                                      htmlA("select files")
+                                    )
+                                  )
+                                ),
+                                htmlDiv(
+                                  id = "needle-mutdata-file-info-div"
+                                )
+                              )
+                            ),
+                            htmlDiv(
+                              id = "needle-domain-file-div",
+                              title = paste(
+                                "Protein data files accepted here can be of",
+                                "two types: \n",
+                                "- an array of JSON objects with the required",
+                                "fields, i.e., \"name\" (any string) and \"coord\"",
+                                "(a string specifying domains in protein",
+                                "coordinates (e.g., \"23-34\");",
+                                "- a JSON file with the same structure as: ",
+                                "http://pfam.xfam.org/protein/P04637/graphic."
+                              ),
+                              children = list(
+                                htmlH5("Upload protein data JSON file"),
+                                dccUpload(
+                                  id = "needle-domains-file-upload",
+                                  className = "needle-upload",
+                                  children = htmlDiv(
+                                    list(
+                                      "Drag and drop or ",
+                                      htmlA("select files")
+                                    )
+                                  )
+                                ),
+                                htmlDiv(
+                                  id = "needle-domains-file-info-div"
+                                )
+                              )
+                            ),
+                            htmlDiv(
+                              id = "needle-domain-query-info-div"
+                            )
+                          )
+                        ),
+                        htmlHr(),
+                        htmlBr(),
+                        htmlDiv(
+                          id = "needle-download-data-div",
+                          children = list(
+                            htmlDiv(
+                              className = "app-controls-block",
+                              children = list(
                                 htmlDiv(
                                   className = "app-controls-name",
-                                  children = "Load protein domains:"
+                                  children = "Download data:"
                                 ),
-                                dccChecklist(
-                                  id = "needle-protein-domains-select-checklist",
-                                  className = "needle-checklist",
+                                dccDropdown(
+                                  id = "needle-download-data-dropdown",
                                   options = list(
-                                    list(label = "Individually", value = INDIV_DOMS_KEY),
-                                    list(label = "From UniProt only", value = UNIPROT_DOMS_KEY)
+                                    list(label = "All", value = FULL_KEY),
+                                    list(label = "Mutations", value = MUT_KEY),
+                                    list(label = "Domains", value = DOM_KEY)
                                   ),
-                                  value = list()
+                                  value = FULL_KEY
                                 )
                               )
                             ),
-                            htmlDiv(
-                              id = sprintf("needle-%s-div", DATABASE_KEY),
-                              className = "app-controls-block",
-                              children = list(
-                                htmlH5("Search UniProt"),
-                                htmlDiv(
-                                  title = paste(
-                                    "Enter the UniProt accession key",
-                                    "of the gene you want to display.\n",
-                                    "More information on https://www.uniprot.org/"
-                                  ),
-                                  children = list(
-                                    dccInput(
-                                      id = "needle-sequence-input",
-                                      value = "",
-                                      type = "text",
-                                      placeholder = "TP53, DDX3X, SMARCA4, ..."
-                                    ),
-                                    htmlButton(
-                                      id = "needle-search-sequence-button",
-                                      children = "submit",
-                                      n_clicks = 0,
-                                      n_clicks_timestamp = 0
-                                    )
-                                  )
-                                ),
-                                htmlDiv(id = "needle-uniprot-div")
-                              )
-                            ),
-                            htmlDiv(
-                              id = sprintf("needle-%s-div", FILE_KEY),
-                              className = "app-controls-block",
-                              children = list(
-                                htmlDiv(
-                                  id = "needle-mutdata-file-div",
-                                  title = paste(
-                                    "Mutation data files are JSON files containing",
-                                    "the following fields :\n",
-                                    "- \"x\" (protein coordinate of the mutation); \n",
-                                    "- \"y\" (number of recorded mutations); \n",
-                                    "- \"mutationGroups\" (type of mutations); \n",
-                                    "- \"domains\" (protein domains).\n",
-                                    "\"x\", \"y\", and \"mutationGroups\" are arrays, they",
-                                    "must have the same length.",
-                                    "\"x\" is required. \"domains\" is an array of",
-                                    "JSON objects with required fields \"name\"",
-                                    "and \"coord\"; \"name\" can be any string (think",
-                                    "of it as a label), whereas \"coord\" should be",
-                                    "a string formatted like",
-                                    "\"<start_coord>-<stop_coord>\" where integer",
-                                    "<start_coord> is less than integer <stop_coord>",
-                                    "(e.g., \"23-34\"), giving the domain in protein",
-                                    "coordinates."
-                                  ),
-                                  children = list(
-                                    htmlH5("Upload mutation data JSON file"),
-                                    dccUpload(
-                                      id = "needle-mutdata-file-upload",
-                                      className = "control-upload",
-                                      children = htmlDiv(
-                                        list(
-                                          "Drag and drop or ",
-                                          htmlA("select files")
-                                        )
-                                      )
-                                    ),
-                                    htmlDiv(
-                                      id = "needle-mutdata-file-info-div"
-                                    )
-                                  )
-                                ),
-                                htmlDiv(
-                                  id = "needle-domain-file-div",
-                                  title = paste(
-                                    "Protein data files accepted here can be of",
-                                    "two types: \n",
-                                    "- an array of JSON objects with the required",
-                                    "fields, i.e., \"name\" (any string) and \"coord\"",
-                                    "(a string specifying domains in protein",
-                                    "coordinates (e.g., \"23-34\");",
-                                    "- a JSON file with the same structure as: ",
-                                    "http://pfam.xfam.org/protein/P04637/graphic."
-                                  ),
-                                  children = list(
-                                    htmlH5("Upload protein data JSON file"),
-                                    dccUpload(
-                                      id = "needle-domains-file-upload",
-                                      className = "needle-upload",
-                                      children = htmlDiv(
-                                        list(
-                                          "Drag and drop or ",
-                                          htmlA("select files")
-                                        )
-                                      )
-                                    ),
-                                    htmlDiv(
-                                      id = "needle-domains-file-info-div"
-                                    )
-                                  )
-                                ),
-                                htmlDiv(
-                                  id = "needle-domains-query-info-div"
-                                )
-                              )
-                            ),
-                            htmlHr(),
-                            htmlBr(),
-                            htmlDiv(
-                              id = "needle-download-data-div",
-                              children = list(
-                                htmlDiv(
-                                  className = "app-controls-block",
-                                  children = list(
-                                    htmlDiv(
-                                      className = "app-controls-name",
-                                      children = "Download data:"
-                                    ),
-                                    dccDropdown(
-                                      id = "needle-download-data-dropdown",
-                                      options = list(
-                                        list(label = "All", value = FULL_KEY),
-                                        list(label = "Mutations", value = MUT_KEY),
-                                        list(label = "Domains", value = DOM_KEY)
-                                      ),
-                                      value = FULL_KEY
-                                    )
-                                  )
-                                ),
-                                htmlA(
-                                  id = "needle-download-data-button-link",
-                                  children = htmlButton(
-                                    id = "needle-download-data-button",
-                                    className = "control-download",
-                                    children = "Download graph data",
-                                    n_clicks = 0,
-                                    n_clicks_timestamp = 0
-                                  ),
-                                  href = "",
-                                  download = ""
-                                )
-                              )
+                            htmlA(
+                              id = "needle-download-data-button-link",
+                              children = htmlButton(
+                                id = "needle-download-data-button",
+                                className = "control-download",
+                                children = "Download graph data",
+                                n_clicks = 0,
+                                n_clicks_timestamp = 0
+                              ),
+                              href = "",
+                              download = ""
                             )
                           ) 
                         )
@@ -654,7 +669,7 @@ app$callback(
     if (is.null(unlist(div_style))){
       div_style = list(display = "none")
     }
-    if (load_choice == FILE_KEY){
+    if (load_choice == DATABASE_KEY){
       div_style[["display"]] <- "inherit"
     } else {
       div_style[["display"]] <- "none"
@@ -678,8 +693,9 @@ app$callback(
       } else {
         title <- "Last query"
       }
-      last_query <- stored_data[["info"]][[load_choice]]
-      if (last_query == TRUE){
+      #last_query <- stored_data[["info"]][[load_choice]]
+      last_query <- stored_data[["info"]][[DATABASE_KEY]]
+      if (last_query != ""){
         div <- htmlDiv(
           list(
             htmlH5(title),
@@ -720,7 +736,9 @@ app$callback(
     if (is.null(unlist(div_style))){
       div_style = list(display = "none")
     }
-    if ((INDIV_DOMS_KEY %in% domains_opt) & (!UNIPROT_DOMS_KEY %in% domains_opt)){
+    if (
+      (INDIV_DOMS_KEY %in% domains_opt) & 
+        (!UNIPROT_DOMS_KEY %in% domains_opt)){
       div_style[["display"]] <- "inherit"
     } else {
       div_style[["display"]] <- "none"
@@ -730,10 +748,10 @@ app$callback(
 )
 
 app$callback(
-  output("needle-domains-query-info-div", "style"),
+  output("needle-domain-query-info-div", "style"),
   list(
     input("needle-protein-domains-select-checklist", "value"),
-    state("needle-domains-query-info-div", "style"),
+    state("needle-domain-query-info-div", "style"),
     state("needle-dataset-select-dropdown", "value")
   ),
   function(domains_opt, div_style, load_choice){
@@ -844,7 +862,7 @@ app$callback(
 )
 
 app$callback(
-  output("needle-domains-query-info-div", "children"),
+  output("needle-domain-query-info-div", "children"),
   list(
     input("needle-store", "data"),
     state("needle-protein-domains-select-checklist", "values")
@@ -979,17 +997,21 @@ app$callback(
       # loads datasets from a github repo for demo purposes
       fpath <- stored_data[["info"]][["dl_data_path"]]
       fname <- DEMO_DATA[[demo_choice]][["mutData"]]
-      stored_data[["plot"]] <- load_mutation_data(sprintf("%s%s", fpath, fname))
+      stored_data[["plot"]] <- load_mutation_data(
+        sprintf("%s%s", fpath, fname)
+      )
     }
     if (load_choice == DATABASE_KEY){
       # loading uniprot data set
       # Performs a simple query in the UniProt database to find an
-      # accession number, to get more than one number, 
-      # change the limit parameter
+      # accession number
       if (query != ""){
         gene_search <- query_into_dataframe(
           query, 
-          fields = list(revieved = "yes", database = "pfam"),
+          fields = list(
+            revieved = "yes", 
+            database = "pfam"
+          ),
           parameters = list(
             limit = 1, 
             columns = "id,entry name,length,genes,organism",
@@ -997,7 +1019,10 @@ app$callback(
             format = "tab"
           )
         )
-        stored_data[["info"]][[DATABASE_KEY]] <- toString(gene_search)
+        stored_data[["info"]][[DATABASE_KEY]] <- capture.output(
+          print(gene_search)
+        ) 
+        
         accession <- gene_search[1, "Entry"]
 
         domains <- load_protein_domains(accession = accession)
@@ -1017,16 +1042,42 @@ app$callback(
           parameters = list(
             format = "gff"
           ),
-          names = c("name", "db", "mut", "start", "end", "x1", "x2", "x3", "note")
+          names = c(
+            "name", "db", "mut", "start", "end", "x1", "x2", "x3", "note"
+          )
         )
         formatted_data <- parse_mutations_uniprot_data(gff_data = gff_data)
         stored_data[["plot"]][["x"]] <- as.character(formatted_data[["x"]])
-        stored_data[["plot"]][["y"]] <- as.integer(formatted_data[["y"]])
-        stored_data[["plot"]][["mutationGroups"]] <- as.character(formatted_data[["mutationGroups"]])
-        stored_data[["info"]][[DB_LAST_QUERY_KEY]] <- query
+        stored_data[["plot"]][["y"]] <- as.character(formatted_data[["y"]])
+        stored_data[["plot"]][["mutationGroups"]] <- as.character(
+          formatted_data[["mutationGroups"]]
+        )
       }
     }
-    #print(stored_data[["plot"]])
+  if (load_choice == FILE_KEY){
+    stored_data[["plot"]] <- parse_mutation_upload_file(mut_contents, mut_fname) 
+    if (INDIV_DOMS_KEY %in% domains_opt){
+      stored_data[["plot"]][["domains"]] <- list()
+      if (!UNIPROT_DOMS_KEY %in% domains_opt){
+        if (!is.null(unlist(dom_contents))){
+          stored_data[["plot"]][["domains"]] <- parse_domain_upload_file(
+            dom_contents, dom_fname
+          )
+        }
+      } else {
+        if (INDIV_DOMS_KEY %in% stored_data){
+          stored_data[["plot"]][["domains"]] <- 
+            stored_data[[INDIV_DOMS_KEY]][["domains"]]
+        }
+      }
+
+    }
+  }
+  if (load_choice != stored_data[["info"]][["previous_key"]]){
+    stored_data[["info"]][["is_same_key"]] <- FALSE
+  } else {
+    stored_data[["info"]][["is_same_key"]] <- TRUE
+  }
   stored_data
   }
 )

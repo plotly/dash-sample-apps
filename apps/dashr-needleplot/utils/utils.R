@@ -4,6 +4,7 @@ library(httr)
 # to make loading gff files easier:
 library(ape)
 library(plyr)
+library(dplyr)
 
 EMPTY_MUT_DATA <- list(
   x = list(),
@@ -63,13 +64,6 @@ MUT_DATA_SCHEMA <- sprintf('{
   "required": ["x"]}', 
   ARR_SCHEMA, ARR_SCHEMA, ARR_SCHEMA, PROT_DOM_SCHEMA
 )
-
-
-#mutationData <- readLines("../sample_data/needle_needleplot_data.json")
-#mutationData <- readLines("../sample_data/needle_ATRX.json")
-
-#json_validate(mutationData, MUT_DATA_SCHEMA, error = TRUE)
-#json_validate(mutationData, PROT_DOM_SCHEMA, error = TRUE)
 
 parse_mutation_data <- function(mutation_data){
   # take a json object and extract the mutation data based on the schema
@@ -206,7 +200,11 @@ validate_query_parameters <- function(parameters = NULL){
           validated_parameters[[param]] <- parameters[[param]] 
         }
       } else if (param == "columns"){
-        column_entry <- unlist(strsplit(gsub("+", "", parameters[[param]], fixed = TRUE), ","))
+        column_entry <- unlist(
+          strsplit(
+            gsub("+", "", parameters[[param]], fixed = TRUE), ","
+          )
+        )
         set_a <- unlist(unique(query_parameters[[param]]))
         set_b <- unlist(unique(column_entry))
         validated_items <- intersect(set_a, set_b)
@@ -216,7 +214,9 @@ validate_query_parameters <- function(parameters = NULL){
             validated_column_entry[[i]] <- column_entry[[i]]
           }
         }
-        validated_parameters[[param]] <- paste(unlist(validated_column_entry), collapse = ",")
+        validated_parameters[[param]] <- paste(
+          unlist(validated_column_entry), collapse = ","
+        )
       } else if (param %in% list("include", "compress", "sort")){
         if (parameters[[param]] %in% query_parameters[[param]]){
           validated_parameters[[param]]  <- parameters[[param]]
@@ -245,34 +245,38 @@ build_query <- function(query, fields = NULL, parameters = NULL){
       if (is.character(fields[[fieldname]])){
         URL <- paste0(URL, field_separator, fieldname, ":", fields[[fieldname]])
       } else {
-        stop(sprintf("In build_query: The value of the field %s is not a string format", fieldname))
+        stop(
+          sprintf("The value of the field %s is not a string format", fieldname)
+        )
       }
     }
   }
   validated_parameters <- validate_query_parameters(parameters)
   for (param in names(validated_parameters)){
-    URL <- paste0(URL, parameter_separator, param, "=", validated_parameters[[param]])
+    URL <- paste0(
+      URL, parameter_separator, param, "=", validated_parameters[[param]]
+    )
   }
   URL
 }
 
-query_into_dataframe <- function(query, fields = NULL, parameters = NULL, names = NULL){
+query_into_dataframe <- function(
+  query, 
+  fields = NULL, 
+  parameters = NULL, 
+  names = NULL
+  ){
   target_url <- build_query(query, fields = fields, parameters = parameters)
   col_id <- "columns"
   col_names <- NULL
   if (is.null(names)){
     db <- read.csv(URLencode(target_url), sep = "\t")
   } else {
-    #db <- read.csv(URLencode(target_url), sep = "\t", col.names = names, row.names = NULL)
     db <- ape::read.gff(file = URLencode(target_url))
     colnames(db) <- names
   }
   db
 }
-
-
-#test_accession <- "O00571"
-#test_domain_data <- pfam_domain_parser(test_accession)
 
 pfam_domain_parser <- function(accession){
   URL <- sprintf("http://pfam.xfam.org/protein/%s/graphic", accession)  
@@ -280,8 +284,6 @@ pfam_domain_parser <- function(accession){
   jsonData <- content(r, "parsed")
   toJSON(jsonData)
 }
-
-#test_domain_data
 
 parse_protein_domains_data <- function(domain_data){
   region_key <- "regions"
@@ -291,9 +293,10 @@ parse_protein_domains_data <- function(domain_data){
   formatted_data <- list()
 
   if (json_validate(domain_data, PFAM_DOM_SCHEMA)){
-    regionlist <- fromJSON(domain_data, simplifyVector = FALSE)[[1]][[region_key]]
+    regionlist <- fromJSON(
+      domain_data, simplifyVector = FALSE
+    )[[1]][[region_key]]
     for (i in 1:length(regionlist)){
-      #print(regionlist[[i]][[region_name_key]])
       formatted_data[[i]] <- list(
         name = unlist(regionlist[[i]][[region_name_key]]),
         coord = sprintf(
@@ -314,7 +317,12 @@ load_protein_domains <- function(accession){
   parse_protein_domains_data(domain_data)
 }
 
-parse_mutations_uniprot_data <- function(gff_data, start = "start", stop = "end", mut_types_to_skip = NULL){
+parse_mutations_uniprot_data <- function(
+  gff_data, 
+  start = "start", 
+  stop = "end", 
+  mut_types_to_skip = NULL
+  ){
   if (is.null(mut_types_to_skip)){
     mut_types_to_skip <- list(
       "Chain",
@@ -325,7 +333,9 @@ parse_mutations_uniprot_data <- function(gff_data, start = "start", stop = "end"
     mut_types_to_skip <- c(mut_types_to_skip, list("Chain"))
   }
   # Selects the various mutations types in the dataset, except types contained in the above list
-  mut_types <- as.character(unique(gff_data[!gff_data$mut %in% mut_types_to_skip, "mut"]))
+  mut_types <- as.character(
+    unique(gff_data[!gff_data$mut %in% mut_types_to_skip, "mut"])
+  )
   x <- list()
   y <- list()
   mutationgroups <- list()
@@ -335,20 +345,33 @@ parse_mutations_uniprot_data <- function(gff_data, start = "start", stop = "end"
     # split between single and multi-site coordinates
     single_sites <- data_coord[data_coord[,start] == data_coord[,stop],]
     multi_sites <- data_coord[data_coord[,start] != data_coord[,stop],]
-
     multi_sites[,start] <- paste(
       as.character(multi_sites[,start]),
       as.character(multi_sites[,stop]),
       sep = "-"
     )
-    sorted_data <- plyr::count(c(single_sites[,start], multi_sites[,start]))
+    sorted_data <- plyr::count(c(single_sites[,start], multi_sites[,start])) %>% 
+      mutate(mut = mut)
 
     x <- c(x, as.character(sorted_data[,"x"])) 
-    y <- c(y, sorted_data[,"freq"])
-    mutationgroups <- c(mutationgroups, rep_len(mut, nrow(sorted_data)))
+    y <- c(y, as.character(sorted_data[,"freq"]))
+    mutationgroups <- c(mutationgroups, sorted_data[, "mut"])
   }
 
-  order_df <- as.data.frame(sort(table(unlist(mutationgroups)), decreasing = TRUE))
+  #order the results by frequency of occurrence
+  # TODO: There is an issue with the ordering of the mutation groups:
+  # For the time being, the data look correct, but the mutation groups they are 
+  # attached to are sometimes incorrect (re-ordered)
+  # For an example, look at DDX3X when uploaded from UniProt Dataset
+  # The mutations and helix labels are somehow reversed...
+  order_df <- as.data.frame(
+    sort(
+      table(
+        unlist(mutationgroups)
+      ), 
+      decreasing = TRUE
+    )
+  )
   order_df <- merge(
     data.frame(
       mut = unlist(mutationgroups),
@@ -363,10 +386,27 @@ parse_mutations_uniprot_data <- function(gff_data, start = "start", stop = "end"
   formatted_data = list(
     "x" = order_df[, "x"],
     "y" = order_df[, "y"],
-    "mutationGroups" = unlist(order_df[, "mut"]),
+    "mutationGroups" = order_df[, "mut"],
     domains = list()
   )
   formatted_data
 }
 
+parse_mutation_upload_file <- function(contents, fname){
+  data <- EMPTY_MUT_DATA
+  if (endsWith(fname, ".json"))
+    content_string <- unlist(strsplit(contents, ","))[2]
+    decoded <- base64_dec(content_string)
+    data <- fromJSON(rawToChar(decoded))
+  data
+}
+
+parse_domain_upload_file <- function(contents, fname){
+  data <- list()
+  if (endsWith(fname, ".json")){
+    content_string <- unlist(strsplit(contents, ","))[2]
+    decoded <- base64_dec(content_string)
+    data <- fromJSON(rawToChar(decoded))
+  }
+}
 
