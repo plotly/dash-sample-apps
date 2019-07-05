@@ -256,7 +256,7 @@ app$layout(
       
       htmlH2('t-SNE Explorer', className='title', id='app-title')
       ,
-      htmlImg(id='plotly-image', className='logo', src="assets/logo.png")
+      htmlImg(id='plotly-image', className='logo', src="assets/logo.png", style=list(float='right'))
       
     )
     ,
@@ -717,9 +717,9 @@ app$callback(
           z=~z, 
           color=~as.factor(label), 
           mode='markers', 
-          marker=list(symbol='circle', size=2.5))
+          marker=list(symbol='circle', size=2.5), width=850, height=600)
         
-        return(p %>% plotly::layout(.,width=850, height=600))
+        return(p)
       } else if(is.element(dataset, WORD_EMBEDDINGS)){
         figure <- generate_figure_word_vec(embedding_DT, wordemb_display_mode, selected_word, datTbl)
         
