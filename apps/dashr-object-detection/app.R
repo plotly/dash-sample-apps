@@ -4,7 +4,6 @@ if (appName != ""){
   
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  
   setwd(sprintf("/app/apps/%s", appName))
 }
 
@@ -23,416 +22,223 @@ library(magrittr)
 
 DEBUG <- T
 FRAMERATE <- 24.0
-f_read <- cmpfun(fread)
-data_table <- cmpfun(data.table)
-gum <- cmpfun(glue)
-load.data <- cmpfun(function(path){
-  #  # Load data about a specific footage (given by the path). It returns a listionary of useful variables such as
-  #  #  the dataframe containing all the detection and bounds localization, the number of classes inside that footage,
-  #  #  the matrix of all the classes in string, the given class with padding, and the root of the number of classes,
-  #  #  rounded.
-  # 
-  
-  # Load DT containing all the processed object detections inside the video
-  
-  Info.DT <- f_read(path)
-  
-  #cls.vec <- the list of detected object classes for the .csv file
-  
-  cls.vec <- Info.DT[, class_str]
-  n.cls <- length(cls.vec)
-  title.vec <- unique(cls.vec)
-  
-  # Gets the smallest value needed to add to the end of the classes list to get a square matrix
-  #   # n := argmin_{n : int} (n \geq n.c) \land (\sqrt{n} : int)
-  #   # to find n we do
-  
-  r.rnd <- ceiling(sqrt(n.cls))
-  
-  pad.ent<- as.integer(r.rnd^2 - n.cls)
-  pad.seq <- numeric(pad.ent)
-  #Pad the class.vec
-  cls.wpad <- c(cls.vec, pad.seq)
-  cls.mtx <- apply(matrix(cls.wpad, nrow=r.rnd, ncol=r.rnd, byrow=T),2,rev)
-  
-  
-  
-  dat_list = list(INFO_DT = Info.DT, N_CLS=n.cls, MTX_CLS = cls.mtx, WPAD_CLS = cls.wpad, RT_RND = r.rnd, TITL=title.vec)
-  
-  
-  if(DEBUG)
-  {
-    print(gum('{path} loaded.'))
-  }
-  
-  
-  return(dat_list)
-  
-})
-
-LABELS <- function(footage){
-  titles = dat.list[[footage]]$TITL
-  l <- length(titles)
-  m <- ceiling(sqrt(l))
-  titles_pad <- c(titles, rep("", times=(m^2-l)))
-  
-  hover_text = titles_pad
-  
-  hover_text = matrix(hover_text, ncol = m, byrow=F)
-  
-  colnames(hover_text) <- 1:m
-  rownames(hover_text) <- 1:m
-  df <- data.table(hover_text, keep.rownames = T)
-  return(dashDataTable(
-    id = 'table',
-    columns = lapply(colnames(df), function(x) {
-      list(name = x, id = x)
-    }),
-    data = setNames(lapply(split(df, seq(nrow(df))), FUN = function (x) {as.list(x)}), NULL)
-  ))
-}
-
-
 #list of optimized function through cmpfun
-load_data <- cmpfun(load.data)
-
-
 
 footage_labels <- c("james_bond", "zebra", "car_show_drone", "car_footage", "DroneCanalFestival","DroneCarFestival2","FarmDrone", "ManCCTV", "RestaurantHoldup")
-
-dat.list <- list( james_bond = load_data("data/james_bond_object_data.csv"), 
-                         
-                         zebra =  load_data("data/Zebra_object_data.csv"), 
-                         
-                         car_show_drone = load_data("data/CarShowDrone_object_data.csv"),  
-                         
-                         car_footage = load_data("data/CarFootage_object_data.csv"),
-                         
-                         DroneCanalFestival = load_data("data/DroneCanalFestivalDetectionData.csv"),
-                         
-                         DroneCarFestival2 =  load_data("data/DroneCarFestival2DetectionData.csv"),
-                         
-                         FarmDrone = load_data("data/FarmDroneDetectionData.csv"),
-                         
-                         ManCCTV = load_data("data/ManCCTVDetectionData.csv"),
-                         
-                         RestaurantHoldup =load_data("data/RestaurantHoldupDetectionData.csv"))
-
-
-
-
-url.list <-  list(regular=data_table(james_bond = 'https://www.youtube.com/watch?v=g9S5GndUhko', 
-                                         
-                                         zebra =  'https://www.youtube.com/watch?v=TVvtD3AVt10', 
-                                         
-                                         car_show_drone = 'https://www.youtube.com/watch?v=gPtn6hD7o8g',  
-                                         
-                                         car_footage = 'https://www.youtube.com/watch?v=qX3bDxHuq6I',
-                                         
-                                         DroneCanalFestival = 'https://youtu.be/0oucTt2OW7M',
-                                         
-                                         DroneCarFestival2 =  'https://youtu.be/vhJ7MHsJvwY',
-                                         
-                                         FarmDrone = 'https://youtu.be/aXfKuaP8v_A',
-                                         
-                                         ManCCTV =  'https://youtu.be/BYZORBIxgbc',
-                                         
-                                         RestaurantHoldup = 'https://youtu.be/WDin4qqgpac'), 
-                      
-                      bounding_box=data_table( james_bond = 'https://www.youtube.com/watch?v=g9S5GndUhko', 
-                                               
-                                               zebra =  'https://www.youtube.com/watch?v=G2pbZgyWQ5E', 
-                                               
-                                               car_show_drone = 'https://www.youtube.com/watch?v=9F5FdcVmLOY',  
-                                               
-                                               car_footage = 'https://www.youtube.com/watch?v=EhnNosq1Lrc',
-                                               
-                                               DroneCanalFestival = 'https://youtu.be/6ZZmsnwk2HQ',
-                                               
-                                               DroneCarFestival2 =  'https://youtu.be/2Gr4RQ-JHIs',
-                                               
-                                               FarmDrone = 'https://youtu.be/pvvW5yZlpyc',
-                                               
-                                               ManCCTV = 'https://youtu.be/1oMrHLrtOZw',
-                                               
-                                               RestaurantHoldup ='https://youtu.be/HOIKOwixYEY')
-) 
-
-
-
+dat.list <- loadCache(pathname="assets/datList.Rcache")
+url.list <- loadCache(pathname="assets/urlList.Rcache")
 app <- Dash$new()
 
-markdown.text = "##### What am I looking at?
+markdown.text <- "##### What am I looking at?
 
 
-This app enhances visualization of objects detected using state-of-the-art Mobile Vision Neural Networks.
-Most user generated videos are dynamic and fast-paced, which might be hard to interpret. A confidence
-heatmap stays consistent through the video and intuitively displays the model prelistions. The pie chart
-lets you interpret how the object classes are divided, which is useful when analyzing videos with numerous
+This app enhances visualization of objects detected using state-of-the-art Mobile Vision Neural Networks.  
+Most user generated videos are dynamic and fast-paced, which might be hard to interpret. A confidence  
+heatmap stays consistent through the video and intuitively displays the model predictions. The pie chart  
+lets you interpret how the object classes are divided, which is useful when analyzing videos with numerous  
 and differing objects.
                                 
                               
 ##### More about this dash app
 
 
-The purpose of this demo is to explore alternative visualization methods for Object Detection. Therefore,
-the visualizations, prelistions and videos are not generated in real time, but done beforehand. To read
-more about it, please visit the [project repo](https://github.com/plotly/dash-object-detection)."
+The purpose of this demo is to explore alternative visualization methods for Object Detection. Therefore,  
+the visualizations, prelistions and videos are not generated in real time, but done beforehand. To read  
+more about it, please visit the [project repo](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-object-detection)."
 
 app$layout(
-  
-  
-  
-  htmlDiv(className='container', children=list( #header-section
+  htmlDiv(children=list( #header-section
     #Top bar
     htmlDiv(
       id='top-bar',
-      className='row',
-      style=list(backgroundColor = '#fa4f56', height= '5px')
+      className='row'
     ),
-    
-    
+    htmlDiv(className='container', children=list(
+      htmlDiv(
+        id='left-side-column',
+        className='eight columns',
+        children=list(
+          htmlImg(
+            id="logo-mobile",
+            src="assets/logo-old.png"
+          ),
+          htmlDiv(
+            id='header-section',
+            #title
+            children=list(
+              ##
+              htmlH4(
+                'Object Detection Explorer'
+              ), 
+              #subheader
+              htmlDiv(
+                children = list(dccMarkdown('
+        To get started, select a footage you want to view, and choose the display mode (with or without  bounding boxes).  
+        Then, you can start playing the video, and the visualization will be displayed depending on the current time.'))
+                
+              ),
+              #'learn more' button - will contain the markdown_popup 
+              htmlButton("Learn More", id="learn-more-button", n_clicks=0)
+            )) ,
+          #Video-outer-container
+          htmlDiv(
+            className='video-outer-container',
+            children= 
+              htmlDiv(
+                className='video-container',
+                children=dashPlayer(
+                  id='video-display',
+                  url='https://www.youtube.com/watch?v=gPtn6hD7o8g',
+                  controls=TRUE,
+                  playing=FALSE,
+                  volume=1,
+                  width='100%',
+                  height='100%'
+                )
+              )
+          ),
+          htmlDiv(
+            className='control-section',
+            children = list(
+              
+              #LMNT #1
+              htmlDiv(
+                className='control-element',
+                children=list(
+                  htmlDiv(children=list("Minimum Confidence Threshold:"), style=list(width= '40%')),
+                  htmlDiv(dccSlider(
+                      id='slider-minimum-confidence-threshold',
+                      min=20,
+                      max=80,
+                      step=NULL,
+                      marks=list('20'=list(label='20%'), 
+                                 '30'=list(label='30%'), 
+                                 '40'=list(label='40%'), 
+                                 '50'=list(label='50%'), 
+                                 '60' = list(label = '60%'), 
+                                 '70' = list(label='70%'), 
+                                 '80'= list(label='80%')
+                                 ),
+                      value=30,
+                      updatemode='drag'
+                    ))
+                ))
+              , 
+              #LMNT #2
+              htmlDiv(
+                className='control-element',
+                children=list(
+                  htmlDiv(children=list("Footage Selection:")),
+                  dccDropdown(
+                    id="dropdown-footage-selection",
+                    options=list(
+                      list(label = 'Drone recording of canal festival',
+                           value = 'DroneCanalFestival'),
+                      list(label = 'Drone recording of car festival', value = 'car_show_drone'),
+                      list(label = 'Drone recording of car festival #2', value = 'DroneCarFestival2'),
+                      list(label = 'Drone recording of a farm', value = 'FarmDrone'),
+                      list(label = 'Lion fighting Zebras', value = 'zebra'),
+                      list(label = 'Man caught by a CCTV', value = 'ManCCTV'),
+                      list(label = 'Man driving expensive car', value = 'car_footage'),
+                      list(label = 'Restaurant Robbery', value = 'RestaurantHoldup')
+                    ),
+                    value='car_show_drone',
+                    clearable=F
+                  )
+                )),    
+              
+              
+              #LMNT #3
+              htmlDiv(
+                className = 'control-element',
+                
+                children = list(
+                  
+                  htmlDiv(children = list("Video Display Mode:")), 
+                  dccDropdown(id = 'dropdown-video-display-mode',
+                              options =list(
+                                list(label='Regular Display', value='regular'),
+                                list(label='Bounding Boxes', value = 'bounding_box')
+                              ), value= 'bounding_box',
+                              searchable = F,
+                              clearable = F
+                  )   
+                )),
+              #LMNT #4  
+              htmlDiv(
+                className='control-element',
+                children=list(
+                  htmlDiv(children="Graph View Mode:"),
+                  dccDropdown(
+                    id="dropdown-graph-view-mode",
+                    options=list(
+                      list(label = 'Detection Mode', value = 'detection')
+                    ),
+                    value='visual',
+                    searchable=FALSE,
+                    clearable=FALSE
+                  )
+                ))
+            ))   
+        )),#LCOL end
+      htmlDiv(
+        id='right-side-column',
+        className='four columns',
+        children=list(
+          htmlDiv(
+            className='img-container',
+            children=htmlImg(
+              id="logo-web",
+              src="assets/logo-old.png")
+          ),
+          htmlDiv(id="div-visual-mode" ),
+          htmlDiv(id="div-detection-mode")
+        ))
+    )),#CONTAINER end
     htmlDiv(
-      id='left-side-column',
-      className='eight columns',
-      style=list(display = 'flex', flexDirection = 'column', flex = 1, height = 'calc(100vh - 5px)', backgroundColor = '#F2F2F2', 'overflow-y' = 'scroll', marginLeft = '0px', justifyContent = 'flex-start', alignItems = 'center'),
+      id='markdown',
+      className='modal',
+      style=list(display= 'none'),
       children=list(
         
-        
         htmlDiv(
-          id='header-section',
-          #title
-          children=list(
-            
-            
-            ##
-            htmlH4(
-              'Object Detection Explorer'
-            ), 
-            
-            
-            #subheader
-            htmlDiv(
-              children = list(dccMarkdown(glue('
-        
-        To get started, select a footage you want to view, and choose the display mode (with or without  bounding boxes).\ 
-        
-        Then, you can start playing the video, and the visualization will 
-                                      be displayed depending on the current time.')))
-              
-            ),
-            #'learn more' button - will contain the markdown_popup 
-            htmlButton("Learn More", id="learn-more-button", n_clicks=0)
-            
-            
-          )) ,
-        
-        
-        #
-        htmlDiv(
-          id='markdown',
-          className='model',
-          style=list(display= 'none'),
-          children=list(
-            
-            htmlDiv(
-              className='close-container',
-              children=htmlButton(
-                'Close',
-                id='markdown_close',
-                n_clicks=0,
-                className='closeButton',
-                style=list(border = 'none', height = '100%')
-              )
-            ),
-            htmlDiv(
-              className='markdown-text',
-              children=list(dccMarkdown(
-                children= markdown.text
-              )
-              )
-            ) #list()
+          className='close-container',
+          children=htmlButton(
+            'Close',
+            id='markdown_close',
+            n_clicks=0,
+            className='closeButton',
           )
-          #list()
-          
         ),
-        
-        
-        
-        #Video-outer-container
         htmlDiv(
-          className='video-outer-container',
-          children= 
-            htmlDiv(
-              
-              style=list(width = '100%', paddingBottom = '56.25%', position = 'relative'),
-              
-              children=dashPlayer(
-                
-                id='video-display',
-                
-                style= list(position = 'absolute', width= '100%', height = '100%', top = '0', left = '0', bottom = '0', right = '0'),
-                
-                url='https://www.youtube.com/watch?v=gPtn6hD7o8g',
-                
-                controls=TRUE,
-                
-                playing=FALSE,
-                
-                volume=1,
-                
-                width='100%',
-                
-                height='100%'
-              )
-            )
-        ),
-        
-        htmlDiv(
-          className='control-section',
-          children = list(
-            
-            #LMNT #1
-            htmlDiv(
-              className='control-element',
-              children=list(
-                htmlDiv(children=list("Minimum Confidence Threshold:"), style=list(width= '40%')),
-                htmlDiv(
-                  dccSlider(
-                    id='slider-minimum-confidence-threshold',
-                    min=20,
-                    max=80,
-                    step=NULL,
-                    marks=list('20'=list(label='20%'), '30'=list(label='30%'), '40'=list(label='40%'), '50' = list(label='50%'), '60' = list(label = '60%'), '70' = list(label='70%'), '80'= list(label='80%')),
-                    value=30,
-                    updatemode='drag'
-                  ), style=list(width = '80%')) #60%
-              )
-            )
-            , 
-            
-            
-            #LMNT #2
-            htmlDiv(
-              className='control-element',
-              children=list(
-                htmlP(children=list("Footage Selection:"), style=list(width = '40%')),
-                dccDropdown(
-                  id="dropdown-footage-selection",
-                  options=list(
-                    list(label = 'Drone recording of canal festival',
-                         value = 'DroneCanalFestival'),
-                    list(label = 'Drone recording of car festival', value = 'car_show_drone'),
-                    list(label = 'Drone recording of car festival #2', value = 'DroneCarFestival2'),
-                    list(label = 'Drone recording of a farm', value = 'FarmDrone'),
-                    list(label = 'Lion fighting Zebras', value = 'zebra'),
-                    list(label = 'Man caught by a CCTV', value = 'ManCCTV'),
-                    list(label = 'Man driving expensive car', value = 'car_footage'),
-                    list(label = 'Restaurant Robbery', value = 'RestaurantHoldup')
-                  ),
-                  value='car_show_drone',
-                  clearable=F,
-                  style=list(width = '60%')
-                )
-              )
-            ),    
-            
-            
-            #LMNT #3
-            htmlDiv(
-              className = 'control-element',
-              
-              children = list(
-                
-                htmlDiv(children = list("Video Display Mode:"), style = list( width =  '40%')), dccDropdown(id = 'dropdown-video-display-mode',
-                                                                                                            options =list(
-                                                                                                              list(label='Regular Display', value='regular'), 
-                                                                                                              list(label='Bounding Boxes', value = 'bounding_box')
-                                                                                                            ), value= 'bounding_box',
-                                                                                                            searchable = F,
-                                                                                                            clearable = F,
-                                                                                                            style = list(width='60%')
-                )   
-                
-                
-              )),
-            
-            #LMNT #4  
-            htmlDiv(
-              className='control-element',
-              children=list(
-                htmlDiv(children="Graph View Mode:", style=list(width = '60%')),
-                dccDropdown(
-                  id="dropdown-graph-view-mode",
-                  options=list(
-                    list(label = 'Visual Mode', value = 'visual'),
-                    list(label = 'Confidence Mode', value = 'confidence'),
-                    list(label = 'Detection Mode', value = 'detection')
-                    
-                  ),
-                  value='visual',
-                  searchable=FALSE,
-                  clearable=FALSE,
-                  style=list(width = '60%')
-                )
-              )
-            )
-            
-          ))   
-        
-      )),#LCOL end
-    
-    
-    htmlDiv(
-      id='right-side-column',
-      className='four columns',
-      style=list( height = 'calc(100vh - 5px)',
-                  overflowY = 'scroll',
-                  marginLeft = '1%',
-                  display = 'flex',
-                  backgroundColor = '#F9F9F9',
-                  flexDirection = 'column'),
-      children=list(
-        htmlDiv(
-          className='img-container',
-          children=htmlImg(
-            style=list(height = '100%', margin = '1px'),
-            src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png")
-        ),
-        
-        htmlDiv(id="div-visual-mode" ),
-        htmlDiv(id='div-confidence-mode'),
-        htmlDiv(id="div-detection-mode")
-        
-      )
-    )
-    
-  )) #CONTAINER end
-  
+          className='markdown-text',
+          children=list(dccMarkdown(children= markdown.text)))
+      ))
+  )) 
 )
 
 #"Learn more" popup
 app$callback(
-  
+
   output = list(
-    
+
     id = 'markdown', property = 'style'
   ),
-  
+
   params = list(
-    
+
     input(id =  "learn-more-button", property = 'n_clicks'),
     input(id = "markdown_close", property = "n_clicks")
-    
+
   ),
-  
+
   function(button_click, close_click){
-    
+
     if(button_click > close_click){return(list(display = 'block', backgroundColor = '#F9F9F9'))}
     else{return(list(display = 'none'))}
-    
+
   }
-  
+
 )
 
 
@@ -472,6 +278,9 @@ app$callback(
           children=
             
             list(
+              htmlP(children = 'Confidence Level of Object Presence', className = 'plot_title'),
+              
+              dccGraph(id = 'heatmap-confidence', style = list(height='40vh', width='100%')),
               
               htmlP(children = 'Object Count', className = 'plot_title'),
               
@@ -487,37 +296,28 @@ app$callback(
 )
 
 #Setting up the heatmap graph
-app$callback(
-  output = list(id = 'div-confidence-mode', property = 'children'),
-  
-  params = list(input(id='dropdown-graph-view-mode', property='value')), 
-  
-  function(dropdown_value){
-    
-    if(dropdown_value=="confidence"){
-      
-      
-      return(list(
-        
-        dccInterval(id = 'interval-confidence-mode', interval = 700, n_intervals = 0),
-        
-        htmlDiv(children = list(htmlP(children = 'Confidence Level of Object Presence', className = 'plot_title'),
-                                
-                                dccGraph(id = 'heatmap-confidence', style = list(height='40vh', width='100%') ) 
-                                
-                                
-        )), 
-        
-        htmlDiv(id='heatmap-labels', children = list() )
-      ))
-      
-      
-      
-      
-    } else {
-      return(list())
-    }}
-)
+# app$callback(
+#   output = list(id = 'div-confidence-mode', property = 'children'),
+#   
+#   params = list(input(id='dropdown-graph-view-mode', property='value')), 
+#   
+#   function(dropdown_value){
+#     
+#     if(dropdown_value=="confidence"){
+#       
+#       
+#       return(list(
+#         
+#         dccInterval(id = 'interval-confidence-mode', interval = 700, n_intervals = 0),
+#         
+#         htmlDiv(children = list( ) 
+#         )), 
+#         
+#         htmlDiv(id='heatmap-labels', children = list() )
+#       ))    } else {
+#       return(list())
+#     }}
+# )
 
 
 #Setting up the graphs for the detection mode
@@ -609,7 +409,7 @@ app$callback(
         
         #Select only the frames above the threshold
         
-        threshold_dec = threshold/100 #threshold in decimal
+        threshold_dec <- threshold/100 #threshold in decimal
         
         #Filter them accordingly
         frame_score_filtered <- frame_score[frame_score > threshold_dec]
@@ -624,8 +424,7 @@ app$callback(
         
         #Select up to top 8 frames w.r.t scores
         
-        frame_ordered = frame_df[order(frame_score_filtered, decreasing=TRUE),]
-        
+        frame_ordered <- frame_df[order(frame_score_filtered, decreasing=TRUE),]
         top_frames <- frame_ordered[m, ]
         
         
@@ -638,32 +437,23 @@ app$callback(
         Obj_count_lst <- as.list(numeric(length(set.Obj)))
         
         names(Obj_count_lst) <- set.Obj
-        Obj_wc = c()
-        
-        
-        
-        
+        Obj_wc <- c()
+      
         for (Obj in Objects){
           
-          Obj_count_lst[[Obj]]= Obj_count_lst[[Obj]] + 1
+          Obj_count_lst[[Obj]] <- Obj_count_lst[[Obj]] + 1
           Obj_wc <- append(Obj_wc, glue("{Obj}  {Obj_count_lst[[Obj]]}"))
           
         }
         
         colors = rep('rgb(250, 79, 86)', length(Obj_wc))
         
-        #Add text information
-        
-        #y_text <- unlist(lapply(unlist(top_frames$Score),function(val){return(glue("{round(val*100)} % confidence"))} ))
-        
-        
-        
-        figure <- plot_ly(type='bar',hoverinfo='x+text', TITL= "Detection Scores",   x = Obj_wc, marker = list(color=colors), y = top_frames$Score)
+        figure <- plot_ly(type='bar',hoverinfo='x+text', name= "Detection Scores",   x = Obj_wc, marker = list(color=colors), y = top_frames$Score)
         
         figure_xaxis <- list(automargin=TRUE, tickangle = -45)
         figure_yaxis <- list(automargin=TRUE, range=c(0,1), title = list(text = 'Score'))
         
-        figure = figure %>% plotly::layout(showlegend = FALSE, autosize=TRUE,  paper_bgcolor = 'rgb(249,249,249)', plot_bgcolor = 'rgb(249,249,249)') 
+        figure %<>% plotly::layout(showlegend = FALSE, autosize=TRUE) 
         
         return(figure)
         
@@ -671,12 +461,10 @@ app$callback(
       
       
     }
-    #p = plot_ly(type =  'bar', showlegend=FALSE, paper_bgcolor = 'rgb(249,249,249)', plot_bgcolor = 'rgb(249,249,249)',   yaxis = list(title = 'score', automargin=TRUE), range = list(0, 1))
-    
     p_xaxis <- list(automargin=TRUE)
     p_yaxis <- list(title = 'Score', automargin = TRUE, range= 0:1)
-    p = plot_ly(type =  'bar', x=c("Empty 1","Empty 2" ), y=c(0,0))
-    p = p %>% plotly::layout(showlegend=FALSE, paper_bgcolor='rgb(249,249,249)', plot_bgcolor='rgb(249,249,249)', xaxis = p_xaxis, yaxis = p_yaxis)
+    p <- plot_ly(type =  'bar', x=c("Empty 1","Empty 2" ), y=c(0,0)) %>%
+      plotly::layout(showlegend=FALSE, xaxis = p_xaxis, yaxis = p_yaxis)
     
     
     return(p) # Returns an empty bar graph
@@ -691,33 +479,33 @@ app$callback(
 app$callback(
   output = list(id = "heatmap-confidence", property = "figure"),
   
-  params = list(input(id = "interval-confidence-mode", property = "n_intervals"),
+  params = list(input(id = "interval-visual-mode", property = "n_intervals"),
                 state(id = 'video-display', property = 'currentTime'),
                 state(id = 'dropdown-footage-selection', property = 'value'),
                 state(id = 'slider-minimum-confidence-threshold', property = 'value')),
   
   function(n, current_time, footage, threshold){
     
-    heatmap_margin = list(l=10, r=10, b=20, t=20, pad=4)
-    bgc = 'rgb(249,249,249)'
+    heatmap_margin <- list(l=10, r=10, b=20, t=20, pad=4)
+    bgc <- 'rgb(249,249,249)'
     
     if(!is.null(current_time)){
       
-      current_frame = round(current_time * FRAMERATE)
+      current_frame <- round(current_time * FRAMERATE)
       
       if((n>0)&&(current_frame>0)){
         
         #Load variables from the data list
         
-        video_info_df = dat.list[[footage]]$INFO_DT
+        video_info_df <- dat.list[[footage]]$INFO_DT
         
-        clses_padded = dat.list[[footage]]$WPAD_CLS
+        clses_padded <- dat.list[[footage]]$WPAD_CLS
         
-        root_rnd = dat.list[[footage]]$RT_RND
+        root_rnd <- dat.list[[footage]]$RT_RND
         
-        clses_mtx = dat.list[[footage]]$MTX_CLS
+        clses_mtx <- dat.list[[footage]]$MTX_CLS
         
-        titles = dat.list[[footage]]$TITL
+        titles <- dat.list[[footage]]$TITL
         
         ##Extract the score
         frame_score <-  video_info_df$score[(video_info_df$frame == current_frame)]
@@ -737,9 +525,9 @@ app$callback(
         
         
         # Remove duplicate, keep the top result
-        class_wodup = frame_string_filtered[!duplicated(frame_index_filtered)]
-        score_wodup = frame_score_filtered[!duplicated(frame_index_filtered)]
-        index_wodup = which(unlist(lapply(1:length(titles), function(i){if(is.element(titles[i], class_wodup)){return(1)} else{return(0)}}))>0)
+        class_wodup <- frame_string_filtered[!duplicated(frame_index_filtered)]
+        score_wodup <- frame_score_filtered[!duplicated(frame_index_filtered)]
+        index_wodup <- which(unlist(lapply(1:length(titles), function(i){if(is.element(titles[i], class_wodup)){return(1)} else{return(0)}}))>0)
         
         #Building "the checkerboard"
         
@@ -757,9 +545,9 @@ app$callback(
         
         titles_pad <- c(titles, rep("", times=(m^2-l)))
         
-        hover_text = titles_pad
+        hover_text <- titles_pad
         
-        hover_text = matrix(hover_text, ncol = m, byrow=F)
+        hover_text <- matrix(hover_text, ncol = m, byrow=F)
         
         ##Resorted to ggplot2
         
@@ -770,9 +558,8 @@ app$callback(
       }
       
     }
-    p = plot_ly(type='heatmap')
-    
-    p = p %>% layout(showlegend = F, paper_bgcolor=bgc, plot_bgcolor=bgc, autosize=F, margin = heatmap_margin)
+    p = plot_ly(type='heatmap') %>% 
+      layout(showlegend = F, autosize=F, margin = heatmap_margin)
     return(p)
     
   }
@@ -783,7 +570,6 @@ app$callback(
 
 
 #VISUAL MODE - Object count pie graph
-
 app$callback(
   output = list(id = 'pie-object-count', property = 'figure'),
   
@@ -794,17 +580,17 @@ app$callback(
   
   function(n, current_time, footage, threshold){
     
-    bgc =  'rgb(249,249,249)'
     
-    pie_margin = list(l=10, r=10, t=15, b=15)
+    
+    pie_margin <- list(l=10, r=10, t=15, b=15)
     
     if(!is.null(current_time)){
       
-      current_frame =  round(current_time * FRAMERATE)
+      current_frame <- round(current_time * FRAMERATE)
       
       if((n>0)&&(current_frame>0)){
         
-        INFO_DT = dat.list[[footage]]$INFO_DT
+        INFO_DT <- dat.list[[footage]]$INFO_DT
         
         ##Extract the score
         frame_score <-  INFO_DT$score[(INFO_DT$frame == current_frame)]
@@ -815,7 +601,7 @@ app$callback(
         
         #Select only the frames above the threshold
         
-        threshold_dec = threshold/100 #threshold in decimal
+        threshold_dec <- threshold/100 #threshold in decimal
         
         #Filter them accordingly
         frame_score_filtered <- frame_score[frame_score > threshold_dec]
@@ -829,36 +615,38 @@ app$callback(
         
         cls_counts <- cls_tbl[cls_tbl > 0]
         
-        clses =  names(cls_counts)
-        counts =  unlist(cls_counts)
+        clses <- names(cls_counts)
+        counts <-  unlist(cls_counts)
         
-        text = unlist(lapply(counts, function(val){ glue("{val} detected")}))
+        text <- unlist(lapply(counts, function(val){ glue("{val} detected")}))
         
         # Set colorscale to piechart
         
-        colorscale = c('#fa4f56', '#fe6767', '#ff7c79', '#ff908b', '#ffa39d', '#ffb6b0', '#ffc8c3', '#ffdbd7',
-                       '#ffedeb', '#ffffff')
-        pie =plot_ly(type = "pie", labels = clses, values=counts, hoverinfo="text+percent", textinfo = "label+percent", marker = list(colors=colorscale[1:length(clses)]))
+        colorscale <- c('#fa4f56', 
+                        '#fe6767', 
+                        '#ff7c79', 
+                        '#ff908b', 
+                        '#ffa39d', 
+                        '#ffb6b0', 
+                        '#ffc8c3', 
+                        '#ffdbd7',
+                        '#ffedeb', 
+                        '#ffffff')
+        pie <- plot_ly(type = "pie", labels = clses, values=counts, hoverinfo="text+percent", textinfo = "label+percent", marker = list(colors=colorscale[1:length(clses)])) 
+        pie %<>% plotly::layout( showlegend=TRUE, autosize=FALSE, margin= pie_margin)
         
-        
-        pie %>% plotly::layout( showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
         return(pie)
       }
       
     }
     
-    p <- plot_ly(type="pie")
-    
-    p %>% plotly::layout(showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
+    p <- plot_ly(type="pie") %>%plotly::layout(showlegend=TRUE, autosize=FALSE, margin= pie_margin)
+  
     return(p)
     
   }
 )
 
-
-
-# 
-# app$run_server(port="8893")
 app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 
 

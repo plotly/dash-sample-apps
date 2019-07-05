@@ -4,7 +4,7 @@ This is a demo of the DashR interactive R framework developed by [Plotly](https:
 
 DashR abstracts away all of the technologies and protocols required to build an interactive web-based application and is a simple and effective way to bind a user interface around your R code. To learn more check out our [documentation](https://dashr-docs.herokuapp.com/).
 
-Try out the [demo app here](https://dash-object-detection.plot.ly/). (Will be replaced with a corresponding link.)
+Try out the [demo app here]( https://dash-playground.plotly.host/dash-object-detection).
 
 ![Animated1](images/Screencast.gif)
 
@@ -31,7 +31,6 @@ Run the init.R script to have your packages installed.
 ```
 source('<path-where-the-folder-is>/dashR-object-detection/init.R', echo=TRUE)
 ```
-Download dashPlayer_0.0.1.tar file so that you can locally install DashPlayer in R.
 
 Run the app in RStudio Console:
 ```

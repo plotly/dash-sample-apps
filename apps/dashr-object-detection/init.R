@@ -1,15 +1,3 @@
-# require(tidyverse)
-# require(dashR)
-# require(dashCoreComponents)
-# require(dashHtmlComponents)
-# require(dashPlayer)
-# require(plotly)
-# require(rlist)
-# require(stringr)
-
-# require(data.table)
-# require(glue)
-# require(compiler)
 
 # R script to run author supplied code, typically used to install additional R packages
 # contains placeholders which are inserted by the compile script
@@ -29,6 +17,7 @@ install.packages("later")
 
 install.packages("jsonlite")
 install.packages("listenv")
+install.packages('rlist')
 
 # installs magrittr, promises, R6
 remotes::install_version("httpuv", version = "1.4.5.1", repos = "http://cloud.r-project.org", upgrade="never")
@@ -60,6 +49,7 @@ install.packages("https://cloud.r-project.org/src/contrib/fiery_1.1.1.tar.gz", t
 remotes::install_github("plotly/dashR", dependencies=FALSE)
 remotes::install_github("plotly/dash-html-components")
 remotes::install_github("plotly/dash-core-components")
+
 install.packages("dashPlayer_0.0.1.tar.gz", type="source", repos=NULL)
 install.packages('https://cran.r-project.org/src/contrib/rlist_0.4.6.1.tar.gz', repos=NULL)
 install.packages('https://cran.r-project.org/src/contrib/data.table_1.12.2.tar.gz', repos=NULL)
@@ -68,4 +58,4 @@ install.packages('https://cran.r-project.org/src/contrib/stringr_1.4.0.tar.gz', 
 install.packages('https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz', repos=NULL)
 install.packages('https://cran.r-project.org/src/contrib/stringi_1.4.3.tar.gz', repos=NULL)
 
-##DashPlayer- install the local version inside the repo
+remotes::install_github("plotly/dash-player")
