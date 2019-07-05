@@ -1,12 +1,14 @@
 appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix, 
-          DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
+  
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  
+  setwd(sprintf("/app/apps/%s", appName))
+}
 
-setwd("app/apps/dashr-object-detection")
-
-
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(dashPlayer)
@@ -22,18 +24,10 @@ library(magrittr)
 DEBUG <- T
 FRAMERATE <- 24.0
 f_read <- cmpfun(fread)
-data_table = cmpfun(data.table)
-
+data_table <- cmpfun(data.table)
 gum <- cmpfun(glue)
-
-dict = cmpfun(list)
-
-aplly <- cmpfun(apply)
-laplly <- cmpfun(lapply)
-
-
 load.data <- cmpfun(function(path){
-  #  # Load data about a specific footage (given by the path). It returns a dictionary of useful variables such as
+  #  # Load data about a specific footage (given by the path). It returns a listionary of useful variables such as
   #  #  the dataframe containing all the detection and bounds localization, the number of classes inside that footage,
   #  #  the matrix of all the classes in string, the given class with padding, and the root of the number of classes,
   #  #  rounded.
@@ -43,13 +37,13 @@ load.data <- cmpfun(function(path){
   
   Info.DT <- f_read(path)
   
-  #cls.vec <- the dict of detected object classes for the .csv file
+  #cls.vec <- the list of detected object classes for the .csv file
   
   cls.vec <- Info.DT[, class_str]
   n.cls <- length(cls.vec)
   title.vec <- unique(cls.vec)
   
-  # Gets the smallest value needed to add to the end of the classes dict to get a square matrix
+  # Gets the smallest value needed to add to the end of the classes list to get a square matrix
   #   # n := argmin_{n : int} (n \geq n.c) \land (\sqrt{n} : int)
   #   # to find n we do
   
@@ -59,11 +53,11 @@ load.data <- cmpfun(function(path){
   pad.seq <- numeric(pad.ent)
   #Pad the class.vec
   cls.wpad <- c(cls.vec, pad.seq)
-  cls.mtx <- aplly(matrix(cls.wpad, nrow=r.rnd, ncol=r.rnd, byrow=T),2,rev)
+  cls.mtx <- apply(matrix(cls.wpad, nrow=r.rnd, ncol=r.rnd, byrow=T),2,rev)
   
   
   
-  dat_dict = dict(INFO_DT = Info.DT, N_CLS=n.cls, MTX_CLS = cls.mtx, WPAD_CLS = cls.wpad, RT_RND = r.rnd, TITL=title.vec)
+  dat_list = list(INFO_DT = Info.DT, N_CLS=n.cls, MTX_CLS = cls.mtx, WPAD_CLS = cls.wpad, RT_RND = r.rnd, TITL=title.vec)
   
   
   if(DEBUG)
@@ -72,12 +66,12 @@ load.data <- cmpfun(function(path){
   }
   
   
-  return(dat_dict)
+  return(dat_list)
   
 })
 
 LABELS <- function(footage){
-  titles = dat.dict[[footage]]$TITL
+  titles = dat.list[[footage]]$TITL
   l <- length(titles)
   m <- ceiling(sqrt(l))
   titles_pad <- c(titles, rep("", times=(m^2-l)))
@@ -99,14 +93,14 @@ LABELS <- function(footage){
 }
 
 
-#dict of optimized function through cmpfun
+#list of optimized function through cmpfun
 load_data <- cmpfun(load.data)
 
 
 
 footage_labels <- c("james_bond", "zebra", "car_show_drone", "car_footage", "DroneCanalFestival","DroneCarFestival2","FarmDrone", "ManCCTV", "RestaurantHoldup")
 
-dat.dict <- dict( james_bond = load_data("data/james_bond_object_data.csv"), 
+dat.list <- list( james_bond = load_data("data/james_bond_object_data.csv"), 
                          
                          zebra =  load_data("data/Zebra_object_data.csv"), 
                          
@@ -127,7 +121,7 @@ dat.dict <- dict( james_bond = load_data("data/james_bond_object_data.csv"),
 
 
 
-url.dict <-  dict(regular=data_table(james_bond = 'https://www.youtube.com/watch?v=g9S5GndUhko', 
+url.list <-  list(regular=data_table(james_bond = 'https://www.youtube.com/watch?v=g9S5GndUhko', 
                                          
                                          zebra =  'https://www.youtube.com/watch?v=TVvtD3AVt10', 
                                          
@@ -173,7 +167,7 @@ markdown.text = "##### What am I looking at?
 
 This app enhances visualization of objects detected using state-of-the-art Mobile Vision Neural Networks.
 Most user generated videos are dynamic and fast-paced, which might be hard to interpret. A confidence
-heatmap stays consistent through the video and intuitively displays the model predictions. The pie chart
+heatmap stays consistent through the video and intuitively displays the model prelistions. The pie chart
 lets you interpret how the object classes are divided, which is useful when analyzing videos with numerous
 and differing objects.
                                 
@@ -182,33 +176,33 @@ and differing objects.
 
 
 The purpose of this demo is to explore alternative visualization methods for Object Detection. Therefore,
-the visualizations, predictions and videos are not generated in real time, but done beforehand. To read
+the visualizations, prelistions and videos are not generated in real time, but done beforehand. To read
 more about it, please visit the [project repo](https://github.com/plotly/dash-object-detection)."
 
 app$layout(
   
   
   
-  htmlDiv(className='container', children=dict( #header-section
+  htmlDiv(className='container', children=list( #header-section
     #Top bar
     htmlDiv(
       id='top-bar',
       className='row',
-      style=dict(backgroundColor = '#fa4f56', height= '5px')
+      style=list(backgroundColor = '#fa4f56', height= '5px')
     ),
     
     
     htmlDiv(
       id='left-side-column',
       className='eight columns',
-      style=dict(display = 'flex', flexDirection = 'column', flex = 1, height = 'calc(100vh - 5px)', backgroundColor = '#F2F2F2', 'overflow-y' = 'scroll', marginLeft = '0px', justifyContent = 'flex-start', alignItems = 'center'),
-      children=dict(
+      style=list(display = 'flex', flexDirection = 'column', flex = 1, height = 'calc(100vh - 5px)', backgroundColor = '#F2F2F2', 'overflow-y' = 'scroll', marginLeft = '0px', justifyContent = 'flex-start', alignItems = 'center'),
+      children=list(
         
         
         htmlDiv(
           id='header-section',
           #title
-          children=dict(
+          children=list(
             
             
             ##
@@ -219,7 +213,7 @@ app$layout(
             
             #subheader
             htmlDiv(
-              children = dict(dccMarkdown(glue('
+              children = list(dccMarkdown(glue('
         
         To get started, select a footage you want to view, and choose the display mode (with or without  bounding boxes).\ 
         
@@ -238,8 +232,8 @@ app$layout(
         htmlDiv(
           id='markdown',
           className='model',
-          style=dict(display= 'none'),
-          children=dict(
+          style=list(display= 'none'),
+          children=list(
             
             htmlDiv(
               className='close-container',
@@ -248,18 +242,18 @@ app$layout(
                 id='markdown_close',
                 n_clicks=0,
                 className='closeButton',
-                style=dict(border = 'none', height = '100%')
+                style=list(border = 'none', height = '100%')
               )
             ),
             htmlDiv(
               className='markdown-text',
-              children=dict(dccMarkdown(
+              children=list(dccMarkdown(
                 children= markdown.text
               )
               )
-            ) #dict()
+            ) #list()
           )
-          #dict()
+          #list()
           
         ),
         
@@ -271,13 +265,13 @@ app$layout(
           children= 
             htmlDiv(
               
-              style=dict(width = '100%', paddingBottom = '56.25%', position = 'relative'),
+              style=list(width = '100%', paddingBottom = '56.25%', position = 'relative'),
               
               children=dashPlayer(
                 
                 id='video-display',
                 
-                style= dict(position = 'absolute', width= '100%', height = '100%', top = '0', left = '0', bottom = '0', right = '0'),
+                style= list(position = 'absolute', width= '100%', height = '100%', top = '0', left = '0', bottom = '0', right = '0'),
                 
                 url='https://www.youtube.com/watch?v=gPtn6hD7o8g',
                 
@@ -296,23 +290,23 @@ app$layout(
         
         htmlDiv(
           className='control-section',
-          children = dict(
+          children = list(
             
             #LMNT #1
             htmlDiv(
               className='control-element',
-              children=dict(
-                htmlDiv(children=dict("Minimum Confidence Threshold:"), style=dict(width= '40%')),
+              children=list(
+                htmlDiv(children=list("Minimum Confidence Threshold:"), style=list(width= '40%')),
                 htmlDiv(
                   dccSlider(
                     id='slider-minimum-confidence-threshold',
                     min=20,
                     max=80,
                     step=NULL,
-                    marks=dict('20'=dict(label='20%'), '30'=dict(label='30%'), '40'=dict(label='40%'), '50' = dict(label='50%'), '60' = dict(label = '60%'), '70' = dict(label='70%'), '80'= dict(label='80%')),
+                    marks=list('20'=list(label='20%'), '30'=list(label='30%'), '40'=list(label='40%'), '50' = list(label='50%'), '60' = list(label = '60%'), '70' = list(label='70%'), '80'= list(label='80%')),
                     value=30,
                     updatemode='drag'
-                  ), style=dict(width = '80%')) #60%
+                  ), style=list(width = '80%')) #60%
               )
             )
             , 
@@ -321,24 +315,24 @@ app$layout(
             #LMNT #2
             htmlDiv(
               className='control-element',
-              children=dict(
-                htmlP(children=dict("Footage Selection:"), style=dict(width = '40%')),
+              children=list(
+                htmlP(children=list("Footage Selection:"), style=list(width = '40%')),
                 dccDropdown(
                   id="dropdown-footage-selection",
-                  options=dict(
-                    dict(label = 'Drone recording of canal festival',
+                  options=list(
+                    list(label = 'Drone recording of canal festival',
                          value = 'DroneCanalFestival'),
-                    dict(label = 'Drone recording of car festival', value = 'car_show_drone'),
-                    dict(label = 'Drone recording of car festival #2', value = 'DroneCarFestival2'),
-                    dict(label = 'Drone recording of a farm', value = 'FarmDrone'),
-                    dict(label = 'Lion fighting Zebras', value = 'zebra'),
-                    dict(label = 'Man caught by a CCTV', value = 'ManCCTV'),
-                    dict(label = 'Man driving expensive car', value = 'car_footage'),
-                    dict(label = 'Restaurant Robbery', value = 'RestaurantHoldup')
+                    list(label = 'Drone recording of car festival', value = 'car_show_drone'),
+                    list(label = 'Drone recording of car festival #2', value = 'DroneCarFestival2'),
+                    list(label = 'Drone recording of a farm', value = 'FarmDrone'),
+                    list(label = 'Lion fighting Zebras', value = 'zebra'),
+                    list(label = 'Man caught by a CCTV', value = 'ManCCTV'),
+                    list(label = 'Man driving expensive car', value = 'car_footage'),
+                    list(label = 'Restaurant Robbery', value = 'RestaurantHoldup')
                   ),
                   value='car_show_drone',
                   clearable=F,
-                  style=dict(width = '60%')
+                  style=list(width = '60%')
                 )
               )
             ),    
@@ -348,16 +342,16 @@ app$layout(
             htmlDiv(
               className = 'control-element',
               
-              children = dict(
+              children = list(
                 
-                htmlDiv(children = dict("Video Display Mode:"), style = dict( width =  '40%')), dccDropdown(id = 'dropdown-video-display-mode',
-                                                                                                            options =dict(
-                                                                                                              dict(label='Regular Display', value='regular'), 
-                                                                                                              dict(label='Bounding Boxes', value = 'bounding_box')
+                htmlDiv(children = list("Video Display Mode:"), style = list( width =  '40%')), dccDropdown(id = 'dropdown-video-display-mode',
+                                                                                                            options =list(
+                                                                                                              list(label='Regular Display', value='regular'), 
+                                                                                                              list(label='Bounding Boxes', value = 'bounding_box')
                                                                                                             ), value= 'bounding_box',
                                                                                                             searchable = F,
                                                                                                             clearable = F,
-                                                                                                            style = dict(width='60%')
+                                                                                                            style = list(width='60%')
                 )   
                 
                 
@@ -366,20 +360,20 @@ app$layout(
             #LMNT #4  
             htmlDiv(
               className='control-element',
-              children=dict(
-                htmlDiv(children="Graph View Mode:", style=dict(width = '60%')),
+              children=list(
+                htmlDiv(children="Graph View Mode:", style=list(width = '60%')),
                 dccDropdown(
                   id="dropdown-graph-view-mode",
-                  options=dict(
-                    dict(label = 'Visual Mode', value = 'visual'),
-                    dict(label = 'Confidence Mode', value = 'confidence'),
-                    dict(label = 'Detection Mode', value = 'detection')
+                  options=list(
+                    list(label = 'Visual Mode', value = 'visual'),
+                    list(label = 'Confidence Mode', value = 'confidence'),
+                    list(label = 'Detection Mode', value = 'detection')
                     
                   ),
                   value='visual',
                   searchable=FALSE,
                   clearable=FALSE,
-                  style=dict(width = '60%')
+                  style=list(width = '60%')
                 )
               )
             )
@@ -392,17 +386,17 @@ app$layout(
     htmlDiv(
       id='right-side-column',
       className='four columns',
-      style=dict( height = 'calc(100vh - 5px)',
+      style=list( height = 'calc(100vh - 5px)',
                   overflowY = 'scroll',
                   marginLeft = '1%',
                   display = 'flex',
                   backgroundColor = '#F9F9F9',
                   flexDirection = 'column'),
-      children=dict(
+      children=list(
         htmlDiv(
           className='img-container',
           children=htmlImg(
-            style=dict(height = '100%', margin = '1px'),
+            style=list(height = '100%', margin = '1px'),
             src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png")
         ),
         
@@ -420,12 +414,12 @@ app$layout(
 #"Learn more" popup
 app$callback(
   
-  output = dict(
+  output = list(
     
     id = 'markdown', property = 'style'
   ),
   
-  params = dict(
+  params = list(
     
     input(id =  "learn-more-button", property = 'n_clicks'),
     input(id = "markdown_close", property = "n_clicks")
@@ -434,8 +428,8 @@ app$callback(
   
   function(button_click, close_click){
     
-    if(button_click > close_click){return(dict(display = 'block', backgroundColor = '#F9F9F9'))}
-    else{return(dict(display = 'none'))}
+    if(button_click > close_click){return(list(display = 'block', backgroundColor = '#F9F9F9'))}
+    else{return(list(display = 'none'))}
     
   }
   
@@ -445,14 +439,14 @@ app$callback(
 #Footage Selection
 app$callback(
   
-  output = dict(id ='video-display' , property='url'),
-  params = dict(input(id='dropdown-footage-selection', property = 'value' ), input(id = 'dropdown-video-display-mode', property = 'value')),
+  output = list(id ='video-display' , property='url'),
+  params = list(input(id='dropdown-footage-selection', property = 'value' ), input(id = 'dropdown-video-display-mode', property = 'value')),
   
   function(footage, display_mode){
     
     #Locate the selected footage and have player video updated
     
-    url = url.dict[[display_mode]][[footage]]
+    url = url.list[[display_mode]][[footage]]
     return(url)
     
   }
@@ -461,67 +455,67 @@ app$callback(
 
 #Setting up the graphs for the visual mode
 app$callback(
-  output = dict(id = 'div-visual-mode', property = 'children'),
+  output = list(id = 'div-visual-mode', property = 'children'),
   
-  params = dict(input(id='dropdown-graph-view-mode', property='value')), 
+  params = list(input(id='dropdown-graph-view-mode', property='value')), 
   
   function(dropdown_value){
     
     if(dropdown_value=="visual"){
       
       
-      return(dict(
+      return(list(
         
         dccInterval(id = 'interval-visual-mode', interval = 700, n_intervals = 0),
         
         htmlDiv(
           children=
             
-            dict(
+            list(
               
               htmlP(children = 'Object Count', className = 'plot_title'),
               
-              dccGraph(id = 'pie-object-count', style = dict(height = '40vh', width = '100%') )
+              dccGraph(id = 'pie-object-count', style = list(height = '40vh', width = '100%') )
               
             ))
         
       ))
       
     } else {
-      return(dict())
+      return(list())
     }}
 )
 
 #Setting up the heatmap graph
 app$callback(
-  output = dict(id = 'div-confidence-mode', property = 'children'),
+  output = list(id = 'div-confidence-mode', property = 'children'),
   
-  params = dict(input(id='dropdown-graph-view-mode', property='value')), 
+  params = list(input(id='dropdown-graph-view-mode', property='value')), 
   
   function(dropdown_value){
     
     if(dropdown_value=="confidence"){
       
       
-      return(dict(
+      return(list(
         
         dccInterval(id = 'interval-confidence-mode', interval = 700, n_intervals = 0),
         
-        htmlDiv(children = dict(htmlP(children = 'Confidence Level of Object Presence', className = 'plot_title'),
+        htmlDiv(children = list(htmlP(children = 'Confidence Level of Object Presence', className = 'plot_title'),
                                 
-                                dccGraph(id = 'heatmap-confidence', style = dict(height='40vh', width='100%') ) 
+                                dccGraph(id = 'heatmap-confidence', style = list(height='40vh', width='100%') ) 
                                 
                                 
         )), 
         
-        htmlDiv(id='heatmap-labels', children = dict() )
+        htmlDiv(id='heatmap-labels', children = list() )
       ))
       
       
       
       
     } else {
-      return(dict())
+      return(list())
     }}
 )
 
@@ -529,9 +523,9 @@ app$callback(
 #Setting up the graphs for the detection mode
 app$callback(
   
-  output = dict(id = 'div-detection-mode', property = 'children'),
+  output = list(id = 'div-detection-mode', property = 'children'),
   
-  params = dict(input(id = 'dropdown-graph-view-mode', property='value')),
+  params = list(input(id = 'dropdown-graph-view-mode', property='value')),
   
   function(value){
     
@@ -540,17 +534,17 @@ app$callback(
       return(
         
         
-        dict(
+        list(
           
           
           dccInterval(id = "interval-detection-mode", interval = 700, n_intervals = 0),
           
           htmlDiv(
-            dict(
+            list(
               
               htmlP(children =  "Detection Score of Most Probable Objects", className = 'plot-title'),
               
-              dccGraph(id = 'bar-score-graph', style = dict(height = '55vh'))
+              dccGraph(id = 'bar-score-graph', style = list(height = '55vh'))
               
               
             )
@@ -566,7 +560,7 @@ app$callback(
       
     } else{
       
-      return(dict()) # return empty dict/dict
+      return(list()) # return empty list/list
     }}
 )
 
@@ -579,9 +573,9 @@ app$callback(
 
 app$callback(
   
-  output = dict(id = "bar-score-graph", property = "figure"),
+  output = list(id = "bar-score-graph", property = "figure"),
   
-  params = dict(input(id = "interval-detection-mode", property = "n_intervals"), 
+  params = list(input(id = "interval-detection-mode", property = "n_intervals"), 
                 
                 #State 
                 state(id = 'video-display', property='currentTime'), 
@@ -602,7 +596,7 @@ app$callback(
       
       if((n>0)&&(current_frame>0)){
         
-        INFO_DT = dat.dict[[footage]]$INFO_DT
+        INFO_DT = dat.list[[footage]]$INFO_DT
         
         #Select the subset of the dataset
         
@@ -660,14 +654,14 @@ app$callback(
         
         #Add text information
         
-        #y_text <- unlist(laplly(unlist(top_frames$Score),function(val){return(glue("{round(val*100)} % confidence"))} ))
+        #y_text <- unlist(lapply(unlist(top_frames$Score),function(val){return(glue("{round(val*100)} % confidence"))} ))
         
         
         
-        figure <- plot_ly(type='bar',hoverinfo='x+text', TITL= "Detection Scores",   x = Obj_wc, marker = dict(color=colors), y = top_frames$Score)
+        figure <- plot_ly(type='bar',hoverinfo='x+text', TITL= "Detection Scores",   x = Obj_wc, marker = list(color=colors), y = top_frames$Score)
         
-        figure_xaxis <- dict(automargin=TRUE, tickangle = -45)
-        figure_yaxis <- dict(automargin=TRUE, range=c(0,1), title = dict(text = 'Score'))
+        figure_xaxis <- list(automargin=TRUE, tickangle = -45)
+        figure_yaxis <- list(automargin=TRUE, range=c(0,1), title = list(text = 'Score'))
         
         figure = figure %>% plotly::layout(showlegend = FALSE, autosize=TRUE,  paper_bgcolor = 'rgb(249,249,249)', plot_bgcolor = 'rgb(249,249,249)') 
         
@@ -677,10 +671,10 @@ app$callback(
       
       
     }
-    #p = plot_ly(type =  'bar', showlegend=FALSE, paper_bgcolor = 'rgb(249,249,249)', plot_bgcolor = 'rgb(249,249,249)',   yaxis = dict(title = 'score', automargin=TRUE), range = dict(0, 1))
+    #p = plot_ly(type =  'bar', showlegend=FALSE, paper_bgcolor = 'rgb(249,249,249)', plot_bgcolor = 'rgb(249,249,249)',   yaxis = list(title = 'score', automargin=TRUE), range = list(0, 1))
     
-    p_xaxis <- dict(automargin=TRUE)
-    p_yaxis <- dict(title = 'Score', automargin = TRUE, range= 0:1)
+    p_xaxis <- list(automargin=TRUE)
+    p_yaxis <- list(title = 'Score', automargin = TRUE, range= 0:1)
     p = plot_ly(type =  'bar', x=c("Empty 1","Empty 2" ), y=c(0,0))
     p = p %>% plotly::layout(showlegend=FALSE, paper_bgcolor='rgb(249,249,249)', plot_bgcolor='rgb(249,249,249)', xaxis = p_xaxis, yaxis = p_yaxis)
     
@@ -695,9 +689,9 @@ app$callback(
 
 #CONFIDENCE MODE - heatmap graph
 app$callback(
-  output = dict(id = "heatmap-confidence", property = "figure"),
+  output = list(id = "heatmap-confidence", property = "figure"),
   
-  params = dict(input(id = "interval-confidence-mode", property = "n_intervals"),
+  params = list(input(id = "interval-confidence-mode", property = "n_intervals"),
                 state(id = 'video-display', property = 'currentTime'),
                 state(id = 'dropdown-footage-selection', property = 'value'),
                 state(id = 'slider-minimum-confidence-threshold', property = 'value')),
@@ -715,15 +709,15 @@ app$callback(
         
         #Load variables from the data list
         
-        video_info_df = dat.dict[[footage]]$INFO_DT
+        video_info_df = dat.list[[footage]]$INFO_DT
         
-        clses_padded = dat.dict[[footage]]$WPAD_CLS
+        clses_padded = dat.list[[footage]]$WPAD_CLS
         
-        root_rnd = dat.dict[[footage]]$RT_RND
+        root_rnd = dat.list[[footage]]$RT_RND
         
-        clses_mtx = dat.dict[[footage]]$MTX_CLS
+        clses_mtx = dat.list[[footage]]$MTX_CLS
         
-        titles = dat.dict[[footage]]$TITL
+        titles = dat.list[[footage]]$TITL
         
         ##Extract the score
         frame_score <-  video_info_df$score[(video_info_df$frame == current_frame)]
@@ -791,9 +785,9 @@ app$callback(
 #VISUAL MODE - Object count pie graph
 
 app$callback(
-  output = dict(id = 'pie-object-count', property = 'figure'),
+  output = list(id = 'pie-object-count', property = 'figure'),
   
-  params = dict(input(id = 'interval-visual-mode', property = 'n_intervals'), 
+  params = list(input(id = 'interval-visual-mode', property = 'n_intervals'), 
                 state(id = 'video-display',  property = 'currentTime'), 
                 state( id = 'dropdown-footage-selection', property = 'value'), 
                 state( id = 'slider-minimum-confidence-threshold', property =  'value') ),
@@ -802,7 +796,7 @@ app$callback(
     
     bgc =  'rgb(249,249,249)'
     
-    pie_margin = dict(l=10, r=10, t=15, b=15)
+    pie_margin = list(l=10, r=10, t=15, b=15)
     
     if(!is.null(current_time)){
       
@@ -810,7 +804,7 @@ app$callback(
       
       if((n>0)&&(current_frame>0)){
         
-        INFO_DT = dat.dict[[footage]]$INFO_DT
+        INFO_DT = dat.list[[footage]]$INFO_DT
         
         ##Extract the score
         frame_score <-  INFO_DT$score[(INFO_DT$frame == current_frame)]
@@ -838,13 +832,13 @@ app$callback(
         clses =  names(cls_counts)
         counts =  unlist(cls_counts)
         
-        text = unlist(laplly(counts, function(val){ glue("{val} detected")}))
+        text = unlist(lapply(counts, function(val){ glue("{val} detected")}))
         
         # Set colorscale to piechart
         
         colorscale = c('#fa4f56', '#fe6767', '#ff7c79', '#ff908b', '#ffa39d', '#ffb6b0', '#ffc8c3', '#ffdbd7',
                        '#ffedeb', '#ffffff')
-        pie =plot_ly(type = "pie", labels = clses, values=counts, hoverinfo="text+percent", textinfo = "label+percent", marker = dict(colors=colorscale[1:length(clses)]))
+        pie =plot_ly(type = "pie", labels = clses, values=counts, hoverinfo="text+percent", textinfo = "label+percent", marker = list(colors=colorscale[1:length(clses)]))
         
         
         pie %>% plotly::layout( showlegend=TRUE, paper_bgcolor=bgc, plot_bgcolor = bgc, autosize=FALSE, margin= pie_margin)
