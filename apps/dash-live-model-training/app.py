@@ -73,28 +73,30 @@ def div_graph(name):
                                 "Plot Display mode:",
                                 style={"font-weight": "bold", "margin-bottom": "0px"},
                             ),
-                            html.Div([
-                                dcc.RadioItems(
-                                    options=[
-                                        {
-                                            "label": " Overlapping",
-                                            "value": "overlap"
-                                        },
-                                        {
-                                            "label": " Separate (Vertical)",
-                                            "value": "separate_vertical",
-                                        },
-                                        {
-                                            "label": " Separate (Horizontal)",
-                                            "value": "separate_horizontal",
-                                        },
-                                    ],
-                                    value="overlap",
-                                    id=f"radio-display-mode-{name}",
-                                    className="plot-display-radio-items"
-                                )
-                            ], className="radio-item-div"),
-                            
+                            html.Div(
+                                [
+                                    dcc.RadioItems(
+                                        options=[
+                                            {
+                                                "label": " Overlapping",
+                                                "value": "overlap",
+                                            },
+                                            {
+                                                "label": " Separate (Vertical)",
+                                                "value": "separate_vertical",
+                                            },
+                                            {
+                                                "label": " Separate (Horizontal)",
+                                                "value": "separate_horizontal",
+                                            },
+                                        ],
+                                        value="overlap",
+                                        id=f"radio-display-mode-{name}",
+                                        className="plot-display-radio-items",
+                                    )
+                                ],
+                                className="radio-item-div",
+                            ),
                             html.Div(id=f"div-current-{name}-value"),
                         ]
                     ),
@@ -140,7 +142,7 @@ app.layout = html.Div(
             style={"padding": "35px 25px"},
             children=[
                 # Hidden Div that will store the result of simulating a model run
-                #html.Div(id="storage-simulated-run", style={"display": "none"}),
+                # html.Div(id="storage-simulated-run", style={"display": "none"}),
                 dcc.Store(id="storage-simulated-run", storage_type="memory"),
                 # Increment the simulation step count at a fixed time interval
                 dcc.Interval(
@@ -239,7 +241,7 @@ app.layout = html.Div(
                                             id="div-step-display",
                                             className="twelve columns",
                                         ),
-                                    ]
+                                    ],
                                 ),
                             ],
                         )
@@ -247,8 +249,8 @@ app.layout = html.Div(
                 ),
                 dcc.Interval(id="interval-log-update", n_intervals=0),
                 # Hidden Div Storing JSON-serialized dataframe of run log
-                #html.Div(id="run-log-storage", style={"display": "none"}),
-                dcc.Store(id="run-log-storage", storage_type='memory')
+                # html.Div(id="run-log-storage", style={"display": "none"}),
+                dcc.Store(id="run-log-storage", storage_type="memory")
                 # The html divs storing the graphs and display parameters
             ],
         ),
@@ -334,9 +336,7 @@ def update_graph(
         )
 
         if display_mode == "separate_vertical":
-            figure = tools.make_subplots(
-                rows=2, cols=1, print_grid=False, shared_yaxes=True
-            )
+            figure = tools.make_subplots(rows=2, cols=1, print_grid=False)
 
             figure.append_trace(trace_train, 1, 1)
             figure.append_trace(trace_val, 2, 1)
@@ -347,15 +347,20 @@ def update_graph(
                 scene={"domain": {"x": (0.0, 0.5), "y": (0.5, 1)}},
             )
 
+            figure["layout"]["yaxis1"].update(title=yaxis_title)
+            figure["layout"]["yaxis2"].update(title=yaxis_title)
+
         elif display_mode == "separate_horizontal":
             figure = tools.make_subplots(
-                rows=1, cols=2, shared_yaxes=True, print_grid=False
+                rows=1, cols=2, print_grid=False, shared_xaxes=True
             )
 
             figure.append_trace(trace_train, 1, 1)
             figure.append_trace(trace_val, 1, 2)
 
             figure["layout"].update(title=layout.title, margin=layout.margin)
+            figure["layout"]["yaxis1"].update(title=yaxis_title)
+            figure["layout"]["yaxis2"].update(title=yaxis_title)
 
         elif display_mode == "overlap":
             figure = go.Figure(data=[trace_train, trace_val], layout=layout)
@@ -415,8 +420,7 @@ def update_interval_log_update(interval_rate):
 if not demo_mode:
 
     @app.callback(
-        Output("run-log-storage", "data"),
-        [Input("interval-log-update", "n_intervals")],
+        Output("run-log-storage", "data"), [Input("interval-log-update", "n_intervals")]
     )
     def get_run_log(_):
         names = [
@@ -478,11 +482,11 @@ def update_accuracy_graph(
 
     try:
         if display_mode in ["separate_horizontal", "overlap"]:
-            graph.figure.layout.yaxis["range"] = [0, 1]
+            graph.figure.layout.yaxis["range"] = [0, 1.3]
+            graph.figure.layout.yaxis2["range"] = [0, 1.3]
         else:
-            graph.figure.layout.yaxis1["range"] = [0, 1]
-            graph.figure.layout.yaxis2["range"] = [0, 1]
-            graph.figure.layout()
+            graph.figure.layout.yaxis1["range"] = [0, 1.3]
+            graph.figure.layout.yaxis2["range"] = [0, 1.3]
 
     except AttributeError:
         pass
@@ -517,8 +521,7 @@ def update_cross_entropy_graph(
 
 
 @app.callback(
-    Output("div-current-accuracy-value", "children"),
-    [Input("run-log-storage", "data")],
+    Output("div-current-accuracy-value", "children"), [Input("run-log-storage", "data")]
 )
 def update_div_current_accuracy_value(run_log_json):
     if run_log_json:
