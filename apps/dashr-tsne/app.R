@@ -256,7 +256,7 @@ app$layout(
       
       htmlH2('t-SNE Explorer', className='title', id='app-title')
       ,
-      htmlImg(id='plotly-image', src="assets/logo.png", style=list(height='90px', float='right', 'margin-top'='10px', 'margin-right'='30px'))
+      htmlImg(id='plotly-image', src="assets/logo.png")
       
     )
     ,
@@ -1044,18 +1044,7 @@ app$callback(
     return({fromJSON(L[2])})
   }
 )
-app$callback(
-  output = list(id='error-message', property='children')
-  ,
-  params =  list(
-    input(id='custom-container', property='children')
-  )
-  ,
-  function(JSON){
-    L <- fromJSON(JSON) 
-    return(fromJSON(L[3]))
-  }
-)
+
 app$callback(
   output = list(id='tsne-3d-plot-custom', property='figure')
   ,
@@ -1074,8 +1063,10 @@ app$callback(
       z=~z, 
       color = ~as.factor(label), 
       mode='markers', 
-      marker=list(symbol='circle', size=2.5)
-    )%>% plotly::layout(.,width=850, height=600)
+      marker=list(symbol='circle', size=2.5),
+      width=850,
+      height=600
+    )
     return(p)
   }
 )
@@ -1088,5 +1079,5 @@ app$callback(
 # 
 # app$run_server(port="8893")
 
-app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050), debug=T)
 
