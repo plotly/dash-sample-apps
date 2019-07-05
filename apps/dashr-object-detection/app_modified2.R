@@ -49,207 +49,206 @@ the visualizations, prelistions and videos are not generated in real time, but d
 more about it, please visit the [project repo](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-object-detection)."
 
 app$layout(
-  
-  
-  
-  htmlDiv(,children=list( #header-section
+  htmlDiv(children=list( #header-section
     #Top bar
     htmlDiv(
       id='top-bar',
-      className='row',
-      style=list(backgroundColor = '#fa4f56', height= '5px')
+      className='row'
     ),
     htmlDiv(className='container', children=list(
-      
-      htmlDiv(id='left-side-column')
-      
-    )),
-    
-    htmlDiv(
-      id='left-side-column',
-      className='eight columns',
-      style=list(display = 'flex', flexDirection = 'column', flex = 1, height = 'calc(100vh - 5px)', backgroundColor = '#F2F2F2', 'overflow-y' = 'scroll', marginLeft = '0px', justifyContent = 'flex-start', alignItems = 'center'),
-      children=list(
-        
-        
-        htmlDiv(
-          id='header-section',
-          #title
-          children=list(
-            ##
-            htmlH4(
-              'Object Detection Explorer'
-            ), 
-            #subheader
-            htmlDiv(
-              children = list(dccMarkdown('
+      htmlDiv(
+        id='left-side-column',
+        className='eight columns',
+        style=list(display = 'flex', 
+                   flexDirection = 'column', 
+                   flex = 1, 
+                   height = 'calc(100vh - 5px)', 
+                   backgroundColor = '#F2F2F2', 
+                   'overflow-y' = 'scroll', 
+                   marginLeft = '0px', 
+                   justifyContent = 'flex-start', 
+                   alignItems = 'center'),
+        children=list(
+          
+          
+          htmlDiv(
+            id='header-section',
+            #title
+            children=list(
+              ##
+              htmlH4(
+                'Object Detection Explorer'
+              ), 
+              #subheader
+              htmlDiv(
+                children = list(dccMarkdown('
         To get started, select a footage you want to view, and choose the display mode (with or without  bounding boxes).  
         Then, you can start playing the video, and the visualization will be displayed depending on the current time.'))
+                
+              ),
+              #'learn more' button - will contain the markdown_popup 
+              htmlButton("Learn More", id="learn-more-button", n_clicks=0)
+            )) ,
+          
+          
+          
+          htmlDiv(
+            id='markdown',
+            className='modal',
+            style=list(display= 'none'),
+            children=list(
               
-            ),
-            #'learn more' button - will contain the markdown_popup 
-            htmlButton("Learn More", id="learn-more-button", n_clicks=0)
-          )) ,
-        
-        
-
-        htmlDiv(
-          id='markdown',
-          className='modal',
-          style=list(display= 'none'),
-          children=list(
-
-            htmlDiv(
-              className='close-container',
-              children=htmlButton(
-                'Close',
-                id='markdown_close',
-                n_clicks=0,
-                className='closeButton',
-                style=list(border = 'none', height = '100%')
-              )
-            ),
-            htmlDiv(
-              className='markdown-text',
-              children=list(dccMarkdown(children= markdown.text)))
-          )),
-        #Video-outer-container
-        htmlDiv(
-          className='video-outer-container',
-          children= 
-            htmlDiv(
-              
-              style=list(width = '100%', paddingBottom = '56.25%', position = 'relative'),
-              
-              children=dashPlayer(
+              htmlDiv(
+                className='close-container',
+                children=htmlButton(
+                  'Close',
+                  id='markdown_close',
+                  n_clicks=0,
+                  className='closeButton',
+                  style=list(border = 'none', height = '100%')
+                )
+              ),
+              htmlDiv(
+                className='markdown-text',
+                children=list(dccMarkdown(children= markdown.text)))
+            )),
+          #Video-outer-container
+          htmlDiv(
+            className='video-outer-container',
+            children= 
+              htmlDiv(
                 
-                id='video-display',
+                style=list(width = '100%', paddingBottom = '56.25%', position = 'relative'),
                 
-                style= list(position = 'absolute', width= '100%', height = '100%', top = '0', left = '0', bottom = '0', right = '0'),
-                
-                url='https://www.youtube.com/watch?v=gPtn6hD7o8g',
-                
-                controls=TRUE,
-                
-                playing=FALSE,
-                
-                volume=1,
-                
-                width='100%',
-                
-                height='100%'
-              )
-            )
-        ),
-        
-        htmlDiv(
-          className='control-section',
-          children = list(
-            
-            #LMNT #1
-            htmlDiv(
-              className='control-element',
-              children=list(
-                htmlDiv(children=list("Minimum Confidence Threshold:"), style=list(width= '40%')),
-                htmlDiv(
-                  dccSlider(
-                    id='slider-minimum-confidence-threshold',
-                    min=20,
-                    max=80,
-                    step=NULL,
-                    marks=list('20'=list(label='20%'), '30'=list(label='30%'), '40'=list(label='40%'), '50' = list(label='50%'), '60' = list(label = '60%'), '70' = list(label='70%'), '80'= list(label='80%')),
-                    value=30,
-                    updatemode='drag'
-                  ), style=list(width = '80%')) #60%
-              )
-            )
-            , 
-            #LMNT #2
-            htmlDiv(
-              className='control-element',
-              children=list(
-                htmlP(children=list("Footage Selection:"), style=list(width = '40%')),
-                dccDropdown(
-                  id="dropdown-footage-selection",
-                  options=list(
-                    list(label = 'Drone recording of canal festival',
-                         value = 'DroneCanalFestival'),
-                    list(label = 'Drone recording of car festival', value = 'car_show_drone'),
-                    list(label = 'Drone recording of car festival #2', value = 'DroneCarFestival2'),
-                    list(label = 'Drone recording of a farm', value = 'FarmDrone'),
-                    list(label = 'Lion fighting Zebras', value = 'zebra'),
-                    list(label = 'Man caught by a CCTV', value = 'ManCCTV'),
-                    list(label = 'Man driving expensive car', value = 'car_footage'),
-                    list(label = 'Restaurant Robbery', value = 'RestaurantHoldup')
-                  ),
-                  value='car_show_drone',
-                  clearable=F,
-                  style=list(width = '60%')
+                children=dashPlayer(
+                  
+                  id='video-display',
+                  
+                  style= list(position = 'absolute', width= '100%', height = '100%', top = '0', left = '0', bottom = '0', right = '0'),
+                  
+                  url='https://www.youtube.com/watch?v=gPtn6hD7o8g',
+                  
+                  controls=TRUE,
+                  
+                  playing=FALSE,
+                  
+                  volume=1,
+                  
+                  width='100%',
+                  
+                  height='100%'
                 )
               )
-            ),    
-            
-            
-            #LMNT #3
-            htmlDiv(
-              className = 'control-element',
+          ),
+          
+          htmlDiv(
+            className='control-section',
+            children = list(
               
-              children = list(
+              #LMNT #1
+              htmlDiv(
+                className='control-element',
+                children=list(
+                  htmlDiv(children=list("Minimum Confidence Threshold:"), style=list(width= '40%')),
+                  htmlDiv(
+                    dccSlider(
+                      id='slider-minimum-confidence-threshold',
+                      min=20,
+                      max=80,
+                      step=NULL,
+                      marks=list('20'=list(label='20%'), '30'=list(label='30%'), '40'=list(label='40%'), '50' = list(label='50%'), '60' = list(label = '60%'), '70' = list(label='70%'), '80'= list(label='80%')),
+                      value=30,
+                      updatemode='drag'
+                    ), style=list(width = '80%')) #60%
+                )
+              )
+              , 
+              #LMNT #2
+              htmlDiv(
+                className='control-element',
+                children=list(
+                  htmlP(children=list("Footage Selection:"), style=list(width = '40%')),
+                  dccDropdown(
+                    id="dropdown-footage-selection",
+                    options=list(
+                      list(label = 'Drone recording of canal festival',
+                           value = 'DroneCanalFestival'),
+                      list(label = 'Drone recording of car festival', value = 'car_show_drone'),
+                      list(label = 'Drone recording of car festival #2', value = 'DroneCarFestival2'),
+                      list(label = 'Drone recording of a farm', value = 'FarmDrone'),
+                      list(label = 'Lion fighting Zebras', value = 'zebra'),
+                      list(label = 'Man caught by a CCTV', value = 'ManCCTV'),
+                      list(label = 'Man driving expensive car', value = 'car_footage'),
+                      list(label = 'Restaurant Robbery', value = 'RestaurantHoldup')
+                    ),
+                    value='car_show_drone',
+                    clearable=F,
+                    style=list(width = '60%')
+                  )
+                )
+              ),    
+              
+              
+              #LMNT #3
+              htmlDiv(
+                className = 'control-element',
                 
-                htmlDiv(children = list("Video Display Mode:"), 
-                        style = list( width =  '40%')), 
-                dccDropdown(id = 'dropdown-video-display-mode',
-                            options =list(
-                              list(label='Regular Display', value='regular'),
-                              list(label='Bounding Boxes', value = 'bounding_box')
+                children = list(
+                  
+                  htmlDiv(children = list("Video Display Mode:"), 
+                          style = list( width =  '40%')), 
+                  dccDropdown(id = 'dropdown-video-display-mode',
+                              options =list(
+                                list(label='Regular Display', value='regular'),
+                                list(label='Bounding Boxes', value = 'bounding_box')
                               ), value= 'bounding_box',
-                            searchable = F,
-                            clearable = F,
-                            style = list(width='60%')
-                )   
-              )),
-            #LMNT #4  
-            htmlDiv(
-              className='control-element',
-              children=list(
-                htmlDiv(children="Graph View Mode:", style=list(width = '60%')),
-                dccDropdown(
-                  id="dropdown-graph-view-mode",
-                  options=list(
-                    list(label = 'Visual Mode', value = 'visual'),
-                    list(label = 'Confidence Mode', value = 'confidence'),
-                    list(label = 'Detection Mode', value = 'detection')
-                  ),
-                  value='visual',
-                  searchable=FALSE,
-                  clearable=FALSE,
-                  style=list(width = '60%')
-                )
-              ))
-          ))   
-      )),#LCOL end
-    htmlDiv(
-      id='right-side-column',
-      className='four columns',
-      style=list( height = 'calc(100vh - 5px)',
-                  overflowY = 'scroll',
-                  marginLeft = '1%',
-                  display = 'flex',
-                  backgroundColor = '#F9F9F9',
-                  flexDirection = 'column'),
-      children=list(
-        htmlDiv(
-          className='img-container',
-          children=htmlImg(
-            style=list(height = '100%', margin = '1px'),
-            src="assets/logo-old.png")
-        ),
-        htmlDiv(id="div-visual-mode" ),
-        htmlDiv(id='div-confidence-mode'),
-        htmlDiv(id="div-detection-mode")
-      ))
-    
-  )) #CONTAINER end
+                              searchable = F,
+                              clearable = F,
+                              style = list(width='60%')
+                  )   
+                )),
+              #LMNT #4  
+              htmlDiv(
+                className='control-element',
+                children=list(
+                  htmlDiv(children="Graph View Mode:", style=list(width = '60%')),
+                  dccDropdown(
+                    id="dropdown-graph-view-mode",
+                    options=list(
+                      list(label = 'Visual Mode', value = 'visual'),
+                      list(label = 'Confidence Mode', value = 'confidence'),
+                      list(label = 'Detection Mode', value = 'detection')
+                    ),
+                    value='visual',
+                    searchable=FALSE,
+                    clearable=FALSE,
+                    style=list(width = '60%')
+                  )
+                ))
+            ))   
+        )),#LCOL end
+      htmlDiv(
+        id='right-side-column',
+        className='four columns',
+        style=list( height = 'calc(100vh - 5px)',
+                    overflowY = 'scroll',
+                    marginLeft = '1%',
+                    display = 'flex',
+                    backgroundColor = '#F9F9F9',
+                    flexDirection = 'column'),
+        children=list(
+          htmlDiv(
+            className='img-container',
+            children=htmlImg(
+              style=list(height = '100%', margin = '1px'),
+              src="assets/logo-old.png")
+          ),
+          htmlDiv(id="div-visual-mode" ),
+          htmlDiv(id='div-confidence-mode'),
+          htmlDiv(id="div-detection-mode")
+        ))
+    ))#CONTAINER end
+  )) 
 )
 
 #"Learn more" popup
