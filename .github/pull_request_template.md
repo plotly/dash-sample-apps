@@ -21,7 +21,9 @@ Issue for app: #[issue number here]
   the GitHub repository for the source code in the portal description.
 - [ ] If the app is a reimplementation of a Python gallery app for the
   DashR gallery, the app in this PR mimics, as closely as possible,
-  the style and functionality of the existing app.
+  the style and functionality of the existing app.=
+- [ ] I have removed *all Google Analytics code* from the app's
+  `assets/` folder.
 
 ## The pre-review review
 

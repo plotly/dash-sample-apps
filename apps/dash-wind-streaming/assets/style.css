@@ -26,7 +26,7 @@ h6 {
 }
 
 .app__menu__img {
-    height: 80px;
+    height: 50px;
     width: auto;
 }
 
@@ -97,6 +97,30 @@ h6 {
     justify-content: center;
 }
 
-._dash-undo-redo {
-    display: none;
+@media only screen and (max-width: 600px) {
+    .histogram__direction {
+        margin: 15px 0px 20px 0px;
+    }
+    .app__content {
+        display: block;
+    }    
+    .app__menu__img {
+        height: 30px;
+        width: auto;
+    }
+    .app__header {
+        display: flex;
+        flex-direction: column;
+    }
+    .app__header__desc {
+        order: 1;
+        text-align: center;
+    }
+    .app__header__logo {
+        order: 0;
+    }
+    .app__header__title {
+        font-size: 1.5em;
+        padding-top: 15px;
+    }
 }
