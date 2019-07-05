@@ -1,0 +1,26 @@
+#mol2d-body ::-webkit-scrollbar-thumb {
+    background-color: #015BB0;
+}
+
+#mol2d-control-tabs .tab--selected {
+    color: #015BB0 !important;
+}
+
+#mol2d-body .rc-slider-track {
+    background-color: #015BB0;
+}
+
+#mol2d-body .rc-slider-handle {
+    border-color: #015BB0;
+}
+
+#mol2d-body input[type="text"] {
+    width: 100%;
+    margin-top: 15px;
+}
+
+#mol2d-body #mol2d-bond-length {
+    display: inline-block;
+    width: 150px;
+    margin-top: 10px;
+}
