@@ -59,7 +59,11 @@ app$layout(
       className='row',
       style=list(backgroundColor = '#fa4f56', height= '5px')
     ),
-    
+    htmlDiv(className='container', children=list(
+      
+      htmlDiv(id='left-side-column')
+      
+    )),
     
     htmlDiv(
       id='left-side-column',
