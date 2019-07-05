@@ -214,6 +214,7 @@ def create_map_bubble_year(
                 showframe=False, showcoastlines=False, projection=dict(type="Mercator")
             ),
             autosize=True,
+            legend={"orientation": "h"},
         )
 
         fig = dict(data=data, layout=layout)

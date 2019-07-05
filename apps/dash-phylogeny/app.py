@@ -56,15 +56,14 @@ app.layout = html.Div(
                             className="logo",
                             src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png",
                         ),
-                        html.Button(className="btn", children=     ["Learn      More"]),
-                    ]
-                )
-                
+                        html.Button(className="btn", children=["Learn      More"]),
+                    ],
+                ),
             ],
         ),
         html.Div(
             id="grid",
-            children = [
+            children=[
                 html.Div(
                     id="controls",
                     className="row div-row div-card",
@@ -98,6 +97,7 @@ app.layout = html.Div(
                                             step=1,
                                             marks=marks_data,
                                             value=min_max_date_value,
+                                            vertical=True,
                                         )
                                     ],
                                 ),
@@ -119,7 +119,10 @@ app.layout = html.Div(
                                                             id="d_mumps",
                                                             options=[
                                                                 {"label": i, "value": i}
-                                                                for i in ["global", "na"]
+                                                                for i in [
+                                                                    "global",
+                                                                    "na",
+                                                                ]
                                                             ],
                                                             value="global",
                                                         )
@@ -234,27 +237,30 @@ app.layout = html.Div(
                         ),
                     ],
                 ),
-                html.Div(
-                    className="six columns div-card",
-                    children=[
-                        html.Div(id="output-container-range-slider"),
-                        dcc.Graph(id="curve-line-graph", figure=fig_curve_line),
-                    ],
+                
+                dcc.Graph(
+                    id="curve-line-graph", 
+                    className="div-card",
+                    figure=fig_curve_line,
                 ),
-                html.Div(
-                    className="six columns div-card",
-                    children=html.Div(id="phylogeny-graph"),
+
+                dcc.Graph(
+                    id="phylogeny-graph",
+                    className="div-card",
                 ),
-                html.Div(
-                    className="six columns div-card",
-                    children=dcc.Graph(id="graph_map", figure=fig_map_bubble),
+
+                dcc.Graph(
+                    id="map-graph", 
+                    className="div-card",
+                    figure=fig_map_bubble,
                 ),
-                html.Div(
-                    className="six columns div-card", 
-                    children=html.Div(id="id-histo")
+
+                dcc.Graph(
+                    id="histo-graph",
+                    className="div-card",
                 ),
-            ]
-        )
+            ],
+        ),
     ]
 )
 
@@ -316,7 +322,7 @@ def _update_flu_option(virus_name):
 
 
 @app.callback(
-    Output("phylogeny-graph", "children"),
+    Output("phylogeny-graph", "figure"),
     [
         Input("d_virus-name", "value"),
         Input("d_mumps", "value"),
@@ -412,11 +418,11 @@ def _update_pĥylogentic_tree(
             )
 
         tree_fig[tree_file_filtred] = fig
-    return (dcc.Graph(id="top-graph", figure=fig),)
+    return fig
 
 
 @app.callback(
-    Output("graph_map", "figure"),
+    Output("map-graph", "figure"),
     [
         Input("d_virus-name", "value"),
         Input("d_mumps", "value"),
@@ -610,7 +616,7 @@ def _update_curve(
 
 
 @app.callback(
-    Output("id-histo", "children"),
+    Output("histo-graph", "figure"),
     [
         Input("d_virus-name", "value"),
         Input("d_mumps", "value"),
@@ -677,25 +683,22 @@ def _update_histo(
     # Move the index values (i.e. Country column) in column and reset index
     df_group_by_country = df_group_by_country.reset_index()
 
-    return dcc.Graph(
-        id="right-bottom-histo",
-        figure={
-            "data": [
-                {
-                    "x": df_group_by_country["Country"],
-                    "y": df_group_by_country["Value"],
-                    "type": "bar",
-                }
-            ],
-            "layout": {
-                "autosize": True,
-                "margin": "0px 0px 0px 0px",
-                "title": "<br>Distribution of {} <br>Between {} and {}".format(
-                    virus_name.title(), min_date, max_date
-                ),
-            },
+    return {
+        "data": [
+            {
+                "x": df_group_by_country["Country"],
+                "y": df_group_by_country["Value"],
+                "type": "bar",
+            }
+        ],
+        "layout": {
+            "autosize": True,
+            "margin": "0px 0px 0px 0px",
+            "title": "<br>Distribution of {} <br>Between {} and {}".format(
+                virus_name.title(), min_date, max_date
+            ),
         },
-    )
+    }
 
 
 ######################################### CSS #########################################
