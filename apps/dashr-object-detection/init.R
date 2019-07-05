@@ -14,10 +14,10 @@ install.packages("remotes")
 
 # installs Rcpp, rlang, BH
 install.packages("later")
-
 install.packages("jsonlite")
 install.packages("listenv")
 install.packages('rlist')
+install.packages('R.cache')
 
 # installs magrittr, promises, R6
 remotes::install_version("httpuv", version = "1.4.5.1", repos = "http://cloud.r-project.org", upgrade="never")

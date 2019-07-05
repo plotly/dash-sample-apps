@@ -18,6 +18,7 @@ library(data.table)
 library(glue)
 library(compiler)
 library(magrittr)
+library(R.cache)
 
 
 DEBUG <- T
@@ -172,6 +173,7 @@ app$layout(
                   dccDropdown(
                     id="dropdown-graph-view-mode",
                     options=list(
+                      list(label='Visual Mode', value='visual'),
                       list(label = 'Detection Mode', value = 'detection')
                     ),
                     value='visual',
