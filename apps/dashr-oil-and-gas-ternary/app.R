@@ -1,44 +1,42 @@
 library(dashHtmlComponents)
 library(dashCoreComponents)
-library(dashR)
+library(dash)
 
-setwd('/Users/kevinphan/Desktop/dashr-oil-and-gas-ternary')
-
-source('contants.R')
+source('constants.R')
 source('dataprep.R')
 
-app = Dash$new()
+app <- Dash$new()
 
-mapbox_access_token = 'pk.eyJ1IjoieWNhb2tyaXMiLCJhIjoiY2p1MDR5c3JmMzJsbjQ1cGlhNHA3MHFkaCJ9.xb3lXp5JskCYFewsv5uU1w'
+mapbox_access_token <- 'pk.eyJ1IjoieWNhb2tyaXMiLCJhIjoiY2p1MDR5c3JmMzJsbjQ1cGlhNHA3MHFkaCJ9.xb3lXp5JskCYFewsv5uU1w'
 
-df = read.csv("test_compositionR.csv")
-df_prod = read.csv("YearlyProduction_table_1.csv")
+df <- read.csv("data/test_compositionR.csv")
+df_prod <- read.csv("data/YearlyProduction_table_1.csv")
 
-colormap = list()
-j = 1
+colormap <- list()
+j <- 1
 for (i in unique(df$fm_name)) {
   colormap[[i]] = colors[[j]]
-  j = j + 1
+  j <- j + 1
 }
 
-build_banner = function(){
+build_banner <- function(){
   return(htmlDiv(
-    id='banner',
-    className='banner',
-    children=list(
+    id = 'banner',
+    className = 'banner',
+    children = list(
       htmlH6("Oil and gas ternary map"),
       htmlImg(
-        src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png"
+        src = "assets/logo.png"
       )
     )
   ))}
 
-build_graph_title = function(title){
+build_graph_title <- function(title){
   return(htmlP(
     className='graph-title',
     children=title))}
 
-generate_production_plot = function(processed_data){
+generate_production_plot <- function(processed_data){
   layout = list(
     xaxis=list(
       title='Year'
@@ -70,7 +68,7 @@ generate_production_plot = function(processed_data){
   
   }
 
-generate_well_map = function(dff,sleected_data,style){
+generate_well_map <- function(dff, selected_data, style){
   Layout= layout(annotations=list(
     list(
       x=1.1,
@@ -118,9 +116,9 @@ generate_well_map = function(dff,sleected_data,style){
       style=style
     ))
   
-  formations = list(unique(dff['fm_name']))
+  formations <- list(unique(dff['fm_name']))
   
-  data = list()
+  data <- list()
   
   for (formation in formations) {
     selected_index = NULL
@@ -128,50 +126,50 @@ generate_well_map = function(dff,sleected_data,style){
       selected_index = selected_dta[formation]
     }
   }
-  new_trace = plot_mapbox(
-    lat = dff[dff['fm_name'] == formation,'nlat83'],
-    lon = dff[dff['fm_name'] == formation,'wlon83'],
-    mode = 'markers',
-    marker = list('color' = colormap[formation], 'size' = 9),
+  new_trace <- plot_mapbox(
+    lat <- dff[dff['fm_name'] == formation,'nlat83'],
+    lon <- dff[dff['fm_name'] == formation,'wlon83'],
+    mode <- 'markers',
+    marker <- list('color' = colormap[formation], 'size' = 9),
     #text = list(map(lambda item= 'Well ID=' + str(int(item)), dff[dff['fm_name'] == formation]['RecordNumber'])),
-    name = formation,
+    name <- formation,
     selectedpoints = selected_index,
     customdata = dff[dff['fm_name'] == formation,'RecordNumber']
   ) %>% Layout
-  data = append(data,new_trace)
+  data <- append(data,new_trace)
   
   return(list('data' = data))
   
 }
 
 
-generate_ternary_map = function(dff, selected_data, contour_visible, marker_visible){
-  k = 1
-  contour_traces = list()
+generate_ternary_map <- function(dff, selected_data, contour_visible, marker_visible){
+  k <- 1
+  contour_traces <- list()
   for (key in labels(ternary_contour)) {
     for (k in ternary_contour[[key]]){
     trace = list(
-      name=key,
-      type='scatterternary',
-      a= list(k['Quartz']),
+      name = key,
+      type = 'scatterternary',
+      a = list(k['Quartz']),
       b = list(k['Carbonate']),
       c = list(k['Clay']),
-      mode='lines',
-      line=list(color='#444', width=0.5),
-      fill='toself',
-      fillcolor=ternary_color[[k]],
-      opacity=0.8,
-      hoverinfo='none',
-      showlegend=FALSE,
-      visible=contour_visible
+      mode = 'lines',
+      line = list(color='#444', width=0.5),
+      fill = 'toself',
+      fillcolor = ternary_color[[k]],
+      opacity = 0.8,
+      hoverinfo = 'none',
+      showlegend = FALSE,
+      visible = contour_visible
     )}
     k = k+1
     contour_traces = append(contour_traces,trace)
   }
   
-  contour_text = generate_contour_text_layer(contour_visible)
+  contour_text <- generate_contour_text_layer(contour_visible)
 
-  layout = list(
+  layout <- list(
     'height' = 600,
     'margin' = dict(l=50, r=10, b=40, t=40, pad=5),
     'ternary' =
@@ -205,27 +203,27 @@ generate_ternary_map = function(dff, selected_data, contour_visible, marker_visi
         borderwidth=2)
   )
   #hovertemplate = "<b> %{text}</b><br><br> Quartz: %{a:.0f}<br>Carbonate : %{b:.0f}<br> Clay: %{c:.0f}<extra></extra>
-  formations = list(unique(dff['fm_name']))
-  data_traces = list()
+  formations <- list(unique(dff['fm_name']))
+  data_traces <- list()
   for (key in formations) {
     if(selected_data){
       select_indices = selected_data[key]
     } else{
       select_indices = NULL
     }
-    new_data_trace = list(
+    new_data_trace <- list(
       #text=list(map(lambda item: 'Well ID:' + str(int(item)), dff[dff['fm_name'] == key]['RecordNumber'])),
-      name=key,
-      customdata=dff[dff['fm_name'] == key,'RecordNumber'],
-      type='scatterternary',
-      a=dff[dff['fm_name'] == key,'Quartz'],
-      b=dff[dff['fm_name'] == key,'Carbonate'],
-      c=dff[dff['fm_name'] == key,'Clay'],
-      mode='markers',
-      hovertemplate=hovertemplate,
-      showlegend=TRUE,
-      marker=list('color' = colormap[key], 'size' = 8, 'line' = list('color' = '#000000', 'width': 0.2)),
-      selectedpoints=select_indices,
+      name = key,
+      customdata = dff[dff['fm_name'] == key,'RecordNumber'],
+      type = 'scatterternary',
+      a = dff[dff['fm_name'] == key,'Quartz'],
+      b = dff[dff['fm_name'] == key,'Carbonate'],
+      c = dff[dff['fm_name'] == key,'Clay'],
+      mode = 'markers',
+      hovertemplate = hovertemplate,
+      showlegend = TRUE,
+      marker = list('color' = colormap[key], 'size' = 8, 'line' = list('color' = '#000000', 'width': 0.2)),
+      selectedpoints = select_indices,
       visible=marker_visible
     )
     data_traces = append(data_traces,new_data_trace)
@@ -233,58 +231,58 @@ generate_ternary_map = function(dff, selected_data, contour_visible, marker_visi
   return(list('data' = contour_traces + contour_text + data_traces, 'layout' = layout))
 }
 
-generate_contour_text_layer = function(contur_visible){
-  layer = list()
+generate_contour_text_layer <- function(contur_visible){
+  layer <- list()
   for (key in labels(ternary_contour)) {
     for (k in ternary_contour[[key]]) {
-      a = mean(unlist(k['Quartz']))
-      b = mean(unlist(k['Carbonate']))
-      c= mean(unlist(k['Clay']))
+      a <- mean(unlist(k['Quartz']))
+      b <- mean(unlist(k['Carbonate']))
+      c <- mean(unlist(k['Clay']))
     }
-    key_br = gsub(key,' ', '<br>')
-    new_trace = generate_contour_text(a, b, c, key, key_br, contour_visible)
-    layer = append(layer,new_trace)
+    key_br <- gsub(key,' ', '<br>')
+    new_trace <- generate_contour_text(a, b, c, key, key_br, contour_visible)
+    layer <- append(layer,new_trace)
   }
   return(layer)
 }
 
-generate_contour_text = function(a, b, c, name, text, visible){
+generate_contour_text <- function(a, b, c, name, text, visible){
   return(list(
     type='scatterternary',
-    a=list(a),
-    b=list(b),
-    c=list(c),
-    name=name,
-    text=text,
-    mode='text',
-    hoverinfo='none',
-    textposition='middle center',
-    textfont=list('size' = 11, 'color' = '#000000', 'family' = 'sans-serif'),
-    showlegend=FALSE,
-    legendgroup='Rock type',
-    visible=visible
+    a = list(a),
+    b = list(b),
+    c = list(c),
+    name = name,
+    text = text,
+    mode = 'text',
+    hoverinfo = 'none',
+    textposition = 'middle center',
+    textfont = list('size' = 11, 'color' = '#000000', 'family' = 'sans-serif'),
+    showlegend = FALSE,
+    legendgroup = 'Rock type',
+    visible = visible
   ))
 }
 
 generate_formation_bar = function(dff, selected_Data){
   
-  layout = layout( showlegend=FALSE,
+  layout <- layout(showlegend=FALSE,
                    hovermode="closest",
                    xaxis=list(tickangle=-45, title="Formations"),
                    yaxis=list(title="Well Counts"),
                    clickmode="event+select")
   
-  formations = list(unique(dff['fm_name']))
+  formations <- list(unique(dff['fm_name']))
   
   if(length(selected_Data > 0)){
-    data = list()
+    data <- list()
     for (i in formations) {
-      selected_points = list()
-      selected_indices = selected_data[i]
+      selected_points <- list()
+      selected_indices <- selected_data[i]
       if(length(select_indices) > 0){
-        selected_points = list(0)
+        selected_points <- list(0)
       }
-      new_trace = plot_ly(
+      new_trace <- plot_ly(
         type = 'Bar',
         x = list(i),
         y = length(dff[dff['fm_name'] == i,]),
@@ -293,13 +291,13 @@ generate_formation_bar = function(dff, selected_Data){
         marker = list('color' = colormap[i]),
         selectedpoints = selected_points
       )
-      data = append(data,new_trace)
+      data <- append(data, new_trace)
     }
   }
   else{
-    data = list()
+    data <- list()
     for (i in formations) {
-      new_trace = plot_ly(
+      new_trace <- plot_ly(
         type = 'Bar',
         x = list(i),
         y = length(dff[dff['fm_name'] == i,]),
@@ -307,31 +305,31 @@ generate_formation_bar = function(dff, selected_Data){
         marker = list('color' = colormap[i]),
         selectedpoints = NULL
       )
-      data = append(data,new_trace)
+      data <- append(data, new_trace)
     }
   }
   return(list('data' = data, 'layout' = layout))
 }
 
 
-get_selection = function(data,formation,selection_data,starting_index){
-  ind = list()
-  current_curve = list(unique(data['fm_name', formation]))
+get_selection <- function(data,formation,selection_data,starting_index){
+  ind <- list()
+  current_curve <- list(unique(data['fm_name', formation]))
   for (point in selection_data['points']) {
     if(point['curveNumber'] - starting_index == current_curve){
-      ind = append(ind,pouint['pointNumber'])
+      ind <- append(ind, point['pointNumber'])
     }
   }
   return(ind)
 }
 
 
-get_selection_by_bar = function(bar_selected_data){
- dict = list()
+get_selection_by_bar <- function(bar_selected_data) {
+ dict <- list()
  if(length(bar_selected_data) > 0){
    for (point in bar_selected_data['points']) {
      if(length(point['x']) > 0){
-       dict[(point["x"])] = list(seq(0, point["y"]))
+       dict[(point["x"])] <- list(seq(0, point["y"]))
      }
    }
  }
@@ -428,7 +426,7 @@ app$layout(htmlDiv(
                         "value"= "Rock Type"
                       )
                     ),
-                    values=list("Well Data", "Rock Type")
+                    value=list("Well Data", "Rock Type")
                   )
                 )
               ),
@@ -475,24 +473,24 @@ app$callback(output = list(id = "form-by-bar", property = "figure"),
                input("ternary-map", "selectedData"),
                input("operator-select", "value")),
              function(map_selected_data, tern_selected_data, op_select){
-               dff = df[df['op'] %in% op_select,]
+               dff <- df[df['op'] %in% op_select,]
                
-               formation = list(unique(dff['fm_name']))
-               ctx = app$callback_context()
-               prop_id = ""
-               prop_type = ""
+               formation <- list(unique(dff['fm_name']))
+               ctx <- app$callback_context()
+               prop_id <- ""
+               prop_type <- ""
                if (isTRUE(ctx$triggered)){
-                 splitted = strsplit(ctx$triggered['prop_id'][0], ".",fixed=TRUE)
-                 prop_id = splitted[0]
-                 prop_type = splitted[1]
+                 splitted <- strsplit(ctx$triggered['prop_id'][0], ".",fixed=TRUE)
+                 prop_id <- splitted[0]
+                 prop_type <- splitted[1]
                }
-               processed_data = list()
+               processed_data <- list()
                if(prop_id == 'well-map' & prop_type == 'selectedData'){
                  for (formation in formations) {
                    if(length(map_selected_data) == 0){
-                     processed_data[formation] = list(0)
+                     processed_data[formation] <- list(0)
                    } else{
-                     processed_data[formation] = get_selection(dff, formation, map_selected_data, 0)
+                     processed_data[formation] <- get_selection(dff, formation, map_selected_data, 0)
                    }
                  }
                }
@@ -502,7 +500,7 @@ app$callback(output = list(id = "form-by-bar", property = "figure"),
                      processed_data[formation] = list(0)
                    }
                    else{
-                     processed_data['formatiom'] = get_selection(dff, formation, tern_selected_data, 32)
+                     processed_data[formation] = get_selection(dff, formation, tern_selected_data, 32)
                    }
                  }
                }
