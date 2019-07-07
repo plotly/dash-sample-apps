@@ -18,8 +18,20 @@
     background-color: #192444;
     padding: 0 5rem;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    align-items: stretch;
+}
+
+@media (min-width: 1400px) {
+    #top-row {
+        flex-direction: row;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    #top-row {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
 }
 
 /* Top-row-header
@@ -27,8 +39,6 @@
 #top-row-header {
     background-color: #1f2c56;
     padding: 6rem 3rem 9rem 3rem;
-    max-width: 35rem;
-    min-height: 53rem;
 }
 
 .banner h6 {
@@ -37,7 +47,6 @@
     font-weight: 800;
     text-transform: uppercase;
     line-height: normal;
-    width: 35rem;
     color: white;
 }
 
@@ -53,22 +62,41 @@
     color: white;
 }
 
-
 #instructions {
     font-style: italic;
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
     color: white;
-    width: 30rem;
     margin: 2rem 0 4rem 0;
 }
 
-#operator-select {
-    width: 35rem;
+@media only screen and (max-width: 1400px) {
+    #top-row-header {
+        flex-grow: 1;
+    }
 }
 
-.Select-control, .Select-multi-value-wrapper, .Select-menu-outer div{
-    background-color: #1f2c56 ;
+@media (min-width: 1401px) {
+    #top-row-header {
+        flex-grow: 1;
+        padding: 6rem 3rem 9rem 3rem;
+    }
+
+    .banner h6 {
+        width: 35rem;
+    }
+
+    #instructions {
+        width: 30rem;
+    }
+
+    #operator-select {
+        width: 35rem;
+    }
+}
+
+.Select-control, .Select-multi-value-wrapper, .Select-menu-outer div {
+    background-color: #1f2c56;
 }
 
 .Select-control, .Select, .Select-value-label, .Select-clear-zone {
@@ -105,32 +133,30 @@
     background-color: #1f2c56 !important;
 }
 
+#selected-rows .Select-multi-value-wrapper, #selected-columns .Select-multi-value-wrapper {
+    max-height: 20rem;
+}
+
 /* Top-row-graphs
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#top-row-graphs{
-    padding: 10rem 0 5rem 0;
+#top-row-graphs {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-grow: 1;
 }
 
-#well-map-container{
+#well-map-container {
     margin: 0 -2rem 0 4rem;
+    flex-grow: 1;
 }
 
-#well-map {
-    height: 50rem;
-    width: 60rem;
+#ternary-map-container {
+    flex-grow: 1;
 }
 
-#ternary-map{
-    height: 50rem;
-    width: 70rem;
-}
-
-#mapbox-view-selector, #ternary-layer-select{
+#mapbox-view-selector, #ternary-layer-select {
     margin-bottom: 1rem;
-}
-
-#ternary-header{
-    margin-left: 5rem;
 }
 
 /* hides the svg dom element that has the click handler responsible for toggling */
@@ -142,27 +168,85 @@
     display: none;
 }
 
-#mapbox-view-selector label, #ternary-layer-select label{
+#mapbox-view-selector label, #ternary-layer-select label {
     color: white;
     font-family: "Open Sans", sans-serif;
     font-weight: 300;
     display: inline-block;
 }
 
+@media only screen and (max-width: 1000px) {
+    #top-row-graphs {
+        flex-direction: column;
+    }
+
+    #well-map-container {
+        margin: 5rem 0 0 0;
+    }
+
+    #ternary-header {
+        margin: 5rem 0 0 0;
+    }
+
+    #ternary-map-container{
+        margin-bottom: 5rem;
+    }
+}
+
+@media (min-width: 1001px) {
+    #well-map-container {
+        margin: 0 -2rem 0 4rem;
+    }
+
+    #ternary-header {
+        margin: 0 0 0 5rem;
+    }
+}
+
+@media (min-width: 1001px) and (max-width: 1400px) {
+    #top-row-graphs {
+        padding: 5rem 0;
+        flex-direction: row;
+        align-items: stretch;
+    }
+}
+
+@media (min-width: 1401px) {
+    #top-row-graphs {
+        padding: 15rem 0 5rem 0;
+        flex-direction: row;
+        align-items: stretch;
+    }
+}
 
 /* Bottom row
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-#bottom-row{
+#bottom-row {
     padding: 5rem;
     background-color: #f2f5fa;
 }
 
-#bottom-row .graph-title{
+#bottom-row .graph-title {
     font-family: "Open Sans", sans-serif;
     font-weight: 800;
     margin-bottom: 3rem;
 }
 
-.graph-title{
+.graph-title {
     font-size: 2rem;
+}
+
+@media only screen and (max-width: 1000px) {
+    #bottom-row{
+        display: flex;
+        flex-direction: column;
+    }
+    #form-bar-container, #well-production-container{
+        width: 100%;
+        margin: 0;
+    }
+
+    #form-bar-container{
+        margin-bottom: 5rem;
+    }
 }

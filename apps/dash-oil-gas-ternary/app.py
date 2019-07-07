@@ -41,7 +41,7 @@ def build_banner():
         className="banner",
         children=[
             html.Img(
-                src="https://images-plotly.imgix.net/static/marketing/dash/dash-logo.png?auto=compress&auto=format"
+                src="https://files.slack.com/files-pri/T06LPNGUD-FKXDDD4QG/dash-logo-new.png"
             ),
             html.H6("Oil and gas ternary map"),
         ],
@@ -383,7 +383,6 @@ app.layout = html.Div(
                     id="top-row-header",
                     children=[
                         html.Div(
-                            className="six columns",
                             id="header-container",
                             children=[
                                 build_banner(),
@@ -420,7 +419,6 @@ app.layout = html.Div(
                         # Well map
                         html.Div(
                             id="well-map-container",
-                            className="six columns",
                             children=[
                                 build_graph_title("Well Map"),
                                 dcc.RadioItems(
@@ -445,7 +443,6 @@ app.layout = html.Div(
                         # Ternary map
                         html.Div(
                             id="ternary-map-container",
-                            className="six columns",
                             children=[
                                 html.Div(
                                     id="ternary-header",
@@ -465,7 +462,7 @@ app.layout = html.Div(
                                                     "value": "Rock Type",
                                                 },
                                             ],
-                                            values=["Well Data", "Rock Type"],
+                                            value=["Well Data", "Rock Type"],
                                         ),
                                     ],
                                 ),
@@ -567,7 +564,7 @@ def update_bar(map_selected_data, tern_selected_data, op_select):
         Input("form-by-bar", "selectedData"),
         Input("form-by-bar", "clickData"),
         Input("operator-select", "value"),
-        Input("ternary-layer-select", "values"),
+        Input("ternary-layer-select", "value"),
     ],
     state=[State("ternary-map", "figure")],
 )
