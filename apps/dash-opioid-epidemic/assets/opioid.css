@@ -54,7 +54,7 @@
 }
 
 /* For devices larger than 400px */
-@media (min-width: 400px) {
+@media (min-width: 400px) and (max-width: 549px) {
     .container {
         width: 85%;
         padding: 0;
@@ -681,6 +681,10 @@ hr {
      #header h4{
         text-align: center;
     }
+
+     #header p{
+         font-size: 1.25rem;
+     }
 }
 
 @media (min-width: 1251px) {
@@ -692,6 +696,10 @@ hr {
         max-height: 80rem;
         height: 80rem;
     }
+
+    #header p{
+         font-size: 1.5rem;
+     }
 }
 
 
@@ -705,7 +713,6 @@ hr {
 
 /* Dropdown
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-
 .Select-control {
     color: #7fafdf !important;
 }
@@ -761,37 +768,6 @@ hr {
 
 #header {
     margin-left: 1.5%;
-}
-
-
-/* Media Queries
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-/*
-Note: The best way to structure the use of media queries is to create the queries
-near the relevant code. For example, if you wanted to change the styles for buttons
-on small devices, paste the mobile query code up in the buttons section and style it
-there.
-*/
-
-
-/* Larger than mobile */
-@media (min-width: 400px) {
-}
-
-/* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {
-}
-
-/* Larger than tablet */
-@media (min-width: 750px) {
-}
-
-/* Larger than desktop */
-@media (min-width: 1000px) {
-}
-
-/* Larger than Desktop HD */
-@media (min-width: 1200px) {
 }
 
 
