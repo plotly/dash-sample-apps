@@ -1,4 +1,5 @@
 vv/
 *.pyc
-<<<<<<< HEAD
 *.DS_Store
+venv/
+.idea/
