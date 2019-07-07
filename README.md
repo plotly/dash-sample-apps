@@ -147,7 +147,7 @@ Img(src="./assets/logo.png") will fail at root level
 ```
 
 Tips
-
+ 
 -  Use [get_asset_url()](https://dash.plot.ly/dash-deployment-server/static-assets)
 -  Use [Pathlib](https://docs.python.org/3/library/pathlib.html) for more flexibility
 
