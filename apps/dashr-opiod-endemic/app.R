@@ -280,7 +280,6 @@ app$callback(
   function(selectedData, chart_dropdown, year){
     # function returns blank figure if no data is selected
     if(is.null(selectedData[[1]])){
-      print("SelectedData is None")
       return(
         list(
           data = list(list(x = 0, y = 0)),
