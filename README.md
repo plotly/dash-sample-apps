@@ -11,7 +11,7 @@ want to run is `my_dash_app` and the app filename is `app.py`, you
 would need to run `python apps/my_dash_app/app.py` from the root
 of the repository.
 
-Each app has a requirements.txt, install the dependecies in a virtual 
+Each app has a requirements.txt, install the dependecies in a virtual
 environment.
 
 ## Contributing to the sample apps repo
@@ -117,9 +117,9 @@ branch. Once you have passed your code review, you can merge your PR.
 
 - **`Procfile`** gets run at root level for deployment
     - Make sure python working directory is at the app level
-    - Ex. `web: gunicorn --pythonpath apps/{DASH_APP_NAME} app:server` 
+    - Ex. `web: gunicorn --pythonpath apps/{DASH_APP_NAME} app:server`
 - **`requirements.txt`**
-    - Install project dependecies in a virtual environment 
+    - Install project dependecies in a virtual environment
 - **`runtime.txt`**
     - App python version
 
@@ -132,7 +132,7 @@ branch. Once you have passed your code review, you can merge your PR.
     │   ├── data/               # all data (csv, json, txt, etc)
     │   ├── app.py              # dash application entry point
     │   ├── Procfile            # used for heroku deployment (how to run app)
-    │   ├── requirements.txt    # project dependecies 
+    │   ├── requirements.txt    # project dependecies
     │   ├── runtime.txt         # used for heroku deployment (python version)
     │   └── ...                 
     └── ...
