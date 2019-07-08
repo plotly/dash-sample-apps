@@ -1,0 +1,21 @@
+{
+    "debugBreakpointsState" : {
+        "breakpoints" : [
+            {
+                "editor_line_number" : 17,
+                "editor_state" : 1,
+                "function_name" : "toplevel",
+                "function_steps" : "",
+                "id" : 0,
+                "is_package_breakpoint" : false,
+                "is_pending_debug_completion" : false,
+                "line_number" : 17,
+                "needs_updated_steps" : true,
+                "package_name" : "",
+                "path" : "~/Documents/GitHub/plot.ly/dash-sample-apps/apps/dashr-shiny-movies/app.R",
+                "state" : 1,
+                "type" : 1
+            }
+        ]
+    }
+}
