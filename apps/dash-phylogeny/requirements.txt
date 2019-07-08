@@ -23,6 +23,7 @@ entrypoints==0.3
 flake8==3.7.7
 Flask==1.0.2
 Flask-Compress==1.4.0
+geopy==1.20.0
 gunicorn==19.9.0
 idna==2.8
 ipykernel==5.1.1
