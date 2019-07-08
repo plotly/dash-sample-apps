@@ -11,8 +11,8 @@ options(repos=r)
 # packages go here
 install.packages("remotes")
 
-remotes::install_github("plotly/dash-html-components", dependencies=TRUE)
-remotes::install_github("plotly/dash-core-components", dependencies=TRUE)
+remotes::install_github("plotly/dash-html-components")
+remotes::install_github("plotly/dash-core-components")
+remotes::install_github("plotly/dash-table")
 remotes::install_github("plotly/dashR", dependencies=TRUE)
-
-install.packages(c("DBI", "RSQLite", "stringr", "glue", "data.table", "plotly", "VGAM"))
+remotes::install_github("plotly/dashPlayer")
