@@ -1,18 +1,8 @@
 
-#import pathlib
-#import numpy as np
-#import datetime as dt
 import dash
 import dash_core_components as dcc
-import plotly.graph_objs as go
-
-
-import dash_core_components as dcc
 import dash_html_components as html
-import numpy as np
 import plotly.graph_objs as go
-
-
 import dash_table
 import pandas as pd
 import lorem
@@ -389,10 +379,7 @@ app.layout = html.Div(
                                             'family': "Arial",
                                             'size': 9
                                         },
-                                        'ticks': "outside",
-                                        #'ticksuffix': " ",
-                                        #'type': "linear",
-                                        #'zerolinecolor': "#b0b1b2"
+                                        'ticks': "outside"
                                     }
                                 )
                             }
@@ -558,9 +545,6 @@ app.layout = html.Div(
 
                     ], className="exhibit six columns",
                                style={'margin-top': "20px"}),
-                    #html.Img(src="assets/IJsVT9P.png",
-                     #        className="exhibit six columns",
-                     #        style={'margin-top': "20px"})
                 ], className="", style={"padding-top": "20px", 'margin-left': '30px'})
             ], className="subpage")
         ], className="page"),
@@ -647,7 +631,6 @@ app.layout = html.Div(
                                         'nticks': 18,
                                         'range': [-0.5, 15.5],
                                         'showgrid': False,
-                                        #'tickangle': 180,
                                         'tickfont': {'size': 9},
                                         'tickmode': "linear",
                                         'ticks': "",
@@ -661,7 +644,6 @@ app.layout = html.Div(
                                         'range': [-1283.8982436029166, 3012.5614936594166],
                                         'showgrid': False,
                                         'showline': True,
-                                        #'tickangle': 180,
                                         'tickfont': {'size': 9},
                                         'ticks': "outside",
                                         'title': "",
@@ -1765,6 +1747,3 @@ app.layout = html.Div(
 
 if __name__ == "__main__":
     app.run_server(debug=True)
-
-
-
