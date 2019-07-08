@@ -69,20 +69,158 @@ app.layout = html.Div(
                     className="row div-row div-card",
                     children=[
                         html.Div(
-                            className="six columns",
+                            id="dataset-picker",
                             children=[
-                                html.H6(children="Dataset"),
-                                dcc.Dropdown(
-                                    id="d_virus-name",
-                                    options=[
-                                        {"label": species[i], "value": species[i]}
-                                        for i in range(len(species))
+                                html.Div(
+                                    className="six columns",
+                                    children=[
+                                        html.H6(children="Dataset"),
+                                        dcc.Dropdown(
+                                            id="d_virus-name",
+                                            options=[
+                                                {"label": species[i], "value": species[i]}
+                                                for i in range(len(species))
+                                            ],
+                                            value="Measles",
+                                        ),
+                                        html.Div(id="output-container"),
                                     ],
-                                    value="Measles",
                                 ),
-                                html.Div(id="output-container"),
-                            ],
+                                # Strain dropdown picker
+                                html.Div(
+                                    className="row",
+                                    children=[
+                                        html.Div(
+                                            className="four columns",
+                                            children=[
+                                                html.Div(
+                                                    children=[
+                                                        html.Div(
+                                                            id="controls-container_mumps",
+                                                            children=[
+                                                                dcc.Dropdown(
+                                                                    id="d_mumps",
+                                                                    options=[
+                                                                        {"label": i, "value": i}
+                                                                        for i in [
+                                                                            "global",
+                                                                            "na",
+                                                                        ]
+                                                                    ],
+                                                                    value="global",
+                                                                )
+                                                            ],
+                                                        ),
+                                                        html.Div(
+                                                            id="controls-container_dengue",
+                                                            children=[
+                                                                dcc.Dropdown(
+                                                                    id="d_dengue",
+                                                                    options=[
+                                                                        {"label": i, "value": i}
+                                                                        for i in [
+                                                                            "all",
+                                                                            "denv1",
+                                                                            "denv2",
+                                                                            "denv3",
+                                                                            "denv4",
+                                                                        ]
+                                                                    ],
+                                                                    value="all",
+                                                                )
+                                                            ],
+                                                        ),
+                                                        html.Div(
+                                                            id="controls-container_lassa",
+                                                            children=[
+                                                                dcc.Dropdown(
+                                                                    id="d_lassa",
+                                                                    options=[
+                                                                        {"label": i, "value": i}
+                                                                        for i in ["s", "l"]
+                                                                    ],
+                                                                    value="s",
+                                                                )
+                                                            ],
+                                                        ),
+                                                        html.Div(
+                                                            id="controls-container_avian",
+                                                            children=[
+                                                                dcc.Dropdown(
+                                                                    id="d_avian_opt1",
+                                                                    options=[
+                                                                        {"label": i, "value": i}
+                                                                        for i in ["h7n9"]
+                                                                    ],
+                                                                    value="h7n9",
+                                                                ),
+                                                                dcc.Dropdown(
+                                                                    id="d_avian_opt2",
+                                                                    options=[
+                                                                        {"label": i, "value": i}
+                                                                        for i in [
+                                                                            "ha",
+                                                                            "mp",
+                                                                            "na",
+                                                                            "ns",
+                                                                            "np",
+                                                                            "pa",
+                                                                            "pb2",
+                                                                            "pb1",
+                                                                        ]
+                                                                    ],
+                                                                    value="ha",
+                                                                ),
+                                                            ],
+                                                        ),
+                                                        html.Div(
+                                                            id="controls-container_flu",
+                                                            children=[
+                                                                dcc.Dropdown(
+                                                                    id="d_flu_opt1",
+                                                                    options=[
+                                                                        {"label": i, "value": i}
+                                                                        for i in [
+                                                                            "h3n2",
+                                                                            "h1n1pdm",
+                                                                            "vic",
+                                                                            "yam",
+                                                                        ]
+                                                                    ],
+                                                                    value="h3n2",
+                                                                ),
+                                                                dcc.Dropdown(
+                                                                    id="d_flu_opt2",
+                                                                    options=[
+                                                                        {"label": i, "value": i}
+                                                                        for i in ["ha", "na"]
+                                                                    ],
+                                                                    value="ha",
+                                                                ),
+                                                                dcc.Dropdown(
+                                                                    id="d_flu_opt3",
+                                                                    options=[
+                                                                        {"label": i, "value": i}
+                                                                        for i in [
+                                                                            "2y",
+                                                                            "3y",
+                                                                            "6y",
+                                                                            "12y",
+                                                                        ]
+                                                                    ],
+                                                                    value="3y",
+                                                                ),
+                                                            ],
+                                                        ),
+                                                    ]
+                                                )
+                                            ],
+                                        )
+                                    ],
+                                ),
+                            ]
                         ),
+                        
                         html.Div(
                             className="six columns",
                             children=[
@@ -103,138 +241,7 @@ app.layout = html.Div(
                                 ),
                             ],
                         ),
-                        # Strain dropdown picker
-                        html.Div(
-                            className="row",
-                            children=[
-                                html.Div(
-                                    className="four columns",
-                                    children=[
-                                        html.Div(
-                                            children=[
-                                                html.Div(
-                                                    id="controls-container_mumps",
-                                                    children=[
-                                                        dcc.Dropdown(
-                                                            id="d_mumps",
-                                                            options=[
-                                                                {"label": i, "value": i}
-                                                                for i in [
-                                                                    "global",
-                                                                    "na",
-                                                                ]
-                                                            ],
-                                                            value="global",
-                                                        )
-                                                    ],
-                                                ),
-                                                html.Div(
-                                                    id="controls-container_dengue",
-                                                    children=[
-                                                        dcc.Dropdown(
-                                                            id="d_dengue",
-                                                            options=[
-                                                                {"label": i, "value": i}
-                                                                for i in [
-                                                                    "all",
-                                                                    "denv1",
-                                                                    "denv2",
-                                                                    "denv3",
-                                                                    "denv4",
-                                                                ]
-                                                            ],
-                                                            value="all",
-                                                        )
-                                                    ],
-                                                ),
-                                                html.Div(
-                                                    id="controls-container_lassa",
-                                                    children=[
-                                                        dcc.Dropdown(
-                                                            id="d_lassa",
-                                                            options=[
-                                                                {"label": i, "value": i}
-                                                                for i in ["s", "l"]
-                                                            ],
-                                                            value="s",
-                                                        )
-                                                    ],
-                                                ),
-                                                html.Div(
-                                                    id="controls-container_avian",
-                                                    children=[
-                                                        dcc.Dropdown(
-                                                            id="d_avian_opt1",
-                                                            options=[
-                                                                {"label": i, "value": i}
-                                                                for i in ["h7n9"]
-                                                            ],
-                                                            value="h7n9",
-                                                        ),
-                                                        dcc.Dropdown(
-                                                            id="d_avian_opt2",
-                                                            options=[
-                                                                {"label": i, "value": i}
-                                                                for i in [
-                                                                    "ha",
-                                                                    "mp",
-                                                                    "na",
-                                                                    "ns",
-                                                                    "np",
-                                                                    "pa",
-                                                                    "pb2",
-                                                                    "pb1",
-                                                                ]
-                                                            ],
-                                                            value="ha",
-                                                        ),
-                                                    ],
-                                                ),
-                                                html.Div(
-                                                    id="controls-container_flu",
-                                                    children=[
-                                                        dcc.Dropdown(
-                                                            id="d_flu_opt1",
-                                                            options=[
-                                                                {"label": i, "value": i}
-                                                                for i in [
-                                                                    "h3n2",
-                                                                    "h1n1pdm",
-                                                                    "vic",
-                                                                    "yam",
-                                                                ]
-                                                            ],
-                                                            value="h3n2",
-                                                        ),
-                                                        dcc.Dropdown(
-                                                            id="d_flu_opt2",
-                                                            options=[
-                                                                {"label": i, "value": i}
-                                                                for i in ["ha", "na"]
-                                                            ],
-                                                            value="ha",
-                                                        ),
-                                                        dcc.Dropdown(
-                                                            id="d_flu_opt3",
-                                                            options=[
-                                                                {"label": i, "value": i}
-                                                                for i in [
-                                                                    "2y",
-                                                                    "3y",
-                                                                    "6y",
-                                                                    "12y",
-                                                                ]
-                                                            ],
-                                                            value="3y",
-                                                        ),
-                                                    ],
-                                                ),
-                                            ]
-                                        )
-                                    ],
-                                )
-                            ],
-                        ),
+                        
                     ],
                 ),
                 
