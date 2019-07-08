@@ -7,3 +7,4 @@ dash_core_components==1.0.0
 Flask==1.0.3
 plotly==3.10.0
 python-dotenv==0.10.3
+gunicorn==19.9.0
