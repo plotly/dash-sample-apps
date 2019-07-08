@@ -27,7 +27,13 @@ titleInput <- dccInput(
   value = ''
 )
 
-trace <- dccInput(
+restyleTrace <- dccInput(
+  placeholder = 'Trace #',
+  type = 'text',
+  value = ''
+)
+
+deleteTrace <- dccInput(
   placeholder = 'Trace #',
   type = 'text',
   value = ''
@@ -972,9 +978,10 @@ layoutOptions = list(
 
 #############################CREATE LAYOUT VARIABLES################################
 
+title 
 plotlyLogo <- htmlA(
   list(
-    htmlImg(src = "assets/dash-logo-new.png",
+    htmlImg(src = "assets/dashR-logo-new.png",
             className = "logo")),
   href = "https://dashr-docs.herokuapp.com/")
 
@@ -988,6 +995,45 @@ layoutOptions <- dccDropdown(id = "layout-dropdown",
                              multi = TRUE,
                              value = "circle")
 
+pageTitle <-
+  htmlH3("PLOTLYPROXY", 
+         style = list(
+           textAlign = "center")
+         )
+
+
+layoutSubTitle <- 
+  htmlH4(""
+    
+  )
+
+#################################### APP START #####################################################
+
+app <- Dash$new()
+
+# Initiate application
+
+htmlDiv(
+  list(
+    plotlyLogo,
+    pageTitle,
+  )
+)
+
+htmlBr()
+
+
+htmlDiv(
+  addButton,
+  
+)
+
+htmlDiv(
+  delButton
+)
+
+
+
 ####################################################################################################
 
 if (appName != "") {
@@ -995,3 +1041,4 @@ if (appName != "") {
 } else {
   app$run_server()
 }
+
