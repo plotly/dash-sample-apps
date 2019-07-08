@@ -6,32 +6,34 @@ import plotly.graph_objs as go
 import dash_table
 import pandas as pd
 import lorem
+import pathlib
+
+# Path
+BASE_PATH = pathlib.Path(__file__).parent.resolve()
+DATA_PATH = BASE_PATH.joinpath("Data").resolve()
+
+## Read in data
+supplyDemand = pd.read_csv(DATA_PATH.joinpath("Data/supplyDemand.csv"))
+actualSeasonal = pd.read_csv(DATA_PATH.joinpath("Data/actualSeasonal.csv"))
+industrailProd = pd.read_csv(DATA_PATH.joinpath("Data/industrailProd.csv"))
+globalMarket = pd.read_csv(DATA_PATH.joinpath("Data/globalMarket.csv"))
+oecdCommersial = pd.read_csv(DATA_PATH.joinpath("data/oecdCommersial.csv"))
+wtiPrices = pd.read_csv(DATA_PATH.joinpath("Data/wtiPrices.csv"))
+epxEquity = pd.read_csv(DATA_PATH.joinpath("Data/epxEquity.csv"))
+chinaSpr = pd.read_csv(DATA_PATH.joinpath("Data/chinaSpr.csv"))
+oecdIndustry = pd.read_csv(DATA_PATH.joinpath("Data/oecdIndustry.csv"))
+wtiOilprices = pd.read_csv(DATA_PATH.joinpath("Data/wtiOilprices.csv"))
+productionCost = pd.read_csv(DATA_PATH.joinpath("Data/productionCost.csv"))
+production2015 = pd.read_csv(DATA_PATH.joinpath("Data/production2015.csv"))
+energyShare = pd.read_csv(DATA_PATH.joinpath("Data/energyShare.csv"))
+adjustedSales = pd.read_csv(DATA_PATH.joinpath("Data/adjustedSales.csv"))
+growthGdp = pd.read_csv(DATA_PATH.joinpath("Data/growthGdp.csv"))
 
 ## Colours
 color_1 = "#003399"
 color_2 = "#00ffff"
 color_3 = "#002277"
 color_b = "#F8F8FF"
-
-## Read in data
-supplyDemand = pd.read_csv("Data/supplyDemand.csv")
-actualSeasonal = pd.read_csv("Data/actualSeasonal.csv")
-industrailProd = pd.read_csv("Data/industrailProd.csv")
-globalMarket = pd.read_csv("Data/globalMarket.csv")
-oecdCommersial = pd.read_csv("data/oecdCommersial.csv")
-wtiPrices = pd.read_csv("Data/wtiPrices.csv")
-epxEquity = pd.read_csv("Data/epxEquity.csv")
-chinaSpr = pd.read_csv("Data/chinaSpr.csv")
-oecdIndustry = pd.read_csv("Data/oecdIndustry.csv")
-wtiOilprices = pd.read_csv("Data/wtiOilprices.csv")
-productionCost = pd.read_csv("Data/productionCost.csv")
-production2015 = pd.read_csv("Data/production2015.csv")
-energyShare = pd.read_csv("Data/energyShare.csv")
-adjustedSales = pd.read_csv("Data/adjustedSales.csv")
-growthGdp = pd.read_csv("Data/growthGdp.csv")
-
-
-df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
 
 app = dash.Dash(__name__)
 
@@ -47,7 +49,7 @@ app.layout = html.Div(
                         html.Div([
                             html.Div(
                                 html.Img(
-                                    src="assets/dash-logo-new.png",
+                                    src=app.get_asset_url("dash-logo-new.png"),
                                     className="", style={'height': "30px"}
                                 )
                             ),
@@ -855,7 +857,7 @@ app.layout = html.Div(
                         html.Strong("Vehicula elementum congue penatibus massa, eu sed",
                                     style={'color': color_1, 'float': "left"}),
                         html.Div(
-                            html.Img(src="assets/DBkxRT2.png",
+                            html.Img(src=app.get_asset_url("DBkxRT2.png"),
                                      style={'height': "180px", 'float': "right"})
                         )
                     ], style={'margin-top': "25px"}, className="six columns")
@@ -1099,7 +1101,7 @@ app.layout = html.Div(
                         html.P("Aenean felis et libero nullam pretium quis est in sit. Commodo nec ante aenean a. Commodo at facilisis vestibulum cursus elementum nascetur et, placerat class aliquam convallis porttitor accumsan. Ultricies sed laoreet eleifend maximus venenatis",
                                style={'color': color_1}),
                         html.Strong("Congue nisl iaculis interdum cubilia maximus"),
-                        html.Img(src="assets/wX5mQYn.png",
+                        html.Img(src=app.get_asset_url("wX5mQYn.png"),
                                  className="exhibit eleven columns", style={'height': "250", 'margin-top': "20px"})
                     ], style={'float': "left"}),
                     html.Div([
