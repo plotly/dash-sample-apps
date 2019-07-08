@@ -161,7 +161,6 @@ app.layout = html.Div(
                         dcc.Checklist(
                             id="lock_selector",
                             options=[{"label": "Lock camera", "value": "locked"}],
-                            values=[],
                             className="dcc_control",
                         ),
                         html.P("Filter by well type:", className="control_label"),
@@ -430,7 +429,7 @@ def update_text(data):
         Input("well_types", "value"),
         Input("year_slider", "value"),
     ],
-    [State("lock_selector", "values"), State("main_graph", "relayoutData")],
+    [State("lock_selector", "value"), State("main_graph", "relayoutData")],
 )
 def make_main_figure(
     well_statuses, well_types, year_slider, selector, main_graph_layout
