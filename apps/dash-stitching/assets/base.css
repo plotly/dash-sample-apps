@@ -288,6 +288,29 @@ input[type="button"] {
   border:transparent !important;
 }
 
+.demo_button{
+  margin-left: 4%;
+  height: 34px;
+  width: 140px;
+  padding-bottom: 10px;
+  color: white;
+  text-align: center;
+  font-size: 9px;
+  font-family: 'Geneva';
+  font-weight: 200;
+  line-height: 38px;
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: turquoise;
+  cursor: pointer;
+  box-sizing: border-box;
+  border-radius: 2px;
+  border: transparent !important;
+  
+}
+
 
 .button_submit {
   margin-left: 9%;
@@ -351,6 +374,13 @@ input[type="button"].button-primary:focus {
 /* Canvas Div */
 #_dash-app-content>div>div.eight.columns.result {
   margin-left: 35px;
+}
+
+#tabs-content-example>div>div,
+.lower-canvas,
+.upper-canvas,
+.canvas-container { 
+    width: 65vw !important;
 }
 
 
@@ -433,34 +463,7 @@ input[type="button"].button-primary:focus {
   box-sizing: border-box;
 }
 
-/* Upload Demo Button*/
-#demo>button {
-  margin-left: 0;
-  height: 50px !important;
-  width: 200px;
-  padding: 0;
-  color: #FBFFFF !important;
-  text-align: center;
-  font-size: 11px;
-  font-family: 'Geneva';
-  font-weight: 200;
-  line-height: 38px;
-  letter-spacing: .1rem;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-  background-color: turquoise;
-  border-radius: 4px;
-  border: 1px solid;
-  cursor: pointer;
-  box-sizing: border-box;
-  float: right;
-}
 
-.demo_button {
-  display: inline;
-  
-}
 
 #tabs-content-example>div>button:nth-child(2),
 #tabs-content-example>div>button:nth-child(3),
@@ -490,15 +493,28 @@ input[type="button"].button-primary:focus {
 
 
 #stitching-result {
-  
-  text-align: left;
-  
+  width: 65vw;
+}
+
+#bla {
+  width: 65vw;
+}
+
+#contrast-stitch>div {
+  width: 80%;
+  margin: 0 auto;
 }
 
 
+#brightness-stitch>div {
+  width: 80%;
+  margin: 0 auto;
+}
 
-.result_slider {
-  width: 70%;
+#tabs-content-example>div:nth-child(2)>label,
+#tabs-content-example>div:nth-child(3)>label {
+  text-align: center;
+  margin-left: 0px;
 }
 
 .upload_zone {
@@ -712,7 +728,6 @@ there.
 @media (max-width: 300px) {
  
   
-  
 }
 
 /* Larger than phablet (also point when grid becomes active) */
@@ -794,27 +809,7 @@ there.
 
   }
 
-  .button_demo {
-    margin-left: 0 !important;
-    height: 34px;
-    width: 115px;
-    padding-bottom: 10px;
-    color: white;
-    text-align: center;
-    font-size: 9px;
-    font-family: 'Geneva';
-    font-weight: 200;
-    line-height: 38px;
-    letter-spacing: .1rem;
-    text-transform: uppercase;
-    text-decoration: none;
-    white-space: nowrap;
-    background-color: green;
-    cursor: pointer;
-    box-sizing: border-box;
-    border-radius: 2px;
-    border: transparent !important;
-  }
+
 
 
   .button_submit {
@@ -1060,8 +1055,8 @@ there.
 
 
 /* Larger than tablet */
-@media (max-width: 750px) {
-
+@media (max-width: 950px) {
+  
     
 }
 

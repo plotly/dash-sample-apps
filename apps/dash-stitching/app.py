@@ -28,6 +28,12 @@ from registration import register_tiles
 from utils import StaticUrlPath
 import pathlib
 
+app = dash.Dash(
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+)
+server = app.server
+app.config.suppress_callback_exceptions = True
+
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
 
@@ -112,13 +118,6 @@ scale = canvas_width / width
 list_columns = ["length", "width", "height", "left", "top"]
 columns = [{"name": i, "id": i} for i in list_columns]
 
-app = dash.Dash(
-    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
-)
-server = app.server
-app.config.suppress_callback_exceptions = True
-
-
 app.layout = html.Div(
     children=[
         html.Div(
@@ -131,6 +130,11 @@ app.layout = html.Div(
                             "LEARN MORE",
                             className="button_instruction",
                             id="learn-more-button",
+                        ),
+                        html.Button(
+                            "UPLOAD DEMO DATA",
+                            className="demo_button",
+                            id="demo"
                         )
                     ],
                     className="mobile_buttons",
@@ -246,10 +250,10 @@ app.layout = html.Div(
                     className="canvas",
                     style={"text-align": "left", "margin": "auto"},
                 ),
-                html.Div(id="demo", children=[]),
-                html.Div(
-                    image_upload_zone("upload-stitch", multiple=True, width="100px"),
+                html.Div(   
                     className="upload_zone",
+                    id="upload-stitch",
+                    children=[]
                 ),
                 html.Div(id="sh_x", hidden=True),
                 html.Div(id="stitched-res", hidden=True),
@@ -280,13 +284,14 @@ def fill_tab(tab):
                 image_content=array_to_data_url(
                     np.zeros((height, width), dtype=np.uint8)
                 ),
-                goButtonTitle="Estimate translation",
+                goButtonTitle="Estimate translation"
             ),
             html.Div(
-                children=[html.Button("Upload demo data")],
-                id="demo",
-                className="demo_button",
-            ),
+                children=[html.Div(image_upload_zone(
+                    "upload-stitch", multiple=True, width="100px"))],
+                className='upload_zone',
+                id='upload'
+            )
         ]
     elif tab == "result-tab":
         return [
@@ -320,9 +325,8 @@ def fill_tab(tab):
                         id="brightness-stitch", min=0, max=1, step=0.02, value=0.5
                     ),
                 ],
-                # style={'width': '70%'},
                 className="result_slider",
-            ),
+            )
         ]
     else:
         return [
