@@ -372,14 +372,15 @@ body, h1, h2, h3, h4, h5, h6, p {
 }
 
 .header-title{
-    background-color: #7145ed;
+    /* background-color: #7145ed; */
+    background-image: url(../assets/wave.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     color: white;
     padding: 4%;
     padding-top: 0px;
-    padding-bottom: 20rem;
+    padding-bottom: 15rem;
     font-size: 1rem;
-    border-bottom-left-radius: 50% 20%;
-    border-bottom-right-radius: 50% 20%;
 }
 
 .logo {
@@ -407,17 +408,13 @@ body, h1, h2, h3, h4, h5, h6, p {
   display: none;
 }
 
-#test {
-  height: 100px;
-}
-
 /* Larger than tablet */
 @media (min-width: 750px) {
   .header-title {
     padding: 4% 8%;
     display: flex;
     align-items: center;
-    padding-bottom: 20rem;
+    padding-bottom: 15rem;
   }
 
   #title {
@@ -434,7 +431,7 @@ body, h1, h2, h3, h4, h5, h6, p {
   #grid {
     padding: 4% -8%;
     width: 80%;
-    margin-top: -15rem;
+    margin-top: -10rem;
     margin-left: auto;
     margin-right: auto;
     display: grid;
@@ -447,11 +444,11 @@ body, h1, h2, h3, h4, h5, h6, p {
     -ms-grid-column-span: 12;
     grid-column: 1 / span 12;
     display: flex;
-    padding: 2rem;
   }
 
   #controls > Div {
     flex: 1;
+    margin: 1rem;
   }
 
   #curve-line-graph {
