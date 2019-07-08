@@ -695,7 +695,7 @@ app$callback(
       }
       #last_query <- stored_data[["info"]][[load_choice]]
       last_query <- stored_data[["info"]][[DATABASE_KEY]]
-      if (last_query != ""){
+      if (last_query[[1]] != ""){
         div <- htmlDiv(
           list(
             htmlH5(title),
@@ -1024,9 +1024,7 @@ app$callback(
         ) 
         
         accession <- gene_search[1, "Entry"]
-
         domains <- load_protein_domains(accession = accession)
-        stored_data[["plot"]][["domains"]] <- domains
 
         stored_data[[INDIV_DOMS_KEY]] <- list(
           "domains" = domains,
@@ -1047,11 +1045,12 @@ app$callback(
           )
         )
         formatted_data <- parse_mutations_uniprot_data(gff_data = gff_data)
-        stored_data[["plot"]][["x"]] <- as.character(formatted_data[["x"]])
-        stored_data[["plot"]][["y"]] <- as.character(formatted_data[["y"]])
-        stored_data[["plot"]][["mutationGroups"]] <- as.character(
+        
+        stored_data[["plot"]][["x"]] <- formatted_data[["x"]]
+        stored_data[["plot"]][["y"]] <- formatted_data[["y"]]
+        stored_data[["plot"]][["mutationGroups"]] <- 
           formatted_data[["mutationGroups"]]
-        )
+        stored_data[["plot"]][["domains"]] <- domains
       }
     }
   if (load_choice == FILE_KEY){
@@ -1070,7 +1069,6 @@ app$callback(
             stored_data[[INDIV_DOMS_KEY]][["domains"]]
         }
       }
-
     }
   }
   if (load_choice != stored_data[["info"]][["previous_key"]]){
@@ -1081,7 +1079,6 @@ app$callback(
   stored_data
   }
 )
-
 
 # GRAPH OPTIONS CALLBACKS=========
 app$callback(
@@ -1141,3 +1138,6 @@ app$callback(
 
 app$run_server()
 
+
+#d <- data.frame(x=c("1", "xx3", "4"), y = c(1, 2, 3))
+#as.numeric(as.character(d$x))

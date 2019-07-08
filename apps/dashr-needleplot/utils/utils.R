@@ -358,17 +358,15 @@ parse_mutations_uniprot_data <- function(
     mutationgroups <- c(mutationgroups, sorted_data[, "mut"])
   }
 
-  #order the results by frequency of occurrence
-  # TODO: There is an issue with the ordering of the mutation groups:
+  # order the results by frequency of occurrence
+  # There is an issue with the ordering of the mutation groups:
   # For the time being, the data look correct, but the mutation groups they are 
-  # attached to are sometimes incorrect (re-ordered)
-  # For an example, look at DDX3X when uploaded from UniProt Dataset
-  # The mutations and helix labels are somehow reversed...
+  # attached to are sometimes re-ordered in an unexpected manner
+  # For an example, source DDX3X from the UniProt database 
+  # The "mutagenesis" and "helix" labels are somehow reversed...
   order_df <- as.data.frame(
     sort(
-      table(
-        unlist(mutationgroups)
-      ), 
+      table(unlist(mutationgroups)), 
       decreasing = TRUE
     )
   )
@@ -381,12 +379,12 @@ parse_mutations_uniprot_data <- function(
     order_df,
     by.x = "mut", by.y = "Var1" 
   )
-  order_df <- order_df[order(order_df$Freq, decreasing = TRUE),]
+  order_df <- order_df[order(order_df[, "Freq"], decreasing = TRUE),]
   
   formatted_data = list(
-    "x" = order_df[, "x"],
-    "y" = order_df[, "y"],
-    "mutationGroups" = order_df[, "mut"],
+    "x" = as.character(order_df$x),
+    "y" = as.numeric(order_df$y),
+    "mutationGroups" = as.character(order_df$mut),
     domains = list()
   )
   formatted_data
