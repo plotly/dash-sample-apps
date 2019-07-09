@@ -18,7 +18,7 @@ Run `app.R`
 The app will load into your default browser window. If it does not, navigate to 127.0.0.1:8050.
 
 ## Screenshots:
-![screenshot](assets/dashr-volcanoplot-screenshot.png)
+![screenshot](assets/dashr-manhattanplot-screenshot.png)
 
 ## More:
 
