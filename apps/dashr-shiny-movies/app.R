@@ -8,6 +8,8 @@ if (appName != "") {
   setwd(sprintf("/app/apps/%s", appName))
 }
 
+setwd("/Users/milaroisin/Documents/GitHub/plot.ly/dash-sample-apps/apps/dashr-shiny-movies")
+
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
@@ -15,13 +17,13 @@ library(plotly)
 
 ######### LOAD DATA, CREATE FUNCTIONS & GLOBAL OBJECTS ##############
 
-install.packages("ggplot2movies")  #moved its own package to reduce the download size of ggplot2.
+#install.packages("ggplot2movies")  #moved its own package to reduce the download size of ggplot2.
 library(ggplot2movies)
 
-minx <- min(movies$rating)
-maxx <- max(movies$rating)
-# size of the bins depend on the input 'bins'
-size <- (maxx - minx) / input$bins
+# minx <- min(movies$rating)
+# maxx <- max(movies$rating)
+# # size of the bins depend on the input 'bins'
+# size <- (maxx - minx) / input$bins
 
 ############################################# APP START ##########################
 
@@ -34,43 +36,62 @@ pageTitle <- htmlH1("Movie Ratings!")
 plotlyLogo <- htmlA(
   list(
     htmlImg(
-      src = "assets/dash-logo-new.png"
-),
-  href = "https://dashr-docs.herokuapp.com/"))
+      src = "assets/image.png")), 
+    href = "https://dashr-docs.herokuapp.com/")
 
 firstP <- htmlDiv(htmlLabel("Number of bins:"), htmlBr())
 
-slider <- htmlDiv(
-  dccSlider(
+slider <- htmlDiv(dccSlider(
   id = "movies-slider",
   min = 1,
   max = 50,
-  marks = c("1", "6", "11", "16", "21", "26", "31", "36", "41", "46", "50"),
+  marks = list("1", "6", "11", "16", "21", "26", "31", "36", "41", "46", "50"),
   value = 10
-)
+))
+
+##################################################################################################
+app$layout(htmlDiv(list(
+  plotlyLogo,
+  firstP,
+  dccSlider(id = "movies-slider"),
+  
+  htmlDiv(list(dccGraph(id = "histogram")))
   
 )))
 
-##################################################################################################
-app$layout(
-
-htmlDiv(
-  list(
-  plotlyLogo,
-  firstP,
-  dccSlider(id = "movies-slider")
-  ),
-  htmlDiv(
-    (list(
-    dccGraph(id = "histogram")
-  )))))
-
 ################## CALLBACKS ##################
 
-app$callbacks(
+# app$callbacks(
+# 
+#   
+# p <- plot_ly(movies, x = rating, autobinx = F, type = "histogram",
+#              xbins = list(start = minx, end = maxx, size = size))
+# )
 
-p <- plot_ly(movies, x = rating, autobinx = F, type = "histogram",
-             xbins = list(start = minx, end = maxx, size = size))
+app$callback(output = list(id = "histogram", property = "figure"),
+             params = list(
+               input(id = "movies-slider", property = "value")
+              ),
+             
+             function(sliderval){
+               print(sliderval)
+               return(list(
+                 data=list(
+                   list(
+                     x=list(1, 2, 3),
+                     y=list(4, 1, 2),
+                     type='bar',
+                     name='SF'
+                   ),
+                   list(
+                     x=list(1, 2, 3),
+                     y=list(2, 4, 5),
+                     type='bar',
+                     name='Montreal'
+                   )
+                 )
+               ))
+             }
 )
 
 ################## CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL #########################
