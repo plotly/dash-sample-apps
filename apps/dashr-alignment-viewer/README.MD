@@ -1,9 +1,8 @@
-# DashR Ideogram 
+# DashR Alignment Viewer 
 
 ## About this App:
 
-This is interactive apps allows you to view multiple sequence alignments of genomic or proteomic sequences.
-
+The Alignment Viewer (MSA) component is used to align multiple genomic or proteomic sequences from a FASTA or Clustal file. This interactive app allows you to display multiple subplots showing gap and conservation info, alongside industry standard colorscale support and consensus sequence. More information about the component is available [here](https://github.com/plotly/react-alignment-viewer).
 
 ## How to Run the App: 
 
@@ -20,4 +19,3 @@ The app will load into your default browser window. If it does not, navigate to 
 ## More:
 
 Learn more about Plotly and Dash [here](https://plot.ly/dash).
-#
