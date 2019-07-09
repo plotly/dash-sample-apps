@@ -41,13 +41,14 @@
 
 #mhp-graph{
     height: 550px;
-    width: 100%;
+    padding: 20px;
 }
 #mhp-graph-div {
     display: inline-block !important;
     margin-top: 50px;
     margin-left: 50px;
     margin-right: 50px;
+    background-color: white;
 }
 #mhp-page-content .app-controls-name {
     width: 100px !important;
