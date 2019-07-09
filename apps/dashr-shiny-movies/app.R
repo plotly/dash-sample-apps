@@ -17,13 +17,13 @@ library(plotly)
 
 ######### LOAD DATA, CREATE FUNCTIONS & GLOBAL OBJECTS ##############
 
-#install.packages("ggplot2movies")  #moved its own package to reduce the download size of ggplot2.
-library(ggplot2movies)
+#install.packages("ggplot2movies") 
+#include in its own init.R file
+#moved its own package to reduce the download size of ggplot2.
 
-# minx <- min(movies$rating)
-# maxx <- max(movies$rating)
-# # size of the bins depend on the input 'bins'
-# size <- (maxx - minx) / input$bins
+library(ggplot2movies)
+minx <- min(movies$rating)
+maxx <- max(movies$rating)
 
 ############################################# APP START ##########################
 
@@ -36,24 +36,27 @@ pageTitle <- htmlH1("Movie Ratings!")
 plotlyLogo <- htmlA(
   list(
     htmlImg(
-      src = "assets/image.png")), 
+      src = "assets/image.png")), className = "logo", 
     href = "https://dashr-docs.herokuapp.com/")
 
 firstP <- htmlDiv(htmlLabel("Number of bins:"), htmlBr())
 
-slider <- htmlDiv(dccSlider(
+slider <- dccSlider(
   id = "movies-slider",
   min = 1,
   max = 50,
-  marks = list("1", "6", "11", "16", "21", "26", "31", "36", "41", "46", "50"),
+  marks = list('1' = '1','6'='6', '11' = '11', '16' = '16', '21' = '21', '26' = '26', '31' = '31', '36' = '36', '41' = '41', '46' = '46', '50' = '50'),
   value = 10
-))
+)
 
 ##################################################################################################
 app$layout(htmlDiv(list(
   plotlyLogo,
+  pageTitle,
   firstP,
-  dccSlider(id = "movies-slider"),
+  slider,
+  # dccSlider(id = "movies-slider"),
+  htmlBr(),
   
   htmlDiv(list(dccGraph(id = "histogram")))
   
