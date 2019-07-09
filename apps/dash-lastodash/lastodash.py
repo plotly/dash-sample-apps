@@ -249,12 +249,20 @@ def generate_table():
     df = df[cols]
     return dt.DataTable(
         id="table",
-        sort_action='native',
-        filter_action='native',
+        sort_action="native",
+        filter_action="native",
         row_deletable=True,
-        css={"rule": "display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;"},
+        css={
+            "rule": "display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;"
+        },
         style_data={"whiteSpace": "normal"},
-        style_cell={"padding": "15px", "midWidth": "0px", "width": "25%", "textAlign": "center", "border": "white"},
+        style_cell={
+            "padding": "15px",
+            "midWidth": "0px",
+            "width": "25%",
+            "textAlign": "center",
+            "border": "white",
+        },
         style_cell_conditional=[
             {"if": {"row_index": "even"}, "backgroundColor": "#f9f9f9"}
         ],
