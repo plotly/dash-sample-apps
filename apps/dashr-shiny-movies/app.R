@@ -20,7 +20,6 @@ library(ggplot2movies)
 
 minx <- min(movies$rating)
 maxx <- max(movies$rating)
-
 # size of the bins depend on the input 'bins'
 size <- (maxx - minx) / input$bins
 
@@ -35,22 +34,44 @@ pageTitle <- htmlH1("Movie Ratings!")
 plotlyLogo <- htmlA(
   list(
     htmlImg(
-      src = "assets/dashR-logo-stripe.png",
-      className = "logo")),
-  href = "https://dashr-docs.herokuapp.com/")
+      src = "assets/dash-logo-new.png"
+),
+  href = "https://dashr-docs.herokuapp.com/"))
 
-firstP <- htmlP("Number of bins:")
+firstP <- htmlDiv(htmlLabel("Number of bins:"), htmlBr())
 
-slider <- dccSlider(
-  
+slider <- htmlDiv(
+  dccSlider(
+  id = "movies-slider",
+  min = 1,
+  max = 50,
+  marks = c("1", "6", "11", "16", "21", "26", "31", "36", "41", "46", "50"),
+  value = 10
 )
+  
+)))
 
 ##################################################################################################
 app$layout(
-  
-  
-)
 
+htmlDiv(
+  list(
+  plotlyLogo,
+  firstP,
+  dccSlider(id = "movies-slider")
+  ),
+  htmlDiv(
+    (list(
+    dccGraph(id = "histogram")
+  )))))
+
+################## CALLBACKS ##################
+
+app$callbacks(
+
+p <- plot_ly(movies, x = rating, autobinx = F, type = "histogram",
+             xbins = list(start = minx, end = maxx, size = size))
+)
 
 ################## CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL #########################
 
