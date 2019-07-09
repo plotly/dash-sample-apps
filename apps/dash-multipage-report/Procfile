@@ -1,0 +1,2 @@
+
+web: gunicorn --pythonpath apps/dash-multipage-report app:server
