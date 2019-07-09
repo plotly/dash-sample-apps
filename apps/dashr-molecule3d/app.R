@@ -563,7 +563,7 @@ header <- htmlDiv(
     htmlA(
       id = "gh-link",
       children = list("View on GitHub"),
-      href = "https://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_molecule3d.py",
+      href = "https://github.com/plotly/dash-sample-apps/blob/master/apps/dashr-molecule3d/app.R",
       style = list(color = "white", border = "solid 1px white")
     ),
     htmlImg(
@@ -815,4 +815,4 @@ app$callback(
 )
 
 #### dash app run ####
-app$run_server()
+app$run_server(host="0.0.0.0", port=8050)
