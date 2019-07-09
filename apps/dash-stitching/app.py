@@ -1,12 +1,7 @@
-from glob import glob
 import numpy as np
 import pandas as pd
 from skimage import io, data, transform
 from time import sleep
-
-from demo_utils import demo_explanation
-
-demo_mode = True
 
 import dash
 from dash.exceptions import PreventUpdate
@@ -36,6 +31,22 @@ app.config.suppress_callback_exceptions = True
 
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
+
+# get relative data folder
+
+DATA_PATH = PATH.joinpath("data").resolve()
+
+
+def demo_explanation(demo_mode):
+    if demo_mode:
+        # Markdown files
+        with open(PATH.joinpath("demo.md"), "r") as file:
+            demo_md = file.read()
+
+        return html.Div(
+            html.Div([dcc.Markdown(demo_md, className="markdown")]),
+            style={"margin": "10px"},
+        )
 
 
 def tile_images(list_of_images, n_rows, n_cols):
@@ -325,12 +336,9 @@ def fill_tab(tab):
                 className="result_slider",
             ),
         ]
-    else:
-        return [
-            html.Img(
-                id="bla", src=app.get_asset_url("stitch_demo.gif"), width=canvas_width
-            )
-        ]
+    return [
+        html.Img(id="bla", src=app.get_asset_url("stitch_demo.gif"), width=canvas_width)
+    ]
 
 
 @app.callback(Output("stitching-tabs", "value"), [Input("button-stitch", "n_clicks")])
@@ -475,7 +483,7 @@ def learn_more(n_clicks):
             html.Div(
                 className="demo_container",
                 style={"margin-bottom": "30px"},
-                children=[demo_explanation(demo_mode)],
+                children=[demo_explanation(True)],
             ),
             "Close",
         )
