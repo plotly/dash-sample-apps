@@ -1,4 +1,4 @@
-# DashR Volcano Plot 
+# DashR Manhattan Plot
 
 ## About this App:
 
