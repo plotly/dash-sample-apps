@@ -512,7 +512,7 @@ header <- htmlDiv(children = list(
   ))),
   "Dash Alignment Viewer",
   
-  htmlA(href="https://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_alignment_viewer.py",
+  htmlA(href="https://github.com/plotly/dash-sample-apps/blob/master/apps/dashr-alignment-viewer/app.R",
         style = list("color" = "white",
                      "border" = "1px solid white",
                      "font-size" = "18px",
