@@ -1,19 +1,10 @@
 appName <- Sys.getenv("DASH_APP_NAME")
 
-if (appName != ""){
-  
+if (appName != "") {
   pathPrefix <- sprintf("/%s/", appName)
-  
-  
-  
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-             
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  
-  
-  
   setwd(sprintf("/app/apps/%s", appName))
-  
 }
 
 library(dashBio)
@@ -28,11 +19,9 @@ library(RCurl)
 
 app <- Dash$new()
 
-setwd("C:/Users/MatthiasL/Desktop/DATA/Plotly/RApps/dashr-alignment-viewer")
-
-dataset1 <- read_file("./assets/sample_data/alignment_viewer_sample.fasta")
-dataset2 <- read_file("./assets/sample_data/alignment_viewer_p53.fasta")
-dataset3 <- read_file("./assets/sample_data/alignment_viewer_p53_clustalo.fasta")
+dataset1 <- read_file("data/alignment_viewer_sample.fasta")
+dataset2 <- read_file("data/alignment_viewer_p53.fasta")
+dataset3 <- read_file("data/alignment_viewer_p53_clustalo.fasta")
 
 DATASETS <- list("dataset1"=dataset1,
                  "dataset2"=dataset2,
@@ -149,7 +138,7 @@ alignlayout <- htmlDiv(id="alignment-body", className="app-body",children=list(
                   "Download sample data",
                   className="control-download"
                 ),
-                href="./assets/sample_data/alignment_viewer_p53_clustalo.fasta",
+                href="data/alignment_viewer_p53_clustalo.fasta",
                 download="p53_clustalo.fasta"
               ),
               
@@ -515,7 +504,7 @@ alignlayout <- htmlDiv(id="alignment-body", className="app-body",children=list(
 ###HEADER###
 header <- htmlDiv(children = list(
   htmlSpan(list(htmlA(
-    htmlImg(src='./assets/index.png', 
+    htmlImg(src='assets/index.png', 
             height = '50', 
             width = '50',
             style = list('top' = '10', 'margin-left' = '10px')),
@@ -541,7 +530,7 @@ header <- htmlDiv(children = list(
         ),
         children = "View on Github"),
   
-  htmlImg(src = "./assets/github.png", 
+  htmlImg(src = "assets/github.png", 
           width = '50', 
           height = '50', 
           style = list(
@@ -749,11 +738,7 @@ app$callback(
 )
 
 if (appName != "") {
-  
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
-  
 } else {
-  
   app$run_server(showcase = TRUE)
-  
 }
