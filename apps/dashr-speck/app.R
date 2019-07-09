@@ -548,4 +548,4 @@ app$callback(
     }
 )
 #### dash app run ####
-app$run_server(debug=TRUE, port=8050)
+app$run_server(host = "0.0.0.0", port=8050)
