@@ -40,9 +40,7 @@ def build_banner():
         id="banner",
         className="banner",
         children=[
-            html.Img(
-                src=app.get_asset_url("dash-logo.png")
-            ),
+            html.Img(src=app.get_asset_url("dash-logo.png")),
             html.H6("Oil and gas ternary map"),
         ],
     )
@@ -89,19 +87,6 @@ def generate_well_map(dff, selected_data, style):
     """
 
     layout = go.Layout(
-        annotations=[
-            dict(
-                x=1.1,
-                y=0.85,
-                align="right",
-                valign="top",
-                text="<b>Formations</b>",
-                showarrow=False,
-                xref="paper",
-                yref="paper",
-                font=dict(family="sans-serif", size=13, color="#000"),
-            )
-        ],
         clickmode="event+select",
         dragmode="lasso",
         showlegend=False,
@@ -193,8 +178,8 @@ def generate_ternary_map(dff, selected_data, contour_visible, marker_visible):
             "sum": 100,
             "aaxis": {
                 "title": {
-                    "text": "",
-                    "font": {"family": "Open Sans", "size": 15, "color": "#000"},
+                    "text": "Quartz",
+                    "font": {"family": "Open Sans", "size": 15, "color": "white"},
                 },
                 "min": -2,
                 "linewidth": 1.5,
@@ -202,8 +187,8 @@ def generate_ternary_map(dff, selected_data, contour_visible, marker_visible):
             },
             "baxis": {
                 "title": {
-                    "text": "",
-                    "font": {"family": "Open Sans", "size": 15, "color": "#000"},
+                    "text": "Carbonate",
+                    "font": {"family": "Open Sans", "size": 15, "color": "white"},
                 },
                 "min": -2,
                 "linewidth": 1.5,
@@ -211,15 +196,15 @@ def generate_ternary_map(dff, selected_data, contour_visible, marker_visible):
             },
             "caxis": {
                 "title": {
-                    "text": "",
-                    "font": {"family": "Open Sans", "size": 15, "color": "#000"},
+                    "text": "Clay",
+                    "font": {"family": "Open Sans", "size": 15, "color": "white"},
                 },
                 "min": -2,
                 "linewidth": 1.5,
                 "ticks": "outside",
             },
         },
-        "margin": dict(l=60, r=0, t=0, b=0),
+        "margin": dict(l=110, r=50, t=50, b=50),
         "paper_bgcolor": "#192444",
         "plot_bgcolor": "#192444",
         "showLegend": False,
@@ -436,6 +421,12 @@ app.layout = html.Div(
                                 ),
                                 dcc.Graph(
                                     id="well-map",
+                                    figure={
+                                        "layout": {
+                                            "paper_bgcolor": "#192444",
+                                            "plot_bgcolor": "#192444",
+                                        }
+                                    },
                                     config={"scrollZoom": True, "displayModeBar": True},
                                 ),
                             ],
@@ -468,7 +459,16 @@ app.layout = html.Div(
                                 ),
                                 dcc.Graph(
                                     id="ternary-map",
-                                    config={"scrollZoom": True, "displayModeBar": False},
+                                    figure={
+                                        "layout": {
+                                            "paper_bgcolor": "#192444",
+                                            "plot_bgcolor": "#192444",
+                                        }
+                                    },
+                                    config={
+                                        "scrollZoom": True,
+                                        "displayModeBar": False,
+                                    },
                                 ),
                             ],
                         ),
