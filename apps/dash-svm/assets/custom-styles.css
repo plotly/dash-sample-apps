@@ -1,8 +1,6 @@
-/* Table of contents
-––––––––––––––––––––––––––––––––––––––––––––––––––
-- Banner
-- Scalable Container
-- Remove Undo
+#body {
+    padding-bottom: 5rem;
+}
 
 /* Banner
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -26,6 +24,7 @@
 
 .banner h2:hover {
     color: #b4b5bf;
+    cursor: pointer;
 }
 
 .banner Img {
@@ -42,12 +41,13 @@
     max-width: none;
 }
 
-@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 1300px) {
 
     .banner .container.scalable {
         display: flex;
         flex-direction: column-reverse;
         justify-content: space-between;
+        align-items: center;
     }
 
     .banner h2 {
@@ -56,12 +56,10 @@
 
     .banner Img {
         height: 8rem;
-        float: left;
         margin-bottom: 5rem;
     }
 
 }
-
 
 /* Dropdowns
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -113,6 +111,10 @@
     background-color: #2f3445;
     color: #a5b1cd;
     border-color: gray;
+}
+
+#button-zero-threshold:hover{
+    border-color: white;
 }
 
 #button-card {
@@ -192,16 +194,18 @@ input[type='radio']:checked {
     -ms-user-select: none;
 }
 
-#graph-line-roc-curve {
-    height: 40%
-}
+@media only screen and (min-width: 1301px) {
+    #graph-line-roc-curve {
+        height: 40%
+    }
 
-#graph-pie-confusion-matrix {
-    height: 60%
-}
+    #graph-pie-confusion-matrix {
+        height: 60%
+    }
 
-#graph-sklearn-svm {
-    height: 83rem;
+    #graph-sklearn-svm {
+        height: 83rem;
+    }
 }
 
 @media only screen and (max-width: 1300px) {
@@ -211,7 +215,6 @@ input[type='radio']:checked {
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        height: 200rem !important;
     }
 
     #svm-graph-container {
@@ -232,23 +235,21 @@ input[type='radio']:checked {
         flex-direction: column;
         align-items: stretch;
         width: 100%;
-        margin: 0;
+        margin: 0 0 0 -7rem;
         padding: 8rem 10rem;
         max-height: none;
         height: 150rem;
-        margin-left: -7rem;
     }
 
-    #graph-line-roc-curve{
-        height: 50rem !important;
-        margin: 4rem 0 7rem 0rem !Important
+    #graph-line-roc-curve {
+        height: 50rem;
+        margin: 4rem 0 7rem 0;
     }
 
-    #graph-pie-confusion-matrix{
-        height: 75rem !important;
+    #graph-pie-confusion-matrix {
+        height: 75rem;
     }
 }
-
 
 /* Remove Undo
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
