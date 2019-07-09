@@ -9,12 +9,6 @@
     max-width: none;
 }
 
-/* Remove Undo
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-._dash-undo-redo {
-    display: none;
-}
-
 body {
     background-color: #f9f9f9;
     color: #333333;
