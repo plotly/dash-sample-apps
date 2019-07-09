@@ -81,9 +81,7 @@ app.layout = html.Div(
                         html.A(
                             id="banner-logo",
                             children=[
-                                html.Img(
-                                    src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png"
-                                )
+                                html.Img(src=app.get_asset_url("dash-logo-new.png"))
                             ],
                             href="https://plot.ly/products/dash/",
                         ),
