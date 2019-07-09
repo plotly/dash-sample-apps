@@ -1,6 +1,6 @@
 # DashR Speck 
 
-This is a Dash for R version of the Speck app originally written in Python [speck](https://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_speck.py)
+This is a Dash for R version of the [Speck app](https://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_speck.py) originally written in Python.
 
 ## Screenshots
 ![assets/speck.gif](assets/speck.gif)
