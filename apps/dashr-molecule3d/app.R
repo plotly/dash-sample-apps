@@ -6,6 +6,16 @@ library(dashDaq)
 library(bio3d)
 library(jsonlite)
 
+appName <- Sys.getenv("DASH_APP_NAME")
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
+  
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  
+  setwd(sprintf("/app/apps/%s", appName))
+}
+
 ############################# set color list #############################
 ATOM_COLOR_DICT <- list(
   "C" = "#c8c8c8",
@@ -604,8 +614,8 @@ app$callback(
   output = list(id = 'mol3d-data-info', property = 'children'),
   params = list(input(id = 'dropdown-demostr', property = 'value')),
   function(molecule_selected) {
-    
-    if(molecule_selected %in% names(data_info)) {
+
+    if(molecule_selected %in% names(data_info) && !is.null(unlist(molecule_selected))) {
       mol <- data_info[[molecule_selected]]
       
       list(
@@ -627,7 +637,7 @@ app$callback(
   function(upload_content, dem) {
     if(is.null(unlist(upload_content))) {
       dem
-    } else upload_content
+    } else list()
   }
 )
 
@@ -672,6 +682,40 @@ app$callback(
   }
 )
 
+get_pdb <- function(decoded_pdb, type = c("ATOM", "HETATM")) {
+  data <- strsplit(decoded_pdb, "\n")[[1]]
+  get_ATOM <- lapply(data,
+                     function(x){
+                       if(any(sapply(type, function(y) grepl(y, x)))) {
+                  
+                         info <- Filter(f = function(y) y != "", strsplit(x, " ")[[1]])
+                         if(info[1] %in% type) {
+                           info
+                         } else NULL
+                       } else NULL
+                     })
+  get_ATOM <- setNames(
+    as.data.frame(
+      do.call(
+        rbind,
+        Filter(Negate(is.null), get_ATOM)
+      ),
+      stringsAsFactors = FALSE
+    ), c('type', 'eleno', 'elety', 'resid', 'chain', 
+         'resno', 'x', 'y', 'z', 'o', 'b', 'elesy')
+  )
+
+  hide <- lapply(c('eleno', 'resno', 'x', 'y', 'z', 'o', 'b'), 
+                 function(column) {
+                   get_ATOM[[column]] <<- as.numeric(get_ATOM[[column]])
+                 }
+  )
+
+  list(
+    atom = get_ATOM
+  )
+}
+
 app$callback(
   output = list(id = 'mol3d-biomolecule-viewer', property = 'children'),
   params = list(
@@ -685,14 +729,19 @@ app$callback(
   function(contents, demostr, mol_style, color_style, wt, custom_colors) {
     
     bonds <- list()
-    
-    if(!is.null(demostr)) {
+
+    if(length(unlist(demostr)) > 0) {
       
       pdbData <- bio3d::read.pdb(demostr)
       tryCatch({bonds <- jsonlite::read_json(gsub(".pdb", ".json" ,demostr))$bonds}, 
                error = function(e) {warning("no bonds JSON file", call. = FALSE)})
+    } else if(length(unlist(contents)) > 0) {
+      content_string <- unlist(strsplit(contents, ","))[2]
+      decoded <- jsonlite::base64_dec(content_string)
+      pdbData <- get_pdb(rawToChar(decoded))
+      browser()
     } else return('demostr and contents are none')
-    
+
     atom_data <- pdbData$atom
     atoms <- lapply(1:dim(atom_data)[1],
                     function(i) {
@@ -743,7 +792,7 @@ app$callback(
     input(id = 'mol-3d', property = 'selectedAtomIds'),
     input(id = 'mol-3d', property = 'modelData')),
   function(selected_atom_ids, model_data) {
-    
+
     residue_summary <- if(length(selected_atom_ids) > 0) {
       lapply(selected_atom_ids,
              function(id) {
