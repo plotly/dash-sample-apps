@@ -2,7 +2,7 @@
 
 ## About this App:
 
-This is an interactive (volcanoplot)[https://en.wikipedia.org/wiki/Volcano_plot_(statistics)] viewer, allowing the user to identify clinically meaningful markers in genomic experiments, i.e., markers that are statistically significant and have an effect size greater than some threshold.
+Manhattan Plot allows you to visualize genome-wide association studies (GWAS) efficiently. Using WebGL under the hood, you can interactively explore overviews of massive datasets comprising hundreds of thousands of points at once, or take a closer look at a small subset of your data
 
 In the "Data" tab, you can select a dataset to view on the plot. In the "View" tab, you can control the color of the highlighted points, as well as the threshold lines that define which values are significant. You can also access metadata from hovering and clicking on the graph.
 
