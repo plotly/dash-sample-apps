@@ -132,10 +132,8 @@ app.layout = html.Div(
                             id="learn-more-button",
                         ),
                         html.Button(
-                            "UPLOAD DEMO DATA",
-                            className="demo_button",
-                            id="demo"
-                        )
+                            "UPLOAD DEMO DATA", className="demo_button", id="demo"
+                        ),
                     ],
                     className="mobile_buttons",
                 ),
@@ -197,7 +195,7 @@ app.layout = html.Div(
                         dcc.Checklist(
                             id="do-blending-stitch",
                             options=[{"label": "Blending images", "value": 1}],
-                            values=[1],
+                            value=[1],
                         ),
                     ],
                     className="radio_items",
@@ -250,11 +248,7 @@ app.layout = html.Div(
                     className="canvas",
                     style={"text-align": "left", "margin": "auto"},
                 ),
-                html.Div(   
-                    className="upload_zone",
-                    id="upload-stitch",
-                    children=[]
-                ),
+                html.Div(className="upload_zone", id="upload-stitch", children=[]),
                 html.Div(id="sh_x", hidden=True),
                 html.Div(id="stitched-res", hidden=True),
                 dcc.Store(id="memory-stitch"),
@@ -284,14 +278,17 @@ def fill_tab(tab):
                 image_content=array_to_data_url(
                     np.zeros((height, width), dtype=np.uint8)
                 ),
-                goButtonTitle="Estimate translation"
+                goButtonTitle="Estimate translation",
             ),
             html.Div(
-                children=[html.Div(image_upload_zone(
-                    "upload-stitch", multiple=True, width="100px"))],
-                className='upload_zone',
-                id='upload'
-            )
+                children=[
+                    html.Div(
+                        image_upload_zone("upload-stitch", multiple=True, width="100px")
+                    )
+                ],
+                className="upload_zone",
+                id="upload",
+            ),
         ]
     elif tab == "result-tab":
         return [
@@ -326,7 +323,7 @@ def fill_tab(tab):
                     ),
                 ],
                 className="result_slider",
-            )
+            ),
         ]
     else:
         return [
@@ -389,15 +386,19 @@ def modify_result(contrast, brightness, image_string):
     ],
 )
 def modify_content(n_cl, n_rows, n_cols, overlap, estimate, image_string, vals):
-    blending = 1 in vals
+    blending = 0
+    if vals is not None:
+        blending = 1 in vals
     if image_string is None:
         raise PreventUpdate
     tiles = untile_images(image_string, n_rows, n_cols)
     if estimate is not None and len(estimate) > 0:
+
         overlap_dict = _sort_props_lines(
             estimate, tiles.shape[2], tiles.shape[3], n_cols
         )
     else:
+
         overlap_dict = None
     canvas = register_tiles(
         tiles,

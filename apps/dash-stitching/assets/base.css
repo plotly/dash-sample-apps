@@ -808,6 +808,29 @@ there.
     margin-bottom: -50px;
 
   }
+  .demo_button {
+    height: 38px;
+    width: 145px;
+    padding: 0;
+    color: #FBFFFF;
+    text-align: center;
+    font-size: 11px;
+    font-family: 'Geneva';
+    font-weight: 200;
+    line-height: 38px;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: turquoise;
+    border: 1px solid white;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: -20px;
+    margin-bottom: -50px;
+  }
 
 
 
@@ -1037,11 +1060,12 @@ there.
     text-decoration: none;
     white-space: nowrap;
     background-color: #4181FF;
-    border-radius: 30px;
+    border-radius: 2px;
     border: 1px solid;
     cursor: pointer;
     box-sizing: border-box;
     margin-left: 0;
+    margin-bottom: 10px;
   }
 
   #bla {
