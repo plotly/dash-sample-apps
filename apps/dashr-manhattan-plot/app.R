@@ -136,6 +136,8 @@ app$layout(
                             )
                           )
                         ),
+                        htmlBr(),
+                        htmlBr(),
                         htmlDiv(
                           className = "app-controls-block",
                           children = list(
