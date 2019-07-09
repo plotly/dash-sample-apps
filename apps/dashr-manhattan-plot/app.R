@@ -132,7 +132,12 @@ app$layout(
                               max = 4,
                               value = 2,
                               step = 0.01,
-                              marks = as.list(setNames( 1:4, 1:4))
+                              marks = as.list(
+                                setNames(
+                                  as.character(1:4), 
+                                  as.character(1:4)
+                                  )
+                                )
                             )
                           )
                         ),
@@ -153,9 +158,10 @@ app$layout(
                               step = 0.1,
                               marks = as.list(
                                 setNames(
-                                  1:4, 1:4 
+                                  as.character(1:4), 
+                                  as.character(1:4)
+                                  )
                                 )
-                              )
                             )
                           )
                         )
@@ -182,7 +188,8 @@ app$callback(
     arguments <- list( 
         dataframe = dataset,
         suggestiveline_value = as.numeric(suggestiveline_value),
-        genomewideline_value = as.numeric(threshold_vals)
+        genomewideline_value = as.numeric(threshold_vals),
+        showlegend = TRUE
       )
     do.call(
       dashbioManhattan, 
