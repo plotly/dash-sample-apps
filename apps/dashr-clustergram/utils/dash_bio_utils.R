@@ -25,7 +25,21 @@ importSOFT <- function(filepath) {
   
   geo_table <- Table(geo_data)
   
-  geo_table <- as.data.table(geo_table)
+  row.names(geo_table) <- geo_table$ID_REF
   
-  row.names(geo_table) <- geo_table
+  geo_table[1] <- NULL
+  
+  return(geo_table)
 }
+
+
+# app <- Dash$new()
+# 
+# app$layout(htmlDiv(list(
+#   dccGraph(figure = heatmaply(n[1:10,])
+#   )
+# )))
+# 
+# 
+# app$run_server(showcase = TRUE)
+
