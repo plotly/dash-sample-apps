@@ -10,7 +10,7 @@
     background-color: #2f3445; /* Machine Learning Color is orange */
     padding: 3rem 0;
     width: 100%;
-    margin-bottom: 6% !important;
+    margin-bottom: 6%;
 }
 
 .banner h2 {
@@ -113,7 +113,7 @@
     border-color: gray;
 }
 
-#button-zero-threshold:hover{
+#button-zero-threshold:hover {
     border-color: white;
 }
 
@@ -126,12 +126,14 @@
     padding-top: 0 !important;
 }
 
-#left-column {
-    margin: 0 3rem 0 0 !important;
-    max-height: 83rem;
-    max-width: 20%;
-    overflow-x: hidden;
-    overflow-y: auto;
+@media (min-width: 1301px) {
+    #left-column {
+        margin: 0 3rem 0 0;
+        max-height: 83rem;
+        max-width: 20%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 }
 
 @media only screen and (max-width: 1300px) {
@@ -141,7 +143,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin: 0 !important;
+        margin: 0;
         max-height: none;
         max-width: none;
     }
@@ -152,16 +154,11 @@
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 .rc-slider-track {
-    background-color: #13c6e9 !important;
+    background-color: #13c6e9;
 }
 
 .rc-slider-handle {
-    border: solid 2px #13c6e9 !important
-}
-
-input[type='radio']:checked {
-    background-color: #13c6e9 !important;
-    border-color: #13c6e9 !important;
+    border: solid 2px #13c6e9;
 }
 
 /* Left column
