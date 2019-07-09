@@ -42,4 +42,4 @@ Run the app, either interactively in R or RStudio, or by using the command line:
 Rscript app.R
 ```
 
-Open a browser at http://127.0.0.1:8050
+Finally, open your browser and enter the URL http://127.0.0.1:8050. 
