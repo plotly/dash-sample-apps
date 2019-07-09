@@ -39,7 +39,10 @@ if "BUCKET_NAME" in os.environ:
 else:
     LOCAL = True
     # Caching with filesystem when served locally
-    cache_config = {"CACHE_TYPE": "filesystem", "CACHE_DIR": os.path.join(APP_PATH, "data", "cache-directory")}
+    cache_config = {
+        "CACHE_TYPE": "filesystem",
+        "CACHE_DIR": os.path.join(APP_PATH, "data"),
+    }
 
 # S3 Client. It is used to store user images. The bucket name
 # is stored inside the utils file, the key is
@@ -50,7 +53,7 @@ secret_access_key = os.environ.get("SECRET_ACCESS_KEY")
 bucket_name = os.environ.get("BUCKET_NAME")
 
 # Empty cache directory before running the app
-folder = os.path.join(APP_PATH, os.path.join("data", "cache-directory"))
+folder = os.path.join(APP_PATH, "data")
 for the_file in os.listdir(folder):
     file_path = os.path.join(folder, the_file)
     try:
@@ -131,8 +134,7 @@ def serve_layout():
                         id="banner",
                         children=[
                             html.Img(
-                                id="logo",
-                                src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png",
+                                id="logo", src=app.get_asset_url("dash-logo-new.png")
                             ),
                             html.H2("Image Processing App", id="title"),
                         ],
@@ -265,7 +267,14 @@ def serve_layout():
                         ]
                     ),
                     dcc.Graph(
-                        id="graph-histogram-colors", config={"displayModeBar": False}
+                        id="graph-histogram-colors",
+                        figure={
+                            "layout": {
+                                "paper_bgcolor": "#272a31",
+                                "plot_bgcolor": "#272a31",
+                            }
+                        },
+                        config={"displayModeBar": False},
                     ),
                 ],
             ),
@@ -440,19 +449,19 @@ def update_histogram(figure):
     ],
 )
 def update_graph_interactive_image(
-        content,
-        undo_clicks,
-        n_clicks,
-        # new_win_width,
-        selectedData,
-        filters,
-        enhance,
-        enhancement_factor,
-        new_filename,
-        dragmode,
-        enc_format,
-        storage,
-        session_id,
+    content,
+    undo_clicks,
+    n_clicks,
+    # new_win_width,
+    selectedData,
+    filters,
+    enhance,
+    enhancement_factor,
+    new_filename,
+    dragmode,
+    enc_format,
+    storage,
+    session_id,
 ):
     t_start = time.time()
 

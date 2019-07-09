@@ -101,6 +101,7 @@ html, body {
     #root {
         flex-direction: column;
         align-items: stretch;
+        justify-content: flex-start;
     }
 }
 
@@ -287,6 +288,7 @@ html, body {
     border: #fccd61 solid 1px;
     padding: 0.5rem 1rem;
     border-radius: 0.3rem;
+    color: darkgray;
 }
 
 #button-run-operation:hover, #button-undo:hover {
