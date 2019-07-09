@@ -1,7 +1,7 @@
-# dashr-moledule3d
-# Moledule3d
+# dashr-speck
+# Speck
 
-This is a dash for R version of the speck app written in python [moledule3d](https://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_speck.py)
+This is a dash for R version of the speck app written in python [speck](https://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_speck.py)
 
 ## Screenshots
 ![assets/speck.gif](assets/speck.gif)
