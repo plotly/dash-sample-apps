@@ -55,7 +55,7 @@
 }
 
 #mol3d-body .control-upload {
-    border-color: #E7625F !important;
+    border: dotted 1px #E7625F; /* Change in individual app stylesheet */
 }
 
 #mol3d-body .control-download:hover {
