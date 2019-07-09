@@ -137,6 +137,11 @@
     max-height: 20rem;
 }
 
+#operator-select .Select-control{
+    padding: 1rem;
+}
+
+
 /* Top-row-graphs
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #top-row-graphs {

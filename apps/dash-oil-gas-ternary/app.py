@@ -41,7 +41,7 @@ def build_banner():
         className="banner",
         children=[
             html.Img(
-                src="https://files.slack.com/files-pri/T06LPNGUD-FKXDDD4QG/dash-logo-new.png"
+                src=app.get_asset_url("dash-logo.png")
             ),
             html.H6("Oil and gas ternary map"),
         ],
@@ -468,7 +468,7 @@ app.layout = html.Div(
                                 ),
                                 dcc.Graph(
                                     id="ternary-map",
-                                    config={"scrollZoom": True, "displayModeBar": True},
+                                    config={"scrollZoom": True, "displayModeBar": False},
                                 ),
                             ],
                         ),
