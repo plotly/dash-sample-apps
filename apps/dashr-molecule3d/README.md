@@ -1,7 +1,7 @@
 # dashr-molecule3d
 # Molecule3d
 
-This is a Dash for R version of the molecule3d app previously written in Python [molecule3d](https://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_molecule3d.py).
+This is a Dash for R version of the [molecule3d](https://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_molecule3d.py) app previously written in Python.
 
 ## Screenshots
 ![assets/molecule3d.gif](assets/molecule3d.gif)
@@ -21,7 +21,7 @@ Clone the `git` repo and `cd` to the root directory:
 git clone https://github.com/plotly/dash-sample-apps
 cd dash-sample-apps/apps/dashr-molecule3d
 ```
-Install the requirements. From the terminal, run the following to install the required packages in the default location:
+Launch R, then install the required package dependencies in the default location:
 
 ```
 
