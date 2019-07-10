@@ -1,16 +1,16 @@
 import os
 import pathlib
 import json
+import importlib
 
 import dash_core_components as dcc
 import plotly.graph_objs as go
-import dash_reusable_components as drc
+# import dash_reusable_components as drc
 
 from PIL import Image, ImageFilter, ImageDraw, ImageEnhance
 
-# drc = importlib.import_module("apps.dash-iamge-processing.dash_reusable_components")
+drc = importlib.import_module("apps.dash-image-processing.dash_reusable_components")
 
-#
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
 # [filename, image_signature, action_stack]
@@ -31,7 +31,7 @@ GRAPH_PLACEHOLDER = dcc.Graph(
             "autosize": True,
             "paper_bgcolor": "#272a31",
             "plot_bgcolor": "#272a31",
-            "margin": go.Margin(l=40, b=40, t=26, r=10),
+            "margin": dict(l=40, b=40, t=26, r=10),
             "xaxis": {
                 "range": (0, 1527),
                 "scaleanchor": "y",
@@ -146,11 +146,11 @@ def show_histogram(image):
         fill = go.Scatter(
             x=list(range(0, 256)),
             y=hg,
-            mode="fill",
+            mode="lines",
             name=name,
             line=dict(color=(color)),
             fill="tozeroy",
-            hoverinfo="none",
+            hoverinfo='none',
         )
 
         return line, fill
@@ -193,7 +193,7 @@ def show_histogram(image):
 
     layout = go.Layout(
         title=title,
-        margin=go.Margin(l=50, r=30),
+        margin=dict(l=50, r=30),
         legend=dict(x=0, y=1.15, orientation="h"),
         paper_bgcolor="#31343a",
         plot_bgcolor="#272a31",
