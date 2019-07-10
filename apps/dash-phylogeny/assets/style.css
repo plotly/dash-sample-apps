@@ -426,6 +426,11 @@ body, h1, h2, h3, h4, h5, h6, p {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+  }
+
+  #learn_more > . {
+    margin: 1rem;
   }
 
   #grid {
