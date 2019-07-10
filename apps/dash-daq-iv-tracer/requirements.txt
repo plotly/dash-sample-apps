@@ -1,10 +1,6 @@
-dash==0.36.0
+dash>=0.41.0
 gunicorn>=19.8.1
-plotly==3.5.0
-numpy==1.16.1
-dash-html-components==0.13.4
-dash-core-components==0.42.1
-dash-renderer==0.17.0
+numpy>=1.16.1
 dash_daq==0.1.4
-pyserial
-pyvisa
+pyserial>=3.4
+pyvisa>=1.9.1
