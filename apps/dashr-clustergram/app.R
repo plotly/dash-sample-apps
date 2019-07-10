@@ -22,8 +22,6 @@ if (appName != ""){
 source("utils/dash_bio_utils.R")
 
 
-
-
 app <- Dash$new()
 
 # Load the datasets.
@@ -34,20 +32,6 @@ gg_back_box <- theme(
   plot.background = element_rect(fill = "#191A1C"),
   legend.background = element_rect(fill = "#191A1C")
 )
-
-
-iris <- read.table(file = "assets/sample_data/clustergram_iris.tsv", sep = 
-                     "\t", skip = 4, row.names = 1,  header = TRUE)
-
-mtcars<- read.table(file = "assets/sample_data/clustergram_mtcars.tsv", sep = 
-                      "\t", skip = 4, row.names = 1, header = TRUE)
-
-prostatecancer <- importSOFT("assets/sample_data/clustergram_GDS5373.SOFT")
-
-lungcancer <- importSOFT("assets/sample_data/clustergram_GDS3627.SOFT")
-
-datasets = list("iris" = iris, "mtcars" = mtcars, "prostatecancer" = prostatecancer,
-                "lungcancer" = lungcancer)
 
 # Code to generate header.
 
@@ -156,13 +140,25 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
             id = 'clustergram-file-upload-container',
             title = 'Upload your own dataset here.',
             children = list(
+              
               dccUpload(
-                id = 'file-upload',
-                className = 'control-upload',
-                children = htmlDiv(list(
-                  "Drag and drop .soft files, or click to select files."
+                id='upload-data',
+                children=htmlDiv(list(
+                  'Drag and Drop .soft files or ',
+                  htmlA('Select Files')
                 )),
-                accept = '.soft'
+                style=list(
+                  'width'= '100%',
+                  'height'= '60px',
+                  'lineHeight'= '60px',
+                  'borderWidth'= '1px',
+                  'borderStyle'= 'dashed',
+                  'borderRadius'= '5px',
+                  'textAlign'= 'center'
+                ),
+                # Allow multiple files to be uploaded
+                multiple=FALSE,
+                accept = '.SOFT'
               )
             )
           ),
@@ -174,8 +170,8 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
                 id = 'clustergram-download-sample-data',
                 className = 'control-download'
               ),
-              href = ("assets/sample_data/clustergram_GDS5826.soft"),
-              download = 'clustergram_GDS5826.SOFT'
+              href = ("assets/sample_data/clustergram_GDS3627.soft"),
+              download = 'clustergram_GDS3627.soft'
             )
           )),
           htmlHr(),
@@ -217,7 +213,8 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
               options = list(
                 list('label' = 'Rows', 'value' = "row"),
                 list('label' = 'Columns', 'value' = "col"),
-                list('label' = 'Both', 'value' = "both")
+                list('label' = 'Both', 'value' = "both"),
+                list('label' = 'None', 'value' = "none")
               ),
               value = "row",
               multi = FALSE
@@ -353,22 +350,6 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
     
     dccStore(
       id = 'data-meta-storage'
-    ),
-    
-    dccStore(
-      id = 'fig-options-storage'
-    ),
-    
-    dccStore(
-      id = 'computed-traces',
-    ),
-    
-    dccStore(
-      id = 'curves-dict'
-    ),
-    
-    dccStore(
-      id = 'group-markers'
     )
   ))
 ))
@@ -385,10 +366,12 @@ app$layout(htmlDiv(list(
 app$callback(
   output(id = 'dataset-storage', property = 'data'),
   params = list(
-    input(id = 'clustergram-datasets', property = 'value')
+    input(id = 'clustergram-datasets', property = 'value'),
+    input(id = "upload-data", property = "contents"),
+    input(id = 'upload-data', property = 'filename')
   ),
   
-  update_data <- function(selection) {
+  update_data <- function(selection, uploaded_file, filename) {
     if (selection == "iris") {
       return(
         list("Name" = "Iris Data Set",
@@ -481,7 +464,7 @@ app$callback(
     else if (endsWith(data$filepath, ".SOFT")) {
       df <- importSOFT(data$filepath)
       
-      df <- df[1:10,]
+      df <- df[1:10, 1:5]
       
     }
     
@@ -495,7 +478,11 @@ app$callback(
     
     else if (labels == "both") {
       showlabels = c(F,F)
-    }   
+    }
+    
+    else if (labels == "none") {
+      showlabels = c(T,T)
+    }
     
     if (length(selected_rows) < 2) {
       return("Please select at least two rows to display.")
@@ -514,7 +501,6 @@ app$callback(
       df <- subset(df, colnames(df) %in% selected_columns)
     }
     
-    
     heatmap <- dccGraph(figure = heatmaply(df,
                                            heatmap_layers = gg_back_box,
                                            side_color_layers = gg_back_box,
@@ -529,6 +515,7 @@ app$callback(
                                              "col" = columnslider
                                            )
     ))  
+    
     
     return(heatmap)
   }
@@ -565,7 +552,8 @@ app$callback(
         sprintf("Name: %s", value$Name),
         htmlBr(),
         htmlBr(),
-        sprintf("Description: %s", value$Description)
+        sprintf("Description: %s", value$Description),
+        paste(names(value$Meta), value$Meta, sep = ": ", collapse = "\n")
       )))
     }
   }
@@ -700,8 +688,6 @@ app$callback(
     return(all_options)
   }
 )
-
-
 
 
 
