@@ -50,14 +50,6 @@ spec.assign_spec()
 app = dash.Dash()
 server = app.server
 
-############################
-# Style
-############################
-
-app.css.append_css({
-    "external_url": "https://rawgit.com/shammamah/dash-stylesheets/master/dash-ocean-optics-stylesheet.css"
-})
-
 colors = {}
 
 with open("colors.txt", 'r') as f:
