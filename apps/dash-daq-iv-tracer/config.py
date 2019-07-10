@@ -6,7 +6,7 @@ import os
 #
 # This name MUST match the name that you specified in the
 # Dash App Manager
-DASH_APP_NAME = 'dash-daq-pressure-gauge-pv'
+DASH_APP_NAME = 'dash-daq-iv-tracer'
 
 # Set to 'private' if you want to add a login screen to your app
 # You can choose who can view the app in your list of files
