@@ -22,6 +22,7 @@ if (appName != ""){
 source("utils/dash_bio_utils.R")
 
 
+
 app <- Dash$new()
 
 # Load the datasets.
@@ -275,34 +276,21 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
                   className = 'app-controls-name',
                   children = 'Annotations:'
                 ),
-                
-                htmlButton(
-                  id = 'remove-all-group-markers',
-                  children = 'Remove all',
-                  n_clicks = 0,
-                  n_clicks_timestamp = 0
+                daqToggleSwitch(
+                  id = 'add-all-group-markers',
+                  color = '#191A1C',
+                  label = list('Enable', 'Disable'),
+                  size = 35,
+                  labelPosition = 'bottom',
+                  value = FALSE
                 ),
+                htmlBr(),
+                htmlBr(),
                 
                 htmlDiv(className = 'app-controls-desc', children = list(
-                  'Annotate your heatmap by labeling clusers; below you can
-                  choose a color for the annotation as well as text for the 
-                  annotation. Then, click on the row cluster or column cluster
-                  that you wish to annotate.'
+                  'Annotate your heatmap by labeling clusers.'
                 ))
-              )),
-              
-              daqColorPicker(
-                id = 'clustergram-annot-color',
-                value = list('hex' = 'rgb(128, 0, 96)'),
-                size = 315
-              ),
-              
-              dccInput(
-                id = 'annotation',
-                placeholder = 'annotation text',
-                type = 'text',
-                value = ''
-              )
+              ))
             )
           ),
           
@@ -449,11 +437,12 @@ app$callback(
     input(id = "column-threshold", property = "value"),
     input(id = "row-threshold", property = "value"),
     input(id = "selected-rows", property = "value"),
-    input(id = "selected-columns", property = "value")
+    input(id = "selected-columns", property = "value"),
+    input(id = "add-all-group-markers", property = "value")
   ),
   
   update_clustergram <- function(data, labels, cluster, columnslider, rowslider, selected_rows,
-                                 selected_columns) {
+                                 selected_columns, annotations) {
     
     if (endsWith(data$filepath, ".tsv")) {
       df <- read.table(file = data$filepath, sep = 
@@ -501,20 +490,42 @@ app$callback(
       df <- subset(df, colnames(df) %in% selected_columns)
     }
     
-    heatmap <- dccGraph(figure = heatmaply(df,
-                                           heatmap_layers = gg_back_box,
-                                           side_color_layers = gg_back_box,
-                                           colors = plasma,
-                                           showticklabels = showlabels,
-                                           scale = cluster,
-                                           k_col = 4,
-                                           k_row = 4,
-                                           column_labels = as.list(colnames(df)),
-                                           color_threshold = list(
-                                             "row" = rowslider,
-                                             "col" = columnslider
-                                           )
-    ))  
+    if (annotations == TRUE) {
+      heatmap <- dccGraph(figure = heatmaply(df,
+                                             heatmap_layers = gg_back_box,
+                                             side_color_layers = gg_back_box,
+                                             colors = plasma,
+                                             showticklabels = showlabels,
+                                             scale = cluster,
+                                             k_col = 4,
+                                             k_row = 4,
+                                             column_labels = as.list(colnames(df)),
+                                             color_threshold = list(
+                                               "row" = rowslider,
+                                               "col" = columnslider
+                                             ),
+                                             seriate = "mean",
+                                             row_side_colors = df[, 2:3],
+                                             col_side_colors = c(rep(0, length(colnames(df))-2), rep(1,2))
+      ))  
+    }
+    
+    else if (annotations == FALSE) {
+      heatmap <- dccGraph(figure = heatmaply(df,
+                                             heatmap_layers = gg_back_box,
+                                             side_color_layers = gg_back_box,
+                                             colors = plasma,
+                                             showticklabels = showlabels,
+                                             scale = cluster,
+                                             k_col = 4,
+                                             k_row = 4,
+                                             column_labels = as.list(colnames(df)),
+                                             color_threshold = list(
+                                               "row" = rowslider,
+                                               "col" = columnslider
+                                             )
+      ))  
+    }
     
     
     return(heatmap)
