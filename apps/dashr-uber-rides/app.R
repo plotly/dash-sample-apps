@@ -19,15 +19,18 @@ library(fasttime)
 
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
 
-ridesRaw_1 <- fread("data/rides_raw_1.csv", stringsAsFactors = FALSE)                     
-ridesRaw_2 <- fread("data/rides_raw_2.csv", stringsAsFactors = FALSE)                     
-ridesRaw_3 <- fread("data/rides_raw_3.csv", stringsAsFactors = FALSE)                     
+ridesPart1 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv"
+ridesPart2 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv"
+ridesPart3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv" 
+# Links for datasets
+
+ridesRaw_1 <- fread(ridesPart1, stringsAsFactors = FALSE)
+ridesRaw_2 <- fread(ridesPart2, stringsAsFactors = FALSE)
+ridesRaw_3 <- fread(ridesPart3, stringsAsFactors = FALSE)
+# Read data
 
 ridesRaw <- rbind(ridesRaw_1, ridesRaw_2, ridesRaw_3)
 # Combine partitions of data
-
-ridesDf <- ridesRaw[, 2:4]
-# Remove extra columns
 
 names(ridesDf) <- c("dateTime", "Lat", "Lon")
 # Rename columns
