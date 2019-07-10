@@ -5,6 +5,7 @@ import importlib
 
 import dash_core_components as dcc
 import plotly.graph_objs as go
+
 # import dash_reusable_components as drc
 
 from PIL import Image, ImageFilter, ImageDraw, ImageEnhance
@@ -150,7 +151,7 @@ def show_histogram(image):
             name=name,
             line=dict(color=(color)),
             fill="tozeroy",
-            hoverinfo='none',
+            hoverinfo="none",
         )
 
         return line, fill
