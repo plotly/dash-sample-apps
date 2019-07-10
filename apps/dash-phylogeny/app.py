@@ -6,6 +6,7 @@ import pandas as pd
 import plotly.graph_objs as go
 import numpy as np
 import random
+import pathlib
 
 from dash.dependencies import Input, Output
 from utils import *
@@ -57,9 +58,9 @@ app.layout = html.Div(
                     children=[
                         html.Img(
                             className="logo",
-                            src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png",
+                            src=app.get_asset_url("logo.png"),
                         ),
-                        html.Button(className="btn", children=["Learn      More"]),
+                        html.Button(className="btn", children=["Learn More"]),
                     ],
                 ),
             ],
