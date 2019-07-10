@@ -149,7 +149,8 @@ def serve_layout():
                                 children=[
                                     utils.GRAPH_PLACEHOLDER,
                                     html.Div(
-                                        id="div-storage", children=utils.STORAGE_PLACEHOLDER
+                                        id="div-storage",
+                                        children=utils.STORAGE_PLACEHOLDER,
                                     ),
                                 ],
                             )
@@ -448,19 +449,19 @@ def update_histogram(figure):
     ],
 )
 def update_graph_interactive_image(
-        content,
-        undo_clicks,
-        n_clicks,
-        # new_win_width,
-        selectedData,
-        filters,
-        enhance,
-        enhancement_factor,
-        new_filename,
-        dragmode,
-        enc_format,
-        storage,
-        session_id,
+    content,
+    undo_clicks,
+    n_clicks,
+    # new_win_width,
+    selectedData,
+    filters,
+    enhance,
+    enhancement_factor,
+    new_filename,
+    dragmode,
+    enc_format,
+    storage,
+    session_id,
 ):
     t_start = time.time()
 
