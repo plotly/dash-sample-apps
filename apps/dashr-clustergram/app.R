@@ -23,9 +23,18 @@ source("utils/dash_bio_utils.R")
 
 
 
+
 app <- Dash$new()
 
 # Load the datasets.
+
+
+gg_back_box <- theme(
+  panel.background = element_rect(fill = "#191A1C"),
+  plot.background = element_rect(fill = "#191A1C"),
+  legend.background = element_rect(fill = "#191A1C")
+)
+
 
 iris <- read.table(file = "assets/sample_data/clustergram_iris.tsv", sep = 
                      "\t", skip = 4, row.names = 1,  header = TRUE)
@@ -33,11 +42,53 @@ iris <- read.table(file = "assets/sample_data/clustergram_iris.tsv", sep =
 mtcars<- read.table(file = "assets/sample_data/clustergram_mtcars.tsv", sep = 
                       "\t", skip = 4, row.names = 1, header = TRUE)
 
-datasets = list("iris" = iris, "mtcars" = mtcars)
+prostatecancer <- importSOFT("assets/sample_data/clustergram_GDS5373.SOFT")
 
+lungcancer <- importSOFT("assets/sample_data/clustergram_GDS3627.SOFT")
+
+datasets = list("iris" = iris, "mtcars" = mtcars, "prostatecancer" = prostatecancer,
+                "lungcancer" = lungcancer)
+
+# Code to generate header.
+
+header <- htmlDiv(
+  id = "app-page-header",
+  style = list(
+    width = "100%",
+    background = "#232323" ,
+    color = "#FFFFFF"
+  ),
+  children = list(
+    htmlA(
+      id = "dashbio-logo",
+      children = list(
+        htmlImg(
+          src = "assets/dashbio_logo_transparent.png" 
+        )
+      ),
+      href = "/Portal"
+    ),
+    htmlH2("Dash Clustergram"),
+    htmlA(
+      id = "gh-link",
+      children = list("View on GitHub"),
+      href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-clustergram",
+      style = list(color = "white", border = "solid 1px white")
+    ),
+    htmlImg(
+      src = "assets/GitHub-Mark-Light-64px.png"
+    )
+  )
+)
+
+# Code to generate the options container and adjustable components within.
 
 options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', children = list(
-  dccLoading(className = 'dashbio-loading', children = htmlDiv(
+  header,
+  htmlBr(),
+  htmlBr(),
+  htmlBr(),
+  dccLoading(className = 'dashbio-loading', type = "circle",  children = htmlDiv(
     id = 'clustergram-wrapper',
     children = dccGraph(id = 'clustergram', style = list('display' = 'none'))
   )),
@@ -86,7 +137,7 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
               list('label' = 'Prostate Cancer', 'value' = 'prostatecancer'),
               list('label' = 'Lung Cancer Subtypes', 'value' = 'lungcancer')
             ),
-            value = 'prostatecancer'
+            value = 'mtcars'
           ),
           
           htmlBr(),
@@ -124,7 +175,7 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
                 className = 'control-download'
               ),
               href = ("assets/sample_data/clustergram_GDS5826.soft"),
-              download = 'clustergram_GDS5826.soft'
+              download = 'clustergram_GDS5826.SOFT'
             )
           )),
           htmlHr(),
@@ -148,10 +199,10 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
               id = 'cluster-checklist',
               options = list(
                 list('label' = 'Row', 'value' = 'row'),
-                list('label' = 'Column', 'value' = 'col')
+                list('label' = 'Column', 'value' = 'column')
               ),
-              value = list('row', 'col'),
-              multi = TRUE
+              value = 'row',
+              multi = FALSE
             )
           )),
           
@@ -164,11 +215,12 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
             dccDropdown(
               id = 'hide-labels',
               options = list(
-                list('label' = 'Row', 'value' = 'row'),
-                list('label' = 'Column', 'value' = 'col')
+                list('label' = 'Rows', 'value' = "row"),
+                list('label' = 'Columns', 'value' = "col"),
+                list('label' = 'Both', 'value' = "both")
               ),
-              value = list('row'),
-              multi = TRUE
+              value = "row",
+              multi = FALSE
             )
           )),
           
@@ -296,6 +348,10 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
     )),
     
     dccStore(
+      id = 'dataset-storage'
+    ),
+    
+    dccStore(
       id = 'data-meta-storage'
     ),
     
@@ -324,40 +380,328 @@ app$layout(htmlDiv(list(
 )))
 
 
-# Store file and dataset callback.
+# Callback to load data storage based on selected dataset.
 
-# app$callback(
-#   output(id = 'data-meta-storage', property = 'data'),
-#   params = list(
-#     input(id = 'file-upload', property = 'contents'),
-#     input(id = 'file-upload', property = 'filename'),
-#     input(id = 'clustergram-datasets', property = 'value')
-#   ),
-#   
-#   store_file_meta_data <- function(contents, filename, dataset_name) {
-#     desc = ''
-#     subsets = list()
-#     row_options = list()
-#     col_options = list()
-#     
-#     if (is.null(dataset_name) == FALSE) {
-#       dataset = datasets[[dataset_name]]
-#     }
-#   }
-# )
+app$callback(
+  output(id = 'dataset-storage', property = 'data'),
+  params = list(
+    input(id = 'clustergram-datasets', property = 'value')
+  ),
+  
+  update_data <- function(selection) {
+    if (selection == "iris") {
+      return(
+        list("Name" = "Iris Data Set",
+             "Description" =  "This is perhaps the best known database to be found
+             in the pattern recognition literature. Fisher's paper is a classic in
+             the field and is referenced frequently to this day. (See Duda & Hart, 
+             for example.) The data set contains 3 classes of 50 instances each, where 
+             each class refers to a type of iris plant. One class is linearly 
+             separable from the other 2; the latter are NOT linearly separable 
+             from each other. [from https://archive.ics.uci.edu/ml/datasets/iris]",
+             
+             "Source" = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/",
+             
+             "filepath" = "assets/sample_data/clustergram_iris.tsv"
+        )
+      )
+    }
+    else if (selection == "mtcars") {
+      return(
+        list("Name" = "Motor Trend Car Road Tests",
+             "Description" =  "The data was extracted from the 1974 Motor Trend US
+             magazine, and comprises fuel consumption and 10 aspects of automobile design
+             and performance for 32 automobiles (1973-74 models).
+             [from https://www.rdocumentation.org/packages/datasets/versions/3.5.1/topics/mtcars]",
+             
+             "Source" = "https://gist.github.com/seankross/a412dfbd88b3db70b74b",
+             
+             "filepath" = "assets/sample_data/clustergram_mtcars.tsv"
+        )
+      )
+    }
+    
+    else if (selection == "prostatecancer") {
+      return(
+        list("Name" = "miR-221 expression effect on prostate cancer cell line",
+             "Description" =  "Analysis of PC-3 prostate cancer cells expressing pre-miR-221. 
+             miR-221 is frequently downregulated in primary prostate cancer. Results provide 
+             insight into the role of miR-221 in the pathogenesis of prostate cancer.",
+             
+             "Meta" = Meta(getGEO(filename = "assets/sample_data/clustergram_GDS5373.SOFT")),
+             
+             "filepath" = "assets/sample_data/clustergram_GDS5373.SOFT"
+        )
+      )
+    }
+    
+    else if (selection == "lungcancer") {
+      return(
+        list("Name" = "Non-small lung cancer subtypes: adenocarcinoma and squamous cell carcinoma",
+             "Description" =  "Comparison of two non-small cell lung cancer histological subtypes: 
+             adenocarcinomas (AC) and squamous cell carcinomas (SCC). Results provide insight 
+             into the molecular differences between AC and SCC.",
+             
+             "Meta" = Meta(getGEO(filename = "assets/sample_data/clustergram_GDS3627.SOFT")),
+             
+             "filepath" = "assets/sample_data/clustergram_GDS3627.SOFT"
+        )
+      )
+    }
+  }
+  
+)
 
-# 
-# app$callback(
-#   output(id = "row-threshold", property = "value"),
-#   params = list(
-#     input(id = "clustergram-datasets", property = "value"),
-#     input(id = "file-upload", property = "contents")
-#   ),
-#   
-#   update_row_threshold_value <- function(dataset_name, contents) {
-#     
-#   }
-# )
+
+
+# Callback to change the depicted clustergram.
+
+
+app$callback(
+  output(id = "clustergram-wrapper", property = "children"),
+  params = list(
+    input(id = "dataset-storage", property = "data"),
+    input(id = "hide-labels", property = "value"),
+    input(id = "cluster-checklist", property = "value"),
+    input(id = "column-threshold", property = "value"),
+    input(id = "row-threshold", property = "value"),
+    input(id = "selected-rows", property = "value"),
+    input(id = "selected-columns", property = "value")
+  ),
+  
+  update_clustergram <- function(data, labels, cluster, columnslider, rowslider, selected_rows,
+                                 selected_columns) {
+    
+    if (endsWith(data$filepath, ".tsv")) {
+      df <- read.table(file = data$filepath, sep = 
+                         "\t", skip = 4, row.names = 1,  header = TRUE)
+      
+    }
+    
+    else if (endsWith(data$filepath, ".SOFT")) {
+      df <- importSOFT(data$filepath)
+      
+      df <- df[1:10,]
+      
+    }
+    
+    if (labels == "row") {
+      showlabels = c(T,F)
+    } 
+    
+    else if (labels == "col") {
+      showlabels = c(F,T)
+    }   
+    
+    else if (labels == "both") {
+      showlabels = c(F,F)
+    }   
+    
+    if (length(selected_rows) < 2) {
+      return("Please select at least two rows to display.")
+    }
+    else if (length(selected_rows) > 2){
+      
+      df <- subset(df, rownames(df) %in% selected_rows)
+    }
+    
+    
+    if (length(selected_rows) < 2) {
+      return("Please select at least two rows to display.")
+    }
+    else if (length(selected_rows) > 2){
+      
+      df <- subset(df, colnames(df) %in% selected_columns)
+    }
+    
+    
+    heatmap <- dccGraph(figure = heatmaply(df,
+                                           heatmap_layers = gg_back_box,
+                                           side_color_layers = gg_back_box,
+                                           colors = plasma,
+                                           showticklabels = showlabels,
+                                           scale = cluster,
+                                           k_col = 4,
+                                           k_row = 4,
+                                           column_labels = as.list(colnames(df)),
+                                           color_threshold = list(
+                                             "row" = rowslider,
+                                             "col" = columnslider
+                                           )
+    ))  
+    
+    return(heatmap)
+  }
+)
+
+
+# Callback to change the dataset information and details.
+
+app$callback(
+  output(id = "clustergram-info", property = "children"),
+  params = list(
+    input(id = "dataset-storage", property = "data")
+  ),
+  
+  update_info <- function(value) {
+    if (endsWith(value$filepath, ".tsv")) {
+      return(htmlDiv(list(
+        htmlH2(children = "Dataset Information"),
+        htmlBr(),
+        sprintf("Name: %s", value$Name),
+        htmlBr(),
+        htmlBr(),
+        sprintf("Description: %s", value$Description),
+        htmlBr(),
+        htmlBr(),
+        sprintf("Source: %s", value$Source)
+      )))
+    }
+    
+    else if (endsWith(value$filepath, ".SOFT")) {
+      return(htmlDiv(list(
+        htmlH2(children = "Dataset Information"),
+        htmlBr(),
+        sprintf("Name: %s", value$Name),
+        htmlBr(),
+        htmlBr(),
+        sprintf("Description: %s", value$Description)
+      )))
+    }
+  }
+)
+
+# Callback to update options for selected rows.
+
+
+app$callback(
+  output(id = "selected-rows", property = "options"),
+  params = list(
+    input(id = "dataset-storage", property = "data")
+  ),
+  
+  update_rows_options <- function(data) {
+    if (endsWith(data$filepath, ".tsv")) {
+      df <- read.table(file = data$filepath, sep = 
+                         "\t", skip = 4, row.names = 1,  header = TRUE)
+      
+    }
+    
+    else if (endsWith(data$filepath, ".SOFT")) {
+      df <- importSOFT(data$filepath)
+      
+      df <- df[1:10,]
+      
+    }
+    all_options <- rownames(df)
+    
+    options_list <- list()
+    
+    for (x in 1:length(all_options)){
+      option = list("label" = all_options[x], "value" = all_options[x])
+      options_list[[x]] = option
+    }
+    
+    return(options_list)
+  }
+)
+
+
+#Callback to update values for selected rows.
+
+app$callback(
+  output(id = "selected-rows", property = "value"),
+  params = list(
+    input(id = "dataset-storage", property = "data")
+  ),
+  
+  update_rows_options <- function(data) {
+    if (endsWith(data$filepath, ".tsv")) {
+      df <- read.table(file = data$filepath, sep = 
+                         "\t", skip = 4, row.names = 1,  header = TRUE)
+      
+    }
+    
+    else if (endsWith(data$filepath, ".SOFT")) {
+      df <- importSOFT(data$filepath)
+      
+      df <- df[1:10,]
+      
+    }
+    all_options <- rownames(df)
+    
+    
+    
+    return(all_options)
+  }
+)
+
+# Callback, same as above, but for updating options for selected columns. 
+
+app$callback(
+  output(id = "selected-columns", property = "options"),
+  params = list(
+    input(id = "dataset-storage", property = "data")
+  ),
+  
+  update_rows_options <- function(data) {
+    if (endsWith(data$filepath, ".tsv")) {
+      df <- read.table(file = data$filepath, sep = 
+                         "\t", skip = 4, row.names = 1,  header = TRUE)
+      
+    }
+    
+    else if (endsWith(data$filepath, ".SOFT")) {
+      df <- importSOFT(data$filepath)
+      
+      df <- df[1:10,]
+      
+    }
+    all_options <- colnames(df)
+    
+    options_list <- list()
+    
+    for (x in 1:length(all_options)){
+      option = list("label" = all_options[x], "value" = all_options[x])
+      options_list[[x]] = option
+    }
+    
+    return(options_list)
+  }
+)
+
+
+
+#Callback to update values for selected columns.
+
+app$callback(
+  output(id = "selected-columns", property = "value"),
+  params = list(
+    input(id = "dataset-storage", property = "data")
+  ),
+  
+  update_rows_options <- function(data) {
+    if (endsWith(data$filepath, ".tsv")) {
+      df <- read.table(file = data$filepath, sep = 
+                         "\t", skip = 4, row.names = 1,  header = TRUE)
+      
+    }
+    
+    else if (endsWith(data$filepath, ".SOFT")) {
+      df <- importSOFT(data$filepath)
+      
+      df <- df[1:10,]
+      
+    }
+    all_options <- colnames(df)
+    
+    
+    
+    return(all_options)
+  }
+)
+
+
 
 
 
@@ -366,8 +710,6 @@ if (appName != "") {
 } else {
   app$run_server(debug = TRUE, showcase = TRUE)
 }
-
-
 
 
 

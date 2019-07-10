@@ -1,6 +1,7 @@
 #clustergram-body {
     color: #E4E4E4 !important;
     background-color: #191A1C !important;
+    min-height: 100vh;
 }
 #clustergram-body ::-webkit-scrollbar {
     background-color: #191A1C !important;
@@ -12,7 +13,7 @@
 #clustergram-wrapper {
     width: 900px;
     display: inline-block !important;
-    padding: 0px;
+    padding: 70px;
     overflow-x: scroll;
     margin: 0px;
 }

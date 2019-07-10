@@ -14,5 +14,7 @@ remotes::install_github("plotly/dash-core-components", ref="1.0.0-cran")
 remotes::install_github("plotly/dashR", ref="0.1.0-cran")
 remotes::install_github("plotly/dash-bio")
 remotes::install_github("plotly/dash-table")
+remotes::install_github("plotly/dash-daq")
 
 install.packages("GEOquery")
+install.packages("heatmaply")
