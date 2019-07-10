@@ -1,11 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display');
+
 #body {
     padding-bottom: 5rem;
 }
 
 /* Banner
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-@import url('https://fonts.googleapis.com/css?family=Playfair+Display');
-
 .banner {
     background-color: #2f3445; /* Machine Learning Color is orange */
     padding: 3rem 0;
