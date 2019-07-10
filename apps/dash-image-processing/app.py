@@ -17,9 +17,8 @@ from dash.dependencies import Input, Output, State
 from dotenv import load_dotenv, find_dotenv
 from flask_caching import Cache
 
-import dash_reusable_components as drc
-from utils import STORAGE_PLACEHOLDER, GRAPH_PLACEHOLDER, IMAGE_STRING_PLACEHOLDER
-from utils import apply_filters, show_histogram, generate_lasso_mask, apply_enhancements
+drc = importlib.import_module("apps.dash-image-processing.dash_reusable_components")
+utils = importlib.import_module("apps.dash-image-processing.utils")
 
 DEBUG = True
 LOCAL = False
@@ -117,7 +116,7 @@ def serve_layout():
 
     # Post the image to the right key, inside the bucket named after the
     # session ID
-    store_image_string(IMAGE_STRING_PLACEHOLDER, session_id)
+    store_image_string(utils.IMAGE_STRING_PLACEHOLDER, session_id)
 
     # App Layout
     return html.Div(
@@ -148,9 +147,9 @@ def serve_layout():
                             html.Div(
                                 id="div-interactive-image",
                                 children=[
-                                    GRAPH_PLACEHOLDER,
+                                    utils.GRAPH_PLACEHOLDER,
                                     html.Div(
-                                        id="div-storage", children=STORAGE_PLACEHOLDER
+                                        id="div-storage", children=utils.STORAGE_PLACEHOLDER
                                     ),
                                 ],
                             )
@@ -370,7 +369,7 @@ def apply_actions_on_image(session_id, action_stack, filename, image_signature):
     # Select using Lasso
     if selected_data and "lassoPoints" in selected_data:
         selection_mode = "lasso"
-        selection_zone = generate_lasso_mask(im_pil, selected_data)
+        selection_zone = utils.generate_lasso_mask(im_pil, selected_data)
     # Select using rectangular box
     elif selected_data and "range" in selected_data:
         selection_mode = "select"
@@ -388,14 +387,14 @@ def apply_actions_on_image(session_id, action_stack, filename, image_signature):
 
     # Apply the filters
     if action_type == "filter":
-        apply_filters(
+        utils.apply_filters(
             image=im_pil, zone=selection_zone, filter=operation, mode=selection_mode
         )
     elif action_type == "enhance":
         enhancement = operation["enhancement"]
         factor = operation["enhancement_factor"]
 
-        apply_enhancements(
+        utils.apply_enhancements(
             image=im_pil,
             zone=selection_zone,
             enhancement=enhancement,
@@ -426,7 +425,7 @@ def update_histogram(figure):
     # Creates the PIL Image object from the b64 png encoding
     im_pil = drc.b64_to_pil(string=enc_str)
 
-    return show_histogram(im_pil)
+    return utils.show_histogram(im_pil)
 
 
 @app.callback(
@@ -449,19 +448,19 @@ def update_histogram(figure):
     ],
 )
 def update_graph_interactive_image(
-    content,
-    undo_clicks,
-    n_clicks,
-    # new_win_width,
-    selectedData,
-    filters,
-    enhance,
-    enhancement_factor,
-    new_filename,
-    dragmode,
-    enc_format,
-    storage,
-    session_id,
+        content,
+        undo_clicks,
+        n_clicks,
+        # new_win_width,
+        selectedData,
+        filters,
+        enhance,
+        enhancement_factor,
+        new_filename,
+        dragmode,
+        enc_format,
+        storage,
+        session_id,
 ):
     t_start = time.time()
 
