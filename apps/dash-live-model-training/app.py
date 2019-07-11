@@ -537,8 +537,10 @@ def update_div_current_accuracy_value(run_log_json):
                     "margin-bottom": "0px",
                 },
             ),
+           
             html.Div(f"Training: {run_log_df['train accuracy'].iloc[-1]:.4f}"),
-            html.Div(f"Validation: {run_log_df['val accuracy'].iloc[-1]:.4f}"),
+            html.Div(f"Validation: {run_log_df['val accuracy'].iloc[-1]:.4f}")
+            
         ]
 
 

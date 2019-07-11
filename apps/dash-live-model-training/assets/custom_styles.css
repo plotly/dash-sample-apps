@@ -104,10 +104,10 @@
 @media (max-width: 375px) {
   #title {
     width: 150px;
-    font-size: 1.2rem !important;
+    font-size: 1.5rem !important;
     font-weight: 400;
     margin-top: 30px;
-    margin-left: 7% !important;
+    margin-left: 8% !important;
   }
 
   #learn-more-button {
@@ -156,7 +156,6 @@
     text-align: center;
     display: inline;
     margin: 0 20px;
-    
   }
 
   /* Second page Smoothing Options */
@@ -173,6 +172,66 @@
     display: inline;
     margin: 0 30px;
   }
+
+  /* Radio items */
+  #radio-display-mode-accuracy {
+    margin: 1px 0;
+
+  }
+
+  .radio-item-div {
+    text-align: right;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 25px;
+
+  }
+
+  .plot-display-radio-items {
+    text-align: left;
+    display: inline-block;
+    font-size: 10px !important;
+    margin: 1px 0;
+  }
+
+  .plot-display-text {
+    display: inline-block;
+    width: 50%
+  }
+
+  /* Current Accuracy */
+  #div-current-accuracy-value>p {
+    display: inline-flex !important;
+    font-size: 13px !important;
+  }
+
+  #div-current-accuracy-value>div:nth-child(2),
+  #div-current-accuracy-value>div:nth-child(3) {
+    text-align: center;
+    display: inline;
+    margin: 20px 5px;
+    font-size: 8px !important;
+    padding-left: 15px;
+  }
+
+
+  /* Current Loss */
+
+  #div-current-cross-entropy-value {
+    display: inline-flex !important;
+    font-size: 13px !important;
+  }
+
+  #div-current-cross-entropy-value>div:nth-child(2),
+  #div-current-cross-entropy-value>div:nth-child(3) {
+    text-align: center;
+    display: inline;
+    margin: 20px 5px;
+    font-size: 8px !important;
+    padding-left: 28px !important;
+    vertical-align: bottom !important;
+  }
+
 
 }
 
@@ -230,7 +289,7 @@
 
   .graph-checkbox-smoothing {
     font-weight: bold;
-    margin-bottom: 0px;
+    
     display: inline-block;
     width: 50%;
   }
@@ -255,14 +314,14 @@
     text-align: right;
   }
   
-  .slider-smoothing {
+
+  #_dash-app-content>div>div:nth-child(4)>div>div.two.columns>div.slider-smoothing {
     margin-bottom: 60px !important;
   }
 
-
   /* Radio items */
   #radio-display-mode-accuracy {
-    margin: 10px 0;
+    margin: 5px 0;
     
   }
 
@@ -278,6 +337,7 @@
     text-align: left;
     display: inline-block;
     font-size: 12px;
+    margin: 5px 0;
   }
 
   .plot-display-text {
@@ -285,20 +345,22 @@
     width: 50%
   }
 
+  
+
   /* Current Accuracy */
   #div-current-accuracy-value>p {
-    margin-bottom: 30px;
+    display: inline-flex !important
   }
 
   #div-current-accuracy-value>div:nth-child(2),
   #div-current-accuracy-value>div:nth-child(3) {
     text-align: center;
     display: inline;
-    margin: 30px 15px;
-    font-size: 1.3rem;
+    margin: 20px 5px;
+    font-size: 10px;
+    padding-left: 15px;
   }
 
- 
 
   /* Second page smoothing options */
 
@@ -321,31 +383,53 @@
     float: right;
   }
 
+  #_dash-app-content>div>div:nth-child(5)>div>div.two.columns>div.slider-smoothing {
+    margin-bottom: 60px !important;
+  }
+
  
 
   /* Current Loss */
 
   #div-current-cross-entropy-value {
-    margin-bottom: 5px;
+    display: inline-flex !important;
   }
 
   #div-current-cross-entropy-value>div:nth-child(2),
   #div-current-cross-entropy-value>div:nth-child(3) {
     text-align: center;
     display: inline;
-    margin: 20px 15px;
-    font-size: 1.3rem;
+    margin: 20px 5px;
+    font-size: 11px;
+    padding-left: 20px;
   }
 
 
 }
 
-/* @media (min-width: 1000px) {
-  #plotly-logo {
-    width: 10.25%;
-    padding: 5px;
+ @media (max-width: 1000px) {
+  #title {
+    width: 200px;
+    font-size: 1.7rem;
+    font-weight: 400;
+    margin-top: 30px;
+    margin-left: 5% !important;
   }
-} */
+
+  #learn-more-button {
+    width: 75px;
+    height: 30px;
+    margin-left: 10px;
+    font-size: 7.5px !important;
+    padding: 0px 8px !important;
+    margin-top: 25px;
+  }
+
+  #plotly-logo {
+    margin-top: 30px;
+    margin-left: 4px;
+  }
+} 
 /* #react-select-4--value-item {
   color: #6b6b6b;
 } */
