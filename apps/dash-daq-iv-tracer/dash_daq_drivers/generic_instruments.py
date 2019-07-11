@@ -11,10 +11,10 @@ import visa
 from .communication_utils import PrologixController
 
 # names to manage the different interfaces used to connect to an instrument
-INTF_VISA = 'pyvisa'
-INTF_PROLOGIX = 'prologix'
-INTF_SERIAL = 'serial'
-INTF_INTERNAL = 'internal'
+INTF_VISA = "pyvisa"
+INTF_PROLOGIX = "prologix"
+INTF_SERIAL = "serial"
+INTF_INTERNAL = "internal"
 
 
 class Instrument(object):
@@ -22,9 +22,9 @@ class Instrument(object):
 
     def __init__(
         self,
-        instr_port_name='',
-        instr_id_name='default',
-        instr_user_name='default',
+        instr_port_name="",
+        instr_id_name="default",
+        instr_user_name="default",
         mock_mode=False,
         instr_intf=None,
         instr_mesurands=None,
@@ -88,15 +88,16 @@ class Instrument(object):
                     # of prologix controller
                     if "COM" in kwargs[INTF_PROLOGIX]:
                         self.instr_connexion = PrologixController(
-                            com_port=kwargs[INTF_PROLOGIX],
-                            **kwargs
+                            com_port=kwargs[INTF_PROLOGIX], **kwargs
                         )
                 else:
                     # it was the PrologixController instance
                     self.instr_connexion = kwargs[INTF_PROLOGIX]
 
-                    if "Prologix GPIB-USB Controller" \
-                            in self.instr_connexion.controller_id():
+                    if (
+                        "Prologix GPIB-USB Controller"
+                        in self.instr_connexion.controller_id()
+                    ):
                         pass
                     else:
                         print(
@@ -106,10 +107,10 @@ class Instrument(object):
 
             else:
                 # the connection doesn't exist so we create it
-                print('Searching for Prologix Controller...')
+                print("Searching for Prologix Controller...")
                 self.instr_connexion = PrologixController(**kwargs)
 
-        if not self.mock_mode and instr_port_name is not '':
+        if not self.mock_mode and instr_port_name is not "":
             self.connect(instr_port_name, **kwargs)
 
     def __str__(self):
@@ -125,7 +126,7 @@ class Instrument(object):
         """
         return "%s(%s)" % (self.instr_id_name, self.instr_port_name)
 
-    def measure(self, instr_param='', **kwargs):
+    def measure(self, instr_param="", **kwargs):
         """initiate a measure by the instrument
             Should be redefined in children classes
         """
@@ -147,7 +148,7 @@ class Instrument(object):
                 answer = None
         # in mock mode
         else:
-            answer = 'mock_mode_read'
+            answer = "mock_mode_read"
 
         return answer
 
@@ -157,13 +158,17 @@ class Instrument(object):
         if not self.mock_mode:
             if self.instr_intf == INTF_PROLOGIX:
                 # make sure the address is the right one
-                self.instr_connexion.write(
-                    "++addr %s" % self.instr_port_name)
+                self.instr_connexion.write("++addr %s" % self.instr_port_name)
             if self.instr_connexion is not None:
                 answer = self.instr_connexion.write(msg + self.term_chars)
             else:
-                raise(IOError("There is no physical connexion established \
-with the instrument %s" % self.instr_id_name))
+                raise (
+                    IOError(
+                        "There is no physical connexion established \
+with the instrument %s"
+                        % self.instr_id_name
+                    )
+                )
         else:
             answer = msg
         return answer
@@ -196,7 +201,7 @@ with the instrument %s" % self.instr_id_name))
                     self.instr_id_name,
                     self.instr_user_name,
                     self.instr_port_name,
-                    self.instr_intf
+                    self.instr_intf,
                 )
             )
 
@@ -205,8 +210,7 @@ with the instrument %s" % self.instr_id_name))
                 # make sure the instrument is not already connected
                 self.disconnect()
                 # connects through the ressource manager (rm)
-                self.instr_connexion = self.rm.open_resource(
-                    instr_port_name, **kwargs)
+                self.instr_connexion = self.rm.open_resource(instr_port_name, **kwargs)
             elif self.instr_intf == INTF_SERIAL:
                 # make sure the instrument is not already connected
                 self.disconnect()
@@ -221,20 +225,16 @@ with the instrument %s" % self.instr_id_name))
                     kwargs.pop("baud_rate")
 
                     self.instr_connexion = serial.Serial(
-                        instr_port_name,
-                        baud_rate,
-                        **kwargs
+                        instr_port_name, baud_rate, **kwargs
                     )
                 else:
-                    self.instr_connexion = serial.Serial(
-                        instr_port_name, **kwargs)
+                    self.instr_connexion = serial.Serial(instr_port_name, **kwargs)
 
             elif self.instr_intf == INTF_PROLOGIX:
                 # only keeps the number of the port
-                self.instr_port_name = instr_port_name.replace('GPIB0::', '')
+                self.instr_port_name = instr_port_name.replace("GPIB0::", "")
 
-                self.instr_connexion.write(
-                    ("++addr %s" % self.instr_port_name))
+                self.instr_connexion.write(("++addr %s" % self.instr_port_name))
 
                 # the \n termchar is embedded in the PrologixController class
                 self.term_chars = ""
@@ -243,8 +243,7 @@ with the instrument %s" % self.instr_id_name))
             else:
                 pass
 
-        if self.instr_connexion is not None \
-                and self.instr_intf != INTF_PROLOGIX:
+        if self.instr_connexion is not None and self.instr_intf != INTF_PROLOGIX:
             self.instr_port_name = instr_port_name
 
     def disconnect(self):

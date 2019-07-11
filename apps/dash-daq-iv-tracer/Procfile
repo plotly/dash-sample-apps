@@ -1,1 +1,1 @@
-web: gunicorn app_mock:server
+web: gunicorn --pythonpath apps/dash-daq-iv-tracer app:server
