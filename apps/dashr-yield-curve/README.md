@@ -8,6 +8,5 @@ This Dash app adapts the excellent [NY Times report A 3-D View of a Chart That P
 
 To learn more check out our [documentation](https://plot.ly/dash).
 
-The following are screenshots for the app in this repo:
-
-![Alt desc](https://raw.githubusercontent.com/plotly/dash-docs/master/images/dash-yield-curve-app.png)
+## Screenshot:
+![screenshot](assets/dashr-yield-curve-screenshot.png)
