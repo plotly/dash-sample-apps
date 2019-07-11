@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css?family=Dosis');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: none;
+}
+
+body {
+  font-size: 1.5em;
+  line-height: 1.6;
+  font-weight: 400;
+  font-family: Dosis, Raleway, HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+input[type="radio"] {
+  display: inline;
+  margin: 0px 5px;
+}
+
+.left-panel, .right-panel {
+  padding: 0rem 2rem;
+}
+
+.oscope-info {
+  margin: 15px;
+}
+
+.right-panel .Title {
+  font-size: 38px;
+  margin-top: 15px;
+  border-bottom: 1px solid rgb(216, 216, 216);
+}
+
+
+.right-panel .Title h3 {
+  font-size: 1.75rem;
+  border-bottom: rgb(216, 216, 216);
+  margin-top: 3px;
+  margin-left: 10px;
+  margin-bottom: 3px;
+}
+
+.power-settings-tab .Title {
+  margin-top: 15px;
+  border-bottom: 1px solid rgb(216, 216, 216);
+}
+
+.power-settings-tab .Title h3 {
+  font-size: 1.75rem;
+  border-bottom: rgb(216, 216, 216);
+  margin-top: 3px;
+  margin-left: 10px;
+  margin-bottom: 3px;
+}
+
+.seven.right-panel > div:nth-child(2) > div > div {
+  text-transform: uppercase;
+  font-weight: 800;
+  color: initial;
+}
+
+._dash-undo-redo {
+  display: none
+}
+
+.graph-param {
+  text-align: center;
+  font-size: 16px;
+  padding: 0 5px;
+  line-height: 20px;
+}
+
+.oscillator-tabs {
+  height: 80%;
+}
+
+.banner {
+  height: 75px;
+  margin: 0 -10px 10px;
+}
+
+#color-picker > div {
+  background-color: inherit !important;
+}
