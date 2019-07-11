@@ -34,7 +34,7 @@ single bar or drag along scatters to know flight details in the table.
 
 ## Screenshots:
 
-![screenshot](assets/dashr-mapd-demo-screenshot.png)
+![screencast](assets/dashr-mapd-demo-screencast.gif)
 
 ## Resources
 
