@@ -7,6 +7,8 @@ This Dash app updates real-time visual analytics by constantly querying a remote
 
 The public dataset used in this app, "flight_2008_7M", includes every single record of US airline flights known by the Bureau of Transportation Statistics in the year 2008. By default, it can be loaded from the `insert_sample_data` script during the Omnisci server installation.
 
+See the python version of this app in the [Dash gallery](https://dash-gallery.plotly.host/dash-mapd-demo/)
+
 ## Requirements
 
 * R, with the following packages:
