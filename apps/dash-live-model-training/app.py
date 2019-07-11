@@ -36,7 +36,7 @@ def div_graph(name):
                         [
                             html.Div(
                                 className="graph-checkbox-smoothing",
-                                children=["Smoothing:"]
+                                children=["Smoothing:"],
                             ),
                             dcc.Checklist(
                                 options=[
@@ -45,12 +45,11 @@ def div_graph(name):
                                 ],
                                 values=[],
                                 id=f"checklist-smoothing-options-{name}",
-                                className="checklist-smoothing"
-                            )
+                                className="checklist-smoothing",
+                            ),
                         ],
-                        style={"margin-top": "10px"}
-                        
-                    ), 
+                        style={"margin-top": "10px"},
+                    ),
                     html.Div(
                         [
                             dcc.Slider(
@@ -69,10 +68,10 @@ def div_graph(name):
                     html.Div(
                         [
                             html.P(
-                                #className="plot-display-text",
+                                # className="plot-display-text",
                                 "Plot Display Mode:",
                                 style={"font-weight": "bold", "margin-bottom": "0px"},
-                                className="plot-display-text"
+                                className="plot-display-text",
                             ),
                             html.Div(
                                 [
@@ -100,8 +99,8 @@ def div_graph(name):
                             ),
                             html.Div(id=f"div-current-{name}-value"),
                         ],
-                        className="entropy-div"
-                    )
+                        className="entropy-div",
+                    ),
                 ],
             ),
             html.Div(id=f"div-{name}-graph", className="ten columns"),
@@ -537,10 +536,8 @@ def update_div_current_accuracy_value(run_log_json):
                     "margin-bottom": "0px",
                 },
             ),
-           
             html.Div(f"Training: {run_log_df['train accuracy'].iloc[-1]:.4f}"),
-            html.Div(f"Validation: {run_log_df['val accuracy'].iloc[-1]:.4f}")
-            
+            html.Div(f"Validation: {run_log_df['val accuracy'].iloc[-1]:.4f}"),
         ]
 
 
