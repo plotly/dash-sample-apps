@@ -5,10 +5,16 @@
   border-radius: 0.75rem;
 } */
 
+
+
 #div-total-step-count > h6 {
   font-weight: bold;
   font-size: 20px;
   color: #6b6b6b;
+}
+
+#div-total-step-count {
+  margin-top: 15px;
 }
 
 #div-step-display > h6 {
@@ -171,6 +177,9 @@
 }
 
 @media (max-width: 550px) {
+  .container {
+    padding: 20px;
+  }
 
   #title {
     width: 200px;
@@ -203,6 +212,9 @@
     display: flex;
   }
 
+  #div-total-step-count {
+    margin-top: 0px;
+  }
 
   #div-total-step-count>h6,
   #div-step-display>h6 {
@@ -212,31 +224,65 @@
   }
  
 
+ 
   /* First Page Smoothing Options */
-  #checklist-smoothing-options-accuracy {
-    text-align: center;
-    margin: 10px 0;
+
+
+  .graph-checkbox-smoothing {
+    font-weight: bold;
+    margin-bottom: 0px;
+    display: inline-block;
+    width: 50%;
   }
 
+  #slider-smoothing-accuracy {
+    width: 50%;
+    float: right;
+  }
+
+  .checklist-smoothing{
+    display: inline-block;
+    width: 50%;
+  }
+
+  
   #checklist-smoothing-options-accuracy>label:nth-child(1),
   #checklist-smoothing-options-accuracy>label:nth-child(2) {
-    text-align: center;
-    display: inline;
-    margin: 0 30px;
+    display: inline-block;
+    font-size: 11.5px;
+    margin: 0;
+    padding: 10px;
+    text-align: right;
   }
+  
+  .slider-smoothing {
+    margin-bottom: 60px !important;
+  }
+
 
   /* Radio items */
   #radio-display-mode-accuracy {
     margin: 10px 0;
+    
   }
 
   .radio-item-div {
-    text-align: center;
+    text-align: right;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 25px;
+    
   }
   
   .plot-display-radio-items {
     text-align: left;
     display: inline-block;
+    font-size: 12px;
+  }
+
+  .plot-display-text {
+    display: inline-block;
+    width: 50%
   }
 
   /* Current Accuracy */
@@ -255,6 +301,7 @@
  
 
   /* Second page smoothing options */
+
   #checklist-smoothing-options-cross-entropy {
     text-align: center;
     margin: 10px 0;
@@ -262,12 +309,19 @@
   
   #checklist-smoothing-options-cross-entropy>label:nth-child(1),
   #checklist-smoothing-options-cross-entropy>label:nth-child(2) {
-    text-align: center;
-    display: inline;
-    margin: 0 30px;
+      display: inline-block;
+      font-size: 11.5px;
+      margin: 0;
+      padding: 10px;
+      text-align: right;
   }
 
+  #slider-smoothing-cross-entropy>div {
+    width: 50%;
+    float: right;
+  }
 
+ 
 
   /* Current Loss */
 

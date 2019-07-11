@@ -34,10 +34,9 @@ def div_graph(name):
                 children=[
                     html.Div(
                         [
-                            html.P(
+                            html.Div(
                                 className="graph-checkbox-smoothing",
-                                children=["Smoothing:"],
-                                style={"font-weight": "bold", "margin-bottom": "0px"},
+                                children=["Smoothing:"]
                             ),
                             dcc.Checklist(
                                 options=[
@@ -46,11 +45,12 @@ def div_graph(name):
                                 ],
                                 values=[],
                                 id=f"checklist-smoothing-options-{name}",
-                                className="checklist-smoothing",
-                            ),
+                                className="checklist-smoothing"
+                            )
                         ],
-                        style={"margin-top": "10px"},
-                    ),
+                        style={"margin-top": "10px"}
+                        
+                    ), 
                     html.Div(
                         [
                             dcc.Slider(
@@ -69,9 +69,10 @@ def div_graph(name):
                     html.Div(
                         [
                             html.P(
-                                # className="plot-display-text",
-                                "Plot Display mode:",
+                                #className="plot-display-text",
+                                "Plot Display Mode:",
                                 style={"font-weight": "bold", "margin-bottom": "0px"},
+                                className="plot-display-text"
                             ),
                             html.Div(
                                 [
@@ -98,8 +99,9 @@ def div_graph(name):
                                 className="radio-item-div",
                             ),
                             html.Div(id=f"div-current-{name}-value"),
-                        ]
-                    ),
+                        ],
+                        className="entropy-div"
+                    )
                 ],
             ),
             html.Div(id=f"div-{name}-graph", className="ten columns"),
@@ -563,4 +565,4 @@ def update_div_current_cross_entropy_value(run_log_json):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8051)
+    app.run_server(debug=True, port=8050)
