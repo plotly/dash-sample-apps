@@ -1,6 +1,5 @@
 library(GEOquery)
 
-
 #  Helper function to simplify data import for Speck
 importSpeck <- function(filepath, 
                         header = FALSE, 
@@ -16,8 +15,6 @@ importSpeck <- function(filepath,
   return(dashTable::df_to_list(textdata))
 }
 
-
-
 #  Helper function to simplify data import for Clustergram SOFT Files
 
 importSOFT <- function(filepath) {
@@ -31,15 +28,3 @@ importSOFT <- function(filepath) {
   
   return(geo_table)
 }
-
-
-# app <- Dash$new()
-# 
-# app$layout(htmlDiv(list(
-#   dccGraph(figure = heatmaply(n[1:10,])
-#   )
-# )))
-# 
-# 
-# app$run_server(showcase = TRUE)
-
