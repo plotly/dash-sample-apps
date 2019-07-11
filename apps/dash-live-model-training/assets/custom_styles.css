@@ -408,27 +408,11 @@
 }
 
  @media (max-width: 1000px) {
-  #title {
-    width: 200px;
-    font-size: 1.7rem;
-    font-weight: 400;
-    margin-top: 30px;
-    margin-left: 5% !important;
-  }
+  
 
-  #learn-more-button {
-    width: 75px;
-    height: 30px;
-    margin-left: 10px;
-    font-size: 7.5px !important;
-    padding: 0px 8px !important;
-    margin-top: 25px;
-  }
 
-  #plotly-logo {
-    margin-top: 30px;
-    margin-left: 4px;
-  }
+
+  
 } 
 /* #react-select-4--value-item {
   color: #6b6b6b;
