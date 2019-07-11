@@ -41,7 +41,6 @@ safemerge <- function(v1, v2){
   
 }
 
-
 safelabel <- function(v1){
   
   if(is.na(v1)|| is.null(v1)||rlang::is_empty(v1)){
@@ -51,8 +50,6 @@ safelabel <- function(v1){
   }
   
 }
-
-###############INTERNAL LOGIC######################
 
 last_back <- 0
 last_next <- 0
@@ -129,22 +126,13 @@ graph <- DM %>% .[,dim(.)[2]:1] %>% plot_ly(x=rev(labels), y=as.Date(dates, form
 #Setup the app
 app <- Dash$new()
 
-###################################################
-#LAYOUT BEGINS
-###################################################
-
 app$layout(
-  
   htmlDiv(list(
-    #
     htmlDiv(list(
-      ##
               dccMarkdown(
-
               className='eight columns offset-by-two'
               ,
               children=" ### A View of a Chart That Predicts The Economic Future: The Yield Curve"
-                      
               )
               ,
               dccMarkdown(className='eight columns offset-by-two'
@@ -152,87 +140,46 @@ app$layout(
               children='This interactive report is a rendition of a
       [New York Times original](https://www.nytimes.com/interactive/2015/03/19/upshot/3d-yield-curve-economic-growth.html).')
               )
-      ##
             ,
             className='row'
             ,
             style=list('text-align'='center', 'margin-bottom'= '15px')
 
             )
-    #
     ,
 
     htmlDiv(list(
-      ##
       htmlDiv(list(
-        ###
           dccSlider(min=0, max=5, value=0, marks=lapply(0:5, genMarksEmpty), id='slider')
-        ###
           ), className='row',style=list('margin-bottom'= '10px'))
-      ##
       ,
-      ##
       htmlDiv(list(
-        ###
           htmlDiv(list(
-            ####
               htmlButton('Back', id='back', style=list('display'='inline-block'),n_clicks=0)#, className='learn-more-button')
-            ####
               ,
-            ####
               htmlButton('Next', id='next', style=list('display'='inline-block'),n_clicks=0)#,  className='learn-more-button')
-            ####
               ),className='two columns offset-by-two')
-        ###
           ,
-        ###
           htmlDiv(id='text', className='six columns', children='')
-        ###
 
           ), className='row', style=list('margin-bottom'= '10px'))
-      ##
       ,
-      ##
       dccGraph(
         id='graph',
         style=list('height'= '60vh'),
         figure=graph
       )
-      ##
       ,
-      ##
       htmlDiv(id='bucket', style=list(display='none'))
       ,
       htmlDiv(id='dummy')
-     
-      
-      
-      ##
     ), id='page')
-    #
-     
-    # #
-
-
   ))
-  
 )
-###################################################
-#LAYOUT ENDS
-###################################################
-
-
-
-###################################################
-
-###################################################
-#CALLBACK BEGINS
-###################################################
 
 ## BUTTON CONTROLS
 
 ####HELPER function
-
 
 app$callback(
   output=list(id='bucket', property='children')
@@ -267,9 +214,7 @@ app$callback(
 )
 
 
-# 
 app$callback(
-
   output = list(id='slider', property='value')
   ,
   params = list(input(id='bucket', property='children'), state(id='slider', property='value'))
@@ -277,7 +222,6 @@ app$callback(
   function(V, S){
     value <- (fromJSON(V))
     if(is.na(value)||is.null(value)||length(value)==0||rlang::is_empty(value)){return(0)} else {
-
     value <- value[[1]] %>% as.numeric
       if(value <0){
         return(0)
@@ -286,16 +230,11 @@ app$callback(
       } else{
         return(value)
       }
-
-
     }
-
   }
-
 )
 
 app$callback(
-  
   output=list(id='dummy', property='children')
   ,
   params=list(input(id='bucket', property='children'))
@@ -305,26 +244,18 @@ app$callback(
   }
 )
 
-## MAKE ANNOTATIONS
-
 app$callback(
-  
   output=list(id='text', property='children')
   ,
   params=list(input(id='slider', property='value'))
   ,
   function(value){
-    
     if(is.null(value)||is.na(value)){value=0} else{value}
-    
     return(TEXTS[[(value+1)]])
-    
   }
 ) 
 
-##LOAD GRAPH
 app$callback(
-
   output=list(id='graph', property='figure')
   ,
   params=list(input(id='slider', property='value'))
@@ -439,12 +370,5 @@ app$callback(
   }
 
 )
-#
-
-###################################################
-#CALLBACKW END
-###################################################
 
 app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
-
-
