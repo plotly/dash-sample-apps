@@ -83,40 +83,40 @@ app$layout(
     htmlDiv(#
       className='row app-body', 
       children=list(
-        htmlDiv(##
+        htmlDiv(
           className='four columns card', 
           children=list(
-            htmlDiv(###
+            htmlDiv(
               className='bg-white', 
               children=list(
-                htmlDiv(####
+                htmlDiv(
                   className='padding-top-bot',
                   children=list(
                     htmlEm('Test Article:'),
                     dccDropdown(id='study-dropdown', options=list(), value='')
-                  )),####
-                htmlDiv(####
+                  )),
+                htmlDiv(
                   className='padding-top-bot', 
                   children=list(
                     htmlH6("Choose the type of plot"),
-                    dccRadioItems(#####
+                    dccRadioItems(
                                   id='chart-type', 
-                                  options=list(######
+                                  options=list(#
                                                list('label'='Box Plot', 'value'='box'),  
                                                list('label'='Violin Plot', 'value'='violin')
-                                  ),######
+                                  ),#
                                   value='violin',
                                   labelStyle=list(
                                     "display"= "inline-block",
                                     "padding"= "12px 12px 12px 0px"
                                   )
-                    )#####
-                  )),####
-                htmlDiv(####
+                    )
+                  )),
+                htmlDiv(
                   className='padding-top-bot',
                   children=list(
                     htmlH6("CSV File"),
-                    dccUpload(#####
+                    dccUpload(
                               id='upload-data',
                               children= 
                                 htmlDiv(#6
@@ -126,25 +126,24 @@ app$layout(
                                     htmlA("Select Files")
                                   )),#6
                               filename = ''
-                    ),#####
-                    #htmlDiv(id='file-checker', children='None'),
+                    ),
                     htmlH5(" 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ", style=list(display='block', width='100%'))
                     
-                  ))####
-              ))###
-          )),##
+                  ))
+              ))
+          )),
         #Graph
-        htmlDiv(##
+        htmlDiv(
           className="eight columns card-left",
           children=list(
-            htmlDiv(###
+            htmlDiv(
               className="bg-white",
-              children=list(#
+              children=list(
                 htmlH5("Animal data plot"),
                 dccGraph(id="plot", figure=default_plot)
-              ))###
-          ))##
-      ))#
+              ))
+          ))
+      ))
   )))
 
 app$callback(
@@ -196,7 +195,6 @@ app$callback(
       
       study_data <- default_study_data
       test_articles <- (study_data[study_data$group_type=='test'] )$test_article %>% unique(.)
-      #options = foreach(i=test_articles, combine='c') %do% returnOptions(i, study_data)
       options <- lapply(test_articles, returnOptions, study_data = study_data)
       return(options[[1]])
       
@@ -206,7 +204,6 @@ app$callback(
       study_data <- contents_parsed$dt
       
       test_articles <- (study_data[study_data$group_type=='test'] )[['test_article']] %>% unique(.)
-      #options = foreach(i=test_articles, combine='c') %do% returnOptions(i, study_data)
       options <- lapply(test_articles, returnOptions, study_data = study_data)
       return(options[[1]])
       
@@ -270,5 +267,3 @@ app$callback(
 )
 
  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
-#app$run_server()
-
