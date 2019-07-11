@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-# In[]:
-# Import required libraries
 import numpy as np
 
 import plotly.graph_objs as go
@@ -14,16 +12,14 @@ import dash_daq as daq
 from dash_daq_drivers import keithley_instruments
 
 # Instance of a Keithley2400 connected with Prologix GPIB to USB controller
-iv_generator = keithley_instruments.KT2400(
-    mock_mode=False
-)
+iv_generator = keithley_instruments.KT2400(mock_mode=False)
 
 
 def is_instrument_port(port_name):
     """test if a string can be a com of gpib port"""
     answer = False
     if isinstance(port_name, str):
-        ports = ['COM', 'com', 'GPIB0::', 'gpib0::']
+        ports = ["COM", "com", "GPIB0::", "gpib0::"]
         for port in ports:
             if port in port_name:
                 answer = not (port == port_name)
@@ -32,13 +28,14 @@ def is_instrument_port(port_name):
 
 class UsefulVariables:
     """Class to store information useful to callbacks"""
+
     def __init__(self):
         self.n_clicks = 0
         self.n_clicks_clear_graph = 0
         self.n_refresh = 0
-        self.source = 'V'
+        self.source = "V"
         self.is_source_being_changed = False
-        self.mode = 'single'
+        self.mode = "single"
         self.sourced_values = []
         self.measured_values = []
 
@@ -64,12 +61,7 @@ class UsefulVariables:
 
     def sorted_values(self):
         """ Sort the data so the are ascending according to the source """
-        data_array = np.vstack(
-            [
-                local_vars.sourced_values,
-                local_vars.measured_values
-            ]
-        )
+        data_array = np.vstack([local_vars.sourced_values, local_vars.measured_values])
         data_array = data_array[:, data_array[0, :].argsort()]
 
         return data_array
@@ -78,75 +70,66 @@ class UsefulVariables:
 local_vars = UsefulVariables()
 
 # font and background colors associated with each themes
-bkg_color = {'dark': '#2a3f5f', 'light': '#F3F6FA'}
-grid_color = {'dark': 'white', 'light': '#C8D4E3'}
-text_color = {'dark': 'white', 'light': '#506784'}
+bkg_color = {"dark": "#2a3f5f", "light": "#F3F6FA"}
+grid_color = {"dark": "white", "light": "#C8D4E3"}
+text_color = {"dark": "white", "light": "#506784"}
 
 # Define the app
 app = dash.Dash(__name__)
 server = app.server
 app.config.suppress_callback_exceptions = False
 
-# Load css file
-external_css = ["https://codepen.io/bachibouzouk/pen/ZRjdZN.css"]
-for css in external_css:
-    app.css.append_css({"external_url": css})
 
-
-def get_source_labels(source='V'):
+def get_source_labels(source="V"):
     """labels for source/measure elements"""
-    if source == 'V':
+    if source == "V":
         # we source voltage and measure current
-        source_label = 'Voltage'
-        measure_label = 'Current'
-    elif source == 'I':
+        source_label = "Voltage"
+        measure_label = "Current"
+    elif source == "I":
         # we source current and measure voltage
-        source_label = 'Current'
-        measure_label = 'Voltage'
+        source_label = "Current"
+        measure_label = "Voltage"
 
     return source_label, measure_label
 
 
-def get_source_units(source='V'):
+def get_source_units(source="V"):
     """units for source/measure elements"""
-    if source == 'V':
+    if source == "V":
         # we source voltage and measure current
-        source_unit = 'V'
-        measure_unit = 'A'
-    elif source == 'I':
+        source_unit = "V"
+        measure_unit = "A"
+    elif source == "I":
         # we source current and measure voltage
-        source_unit = 'μA'
-        measure_unit = 'V'
+        source_unit = "μA"
+        measure_unit = "V"
 
     return source_unit, measure_unit
 
 
-def get_source_max(source='V'):
+def get_source_max(source="V"):
     """units for source/measure elements"""
-    if source == 'V':
+    if source == "V":
         # we source voltage and measure current
         return 20
-    elif source == 'I':
+    elif source == "I":
         # we source current and measure voltage
         return 100
 
 
 h_style = {
-    'display': 'flex',
-    'flex-direction': 'row',
-    'alignItems': 'center',
-    'justifyContent': 'space-between',
-    'margin': '5px'
+    "display": "flex",
+    "flex-direction": "row",
+    "alignItems": "center",
+    "justifyContent": "space-between",
+    "margin": "5px",
 }
 
 
 # Create controls using a function
 def generate_main_layout(
-        theme='light',
-        src_type='V',
-        mode_val='single',
-        fig=None,
-        sourcemeter=iv_generator
+    theme="light", src_type="V", mode_val="single", fig=None, sourcemeter=iv_generator
 ):
     """generate the layout of the app"""
 
@@ -154,24 +137,24 @@ def generate_main_layout(
     source_unit, measure_unit = get_source_units(src_type)
     source_max = get_source_max(src_type)
 
-    if mode_val == 'single':
+    if mode_val == "single":
         single_style = {
-            'display': 'flex',
-            'flex-direction': 'column',
-            'alignItems': 'center'
+            "display": "flex",
+            "flex-direction": "column",
+            "alignItems": "center",
         }
-        sweep_style = {'display': 'none'}
+        sweep_style = {"display": "none"}
 
-        label_btn = 'Single measure'
+        label_btn = "Single measure"
     else:
-        single_style = {'display': 'none'}
+        single_style = {"display": "none"}
         sweep_style = {
-            'display': 'flex',
-            'flex-direction': 'column',
-            'alignItems': 'center'
+            "display": "flex",
+            "flex-direction": "column",
+            "alignItems": "center",
         }
 
-        label_btn = 'Start sweep'
+        label_btn = "Start sweep"
 
     # As the trigger-measure btn will have its n_clicks reset by the reloading
     # of the layout we need to reset this one as well
@@ -181,336 +164,308 @@ def generate_main_layout(
     if fig is None:
         data = []
     else:
-        data = fig['data']
+        data = fig["data"]
 
     html_layout = [
         html.Div(
-            className='row',
+            className="row",
             children=[
                 # graph to trace out the result(s) of the measurement(s)
                 html.Div(
-                    id='IV_graph_div',
+                    id="IV_graph_div",
                     className="eight columns",
                     children=[
                         dcc.Graph(
-                            id='IV_graph',
+                            id="IV_graph",
                             figure={
-                                'data': data,
-                                'layout': dict(
+                                "data": data,
+                                "layout": dict(
                                     paper_bgcolor=bkg_color[theme],
                                     plot_bgcolor=bkg_color[theme],
-                                    font=dict(
-                                        color=text_color[theme],
-                                        size=15,
-                                    ),
+                                    font=dict(color=text_color[theme], size=15),
                                     xaxis={
-                                        'color': grid_color[theme],
-                                        'gridcolor': grid_color[theme]
+                                        "color": grid_color[theme],
+                                        "gridcolor": grid_color[theme],
                                     },
                                     yaxis={
-                                        'color': grid_color[theme],
-                                        'gridcolor': grid_color[theme]
-                                    }
-                                )
-                            }
+                                        "color": grid_color[theme],
+                                        "gridcolor": grid_color[theme],
+                                    },
+                                ),
+                            },
                         )
-                    ]
+                    ],
                 ),
                 # controls and options for the IV tracer
                 html.Div(
                     className="two columns",
-                    id='IV-options_div',
+                    id="IV-options_div",
                     children=[
                         html.H4(
-                            'Sourcing',
-                            title='Choose whether you want to source voltage '
-                                  'and measure current or source current and '
-                                  'measure voltage'
+                            "Sourcing",
+                            title="Choose whether you want to source voltage "
+                            "and measure current or source current and "
+                            "measure voltage",
                         ),
                         dcc.RadioItems(
-                            id='source-choice',
+                            id="source-choice",
                             options=[
-                                {'label': 'Voltage', 'value': 'V'},
-                                {'label': 'Current', 'value': 'I'}
+                                {"label": "Voltage", "value": "V"},
+                                {"label": "Current", "value": "I"},
                             ],
-                            value=src_type
+                            value=src_type,
                         ),
                         html.Br(),
                         html.H4(
-                            'Measure mode',
-                            title='Choose if you want to do single measurement'
-                                  ' or to start a sweep'
+                            "Measure mode",
+                            title="Choose if you want to do single measurement"
+                            " or to start a sweep",
                         ),
                         dcc.RadioItems(
-                            id='mode-choice',
+                            id="mode-choice",
                             options=[
-                                {'label': 'Single measure', 'value': 'single'},
-                                {'label': 'Sweep', 'value': 'sweep'}
+                                {"label": "Single measure", "value": "single"},
+                                {"label": "Sweep", "value": "sweep"},
                             ],
-                            value=mode_val
+                            value=mode_val,
                         ),
                         html.Br(),
                         html.Div(
                             daq.StopButton(
-                                id='clear-graph_btn',
-                                buttonText='Clear graph',
-                                size=150
+                                id="clear-graph_btn", buttonText="Clear graph", size=150
                             ),
                             style={
-                                'alignItems': 'center',
-                                'display': 'flex',
-                                'flex-direction': 'row'
-                            }
+                                "alignItems": "center",
+                                "display": "flex",
+                                "flex-direction": "row",
+                            },
                         ),
                         html.Br(),
                         daq.Indicator(
-                            id='clear-graph_ind',
-                            value=False,
-                            style={'display': 'none'}
-                        )
-                    ]
+                            id="clear-graph_ind", value=False, style={"display": "none"}
+                        ),
+                    ],
                 ),
                 # controls for the connexion to the instrument
                 html.Div(
-                    id='instr_controls',
+                    id="instr_controls",
                     children=[
-                        html.H4(
-                            sourcemeter.instr_user_name,
-                        ),
+                        html.H4(sourcemeter.instr_user_name),
                         # A button to turn the instrument on or off
                         html.Div(
                             children=[
                                 html.Div(
-                                    id='power_button_div',
+                                    id="power_button_div",
                                     children=daq.PowerButton(
-                                        id='power_button',
-                                        on='false'
-                                    )
+                                        id="power_button", on="false"
+                                    ),
                                 ),
                                 html.Br(),
                                 html.Div(
                                     children=daq.Indicator(
-                                        id='mock_indicator',
+                                        id="mock_indicator",
                                         value=sourcemeter.mock_mode,
-                                        label='is mock?'
+                                        label="is mock?",
                                     ),
-                                    style={'margin': '20px'},
-                                    title='If the indicator is on, it means '
-                                          'the instrument is in mock mode'
-                                )
+                                    style={"margin": "20px"},
+                                    title="If the indicator is on, it means "
+                                    "the instrument is in mock mode",
+                                ),
                             ],
-                            style=h_style
+                            style=h_style,
                         ),
                         # An input to choose the COM/GPIB port
                         dcc.Input(
-                            id='instr_port_input',
-                            placeholder='Enter port name...',
-                            type='text',
-                            value=''
+                            id="instr_port_input",
+                            placeholder="Enter port name...",
+                            type="text",
+                            value="",
                         ),
                         html.Br(),
                         # A button which will initiate the connexion
                         daq.StopButton(
-                            id='instr_port_button',
-                            buttonText='Connect',
-                            disabled=True
+                            id="instr_port_button", buttonText="Connect", disabled=True
                         ),
                         html.Br(),
                         html.Div(
-                            id='instr_status_div',
+                            id="instr_status_div",
                             children="",
-                            style={'margin': '10 px'}
-                        )
+                            style={"margin": "10 px"},
+                        ),
                     ],
                     style={
-                        'display': 'flex',
-                        'flex-direction': 'column',
-                        'alignItems': 'center',
-                        'justifyContent': 'space-between',
-                        'border': '2px solid #C8D4E3',
-                        'background': '#f2f5fa'
-                    }
-                )
-            ]
+                        "display": "flex",
+                        "flex-direction": "column",
+                        "alignItems": "center",
+                        "justifyContent": "space-between",
+                        "border": "2px solid #C8D4E3",
+                        "background": "#f2f5fa",
+                    },
+                ),
+            ],
         ),
         html.Div(
-            id='measure_controls_div',
-            className='row',
+            id="measure_controls_div",
+            className="row",
             children=[
                 # Sourcing controls
                 html.Div(
-                    id='source-div',
+                    id="source-div",
                     className="three columns",
                     children=[
                         # To perform single measures adjusting the source with
                         # a knob
                         html.Div(
-                            id='single_div',
+                            id="single_div",
                             children=[
                                 daq.Knob(
-                                    id='source-knob',
+                                    id="source-knob",
                                     value=0.00,
                                     min=0,
                                     max=source_max,
-                                    label='%s (%s)' % (
-                                        source_label,
-                                        source_unit
-                                    )
+                                    label="%s (%s)" % (source_label, source_unit),
                                 ),
                                 daq.LEDDisplay(
                                     id="source-knob-display",
-                                    label='Knob readout',
-                                    value=0.00
-                                )
+                                    label="Knob readout",
+                                    value=0.00,
+                                ),
                             ],
-                            style=single_style
+                            style=single_style,
                         ),
                         # To perfom automatic sweeps of the source
                         html.Div(
-                            id='sweep_div',
+                            id="sweep_div",
                             children=[
                                 html.Div(
-                                    id='sweep-title',
-                                    children=html.H4(
-                                        "%s sweep:" % source_label
-                                    )
+                                    id="sweep-title",
+                                    children=html.H4("%s sweep:" % source_label),
                                 ),
                                 html.Div(
                                     [
-                                        'Start',
+                                        "Start",
                                         html.Br(),
                                         daq.PrecisionInput(
-                                            id='sweep-start',
+                                            id="sweep-start",
                                             precision=4,
                                             min=0,
                                             max=source_max,
-                                            label=' %s' % source_unit,
-                                            labelPosition='right',
+                                            label=" %s" % source_unit,
+                                            labelPosition="right",
                                             value=1,
-                                            style={'margin': '5px'}
+                                            style={"margin": "5px"},
                                         ),
-
                                     ],
-                                    title='The lowest value of the sweep',
-                                    style=h_style
+                                    title="The lowest value of the sweep",
+                                    style=h_style,
                                 ),
                                 html.Div(
                                     [
-                                        'Stop',
+                                        "Stop",
                                         daq.PrecisionInput(
-                                            id='sweep-stop',
+                                            id="sweep-stop",
                                             precision=4,
                                             min=0,
                                             max=source_max,
-                                            label=' %s' % source_unit,
-                                            labelPosition='right',
+                                            label=" %s" % source_unit,
+                                            labelPosition="right",
                                             value=9,
-                                            style={'margin': '5px'}
-                                        )
+                                            style={"margin": "5px"},
+                                        ),
                                     ],
-                                    title='The highest value of the sweep',
-                                    style=h_style
+                                    title="The highest value of the sweep",
+                                    style=h_style,
                                 ),
                                 html.Div(
                                     [
-                                        'Step',
+                                        "Step",
                                         daq.PrecisionInput(
-                                            id='sweep-step',
+                                            id="sweep-step",
                                             precision=4,
                                             min=0,
                                             max=source_max,
-                                            label=' %s' % source_unit,
-                                            labelPosition='right',
-                                            value=source_max / 20.,
-                                            style={'margin': '5px'}
-                                        )
+                                            label=" %s" % source_unit,
+                                            labelPosition="right",
+                                            value=source_max / 20.0,
+                                            style={"margin": "5px"},
+                                        ),
                                     ],
-                                    title='The increment of the sweep',
-                                    style=h_style
+                                    title="The increment of the sweep",
+                                    style=h_style,
                                 ),
                                 html.Div(
                                     [
-                                        'Time of a step',
+                                        "Time of a step",
                                         daq.NumericInput(
-                                            id='sweep-dt',
+                                            id="sweep-dt",
                                             value=0.5,
                                             min=0.1,
-                                            style={'margin': '5px'}
+                                            style={"margin": "5px"},
                                         ),
-                                        's'
+                                        "s",
                                     ],
-                                    title='The time spent on each increment',
-                                    style=h_style
+                                    title="The time spent on each increment",
+                                    style=h_style,
                                 ),
                                 html.Div(
                                     [
                                         daq.Indicator(
-                                            id='sweep-status',
-                                            label='Sweep active',
-                                            value=False
+                                            id="sweep-status",
+                                            label="Sweep active",
+                                            value=False,
                                         )
                                     ],
-                                    title='Indicates if the sweep is running',
-                                    style=h_style
-                                )
+                                    title="Indicates if the sweep is running",
+                                    style=h_style,
+                                ),
                             ],
-                            style=sweep_style
-                        )
-                    ]
+                            style=sweep_style,
+                        ),
+                    ],
                 ),
                 # measure button and indicator
                 html.Div(
-                    id='trigger_div',
+                    id="trigger_div",
                     className="two columns",
                     children=[
                         daq.StopButton(
-                            id='trigger-measure_btn',
-                            buttonText=label_btn,
-                            size=150
+                            id="trigger-measure_btn", buttonText=label_btn, size=150
                         ),
                         daq.Indicator(
-                            id='measure-triggered',
-                            value=False,
-                            label='Measure active'
+                            id="measure-triggered", value=False, label="Measure active"
                         ),
-                    ]
+                    ],
                 ),
                 # Display the sourced and measured values
                 html.Div(
-                    id='measure_div',
+                    id="measure_div",
                     className="five columns",
                     children=[
                         daq.LEDDisplay(
                             id="source-display",
-                            label='Applied %s (%s)' % (
-                                source_label,
-                                source_unit
-                            ),
-                            value="0.0000"
+                            label="Applied %s (%s)" % (source_label, source_unit),
+                            value="0.0000",
                         ),
                         daq.LEDDisplay(
                             id="measure-display",
-                            label='Measured %s (%s)' % (
-                                measure_label,
-                                measure_unit
-                            ),
-                            value="0.0000"
-                        )
-                    ]
-                )
-
+                            label="Measured %s (%s)" % (measure_label, measure_unit),
+                            value="0.0000",
+                        ),
+                    ],
+                ),
             ],
             style={
-                'width': '100%',
-                'flexDirection': 'column',
-                'alignItems': 'center',
-                'justifyContent': 'space-between'
-            }
+                "width": "100%",
+                "flexDirection": "column",
+                "alignItems": "center",
+                "justifyContent": "space-between",
+            },
         ),
         html.Div(
             children=[
                 html.Div(
-                    children=dcc.Markdown('''
+                    children=dcc.Markdown(
+                        """
 **What is this app about?**
 
 This is an app to show the graphic elements of Dash DAQ used to create an
@@ -542,132 +497,115 @@ source type is changed.
 
 You can purchase the Dash DAQ components at [
 dashdaq.io](https://www.dashdaq.io/)
-                    '''),
+                    """
+                    ),
                     style={
-                        'max-width': '600px',
-                        'margin': '15px auto 300 px auto',
-                        'padding': '40px',
-                        'alignItems': 'left',
-                        'box-shadow': '10px 10px 5px rgba(0, 0, 0, 0.2)',
-                        'border': '1px solid #DFE8F3',
-                        'color': text_color[theme],
-                        'background': bkg_color[theme]
-                    }
+                        "max-width": "600px",
+                        "margin": "15px auto 300 px auto",
+                        "padding": "40px",
+                        "alignItems": "left",
+                        "box-shadow": "10px 10px 5px rgba(0, 0, 0, 0.2)",
+                        "border": "1px solid #DFE8F3",
+                        "color": text_color[theme],
+                        "background": bkg_color[theme],
+                    },
                 )
             ]
-        )
+        ),
     ]
 
-    if theme == 'dark':
+    if theme == "dark":
         return daq.DarkThemeProvider(children=html_layout)
-    elif theme == 'light':
+    elif theme == "light":
         return html_layout
 
 
 root_layout = html.Div(
-    id='main_page',
+    id="main_page",
     children=[
-        dcc.Location(id='url', refresh=False),
-        dcc.Interval(id='refresher', interval=1000000),
+        dcc.Location(id="url", refresh=False),
+        dcc.Interval(id="refresher", interval=1000000),
         html.Div(
-            id='header',
-            className='banner',
+            id="header",
+            className="banner",
             children=[
-                html.H2('Dash DAQ: IV curve tracer'),
+                html.H2("Dash DAQ: IV curve tracer"),
                 daq.ToggleSwitch(
-                    id='toggleTheme',
-                    label='Dark/Light layout',
+                    id="toggleTheme",
+                    label="Dark/Light layout",
                     size=30,
-                    style={'display': 'none'}
+                    style={"display": "none"},
                 ),
                 html.Img(
-                    src='https://s3-us-west-1.amazonaws.com/plotly'
-                        '-tutorials/excel/dash-daq/dash-daq-logo'
-                        '-by-plotly-stripe.png',
-                    style={
-                        'height': '100',
-                        'float': 'right',
-                    }
-                )
+                    src="https://s3-us-west-1.amazonaws.com/plotly"
+                    "-tutorials/excel/dash-daq/dash-daq-logo"
+                    "-by-plotly-stripe.png",
+                    style={"height": "100", "float": "right"},
+                ),
             ],
             style={
-                'width': '100%',
-                'display': 'flex',
-                'flexDirection': 'row',
-                'alignItems': 'center',
-                'justifyContent': 'space-between',
-                'background': '#A2B1C6',
-                'color': '#506784'
-            }
+                "width": "100%",
+                "display": "flex",
+                "flexDirection": "row",
+                "alignItems": "center",
+                "justifyContent": "space-between",
+                "background": "#A2B1C6",
+                "color": "#506784",
+            },
         ),
         html.Div(
-            id='page-content',
+            id="page-content",
             children=generate_main_layout(),
             # className='ten columns',
-            style={
-                'width': '100%'
-            }
-        )
-    ]
+            style={"width": "100%"},
+        ),
+    ],
 )
 
-
-# In[]:
 # Create app layout
 app.layout = root_layout
 
-
-# In[]:
-# Create callbacks
 # ======= Dark/light themes callbacks =======
 @app.callback(
-    Output('page-content', 'children'),
+    Output("page-content", "children"),
+    [Input("toggleTheme", "value")],
     [
-        Input('toggleTheme', 'value')
+        State("source-choice", "value"),
+        State("mode-choice", "value"),
+        State("IV_graph", "figure"),
     ],
-    [
-        State('source-choice', 'value'),
-        State('mode-choice', 'value'),
-        State('IV_graph', 'figure')
-    ]
 )
 def page_layout(value, src_type, mode_val, fig):
     """update the theme of the daq components"""
 
     if value:
-        return generate_main_layout('dark', src_type, mode_val, fig)
+        return generate_main_layout("dark", src_type, mode_val, fig)
     else:
-        return generate_main_layout('light', src_type, mode_val, fig)
+        return generate_main_layout("light", src_type, mode_val, fig)
 
 
 @app.callback(
-    Output('page-content', 'style'),
-    [Input('toggleTheme', 'value')],
-    [State('page-content', 'style')]
+    Output("page-content", "style"),
+    [Input("toggleTheme", "value")],
+    [State("page-content", "style")],
 )
 def page_style(value, style_dict):
     """update the theme of the app"""
     if value:
-        theme = 'dark'
+        theme = "dark"
     else:
-        theme = 'light'
+        theme = "light"
 
-    style_dict['color'] = text_color[theme]
-    style_dict['background'] = bkg_color[theme]
+    style_dict["color"] = text_color[theme]
+    style_dict["background"] = bkg_color[theme]
     return style_dict
 
 
 # ======= Power on/off toggle callbacks =======
 @app.callback(
-    Output('instr_port_button', 'disabled'),
-    [
-        Input('power_button', 'on'),
-        Input('instr_port_input', 'value')
-    ],
-    [
-        State('instr_port_input', 'value'),
-        State('instr_port_input', 'placeholder')
-    ]
+    Output("instr_port_button", "disabled"),
+    [Input("power_button", "on"), Input("instr_port_input", "value")],
+    [State("instr_port_input", "value"), State("instr_port_input", "placeholder")],
 )
 def instrument_port_btn_update(pwr_status, _, text, placeholder):
     """enable or disable the connect button
@@ -682,15 +620,15 @@ def instrument_port_btn_update(pwr_status, _, text, placeholder):
 
 
 @app.callback(
-    Output('instr_status_div', 'children'),
-    [Input('instr_port_button', 'n_clicks')],
-    [State('instr_port_input', 'value')],
+    Output("instr_status_div", "children"),
+    [Input("instr_port_button", "n_clicks")],
+    [State("instr_port_input", "value")],
 )
 def instrument_port_btn_click(_, text):
     """reconnect the instrument to the new com port"""
     iv_generator.connect(text)
-    print(iv_generator.ask('*IDN?'))
-    return str(iv_generator.ask('*IDN?'))
+    print(iv_generator.ask("*IDN?"))
+    return str(iv_generator.ask("*IDN?"))
 
 
 def automatic_grey_out_callback(div_id, app):
@@ -699,9 +637,7 @@ def automatic_grey_out_callback(div_id, app):
     """
 
     @app.callback(
-        Output(div_id, 'style'),
-        [Input('power_button', 'on')],
-        [State(div_id, 'style')],
+        Output(div_id, "style"), [Input("power_button", "on")], [State(div_id, "style")]
     )
     def grey_out(pwr_status, style_dict):
         if style_dict is None:
@@ -709,22 +645,22 @@ def automatic_grey_out_callback(div_id, app):
         else:
             answer = style_dict
         if pwr_status:
-            answer['opacity'] = 1
+            answer["opacity"] = 1
         else:
-            answer['opacity'] = 0.3
+            answer["opacity"] = 0.3
         return answer
 
-    grey_out.__name__ = 'grey_out_%s' % div_id
+    grey_out.__name__ = "grey_out_%s" % div_id
 
     return grey_out
 
 
 for div_id in [
-    'IV_graph_div',
-    'IV-options_div',
-    'measure_controls_div',
-    'measure_div',
-    'trigger_div'
+    "IV_graph_div",
+    "IV-options_div",
+    "measure_controls_div",
+    "measure_div",
+    "trigger_div",
 ]:
     automatic_grey_out_callback(div_id, app)
 
@@ -734,33 +670,23 @@ def automatic_enable_callback(div_id, app):
         to instrument.
     """
 
-    @app.callback(
-        Output(div_id, 'disabled'),
-        [Input('power_button', 'on')]
-    )
+    @app.callback(Output(div_id, "disabled"), [Input("power_button", "on")])
     def enable(pwr_status):
         return not pwr_status
 
-    enable.__name__ = 'enable_%s' % div_id
+    enable.__name__ = "enable_%s" % div_id
 
     return enable
 
 
-for div_id in [
-    'clear-graph_btn',
-    'trigger-measure_btn',
-    'source-knob'
-]:
+for div_id in ["clear-graph_btn", "trigger-measure_btn", "source-knob"]:
     automatic_enable_callback(div_id, app)
 
 
 # ======= Callbacks for changing labels =======
 @app.callback(
-    Output('source-knob', 'label'),
-    [
-        Input('source-choice', 'value'),
-        Input('mode-choice', 'value')
-    ],
+    Output("source-knob", "label"),
+    [Input("source-choice", "value"), Input("mode-choice", "value")],
 )
 def source_knob_label(src_type, _):
     """update label upon modification of Radio Items"""
@@ -769,64 +695,49 @@ def source_knob_label(src_type, _):
 
 
 @app.callback(
-    Output('source-knob-display', 'label'),
-    [
-        Input('source-choice', 'value'),
-        Input('mode-choice', 'value')
-    ],
+    Output("source-knob-display", "label"),
+    [Input("source-choice", "value"), Input("mode-choice", "value")],
 )
 def source_knob_display_label(scr_type, _):
     """update label upon modification of Radio Items"""
     source_label, measure_label = get_source_labels(scr_type)
     source_unit, measure_unit = get_source_units(scr_type)
-    return 'Value : %s (%s)' % (source_label, source_unit)
+    return "Value : %s (%s)" % (source_label, source_unit)
 
 
 @app.callback(
-    Output('sweep-start', 'label'),
-    [
-        Input('source-choice', 'value'),
-        Input('mode-choice', 'value')
-    ],
+    Output("sweep-start", "label"),
+    [Input("source-choice", "value"), Input("mode-choice", "value")],
 )
 def sweep_start_label(src_type, _):
     """update label upon modification of Radio Items"""
     source_unit, measure_unit = get_source_units(src_type)
-    return '(%s)' % source_unit
+    return "(%s)" % source_unit
 
 
 @app.callback(
-    Output('sweep-stop', 'label'),
-    [
-        Input('source-choice', 'value'),
-        Input('mode-choice', 'value')
-    ],
+    Output("sweep-stop", "label"),
+    [Input("source-choice", "value"), Input("mode-choice", "value")],
 )
 def sweep_stop_label(src_type, _):
     """update label upon modification of Radio Items"""
     source_unit, measure_unit = get_source_units(src_type)
-    return '(%s)' % source_unit
+    return "(%s)" % source_unit
 
 
 @app.callback(
-    Output('sweep-step', 'label'),
-    [
-        Input('source-choice', 'value'),
-        Input('mode-choice', 'value')
-    ],
+    Output("sweep-step", "label"),
+    [Input("source-choice", "value"), Input("mode-choice", "value")],
 )
 def sweep_step_label(src_type, _):
     """update label upon modification of Radio Items"""
     source_unit, measure_unit = get_source_units(src_type)
-    return '(%s)' % source_unit
+    return "(%s)" % source_unit
 
 
 @app.callback(
-    Output('sweep-title', 'children'),
-    [
-        Input('source-choice', 'value'),
-        Input('mode-choice', 'value')
-    ],
+    Output("sweep-title", "children"),
+    [Input("source-choice", "value"), Input("mode-choice", "value")],
 )
 def sweep_title_label(src_type, _):
     """update label upon modification of Radio Items"""
@@ -835,135 +746,95 @@ def sweep_title_label(src_type, _):
 
 
 @app.callback(
-    Output('source-display', 'label'),
-    [
-        Input('source-choice', 'value'),
-        Input('mode-choice', 'value')
-    ],
+    Output("source-display", "label"),
+    [Input("source-choice", "value"), Input("mode-choice", "value")],
 )
 def source_display_label(src_type, _):
     """update label upon modification of Radio Items"""
     source_label, measure_label = get_source_labels(src_type)
     source_unit, measure_unit = get_source_units(src_type)
-    return 'Applied %s (%s)' % (source_label, source_unit)
+    return "Applied %s (%s)" % (source_label, source_unit)
 
 
 @app.callback(
-    Output('measure-display', 'label'),
-    [
-        Input('source-choice', 'value'),
-        Input('mode-choice', 'value')
-    ],
+    Output("measure-display", "label"),
+    [Input("source-choice", "value"), Input("mode-choice", "value")],
 )
 def measure_display_label(src_type, _):
     """update label upon modification of Radio Items"""
     source_label, measure_label = get_source_labels(src_type)
     source_unit, measure_unit = get_source_units(src_type)
-    return 'Measured %s (%s)' % (measure_label, measure_unit)
+    return "Measured %s (%s)" % (measure_label, measure_unit)
 
 
 # ======= Callbacks to change elements in the layout =======
-@app.callback(
-    Output('single_div', 'style'),
-    [Input('mode-choice', 'value')]
-)
+@app.callback(Output("single_div", "style"), [Input("mode-choice", "value")])
 def single_div_toggle_style(mode_val):
     """toggle the layout for single measure"""
-    if mode_val == 'single':
-        return {
-            'display': 'flex',
-            'flex-direction': 'column',
-            'alignItems': 'center'
-        }
+    if mode_val == "single":
+        return {"display": "flex", "flex-direction": "column", "alignItems": "center"}
     else:
-        return {'display': 'none'}
+        return {"display": "none"}
 
 
-@app.callback(
-    Output('sweep_div', 'style'),
-    [Input('mode-choice', 'value')]
-
-)
+@app.callback(Output("sweep_div", "style"), [Input("mode-choice", "value")])
 def sweep_div_toggle_style(mode_val):
     """toggle the layout for sweep"""
-    if mode_val == 'single':
-        return {'display': 'none'}
+    if mode_val == "single":
+        return {"display": "none"}
     else:
-        return {
-            'display': 'flex',
-            'flex-direction': 'column',
-            'alignItems': 'center'
-        }
+        return {"display": "flex", "flex-direction": "column", "alignItems": "center"}
 
 
-@app.callback(
-    Output('source-knob', 'max'),
-    [Input('source-choice', 'value')]
-
-)
+@app.callback(Output("source-knob", "max"), [Input("source-choice", "value")])
 def source_knob_max(src_type):
     """update max value upon changing source type"""
     return get_source_max(src_type)
 
 
-@app.callback(
-    Output('sweep-start', 'max'),
-    [Input('source-choice', 'value')]
-
-)
+@app.callback(Output("sweep-start", "max"), [Input("source-choice", "value")])
 def sweep_start_max(src_type):
     """update max value upon changing source type"""
     return get_source_max(src_type)
 
 
-@app.callback(
-    Output('sweep-stop', 'max'),
-    [Input('source-choice', 'value')]
-)
+@app.callback(Output("sweep-stop", "max"), [Input("source-choice", "value")])
 def sweep_stop_max(src_type):
     """update max value upon changing source type"""
     return get_source_max(src_type)
 
 
-@app.callback(
-    Output('sweep-step', 'max'),
-    [Input('source-choice', 'value')]
-)
+@app.callback(Output("sweep-step", "max"), [Input("source-choice", "value")])
 def sweep_step_max(src_type):
     """update max value upon changing source type"""
     return get_source_max(src_type)
 
 
 @app.callback(
-    Output('trigger-measure_btn', 'buttonText'),
-    [
-        Input('measure-triggered', 'value'),
-        Input('mode-choice', 'value')
-    ],
-    [
-        State('trigger-measure_btn', 'buttonText'),
-    ]
+    Output("trigger-measure_btn", "buttonText"),
+    [Input("measure-triggered", "value"), Input("mode-choice", "value")],
+    [State("trigger-measure_btn", "buttonText")],
 )
 def toggle_trigger_measure_button_label(measure_triggered, mode_val, btn_text):
     """change the label of the trigger button"""
 
-    if mode_val == 'single':
-        return 'Single measure'
+    if mode_val == "single":
+        return "Single measure"
     else:
         if measure_triggered:
-            if btn_text == 'Start sweep':
-                return 'Stop sweep'
+            if btn_text == "Start sweep":
+                return "Stop sweep"
             else:
-                return 'Start sweep'
+                return "Start sweep"
         else:
-            return 'Start sweep'
+            return "Start sweep"
 
 
 # ======= Applied/measured values display =======
 @app.callback(
-    Output('source-knob', 'value'),
-    [Input('source-choice', 'value')],
-    [State('source-knob', 'value')]
+    Output("source-knob", "value"),
+    [Input("source-choice", "value")],
+    [State("source-knob", "value")],
 )
 def source_change(src_type, src_val):
     """modification upon source-change
@@ -982,21 +853,16 @@ def source_change(src_type, src_val):
 
 # ======= Interval callbacks =======
 @app.callback(
-    Output('refresher', 'interval'),
-    [
-        Input('sweep-status', 'value')
-    ],
-    [
-        State('mode-choice', 'value'),
-        State('sweep-dt', 'value')
-    ]
+    Output("refresher", "interval"),
+    [Input("sweep-status", "value")],
+    [State("mode-choice", "value"), State("sweep-dt", "value")],
 )
 def interval_toggle(swp_on, mode_val, dt):
     """change the interval to high frequency for sweep"""
     if dt <= 0:
         # Precaution against the user
         dt = 0.5
-    if mode_val == 'single':
+    if mode_val == "single":
         return 1000000
     else:
         if swp_on:
@@ -1006,19 +872,13 @@ def interval_toggle(swp_on, mode_val, dt):
 
 
 @app.callback(
-    Output('refresher', 'n_intervals'),
-    [
-        Input('trigger-measure_btn', 'n_clicks'),
-        Input('mode-choice', 'value')
-    ],
-    [
-        State('sweep-status', 'value'),
-        State('refresher', 'n_intervals')
-    ]
+    Output("refresher", "n_intervals"),
+    [Input("trigger-measure_btn", "n_clicks"), Input("mode-choice", "value")],
+    [State("sweep-status", "value"), State("refresher", "n_intervals")],
 )
 def reset_interval(_, mode_val, swp_on, n_interval):
     """reset the n_interval of the dcc.Interval once a sweep is done"""
-    if mode_val == 'single':
+    if mode_val == "single":
         local_vars.reset_interval()
         return 0
     else:
@@ -1030,30 +890,19 @@ def reset_interval(_, mode_val, swp_on, n_interval):
 
 
 @app.callback(
-    Output('sweep-status', 'value'),
+    Output("sweep-status", "value"),
+    [Input("trigger-measure_btn", "n_clicks"), Input("source-display", "value")],
     [
-        Input('trigger-measure_btn', 'n_clicks'),
-        Input('source-display', 'value'),
-
+        State("trigger-measure_btn", "buttonText"),
+        State("measure-triggered", "value"),
+        State("sweep-status", "value"),
+        State("sweep-stop", "value"),
+        State("sweep-step", "value"),
+        State("mode-choice", "value"),
     ],
-    [
-        State('trigger-measure_btn', 'buttonText'),
-        State('measure-triggered', 'value'),
-        State('sweep-status', 'value'),
-        State('sweep-stop', 'value'),
-        State('sweep-step', 'value'),
-        State('mode-choice', 'value')
-    ]
 )
 def sweep_activation_toggle(
-        n_clicks,
-        sourced_val,
-        trig_button_text,
-        _,
-        swp_on,
-        swp_stop,
-        swp_step,
-        mode_val
+    n_clicks, sourced_val, trig_button_text, _, swp_on, swp_stop, swp_step, mode_val
 ):
     """decide whether to turn on or off the sweep
     when single mode is selected, it is off by default
@@ -1061,60 +910,46 @@ def sweep_activation_toggle(
     otherwise it stops the sweep once the sourced value gets higher or equal
     than the sweep limit minus the sweep step
     """
-    if mode_val == 'single':
+    if mode_val == "single":
         return False
     else:
         if swp_on:
             # The condition of continuation is to source lower than the sweep
             # limit minus one sweep step
-            answer = float(sourced_val) <= float(swp_stop)-float(swp_step)
-            print('sweep on')
+            answer = float(sourced_val) <= float(swp_stop) - float(swp_step)
+            print("sweep on")
             print(answer)
 
-            if trig_button_text == 'Start sweep':
+            if trig_button_text == "Start sweep":
                 # the button was clicked on and is back to Start sweep
                 return False
             else:
                 # the button wasn't clicked on
                 return answer
         else:
-            if trig_button_text == 'Start sweep':
+            if trig_button_text == "Start sweep":
                 # The 'trigger-measure_btn' wasn't pressed yet
-                print('sweep not on, not considering')
+                print("sweep not on, not considering")
                 return False
             else:
                 # Initiate a sweep
-                print('sweep not on, initiating')
+                print("sweep not on, initiating")
                 return True
 
 
 # ======= Measurements callbacks =======
-@app.callback(
-    Output('source-knob-display', 'value'),
-    [
-        Input('source-knob', 'value')
-    ]
-)
+@app.callback(Output("source-knob-display", "value"), [Input("source-knob", "value")])
 def set_source_knob_display(knob_val):
     """"set the value of the knob on a LED display"""
     return knob_val
 
 
 @app.callback(
-    Output('measure-triggered', 'value'),
-    [
-        Input('trigger-measure_btn', 'n_clicks'),
-        Input('mode-choice', 'value'),
-    ],
-    [
-        State('sweep-status', 'value')
-    ]
+    Output("measure-triggered", "value"),
+    [Input("trigger-measure_btn", "n_clicks"), Input("mode-choice", "value")],
+    [State("sweep-status", "value")],
 )
-def update_trigger_measure(
-        nclick,
-        mode_val,
-        _
-):
+def update_trigger_measure(nclick, mode_val, _):
     """ Controls if a measure can be made or not
     The indicator 'measure-triggered' can be set to True only by a click
     on the 'trigger-measure_btn' button or by the 'refresher' interval
@@ -1128,46 +963,42 @@ def update_trigger_measure(
         local_vars.change_n_clicks(int(nclick))
         return True
     else:
-        if mode_val == 'single':
+        if mode_val == "single":
             # It was triggered by a change of the mode
             return False
 
 
 @app.callback(
-    Output('source-display', 'value'),
+    Output("source-display", "value"),
+    [Input("refresher", "n_intervals"), Input("measure-triggered", "value")],
     [
-        Input('refresher', 'n_intervals'),
-        Input('measure-triggered', 'value'),
+        State("source-knob", "value"),
+        State("source-display", "value"),
+        State("sweep-start", "value"),
+        State("sweep-stop", "value"),
+        State("sweep-step", "value"),
+        State("mode-choice", "value"),
+        State("sweep-status", "value"),
     ],
-    [
-        State('source-knob', 'value'),
-        State('source-display', 'value'),
-        State('sweep-start', 'value'),
-        State('sweep-stop', 'value'),
-        State('sweep-step', 'value'),
-        State('mode-choice', 'value'),
-        State('sweep-status', 'value')
-    ]
 )
 def set_source_display(
-        n_interval,
-        meas_triggered,
-        knob_val,
-        old_source_display_val,
-        swp_start,
-        swp_stop,
-        swp_step,
-        mode_val,
-        swp_on
+    n_interval,
+    meas_triggered,
+    knob_val,
+    old_source_display_val,
+    swp_start,
+    swp_stop,
+    swp_step,
+    mode_val,
+    swp_on,
 ):
     """"set the source value to the instrument"""
-    if mode_val == 'single':
+    if mode_val == "single":
         return knob_val
     else:
         if meas_triggered:
             if swp_on:
-                answer = float(swp_start) \
-                         + (int(n_interval) - 1) * float(swp_step)
+                answer = float(swp_start) + (int(n_interval) - 1) * float(swp_step)
                 if answer > float(swp_stop):
                     return old_source_display_val
                 else:
@@ -1179,25 +1010,18 @@ def set_source_display(
 
 
 @app.callback(
-    Output('measure-display', 'value'),
+    Output("measure-display", "value"),
+    [Input("source-display", "value")],
     [
-        Input('source-display', 'value')
+        State("measure-triggered", "value"),
+        State("measure-display", "value"),
+        State("source-choice", "value"),
+        State("mode-choice", "value"),
+        State("sweep-status", "value"),
     ],
-    [
-        State('measure-triggered', 'value'),
-        State('measure-display', 'value'),
-        State('source-choice', 'value'),
-        State('mode-choice', 'value'),
-        State('sweep-status', 'value')
-    ]
 )
 def update_measure_display(
-        src_val,
-        meas_triggered,
-        meas_old_val,
-        src_type,
-        mode_val,
-        swp_on
+    src_val, meas_triggered, meas_old_val, src_type, mode_val, swp_on
 ):
     """"read the measured value from the instrument
     check if a measure should be made
@@ -1208,7 +1032,7 @@ def update_measure_display(
     source_value = float(src_val)
     measured_value = meas_old_val
 
-    if mode_val == 'single':
+    if mode_val == "single":
         if meas_triggered:
             # Save the sourced value
             local_vars.sourced_values.append(source_value)
@@ -1230,12 +1054,12 @@ def update_measure_display(
 
 # ======= Graph related callbacks =======
 @app.callback(
-    Output('clear-graph_ind', 'value'),
+    Output("clear-graph_ind", "value"),
     [
-        Input('source-knob', 'value'),
-        Input('clear-graph_btn', 'n_clicks'),
-        Input('measure-triggered', 'value')
-    ]
+        Input("source-knob", "value"),
+        Input("clear-graph_btn", "n_clicks"),
+        Input("measure-triggered", "value"),
+    ],
 )
 def clear_graph_click(src_val, nclick, meas_triggered):
     """clear the data on the graph
@@ -1264,41 +1088,38 @@ def clear_graph_click(src_val, nclick, meas_triggered):
 
 
 @app.callback(
-    Output('IV_graph', 'figure'),
+    Output("IV_graph", "figure"),
+    [Input("measure-display", "value"), Input("clear-graph_ind", "value")],
     [
-        Input('measure-display', 'value'),
-        Input('clear-graph_ind', 'value')
+        State("toggleTheme", "value"),
+        State("measure-triggered", "value"),
+        State("IV_graph", "figure"),
+        State("source-choice", "value"),
+        State("mode-choice", "value"),
+        State("sweep-status", "value"),
     ],
-    [
-        State('toggleTheme', 'value'),
-        State('measure-triggered', 'value'),
-        State('IV_graph', 'figure'),
-        State('source-choice', 'value'),
-        State('mode-choice', 'value'),
-        State('sweep-status', 'value')
-    ]
 )
 def update_graph(
-        measured_val,
-        clear_graph,  # Had to do this because of the lack of multiple Outputs
-        theme,
-        meas_triggered,
-        graph_data,
-        src_type,
-        mode_val,
-        swp_on
+    measured_val,
+    clear_graph,  # Had to do this because of the lack of multiple Outputs
+    theme,
+    meas_triggered,
+    graph_data,
+    src_type,
+    mode_val,
+    swp_on,
 ):
     """"update the IV graph"""
     if theme:
-        theme = 'dark'
+        theme = "dark"
     else:
-        theme = 'light'
+        theme = "light"
 
     # Labels for sourced and measured quantities
     source_label, measure_label = get_source_labels(src_type)
     source_unit, measure_unit = get_source_units(src_type)
 
-    if mode_val == 'single':
+    if mode_val == "single":
         if meas_triggered:
             # The change to the graph was triggered by a measure
 
@@ -1312,44 +1133,33 @@ def update_graph(
                 go.Scatter(
                     x=xdata,
                     y=ydata,
-                    mode='lines+markers',
-                    name='IV curve',
-                    line={
-                        'color': '#EF553B',
-                        'width': 2
-                    }
+                    mode="lines+markers",
+                    name="IV curve",
+                    line={"color": "#EF553B", "width": 2},
                 )
             ]
 
             return {
-                'data': data_for_graph,
-                'layout': dict(
+                "data": data_for_graph,
+                "layout": dict(
                     xaxis={
-                        'title': 'Applied %s (%s)' % (
-                            source_label, source_unit
-                        ),
-                        'color': text_color[theme],
-                        'gridcolor': grid_color[theme]
+                        "title": "Applied %s (%s)" % (source_label, source_unit),
+                        "color": text_color[theme],
+                        "gridcolor": grid_color[theme],
                     },
                     yaxis={
-                        'title': 'Measured %s (%s)' % (
-                            measure_label,
-                            measure_unit
-                        ),
-                        'gridcolor': grid_color[theme]
+                        "title": "Measured %s (%s)" % (measure_label, measure_unit),
+                        "gridcolor": grid_color[theme],
                     },
-                    font=dict(
-                        color=text_color[theme],
-                        size=15,
-                    ),
-                    margin={'l': 100, 'b': 100, 't': 50, 'r': 20, 'pad': 0},
+                    font=dict(color=text_color[theme], size=15),
+                    margin={"l": 100, "b": 100, "t": 50, "r": 20, "pad": 0},
                     plot_bgcolor=bkg_color[theme],
-                    paper_bgcolor=bkg_color[theme]
-                )
+                    paper_bgcolor=bkg_color[theme],
+                ),
             }
         else:
             if clear_graph:
-                graph_data['data'] = local_vars.sorted_values()
+                graph_data["data"] = local_vars.sorted_values()
             return graph_data
     else:
         if swp_on:
@@ -1365,48 +1175,34 @@ def update_graph(
                 go.Scatter(
                     x=xdata,
                     y=ydata,
-                    mode='lines+markers',
-                    name='IV curve',
-                    line={
-                        'color': '#EF553B',
-                        'width': 2
-                    }
+                    mode="lines+markers",
+                    name="IV curve",
+                    line={"color": "#EF553B", "width": 2},
                 )
             ]
 
             return {
-                'data': data_for_graph,
-                'layout': dict(
+                "data": data_for_graph,
+                "layout": dict(
                     xaxis={
-                        'title': 'Applied %s (%s)' % (
-                            source_label, source_unit
-                        ),
-                        'color': text_color[theme],
-                        'gridcolor': grid_color[theme]
+                        "title": "Applied %s (%s)" % (source_label, source_unit),
+                        "color": text_color[theme],
+                        "gridcolor": grid_color[theme],
                     },
                     yaxis={
-                        'title': 'Measured %s (%s)' % (
-                            measure_label,
-                            measure_unit
-                        ),
-                        'gridcolor': grid_color[theme]
+                        "title": "Measured %s (%s)" % (measure_label, measure_unit),
+                        "gridcolor": grid_color[theme],
                     },
-                    font=dict(
-                        color=text_color[theme],
-                        size=15,
-                    ),
-                    margin={'l': 100, 'b': 100, 't': 50, 'r': 20, 'pad': 0},
+                    font=dict(color=text_color[theme], size=15),
+                    margin={"l": 100, "b": 100, "t": 50, "r": 20, "pad": 0},
                     plot_bgcolor=bkg_color[theme],
-                    paper_bgcolor=bkg_color[theme]
-                )
+                    paper_bgcolor=bkg_color[theme],
+                ),
             }
         else:
             if clear_graph:
-                graph_data['data'] = local_vars.sorted_values()
+                graph_data["data"] = local_vars.sorted_values()
             return graph_data
 
-
-# In[]:
-# Main
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run_server(debug=False)

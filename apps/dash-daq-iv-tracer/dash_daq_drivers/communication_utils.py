@@ -12,6 +12,7 @@ import sys
 
 try:
     import serial
+
     serial_available = True
 except ImportError:
     serial_available = False
@@ -19,17 +20,18 @@ except ImportError:
 
 try:
     import visa
+
     visa_available = True
 except ImportError:
     visa_available = False
     print("pyvisa package not installed, run 'pip install pyvisa'")
 
-INTF_VISA = 'pyvisa'
-INTF_PROLOGIX = 'prologix'
+INTF_VISA = "pyvisa"
+INTF_PROLOGIX = "prologix"
 INTF_GPIB = INTF_PROLOGIX
-INTF_SERIAL = 'serial'
+INTF_SERIAL = "serial"
 
-INTF_NONE = 'None'
+INTF_NONE = "None"
 
 PROLOGIX_COM_PORT = "COM3"
 
@@ -57,15 +59,15 @@ def list_serial_ports(max_port_num=20):
         :returns:
             A list of the serial ports available on the system
     """
-    if sys.platform.startswith('win'):
-        ports = ['COM%s' % (i + 1) for i in range(max_port_num)]
-    elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+    if sys.platform.startswith("win"):
+        ports = ["COM%s" % (i + 1) for i in range(max_port_num)]
+    elif sys.platform.startswith("linux") or sys.platform.startswith("cygwin"):
         # this excludes your current terminal "/dev/tty"
-        ports = glob.glob('/dev/tty[A-Za-z]*')
-    elif sys.platform.startswith('darwin'):
-        ports = glob.glob('/dev/tty.*')
+        ports = glob.glob("/dev/tty[A-Za-z]*")
+    elif sys.platform.startswith("darwin"):
+        ports = glob.glob("/dev/tty.*")
     else:
-        raise EnvironmentError('Unsupported platform')
+        raise EnvironmentError("Unsupported platform")
 
     result = []
     for port in ports:
@@ -106,7 +108,7 @@ def find_prologix_ports():
             prologix_controller = prologix_controller.encode()
             if prologix_controller in answer:
                 result.append(port)
-        except(OSError, serial.SerialException):
+        except (OSError, serial.SerialException):
             pass
 
     return result
@@ -138,13 +140,7 @@ class PrologixController(object):
     connection = None
 
     def __init__(
-            self,
-            com_port=None,
-            mock=False,
-            auto=1,
-            baud_rate=9600,
-            timeout=5,
-            **kwargs
+        self, com_port=None, mock=False, auto=1, baud_rate=9600, timeout=5, **kwargs
     ):
 
         self.mock = mock
@@ -156,21 +152,21 @@ class PrologixController(object):
 
                 if com_port != []:
                     if len(com_port) > 1:
-                        logging.warning("There is more than one Prologix \
-                         controller, we are connecting to %s" % (com_port[0]))
+                        logging.warning(
+                            "There is more than one Prologix \
+                         controller, we are connecting to %s"
+                            % (com_port[0])
+                        )
 
                     com_port = com_port[0]
-                    print(
-                        "... found a Prologix controller on the port '%s'" %
-                        com_port
-                    )
+                    print("... found a Prologix controller on the port '%s'" % com_port)
 
                     self.connection = serial.Serial(
                         com_port,
                         baud_rate,
                         xonxoff=True,
                         stopbits=serial.STOPBITS_TWO,
-                        timeout=timeout
+                        timeout=timeout,
                     )
                 else:
                     self.connection = None
@@ -183,14 +179,11 @@ class PrologixController(object):
                         baud_rate,
                         xonxoff=True,
                         stopbits=serial.STOPBITS_TWO,
-                        timeout=timeout
+                        timeout=timeout,
                     )
                 except serial.serialutil.SerialException:
                     self.connection = None
-                    print(
-                        "The port %s is not attributed to any device"
-                        % com_port
-                    )
+                    print("The port %s is not attributed to any device" % com_port)
 
             if self.connection is not None:
                 # set the connector in controller mode and let the user
@@ -212,12 +205,12 @@ class PrologixController(object):
                     print(
                         "The port %s isn't related to a Prologix controller "
                         "(try to plug and unplug the cable if it is there "
-                        "nevertheless)" % (com_port))
+                        "nevertheless)" % (com_port)
+                    )
                     print(version_number)
 
                 print(
-                    "%s is connected on the port '%s'"
-                    % (version_number[:-2], com_port)
+                    "%s is connected on the port '%s'" % (version_number[:-2], com_port)
                 )
             else:
                 print("The connection to the Prologix connector failed")
@@ -235,8 +228,8 @@ class PrologixController(object):
     def write(self, cmd):
         """use serial.write"""
         # add a new line if the command didn't have one already
-        if not cmd.endswith('\n'):
-            cmd += '\n'
+        if not cmd.endswith("\n"):
+            cmd += "\n"
         if self.connection is not None:
             #  print("Prologix in : ", cmd)
             self.connection.write(cmd.encode())
@@ -245,7 +238,7 @@ class PrologixController(object):
         """use serial.read"""
         if self.connection is not None:
             if not self.auto:
-                self.write('++read eoi')
+                self.write("++read eoi")
             answer = self.connection.read(num_bit)
             # print("Prologix out (read) : ", answer)
             return (answer).decode()
@@ -256,7 +249,7 @@ class PrologixController(object):
         """use serial.readline"""
         if self.connection is not None:
             if not self.auto:
-                self.write('++read eoi')
+                self.write("++read eoi")
             answer = self.connection.readline()
             # print("Prologix out (readline): ", answer)
             return answer.decode()
@@ -289,7 +282,7 @@ class PrologixController(object):
 
                 # change the GPIB address on the prologix controller
                 # prove if an instrument is connected to the port
-                self.write('++addr %i\n*IDN?\n' % i)
+                self.write("++addr %i\n*IDN?\n" % i)
 
                 # probe the answer
                 s = self.readline()
