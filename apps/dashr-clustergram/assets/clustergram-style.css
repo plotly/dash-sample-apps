@@ -1,7 +1,6 @@
 #clustergram-body {
     color: #E4E4E4 !important;
     background-color: #191A1C !important;
-    min-height: 100vh;
 }
 #clustergram-body ::-webkit-scrollbar {
     background-color: #191A1C !important;
@@ -13,7 +12,7 @@
 #clustergram-wrapper {
     width: 900px;
     display: inline-block !important;
-    padding: 70px;
+    padding: 0px;
     overflow-x: scroll;
     margin: 0px;
 }
@@ -162,4 +161,15 @@ input#selected-rows, input#selected-columns {
 #clustergram-body #row-labels-source {
     width: 100%;
     margin: 10px 0px;
+}
+
+
+
+.blankspace {
+	background: #E4E4E4;
+	width: 100%;
+	height: 60px;
+	font-size: 50px;
+	color: white;
+	font-family: "Times";
 }
