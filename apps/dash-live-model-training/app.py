@@ -43,7 +43,7 @@ def div_graph(name):
                                     {"label": " Training", "value": "train"},
                                     {"label": " Validation", "value": "val"},
                                 ],
-                                values=[],
+                                value=[],
                                 id=f"checklist-smoothing-options-{name}",
                                 className="checklist-smoothing",
                             ),
@@ -68,7 +68,6 @@ def div_graph(name):
                     html.Div(
                         [
                             html.P(
-                                # className="plot-display-text",
                                 "Plot Display Mode:",
                                 style={"font-weight": "bold", "margin-bottom": "0px"},
                                 className="plot-display-text",
@@ -134,16 +133,12 @@ app.layout = html.Div(
             className="banner row",
         ),
         html.Div(
-            # Empty child function for the callback
             html.Div(id="demo-explanation", children=[])
-        ),
-        # Body
+        ),      
         html.Div(
             className="container",
             style={"padding": "35px 25px"},
             children=[
-                # Hidden Div that will store the result of simulating a model run
-                # html.Div(id="storage-simulated-run", style={"display": "none"}),
                 dcc.Store(id="storage-simulated-run", storage_type="memory"),
                 # Increment the simulation step count at a fixed time interval
                 dcc.Interval(
@@ -249,10 +244,7 @@ app.layout = html.Div(
                     ],
                 ),
                 dcc.Interval(id="interval-log-update", n_intervals=0),
-                # Hidden Div Storing JSON-serialized dataframe of run log
-                # html.Div(id="run-log-storage", style={"display": "none"}),
-                dcc.Store(id="run-log-storage", storage_type="memory")
-                # The html divs storing the graphs and display parameters
+                dcc.Store(id="run-log-storage", storage_type="memory")           
             ],
         ),
         html.Div(className="container", children=[div_graph("accuracy")]),
@@ -394,9 +386,9 @@ def learn_more(n_clicks):
             ),
             "Close",
         )
-    else:
-        n_clicks += 1
-        return (html.Div(), "Learn More")
+    
+    n_clicks += 1
+    return (html.Div(), "Learn More")
 
 
 @app.callback(
@@ -462,7 +454,7 @@ def update_div_step_display(run_log_json):
     [
         Input("run-log-storage", "data"),
         Input("radio-display-mode-accuracy", "value"),
-        Input("checklist-smoothing-options-accuracy", "values"),
+        Input("checklist-smoothing-options-accuracy", "value"),
         Input("slider-smoothing-accuracy", "value"),
     ],
 )
@@ -500,7 +492,7 @@ def update_accuracy_graph(
     [
         Input("run-log-storage", "data"),
         Input("radio-display-mode-cross-entropy", "value"),
-        Input("checklist-smoothing-options-cross-entropy", "values"),
+        Input("checklist-smoothing-options-cross-entropy", "value"),
         Input("slider-smoothing-cross-entropy", "value"),
     ],
 )
@@ -564,4 +556,4 @@ def update_div_current_cross_entropy_value(run_log_json):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8050)
+    app.run_server(debug=True)

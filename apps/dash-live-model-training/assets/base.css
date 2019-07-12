@@ -613,46 +613,4 @@ there.
     width: 20%;
   }
 
-  /* #radio-display-mode-accuracy {
-    float: right;
-  }
-
-  #checklist-smoothing-options-accuracy {
-    float: right;
-  }
-
-  #slider-smoothing-accuracy > div {
-    float: right;
-    margin-bottom: 5%;
-  }
-
-  #slider-smoothing-cross-entropy > div {
-    float: right;
-    margin-bottom: 5%;
-  }
-  .slider-smoothing {
-    width: 50%;
-  }
-
-  .graph-checkbox-smoothing {
-    float: left;
-  }
-
-  .checklist-smoothing {
-    float: right;
-  }
-  .plot-display-radio-items {
-    float: right;
-  }
-  .plot-display-text {
-    float: left; 
-  } 
-
-  #dropdown-demo-dataset {
-    width: 30%;
-  }
-
-  #dropdown-simulation-model {
-    width: 30%;
-  }*/
 }

@@ -101,6 +101,355 @@
 }
 
 
+
+@media only screen and (max-width: 1000px) {
+  .container {
+    padding: 20px;
+  }
+
+  #title {
+    width: 45%;
+    font-size: 2.4rem;
+    font-weight: 400;
+    margin-top: 30px;
+    margin-left: 7% !important;
+  }
+
+  #learn-more-button {
+    width: 75px;
+    height: 30px;
+    margin-left: 90px;
+    font-size: 7.5px !important;
+    padding: 0px 8px !important;
+    margin-top: 25px;
+  }
+
+  #plotly-logo {
+    margin-top: 24px;
+    margin-left: 4px;
+  }
+
+  .dropdown-box-first,
+  .dropdown-box-second {
+    width: 50%;
+  }
+
+  #div-interval-control {
+    text-align: center;
+    display: flex;
+  }
+
+  #div-total-step-count {
+    margin-top: 0px;
+  }
+
+  #div-total-step-count>h6,
+  #div-step-display>h6 {
+    text-align: left;
+    display: inline-block;
+    font-size: 1.9rem;
+  }
+
+
+  /* First Page Smoothing Options */
+
+  .graph-checkbox-smoothing {
+    font-weight: bold;
+    display: inline-block;
+    width: 50%;
+  }
+
+  #slider-smoothing-accuracy {
+    width: 50%;
+    float: right;
+  }
+
+  .checklist-smoothing {
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+  }
+
+
+  #checklist-smoothing-options-accuracy>label:nth-child(1),
+  #checklist-smoothing-options-accuracy>label:nth-child(2) {
+    display: inline-block;
+    font-size: 14.5px;
+    margin: 0;
+    padding: 10px;
+    text-align: right;
+  }
+
+
+  #_dash-app-content>div>div:nth-child(4)>div>div.two.columns>div.slider-smoothing {
+    margin-bottom: 60px !important;
+  }
+
+  /* Radio items */
+  #radio-display-mode-accuracy {
+    margin: 5px 0;
+
+  }
+
+  .radio-item-div {
+    text-align: right;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 20%;
+  }
+
+  .plot-display-radio-items {
+    text-align: left;
+    display: inline-block;
+    font-size: 12px;
+    margin: 5px 0;
+  }
+
+  .plot-display-text {
+    display: inline-block;
+    width: 45%;
+    font-size: 14px;
+  }
+
+
+
+  /* Current Accuracy */
+  #div-current-accuracy-value>p {
+    display: inline-flex !important;
+    width: 40%;
+  }
+
+  #div-current-accuracy-value>div:nth-child(2),
+  #div-current-accuracy-value>div:nth-child(3) {
+    text-align: center;
+    display: inline;
+    margin: 10px 2px !important;
+    font-size: 13px;
+    padding-left: 65px;
+  }
+
+
+  /* Second page smoothing options */
+
+  #checklist-smoothing-options-cross-entropy {
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  #checklist-smoothing-options-cross-entropy>label:nth-child(1),
+  #checklist-smoothing-options-cross-entropy>label:nth-child(2) {
+    display: inline-block;
+    font-size: 14.5px;
+    margin: 0;
+    padding: 10px;
+    text-align: right;
+  }
+
+  #slider-smoothing-cross-entropy>div {
+    width: 50%;
+    float: right;
+  }
+
+  #_dash-app-content>div>div:nth-child(5)>div>div.two.columns>div.slider-smoothing {
+    margin-bottom: 60px !important;
+  }
+
+
+
+  /* Current Loss */
+
+  #div-current-cross-entropy-value>p {
+    display: inline-flex !important;
+    width: 40%;
+  }
+
+  #div-current-cross-entropy-value>div:nth-child(2),
+  #div-current-cross-entropy-value>div:nth-child(3) {
+    text-align: center;
+    display: inline;
+    margin: 10px 10px !important;
+    font-size: 13px;
+    padding-left: 65px;
+  }
+}
+
+@media (max-width: 550px) {
+  .container {
+    padding: 20px;
+  }
+
+  #title {
+    width: 45%;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-top: 30px;
+    margin-left: 7% !important;
+  }
+
+  #learn-more-button {
+    width: 75px;
+    height: 30px;
+    margin-left: 10px;
+    font-size: 7.5px !important;
+    padding: 0px 8px !important;
+    margin-top: 25px;
+  }
+  #plotly-logo {
+    margin-top: 30px;
+    margin-left: 4px;
+  }
+
+  .dropdown-box-first,
+  .dropdown-box-second {
+    width: 50%;
+  }
+
+  #div-interval-control {
+    text-align: center;
+    display: flex;
+  }
+
+  #div-total-step-count {
+    margin-top: 0px;
+  }
+
+  #div-total-step-count>h6,
+  #div-step-display>h6 {
+    text-align: left;
+    display: inline-block;
+    font-size: 1.9rem;
+  }
+ 
+ 
+  /* First Page Smoothing Options */
+
+
+  .graph-checkbox-smoothing {
+    font-weight: bold;
+    display: inline-block;
+    width: 50%;
+  }
+
+  #slider-smoothing-accuracy {
+    width: 50%;
+    float: right;
+  }
+
+  .checklist-smoothing{
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+  }
+
+  
+  #checklist-smoothing-options-accuracy>label:nth-child(1),
+  #checklist-smoothing-options-accuracy>label:nth-child(2) {
+    display: inline-block;
+    font-size: 9.5px;
+    margin: 0;
+    padding: 10px;
+    text-align: right;
+  }
+  
+
+  #_dash-app-content>div>div:nth-child(4)>div>div.two.columns>div.slider-smoothing {
+    margin-bottom: 60px !important;
+  }
+
+  /* Radio items */
+  #radio-display-mode-accuracy {
+    margin: 5px 0;
+    
+  }
+
+  .radio-item-div {
+    text-align: right;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 15%;
+    
+  }
+  
+  .plot-display-radio-items {
+    text-align: left;
+    display: inline-block;
+    font-size: 12px;
+    margin: 5px 0;
+  }
+
+  .plot-display-text {
+    display: inline-block;
+    width: 45%;
+    font-size: 14px;
+  }
+
+  
+
+  /* Current Accuracy */
+  #div-current-accuracy-value>p {
+    display: inline-flex !important
+  }
+
+  #div-current-accuracy-value>div:nth-child(2),
+  #div-current-accuracy-value>div:nth-child(3) {
+    text-align: center;
+    display: inline;
+    margin: 20px 2px;
+    font-size: 9px !important;
+    padding-left: 25px;
+  }
+
+
+  /* Second page smoothing options */
+
+  #checklist-smoothing-options-cross-entropy {
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  #checklist-smoothing-options-cross-entropy>label:nth-child(1),
+  #checklist-smoothing-options-cross-entropy>label:nth-child(2) {
+      display: inline-block;
+      font-size: 9.5px;
+      margin: 0;
+      padding: 10px;
+      text-align: right;
+  }
+
+  #slider-smoothing-cross-entropy>div {
+    width: 50%;
+    float: right;
+  }
+
+  #_dash-app-content>div>div:nth-child(5)>div>div.two.columns>div.slider-smoothing {
+    margin-bottom: 60px !important;
+  }
+
+ 
+
+  /* Current Loss */
+
+  #div-current-cross-entropy-value {
+    display: inline-flex !important;
+    width: 100%;
+  }
+
+  #div-current-cross-entropy-value>div:nth-child(2),
+  #div-current-cross-entropy-value>div:nth-child(3) {
+    text-align: center;
+    display: inline;
+    margin: 10px 2px;
+    font-size: 9px !important;
+    padding-left: 10px;
+    padding-top: 10px;
+    
+  }
+
+  
+
+
+}
+
 @media (max-width: 375px) {
   #title {
     width: 150px;
@@ -155,7 +504,7 @@
   #checklist-smoothing-options-accuracy>label:nth-child(2) {
     text-align: center;
     display: inline;
-    margin: 0 20px;
+
   }
 
   /* Second page Smoothing Options */
@@ -170,7 +519,7 @@
   #checklist-smoothing-options-cross-entropy>label:nth-child(2) {
     text-align: center;
     display: inline;
-    margin: 0 30px;
+    
   }
 
   /* Radio items */
@@ -211,7 +560,6 @@
     display: inline;
     margin: 20px 5px;
     font-size: 8px !important;
-    padding-left: 15px;
   }
 
 
@@ -226,130 +574,22 @@
   #div-current-cross-entropy-value>div:nth-child(3) {
     text-align: center;
     display: inline;
-    margin: 20px 5px;
+    margin: 20px 2px;
     font-size: 8px !important;
-    padding-left: 28px !important;
     vertical-align: bottom !important;
+    padding: 0;
+    padding-top: 10px;
+    padding-left: 5px;
   }
-
 
 }
 
-@media (max-width: 550px) {
-  .container {
-    padding: 20px;
-  }
-
-  #title {
-    width: 200px;
-    font-size: 1.7rem;
-    font-weight: 400;
-    margin-top: 30px;
-    margin-left: 5% !important;
-  }
-
-  #learn-more-button {
-    width: 75px;
-    height: 30px;
-    margin-left: 10px;
-    font-size: 7.5px !important;
-    padding: 0px 8px !important;
-    margin-top: 25px;
-  }
-  #plotly-logo {
-    margin-top: 30px;
-    margin-left: 4px;
-  }
-
-  .dropdown-box-first,
-  .dropdown-box-second {
-    width: 50%;
-  }
-
-  #div-interval-control {
-    text-align: center;
-    display: flex;
-  }
-
-  #div-total-step-count {
-    margin-top: 0px;
-  }
-
-  #div-total-step-count>h6,
-  #div-step-display>h6 {
-    text-align: left;
-    display: inline-block;
-    font-size: 1.9rem;
-  }
- 
-
- 
-  /* First Page Smoothing Options */
-
-
-  .graph-checkbox-smoothing {
-    font-weight: bold;
-    
-    display: inline-block;
-    width: 50%;
-  }
-
-  #slider-smoothing-accuracy {
-    width: 50%;
-    float: right;
-  }
-
-  .checklist-smoothing{
-    display: inline-block;
-    width: 50%;
-  }
-
-  
-  #checklist-smoothing-options-accuracy>label:nth-child(1),
-  #checklist-smoothing-options-accuracy>label:nth-child(2) {
-    display: inline-block;
-    font-size: 11.5px;
-    margin: 0;
-    padding: 10px;
-    text-align: right;
-  }
-  
-
-  #_dash-app-content>div>div:nth-child(4)>div>div.two.columns>div.slider-smoothing {
-    margin-bottom: 60px !important;
-  }
-
-  /* Radio items */
-  #radio-display-mode-accuracy {
-    margin: 5px 0;
-    
-  }
-
-  .radio-item-div {
-    text-align: right;
-    display: inline-block;
-    vertical-align: top;
-    padding-left: 25px;
-    
-  }
-  
-  .plot-display-radio-items {
-    text-align: left;
-    display: inline-block;
-    font-size: 12px;
-    margin: 5px 0;
-  }
-
-  .plot-display-text {
-    display: inline-block;
-    width: 50%
-  }
-
-  
+@media (max-width: 360px) {
 
   /* Current Accuracy */
   #div-current-accuracy-value>p {
-    display: inline-flex !important
+    display: inline-flex !important;
+    font-size: 13px !important;
   }
 
   #div-current-accuracy-value>div:nth-child(2),
@@ -357,63 +597,172 @@
     text-align: center;
     display: inline;
     margin: 20px 5px;
-    font-size: 10px;
-    padding-left: 15px;
+    font-size: 7px !important;
   }
 
-
-  /* Second page smoothing options */
-
-  #checklist-smoothing-options-cross-entropy {
-    text-align: center;
-    margin: 10px 0;
-  }
-  
-  #checklist-smoothing-options-cross-entropy>label:nth-child(1),
-  #checklist-smoothing-options-cross-entropy>label:nth-child(2) {
-      display: inline-block;
-      font-size: 11.5px;
-      margin: 0;
-      padding: 10px;
-      text-align: right;
-  }
-
-  #slider-smoothing-cross-entropy>div {
-    width: 50%;
-    float: right;
-  }
-
-  #_dash-app-content>div>div:nth-child(5)>div>div.two.columns>div.slider-smoothing {
-    margin-bottom: 60px !important;
-  }
-
- 
 
   /* Current Loss */
 
   #div-current-cross-entropy-value {
     display: inline-flex !important;
+    font-size: 13px !important;
   }
 
   #div-current-cross-entropy-value>div:nth-child(2),
   #div-current-cross-entropy-value>div:nth-child(3) {
     text-align: center;
     display: inline;
-    margin: 20px 5px;
-    font-size: 11px;
-    padding-left: 20px;
-  }
-
+    margin: 20px 2px;
+    font-size: 8px !important;
+    vertical-align: bottom !important;
+    padding: 0;
+    padding-top: 10px;
+    padding-left: 2px;
 
 }
 
- @media (max-width: 1000px) {
+
+
+@media (max-width: 320px) {
+  #title {
+    width: 150px;
+    font-size: 1.4rem !important;
+    font-weight: 400;
+    margin-top: 30px;
+    margin-left: 8% !important;
+  }
+
+  #learn-more-button {
+    width: 60px;
+    height: 30px;
+    margin-left: -5px !important;
+    font-size: 5.5px !important;
+    padding: 0px 8px !important;
+    margin-top: 25px;
+  }
+
+  #plotly-logo {
+    margin-top: 30px;
+  }
+
+  .dropdown-box-first,
+  .dropdown-box-second {
+    width: 50%;
+  }
+
+
+  #div-interval-control {
+    text-align: center;
+    display: flex;
+  }
+
+
+  #div-total-step-count>h6,
+  #div-step-display>h6 {
+    text-align: left;
+    display: inline-block;
+    font-size: 1.4rem !important;
+  }
+
+  /* First page Smoothing Options */
+  #checklist-smoothing-options-accuracy {
+    text-align: center;
+    margin: 10px 0;
+    display: inline-flex;
+  }
+
+  #checklist-smoothing-options-accuracy>label:nth-child(1),
+  #checklist-smoothing-options-accuracy>label:nth-child(2) {
+    text-align: center;
+    display: inline;
+
+  }
+
+  /* Second page Smoothing Options */
+  #checklist-smoothing-options-cross-entropy {
+    text-align: center;
+    margin: 10px 0;
+    display: inline-flex;
+
+  }
+
+  #checklist-smoothing-options-cross-entropy>label:nth-child(1),
+  #checklist-smoothing-options-cross-entropy>label:nth-child(2) {
+    text-align: center;
+    display: inline;
+
+  }
+
+  /* Radio items */
+  #radio-display-mode-accuracy {
+    margin: 1px 0;
+
+  }
+
+  .radio-item-div {
+    text-align: right;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 10px;
+
+  }
+
+  .plot-display-radio-items {
+    text-align: left;
+    display: inline-block;
+    font-size: 10px !important;
+    margin: 1px 0;
+  }
+
+  .plot-display-text {
+    display: inline-block;
+    width: 50%;
+    font-size: 12px;
+  }
+
+  /* Current Accuracy */
+  #div-current-accuracy-value>p {
+    display: inline-flex !important;
+    font-size: 10px !important;
+  }
+
+  #div-current-accuracy-value>div:nth-child(2),
+  #div-current-accuracy-value>div:nth-child(3) {
+    text-align: center;
+    display: inline;
+    margin: 20px 5px;
+    font-size: 8px !important;
+    padding-left: 5px;
+  }
+
+
+  /* Current Loss */
+
+  #div-current-cross-entropy-value {
+    display: inline-flex !important;
+    font-size: 13px !important;
+  }
+
+  #div-current-cross-entropy-value>div:nth-child(2),
+  #div-current-cross-entropy-value>div:nth-child(3) {
+    text-align: center;
+    display: inline;
+    margin: 20px 2px;
+    font-size: 7px !important;
+    vertical-align: bottom !important;
+    padding: 0;
+    padding-top: 10px;
+    padding-left: 0px;
+  }
+
+  }
+
+  
+}
+
+
   
 
-
-
-  
-} 
 /* #react-select-4--value-item {
   color: #6b6b6b;
 } */
