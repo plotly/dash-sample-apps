@@ -348,7 +348,7 @@ app$layout(htmlDiv(list(
   options_tabs,
   htmlDiv(list(
     "                "
-  ), className = "blankspace"),
+  ), className = "blankspace")
 )))
 
 
