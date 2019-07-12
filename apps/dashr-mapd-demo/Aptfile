@@ -1,3 +1,17 @@
 libcurl4-openssl-dev
 libxml2-dev
 libv8-3.14-dev
+r-cran-devtools
+r-cran-jsonlite
+r-cran-listenv
+r-cran-httpuv
+r-cran-plotly
+r-cran-assertthat
+r-cran-xml2
+r-cran-triebeard
+r-cran-urltools
+r-cran-uuid
+r-cran-base64enc
+r-cran-codetools
+r-cran-globals
+
