@@ -796,7 +796,7 @@ app.layout = html.Div(
                     className="div-info",
                     children=[
                         html.Img(
-                            className="logo", src=app.get_asset_url("dash-logo.png")
+                            className="logo", src=app.get_asset_url("dash-logo-new.png")
                         ),
                         html.H6(className="title-header", children="FOREX TRADER"),
                         html.P(
