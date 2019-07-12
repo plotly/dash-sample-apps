@@ -93,6 +93,10 @@ jobs:
             APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }' | sort -u)
             for APP in $APPS_MODIFIED
             do
+              if [[ $APP =~ "dashr" ]]
+              then
+                continue
+              fi
               git config --global user.email '<>' # Leave email blank
               git config --global user.name "Circle MonoRepo Automatic Deployer"
               echo $PLOTLY_GA_CODE > ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js
