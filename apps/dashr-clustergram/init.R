@@ -16,5 +16,8 @@ remotes::install_github("plotly/dash-bio")
 remotes::install_github("plotly/dash-table")
 remotes::install_github("plotly/dash-daq")
 
-install.packages("GEOquery")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("GEOquery")
 install.packages("heatmaply")
