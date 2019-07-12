@@ -68,8 +68,7 @@ app.layout = html.Div(
                     className="four columns div-user-controls",
                     children=[
                         html.Img(
-                            className="logo",
-                            src=app.get_asset_url("dash-logo-new.png"),
+                            className="logo", src=app.get_asset_url("dash-logo-new.png")
                         ),
                         html.H2("DASH - UBER DATA APP"),
                         html.P(
