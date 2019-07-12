@@ -132,9 +132,7 @@ app.layout = html.Div(
             ],
             className="banner row",
         ),
-        html.Div(
-            html.Div(id="demo-explanation", children=[])
-        ),      
+        html.Div(html.Div(id="demo-explanation", children=[])),
         html.Div(
             className="container",
             style={"padding": "35px 25px"},
@@ -244,7 +242,7 @@ app.layout = html.Div(
                     ],
                 ),
                 dcc.Interval(id="interval-log-update", n_intervals=0),
-                dcc.Store(id="run-log-storage", storage_type="memory")           
+                dcc.Store(id="run-log-storage", storage_type="memory"),
             ],
         ),
         html.Div(className="container", children=[div_graph("accuracy")]),
@@ -386,7 +384,7 @@ def learn_more(n_clicks):
             ),
             "Close",
         )
-    
+
     n_clicks += 1
     return (html.Div(), "Learn More")
 
