@@ -119,7 +119,7 @@ app$layout(
                     dccUpload(
                               id='upload-data',
                               children= 
-                                htmlDiv(#6
+                                htmlDiv(
                                   className="upload",
                                   list(
                                     htmlP("Drag and Drop or "), 
