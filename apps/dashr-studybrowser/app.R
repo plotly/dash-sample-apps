@@ -104,7 +104,7 @@ app$layout(
                                   options=list(
                                                list('label'='Box Plot', 'value'='box'),  
                                                list('label'='Violin Plot', 'value'='violin')
-                                  ),#
+                                  ),
                                   value='violin',
                                   labelStyle=list(
                                     "display"= "inline-block",
