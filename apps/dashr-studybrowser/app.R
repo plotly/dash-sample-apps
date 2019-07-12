@@ -101,7 +101,7 @@ app$layout(
                     htmlH6("Choose the type of plot"),
                     dccRadioItems(
                                   id='chart-type', 
-                                  options=list(#
+                                  options=list(
                                                list('label'='Box Plot', 'value'='box'),  
                                                list('label'='Violin Plot', 'value'='violin')
                                   ),#
