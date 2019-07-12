@@ -11,14 +11,18 @@ body {
 }
 .logo {
   /* height: 80%; */
-  height: 80%;
+  height: 50%;
   width: auto !important;
+  padding-left: 5%;
   /* float: right; */
   /* margin-right: 80px; */
 }
 .flex-display {
   display: flex;
 }
+/* .js-plotly-plot .plotly .modebar {
+  padding-right: 60px;
+} */
 .single_div_toggle_style {
   width: 80%;
   /* display: flex; */
@@ -39,12 +43,11 @@ body {
   align-items: center;
   justify-content: space-between;
   height: 80px;
-  padding-left: 5%;
+  /* padding-left: 5%; */
 }
 
 .intro-banner {
-  padding-left: 5%;
-  padding-right: 5%;
+  padding: 0 5%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -71,10 +74,10 @@ body {
 
 #figure-card {
   margin-left: 4.5%; /*Set this to balance margin gap in skeleton*/
-  border-radius: 10px;
-  box-shadow: 0 6px 14px rgba(80, 103, 132, 0.2);
+  /* border-radius: 10px;
+  box-shadow: 0 6px 14px rgba(80, 103, 132, 0.2); */
   display: flex;
-  height: 100% !important;
+  height: 100%;
   flex-direction: column;
   justify-content: center;
 }
@@ -97,11 +100,10 @@ body {
 #up-control-card,
 #mid-control-card,
 #bottom-card {
-  border-radius: 15px;
-  box-shadow: 0 6px 14px rgba(80, 103, 132, 0.2);
+  /* border-radius: 15px;
+  box-shadow: 0 6px 14px rgba(80, 103, 132, 0.2); */
   width: 100%;
-  padding-top: 2%;
-  padding-bottom: 2%;
+  padding: 5% 0 !important;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -113,7 +115,7 @@ body {
 #control-sections {
   display: flex;
   flex-direction: column;
-  width: 80%;
+  /* width: 80%; */
   line-height: 1.8;
 }
 
@@ -205,7 +207,7 @@ body {
   left: 0;
   top: 0;
   width: 100vw; /* Full width */
-  height: 100vh; /* Full height */
+  height: 100vh; /* Full */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */

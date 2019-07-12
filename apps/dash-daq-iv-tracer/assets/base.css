@@ -49,14 +49,14 @@ body {
 
 /*For devices larger than 400px */
 @media (min-width: 400px) {
-  .container {
-    width: 100%; /*Change to 100%*/
-    padding: 0;
-  }
+  /* .container { */
+  /* width: 100%; Change to 100% */
+  /* padding: 0;
+  } */
 }
 
 /* For devices larger than 550px */
-@media (min-width: 550px) {
+@media (min-width: 750px) {
   .container {
     width: 100%; /*Change to 100%*/
   }
@@ -521,15 +521,69 @@ there.
 */
 
 /* Larger than mobile */
-@media (min-width: 400px) {
+@media (max-width: 400px) {
+  .logo {
+    height: 35% !important;
+  }
 }
+/* @media (min-width: 401px) {
+  .logo {
+    height: 50% !important;
+  }
+} */
 
 /* Larger than phablet (also point when grid becomes active) */
 @media (min-width: 550px) {
 }
-
+@media (min-width: 768px) {
+  .logo {
+    height: 65% !important;
+  }
+}
 /* Larger than tablet */
-@media (min-width: 750px) {
+@media (max-width: 750px) {
+  .flex-display {
+    display: block;
+  }
+  #figure-card {
+    margin-left: 0 !important;
+    margin-bottom: 2%;
+    display: block !important;
+    height: auto !important;
+  }
+  #control-container {
+    margin-left: 0 !important;
+  }
+  #bottom-card {
+    margin-bottom: 4%;
+  }
+  html {
+    background-color: rgb(246, 246, 247);
+  }
+  .intro-banner-content {
+    width: auto !important;
+    text-align: center;
+    margin-top: 5%;
+  }
+  .logo {
+    padding-left: 0 !important;
+  }
+  #toggleTheme {
+    margin-left: 17%;
+  }
+  .title {
+    font-size: 20px !important;
+  }
+  .banner {
+    display: block !important;
+    padding: 3%;
+  }
+  #control-sections {
+    width: auto;
+  }
+  .intro-banner {
+    margin-top: 4.5%;
+  }
 }
 
 /* Larger than desktop */

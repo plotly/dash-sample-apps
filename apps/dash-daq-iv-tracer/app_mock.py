@@ -2,6 +2,7 @@ import numpy as np
 from textwrap import dedent
 
 import plotly.graph_objs as go
+import pathlib
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
@@ -15,9 +16,15 @@ from dash_daq_drivers import keithley_instruments
 iv_generator = keithley_instruments.KT2400("COM3", mock_mode=True)
 
 # Define the app
-app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+)
 server = app.server
 app.config.suppress_callback_exceptions = True
+
+# get relative data folder
+PATH = pathlib.Path(__file__).parent
+DATA_PATH = PATH.joinpath("data").resolve()
 
 
 class UsefulVariables:
@@ -199,7 +206,7 @@ def generate_main_layout(
                                                     label=["Single measure", "Sweep"],
                                                     style={
                                                         "width": "150px",
-                                                        "margin": "auto",
+                                                        # "margin": "auto",
                                                     },
                                                     value=False,
                                                 ),
@@ -516,22 +523,27 @@ app.layout = html.Div(
             style={"color": text_color["light"]},
             children=[
                 html.Img(
-                    src="https://s3-us-west-1.amazonaws.com/plotly"
-                    "-tutorials/excel/dash-daq/dash-daq-logo"
-                    "-by-plotly-stripe.png",
+                    src=app.get_asset_url("dash-daq-logo.png"),
                     className="logo three columns",
                 ),
                 html.H6("Dash DAQ: IV Curve Tracer", className="title six columns"),
-                html.Div(className="three columns", style={"float":"left"},
-                children=[
-                    daq.ToggleSwitch(
-                        id="toggleTheme",
-                        label=["Light", "Dark"],
-                        style={"margin": "auto", "width": "65%", "color": text_color["light"]},
-                        value=False,
-                        size=35,
-                    ),
-                ]),
+                html.Div(
+                    className="three columns",
+                    style={"float": "left"},
+                    children=[
+                        daq.ToggleSwitch(
+                            id="toggleTheme",
+                            label=["Light", "Dark"],
+                            style={
+                                "margin": "auto",
+                                "width": "65%",
+                                "color": text_color["light"],
+                            },
+                            value=False,
+                            size=35,
+                        )
+                    ],
+                ),
             ],
         ),
         html.Div(
