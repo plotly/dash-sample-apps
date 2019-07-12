@@ -11,8 +11,21 @@ import dash_daq as daq
 
 from dash_daq_drivers import keithley_instruments
 
+# Define the app
+app = dash.Dash(
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+)
+server = app.server
+app.config.suppress_callback_exceptions = False
+
+
 # Instance of a Keithley2400 connected with Prologix GPIB to USB controller
 iv_generator = keithley_instruments.KT2400(mock_mode=False)
+
+# font and background colors associated with each themes
+bkg_color = {"dark": "#2a3f5f", "light": "#F3F6FA"}
+grid_color = {"dark": "white", "light": "#C8D4E3"}
+text_color = {"dark": "white", "light": "#506784"}
 
 
 def is_instrument_port(port_name):
@@ -68,16 +81,6 @@ class UsefulVariables:
 
 
 local_vars = UsefulVariables()
-
-# font and background colors associated with each themes
-bkg_color = {"dark": "#2a3f5f", "light": "#F3F6FA"}
-grid_color = {"dark": "white", "light": "#C8D4E3"}
-text_color = {"dark": "white", "light": "#506784"}
-
-# Define the app
-app = dash.Dash(__name__)
-server = app.server
-app.config.suppress_callback_exceptions = False
 
 
 def get_source_labels(source="V"):
@@ -1203,6 +1206,7 @@ def update_graph(
             if clear_graph:
                 graph_data["data"] = local_vars.sorted_values()
             return graph_data
+
 
 if __name__ == "__main__":
     app.run_server(debug=False)
