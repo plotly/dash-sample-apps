@@ -345,7 +345,10 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
 
 
 app$layout(htmlDiv(list(
-  options_tabs
+  options_tabs,
+  htmlDiv(list(
+    "                "
+  ), className = "blankspace"),
 )))
 
 
