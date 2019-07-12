@@ -11,3 +11,6 @@ remotes::install_github("plotly/dash-core-components")
 remotes::install_github("plotly/dash-table")
 remotes::install_github("plotly/dashR")
 
+install.packages("fasttime")
+install.packages("RJDBC")
+

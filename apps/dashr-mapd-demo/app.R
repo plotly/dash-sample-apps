@@ -20,8 +20,24 @@ if (appName != ""){
   setwd(sprintf("/app/apps/%s", appName))
 }
 
-user <- "admin"
-password <- "HyperInteractive"
+if (appName != ""){
+  host <- Sys.getenv("DB_HOST")
+} else {
+  host <- "localhost"
+}
+
+if (host == "localhost"){
+  # insert personal credentials here:
+  user <- "admin"
+  password <- "HyperInteractive"
+  dbname <- "omnisci"
+} else {
+  # use server credentials:
+  user <- "mapd"
+  password <- "HyperInteractive"
+  dbname <- "mapd"
+}
+
 flight_table <- "flights_2008_7M"
 
 db_connect <- function(){
@@ -31,14 +47,15 @@ db_connect <- function(){
         "com.omnisci.jdbc.OmniSciDriver",
         # Insert pathname to the mapd / omnisci JDBC driver JAR file
         "/opt/omnisci/bin/omnisci-jdbc-4.7.1.jar",
-        #"/opt/omnisci/bin/mapd-1.0-SNAPSHOT-jar-with-dependencies.jar",
         identifier.quote="'"
       )
       conn <- dbConnect(
         drv,
-        "jdbc:omnisci:localhost:6274:omnisci",
+        sprintf("jdbc:%s:%s:6274:%s", dbname, host, dbname),
         user = user,
-        password = password
+        password = password,
+        host = host,
+        dbname = dbname
       )
       if (!flight_table %in% dbListTables(conn)){
         message(
