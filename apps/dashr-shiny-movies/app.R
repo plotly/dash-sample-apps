@@ -57,8 +57,6 @@ slider <- dccSlider(
     '31' = '31',
     '36' = '36',
     '41' = '41',
-    
-    
     '46' = '46',
     '50' = '50'
   ),
@@ -90,31 +88,38 @@ app$layout(htmlDiv(list(
 app$callback(output = list(id = "histogram", property = "figure"),
              params = list(input(id = "movies-slider", property = "value")),
              
-             function(sliderval) {
-               size <- (maxx - minx) / input$bins
-               
+             function(bins) {
+               size <- (maxx - minx) / bins
                # a simple histogram of movie ratings
                p <- plot_ly(
                  movies,
-                 x = rating,
-                 autobinx = F,
+                 x = movies$rating,
+                 autobinx = FALSE,
                  type = "histogram",
-                 xbins = list(start = minx, 
+                 xbins = list(
+                   start = minx, 
                    end = maxx,
                    size = size
                  )
-                 
-                 
-               ),
-               list(layout = list(
+               ) %>% layout(
                  xaxis = list(
                    title = "Ratings",
                    range = c(minx, maxx),
-                   autotick = F,
+                   autotick = FALSE,
                    tick0 = minx,
                    dtick = size
                  )
-               ))
+               )
+               # list(layout = list(
+               #   xaxis = list(
+               #     title = "Ratings",
+               #     range = c(minx, maxx),
+               #     autotick = F,
+               #     tick0 = minx,
+               #     dtick = size
+               #   )
+               # ))
+               return(p)
              })
 
 ################## CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL #########################
