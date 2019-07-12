@@ -77,23 +77,20 @@ app$callback(output = list(id = "histogram", property = "figure"),
               ),
              
              function(sliderval){
-               print(sliderval)
-               return(list(
-                 data=list(
-                   list(
-                     x=list(1, 2, 3),
-                     y=list(4, 1, 2),
-                     type='bar',
-                     name='SF'
-                   ),
-                   list(
-                     x=list(1, 2, 3),
-                     y=list(2, 4, 5),
-                     type='bar',
-                     name='Montreal'
-                   )
+               size <- (maxx - minx) / input$bins
+               
+               # a simple histogram of movie ratings
+               p <- plot_ly(movies, x = rating, autobinx = F, type = "histogram",
+                            xbins = list(start = minx, end = maxx, size = size)),
+               list(
+                 layout = list(
+                   xaxis = list(title = "Ratings",
+                                range = c(minx, maxx), 
+                                autotick = F,
+                                tick0 = minx, 
+                                dtick = size)
                  )
-               ))
+               )
              }
 )
 
