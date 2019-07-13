@@ -60,7 +60,7 @@ def build_banner():
                     ),
                     html.Img(
                         id="logo",
-                        src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png",
+                        src=app.get_asset_url('plotly_logo.png'),
                     ),
                 ],
             ),
