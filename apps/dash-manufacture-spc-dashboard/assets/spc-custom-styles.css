@@ -53,6 +53,11 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: flex-end;
+}
+
+#logo {
+    height: 50px;
 }
 
 .banner button {
@@ -121,7 +126,7 @@ body {
 }
 
 #tabs {
-    margin:0 0 3rem 0;
+    margin: 0 0 3rem 0;
     width: 100%;
 }
 
@@ -238,7 +243,7 @@ body {
     background-color: #1d202d;
 }
 
-#control-chart-container{
+#control-chart-container {
     position: relative;
     z-index: 4;
     width: 100%;
