@@ -6,8 +6,6 @@ library(heatmaply)
 library(data.table)
 library(dashDaq)
 
-
-
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
   pathPrefix <- sprintf("/%s/", appName)
@@ -18,15 +16,11 @@ if (appName != ""){
   setwd(sprintf("/app/apps/%s", appName))
 }
 
-
 source("utils/dash_bio_utils.R")
-
-
 
 app <- Dash$new()
 
 # Load the datasets.
-
 
 gg_back_box <- theme(
   panel.background = element_rect(fill = "#191A1C"),
@@ -85,7 +79,7 @@ options_tabs <- htmlDiv(id = 'clustergram-body', className = 'app-body', childre
         value = 'what-is',
         children = htmlDiv(className = 'control-tab', children = list(
           htmlH4(className = 'what-is', children = "What is Clustergram?"),
-          htmlP('Clusterman is a combination of a heatmap and dendrograms that
+          htmlP('Clustergram is a combination of a heatmap and dendrograms that
                 allows you to display hierarchical clustering data. Clusters on
                 the dendrogram are highlighted in one color if they comprise
                  data points that share some minimal level of correlation.'),
@@ -703,17 +697,8 @@ app$callback(
   }
 )
 
-
-
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
 } else {
   app$run_server(debug = TRUE, showcase = TRUE)
 }
-
-
-
-
-
-
-
