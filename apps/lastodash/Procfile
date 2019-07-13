@@ -1,1 +1,0 @@
-web:gunicorn apps.lastodash.lastodash:server

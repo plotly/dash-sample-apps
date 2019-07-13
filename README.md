@@ -11,7 +11,7 @@ want to run is `my_dash_app` and the app filename is `app.py`, you
 would need to run `python apps/my_dash_app/app.py` from the root
 of the repository.
 
-Each app has a requirements.txt, install the dependecies in a virtual 
+Each app has a requirements.txt, install the dependecies in a virtual
 environment.
 
 ## Contributing to the sample apps repo
@@ -46,7 +46,7 @@ There are two options when you are naming the folder:
 
 1. Make the folder have the _exact same_ name as the Dash app name.
 
-2. Select any other name, but _update the file
+2. (Python apps only) Select any other name, but _update the file
    [`apps_mapping.py`](apps_directory_mapping.py)_ with the Dash app
    name and the folder name you have selected.
 
@@ -55,6 +55,44 @@ that only contains the name of the app. Stage the README and commit it
 to your app branch.
 
 See [project boilerplate!](https://github.com/plotly/dash-sample-apps#project-boilerplate)
+
+### Notes on adding a new Dash for R app
+
+Contributing an app written with Dash for R is very similar to the steps outlined above. 
+
+1. Make the folder have the _exact same_ name as the Dash app name.
+
+2. Ensure that the file containing your app code is named `app.R`.
+
+3. The `Procfile` should contain 
+
+```
+web: R -f /app/apps/"$DASH_APP_NAME"/app.R
+```
+
+4. Routing and request pathname prefixes should be set. One approach might be to include
+
+```
+appName <- Sys.getenv("DASH_APP_NAME")
+pathPrefix <- sprintf("/%s/", appName)
+
+Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+```
+
+at the head of your `app.R` file.
+
+5. `run_server()` should be provided the host and port information explicitly, e.g.
+
+``
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+``
+
+6. For convenience, it is probably easiest to set the working directory in `app.R` as well:
+
+``
+setwd(sprintf("/app/apps/%s", appName))
+``
 
 ### Making changes to an existing app
 
@@ -79,9 +117,9 @@ branch. Once you have passed your code review, you can merge your PR.
 
 - **`Procfile`** gets run at root level for deployment
     - Make sure python working directory is at the app level
-    - Ex. `web: gunicorn --pythonpath apps/{DASH_APP_NAME} app:server` 
+    - Ex. `web: gunicorn --pythonpath apps/{DASH_APP_NAME} app:server`
 - **`requirements.txt`**
-    - Install project dependecies in a virtual environment 
+    - Install project dependecies in a virtual environment
 - **`runtime.txt`**
     - App python version
 
@@ -94,7 +132,7 @@ branch. Once you have passed your code review, you can merge your PR.
     │   ├── data/               # all data (csv, json, txt, etc)
     │   ├── app.py              # dash application entry point
     │   ├── Procfile            # used for heroku deployment (how to run app)
-    │   ├── requirements.txt    # project dependecies 
+    │   ├── requirements.txt    # project dependecies
     │   ├── runtime.txt         # used for heroku deployment (python version)
     │   └── ...                 
     └── ...
@@ -109,7 +147,7 @@ Img(src="./assets/logo.png") will fail at root level
 ```
 
 Tips
-
+ 
 -  Use [get_asset_url()](https://dash.plot.ly/dash-deployment-server/static-assets)
 -  Use [Pathlib](https://docs.python.org/3/library/pathlib.html) for more flexibility
 
@@ -159,3 +197,4 @@ PR has two checkers.
 1. make sure your code passed the black linter
 2. make sure your project is deployed on dns playground
 ```
+

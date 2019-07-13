@@ -116,7 +116,7 @@ def create_layout(app):
                     html.Div(
                         [
                             html.Img(
-                                src=app.get_asset_url("dash-logo-stripe.png"),
+                                src=app.get_asset_url("dash-logo.png"),
                                 className="logo",
                                 id="plotly-image",
                             )
@@ -138,15 +138,15 @@ def create_layout(app):
             # Demo Description
             html.Div(
                 className="row background",
-                id="learn-more-button",
+                id="demo-explanation",
                 style={"padding": "50px 45px"},
                 children=[
                     html.Div(
-                        id="description-text",
-                        style={"padding-right": "15%"},
-                        children=dcc.Markdown(demo_intro_md),
+                        id="description-text", children=dcc.Markdown(demo_intro_md)
                     ),
-                    html.Div(html.Button("Learn More", id="button")),
+                    html.Div(
+                        html.Button(id="learn-more-button", children=["Learn More"])
+                    ),
                 ],
             ),
             # Body
@@ -354,35 +354,33 @@ def demo_callbacks(app):
 
     # Callback function for the learn-more button
     @app.callback(
-        Output("learn-more-button", "children"),
+        [
+            Output("description-text", "children"),
+            Output("learn-more-button", "children"),
+        ],
         [Input("learn-more-button", "n_clicks")],
     )
     def learn_more(n_clicks):
-        # If clicked odd times, the insturctions will show; else (even times), only the header will show
+        # If clicked odd times, the instructions will show; else (even times), only the header will show
         if n_clicks == None:
             n_clicks = 0
         if (n_clicks % 2) == 1:
             n_clicks += 1
-            return html.Div(
-                children=[
-                    html.Div(
-                        style={"padding-right": "15%"},
-                        children=dcc.Markdown(demo_intro_md),
-                    ),
-                    html.Div(children=dcc.Markdown(demo_description_md)),
-                    html.Div(html.Button("Close", id="button")),
-                ]
+            return (
+                html.Div(
+                    style={"padding-right": "15%"},
+                    children=[dcc.Markdown(demo_description_md)],
+                ),
+                "Close",
             )
         else:
             n_clicks += 1
-            return html.Div(
-                children=[
-                    html.Div(
-                        style={"padding-right": "15%"},
-                        children=dcc.Markdown(demo_intro_md),
-                    ),
-                    html.Div(html.Button("Learn More", id="button")),
-                ]
+            return (
+                html.Div(
+                    style={"padding-right": "15%"},
+                    children=[dcc.Markdown(demo_intro_md)],
+                ),
+                "Learn More",
             )
 
     @app.callback(

@@ -1,3 +1,4 @@
+import os
 import pathlib
 import numpy as np
 import datetime as dt
@@ -11,6 +12,8 @@ from dash.dependencies import Input, Output, State
 from scipy.stats import rayleigh
 from db.api import get_wind_data, get_wind_data_by_id
 
+
+GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 5000)
 
 app = dash.Dash(
     __name__,
@@ -39,7 +42,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Img(
-                            src=app.get_asset_url("dash-logo-stripe-inverted.png"),
+                            src=app.get_asset_url("dash-logo.png"),
                             className="app__menu__img",
                         )
                     ],
@@ -66,7 +69,9 @@ app.layout = html.Div(
                             ),
                         ),
                         dcc.Interval(
-                            id="wind-speed-update", interval=1000, n_intervals=0
+                            id="wind-speed-update",
+                            interval=int(GRAPH_INTERVAL),
+                            n_intervals=0,
                         ),
                     ],
                     className="two-thirds column wind__speed__container",
@@ -109,7 +114,7 @@ app.layout = html.Div(
                                             options=[
                                                 {"label": "Auto", "value": "Auto"}
                                             ],
-                                            values=["Auto"],
+                                            value=["Auto"],
                                             inputClassName="auto__checkbox",
                                             labelClassName="auto__label",
                                         ),
@@ -288,7 +293,7 @@ def gen_wind_direction(interval):
     [
         State("wind-speed", "figure"),
         State("bin-slider", "value"),
-        State("bin-auto", "values"),
+        State("bin-auto", "value"),
     ],
 )
 def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
@@ -419,7 +424,7 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
 
 
 @app.callback(
-    Output("bin-auto", "values"),
+    Output("bin-auto", "value"),
     [Input("bin-slider", "value")],
     [State("wind-speed", "figure")],
 )
@@ -437,7 +442,7 @@ def deselect_auto(slider_value, wind_speed_figure):
 
 @app.callback(
     Output("bin-size", "children"),
-    [Input("bin-auto", "values")],
+    [Input("bin-auto", "value")],
     [State("bin-slider", "value")],
 )
 def show_num_bins(autoValue, slider_value):
