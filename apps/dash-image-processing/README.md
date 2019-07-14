@@ -1,6 +1,5 @@
 # Dash Image Processing App
 
-
 [![GitHub license](https://img.shields.io/github/license/plotly/dash-image-processing.svg)](https://github.com/plotly/dash-image-processing/blob/master/LICENSE.md)
 [![GitHub issues](https://img.shields.io/github/issues/plotly/dash-image-processing.svg)](https://github.com/plotly/dash-image-processing/issues)
 [![GitHub forks](https://img.shields.io/github/forks/plotly/dash-image-processing.svg)](https://github.com/plotly/dash-image-processing/network)
