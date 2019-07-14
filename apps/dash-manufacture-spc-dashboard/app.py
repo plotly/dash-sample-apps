@@ -56,10 +56,7 @@ def build_banner():
                     html.Button(
                         id="learn-more-button", children="LEARN MORE", n_clicks=0
                     ),
-                    html.Img(
-                        id="logo",
-                        src=app.get_asset_url('plotly_logo.png'),
-                    ),
+                    html.Img(id="logo", src=app.get_asset_url("plotly_logo.png")),
                 ],
             ),
         ],
@@ -88,7 +85,7 @@ def build_tabs():
                         label="Control Charts Dashboard",
                         value="tab2",
                         className="custom-tab",
-                        selected_className="custom-tab--selected"
+                        selected_className="custom-tab--selected",
                     ),
                 ],
             )
@@ -300,9 +297,7 @@ def build_quick_stats_panel():
             ),
             html.Div(
                 id="utility-card",
-                children=[
-                    daq.StopButton(id="stop-button", size=160, n_clicks=0)
-                ],
+                children=[daq.StopButton(id="stop-button", size=160, n_clicks=0)],
             ),
         ],
     )
@@ -435,8 +430,10 @@ def generate_metric_row_helper(stopped_interval, index):
                     {
                         "data": [
                             {
-                                "x": state_dict["Batch"]["data"].tolist()[:stopped_interval],
-                                "y": state_dict[item]['data'][:stopped_interval],
+                                "x": state_dict["Batch"]["data"].tolist()[
+                                    :stopped_interval
+                                ],
+                                "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
                                 "line": {"color": "#f4d44d"},
@@ -531,7 +528,6 @@ def build_chart_panel():
         className="twelve columns",
         children=[
             generate_section_banner("Live SPC Chart"),
-
             dcc.Store(id="control-chart-state"),
             dcc.Graph(
                 id="control-chart-live",
@@ -802,62 +798,65 @@ app.layout = html.Div(
     id="big-app-container",
     children=[
         build_banner(),
-
         dcc.Interval(
             id="interval-component",
             interval=2 * 1000,  # in milliseconds
             n_intervals=50,
-            disabled=True
+            disabled=True,
         ),
-
         html.Div(
             id="app-container",
             children=[
                 build_tabs(),
                 # Main app
-                html.Div(
-                    id="app-content", className="container scalable")
+                html.Div(id="app-content", className="container scalable"),
             ],
         ),
         dcc.Store(id="value-setter-store", data=init_value_setter_store()),
-        dcc.Store(id='n-interval-stage', data=50),
-        generate_modal()
+        dcc.Store(id="n-interval-stage", data=50),
+        generate_modal(),
     ],
 )
 
 
 @app.callback(
-    [Output('app-content', 'children'), Output('interval-component', 'n_intervals')],
-    [Input('app-tabs', "value")],
-    [State('n-interval-stage', 'data')]
+    [Output("app-content", "children"), Output("interval-component", "n_intervals")],
+    [Input("app-tabs", "value")],
+    [State("n-interval-stage", "data")],
 )
 def render_tab_content(tab_switch, stopped_interval):
-    if tab_switch == 'tab1':
+    if tab_switch == "tab1":
         return build_tab_1(), stopped_interval
-    return html.Div(
-        id="status-container",
-        children=[
-            build_quick_stats_panel(),
-            html.Div(
-                id="graphs-container",
-                children=[build_top_panel(stopped_interval), build_chart_panel()],
-            ),
-        ]
-    ), stopped_interval
+    return (
+        html.Div(
+            id="status-container",
+            children=[
+                build_quick_stats_panel(),
+                html.Div(
+                    id="graphs-container",
+                    children=[build_top_panel(stopped_interval), build_chart_panel()],
+                ),
+            ],
+        ),
+        stopped_interval,
+    )
 
 
 # Update interval
 @app.callback(
-    Output('n-interval-stage', 'data'),
-    [Input('app-tabs', 'value')],
-    [State('interval-component', 'n_intervals'), State('interval-component', 'disabled'),
-     State('n-interval-stage', 'data')]
+    Output("n-interval-stage", "data"),
+    [Input("app-tabs", "value")],
+    [
+        State("interval-component", "n_intervals"),
+        State("interval-component", "disabled"),
+        State("n-interval-stage", "data"),
+    ],
 )
 def update_interval_state(tab_switch, cur_interval, disabled, cur_stage):
     if disabled:
         return cur_interval
 
-    if tab_switch == 'tab1':
+    if tab_switch == "tab1":
         return cur_interval
     return cur_stage
 
@@ -870,7 +869,7 @@ def update_interval_state(tab_switch, cur_interval, disabled, cur_stage):
 )
 def stop_production(n_clicks, current):
     if n_clicks == 0:
-        return True, 'start'
+        return True, "start"
     return not current, "stop" if current else "start"
 
 
