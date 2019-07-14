@@ -288,7 +288,6 @@ def build_quick_stats_panel():
                     html.H5("Time to completion"),
                     daq.Gauge(
                         id="progress-gauge",
-                        value=0,
                         max=max_length * 2,
                         min=0,
                         showCurrentValue=True,
@@ -431,8 +430,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                    :stopped_interval
-                                ],
+                                     :stopped_interval
+                                     ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
@@ -830,13 +829,13 @@ def render_tab_content(tab_switch, stopped_interval):
     return (
         html.Div(
             id="status-container",
-            children=[
+            children=daq.DarkThemeProvider(theme=theme, children=[
                 build_quick_stats_panel(),
                 html.Div(
                     id="graphs-container",
                     children=[build_top_panel(stopped_interval), build_chart_panel()],
                 ),
-            ],
+            ]),
         ),
         stopped_interval,
     )
@@ -1025,138 +1024,27 @@ def show_current_specs(n_clicks, dd_select, store_data):
         )
 
 
-# ======= update each row at interval =========
-@app.callback(
-    output=[
-        Output(params[1] + suffix_count, "children"),
-        Output(params[1] + suffix_sparkline_graph, "extendData"),
-        Output(params[1] + suffix_ooc_n, "children"),
-        Output(params[1] + suffix_ooc_g, "value"),
-        Output(params[1] + suffix_indicator, "color"),
+# decorator for list of output
+def create_callback(param):
+    def callback(interval, stored_data):
+        count, ooc_n, ooc_g_value, indicator = update_count(interval, param, stored_data)
+        spark_line_data = update_sparkline(interval, param)
+        return count, spark_line_data, ooc_n, ooc_g_value, indicator
+
+    return callback
+
+
+for param in params[1:]:
+    update_param_row_function = create_callback(param)
+    app.callback(output=[
+        Output(param + suffix_count, "children"),
+        Output(param + suffix_sparkline_graph, "extendData"),
+        Output(param + suffix_ooc_n, "children"),
+        Output(param + suffix_ooc_g, "value"),
+        Output(param + suffix_indicator, "color"),
     ],
-    inputs=[Input("interval-component", "n_intervals")],
-    state=[State("value-setter-store", "data")],
-)
-def update_param1_row(interval, stored_data):
-    count, ooc_n, ooc_g_value, indicator = update_count(
-        interval, params[1], stored_data
-    )
-    spark_line_data = update_sparkline(interval, params[1])
-    return count, spark_line_data, ooc_n, ooc_g_value, indicator
-
-
-@app.callback(
-    output=[
-        Output(params[2] + suffix_count, "children"),
-        Output(params[2] + suffix_sparkline_graph, "extendData"),
-        Output(params[2] + suffix_ooc_n, "children"),
-        Output(params[2] + suffix_ooc_g, "value"),
-        Output(params[2] + suffix_indicator, "color"),
-    ],
-    inputs=[Input("interval-component", "n_intervals")],
-    state=[State("value-setter-store", "data")],
-)
-def update_param2_row(interval, stored_data):
-    count, ooc_n, ooc_g_value, indicator = update_count(
-        interval, params[2], stored_data
-    )
-    spark_line_data = update_sparkline(interval, params[2])
-    return count, spark_line_data, ooc_n, ooc_g_value, indicator
-
-
-@app.callback(
-    output=[
-        Output(params[3] + suffix_count, "children"),
-        Output(params[3] + suffix_sparkline_graph, "extendData"),
-        Output(params[3] + suffix_ooc_n, "children"),
-        Output(params[3] + suffix_ooc_g, "value"),
-        Output(params[3] + suffix_indicator, "color"),
-    ],
-    inputs=[Input("interval-component", "n_intervals")],
-    state=[State("value-setter-store", "data")],
-)
-def update_param3_row(interval, stored_data):
-    count, ooc_n, ooc_g_value, indicator = update_count(
-        interval, params[3], stored_data
-    )
-    spark_line_data = update_sparkline(interval, params[3])
-    return count, spark_line_data, ooc_n, ooc_g_value, indicator
-
-
-@app.callback(
-    output=[
-        Output(params[4] + suffix_count, "children"),
-        Output(params[4] + suffix_sparkline_graph, "extendData"),
-        Output(params[4] + suffix_ooc_n, "children"),
-        Output(params[4] + suffix_ooc_g, "value"),
-        Output(params[4] + suffix_indicator, "color"),
-    ],
-    inputs=[Input("interval-component", "n_intervals")],
-    state=[State("value-setter-store", "data")],
-)
-def update_param4_row(interval, stored_data):
-    count, ooc_n, ooc_g_value, indicator = update_count(
-        interval, params[4], stored_data
-    )
-    spark_line_data = update_sparkline(interval, params[4])
-    return count, spark_line_data, ooc_n, ooc_g_value, indicator
-
-
-@app.callback(
-    output=[
-        Output(params[5] + suffix_count, "children"),
-        Output(params[5] + suffix_sparkline_graph, "extendData"),
-        Output(params[5] + suffix_ooc_n, "children"),
-        Output(params[5] + suffix_ooc_g, "value"),
-        Output(params[5] + suffix_indicator, "color"),
-    ],
-    inputs=[Input("interval-component", "n_intervals")],
-    state=[State("value-setter-store", "data")],
-)
-def update_param5_row(interval, stored_data):
-    count, ooc_n, ooc_g_value, indicator = update_count(
-        interval, params[5], stored_data
-    )
-    spark_line_data = update_sparkline(interval, params[5])
-    return count, spark_line_data, ooc_n, ooc_g_value, indicator
-
-
-@app.callback(
-    output=[
-        Output(params[6] + suffix_count, "children"),
-        Output(params[6] + suffix_sparkline_graph, "extendData"),
-        Output(params[6] + suffix_ooc_n, "children"),
-        Output(params[6] + suffix_ooc_g, "value"),
-        Output(params[6] + suffix_indicator, "color"),
-    ],
-    inputs=[Input("interval-component", "n_intervals")],
-    state=[State("value-setter-store", "data")],
-)
-def update_param6_row(interval, stored_data):
-    count, ooc_n, ooc_g_value, indicator = update_count(
-        interval, params[6], stored_data
-    )
-    spark_line_data = update_sparkline(interval, params[6])
-    return count, spark_line_data, ooc_n, ooc_g_value, indicator
-
-
-@app.callback(
-    output=[
-        Output(params[7] + suffix_count, "children"),
-        Output(params[7] + suffix_sparkline_graph, "extendData"),
-        Output(params[7] + suffix_ooc_n, "children"),
-        Output(params[7] + suffix_ooc_g, "value"),
-        Output(params[7] + suffix_indicator, "color"),
-    ],
-    inputs=[Input("interval-component", "n_intervals")],
-    state=[State("value-setter-store", "data")],
-)
-def update_param7_row(interval, stored_data):
-    count, ooc_n, ooc_g_value, indicator = update_count(
-        interval, params[7], stored_data
-    )
-    spark_line_data = update_sparkline(interval, params[7])
-    return count, spark_line_data, ooc_n, ooc_g_value, indicator
+        inputs=[Input("interval-component", "n_intervals")],
+        state=[State("value-setter-store", "data")])(update_param_row_function)
 
 
 #  ======= button to choose/update figure based on click ============
