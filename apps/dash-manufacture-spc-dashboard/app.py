@@ -312,7 +312,7 @@ def generate_section_banner(title):
     return html.Div(className="section-banner", children=title)
 
 
-def build_top_panel():
+def build_top_panel(stopped_interval):
     return html.Div(
         id="top-section-container",
         className="row",
@@ -330,13 +330,13 @@ def build_top_panel():
                             html.Div(
                                 id="metric-rows",
                                 children=[
-                                    generate_metric_row_helper(1),
-                                    generate_metric_row_helper(2),
-                                    generate_metric_row_helper(3),
-                                    generate_metric_row_helper(4),
-                                    generate_metric_row_helper(5),
-                                    generate_metric_row_helper(6),
-                                    generate_metric_row_helper(7),
+                                    generate_metric_row_helper(stopped_interval, 1),
+                                    generate_metric_row_helper(stopped_interval, 2),
+                                    generate_metric_row_helper(stopped_interval, 3),
+                                    generate_metric_row_helper(stopped_interval, 4),
+                                    generate_metric_row_helper(stopped_interval, 5),
+                                    generate_metric_row_helper(stopped_interval, 6),
+                                    generate_metric_row_helper(stopped_interval, 7),
                                 ],
                             ),
                         ],
@@ -395,7 +395,7 @@ def generate_metric_list_header():
     )
 
 
-def generate_metric_row_helper(index):
+def generate_metric_row_helper(stopped_interval, index):
     item = params[index]
 
     div_id = item + suffix_row
@@ -435,8 +435,8 @@ def generate_metric_row_helper(index):
                     {
                         "data": [
                             {
-                                "x": [],
-                                "y": [],
+                                "x": state_dict["Batch"]["data"].tolist()[:stopped_interval],
+                                "y": state_dict[item]['data'][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
                                 "line": {"color": "#f4d44d"},
@@ -840,7 +840,7 @@ def render_tab_content(tab_switch, stopped_interval):
             build_quick_stats_panel(),
             html.Div(
                 id="graphs-container",
-                children=[build_top_panel(), build_chart_panel()],
+                children=[build_top_panel(stopped_interval), build_chart_panel()],
             ),
         ]
     ), stopped_interval
