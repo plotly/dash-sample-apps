@@ -6,11 +6,12 @@
 /* Banner
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-body {
-    color: whitesmoke !important;
-    background-color: #242633 !important;
+#_dash-app-content {
+    color: whitesmoke;
+    background-color: #242633;
     font-family: "Open Sans", sans-serif;
     width: 100%;
+    min-height: 100vh;
     max-width: 100% !important;
     overflow-x: hidden;
 }
@@ -468,7 +469,7 @@ body {
 }
 
 #app-container {
-    padding: 0 0 10rem 0;
+    padding: 2rem 2rem;
     max-width: 100%;
     width: 100%;
 }
@@ -515,6 +516,7 @@ body {
     display: inline-block;
     float: right;
 }
+
 
 /* Tab 2 Quick stats
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
