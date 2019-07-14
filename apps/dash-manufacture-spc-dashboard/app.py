@@ -1,4 +1,3 @@
-import re
 import os
 import pathlib
 
@@ -16,7 +15,6 @@ import pandas as pd
 app = dash.Dash(__name__)
 server = app.server
 app.config["suppress_callback_exceptions"] = True
-
 
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 df = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "spc_data.csv")))
@@ -37,7 +35,7 @@ theme = {
     "detail": "#2d3038",  # Background-card
     "primary": "#007439",  # Green
     "secondary": "#FFD15F",  # Accent
-}
+}  # todo: change all dash-daq classname in stylesheet
 
 
 def build_banner():
@@ -75,7 +73,7 @@ def build_tabs():
         children=[
             dcc.Tabs(
                 id="app-tabs",
-                value="tab1",
+                value="tab2",
                 className="custom-tabs",
                 children=[
                     dcc.Tab(
@@ -84,35 +82,13 @@ def build_tabs():
                         value="tab1",
                         className="custom-tab",
                         selected_className="custom-tab--selected",
-                        disabled_style={
-                            "backgroundColor": "#1d202d",
-                            "color": "white",
-                            "border": "#23262E solid 3px",
-                            "display": "flex",
-                            "flex-direction": "column",
-                            "alignItems": "center",
-                            "justifyContent": "center",
-                            "cursor": "default",
-                        },
-                        disabled=False,
                     ),
                     dcc.Tab(
                         id="Control-chart-tab",
                         label="Control Charts Dashboard",
                         value="tab2",
                         className="custom-tab",
-                        selected_className="custom-tab--selected",
-                        disabled_style={
-                            "backgroundColor": "#1d202d",
-                            "color": "white",
-                            "border": "#23262E solid 3px",
-                            "display": "flex",
-                            "flex-direction": "column",
-                            "alignItems": "center",
-                            "justifyContent": "center",
-                            "cursor": "default",
-                        },
-                        disabled=False,
+                        selected_className="custom-tab--selected"
                     ),
                 ],
             )
@@ -292,147 +268,6 @@ def generate_modal():
     )
 
 
-app.layout = html.Div(
-    id="big-app-container",
-    children=[
-        build_banner(),
-        html.Div(
-            id="app-container",
-            children=[
-                build_tabs(),
-                # Main app
-                html.Div(id="app-content", className="container scalable"),
-                html.Button("Proceed to Measurement", id="tab-trigger-btn", n_clicks=0),
-            ],
-        ),
-        dcc.Store(id="value-setter-store", data=init_value_setter_store()),
-        generate_modal(),
-    ],
-)
-
-
-# ===== Callbacks to update values based on store data and dropdown selection =====
-@app.callback(
-    output=[
-        Output("value-setter-panel", "children"),
-        Output("ud_usl_input", "value"),
-        Output("ud_lsl_input", "value"),
-        Output("ud_ucl_input", "value"),
-        Output("ud_lcl_input", "value"),
-    ],
-    inputs=[Input("metric-select-dropdown", "value")],
-    state=[State("value-setter-store", "data")],
-)
-def build_value_setter_panel(dd_select, state_value):
-    return (
-        [
-            build_value_setter_line(
-                "value-setter-panel-header",
-                "Specs",
-                "Historical Value",
-                "Set new value",
-            ),
-            build_value_setter_line(
-                "value-setter-panel-usl",
-                "Upper Specification limit",
-                state_dict[dd_select]["usl"],
-                ud_usl_input,
-            ),
-            build_value_setter_line(
-                "value-setter-panel-lsl",
-                "Lower Specification limit",
-                state_dict[dd_select]["lsl"],
-                ud_lsl_input,
-            ),
-            build_value_setter_line(
-                "value-setter-panel-ucl",
-                "Upper Control limit",
-                state_dict[dd_select]["ucl"],
-                ud_ucl_input,
-            ),
-            build_value_setter_line(
-                "value-setter-panel-lcl",
-                "Lower Control limit",
-                state_dict[dd_select]["lcl"],
-                ud_lcl_input,
-            ),
-        ],
-        state_value[dd_select]["usl"],
-        state_value[dd_select]["lsl"],
-        state_value[dd_select]["ucl"],
-        state_value[dd_select]["lcl"],
-    )
-
-
-# ====== Callbacks to update stored data via click =====
-@app.callback(
-    output=Output("value-setter-store", "data"),
-    inputs=[Input("value-setter-set-btn", "n_clicks")],
-    state=[
-        State("metric-select-dropdown", "value"),
-        State("value-setter-store", "data"),
-        State("ud_usl_input", "value"),
-        State("ud_lsl_input", "value"),
-        State("ud_ucl_input", "value"),
-        State("ud_lcl_input", "value"),
-    ],
-)
-def set_value_setter_store(set_btn, param, data, usl, lsl, ucl, lcl):
-    if set_btn is None:
-        return data
-    else:
-        data[param]["usl"] = usl
-        data[param]["lsl"] = lsl
-        data[param]["ucl"] = ucl
-        data[param]["lcl"] = lcl
-
-        # Recalculate ooc in case of param updates
-        data[param]["ooc"] = populate_ooc(df[param], ucl, lcl)
-        return data
-
-
-@app.callback(
-    output=Output("value-setter-view-output", "children"),
-    inputs=[
-        Input("value-setter-view-btn", "n_clicks"),
-        Input("metric-select-dropdown", "value"),
-        Input("value-setter-store", "data"),
-    ],
-)
-def show_current_specs(n_clicks, dd_select, store_data):
-    if n_clicks > 0:
-        curr_col_data = store_data[dd_select]
-        new_df_dict = {
-            "Specs": [
-                "Upper Specification Limit",
-                "Lower Specification Limit",
-                "Upper Control Limit",
-                "Lower Control Limit",
-            ],
-            "Current Setup": [
-                curr_col_data["usl"],
-                curr_col_data["lsl"],
-                curr_col_data["ucl"],
-                curr_col_data["lcl"],
-            ],
-        }
-        new_df = pd.DataFrame.from_dict(new_df_dict)
-        return dash_table.DataTable(
-            style_header={"backgroundColor": "#2d3038", "fontWeight": "bold"},
-            style_as_list_view=True,
-            style_cell_conditional=[
-                {"if": {"column_id": c}, "textAlign": "left"} for c in ["Specs"]
-            ],
-            style_cell={
-                "backgroundColor": "#2d3038",
-                "color": "darkgray",
-                "border": "darkgray",
-            },
-            data=new_df.to_dict("rows"),
-            columns=[{"id": c, "name": c} for c in ["Specs", "Current Setup"]],
-        )
-
-
 def build_quick_stats_panel():
     return html.Div(
         id="quick-stats",
@@ -466,7 +301,7 @@ def build_quick_stats_panel():
             html.Div(
                 id="utility-card",
                 children=[
-                    daq.StopButton(id="stop-button", size=160, buttonText="start")
+                    daq.StopButton(id="stop-button", size=160, n_clicks=0)
                 ],
             ),
         ],
@@ -696,12 +531,7 @@ def build_chart_panel():
         className="twelve columns",
         children=[
             generate_section_banner("Live SPC Chart"),
-            dcc.Interval(
-                id="interval-component",
-                interval=2 * 1000,  # in milliseconds
-                n_intervals=0,
-                disabled=True,
-            ),
+
             dcc.Store(id="control-chart-state"),
             dcc.Graph(
                 id="control-chart-live",
@@ -918,85 +748,6 @@ def generate_graph(interval, specs_dict, col):
     return fig
 
 
-@app.callback(
-    output=[
-        Output("app-tabs", "value"),
-        Output("app-content", "children"),
-        Output("Specs-tab", "disabled"),
-        Output("Control-chart-tab", "disabled"),
-        Output("tab-trigger-btn", "style"),
-    ],
-    inputs=[Input("tab-trigger-btn", "n_clicks")],
-)
-def render_tab_content(tab_switch):
-    if tab_switch == 0:
-        return (
-            "tab1",
-            build_tab_1(),
-            False,
-            True,
-            {"display": "inline-block", "float": "right"},
-        )
-
-    if tab_switch:
-        return [
-            "tab2",
-            html.Div(
-                id="status-container",
-                children=[
-                    build_quick_stats_panel(),
-                    html.Div(
-                        id="graphs-container",
-                        children=[build_top_panel(), build_chart_panel()],
-                    ),
-                ],
-            ),
-            True,
-            False,
-            {"display": "none"},
-        ]
-
-
-# ======= Callbacks for modal popup =======
-@app.callback(
-    Output("markdown", "style"),
-    [Input("learn-more-button", "n_clicks"), Input("markdown_close", "n_clicks")],
-)
-def update_click_output(button_click, close_click):
-    ctx = dash.callback_context
-
-    if ctx.triggered:
-        prop_id = ctx.triggered[0]["prop_id"].split(".")[0]
-        if prop_id == "learn-more-button":
-            return {"display": "block"}
-
-    return {"display": "none"}
-
-
-# Callbacks for stopping interval update
-@app.callback(
-    [Output("interval-component", "disabled"), Output("stop-button", "buttonText")],
-    [Input("stop-button", "n_clicks")],
-    state=[State("interval-component", "disabled")],
-)
-def stop_production(_, current):
-    return not current, "stop" if current else "start"
-
-
-# ======= update progress gauge =========
-@app.callback(
-    output=Output("progress-gauge", "value"),
-    inputs=[Input("interval-component", "n_intervals")],
-)
-def update_gauge(interval):
-    if interval < max_length:
-        total_count = interval
-    else:
-        total_count = max_length
-
-    return int(total_count)
-
-
 def update_sparkline(interval, param):
     x_array = state_dict["Batch"]["data"].tolist()
     y_array = state_dict[param]["data"].tolist()
@@ -1019,7 +770,7 @@ def update_count(interval, col, data):
     if interval == 0:
         return "0", "0.00%", 0.00001, theme["primary"]
 
-    elif interval > 0:
+    if interval > 0:
 
         if interval >= max_length:
             total_count = max_length - 1
@@ -1045,6 +796,234 @@ def update_count(interval, col, data):
             color = "#FF0000"
 
     return str(total_count + 1), ooc_percentage_str, ooc_grad_val, color
+
+
+app.layout = html.Div(
+    id="big-app-container",
+    children=[
+        build_banner(),
+
+        dcc.Interval(
+            id="interval-component",
+            interval=2 * 1000,  # in milliseconds
+            n_intervals=50,
+            disabled=True
+        ),
+
+        html.Div(
+            id="app-container",
+            children=[
+                build_tabs(),
+                # Main app
+                html.Div(
+                    id="app-content", className="container scalable")
+            ],
+        ),
+        dcc.Store(id="value-setter-store", data=init_value_setter_store()),
+        dcc.Store(id='n-interval-stage', data=50),
+        generate_modal()
+    ],
+)
+
+
+@app.callback(
+    [Output('app-content', 'children'), Output('interval-component', 'n_intervals')],
+    [Input('app-tabs', "value")],
+    [State('n-interval-stage', 'data')]
+)
+def render_tab_content(tab_switch, stopped_interval):
+    if tab_switch == 'tab1':
+        return build_tab_1(), stopped_interval
+    return html.Div(
+        id="status-container",
+        children=[
+            build_quick_stats_panel(),
+            html.Div(
+                id="graphs-container",
+                children=[build_top_panel(), build_chart_panel()],
+            ),
+        ]
+    ), stopped_interval
+
+
+# Update interval
+@app.callback(
+    Output('n-interval-stage', 'data'),
+    [Input('app-tabs', 'value')],
+    [State('interval-component', 'n_intervals'), State('interval-component', 'disabled'),
+     State('n-interval-stage', 'data')]
+)
+def update_interval_state(tab_switch, cur_interval, disabled, cur_stage):
+    if disabled:
+        return cur_interval
+
+    if tab_switch == 'tab1':
+        return cur_interval
+    return cur_stage
+
+
+# Callbacks for stopping interval update
+@app.callback(
+    [Output("interval-component", "disabled"), Output("stop-button", "buttonText")],
+    [Input("stop-button", "n_clicks")],
+    [State("interval-component", "disabled")],
+)
+def stop_production(n_clicks, current):
+    if n_clicks == 0:
+        return True, 'start'
+    return not current, "stop" if current else "start"
+
+
+# ======= Callbacks for modal popup =======
+@app.callback(
+    Output("markdown", "style"),
+    [Input("learn-more-button", "n_clicks"), Input("markdown_close", "n_clicks")],
+)
+def update_click_output(button_click, close_click):
+    ctx = dash.callback_context
+
+    if ctx.triggered:
+        prop_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        if prop_id == "learn-more-button":
+            return {"display": "block"}
+
+    return {"display": "none"}
+
+
+# ======= update progress gauge =========
+@app.callback(
+    output=Output("progress-gauge", "value"),
+    inputs=[Input("interval-component", "n_intervals")],
+)
+def update_gauge(interval):
+    if interval < max_length:
+        total_count = interval
+    else:
+        total_count = max_length
+
+    return int(total_count)
+
+
+# ===== Callbacks to update values based on store data and dropdown selection =====
+@app.callback(
+    output=[
+        Output("value-setter-panel", "children"),
+        Output("ud_usl_input", "value"),
+        Output("ud_lsl_input", "value"),
+        Output("ud_ucl_input", "value"),
+        Output("ud_lcl_input", "value"),
+    ],
+    inputs=[Input("metric-select-dropdown", "value")],
+    state=[State("value-setter-store", "data")],
+)
+def build_value_setter_panel(dd_select, state_value):
+    return (
+        [
+            build_value_setter_line(
+                "value-setter-panel-header",
+                "Specs",
+                "Historical Value",
+                "Set new value",
+            ),
+            build_value_setter_line(
+                "value-setter-panel-usl",
+                "Upper Specification limit",
+                state_dict[dd_select]["usl"],
+                ud_usl_input,
+            ),
+            build_value_setter_line(
+                "value-setter-panel-lsl",
+                "Lower Specification limit",
+                state_dict[dd_select]["lsl"],
+                ud_lsl_input,
+            ),
+            build_value_setter_line(
+                "value-setter-panel-ucl",
+                "Upper Control limit",
+                state_dict[dd_select]["ucl"],
+                ud_ucl_input,
+            ),
+            build_value_setter_line(
+                "value-setter-panel-lcl",
+                "Lower Control limit",
+                state_dict[dd_select]["lcl"],
+                ud_lcl_input,
+            ),
+        ],
+        state_value[dd_select]["usl"],
+        state_value[dd_select]["lsl"],
+        state_value[dd_select]["ucl"],
+        state_value[dd_select]["lcl"],
+    )
+
+
+# ====== Callbacks to update stored data via click =====
+@app.callback(
+    output=Output("value-setter-store", "data"),
+    inputs=[Input("value-setter-set-btn", "n_clicks")],
+    state=[
+        State("metric-select-dropdown", "value"),
+        State("value-setter-store", "data"),
+        State("ud_usl_input", "value"),
+        State("ud_lsl_input", "value"),
+        State("ud_ucl_input", "value"),
+        State("ud_lcl_input", "value"),
+    ],
+)
+def set_value_setter_store(set_btn, param, data, usl, lsl, ucl, lcl):
+    if set_btn is None:
+        return data
+    else:
+        data[param]["usl"] = usl
+        data[param]["lsl"] = lsl
+        data[param]["ucl"] = ucl
+        data[param]["lcl"] = lcl
+
+        # Recalculate ooc in case of param updates
+        data[param]["ooc"] = populate_ooc(df[param], ucl, lcl)
+        return data
+
+
+@app.callback(
+    output=Output("value-setter-view-output", "children"),
+    inputs=[
+        Input("value-setter-view-btn", "n_clicks"),
+        Input("metric-select-dropdown", "value"),
+        Input("value-setter-store", "data"),
+    ],
+)
+def show_current_specs(n_clicks, dd_select, store_data):
+    if n_clicks > 0:
+        curr_col_data = store_data[dd_select]
+        new_df_dict = {
+            "Specs": [
+                "Upper Specification Limit",
+                "Lower Specification Limit",
+                "Upper Control Limit",
+                "Lower Control Limit",
+            ],
+            "Current Setup": [
+                curr_col_data["usl"],
+                curr_col_data["lsl"],
+                curr_col_data["ucl"],
+                curr_col_data["lcl"],
+            ],
+        }
+        new_df = pd.DataFrame.from_dict(new_df_dict)
+        return dash_table.DataTable(
+            style_header={"backgroundColor": "#2d3038", "fontWeight": "bold"},
+            style_as_list_view=True,
+            style_cell_conditional=[
+                {"if": {"column_id": c}, "textAlign": "left"} for c in ["Specs"]
+            ],
+            style_cell={
+                "backgroundColor": "#2d3038",
+                "color": "darkgray",
+                "border": "darkgray",
+            },
+            data=new_df.to_dict("rows"),
+            columns=[{"id": c, "name": c} for c in ["Specs", "Current Setup"]],
+        )
 
 
 # ======= update each row at interval =========
