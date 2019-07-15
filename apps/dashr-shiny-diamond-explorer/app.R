@@ -14,6 +14,7 @@ library(plotly)
 data(diamonds, package = "ggplot2")
 nms <- names(diamonds)
 
+#rendering dropdown lists
 lapply(nms, function(x) {
   list(label = x, value = x)
 })
@@ -57,26 +58,26 @@ SampleSlider <- dccSlider(id = "sample-slider",
                             "53940" = "53940")
                           ,
                           value = 1000
-                          )
+)
 
 heightSlider <- dccSlider(id = "height-slider",
                           min = 100,
                           max = 2000,
                           marks = list(
-                          "100" = "100",
-                          "290" = "290",
-                          "480" = "480",
-                          "670" = "670",
-                          "860" = "860",
-                          "1,050" = "1,050",
-                          "1,240" = "1,240",
-                          "1,430" = "1,430",
-                          "1,620" = "1,620",
-                          "1,810" = "1,810",
-                          "2,000" = "2,000"),
+                            "100" = "100",
+                            "290" = "290",
+                            "480" = "480",
+                            "670" = "670",
+                            "860" = "860",
+                            "1,050" = "1,050",
+                            "1,240" = "1,240",
+                            "1,430" = "1,430",
+                            "1,620" = "1,620",
+                            "1,810" = "1,810",
+                            "2,000" = "2,000"),
                           value = 1000
-                          )
-                          
+)
+
 
 ##### CREATE LAYOUT VARIABLES #######
 
@@ -121,7 +122,31 @@ app$layout(
 
 ################ CALLBACKS #####################
 
-
+app$callback(output = list(id = "histogram", property = "figure"),
+             params = list(input(id = "movies-slider", property = "value")),
+             
+             function(input, output) {
+               #add reactive data information. Dataset = built in diamonds data
+               dataset <- reactive({
+                 diamonds[sample(nrow(diamonds), sampleSize)]
+                          
+             # build graph with ggplot syntax
+             p <- ggplot(dataset(), 
+                         aes_string(x = x, 
+                                    y = y, 
+                                    color = color)) + geom_point()
+               )
+             # if at least one facet column/row is specified, add it
+             facets <- paste(input$facet_row, '~', input$facet_col)
+             if (facets != '. ~ .') p <- p + facet_grid(facets)
+             
+             ggplotly(p) %>% 
+               layout(height = input$plotHeight, autosize=TRUE)
+             
+             }
+             return(p)
+             })
+)
 ########CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL
 
 if (appName != "") {
