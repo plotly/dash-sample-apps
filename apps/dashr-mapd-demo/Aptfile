@@ -1,8 +1,5 @@
 libcurl4-openssl-dev
 libxml2-dev
 libv8-3.14-dev
-r-cran-jsonlite
 r-cran-httpuv
-r-cran-base64enc
-r-cran-codetools
 
