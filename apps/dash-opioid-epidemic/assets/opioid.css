@@ -54,7 +54,7 @@
 }
 
 /* For devices larger than 400px */
-@media (min-width: 400px) {
+@media (min-width: 400px) and (max-width: 549px) {
     .container {
         width: 85%;
         padding: 0;
@@ -683,6 +683,10 @@ hr {
     #header h4 {
         text-align: center;
     }
+
+     #header p{
+         font-size: 1.25rem;
+     }
 }
 
 @media (min-width: 1251px) {
@@ -694,6 +698,10 @@ hr {
         max-height: 80rem;
         height: 80rem;
     }
+
+    #header p{
+         font-size: 1.5rem;
+     }
 }
 
 
@@ -707,7 +715,6 @@ hr {
 
 /* Dropdown
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-
 .Select-control {
     color: #7fafdf !important;
 }
