@@ -4,8 +4,40 @@ Poison induced death data was downloaded from [CDC Wonder](dash_app_screencast.g
 
 [View the Dash app](https://opioid-epidemic.herokuapp.com/)
 
-![plotly-dash-screencast](data/app_screencast.gif)
+## Getting Started
 
-![cube-helix-colorscale](https://github.com/plotly/dash-colorscales/raw/master/screenshot.png)
+### Running the app locally
+
+First create a virtual environment with conda or venv inside a temp folder, then activate it.
+
+```
+virtualenv venv
+
+# Windows
+venv\Scripts\activate
+# Or Linux
+source venv/bin/activate
+
+```
+
+Clone the git repo, then install the requirements with pip
+
+```
+
+git clone https://github.com/plotly/dash-sample-apps
+cd dash-sample-apps/apps/dash-financial-report
+pip install -r requirements.txt
+
+```
+
+Run the app
+
+```
+
+python app.py
+
+```
+
+![plotly-dash-screencast](assets/app_screencast.gif)
 
 Dash app inspired by [this Tableau dashboard](https://www.cdc.gov/nchs/data-visualization/drug-poisoning-mortality/)
