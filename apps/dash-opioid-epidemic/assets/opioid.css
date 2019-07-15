@@ -308,6 +308,7 @@ p {
 }
 
 #description {
+    font-size: 1.5rem;
     border-left: #2cfec1 solid 1rem;
     padding-left: 1rem;
     max-width: 100rem;
@@ -328,6 +329,10 @@ p {
 @media only screen and (max-width: 550px){
     .rc-slider-mark-text{
         font-size: 50%;
+    }
+
+    #description{
+        font-size: 1rem;
     }
 }
 
@@ -683,7 +688,7 @@ hr {
 /* Graph
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-@media only screen and (max-width: 1250px) {
+@media (max-width: 1250px) {
     /*For mobile and smaller screens*/
     #graph-container {
         margin: 0 0 10rem 0;
@@ -696,10 +701,6 @@ hr {
     #header h4 {
         text-align: center;
     }
-
-     #description{
-         font-size: 1rem;
-     }
 }
 
 @media (min-width: 1251px) {
@@ -720,10 +721,6 @@ hr {
     #header p{
          font-size: 1.5rem;
      }
-
-    #description{
-        font-size: 1.5rem;
-    }
 }
 
 
