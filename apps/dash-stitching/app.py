@@ -360,7 +360,7 @@ def estimate_translation(string):
 
 @app.callback(Output("memory-stitch", "data"), [Input("button-stitch", "n_clicks")])
 def update_store(click):
-    sleep(0.1)
+
     return click
 
 
