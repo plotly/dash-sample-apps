@@ -172,13 +172,13 @@
     }
 }
 
-@media (max-width: 950px){
+@media (max-width: 950px) {
     .rc-slider-mark-text {
         font-size: 1.5vw;
     }
 }
 
-@media(max-width: 650px){
+@media (max-width: 650px) {
     .rc-slider-mark-text {
         font-size: 2vw;
     }
@@ -334,7 +334,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
     }
 
     #svm-graph-container {
@@ -343,6 +343,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding-bottom: 4rem;
+        border-bottom: solid 1px rgba(255, 255, 255, 0.1);
     }
 
     #graph-sklearn-svm {
@@ -363,7 +365,7 @@
 
     #graph-line-roc-curve {
         height: 45rem;
-        margin: 7rem 0 1rem 0;
+        margin: 3rem 0 1rem 0;
     }
 
     #graph-pie-confusion-matrix {
@@ -373,15 +375,20 @@
 }
 
 @media (max-width: 650px) {
-    #graphs-container{
+    #svm-graph-container {
+        padding-bottom: 3rem;
+    }
+
+    #graphs-container {
         align-items: center;
         width: 100%;
         max-width: 100%;
     }
+
     #graph-line-roc-curve {
         width: 90%;
         height: 30rem;
-        margin: 5rem 0 1rem 0;
+        margin: 3rem 0 1rem 0;
     }
 
     #graph-pie-confusion-matrix {
@@ -391,12 +398,19 @@
     }
 }
 
+@media (max-width: 400px) {
+    #graphs-container {
+        align-items: center;
+        margin-left: -4rem
+    }
+}
+
 /* Remove Undo
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ._dash-undo-redo {
     display: none;
 }
 
-#graph-line-roc-curve .modebar, #graph-pie-confusion-matrix.modebar {
+#graph-line-roc-curve .modebar, #graph-pie-confusion-matrix .modebar {
     display: none;
 }
