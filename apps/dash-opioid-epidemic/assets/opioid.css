@@ -306,11 +306,15 @@ p {
 }
 
 #description {
-    font-size: 1rem;
     border-left: #2cfec1 solid 1rem;
     padding-left: 1rem;
     max-width: 100rem;
     margin: 2rem 0 3rem 0;
+}
+
+#logo{
+    height: 5rem;
+    margin-bottom: 2rem;
 }
 
 #slider-text, #chart-selector {
@@ -684,7 +688,7 @@ hr {
         text-align: center;
     }
 
-     #header p{
+     #description{
          font-size: 1.25rem;
      }
 }
@@ -699,9 +703,18 @@ hr {
         height: 80rem;
     }
 
+    #logo{
+        float: right;
+        padding-right: 2rem;
+    }
+
     #header p{
          font-size: 1.5rem;
      }
+
+    #description{
+        font-size: 1.5rem;
+    }
 }
 
 

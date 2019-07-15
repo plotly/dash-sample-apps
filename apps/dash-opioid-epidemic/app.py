@@ -93,6 +93,7 @@ app.layout = html.Div(
         html.Div(
             id="header",
             children=[
+                html.Img(id='logo', src=app.get_asset_url("dash-logo.png")),
                 html.H4(children="Rate of US Poison-Induced Deaths"),
                 html.P(
                     id="description",
