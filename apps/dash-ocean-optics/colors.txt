@@ -1,6 +1,0 @@
-background #bbbbbb
-primary #ffffff
-secondary #efefef
-tertiary #dfdfdf
-grid-colour #eeeeee
-accent #2222ff
