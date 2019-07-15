@@ -1,4 +1,4 @@
-dash>=0.43.0
+dash==1.0.0
 gunicorn>=19.7.1
 numpy>=1.14.0
 pandas>=0.22.0

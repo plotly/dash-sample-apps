@@ -322,6 +322,10 @@ p {
     font-size: 2rem;
 }
 
+#rc-slider-mark-text{
+    font-size: 1.25rem;
+}
+
 /* Blockquotes
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 blockquote {

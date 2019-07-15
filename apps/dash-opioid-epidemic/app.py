@@ -329,10 +329,7 @@ def update_map_title(year):
     ],
 )
 def display_selected_data(selectedData, chart_dropdown, year):
-    print(chart_dropdown)
-    print("FIRE SELECTION")
     if selectedData is None:
-        print("SelectedData is None")
         return dict(
             data=[dict(x=0, y=0)],
             layout=dict(
@@ -347,7 +344,6 @@ def display_selected_data(selectedData, chart_dropdown, year):
     for i in range(len(fips)):
         if len(fips[i]) == 4:
             fips[i] = "0" + fips[i]
-    print("FIPS", "\n", fips)
     dff = df_full_data[df_full_data["County Code"].isin(fips)]
     dff = dff.sort_values("Year")
 
