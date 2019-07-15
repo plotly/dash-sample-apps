@@ -62,12 +62,12 @@
 }
 
 /* For devices larger than 550px */
-@media (min-width: 550px) {
+@media (min-width: 750px) {
   .container {
-    width: 80%; }
+    width: 100%; }
   .column,
   .columns {
-    margin-left: 9%; }
+    margin-left: 3%; }
   .column:first-child,
   .columns:first-child {
     margin-left: 0; }
@@ -371,10 +371,7 @@ input[type="button"].button-primary:focus {
 
 
 
-/* Canvas Div */
-#_dash-app-content>div>div.eight.columns.result {
-  margin-left: 35px;
-}
+
 
 #tabs-content-example>div>div,
 .lower-canvas,
@@ -724,15 +721,21 @@ there.
 */
 
 
-/* Larger than mobile */
-@media (max-width: 300px) {
- 
+/* Larger than tablet */
+@media (max-width: 1250px) {}
+
+/* Larger than desktop */
+@media (max-width: 1000px) {}
+
+/* Larger than Desktop HD */
+@media (max-width: 950px) {
   
 }
 
+
 /* Larger than phablet (also point when grid becomes active) */
-@media (max-width: 550px) {
-    .instruction {
+@media (max-width: 750px) {
+  .instruction {
     width: 100vw;
     height: 100vh;
     text-align: center;
@@ -1078,20 +1081,4 @@ there.
 
 }
 
-
-/* Larger than tablet */
-@media (max-width: 950px) {
-  
-    
-}
-
-/* Larger than desktop */
-@media (max-width: 1000px) {
-
-}
-/* Larger than Desktop HD */
-@media (max-width: 1200px) {
-  
-  
-}
 
