@@ -13,7 +13,7 @@ install.packages("later")
 install.packages("jsonlite")
 install.packages("listenv")
 # installs magrittr, promises, R6
-#remotes::install_version("httpuv", version = "1.4.5.1", repos = "http://cloud.r-project.org", upgrade="never")
+remotes::install_version("httpuv", version = "1.4.5.1", repos = "http://cloud.r-project.org", upgrade="never")
 # installs crayon, digest, htmltools, mime, sourcetools, xtable
 remotes::install_version("shiny", version = "1.2.0", repos = "http://cloud.r-project.org", upgrade="never")
 # installs askpass, assertthat, base64enc, cli, colorspace, crosstalk, curl, data.table, dplyr, fansi, ggplot2, glue, gtable, hexbin, htmlwidgets, httr, labeling, lattice, lazyeval, mgcv, munsell, nlme, openssl, pillar, pkgconfig, plogr, plyr, purrr, RColorBrewer, reshape2, scales, stringi, stringr, sys, tibble, tidyr, tidyselect, utf8, viridisLite, withr, yaml
@@ -35,10 +35,10 @@ install.packages("https://cloud.r-project.org/src/contrib/Archive/future/future_
 install.packages("https://cloud.r-project.org/src/contrib/routr_0.3.0.tar.gz", type="source", repos=NULL)
 install.packages("https://cloud.r-project.org/src/contrib/fiery_1.1.1.tar.gz", type="source", repos=NULL)
 
-#remotes::install_github("plotly/dash-html-components")
-#remotes::install_github("plotly/dash-core-components")
-#remotes::install_github("plotly/dash-table")
-#remotes::install_github("plotly/dashR")
+remotes::install_github("plotly/dash-html-components")
+remotes::install_github("plotly/dash-core-components")
+remotes::install_github("plotly/dash-table")
+remotes::install_github("plotly/dashR")
 
 install.packages("fasttime")
 install.packages("RJDBC")

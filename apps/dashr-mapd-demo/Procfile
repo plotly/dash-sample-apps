@@ -1,5 +1,1 @@
-web: R -e 'devtools::install_github("plotly/dash-html-components")'
-web: R -e 'devtools::install_github("plotly/dash-core-components")'
-web: R -e 'devtools::install_github("plotly/dash-table")'
-web: R -e 'devtools::install_github("plotly/dashR")'
 web: R -f /app/apps/"$DASH_APP_NAME"/app.R
