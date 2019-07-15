@@ -6,12 +6,12 @@
 /* Banner
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-#_dash-app-content {
+body {
     color: whitesmoke;
-    background-color: #242633;
+    background-color: #1e2130;
     font-family: "Open Sans", sans-serif;
     width: 100%;
-    min-height: 100vh;
+    height:100vh;
     max-width: 100% !important;
     overflow-x: hidden;
 }
@@ -21,33 +21,43 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 10rem;
+    padding: 0 4rem;
 }
 
 .banner {
-    height: 12rem;
-    background-color: #242633;
+    height: 6rem;
+    background-color: #1e2130;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     border-bottom: darkgray solid 1px;
-    padding: 0 10rem;
+    padding: 1rem 4rem;
     width: 100%;
 }
 
 
 .banner h5 {
-    color: white;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 3rem;
-    font-weight: bold;
-    line-height: 1;
+    color: #f3f5f4;
+    font-family: 'Open Sans Semi Bold', sans-serif;
+    font-weight: 500;
+    line-height: 1.2;
+    font-size: 2rem;
+    letter-spacing: 0.1rem;
     text-transform: uppercase;
 }
 
 .banner h6 {
     color: darkgray;
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.banner button {
+    color: #95969A;
+    margin-right:10px;
+    height: 30px;
+    line-height: 30px;
 }
 
 #banner-logo {
@@ -57,24 +67,14 @@
     justify-content: flex-end;
 }
 
-#logo {
-    height: 50px;
-}
-
-.banner button {
-    color: #95969A;
-    height: 5rem;
-}
-
 .banner button:hover {
-    color: #91dfd2;
-    height: 5rem;
+    color: #92e0d3;
     border-color: whitesmoke;
 }
 
 .banner Img {
-    height: 8rem;
-    margin-left: 1rem;
+    height: 3rem;
+    margin: 0px 10px;
 }
 
 /* Tabs
@@ -105,7 +105,7 @@
 
 .section-banner {
     color: darkgray;
-    font-size: 2rem;
+    font-size: 1.5rem;
     background-color: #1d202d;
     text-align: left;
     font-weight: normal;
