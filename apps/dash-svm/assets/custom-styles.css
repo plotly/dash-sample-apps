@@ -172,6 +172,18 @@
     }
 }
 
+@media (max-width: 950px){
+    .rc-slider-mark-text {
+        font-size: 1.5vw;
+    }
+}
+
+@media(max-width: 650px){
+    .rc-slider-mark-text {
+        font-size: 2vw;
+    }
+}
+
 @media (min-width: 1301px) {
     #left-column {
         flex: 1 20%;
@@ -205,20 +217,26 @@
         font-size: 0.8rem;
         padding: 0
     }
-
 }
 
-/*@media (max-width: 1300px) {*/
-/*#left-column {*/
-/*width: 100%;*/
-/*display: flex;*/
-/*flex-direction: column;*/
-/*align-items: center;*/
-/*margin: 0;*/
-/*max-height: none;*/
-/*max-width: none;*/
-/*}*/
-/*}*/
+@media (max-width: 950px) {
+    #button-zero-threshold {
+        font-size: 1.0rem;
+        padding: 0
+    }
+}
+
+@media (max-width: 950px) {
+    #left-column {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        max-height: none;
+        max-width: none;
+    }
+}
 
 /* Slider
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -310,48 +328,68 @@
     }
 }
 
-/*@media (max-width: 1300px) {*/
-/*#div-graphs {*/
-/*width: 100%;*/
-/*display: flex;*/
-/*flex-direction: column;*/
-/*align-items: center;*/
-/*justify-content: space-between;*/
-/*}*/
+@media (max-width: 950px) {
+    #div-graphs {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-/*#svm-graph-container {*/
-/*width: 80vw;*/
-/*height: 65vw;*/
-/*display: flex;*/
-/*flex-direction: column;*/
-/*align-items: center;*/
-/*}*/
+    #svm-graph-container {
+        width: 80vw;
+        height: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-/*#graph-sklearn-svm {*/
-/*width: 80%;*/
-/*height: 150%;*/
-/*}*/
+    #graph-sklearn-svm {
+        width: 80vw;
+        height: 80vw;
+    }
 
-/*#graphs-container {*/
-/*display: flex;*/
-/*flex-direction: column;*/
-/*align-items: stretch;*/
-/*width: 100%;*/
-/*margin: 0 0 0 -7rem;*/
-/*padding: 8rem 10rem;*/
-/*max-height: none;*/
-/*height: 150rem;*/
-/*}*/
+    #graphs-container {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        width: 90%;
+        max-width: 90%;
+        margin: 0 0 0 -1rem;
+        max-height: none;
+    }
 
-/*#graph-line-roc-curve {*/
-/*height: 50rem;*/
-/*margin: 4rem 0 7rem 0;*/
-/*}*/
+    #graph-line-roc-curve {
+        height: 45rem;
+        margin: 7rem 0 1rem 0;
+    }
 
-/*#graph-pie-confusion-matrix {*/
-/*height: 75rem;*/
-/*}*/
-/*}*/
+    #graph-pie-confusion-matrix {
+        height: 60rem;
+        margin-bottom: 5rem;
+    }
+}
+
+@media (max-width: 650px) {
+    #graphs-container{
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+    }
+    #graph-line-roc-curve {
+        width: 90%;
+        height: 30rem;
+        margin: 5rem 0 1rem 0;
+    }
+
+    #graph-pie-confusion-matrix {
+        width: 90%;
+        height: 40rem;
+        margin-bottom: 5rem;
+    }
+}
 
 /* Remove Undo
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
