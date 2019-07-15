@@ -237,7 +237,7 @@ build_tabs <- function() {
   )
 }
 
-# generate layout for tab 1
+# Generate Layout for Tab 1 --------------------------------------------------------------------------------------------
 
 build_value_setter_line <- function(line_num, label, value, col3) {
   return(
@@ -313,7 +313,7 @@ build_tab_1 <- function() {
   )
 }
 
-# generate layout for tab 2
+# Generate Layout for Tab 2 --------------------------------------------------------------------------------------------
 
 build_quick_stats_panel <- function() {
   return(
@@ -923,6 +923,8 @@ app$callback(
   }
 )
 
+# TAB 1 ----------------------------------------------------------------------------------------------------------------
+
 # callbacks to update values based on stored data and dropdown selection
 app$callback(
   list(id = "value-setter-panel", property = "children"),
@@ -1120,6 +1122,8 @@ app$callback(
   }
 )
 
+# TAB 2 ----------------------------------------------------------------------------------------------------------------
+
 # callbacks for stopping interval update when clicking "Stop/Start" button
 app$callback(
   output = list(id = "interval-component", property = "disabled"),
@@ -1213,9 +1217,33 @@ update_metric_summary <- function(param) {
 }
 for (param in params[-1]) {update_metric_summary(param)}
 
-# ---------------------------------- FIX BELOW ----------------------------------
+# callbacks to update pie chart
+app$callback(
+  output = list(id = "piechart", property = "figure"),
+  params = list(
+    input(id = "interval-component", property = "n_intervals"),
+    state(id = "value-setter-store", property = "data"),
+    state(id = "piechart", property = "figure")
+  ),
+  function(interval, stored_data, fig) {
+    if (interval != 0) {
+      total_count <- ifelse(interval < max_length, interval, max_length)
+      values <- list()
+      colors <- list()
+      for (param in params[-1]) {
+        ooc_param <- stored_data[[param]][["ooc"]][[total_count]]*100+1
+        # CHANGE TO: ooc_param <- stored_data[[param]][["ooc"]][[total_count]]*100
+        values <- append(values, ooc_param)
+        colors <- append(colors, ifelse(ooc_param > 6, "#f45060", "#91dfd2"))
+      }
+      fig$data[[1]]$values <- values
+      fig$data[[1]]$marker$colors <- colors
+    }
+    return(fig)
+  }
+)
 
-# callbacks to update graph according to interval and selected parameteer
+# callbacks to update graph according to interval and selected parameter (FIX!)
 app$callback(
   output = list(id = "control-chart-live", property = "figure"),
   params = list(
@@ -1230,20 +1258,23 @@ app$callback(
     state(id = "value-setter-store", property = "data"),
     state(id = "control-chart-live", property = "figure")
   ),
-  function(interval, n1, n2, n3, n4, n5, n6, n7, data, cur_fig) {
+  function(interval, n1, n2, n3, n4, n5, n6, n7, data, fig) {
     # find which one was triggered
     ctx <- app$callback_context()
     if(!ctx$triggered$value) {
-      return(generate_graph(interval, data, params[-1][[1]]))
+      id <- params[-1][[1]]
     } else {
       # get most recently triggered input id and property
       splitted <- unlist(strsplit(ctx$triggered$prop_id, "[.]"))
       prop_id <- splitted[[1]]
       prop_type <- splitted[[2]]
       if (prop_type == "n_clicks") {
+        id <- params[-1][[1]] # EDIT THIS
+      } else if (prop_type == "n_intervals") {
+        id <- cur_fig$x$data[[1]][["name"]]
       }
-      return("")
     }
+    return(generate_graph(interval, data, id))
 
 
     # # find which one was triggered
@@ -1268,34 +1299,6 @@ app$callback(
     #   }
     # }
 
-  }
-)
-
-# ---------------------------------- FIX ABOVE ----------------------------------
-
-# callbacks to update pie chart
-app$callback(
-  output = list(id = "piechart", property = "figure"),
-  params = list(
-    input(id = "interval-component", property = "n_intervals"),
-    state(id = "value-setter-store", property = "data"),
-    state(id = "piechart", property = "figure")
-  ),
-  function(interval, stored_data, fig) {
-    if (interval != 0) {
-      total_count <- ifelse(interval < max_length, interval, max_length)
-      values <- list()
-      colors <- list()
-      for (param in params[-1]) {
-        ooc_param <- stored_data[[param]][["ooc"]][[total_count]]*100+1
-        # CHANGE TO: ooc_param <- stored_data[[param]][["ooc"]][[total_count]]*100
-        values <- append(values, ooc_param)
-        colors <- append(colors, ifelse(ooc_param > 6, "#f45060", "#91dfd2"))
-      }
-      fig$data[[1]]$values <- values
-      fig$data[[1]]$marker$colors <- colors
-    }
-    return(fig)
   }
 )
 
