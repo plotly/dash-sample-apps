@@ -1258,47 +1258,21 @@ app$callback(
     state(id = "value-setter-store", property = "data"),
     state(id = "control-chart-live", property = "figure")
   ),
-  function(interval, n1, n2, n3, n4, n5, n6, n7, data, fig) {
+  function(interval, n1, n2, n3, n4, n5, n6, n7, data, cur_fig) {
     # find which one was triggered
     ctx <- app$callback_context()
     if(!ctx$triggered$value) {
       id <- params[-1][[1]]
     } else {
       # get most recently triggered input id and property
-      splitted <- unlist(strsplit(ctx$triggered$prop_id, "[.]"))
-      prop_id <- splitted[[1]]
-      prop_type <- splitted[[2]]
-      if (prop_type == "n_clicks") {
-        id <- params[-1][[1]] # EDIT THIS
-      } else if (prop_type == "n_intervals") {
+      input <- unlist(strsplit(ctx$triggered$prop_id, "[.]"))
+      if (input[[2]] == "n_clicks") {
+        id <- gsub('.{7}$', '', input[[1]])
+      } else if (input[[2]] == "n_intervals" && !is.na(cur_fig)) { # REMOVE: !is.na(cur_fig)
         id <- cur_fig$x$data[[1]][["name"]]
       }
     }
     return(generate_graph(interval, data, id))
-
-
-    # # find which one was triggered
-    # ctx <- app$callback_context()
-    # if(!ctx$triggered$value) {
-    #   return(generate_graph(interval, data, params[-1][[1]]))
-    # } else {
-    #   # get most recently triggered id and prop_type
-    #   splitted <- unlist(strsplit(ctx$triggered$prop_id, "[.]"))
-    #   prop_id <- splitted[[1]]
-    #   prop_type <- splitted[[2]]
-    #   if (prop_type == "n_clicks") {
-    #     curr_id <- cur_fig$x$data[[1]][["name"]]
-    #     prop_id <- prop_id[1:-7] # EDIT!
-    #     if (curr_id == prop_id) {
-    #       return(generate_graph(interval, data, curr_id))
-    #     } else
-    #       return(generate_graph(interval, data, prop_id))
-    #   } else if (prop_type == "n_intervals" && !is.na(cur_fig)) {
-    #     curr_id <- cur_fig$x$data[[1]][["name"]]
-    #     return(generate_graph(interval, data, curr_id))
-    #   }
-    # }
-
   }
 )
 
