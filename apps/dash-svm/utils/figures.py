@@ -148,12 +148,12 @@ def serve_pie_confusion_matrix(model, X_test, y_test, Z, threshold):
         sort=False,
         marker=dict(colors=colors),
         insidetextfont={"color": "black"},
-        rotation=90,
+        rotation=0,
     )
 
     layout = go.Layout(
         title="Confusion Matrix",
-        margin=dict(l=50, r=10, t=100, b=10),
+        margin=dict(l=50, r=10, t=150, b=10),
         legend=dict(bgcolor="#282b38", font={"color": "#a5b1cd"}, orientation="h"),
         plot_bgcolor="#282b38",
         paper_bgcolor="#282b38",

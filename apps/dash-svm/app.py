@@ -95,10 +95,10 @@ app.layout = html.Div(
             children=[
                 html.Div(
                     id="app-container",
-                    className="row",
+                    # className="row",
                     children=[
                         html.Div(
-                            className="three columns",
+                            # className="three columns",
                             id="left-column",
                             children=[
                                 drc.Card(
@@ -421,12 +421,12 @@ def update_svm_graph(
 
     return [
         html.Div(
-            className="six columns",
+            # className="six columns",
             id="svm-graph-container",
             children=[dcc.Graph(id="graph-sklearn-svm", figure=prediction_figure)],
         ),
         html.Div(
-            className="three columns",
+            # className="three columns",
             id="graphs-container",
             children=[
                 dcc.Graph(id="graph-line-roc-curve", figure=roc_figure),

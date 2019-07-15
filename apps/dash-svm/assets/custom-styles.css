@@ -4,13 +4,19 @@
     padding-bottom: 5rem;
 }
 
+@media (max-width: 700px) {
+    #body {
+        width: 100%;
+    }
+}
+
 /* Banner
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .banner {
     background-color: #2f3445; /* Machine Learning Color is orange */
     padding: 3rem 0;
     width: 100%;
-    margin-bottom: 6%;
+    margin-bottom: 5rem;
 }
 
 .banner h2 {
@@ -41,7 +47,7 @@
     max-width: none;
 }
 
-@media only screen and (max-width: 1300px) {
+@media (max-width: 1300px) {
 
     .banner .container.scalable {
         display: flex;
@@ -58,7 +64,40 @@
         height: 8rem;
         margin-bottom: 5rem;
     }
+}
 
+@media (max-width: 700px) {
+    .banner .container.scalable {
+        padding: 0
+    }
+
+    .banner Img {
+        height: 4rem;
+        margin-bottom: 2rem;
+    }
+
+    .banner h2 {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 700px) {
+    #first-card {
+        margin: 0;
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+
+/* app-container
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+@media (min-width: 801px) {
+    #app-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }
 }
 
 /* Dropdowns
@@ -95,7 +134,8 @@
 
 .card {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    width: 75%;
+    width: 80%;
+    padding: 2rem 0;
 }
 
 #last-card {
@@ -123,32 +163,55 @@
 }
 
 #first-card {
-    padding-top: 0 !important;
+    padding-top: 0;
+}
+
+@media(max-width:1500px){
+    .rc-slider-mark-text{
+        font-size: 0.7vw;
+    }
 }
 
 @media (min-width: 1301px) {
     #left-column {
+        flex: 1 20%;
         margin: 0 3rem 0 0;
         max-height: 83rem;
-        max-width: 20%;
         overflow-x: hidden;
         overflow-y: auto;
     }
+
+    .card {
+        padding-left: 2rem;
+    }
 }
 
-@media only screen and (max-width: 1300px) {
-
+@media (max-width: 1300px){
     #left-column {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 0;
-        max-height: none;
-        max-width: none;
+        flex: 1 20%;
+        margin: 0 3rem 0 0;
+        max-height: 70rem;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
+    .card {
+        padding-left: 2rem;
+    }
 }
+
+
+/*@media (max-width: 1300px) {*/
+/*#left-column {*/
+/*width: 100%;*/
+/*display: flex;*/
+/*flex-direction: column;*/
+/*align-items: center;*/
+/*margin: 0;*/
+/*max-height: none;*/
+/*max-width: none;*/
+/*}*/
+/*}*/
 
 /* Slider
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -178,20 +241,38 @@
 /* Graph container
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #svm-graph-container {
-    margin-top: 5px;
+    margin-top: 0.5rem;
 }
 
-#graphs-container {
-    min-width: 24.5%;
-    height: 83rem;
-    margin-top: 5px;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
+@media (min-width: 801px) {
+    #div-graphs {
+        flex: 4 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: stretch;
+    }
+    #svm-graph-container{
+        flex: 2 66%;
+    }
+    #graphs-container{
+        flex: 1 33%
+    }
+
+    #graph-sklearn-svm{
+        height: 100%;
+    }
 }
 
-@media only screen and (min-width: 1301px) {
+@media (min-width: 1301px) {
+    #div-graphs{
+        height: 83rem;
+    }
+
+    #graphs-container {
+        margin-top: 0.5rem;
+    }
+
     #graph-line-roc-curve {
         height: 40%
     }
@@ -199,66 +280,71 @@
     #graph-pie-confusion-matrix {
         height: 60%
     }
-
-    #graph-sklearn-svm {
-        height: 83rem;
-    }
 }
 
-@media only screen and (max-width: 1300px) {
-    #div-graphs {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    #svm-graph-container {
-        width: 80vw;
-        height: 65vw;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #graph-sklearn-svm {
-        width: 80%;
-        height: 150%;
+@media (max-width: 1300px) {
+    #div-graphs{
+        height: 70rem;
     }
 
     #graphs-container {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        width: 100%;
-        margin: 0 0 0 -7rem;
-        padding: 8rem 10rem;
-        max-height: none;
-        height: 150rem;
+        margin-top: 0.5rem;
     }
 
     #graph-line-roc-curve {
-        height: 50rem;
-        margin: 4rem 0 7rem 0;
+        height: 40%
     }
 
     #graph-pie-confusion-matrix {
-        height: 75rem;
+        height: 60%
     }
 }
+
+/*@media (max-width: 1300px) {*/
+/*#div-graphs {*/
+/*width: 100%;*/
+/*display: flex;*/
+/*flex-direction: column;*/
+/*align-items: center;*/
+/*justify-content: space-between;*/
+/*}*/
+
+/*#svm-graph-container {*/
+/*width: 80vw;*/
+/*height: 65vw;*/
+/*display: flex;*/
+/*flex-direction: column;*/
+/*align-items: center;*/
+/*}*/
+
+/*#graph-sklearn-svm {*/
+/*width: 80%;*/
+/*height: 150%;*/
+/*}*/
+
+/*#graphs-container {*/
+/*display: flex;*/
+/*flex-direction: column;*/
+/*align-items: stretch;*/
+/*width: 100%;*/
+/*margin: 0 0 0 -7rem;*/
+/*padding: 8rem 10rem;*/
+/*max-height: none;*/
+/*height: 150rem;*/
+/*}*/
+
+/*#graph-line-roc-curve {*/
+/*height: 50rem;*/
+/*margin: 4rem 0 7rem 0;*/
+/*}*/
+
+/*#graph-pie-confusion-matrix {*/
+/*height: 75rem;*/
+/*}*/
+/*}*/
 
 /* Remove Undo
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ._dash-undo-redo {
     display: none;
-}
-
-@media only screen and (max-width: 1300px) {
-    #app-container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
 }
