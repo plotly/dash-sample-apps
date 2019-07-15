@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1563217341166.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "209175448",
+    "id" : "F26DA9BA",
+    "lastKnownWriteTime" : 1563221699,
+    "last_content_update" : 1563221699304,
+    "path" : "~/Documents/GitHub/plot.ly/dash-sample-apps/apps/dashr-shiny-diamond-explorer/app.R",
+    "project_path" : "app.R",
+    "properties" : {
+        "cursorPosition" : "111,10",
+        "scrollLine" : "107"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

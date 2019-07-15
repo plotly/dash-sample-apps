@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1562950272308.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3269494140",
+    "id" : "8391F877",
+    "lastKnownWriteTime" : 1562957931,
+    "last_content_update" : 1562958151030,
+    "path" : "~/Documents/GitHub/plot.ly/dash-sample-apps/apps/dashr-shiny-movies/app.R",
+    "project_path" : "app.R",
+    "properties" : {
+        "cursorPosition" : "129,18",
+        "scrollLine" : "117"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
