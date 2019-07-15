@@ -1,4 +1,4 @@
-._dash-undo-redo {
+/* ._dash-undo-redo {
     display: none;
   }
   #page {
@@ -167,4 +167,87 @@
       padding: 20px;
       padding-top: 0px;
       font-variant: small-caps;
-  }
+  } */
+
+
+body {
+    background-color: #939393;
+    color: #F4F6F8;
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+}
+
+.left__section {
+    /* padding: 50px 125px 25px 85px; */
+    padding: 30px 70px 70px 70px;
+    /* height: 150vh; */
+    background-color: #A5A5A5;
+    color: white;
+}
+
+.logo {
+    height: 60px;
+    width: auto;
+}
+
+.right__section {
+    height: 100vh;
+    background-color: #939393;
+}
+
+.control {
+    padding: 10px 0px;
+}
+
+.Select-control,
+.control__dropdowns {
+    width: 100%;
+    background-color: transparent !important;
+    border: 1px solid white !important;
+    color: white !important;
+}
+
+.strobe {
+    padding: 10px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+input {
+    border-radius: 0 !important;
+}
+
+.Select-control {
+    border-radius: 0;
+}
+
+.Select-value-label {
+    color: white !important;
+}
+
+#my-daq-booleanswitchsss {
+    display: flex !important;
+}
+
+#light-intensity-knobss {
+    display: flex;
+    justify-content: center;
+}
+
+#submit-buttossn {
+    width: 100%;
+    background-color: #565656;
+    color: white;
+    height: 50px;
+}
+
+.autoscale {
+    display: flex;
+    justify-content: space-between;
+}
+
+#submit-status {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid grey;
+}
