@@ -112,7 +112,7 @@ def serve_roc_curve(model, X_test, y_test):
         xaxis=dict(title="False Positive Rate", gridcolor="#2f3445"),
         yaxis=dict(title="True Positive Rate", gridcolor="#2f3445"),
         legend=dict(x=0, y=1.05, orientation="h"),
-        margin=dict(l=100, r=10, t=25, b=40),
+        margin=dict(l=70, r=10, t=25, b=40),
         plot_bgcolor="#282b38",
         paper_bgcolor="#282b38",
         font={"color": "#a5b1cd"},
