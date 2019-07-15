@@ -737,6 +737,10 @@ hr {
 
 /* Dropdown
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+Select-value{
+    cursor: pointer;
+}
+
 .Select-control {
     color: #7fafdf !important;
 }
