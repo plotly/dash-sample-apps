@@ -56,7 +56,7 @@ def build_banner():
                     html.Button(
                         id="learn-more-button", children="LEARN MORE", n_clicks=0
                     ),
-                    html.Img(id="logo", src=app.get_asset_url("plotly_logo.png")),
+                    html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png")),
                 ],
             ),
         ],
@@ -800,7 +800,7 @@ app.layout = html.Div(
         dcc.Interval(
             id="interval-component",
             interval=2 * 1000,  # in milliseconds
-            n_intervals=50,
+            n_intervals=50,  # start at batch 50
             disabled=True,
         ),
         html.Div(
@@ -1145,4 +1145,4 @@ def update_piechart(interval, stored_data):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8050)
+    app.run_server(debug=True, dev_tools_ui=False, port=8050)
