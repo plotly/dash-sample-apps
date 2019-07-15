@@ -187,6 +187,12 @@ a:hover {
 .logo {
   height: 50px;
   padding-bottom: 12px;
+}
+
+.logo img {
+  height: 100px;
+  float: right; 
+}
 
 
 /* Buttons

@@ -35,10 +35,10 @@ app <- Dash$new()
 
 ################################### LAYOUT VARIABLES ##########################
 
-pageTitle <- htmlH1("Movie Ratings!")
+pageTitle <- htmlH2("Movie Ratings!")
 
 plotlyLogo <-
-  htmlA(list(htmlImg(src = "assets/image.png")), className = "logo",
+  htmlA(list(htmlImg(id = "banner-image", src = "assets/image.png")), className = "logo",
         href = "https://dashr-docs.herokuapp.com/")
 
 firstP <- htmlDiv(htmlLabel("Number of bins:"), htmlBr())
@@ -64,32 +64,27 @@ slider <- dccSlider(
 )
 
 ##################################################################################################
-app$layout(htmlDiv(list(
-  plotlyLogo,
-  pageTitle,
-  firstP,
-  slider,
-  # dccSlider(id = "movies-slider"),
-  htmlBr(),
-  
-  htmlDiv(list(dccGraph(id = "histogram")))
-  
-)))
+app$layout(htmlDiv(
+  list(
+    plotlyLogo,
+    pageTitle,
+    firstP,
+    htmlDiv(list(slider, className = "five columns")),
+    htmlBr(),
+    htmlDiv(list
+            (dccGraph
+              (id= "histogram", classname = "histogram"), className = "seven columns"))
+  )
+))
 
 ################## CALLBACKS ##################
-
-# app$callbacks(
-#
-#
-# p <- plot_ly(movies, x = rating, autobinx = F, type = "histogram",
-#              xbins = list(start = minx, end = maxx, size = size))
-# )
 
 app$callback(output = list(id = "histogram", property = "figure"),
              params = list(input(id = "movies-slider", property = "value")),
              
              function(bins) {
                size <- (maxx - minx) / bins
+               
                # a simple histogram of movie ratings
                p <- plot_ly(
                  movies,
@@ -97,28 +92,17 @@ app$callback(output = list(id = "histogram", property = "figure"),
                  autobinx = FALSE,
                  type = "histogram",
                  xbins = list(
-                   start = minx, 
+                   start = minx,
                    end = maxx,
                    size = size
                  )
-               ) %>% layout(
-                 xaxis = list(
-                   title = "Ratings",
-                   range = c(minx, maxx),
-                   autotick = FALSE,
-                   tick0 = minx,
-                   dtick = size
-                 )
-               )
-               # list(layout = list(
-               #   xaxis = list(
-               #     title = "Ratings",
-               #     range = c(minx, maxx),
-               #     autotick = F,
-               #     tick0 = minx,
-               #     dtick = size
-               #   )
-               # ))
+               ) %>% layout(xaxis = list(
+                 title = "Ratings",
+                 range = c(minx, maxx),
+                 autotick = FALSE,
+                 tick0 = minx,
+                 dtick = size
+               ))
                return(p)
              })
 
@@ -129,4 +113,3 @@ if (appName != "") {
 } else {
   app$run_server()
 }
-
