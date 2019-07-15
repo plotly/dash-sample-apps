@@ -310,7 +310,7 @@ p {
     border-left: #2cfec1 solid 1rem;
     padding-left: 1rem;
     max-width: 100rem;
-    margin-bottom: 3rem;
+    margin: 2rem 0 3rem 0;
 }
 
 #slider-text, #chart-selector {
@@ -679,7 +679,8 @@ hr {
         height: 80rem;
         width: 100%;
     }
-     #header h4{
+
+    #header h4 {
         text-align: center;
     }
 }
