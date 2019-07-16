@@ -91,6 +91,7 @@ def div_graph(name):
                                         ],
                                         value="overlap",
                                         id=f"radio-display-mode-{name}",
+                                        labelStyle={"verticalAlign": "middle"},
                                         className="plot-display-radio-items",
                                     )
                                 ],

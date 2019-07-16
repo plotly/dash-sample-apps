@@ -150,6 +150,16 @@
     font-size: 1.9rem;
   }
 
+  #div-total-step-count>h6 {
+    float: right;
+    margin-right: 10%;
+  }
+
+  #div-step-display>h6 {
+    float: left !important;
+    margin-left: 25%;
+  }
+
 
   /* First Page Smoothing Options */
 
@@ -211,6 +221,12 @@
     font-size: 14px;
   }
 
+  #radio-display-mode-accuracy>label:nth-child(1)>input[type=radio],
+  #radio-display-mode-accuracy>label:nth-child(2)>input[type=radio], 
+  #radio-display-mode-accuracy>label:nth-child(3)>input[type=radio] {
+    vertical-align: middle !important;
+  }
+  
 
 
   /* Current Accuracy */
@@ -315,11 +331,19 @@
 
   #div-total-step-count>h6,
   #div-step-display>h6 {
-    text-align: left;
-    display: inline-block;
-    font-size: 1.9rem;
+    display: block;
+    font-size: 1.4rem;
   }
  
+  #div-total-step-count>h6 {
+    float: right;
+    margin-right: 10%;
+  }
+
+  #div-step-display>h6 {
+    float: left !important;
+    margin-left: 25%;
+  }
  
   /* First Page Smoothing Options */
 
@@ -367,7 +391,6 @@
     display: inline-block;
     vertical-align: top;
     padding-left: 15%;
-    
   }
   
   .plot-display-radio-items {
@@ -383,8 +406,7 @@
     font-size: 14px;
   }
 
-  
-
+ 
   /* Current Accuracy */
   #div-current-accuracy-value>p {
     display: inline-flex !important
@@ -493,6 +515,15 @@
     font-size: 1.4rem !important;
   }
 
+  #div-total-step-count>h6 {
+    float: right !important;
+    margin-right: 5%;
+  }
+
+  #div-step-display>h6 {
+    float: left !important;
+  }
+
   /* First page Smoothing Options */
   #checklist-smoothing-options-accuracy {
     text-align: center;
@@ -540,13 +571,18 @@
     text-align: left;
     display: inline-block;
     font-size: 10px !important;
-    margin: 1px 0;
+    margin: 10px 0 !important;
+    
+    
   }
 
   .plot-display-text {
     display: inline-block;
-    width: 50%
+    width: 50%;
+    margin-bottom: 10px;
   }
+
+  
 
   /* Current Accuracy */
   #div-current-accuracy-value>p {
@@ -661,7 +697,17 @@
   #div-step-display>h6 {
     text-align: left;
     display: inline-block;
-    font-size: 1.4rem !important;
+    font-size: 1.2rem !important;
+  }
+
+  #div-total-step-count>h6 {
+    float: right;
+    margin-right: 10%;
+  }
+
+  #div-step-display>h6 {
+    float: left;
+    margin-left: 10%;
   }
 
   /* First page Smoothing Options */

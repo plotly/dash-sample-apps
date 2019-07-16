@@ -27,33 +27,19 @@ Development: https://rawgit.com/xhlulu/0acba79000a3fd1e6f552ed82edb8a64/raw/dash
 .banner {
   height: 75px;
   background-color: #191e27;
-  /* border-radius: 5px 5px 2px 2px; */
-  /* padding-top: 0px;
-  padding-left: 0px;
-  padding-right: 0px; */
   padding: 0px;
-  /* width: 90%; */
-  /* margin-left: auto;
-  margin-right: auto; */
   margin: auto;
 }
 
 .banner h2 {
-  /* color: white; */
   color: #e6ecf4;
   margin-left: 1.5%;
   display: inline-block;
-  /* font-family: "Raleway"; */
   font-family: "Raleway Medium", sans-serif;
-  /* font-size: 4rem; */
-  /* line-height: 1; */
   font-size: 30px;
 }
 
 .banner img {
-  /* margin: 20px 0; */
-  /* width: auto !important; */
-
   padding: 0px 15px;
   margin-top: 20px;
   margin-bottom: 15px;
@@ -66,7 +52,6 @@ Development: https://rawgit.com/xhlulu/0acba79000a3fd1e6f552ed82edb8a64/raw/dash
   background-color: white;
   border-radius: 2px 2px 5px 5px;
   font-size: 1.5rem;
-  /* border: thin solid rgb(240, 240, 240); */
   margin-left: auto;
   margin-right: auto;
   color: #6b6b6b;
@@ -548,41 +533,11 @@ there.
 
 /* Larger than mobile */
 @media (max-width: 375px) {
-  /*
-  #title {
-    width: 30%;
-    font-size: 20px;
-    padding-top: 10px;
-  }
-  #learn-more-button {
-    margin-left: 0px;
-    font-size: 55px !important;
-    padding: 0px 10px !important;
-  }
-  #plotly-logo {
-    padding: 100px 500px !important;
-  }
-  */
+  
 }
 
 /* Larger than tablet */
 @media (max-width: 575px) {
-  /*
-  #title {
-    width: 40% !important;
-    font-size: 15px;
-    padding-top: 10px;
-  }
-  #learn-more-button {
-    margin-left: 0px;
-    font-size: 7.5px !important;
-    padding: 0px 10px !important;
-  }
-  #plotly-logo {
-    padding: 10px 10px !important;
-  }
-
-  */
   
 }
 
