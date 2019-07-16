@@ -45,7 +45,8 @@ db_connect <- function(){
     {
       drv <- JDBC(
         "com.omnisci.jdbc.OmniSciDriver",
-        # Insert pathname to the mapd / omnisci JDBC driver JAR file
+        # Insert pathname to the mapd / omnisci JDBC driver JAR 
+        # file installed on your machine
         "/opt/omnisci/bin/omnisci-jdbc-4.7.1.jar",
         identifier.quote="'"
       )
