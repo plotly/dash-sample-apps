@@ -10,35 +10,6 @@
     }
 }
 
-/* Banner
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-.banner {
-    background-color: #2f3445; /* Machine Learning Color is orange */
-    padding: 3rem 0;
-    width: 100%;
-    margin-bottom: 5rem;
-}
-
-.banner h2 {
-    color: #a5b1cd;
-    display: inline-block;
-    font-family: 'Playfair Display', sans-serif;
-    font-size: 4rem;
-    line-height: 1;
-    text-align: center;
-}
-
-.banner h2:hover {
-    color: #b4b5bf;
-    cursor: pointer;
-}
-
-.banner Img {
-    position: relative;
-    float: right;
-    height: 8rem;
-}
-
 /* Scalable Container
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -87,6 +58,35 @@
         padding-right: 0;
         padding-left: 0;
     }
+}
+
+/* Banner
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.banner {
+    background-color: #2f3445; /* Machine Learning Color is orange */
+    padding: 3rem 0;
+    width: 100%;
+    margin-bottom: 5rem;
+}
+
+.banner h2 {
+    color: #a5b1cd;
+    display: inline-block;
+    font-family: 'Playfair Display', sans-serif;
+    font-size: 4rem;
+    line-height: 1;
+    text-align: center;
+}
+
+.banner h2:hover {
+    color: #b4b5bf;
+    cursor: pointer;
+}
+
+.banner Img {
+    position: relative;
+    float: right;
+    height: 8rem;
 }
 
 /* app-container
