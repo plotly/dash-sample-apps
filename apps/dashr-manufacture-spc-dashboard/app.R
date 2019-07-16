@@ -643,24 +643,6 @@ build_chart_panel <- function() {
         dccGraph(
           id = "control-chart-live",
           figure = generate_graph(0, state_dict, params[-1][[1]])
-          # figure = list(
-          #   "data" = list(
-          #     list(
-          #       "type" = "scatter",
-          #       "x" = list(),
-          #       "y" = list(),
-          #       "mode" = "lines+markers",
-          #       "name" = params[[2]]
-          #     )
-          #   ),
-          #   "layout" = list(
-          #     "paper_bgcolor" = "#1d202d",
-          #     "plot_bgcolor" = "#1d202d",
-          #     "legend" = list("font" = list("color" = "darkgray")),
-          #     "font" = list("color" = "darkgray"),
-          #     "autosize" = TRUE
-          #   )
-          # )
         )
       )
     )
