@@ -6,43 +6,27 @@ This dashboard allows you to explore clinic patient volume by time of the day, w
 
 ## Requirements
 
-* Python 3
+* R version 3.6.0
 
 ## How to run this app
 
-We suggest you to create a virtual environment for running this app with Python 3. Clone this repository 
-and open your terminal/command prompt in the root folder.
+Clone the repository, and switch your directory to dashr-clinical-analytics
 
 ```
 git clone https://github.com/plotly/dash-sample-apps
-cd dash-sample-apps/apps/dash-clinical-analytics
-python3 -m virtualenv venv
+cd dash-sample-apps/apps/dashr-clinical-analytics
 
-```
-In Unix system:
-```
-source venv/bin/activate
-
-```
-In Windows: 
-
-```
-venv\Scripts\activate
 ```
 
 Install all required packages by running:
 ```
-pip install -r requirements.txt
+Rscript init.R
 ```
 
 Run this app locally by:
 ```
-python app.py
+Rscript app.R
 ```
-
-## Screenshot
-
-![screenshot](img/screencapture.png)
 
 ## Resources
 
