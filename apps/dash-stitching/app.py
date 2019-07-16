@@ -32,8 +32,6 @@ app.config.suppress_callback_exceptions = True
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
 
-# get relative data folder
-
 DATA_PATH = PATH.joinpath("data").resolve()
 
 
