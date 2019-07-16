@@ -37,7 +37,7 @@ df_full_data["County Code"] = df_full_data["County Code"].apply(
     lambda x: str(x).zfill(5)
 )
 df_full_data["County"] = (
-        df_full_data["Unnamed: 0"] + ", " + df_full_data.County.map(str)
+    df_full_data["Unnamed: 0"] + ", " + df_full_data.County.map(str)
 )
 
 YEARS = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
@@ -289,12 +289,10 @@ def display_map(year, figure):
     )
 
     base_url = "https://raw.githubusercontent.com/jackparmer/mapbox-counties/master/"
-    # base_url = os.path.join(APP_PATH, "data")
     for bin in BINS:
         geo_layer = dict(
             sourcetype="geojson",
             source=base_url + str(year) + "/" + bin + ".geojson",
-            # source=os.path.join(base_url, os.path.join(str(year), bin + ".geojson")),
             type="fill",
             color=cm[bin],
             opacity=DEFAULT_OPACITY,
@@ -423,7 +421,6 @@ def display_selected_data(selectedData, chart_dropdown, year):
     fig_layout["xaxis"]["title"] = ""
     fig_layout["yaxis"]["fixedrange"] = True
     fig_layout["xaxis"]["fixedrange"] = False
-    # fig['layout']['margin'] = dict(t=50, r=150, b=20, l=80)
     fig_layout["hovermode"] = "closest"
     fig_layout["title"] = "<b>{0}</b> counties selected".format(len(fips))
     fig_layout["legend"] = dict(orientation="v")
