@@ -181,13 +181,15 @@ def build_tab_1():
                         html.Div(id="value-setter-panel"),
                         html.Br(),
                         html.Div(
-                            id = 'button-div',
+                            id="button-div",
                             children=[
                                 html.Button("Update", id="value-setter-set-btn"),
                                 html.Button(
-                                    "View current setup", id="value-setter-view-btn", n_clicks=0
-                                )
-                            ]
+                                    "View current setup",
+                                    id="value-setter-view-btn",
+                                    n_clicks=0,
+                                ),
+                            ],
                         ),
                         html.Div(
                             id="value-setter-view-output", className="output-datatable"
@@ -434,8 +436,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                     :stopped_interval
-                                     ],
+                                    :stopped_interval
+                                ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
@@ -837,9 +839,9 @@ def render_tab_content(tab_switch, stopped_interval):
                 build_quick_stats_panel(),
                 html.Div(
                     id="graphs-container",
-                    children=[build_top_panel(stopped_interval), build_chart_panel()])
-
-            ]
+                    children=[build_top_panel(stopped_interval), build_chart_panel()],
+                ),
+            ],
         ),
         stopped_interval,
     )
@@ -1031,7 +1033,9 @@ def show_current_specs(n_clicks, dd_select, store_data):
 # decorator for list of output
 def create_callback(param):
     def callback(interval, stored_data):
-        count, ooc_n, ooc_g_value, indicator = update_count(interval, param, stored_data)
+        count, ooc_n, ooc_g_value, indicator = update_count(
+            interval, param, stored_data
+        )
         spark_line_data = update_sparkline(interval, param)
         return count, spark_line_data, ooc_n, ooc_g_value, indicator
 
@@ -1040,15 +1044,17 @@ def create_callback(param):
 
 for param in params[1:]:
     update_param_row_function = create_callback(param)
-    app.callback(output=[
-        Output(param + suffix_count, "children"),
-        Output(param + suffix_sparkline_graph, "extendData"),
-        Output(param + suffix_ooc_n, "children"),
-        Output(param + suffix_ooc_g, "value"),
-        Output(param + suffix_indicator, "color"),
-    ],
+    app.callback(
+        output=[
+            Output(param + suffix_count, "children"),
+            Output(param + suffix_sparkline_graph, "extendData"),
+            Output(param + suffix_ooc_n, "children"),
+            Output(param + suffix_ooc_g, "value"),
+            Output(param + suffix_indicator, "color"),
+        ],
         inputs=[Input("interval-component", "n_intervals")],
-        state=[State("value-setter-store", "data")])(update_param_row_function)
+        state=[State("value-setter-store", "data")],
+    )(update_param_row_function)
 
 
 #  ======= button to choose/update figure based on click ============
@@ -1149,4 +1155,6 @@ def update_piechart(interval, stored_data):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(debug=True, dev_tools_ui=False, dev_tools_hot_reload=False, port=8050)
+    app.run_server(
+        debug=True, dev_tools_ui=False, dev_tools_hot_reload=False, port=8050
+    )

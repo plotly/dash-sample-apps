@@ -22,7 +22,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 4rem;
+  padding: 0 6rem;
 }
 
 .banner {
@@ -329,7 +329,7 @@ body {
 #button-div {
   display:flex;
   flex-direction: row;
-  padding-left: 60%;
+  justify-content: flex-end;
 }
 
 #value-setter-view-btn {
@@ -358,7 +358,7 @@ body {
 
 
 .output-datatable {
-  margin: 20px 0;
+  margin: 2rem 0rem 2rem 4rem;
   line-height: 3;
 }
 
