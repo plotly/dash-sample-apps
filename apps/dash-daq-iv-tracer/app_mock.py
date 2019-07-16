@@ -310,6 +310,9 @@ def generate_main_layout(
                                                                     % source_unit,
                                                                     labelPosition="right",
                                                                     value=0,
+                                                                    style={
+                                                                        "marginLeft": "5px"
+                                                                    },
                                                                 ),
                                                             ],
                                                             title="The lowest value of the sweep",
@@ -360,7 +363,8 @@ def generate_main_layout(
                                                                     style={
                                                                         "color": text_color[
                                                                             theme
-                                                                        ]
+                                                                        ],
+                                                                        "margin": "5px",
                                                                     },
                                                                 ),
                                                                 "s",
