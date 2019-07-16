@@ -24,16 +24,9 @@ if (appName != ""){
 app <- Dash$new(name = "DashR Manufacture SPC Dashboard", suppress_callback_exceptions = TRUE)
 
 ########################################################################################################################
-# IMPORT DATA
-
-data_dir <- "data/"
-data_file <- "spc_data.csv"
-data_path <- paste(data_dir, data_file, sep="")
-
-df <- read.table(data_path, header = TRUE, sep = ",")
-
-########################################################################################################################
 # HANDLE & STORE DATA
+
+df <- read.table(paste("data", "spc_data.csv", sep="/"), header = TRUE, sep = ",")
 
 names(df) <- gsub("[.]", "-", names(df))
 params = names(df) # list of parameters (params[-1] removes "Batch")
@@ -46,22 +39,21 @@ populate_ooc <- function(data, ucl, lcl) {
     if (data[[i]] >= ucl | data[[i]] <= lcl) {
       ooc_count <- ooc_count + 1
     }
-    output[[length(output)+1]] <- ooc_count / (i+1)
+    output[[i]] <- ooc_count / (i+1)
   }
   return(output)
 }
 
 init_df <- function() {
   output <- list()
-  for (i in 1:length(params)) {
-    col <- params[i]
-    data <- df[[col]]
+  for (param in params) {
+    data <- df[[param]]
     stats <- summary(data)
     ucl <- stats[["Mean"]]+3*sd(data)
     lcl <- stats[["Mean"]]-3*sd(data)
     usl <- stats[["Mean"]]+sd(data)
     lsl <- stats[["Mean"]]-sd(data)
-    output[[col]] <- list(
+    output[[param]] <- list(
       "count" = as.numeric(length(data)),
       "data" = data,
       "mean" = as.numeric(stats[["Mean"]]),
@@ -175,7 +167,7 @@ build_banner <- function() {
             ),
             htmlImg(
               id = "logo",
-              src = "https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png"
+              src = paste("assets", "dash-logo.png", sep="/")
             )
           )
         )
@@ -341,7 +333,7 @@ build_quick_stats_panel <- function() {
             daqGauge(
               id = "progress-gauge",
               value = 0,
-              max = max_length*2, # CHANGE TO: max = max_length
+              max = max_length,
               min = 0,
               showCurrentValue = TRUE
             )
@@ -635,7 +627,7 @@ build_chart_panel <- function() {
           id = "interval-component",
           interval = 2*1000,  # in milliseconds
           n_intervals = 0,
-          disabled = TRUE # CHANGE TO: disabled = FALSE
+          disabled = TRUE
         ),
         dccStore(
           id = "control-chart-state"
@@ -1146,7 +1138,6 @@ app$callback(
       colors <- list()
       for (param in params[-1]) {
         ooc_param <- stored_data[[param]][["ooc"]][[total_count]]*100+1
-        # CHANGE TO: ooc_param <- stored_data[[param]][["ooc"]][[total_count]]*100
         values <- append(values, ooc_param)
         colors <- append(colors, ifelse(ooc_param > 6, "#f45060", "#91dfd2"))
       }
@@ -1157,7 +1148,7 @@ app$callback(
   }
 )
 
-# callbacks to update graph according to interval and selected parameter (FIX!)
+# callbacks to update graph according to interval and selected parameter
 app$callback(
   output = list(id = "control-chart-live", property = "figure"),
   params = list(
@@ -1182,12 +1173,10 @@ app$callback(
       input <- unlist(strsplit(ctx$triggered$prop_id, "[.]"))
       if (input[[2]] == "n_clicks") {
         id <- gsub('.{7}$', '', input[[1]])
-      } else if (input[[2]] == "n_intervals") { # REMOVE: !is.na(cur_fig)
+      } else if (input[[2]] == "n_intervals") {
         id <- cur_fig$data[[1]][["name"]]
       }
     }
-    str("INTERVALS")
-    str(interval)
     return(generate_graph(interval, data, id))
   }
 )
