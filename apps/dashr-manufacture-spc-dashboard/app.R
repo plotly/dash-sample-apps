@@ -100,9 +100,10 @@ suffix <- list(
 
 theme <- list(
   "dark" = TRUE,
-  "detail" = "#2d3038",  # background-card
-  "primary" = "#007439",  # green
-  "secondary" = "#FFD15F"  # accent
+  "detail" = "#2d3038", # background
+  "primary" = "#007439", # green
+  "secondary" = "#FFD15F", # yellow
+  "red" = "#F45060" # red
 )
 
 ########################################################################################################################
@@ -641,24 +642,25 @@ build_chart_panel <- function() {
         ),
         dccGraph(
           id = "control-chart-live",
-          figure = list(
-            "data" = list(
-              list(
-                "type" = "scatter",
-                "x" = list(),
-                "y" = list(),
-                "mode" = "lines+markers",
-                "name" = params[[2]]
-              )
-            ),
-            "layout" = list(
-              "paper_bgcolor" = "#1d202d",
-              "plot_bgcolor" = "#1d202d",
-              "legend" = list("font" = list("color" = "darkgray")),
-              "font" = list("color" = "darkgray"),
-              "autosize" = TRUE
-            )
-          )
+          figure = generate_graph(0, state_dict, params[-1][[1]])
+          # figure = list(
+          #   "data" = list(
+          #     list(
+          #       "type" = "scatter",
+          #       "x" = list(),
+          #       "y" = list(),
+          #       "mode" = "lines+markers",
+          #       "name" = params[[2]]
+          #     )
+          #   ),
+          #   "layout" = list(
+          #     "paper_bgcolor" = "#1d202d",
+          #     "plot_bgcolor" = "#1d202d",
+          #     "legend" = list("font" = list("color" = "darkgray")),
+          #     "font" = list("color" = "darkgray"),
+          #     "autosize" = TRUE
+          #   )
+          # )
         )
       )
     )
@@ -666,192 +668,124 @@ build_chart_panel <- function() {
 }
 
 generate_graph <- function(interval, specs_dict, col) {
-  mean <- state_dict[[col]][["mean"]]
-  ucl <- specs_dict[[col]][["ucl"]]
-  lcl <- specs_dict[[col]][["lcl"]]
-  usl <- specs_dict[[col]][["usl"]]
-  lsl <- specs_dict[[col]][["lsl"]]
-  x_array <- as.list(state_dict[["Batch"]][["data"]])
-  y_array <- as.list(state_dict[[col]][["data"]])
-  total_count <- ifelse(interval < max_length, interval, max_length)
-  x_data <- x_array[1:total_count]
-  y_data <- y_array[1:total_count]
-  fig <- plot_ly(
-    x = x_data,
-    y = y_data,
-    mode = "lines+markers",
-    name = col,
-    line = list("color" = "#f4d44d")
+  stats <- list(
+    mean = list(data = state_dict[[col]][["mean"]], label = "Targeted Mean", color = "rgb(255,127,80)", style = "solid", width = 2),
+    ucl = list(data = specs_dict[[col]][["ucl"]], label = "ucl", color = "rgb(255,127,80)", style = "dot", width = 1),
+    lcl = list(data = specs_dict[[col]][["lcl"]], label = "lcl", color = "rgb(255,127,80)", style = "dot", width = 1),
+    usl = list(data = specs_dict[[col]][["usl"]], label = "usl", color = "#91dfd2", style = "dot", width = 1),
+    lsl = list(data = specs_dict[[col]][["lsl"]], label = "lsl", color = "#91dfd2", style = "dot", width = 1)
   )
-  # ooc_trace <- list(
-  #   "x": list(),
-  #   "y": list(),
-  #   "name": "Out of Control",
-  #   "mode": "markers",
-  #   "marker": list(color = "rgba(210, 77, 87, 0.7)", symbol = "square", size = 11)
-  # )
-  # for (i in 1:length(y_data)) {
-  #   if (y_data[[i]] >= ucl | y_data[[i]] <= lcl) {
-  #     ooc_trace[["x"]][[length(ooc_trace[["x"]])+1]] <- i
-  #     ooc_trace[["y"]][[length(ooc_trace[["y"]])+1]] <- y_data[[i]]
-  #   }
-  # }
-  # histo_trace <- list(
-  #   "x" = x_data,
-  #   "y" = y_data,
-  #   "type" = "histogram",
-  #   "orientation" = "h",
-  #   "name" = "Distribution",
-  #   "xaxis" = "x2",
-  #   "yaxis" = "y2",
-  #   "marker" = list("color" = "#f4d44d"),
-  # )
-  # fig$x <- list(
-  #   "data" = list(
-  #     list(
-  #       "x" = x_data,
-  #       "y" = y_data,
-  #       "mode" = "lines+markers",
-  #       "name" = col,
-  #       "line" = list("color" = "#f4d44d"),
-  #     ),
-  #     ooc_trace,
-  #     histo_trace
-  #   )
-  # )
-  # len_figure <- length(fig$x$data[[0]][["x"]])
-  # fig$x$layout <- list(
-  #   hovermode = "closest",
-  #   uirevision = col,
-  #   paper_bgcolor = "#1d202d",
-  #   plot_bgcolor = "#1d202d",
-  #   legend = list("font" = list("color" = "darkgray")),
-  #   font = list("color" = "darkgray"),
-  #   showlegend = TRUE,
-  #   xaxis = list(
-  #     "zeroline" = FALSE,
-  #     "title" = "Batch_Num",
-  #     "showline" = FALSE,
-  #     "domain" = list(0, 0.8),
-  #     "titlefont" = list("color" = "darkgray")
-  #   ),
-  #   yaxis = list(
-  #     "title" = col,
-  #     "autorange" = TRUE,
-  #     "titlefont" = list("color" = "darkgray")
-  #   ),
-  #   annotations = list(
-  #     list(
-  #       "x" = 0.75,
-  #       "y" = lcl,
-  #       "xref" = "paper",
-  #       "yref" = "y",
-  #       "text" = "LCL:" + str(round(lcl, 3)),
-  #       "showarrow" = FALSE,
-  #       "font" = list("color" = "white"),
-  #     ),
-  #     list(
-  #       "x" = 0.75,
-  #       "y" = ucl,
-  #       "xref" = "paper",
-  #       "yref" = "y",
-  #       "text" = "UCL:" + str(round(ucl, 3)),
-  #       "showarrow" = FALSE,
-  #       "font" = list("color" = "white"),
-  #     ),
-  #     list(
-  #       "x" = 0.75,
-  #       "y" = usl,
-  #       "xref" = "paper",
-  #       "yref" = "y",
-  #       "text" = "USL:" + str(round(usl, 3)),
-  #       "showarrow" = FALSE,
-  #       "font" = list("color" = "white"),
-  #     ),
-  #     list(
-  #       "x" = 0.75,
-  #       "y" = lsl,
-  #       "xref" = "paper",
-  #       "yref" = "y",
-  #       "text" = "LSL:" + str(round(lsl, 3)),
-  #       "showarrow" = FALSE,
-  #       "font" = list("color" = "white"),
-  #     ),
-  #     list(
-  #       "x" = 0.75,
-  #       "y" = mean,
-  #       "xref" = "paper",
-  #       "yref" = "y",
-  #       "text" = "Targeted mean:" + str(round(mean, 3)),
-  #       "showarrow" = FALSE,
-  #       "font" = list("color" = "white"),
-  #     ),
-  #   ),
-  #   shapes = list(
-  #     list(
-  #       "type" = "line",
-  #       "xref" = "x",
-  #       "yref" = "y",
-  #       "x0" = 1,
-  #       "y0" = usl,
-  #       "x1" = len_figure + 1,
-  #       "y1" = usl,
-  #       "line" = list("color" = "#91dfd2", "width" = 1, "dash" = "dashdot"),
-  #     ),
-  #     list(
-  #       "type" = "line",
-  #       "xref" = "x",
-  #       "yref" = "y",
-  #       "x0" = 1,
-  #       "y0" = lsl,
-  #       "x1" = len_figure + 1,
-  #       "y1" = lsl,
-  #       "line" = list("color" = "#91dfd2", "width" = 1, "dash" = "dashdot"),
-  #     ),
-  #     list(
-  #       "type" = "line",
-  #       "xref" = "x",
-  #       "yref" = "y",
-  #       "x0" = 1,
-  #       "y0" = ucl,
-  #       "x1" = len_figure + 1,
-  #       "y1" = ucl,
-  #       "line" = list("color" = "rgb(255,127,80)", "width" = 1, "dash" = "dashdot"),
-  #     ),
-  #     list(
-  #       "type" = "line",
-  #       "xref" = "x",
-  #       "yref" = "y",
-  #       "x0" = 1,
-  #       "y0" = mean,
-  #       "x1" = len_figure + 1,
-  #       "y1" = mean,
-  #       "line" = list("color" = "rgb(255,127,80)", "width" = 2),
-  #     ),
-  #     list(
-  #       "type" = "line",
-  #       "xref" = "x",
-  #       "yref" = "y",
-  #       "x0" = 1,
-  #       "y0" = lcl,
-  #       "x1" = len_figure + 1,
-  #       "y1" = lcl,
-  #       "line" = list("color" = "rgb(255,127,80)", "width" = 1, "dash" = "dashdot"),
-  #     ),
-  #   ),
-  #   xaxis2 = list(
-  #     "title" = "count",
-  #     "domain" = list(0.8, 1),  # 70 to 100 % of width
-  #     "titlefont" = list("color" = "darkgray"),
-  #   ),
-  #   yaxis2 = list(
-  #     "anchor" = "free",
-  #     "overlaying" = "y",
-  #     "side" = "right",
-  #     "showticklabels" = FALSE,
-  #     "titlefont" = list("color" = "darkgray")
-  #   )
-  # )
+  total_count <- ifelse(interval < max_length, interval, max_length)
+  x_data <- list()
+  y_data <- list()
+  x_data_ooc <- list()
+  y_data_ooc <- list()
+  if (total_count != 0) {
+    x_data <- state_dict[["Batch"]][["data"]][1:total_count]
+    y_data <- state_dict[[col]][["data"]][1:total_count]
+    x_data_ooc <- lapply(1:total_count, function(i) {return(ifelse(y_data[[i]] > stats$lcl$data && y_data[[i]] < stats$ucl$data, NA, i))})
+    y_data_ooc <- lapply(1:total_count, function(i) {return(ifelse(y_data[[i]] > stats$lcl$data && y_data[[i]] < stats$ucl$data, NA, y_data[[i]]))})
+  }
+  # define figure
+  fig <- list(
+    data = list(
+      # parameter trace
+      list(
+        type = "scatter",
+        x = x_data,
+        y = y_data,
+        mode = "lines+markers",
+        name = col,
+        line = list("color" = "#f4d44d")
+      ),
+      # ooc trace
+      list(
+        type = "scatter",
+        x = x_data_ooc,
+        y = y_data_ooc,
+        mode = "markers",
+        name = "Out of Control",
+        marker = list(color = theme[["red"]], symbol = "square", size = 11)
+      ),
+      # histogram
+      list(
+        type = "histogram",
+        x = x_data,
+        y = y_data,
+        orientation = "h",
+        xaxis = "x2",
+        yaxis = "y2",
+        name = "Distribution",
+        marker = list("color" = "#f4d44d")
+      )
+    ),
+    layout = list(
+      hovermode = "closest",
+      uirevision = col,
+      paper_bgcolor = "#1d202d",
+      plot_bgcolor = "#1d202d",
+      legend = list("font" = list("color" = "darkgray")),
+      font = list("color" = "darkgray"),
+      showlegend = TRUE,
+      shapes = lapply(
+        unname(stats),
+        function(line) {
+          return(
+            list(
+              type = "line",
+              xref = "x",
+              yref = "y",
+              x0 = 1,
+              y0 = line$data,
+              x1 = total_count+1,
+              y1 = line$data,
+              line = list(color = line$color, width = line$width, dash = line$style)
+            )
+          )
+        }
+      ),
+      annotations = lapply(
+        unname(stats),
+        function(line) {
+          return(
+            list(
+              x = 0.75,
+              y = line$data,
+              xref = "paper",
+              yref = "y",
+              text = sprintf("%s: %.3f", ifelse(line$label == "Targeted Mean", line$label, toupper(line$label)), line$data),
+              showarrow = FALSE,
+              font = list("color" = "white")
+            )
+          )
+        }
+      ),
+      xaxis = list(
+        zeroline = FALSE,
+        title = "Batch_Num",
+        showline = FALSE,
+        domain = list(0, 0.8),
+        titlefont = list("color" = "darkgray")
+      ),
+      yaxis = list(
+        title = col,
+        autorange = TRUE,
+        titlefont = list("color" = "darkgray")
+      ),
+      xaxis2 = list(
+        title = "Count",
+        domain = list(0.8, 1),  # 70 to 100 % of width
+        titlefont = list("color" = "darkgray")
+      ),
+      yaxis2 = list(
+        anchor = "free",
+        overlaying = "y",
+        side = "right",
+        showticklabels = FALSE,
+        titlefont = list("color" = "darkgray")
+      )
+    )
+  )
   return(fig)
 }
 
@@ -1028,8 +962,6 @@ app$callback(
   ),
   function(n_clicks, dd_select, store_data) {
     if (n_clicks > 0) {
-      out1 <- store_data[[dd_select]][["usl"]]
-      print(out1)
       new_df <- data.frame(
         "Specs" = c(
           "Upper Specification Limit",
@@ -1268,10 +1200,12 @@ app$callback(
       input <- unlist(strsplit(ctx$triggered$prop_id, "[.]"))
       if (input[[2]] == "n_clicks") {
         id <- gsub('.{7}$', '', input[[1]])
-      } else if (input[[2]] == "n_intervals" && !is.na(cur_fig)) { # REMOVE: !is.na(cur_fig)
-        id <- cur_fig$x$data[[1]][["name"]]
+      } else if (input[[2]] == "n_intervals") { # REMOVE: !is.na(cur_fig)
+        id <- cur_fig$data[[1]][["name"]]
       }
     }
+    str("INTERVALS")
+    str(interval)
     return(generate_graph(interval, data, id))
   }
 )
