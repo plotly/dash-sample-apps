@@ -1,15 +1,13 @@
-import re
 import os
 import pathlib
-
-import pandas as pd
-import cufflinks as cf
+import re
 
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import pandas as pd
 from dash.dependencies import Input, Output, State
-
+import cufflinks as cf
 
 # Initialize app
 
@@ -21,11 +19,9 @@ app = dash.Dash(
 )
 server = app.server
 
-
 # Load data
 
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
-
 
 df_lat_lon = pd.read_csv(
     os.path.join(APP_PATH, os.path.join("data", "lat_lon_counties.csv"))
@@ -41,7 +37,7 @@ df_full_data["County Code"] = df_full_data["County Code"].apply(
     lambda x: str(x).zfill(5)
 )
 df_full_data["County"] = (
-    df_full_data["Unnamed: 0"] + ", " + df_full_data.County.map(str)
+        df_full_data["Unnamed: 0"] + ", " + df_full_data.County.map(str)
 )
 
 YEARS = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
@@ -89,7 +85,6 @@ DEFAULT_OPACITY = 0.8
 mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
 mapbox_style = "mapbox://styles/plotlymapbox/cjvprkf3t1kns1cqjxuxmwixz"
 
-
 # App layout
 
 app.layout = html.Div(
@@ -114,7 +109,6 @@ app.layout = html.Div(
             children=[
                 html.Div(
                     id="left-column",
-                    className="seven columns",
                     children=[
                         html.Div(
                             id="slider-container",
@@ -216,7 +210,6 @@ app.layout = html.Div(
                             ),
                         ),
                     ],
-                    className="five columns",
                 ),
             ],
         ),
@@ -296,10 +289,12 @@ def display_map(year, figure):
     )
 
     base_url = "https://raw.githubusercontent.com/jackparmer/mapbox-counties/master/"
+    # base_url = os.path.join(APP_PATH, "data")
     for bin in BINS:
         geo_layer = dict(
             sourcetype="geojson",
             source=base_url + str(year) + "/" + bin + ".geojson",
+            # source=os.path.join(base_url, os.path.join(str(year), bin + ".geojson")),
             type="fill",
             color=cm[bin],
             opacity=DEFAULT_OPACITY,

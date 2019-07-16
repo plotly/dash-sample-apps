@@ -354,7 +354,7 @@ blockquote {
     padding-left: 1rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
-    margin-left: 0rem;
+    margin-left: 0;
 }
 
 
@@ -496,7 +496,7 @@ select:focus {
 label,
 legend {
     display: block;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 fieldset {
@@ -572,14 +572,14 @@ td:last-child {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 button,
 .button {
-    margin-bottom: 0rem;
+    margin-bottom: 0;
 }
 
 input,
 textarea,
 select,
 fieldset {
-    margin-bottom: 0rem;
+    margin-bottom: 0;
 }
 
 pre,
@@ -587,7 +587,7 @@ dl,
 figure,
 table,
 form {
-    margin-bottom: 0rem;
+    margin-bottom: 0;
 }
 
 p,
@@ -663,7 +663,7 @@ hr {
 /* Heatmap
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #heatmap-container {
-    margin: 2.5rem 0;
+    margin: 2.5rem 0 0 0;
     background-color: #252e3f;
 }
 
@@ -674,7 +674,16 @@ hr {
 
 #county-choropleth {
     margin: 0;
-    height: 58.5rem;
+    flex-grow: 1;
+}
+
+@media (min-width: 1251px) {
+    #heatmap-container {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
 }
 
 /* Left column
@@ -691,8 +700,11 @@ hr {
     /*For desktop*/
     #left-column {
         margin-right: 1.5%;
-        height: 80rem;
-        max-height: 80rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-content: center;
+        flex: 6 60%;
     }
 }
 
@@ -701,17 +713,20 @@ hr {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #graph-container {
-    margin: 0 0 10rem 0;
     background-color: #252e3f;
     padding: 5rem;
-    height: 80rem;
-    width: 100%;
+    margin: 0;
 }
 
 @media (max-width: 1250px) {
     /*For mobile and smaller screens*/
     #header h4 {
         text-align: center;
+    }
+
+    #graph-container {
+        width: 100%;
+        margin-top: 5rem;
     }
 }
 
@@ -724,6 +739,15 @@ hr {
 
     #header p {
         font-size: 1.5rem;
+    }
+
+    #graph-container {
+        flex: 4 40%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
     }
 }
 
@@ -738,13 +762,20 @@ hr {
     margin-bottom: 6.6rem;
 }
 
-#selected-data {
-    height: 55rem;
+@media (max-width: 1250px){
+    #selected-data{
+        height: 55rem;
+    }
+}
+@media (min-width: 1251px){
+    #selected-data{
+        flex-grow: 1;
+    }
 }
 
 /* Dropdown
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-Select-value {
+.Select-value {
     cursor: pointer;
 }
 
@@ -789,6 +820,7 @@ Select-value {
         flex-direction: column;
         justify-content: flex-start;
         align-items: stretch;
+        margin-bottom: 5rem;
     }
 }
 
@@ -797,8 +829,10 @@ Select-value {
     #app-container {
         display: flex;
         flex-direction: row;
-        justify-content: center;
-        height: 80rem;
+        justify-content: flex-start;
+        align-items: stretch;
+        height: 100rem;
+        margin-bottom: 5rem;
     }
 }
 
