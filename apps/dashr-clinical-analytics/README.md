@@ -27,6 +27,8 @@ Run this app locally by:
 ```
 Rscript app.R
 ```
+## Snapshot 
+![snapshot](screencapture-127-0-0-1-8080-2019-07-16-11_27_28.png)
 
 ## Resources
 
