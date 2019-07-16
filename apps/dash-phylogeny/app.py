@@ -114,6 +114,7 @@ app.layout = html.Div(
                                                                     value="global",
                                                                 )
                                                             ],
+                                                            style={"display": "none"},
                                                         ),
                                                         html.Div(
                                                             id="controls-container_dengue",
@@ -133,6 +134,7 @@ app.layout = html.Div(
                                                                     value="all",
                                                                 )
                                                             ],
+                                                            style={"display": "none"},
                                                         ),
                                                         html.Div(
                                                             id="controls-container_lassa",
@@ -146,6 +148,7 @@ app.layout = html.Div(
                                                                     value="s",
                                                                 )
                                                             ],
+                                                            style={"display": "none"},
                                                         ),
                                                         html.Div(
                                                             id="controls-container_avian",
@@ -176,6 +179,7 @@ app.layout = html.Div(
                                                                     value="ha",
                                                                 ),
                                                             ],
+                                                            style={"display": "none"},
                                                         ),
                                                         html.Div(
                                                             id="controls-container_flu",
@@ -215,6 +219,7 @@ app.layout = html.Div(
                                                                     value="3y",
                                                                 ),
                                                             ],
+                                                            style={"display": "none"},
                                                         ),
                                                     ]
                                                 )

@@ -367,29 +367,11 @@ body, h1, h2, h3, h4, h5, h6, p {
     font-family: 'Lato', serif;
 }
 
+margin-left: auto;
+margin-right: auto;
 .btn{
     color: #FFF;
 }
-
-.header-title{
-    /* background-color: #7145ed; */
-    background-image: url(../assets/wave.png);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    color: white;
-    padding: 4%;
-    padding-top: 0px;
-    padding-bottom: 15rem;
-    font-size: 1rem;
-}
-
-.logo {
-  max-width: 20rem;
-}
-
-/* .div-row {
-   padding: 32px;  
-} */
 
 .div-card {
   border-radius: 2px;
@@ -408,40 +390,76 @@ body, h1, h2, h3, h4, h5, h6, p {
   display: none;
 }
 
+.header-title {
+  /* background-color: #7145ed; */
+  background-image: url(../assets/wave.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: white;
+  padding: 4%;
+  padding-top: 0px;
+  padding-bottom: 15rem;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#title {
+  display: inline-block;
+  text-align: center;
+}
+
+#learn_more {
+  display: flex;
+}
+.logo {
+  max-width: 20rem;
+}
+
+#grid {
+  margin-top: -12rem;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#id-slicer {
+  margin: 2rem;
+}
+
 /* Larger than tablet */
-@media (min-width: 750px) {
+@media (min-width: 1000px) {
   .header-title {
     padding: 4% 8%;
-    display: flex;
     align-items: center;
     padding-bottom: 15rem;
+    flex-direction: row;
   }
 
   #title {
     flex: 10;
+    text-align: left;
   }
 
   #learn_more {
     flex: 1;
-    display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
   }
 
-  #learn_more > . {
+  #learn_more > * {
     margin: 1rem;
+    align-self: space-between;
   }
 
   #grid {
     padding: 4% -8%;
-    width: 80%;
-    margin-top: -10rem;
-    margin-left: auto;
-    margin-right: auto;
     display: grid;
-    -ms-grid-columns: (1fr)[12];
+    -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-columns: repeat(12, 1fr);
+    -ms-grid-rows: auto 3fr 2fr;
+    grid-template-rows: auto 3fr 2fr;
   }
 
   #controls {

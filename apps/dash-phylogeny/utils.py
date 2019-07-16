@@ -310,6 +310,7 @@ def create_curve_line(df, virus_name, min_date, max_date):
 
     # Edit the layout
     layout = dict(
+        autosize=True,
         title="Evolution of "
         + virus_name.title()
         + " virus <br>Between "
@@ -597,7 +598,6 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
     layout = dict(
         title=graph_title,
         dragmode="select",
-        height=1000,
         autosize=True,
         showlegend=True,
         xaxis=dict(
