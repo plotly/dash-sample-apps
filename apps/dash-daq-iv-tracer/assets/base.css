@@ -523,14 +523,15 @@ there.
 /* Larger than mobile */
 @media (max-width: 400px) {
   .logo {
-    height: 35% !important;
+    height: 25% !important;
+  }
+  .eYjXaY {
+    padding: 10px 7px !important;
+  }
+  .eYbLCt {
+    font-size: 12px !important;
   }
 }
-/* @media (min-width: 401px) {
-  .logo {
-    height: 50% !important;
-  }
-} */
 
 /* Larger than phablet (also point when grid becomes active) */
 @media (min-width: 550px) {
@@ -554,8 +555,11 @@ there.
   #control-container {
     margin-left: 0 !important;
   }
+  #figure-card,
+  #up-control-card,
+  #mid-control-card,
   #bottom-card {
-    margin-bottom: 4%;
+    margin-bottom: 5% !important;
   }
   html {
     background-color: rgb(246, 246, 247);
@@ -568,9 +572,9 @@ there.
   .logo {
     padding-left: 0 !important;
   }
-  #toggleTheme {
+  /* #toggleTheme {
     margin-left: 17%;
-  }
+  } */
   .title {
     font-size: 20px !important;
   }
@@ -581,8 +585,14 @@ there.
   #control-sections {
     width: auto;
   }
-  .intro-banner {
+  /* .intro-banner {
     margin-top: 4.5%;
+  } */
+  #page-content {
+    margin: 5%;
+  }
+  .banner {
+    height: 120px !important;
   }
 }
 

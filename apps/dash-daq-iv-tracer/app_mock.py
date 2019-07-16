@@ -100,6 +100,7 @@ def get_source_units(source="Voltage"):
 
 
 # Font and background colors associated with each theme
+banner_color = {"dark": "#23262e", "light": "#ffffff"}
 bkg_color = {"dark": "#23262e", "light": "#f6f6f7"}
 grid_color = {"dark": "#53555B", "light": "#969696"}
 text_color = {"dark": "#95969A", "light": "#595959"}
@@ -204,10 +205,7 @@ def generate_main_layout(
                                                 daq.ToggleSwitch(
                                                     id="mode-choice-toggle",
                                                     label=["Single measure", "Sweep"],
-                                                    style={
-                                                        "width": "150px",
-                                                        # "margin": "auto",
-                                                    },
+                                                    style={"width": "150px"},
                                                     value=False,
                                                 ),
                                             ],
@@ -520,7 +518,10 @@ app.layout = html.Div(
         html.Div(
             id="header",
             className="banner",
-            style={"color": text_color["light"]},
+            style={
+                "backgroundColor": banner_color["light"],
+                "color": text_color["light"],
+            },
             children=[
                 html.Img(
                     src=app.get_asset_url("dash-daq-logo.png"),
@@ -577,11 +578,7 @@ app.layout = html.Div(
             id="page-content",
             children=generate_main_layout(),
             className="flex-display",
-            style={
-                "backgroundColor": bkg_color["light"],
-                # "display": "flex",
-                "padding": "2%",
-            },
+            style={"backgroundColor": bkg_color["light"], "padding": "2%"},
         ),
         generate_modal(),
     ],
@@ -768,7 +765,12 @@ def single_div_toggle(mode_choice):
     if mode_choice:
         return {"display": "none"}
 
-    # return single_div_toggle_style
+    return {
+        "display": "flex",
+        "flexDirection": "column",
+        "alignItems": "center",
+        "justifyContent": "space-around",
+    }
 
 
 @app.callback(Output("sweep_div", "style"), [Input("mode-choice-toggle", "value")])
@@ -995,7 +997,7 @@ def update_measure_display(
             # Save the measured value
             local_vars.measured_values.append(measured_value)
 
-    return measured_value
+    return round(measured_value, 2)
 
 
 # ======= Graph related callbacks =======
@@ -1122,9 +1124,6 @@ def update_graph(
             xdata = data_array[0, :]
             ydata = data_array[1, :]
 
-            # print("xdata:", xdata)
-            # print("ydata:", ydata)
-
             data_for_graph = [
                 go.Scatter(
                     x=xdata,
@@ -1160,4 +1159,4 @@ def update_graph(
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, dev_tools_hot_reload=False, host="0.0.0.0")
+    app.run_server(debug=True)
