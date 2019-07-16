@@ -31,7 +31,6 @@ suffix_ooc_g = "_OOC_graph"
 suffix_indicator = "_indicator"
 
 theme = {
-    "dark": True,
     "detail": "#2d3038",  # Background-card
     "primary": "#007439",  # Green
     "secondary": "#FFD15F",  # Accent
@@ -181,9 +180,14 @@ def build_tab_1():
                     children=[
                         html.Div(id="value-setter-panel"),
                         html.Br(),
-                        html.Button("Update", id="value-setter-set-btn"),
-                        html.Button(
-                            "View current setup", id="value-setter-view-btn", n_clicks=0
+                        html.Div(
+                            id = 'button-div',
+                            children=[
+                                html.Button("Update", id="value-setter-set-btn"),
+                                html.Button(
+                                    "View current setup", id="value-setter-view-btn", n_clicks=0
+                                )
+                            ]
                         ),
                         html.Div(
                             id="value-setter-view-output", className="output-datatable"
@@ -829,13 +833,13 @@ def render_tab_content(tab_switch, stopped_interval):
     return (
         html.Div(
             id="status-container",
-            children=daq.DarkThemeProvider(theme=theme, children=[
+            children=[
                 build_quick_stats_panel(),
                 html.Div(
                     id="graphs-container",
-                    children=[build_top_panel(stopped_interval), build_chart_panel()],
-                ),
-            ]),
+                    children=[build_top_panel(stopped_interval), build_chart_panel()])
+
+            ]
         ),
         stopped_interval,
     )
@@ -1145,4 +1149,4 @@ def update_piechart(interval, stored_data):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(debug=True, dev_tools_ui=False, port=8050)
+    app.run_server(debug=True, dev_tools_ui=False, dev_tools_hot_reload=False, port=8050)
