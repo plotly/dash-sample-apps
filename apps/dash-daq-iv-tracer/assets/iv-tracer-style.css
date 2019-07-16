@@ -11,11 +11,16 @@ body {
 }
 .logo {
   /* height: 80%; */
-  height: 50%;
+  height: 30%;
   width: auto !important;
   padding-left: 5%;
   /* float: right; */
   /* margin-right: 80px; */
+}
+#_dash-global-error-container
+  > div
+  > div.dash-debug-menu.dash-debug-menu--closed {
+  display: none;
 }
 .flex-display {
   display: flex;
@@ -45,6 +50,10 @@ body {
   height: 80px;
   /* padding-left: 5%; */
 }
+
+/* .banner {
+  background-color: white !important;
+} */
 
 .intro-banner {
   padding: 0 5%;
@@ -100,8 +109,6 @@ body {
 #up-control-card,
 #mid-control-card,
 #bottom-card {
-  /* border-radius: 15px;
-  box-shadow: 0 6px 14px rgba(80, 103, 132, 0.2); */
   width: 100%;
   padding: 5% 0 !important;
   display: flex;
@@ -115,7 +122,6 @@ body {
 #control-sections {
   display: flex;
   flex-direction: column;
-  /* width: 80%; */
   line-height: 1.8;
 }
 
