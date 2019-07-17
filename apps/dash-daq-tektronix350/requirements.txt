@@ -1,0 +1,6 @@
+gunicorn>=19.7.1
+dash==0.43.0
+numpy==1.16.1
+scipy==1.2.1
+flake8
+dash-daq>=0.1.4
