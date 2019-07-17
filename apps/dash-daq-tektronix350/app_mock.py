@@ -78,7 +78,7 @@ def knobs(cur_input, cur_tab):
                 className="four columns",
             ),
         ],
-        className="knobs"
+        className="knobs",
     )
 
 
@@ -113,7 +113,7 @@ def led_displays(cur_input, cur_tab):
                 className="four columns",
             ),
         ],
-        className="led-displays"
+        className="led-displays",
     )
 
 
@@ -129,10 +129,11 @@ def radioitem(cur_input, cur_tab):
                     {"label": "Ramp", "value": "RAMP"},
                 ],
                 value=cur_input[cur_tab]["function_type"],
-                labelStyle={"display": "inline-block"}
+                labelStyle={"display": "inline-block"},
             )
-        ]
+        ],
     )
+
 
 def power_setting_div(cur_inputs, cur_tab):
     if cur_inputs is None or len(cur_inputs) == 0:
@@ -147,7 +148,6 @@ def power_setting_div(cur_inputs, cur_tab):
                     "Power", id="power-title", style={"color": theme["primary"]}
                 ),
             ),
-            
             # Power Controllers
             html.Div(
                 [
@@ -204,7 +204,7 @@ def function_setting_div(cur_input, cur_tab):
                     # # RadioItems
                     radioitem(cur_input, cur_tab),
                 ]
-            )
+            ),
         ],
     )
 
@@ -212,7 +212,6 @@ def function_setting_div(cur_input, cur_tab):
 app.layout = html.Div(
     id="main-page",
     children=[
-
         # Header
         html.Div(
             id="header",
@@ -221,123 +220,115 @@ app.layout = html.Div(
                 # Toggle
                 html.Div(
                     className="row toggleDiv",
-                    children=[
-                        daq.ToggleSwitch(
-                            id="toggleTheme",
-                            size=30,
-                            value=False,
-                        )
-                    ],
+                    children=[daq.ToggleSwitch(id="toggleTheme", size=30, value=False)],
                 ),
                 # Title and Image
                 html.Div(
                     className="row",
                     children=[
-                        html.H2("Dash DAQ: Function Generator & Oscilloscope Control Panel"),
+                        html.H2(
+                            "Dash DAQ: Function Generator & Oscilloscope Control Panel"
+                        ),
                         html.Img(
                             src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/"
                             + "excel/dash-daq/dash-daq-logo-by-plotly-stripe+copy.png",
-                            className="logo"
+                            className="logo",
                         ),
-                        html.H6("Dash DAQ: Function Generator & Oscilloscope Control Panel"),
-                    ]
-                )
+                        html.H6(
+                            "Dash DAQ: Function Generator & Oscilloscope Control Panel"
+                        ),
+                    ],
+                ),
             ],
         ),
-
         html.Div(
             className="row",
             children=[
-                    # LEFT PANEL - SETTINGS
-                    html.Div(
-                        className="five columns left-panel",
-                        children=[
-                            html.Div(
-                                id="dark-theme-components",
-                                children=DarkThemeProvider(
-                                    theme=theme,
-                                    children=[
-                                        power_setting_div(None, "1"),
-                                        function_setting_div(None, "1"),
-                                    ],
-                                ),
-                            ),
-                            daq.ColorPicker(
-                                id="color-picker",
-                                label="Color Picker",
-                                value=dict(hex="#6682C0"),
-                                size=164,
-                                style={
-                                    "marginTop": "20px",
-                                    "backgroundColor": "inherit",
-                                },
-                            ),
-                        ],
-                    ),
-
-                    # RIGHT PANEL - OSCILLATIONS
-                    html.Div(
-                        className="seven columns right-panel",
-                        children=[
-                            html.Div(
-                                [html.H3("Graph", id="graph-title")],
-                                style={"color": theme["primary"]},
-                                className="Title",
-                            ),
-                            dcc.Tabs(
-                                id="tabs",
-                                children=[dcc.Tab(label="Run #1", value="1")],
-                                value="1",
-                                className="oscillator-tabs",
-                                colors={
-                                    "border": "#d6d6d6",
-                                    "primary": "#6682C0",
-                                    "background": "#f2f2f2",
-                                },
-                            ),
-                            html.Div(
-                                className="row oscope-info",
+                # LEFT PANEL - SETTINGS
+                html.Div(
+                    className="five columns left-panel",
+                    children=[
+                        html.Div(
+                            id="dark-theme-components",
+                            children=DarkThemeProvider(
+                                theme=theme,
                                 children=[
-                                    html.Div(
-                                        [
-                                            html.Div(
-                                                [
-                                                    html.Div(
-                                                        id="graph-info",
-                                                        children="-",
-                                                        style={
-                                                            "border": "1px solid"
-                                                            + theme["primary"]
-                                                        },
-                                                    )
-                                                ],
-                                                className="row graph-param",
-                                            )
-                                        ],
-                                        className="six columns",
-                                    ),
-                                    html.Button(
-                                        "+",
-                                        id="new-tab",
-                                        n_clicks=0,
-                                        type="submit",
-                                        style={
-                                            "height": "20px",
-                                            "width": "20px",
-                                            "padding": "2px",
-                                            "lineHeight": "10px",
-                                            "float": "right",
-                                            "color": "inherit",
-                                        },
-                                    ),
+                                    power_setting_div(None, "1"),
+                                    function_setting_div(None, "1"),
                                 ],
                             ),
-                            html.Hr(),
-                            dcc.Graph(id="oscope-graph", figure={}),
-                        ],
-                    ),
-                ]
-            
+                        ),
+                        daq.ColorPicker(
+                            id="color-picker",
+                            label="Color Picker",
+                            value=dict(hex="#6682C0"),
+                            size=164,
+                            style={"marginTop": "20px", "backgroundColor": "inherit"},
+                        ),
+                    ],
+                ),
+                # RIGHT PANEL - OSCILLATIONS
+                html.Div(
+                    className="seven columns right-panel",
+                    children=[
+                        html.Div(
+                            [html.H3("Graph", id="graph-title")],
+                            style={"color": theme["primary"]},
+                            className="Title",
+                        ),
+                        dcc.Tabs(
+                            id="tabs",
+                            children=[dcc.Tab(label="Run #1", value="1")],
+                            value="1",
+                            className="oscillator-tabs",
+                            colors={
+                                "border": "#d6d6d6",
+                                "primary": "#6682C0",
+                                "background": "#f2f2f2",
+                            },
+                        ),
+                        html.Div(
+                            className="row oscope-info",
+                            children=[
+                                html.Div(
+                                    [
+                                        html.Div(
+                                            [
+                                                html.Div(
+                                                    id="graph-info",
+                                                    children="-",
+                                                    style={
+                                                        "border": "1px solid"
+                                                        + theme["primary"]
+                                                    },
+                                                )
+                                            ],
+                                            className="row graph-param",
+                                        )
+                                    ],
+                                    className="six columns",
+                                ),
+                                html.Button(
+                                    "+",
+                                    id="new-tab",
+                                    n_clicks=0,
+                                    type="submit",
+                                    style={
+                                        "height": "20px",
+                                        "width": "20px",
+                                        "padding": "2px",
+                                        "lineHeight": "10px",
+                                        "float": "right",
+                                        "color": "inherit",
+                                    },
+                                ),
+                            ],
+                        ),
+                        html.Hr(),
+                        dcc.Graph(id="oscope-graph", figure={}),
+                    ],
+                ),
+            ],
         ),
         dcc.Store(id="control-inputs", data={}),  # {tabs_number: {value1:x, value2:x}
     ],
