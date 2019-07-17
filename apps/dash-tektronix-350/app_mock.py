@@ -9,7 +9,9 @@ from dash.exceptions import PreventUpdate
 import numpy as np
 from scipy import signal
 
-app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+)
 app.config["suppress_callback_exceptions"] = True
 server = app.server
 
@@ -37,35 +39,6 @@ init_input = {
 }
 
 
-def header():
-    return html.Div(
-        id="header",
-        className="banner",
-        style={"backgroundColor": "#6682C0"},
-        children=[
-            html.H2(
-                "Dash DAQ: Function Generator & Oscilloscope Control Panel",
-                style={
-                    "color": "white",
-                    "marginLeft": "40px",
-                    "display": "inline-block",
-                    "text-align": "center",
-                },
-            ),
-            html.Img(
-                src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/"
-                + "excel/dash-daq/dash-daq-logo-by-plotly-stripe+copy.png",
-                style={
-                    "position": "relative",
-                    "float": "right",
-                    "right": "10px",
-                    "height": "75px",
-                },
-            ),
-        ],
-    )
-
-
 def knobs(cur_input, cur_tab):
     return html.Div(
         [
@@ -74,9 +47,8 @@ def knobs(cur_input, cur_tab):
                 id="frequency-input",
                 label="Frequency (Hz)",
                 labelPosition="bottom",
-                size=75,
+                size=70,
                 color=theme["primary"],
-                # scale={'interval': 1000000},
                 max=2500000,
                 min=1e5,
                 className="four columns",
@@ -86,7 +58,7 @@ def knobs(cur_input, cur_tab):
                 id="amplitude-input",
                 label="Amplitude (mV)",
                 labelPosition="bottom",
-                size=75,
+                size=70,
                 scale={"labelInterval": 10},
                 color=theme["primary"],
                 max=10,
@@ -98,7 +70,7 @@ def knobs(cur_input, cur_tab):
                 id="offset-input",
                 label="Offset (mV)",
                 labelPosition="bottom",
-                size=75,
+                size=72,
                 scale={"labelInterval": 10},
                 color=theme["primary"],
                 max=10,
@@ -106,7 +78,7 @@ def knobs(cur_input, cur_tab):
                 className="four columns",
             ),
         ],
-        style={"marginLeft": "20%", "textAlign": "center"},
+        className="knobs"
     )
 
 
@@ -120,7 +92,6 @@ def led_displays(cur_input, cur_tab):
                 label="Frequency (Hz)",
                 labelPosition="bottom",
                 color=theme["primary"],
-                style={"marginBottom": "30px"},
                 className="four columns",
             ),
             daq.LEDDisplay(
@@ -142,29 +113,26 @@ def led_displays(cur_input, cur_tab):
                 className="four columns",
             ),
         ],
-        style={"marginLeft": "20%", "textAlign": "center"},
+        className="led-displays"
     )
 
 
 def radioitem(cur_input, cur_tab):
-    return dcc.RadioItems(
-        id="function-type",
-        options=[
-            {"label": "Sine", "value": "SIN"},
-            {"label": "Square", "value": "SQUARE"},
-            {"label": "Ramp", "value": "RAMP"},
-        ],
-        value=cur_input[cur_tab]["function_type"],
-        labelStyle={"display": "inline-block"},
-        style={
-            "margin": "30px auto 0px auto",
-            "display": "flex",
-            "width": "80%",
-            "alignItems": "center",
-            "justifyContent": "space-between",
-        },
+    return html.Div(
+        className="radio-items",
+        children=[
+            dcc.RadioItems(
+                id="function-type",
+                options=[
+                    {"label": "Sine", "value": "SIN"},
+                    {"label": "Square", "value": "SQUARE"},
+                    {"label": "Ramp", "value": "RAMP"},
+                ],
+                value=cur_input[cur_tab]["function_type"],
+                labelStyle={"display": "inline-block"}
+            )
+        ]
     )
-
 
 def power_setting_div(cur_inputs, cur_tab):
     if cur_inputs is None or len(cur_inputs) == 0:
@@ -172,14 +140,16 @@ def power_setting_div(cur_inputs, cur_tab):
     return html.Div(
         className="row power-settings-tab",
         children=[
+            # Title
             html.Div(
                 className="Title",
                 children=html.H3(
                     "Power", id="power-title", style={"color": theme["primary"]}
                 ),
             ),
+            
+            # Power Controllers
             html.Div(
-                # power-controllers
                 [
                     html.Div(
                         [
@@ -225,43 +195,60 @@ def function_setting_div(cur_input, cur_tab):
                 style={"color": theme["primary"]},
                 children=html.H3("Function", id="function-title"),
             ),
-            # Knobs
-            knobs(cur_input, cur_tab),
-            # LED Displays
-            led_displays(cur_input, cur_tab),
-            # # RadioItems
-            radioitem(cur_input, cur_tab),
+            html.Div(
+                children=[
+                    # Knobs
+                    knobs(cur_input, cur_tab),
+                    # LED Displays
+                    led_displays(cur_input, cur_tab),
+                    # # RadioItems
+                    radioitem(cur_input, cur_tab),
+                ]
+            )
         ],
     )
 
 
 app.layout = html.Div(
     id="main-page",
-    className="container",
     children=[
-        # toggle
+
+        # Header
         html.Div(
-            id="toggleDiv",
-            style={"width": "fit-content", "margin": "0 auto"},
+            id="header",
+            className="banner row",
             children=[
-                daq.ToggleSwitch(
-                    id="toggleTheme",
-                    style={
-                        "position": "absolute",
-                        "transform": "translate(-50%, 20%)",
-                        "z-index": "9999",
-                    },
-                    size=30,
-                    value=False,
+                # Toggle
+                html.Div(
+                    className="row toggleDiv",
+                    children=[
+                        daq.ToggleSwitch(
+                            id="toggleTheme",
+                            size=30,
+                            value=False,
+                        )
+                    ],
+                ),
+                # Title and Image
+                html.Div(
+                    className="row",
+                    children=[
+                        html.H2("Dash DAQ: Function Generator & Oscilloscope Control Panel"),
+                        html.Img(
+                            src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/"
+                            + "excel/dash-daq/dash-daq-logo-by-plotly-stripe+copy.png",
+                            className="logo"
+                        ),
+                        html.H6("Dash DAQ: Function Generator & Oscilloscope Control Panel"),
+                    ]
                 )
             ],
         ),
-        # header
-        header(),
+
         html.Div(
-            children=html.Div(
-                children=[
-                    # Setting panel - left
+            className="row",
+            children=[
+                    # LEFT PANEL - SETTINGS
                     html.Div(
                         className="five columns left-panel",
                         children=[
@@ -287,7 +274,8 @@ app.layout = html.Div(
                             ),
                         ],
                     ),
-                    # Oscillator Panel - Right
+
+                    # RIGHT PANEL - OSCILLATIONS
                     html.Div(
                         className="seven columns right-panel",
                         children=[
@@ -349,7 +337,7 @@ app.layout = html.Div(
                         ],
                     ),
                 ]
-            )
+            
         ),
         dcc.Store(id="control-inputs", data={}),  # {tabs_number: {value1:x, value2:x}
     ],

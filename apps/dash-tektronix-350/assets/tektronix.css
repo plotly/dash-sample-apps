@@ -6,16 +6,14 @@
   box-sizing: border-box;
 }
 
-.container {
-  width: 100%;
-  max-width: none;
-}
-
 body {
   font-size: 1.5em;
   line-height: 1.6;
   font-weight: 400;
   font-family: Dosis, Raleway, HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0;
+  width: 100%;
+  max-width: none;
 }
 
 input[type="radio"] {
@@ -81,10 +79,108 @@ input[type="radio"] {
 }
 
 .banner {
-  height: 75px;
-  margin: 0 -10px 10px;
+  background-color: #6682C0;
+}
+
+.banner h2{
+  color: white;
+  display: inline-block;
+  text-align: center;
+  margin-left: 20px;
+}
+
+.banner h6{
+  display: none;
 }
 
 #color-picker > div {
   background-color: inherit !important;
+}
+
+.logo{
+  position: relative;
+  float: right;
+  height: 75px;
+  padding: 3px;
+}
+
+.toggleDiv{
+  width: fit-content;
+  margin-left: 51%;
+}
+
+#toggleTheme{
+  transform: translate(-50%, 20%);
+  z-index: 9999;
+}
+
+#function-type{
+  display: flex;
+  width: 80%;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.knobs, .led-displays{
+  margin-left: 20%;
+  text-align: center;
+}
+
+.radio-items{
+  display: flex;
+  width: 80%;
+  align-items: center;
+  justify-content: space-between;
+  margin: 30px auto 0px auto;
+}
+
+@media only screen and (max-width: 966px){
+  .logo{
+    float: left;
+  }
+  .banner h2{
+    display: none;
+  }
+  .banner h6{
+    display: block;
+    float: left;
+    color: white;
+    display: block;
+    text-align: center;
+    margin-left: 10px;
+  }
+}
+
+@media only screen and (max-width: 768px){
+  .six.columns {
+    width: 48%;
+  }
+
+  .four.columns{
+    width: 30%;
+  }
+
+  .five.columns, .seven.columns{
+    width: 100%
+  }
+
+  .left-panel, .right-panel{
+    width: 100%;
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 550px){
+  .knobs, .led-displays{
+    display: flex;
+    width: 80%;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 18%;
+
+  }
+  .four.columns{
+    margin: 0;
+  }
 }
