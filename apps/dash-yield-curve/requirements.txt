@@ -1,7 +1,4 @@
 flask-cors
-gunicorn>=19.7.1
-plotly==2.4.1
-dash-core-components==0.42.1
-dash-html-components==0.13.4
-dash==0.35.1
+gunicorn>=19.9.0
+dash==1.0.0
 pandas==0.19.2
