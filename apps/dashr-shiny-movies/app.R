@@ -21,10 +21,6 @@ library(plotly)
 
 ######### LOAD DATA, CREATE FUNCTIONS & GLOBAL OBJECTS ##############
 
-#install.packages("ggplot2movies")
-#include in its own init.R file
-#moved its own package to reduce the download size of ggplot2.
-
 library(ggplot2movies)
 minx <- min(movies$rating)
 maxx <- max(movies$rating)
@@ -69,13 +65,12 @@ app$layout(htmlDiv(
     plotlyLogo,
     pageTitle,
     firstP,
-    htmlDiv(list(slider, className = "five columns")),
+    htmlDiv(list(slider), className = "five columns"),
     htmlBr(),
-    htmlDiv(list
-            (dccGraph
-              (id= "histogram", classname = "histogram"), className = "seven columns"))
-  )
-))
+    htmlDiv(list(
+      dccGraph(
+        id = 'histogram')), className = 'seven columns')
+  )))
 
 ################## CALLBACKS ##################
 
