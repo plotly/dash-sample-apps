@@ -7,7 +7,6 @@ import dash
 import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
-
 import dash_daq as daq
 
 from dash_daq_drivers import keithley_instruments
@@ -129,7 +128,7 @@ def generate_main_layout(
     html_layout = [
         html.Div(
             id="page-body-content",
-            className="row",
+            className="row flex-display",
             children=[
                 html.Div(
                     id="figure-card",
@@ -157,6 +156,36 @@ def generate_main_layout(
                                     },
                                 ),
                             },
+                        ),
+                        html.Div(
+                            id="bottom-card",
+                            style={
+                                "backgroundColor": card_color[theme],
+                                "color": text_color[theme],
+                                "marginTop": "10px",
+                            },
+                            children=[
+                                # Display the sourced and measured values
+                                html.Div(
+                                    id="measure-div",
+                                    children=[
+                                        daq.LEDDisplay(
+                                            id="source-display",
+                                            label="Applied %s (%s)"
+                                            % (source_label, source_unit),
+                                            value=0.00,
+                                            color=accent_color[theme],
+                                        ),
+                                        daq.LEDDisplay(
+                                            id="measure-display",
+                                            label="Measured %s (%s)"
+                                            % (measure_label, measure_unit),
+                                            value=0.0000,
+                                            color=accent_color[theme],
+                                        ),
+                                    ],
+                                )
+                            ],
                         ),
                     ],
                 ),
@@ -361,10 +390,11 @@ def generate_main_layout(
                                                                     value=0.2,
                                                                     min=0.01,
                                                                     style={
-                                                                        "color": text_color[
-                                                                            theme
-                                                                        ],
-                                                                        "margin": "5px",
+                                                                        # "color": text_color[
+                                                                        #     theme
+                                                                        # ],
+                                                                        # "backgroundColor":bkg_color[theme],
+                                                                        "margin": "5px"
                                                                     },
                                                                 ),
                                                                 "s",
@@ -397,38 +427,39 @@ def generate_main_layout(
                                 ),
                             ],
                         ),
-                        html.Div(
-                            id="bottom-card",
-                            style={
-                                "backgroundColor": card_color[theme],
-                                "color": text_color[theme],
-                                "marginTop": "10px",
-                            },
-                            children=[
-                                # Display the sourced and measured values
-                                html.Div(
-                                    id="measure-div",
-                                    children=[
-                                        daq.LEDDisplay(
-                                            id="source-display",
-                                            label="Applied %s (%s)"
-                                            % (source_label, source_unit),
-                                            value=0.00,
-                                            color=accent_color[theme],
-                                        ),
-                                        daq.LEDDisplay(
-                                            id="measure-display",
-                                            label="Measured %s (%s)"
-                                            % (measure_label, measure_unit),
-                                            value=0.0000,
-                                            color=accent_color[theme],
-                                        ),
-                                    ],
-                                )
-                            ],
-                        ),
+                        # html.Div(
+                        #     id="bottom-card",
+                        #     style={
+                        #         "backgroundColor": card_color[theme],
+                        #         "color": text_color[theme],
+                        #         "marginTop": "10px",
+                        #     },
+                        #     children=[
+                        #         # Display the sourced and measured values
+                        #         html.Div(
+                        #             id="measure-div",
+                        #             children=[
+                        #                 daq.LEDDisplay(
+                        #                     id="source-display",
+                        #                     label="Applied %s (%s)"
+                        #                     % (source_label, source_unit),
+                        #                     value=0.00,
+                        #                     color=accent_color[theme],
+                        #                 ),
+                        #                 daq.LEDDisplay(
+                        #                     id="measure-display",
+                        #                     label="Measured %s (%s)"
+                        #                     % (measure_label, measure_unit),
+                        #                     value=0.0000,
+                        #                     color=accent_color[theme],
+                        #                 ),
+                        #             ],
+                        #         )
+                        #     ],
+                        # ),
                     ],
                 ),
+                # dcc.Store(id="control-inputs", data={})
             ],
         )
     ]
@@ -825,10 +856,8 @@ def interval_toggle(swp_on, mode_choice, dt):
     if mode_choice:
         if swp_on:
             return dt * 1000
-        else:
-            return 1000000
-    else:
         return 1000000
+    return 1000000
 
 
 @app.callback(
@@ -841,9 +870,8 @@ def reset_interval(_, mode_choice, swp_on, n_interval):
     if mode_choice:
         if swp_on:
             return n_interval
-        else:
-            local_vars.reset_interval()
-            return 0
+        local_vars.reset_interval()
+        return 0
     local_vars.reset_interval()
     return 0
 
@@ -880,9 +908,8 @@ def sweep_activation_toggle(
             if not meas_triggered:
                 # The 'trigger-measure_btn' wasn't pressed yet
                 return False
-            else:
-                # Initiate a sweep
-                return True
+            # Initiate a sweep
+            return True
 
 
 # ======= Measurements callbacks =======
@@ -1035,8 +1062,7 @@ def clear_graph_click(src_val, nclick, meas_triggered):
             # Reset the data
             local_vars.clear_graph()
             return True
-        else:
-            return False
+        return False
 
 
 @app.callback(
