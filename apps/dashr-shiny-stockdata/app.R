@@ -28,13 +28,27 @@ pageTitle <- htmlH2("Coupled hover-events in plotly charts using Shiny")
 subTitle <- htmlH4("This Shiny app showcases coupled hover-events using Plotly's event_data() function.")
 
 
-plotlyLogo <-
-  htmlA(list(htmlImg(id = "banner-image", src = "assets/image.png")), 
-        className = "logo", href = "https://dashr-docs.herokuapp.com/")
+plotlyLogo <- htmlA(
+  list(htmlImg(
+    id = "banner-image",
+    src = "assets/image.png")), 
+        className = "logo",
+  href = "https://dashr-docs.herokuapp.com/")
 
-windowDropdown <- dccDropdown(
-  id = "windowlength"
+windowLabel <- htmlLabel("Select Window Length")
+
+windowOptions <- list(
+  list(label = "10", value = "10"),
+  list(label = "20", value = "20"),
+  list(label = "30", value = "30"),
+  list(label = "60", value = "60"),
+  list(label = "90", value = "90")
 )
+
+windowDropdown <- dccDropdown(id = "window-dropdown",
+                              options = windowOptions,
+                              value = "10",
+                              clearable = FALSE)
 
 ############## APP START ##################
 
