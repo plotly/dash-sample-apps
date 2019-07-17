@@ -321,7 +321,6 @@ def fill_tab(tab):
                         id="contrast-stitch", min=0, max=1, step=0.02, value=0.5
                     ),
                 ],
-                # style={'width': '70%'},
                 className="result_slider",
             ),
             html.Div(
