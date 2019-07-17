@@ -284,10 +284,10 @@ def build_quick_stats_panel():
                 children=[
                     html.P("Operator ID"),
                     daq.LEDDisplay(
-                        id = "operator-led",
+                        id="operator-led",
                         value="1704",
                         color="#92e0d3",
-                        backgroundColor="#1e2130"
+                        backgroundColor="#1e2130",
                     ),
                 ],
             ),
@@ -440,8 +440,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                     :stopped_interval
-                                     ],
+                                    :stopped_interval
+                                ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
@@ -451,8 +451,12 @@ def generate_metric_row_helper(stopped_interval, index):
                         "layout": {
                             "uirevision": True,
                             "margin": dict(l=0, r=0, t=4, b=4, pad=0),
-                            "xaxis": dict(showline=False, showgrid=False, zeroline=False),
-                            "yaxis": dict(showline=False, showgrid=False, zeroline=False),
+                            "xaxis": dict(
+                                showline=False, showgrid=False, zeroline=False
+                            ),
+                            "yaxis": dict(
+                                showline=False, showgrid=False, zeroline=False
+                            ),
                             "paper_bgcolor": "rgba(0,0,0,0)",
                             "plot_bgcolor": "rgba(0,0,0,0)",
                         },
@@ -555,8 +559,12 @@ def build_chart_panel():
                         "layout": {
                             "paper_bgcolor": "rgba(0,0,0,0)",
                             "plot_bgcolor": "rgba(0,0,0,0)",
-                            "xaxis": dict(showline=False, showgrid=False, zeroline=False),
-                            "yaxis": dict(showgrid=False, showline=False, zeroline=False),
+                            "xaxis": dict(
+                                showline=False, showgrid=False, zeroline=False
+                            ),
+                            "yaxis": dict(
+                                showgrid=False, showline=False, zeroline=False
+                            ),
                             "autosize": True,
                         },
                     }
@@ -641,12 +649,14 @@ def generate_graph(interval, specs_dict, col):
             "domain": [0, 0.8],
             "titlefont": {"color": "darkgray"},
         },
-        yaxis={"title": col,
-               "showgrid": False,
-               "showline": False,
-               "zeroline": False,
-               "autorange": True,
-               "titlefont": {"color": "darkgray"}},
+        yaxis={
+            "title": col,
+            "showgrid": False,
+            "showline": False,
+            "zeroline": False,
+            "autorange": True,
+            "titlefont": {"color": "darkgray"},
+        },
         annotations=[
             {
                 "x": 0.75,
@@ -1033,8 +1043,12 @@ def show_current_specs(n_clicks, dd_select, store_data):
             style_header={"fontWeight": "bold"},
             style_as_list_view=True,
             style_cell_conditional=[
-                {"if": {"column_id": "Specs"}, "textAlign": "left", "paddingRight": "10rem"},
-                {"if": {"column_id": "Current Setup"}, "paddingLeft": "10rem"}
+                {
+                    "if": {"column_id": "Specs"},
+                    "textAlign": "left",
+                    "paddingRight": "10rem",
+                },
+                {"if": {"column_id": "Current Setup"}, "paddingLeft": "10rem"},
             ],
             style_cell={
                 "backgroundColor": "#1e2130",
@@ -1044,7 +1058,7 @@ def show_current_specs(n_clicks, dd_select, store_data):
                 "border-top": "#1e2130",
                 "border-bottom": "#1e2130",
                 "border-left": "#1e2130",
-                "border-right": "#1e2130"
+                "border-right": "#1e2130",
             },
             data=new_df.to_dict("rows"),
             # css=[{'selector': 'tr:hover', 'rule': 'color: #92e0d3 !important;'}],  #tr hover rule doesn't apply for table1.0.0
@@ -1133,7 +1147,7 @@ def update_piechart(interval, stored_data):
             "layout": {
                 "font": {"color": "white"},
                 "paper_bgcolor": "rgba(0,0,0,0)",
-                "plot_bgcolor": "rgba(0,0,0,0)"
+                "plot_bgcolor": "rgba(0,0,0,0)",
             },
         }
 
