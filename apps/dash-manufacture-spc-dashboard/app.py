@@ -282,19 +282,19 @@ def build_quick_stats_panel():
             html.Div(
                 id="card-1",
                 children=[
-                    html.H5("Operator ID"),
+                    html.P("Operator ID"),
                     daq.LEDDisplay(
+                        id = "operator-led",
                         value="1704",
-                        color="#91dfd2",
-                        backgroundColor="#242633",
-                        size="55",
+                        color="#92e0d3",
+                        backgroundColor="#1e2130"
                     ),
                 ],
             ),
             html.Div(
                 id="card-2",
                 children=[
-                    html.H5("Time to completion"),
+                    html.P("Time to completion"),
                     daq.Gauge(
                         id="progress-gauge",
                         max=max_length * 2,
@@ -365,8 +365,8 @@ def generate_piechart():
         figure={
             "data": [
                 {
-                    "labels": params[1:],
-                    "values": [1, 1, 1, 1, 1, 1, 1],
+                    "labels": [],
+                    "values": [],
                     "type": "pie",
                     "marker": {"line": {"color": "white", "width": 1}},
                     "hoverinfo": "label",
@@ -374,9 +374,10 @@ def generate_piechart():
                 }
             ],
             "layout": {
+                "margin": dict(l=20, r=20, t=20, b=20),
                 "showlegend": True,
-                "paper_bgcolor": "#1d202d",
-                "plot_bgcolor": "#1d202d",
+                "paper_bgcolor": "rgba(0,0,0,0)",
+                "plot_bgcolor": "rgba(0,0,0,0)",
                 "font": {"color": "white"},
                 "autosize": True,
             },
@@ -439,8 +440,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                    :stopped_interval
-                                ],
+                                     :stopped_interval
+                                     ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
@@ -450,8 +451,10 @@ def generate_metric_row_helper(stopped_interval, index):
                         "layout": {
                             "uirevision": True,
                             "margin": dict(l=0, r=0, t=4, b=4, pad=0),
-                            "paper_bgcolor": "#1d202d",
-                            "plot_bgcolor": "#1d202d",
+                            "xaxis": dict(showline=False, showgrid=False, zeroline=False),
+                            "yaxis": dict(showline=False, showgrid=False, zeroline=False),
+                            "paper_bgcolor": "rgba(0,0,0,0)",
+                            "plot_bgcolor": "rgba(0,0,0,0)",
                         },
                     }
                 ),
@@ -550,8 +553,10 @@ def build_chart_panel():
                             }
                         ],
                         "layout": {
-                            "paper_bgcolor": "#1d202d",
-                            "plot_bgcolor": "#1d202d",
+                            "paper_bgcolor": "rgba(0,0,0,0)",
+                            "plot_bgcolor": "rgba(0,0,0,0)",
+                            "xaxis": dict(showline=False, showgrid=False, zeroline=False),
+                            "yaxis": dict(showgrid=False, showline=False, zeroline=False),
                             "autosize": True,
                         },
                     }
@@ -623,19 +628,25 @@ def generate_graph(interval, specs_dict, col):
     fig["layout"] = dict(
         hovermode="closest",
         uirevision=col,
-        paper_bgcolor="#1d202d",
-        plot_bgcolor="#1d202d",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         legend={"font": {"color": "darkgray"}},
         font={"color": "darkgray"},
         showlegend=True,
         xaxis={
             "zeroline": False,
+            "showgrid": False,
             "title": "Batch_Num",
             "showline": False,
             "domain": [0, 0.8],
             "titlefont": {"color": "darkgray"},
         },
-        yaxis={"title": col, "autorange": True, "titlefont": {"color": "darkgray"}},
+        yaxis={"title": col,
+               "showgrid": False,
+               "showline": False,
+               "zeroline": False,
+               "autorange": True,
+               "titlefont": {"color": "darkgray"}},
         annotations=[
             {
                 "x": 0.75,
@@ -739,6 +750,7 @@ def generate_graph(interval, specs_dict, col):
             "title": "count",
             "domain": [0.8, 1],  # 70 to 100 % of width
             "titlefont": {"color": "darkgray"},
+            "showgrid": False,
         },
         yaxis2={
             "anchor": "free",
@@ -1021,7 +1033,8 @@ def show_current_specs(n_clicks, dd_select, store_data):
             style_header={"fontWeight": "bold"},
             style_as_list_view=True,
             style_cell_conditional=[
-                {"if": {"column_id": c}, "textAlign": "left"} for c in ["Specs"]
+                {"if": {"column_id": "Specs"}, "textAlign": "left", "paddingRight": "10rem"},
+                {"if": {"column_id": "Current Setup"}, "paddingLeft": "10rem"}
             ],
             style_cell={
                 "backgroundColor": "#1e2130",
@@ -1030,8 +1043,11 @@ def show_current_specs(n_clicks, dd_select, store_data):
                 "color": "darkgray",
                 "border-top": "#1e2130",
                 "border-bottom": "#1e2130",
+                "border-left": "#1e2130",
+                "border-right": "#1e2130"
             },
             data=new_df.to_dict("rows"),
+            # css=[{'selector': 'tr:hover', 'rule': 'color: #92e0d3 !important;'}],  #tr hover rule doesn't apply for table1.0.0
             columns=[{"id": c, "name": c} for c in ["Specs", "Current Setup"]],
         )
 
@@ -1116,8 +1132,8 @@ def update_piechart(interval, stored_data):
             "data": [],
             "layout": {
                 "font": {"color": "white"},
-                "paper_bgcolor": "#1d202d",
-                "plot_bgcolor": "#1d202d",
+                "paper_bgcolor": "rgba(0,0,0,0)",
+                "plot_bgcolor": "rgba(0,0,0,0)"
             },
         }
 
@@ -1148,11 +1164,12 @@ def update_piechart(interval, stored_data):
             }
         ],
         "layout": {
+            "margin": dict(t=20, b=50),
             "uirevision": True,
             "font": {"color": "white"},
             "showlegend": False,
-            "paper_bgcolor": "#1d202d",
-            "plot_bgcolor": "#1d202d",
+            "paper_bgcolor": "rgba(0,0,0,0)",
+            "plot_bgcolor": "rgba(0,0,0,0)",
             "autosize": True,
         },
     }
