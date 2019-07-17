@@ -226,8 +226,12 @@
   #radio-display-mode-accuracy>label:nth-child(3)>input[type=radio] {
     vertical-align: middle !important;
   }
-  
 
+  #radio-display-mode-cross-entropy>label:nth-child(1)>input[type=radio],
+  #radio-display-mode-cross-entropy>label:nth-child(2)>input[type=radio],
+  #radio-display-mode-cross-entropy>label:nth-child(3)>input[type=radio] {
+    vertical-align: middle !important;
+  }
 
   /* Current Accuracy */
   #div-current-accuracy-value>p {
