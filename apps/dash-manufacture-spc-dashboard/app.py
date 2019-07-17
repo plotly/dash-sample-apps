@@ -12,7 +12,7 @@ from textwrap import dedent
 
 import pandas as pd
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
 server = app.server
 app.config["suppress_callback_exceptions"] = True
 
@@ -436,8 +436,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                    :stopped_interval
-                                ],
+                                     :stopped_interval
+                                     ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
@@ -1015,15 +1015,20 @@ def show_current_specs(n_clicks, dd_select, store_data):
         }
         new_df = pd.DataFrame.from_dict(new_df_dict)
         return dash_table.DataTable(
-            style_header={"backgroundColor": "#2d3038", "fontWeight": "bold"},
+            style_header={
+                "fontWeight": "bold"
+            },
             style_as_list_view=True,
             style_cell_conditional=[
                 {"if": {"column_id": c}, "textAlign": "left"} for c in ["Specs"]
             ],
             style_cell={
-                "backgroundColor": "#2d3038",
+                "backgroundColor": "#1e2130",
+                "fontFamily": "Open Sans",
+                "padding": "0 2rem",
                 "color": "darkgray",
-                "border": "darkgray",
+                "border-top": '#1e2130',
+                "border-bottom": "#1e2130"
             },
             data=new_df.to_dict("rows"),
             columns=[{"id": c, "name": c} for c in ["Specs", "Current Setup"]],
