@@ -10,10 +10,6 @@ if (appName != "") {
   setwd(sprintf("/app/apps/%s", appName))
 }
 
-setwd(
-  "/Users/milaroisin/Documents/GitHub/plot.ly/dash-sample-apps/apps/dashr-shiny-movies"
-)
-
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
@@ -22,6 +18,8 @@ library(plotly)
 ######### LOAD DATA, CREATE FUNCTIONS & GLOBAL OBJECTS ##############
 
 library(ggplot2movies)
+
+
 minx <- min(movies$rating)
 maxx <- max(movies$rating)
 
@@ -66,11 +64,9 @@ app$layout(htmlDiv(
     pageTitle,
     firstP,
     htmlDiv(list(slider), className = "five columns"),
-    htmlBr(),
-    htmlDiv(list(
-      dccGraph(
-        id = 'histogram')), className = 'seven columns')
-  )))
+    htmlDiv(list(dccGraph(id = 'histogram')), className = 'seven columns')
+  )
+))
 
 ################## CALLBACKS ##################
 
@@ -108,3 +104,4 @@ if (appName != "") {
 } else {
   app$run_server()
 }
+
