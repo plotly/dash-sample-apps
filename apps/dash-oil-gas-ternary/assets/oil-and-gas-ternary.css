@@ -71,32 +71,6 @@
     margin: 2rem 0 4rem 0;
 }
 
-@media (min-width: 1401px) {
-    #top-row-header {
-        flex-grow: 1;
-        padding: 6rem 3rem 9rem 3rem;
-    }
-
-    .banner h6 {
-        width: 35rem;
-    }
-
-    #instructions {
-        width: 30rem;
-    }
-
-    #operator-select {
-        width: 35rem;
-    }
-}
-
-@media only screen and (max-width: 1400px) {
-    #top-row-header {
-        flex-grow: 1;
-        padding: 6rem 3rem 5rem 3rem;
-    }
-}
-
 .Select-control, .Select-multi-value-wrapper, .Select-menu-outer div {
     background-color: #1f2c56;
 }
@@ -141,6 +115,94 @@
 
 #operator-select .Select-control {
     padding: 1rem;
+}
+
+@media only screen and (max-width: 750px) {
+    #banner h6 {
+        font-size: 3rem;
+    }
+
+    #instructions {
+        font-size: 1.25rem;
+    }
+
+    .Select-value-label, .Select-menu-outer {
+        font-size: 1rem;
+    }
+
+    .banner Img {
+        height: 3.5rem;
+        margin-bottom: 2rem;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    #banner h6 {
+        font-size: 3rem;
+    }
+
+    #instructions {
+        font-size: 1.25rem;
+    }
+
+    .Select-value-label, .Select-menu-outer {
+        font-size: 1rem;
+    }
+
+    .banner Img {
+        height: 3rem;
+        margin-bottom: 2rem;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    #banner h6 {
+        font-size: 2.5rem;
+    }
+
+    #instructions {
+        font-size: 1.1rem;
+    }
+
+    .Select-value-label, .Select-menu-outer {
+        font-size: 0.8rem;
+    }
+
+    .banner Img {
+        height: 3rem;
+        margin-bottom: 2rem;
+    }
+
+    #header-container .graph-title {
+        font-size: 1.25rem;
+    }
+
+}
+
+@media (min-width: 1401px) {
+    #top-row-header {
+        flex-grow: 1;
+        padding: 6rem 3rem 9rem 3rem;
+    }
+
+    .banner h6 {
+        width: 35rem;
+    }
+
+    #instructions {
+        width: 30rem;
+    }
+
+    #operator-select {
+        width: 35rem;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    #top-row-header {
+        flex-grow: 1;
+        padding: 6rem 3rem 5rem 3rem;
+    }
 }
 
 
@@ -236,7 +298,7 @@
         font-size: 1rem;
     }
 
-    .legendtext.user-select-none {
+    #top-row .legendtext {
         font-size: 1.25rem !important;
     }
 
@@ -255,7 +317,7 @@
         font-size: 0.85rem;
     }
 
-    .legendtext.user-select-none {
+    #top-row .legendtext {
         font-size: 1.25rem !important;
     }
 
@@ -274,7 +336,7 @@
         font-size: 0.9rem;
     }
 
-    .legendtext.user-select-none {
+    #top-row .legendtext {
         font-size: 1.25rem !important;
     }
 
@@ -301,7 +363,7 @@
         font-size: 1rem;
     }
 
-    .legendtext.user-select-none {
+    #top-row .legendtext {
         font-size: 1.25rem !important;
     }
 
@@ -321,7 +383,7 @@
         font-size: 1.1rem !important;
     }
 
-    .legendtext.user-select-none {
+    #top-row .legendtext {
         font-size: 1.25rem !important;
     }
 
@@ -330,6 +392,10 @@
     }
 
     .ytick text, .xtick text {
+        font-size: 1.1rem !important;
+    }
+
+    .hovertext text{
         font-size: 1.1rem !important;
     }
 }
@@ -359,7 +425,7 @@
         font-size: 1.8vw !important;
     }
 
-    .legendtext.user-select-none {
+    #top-row .legendtext {
         font-size: 1.1rem !important;
     }
 
@@ -374,7 +440,7 @@
 
 @media (max-width: 400px) {
     #ternary-map * {
-        font-size: 1.5vw !important;
+        font-size: 2vw !important;
     }
 
     #top-row {
@@ -391,9 +457,16 @@
     #ternary-map {
         margin: -7rem 0 0 -6.5rem;
     }
+
+    .hovertext text{
+        font-size: 0.9rem !important;
+    }
 }
 
 @media (max-width: 350px) {
+    #well-map{
+        height: 35rem;
+    }
     #bottom-row {
         margin-top: -8rem;
     }
@@ -413,14 +486,14 @@
 #bottom-row .graph-title {
     font-family: "Open Sans", sans-serif;
     font-weight: 800;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
-
-@media only screen and (max-width: 1000px) {
+@media (max-width: 1000px) {
     #bottom-row {
         display: flex;
         flex-direction: column;
+        padding: 4rem 4vw;
     }
 
     #form-bar-container, #well-production-container {
@@ -430,5 +503,20 @@
 
     #form-bar-container {
         margin-bottom: 5rem;
+    }
+}
+
+@media (max-width: 550px) {
+    #bottom-row .xtitle, #bottom-row .ytitle {
+        font-size: 1.2rem !important
+    }
+}
+
+@media (max-width: 550px) {
+    #bottom-row .xtitle, #bottom-row .ytitle {
+        font-size: 1rem !important
+    }
+    #bottom-row .legendtext{
+        font-size: 0.8rem !important;
     }
 }
