@@ -61,3 +61,5 @@ python app.py
 ## Screenshots
 
 ![IV Curve Tracer](screenshots/screenshot.png)
+
+![animated](screenshots/dash-daq-iv-tracer-demo.gif)

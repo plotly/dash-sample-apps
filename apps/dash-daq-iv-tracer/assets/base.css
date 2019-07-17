@@ -552,6 +552,9 @@ there.
     display: block !important;
     height: auto !important;
   }
+  #page-content {
+    display: block !important;
+  }
   #control-container {
     margin-left: 0 !important;
   }
