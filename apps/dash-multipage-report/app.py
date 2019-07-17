@@ -292,7 +292,7 @@ app.layout = html.Div(
                                     lorem.paragraph() * 2, style={"margin-top": "20px"}
                                 ),
                             ],
-                            style={"margin-left": "80px", "margin-right": "40px"},
+                            className="page-3",
                         ),
                         html.Div(
                             [
@@ -303,7 +303,7 @@ app.layout = html.Div(
                                     lorem.paragraph() * 3, style={"margin-top": "20px"}
                                 ),
                             ],
-                            style={"margin-left": "80px", "margin-right": "40px"},
+                            className="page-3",
                         ),
                     ],
                     className="subpage",
@@ -379,7 +379,7 @@ app.layout = html.Div(
                                         html.Div(
                                             [
                                                 html.P(
-                                                    lorem.paragraph() * 1,
+                                                    lorem.paragraph(),
                                                     style={"margin-left": "20px"},
                                                 )
                                             ],
@@ -402,7 +402,7 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.P(
-                                            lorem.paragraph() * 2,
+                                            lorem.paragraph(),
                                             style={"margin-top": "20px"},
                                         )
                                     ]
@@ -940,8 +940,7 @@ app.layout = html.Div(
                                     style={"margin-top": "20px"},
                                 ),
                             ],
-                            className="",
-                            style={"padding-top": "20px", "margin-left": "30px"},
+                            className="page-7",
                         ),
                     ],
                     className="subpage",
@@ -1220,7 +1219,7 @@ app.layout = html.Div(
                     [
                         html.Div(
                             [html.P(lorem.paragraph() * 3)],
-                            style={"position": "relative", "margin-top": "40px"},
+                            className="page-6",
                         ),
                         html.Div(
                             [

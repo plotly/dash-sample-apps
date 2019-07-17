@@ -30,6 +30,16 @@ body {
 	  height: 257mm;
 	  outline: 2cm whitesmoke solid;
  }
+ 
+ .page-3 {
+   margin-left: 80px;
+   margin-right: 40px;
+ }
+ 
+ .page-6 {
+   position: relative;
+   margin-top: 40px;
+ }
 
  @page {
 	  size: A4;
@@ -66,6 +76,8 @@ p{ margin-bottom: 1rem }
 .gs-table-header{ background: #C41230 !important; -webkit-print-color-adjust: exact; }
 
 .gs-accent-header{ background: #65201F !important; -webkit-print-color-adjust: exact; }
+
+
 
 div.padded{ padding: 10px; }
 
