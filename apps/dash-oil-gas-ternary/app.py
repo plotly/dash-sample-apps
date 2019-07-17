@@ -14,7 +14,12 @@ from dash.dependencies import Input, Output, State
 constants = importlib.import_module("apps.dash-oil-gas-ternary.constants")
 
 # app initialize
-app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__,
+    meta_tags=[
+        {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
+    ],
+)
 server = app.server
 app.config["suppress_callback_exceptions"] = True
 
@@ -57,7 +62,7 @@ def generate_production_plot(processed_data):
 
     data = []
     for well_id, formation in list(
-        zip(processed_data["well_id"], processed_data["formation"])
+            zip(processed_data["well_id"], processed_data["formation"])
     ):
         well_prod = df_prod[df_prod["RecordNumber"] == well_id]
         new_trace = dict(
@@ -89,7 +94,7 @@ def generate_well_map(dff, selected_data, style):
     layout = go.Layout(
         clickmode="event+select",
         dragmode="lasso",
-        showlegend=False,
+        showlegend=True,
         autosize=True,
         hovermode="closest",
         margin=dict(l=0, r=0, t=0, b=0),
@@ -101,6 +106,14 @@ def generate_well_map(dff, selected_data, style):
             zoom=8,
             style=style,
         ),
+        legend=dict(
+            bgcolor="#1f2c56",
+            orientation="h",
+            font=dict(color="white"),
+            x=0,
+            y=0,
+            yanchor="bottom",
+        )
     )
 
     formations = dff["fm_name"].unique().tolist()
@@ -239,7 +252,7 @@ def generate_ternary_map(dff, selected_data, contour_visible, marker_visible):
             c=dff[dff["fm_name"] == key]["Clay"],
             mode="markers",
             hovertemplate=hovertemplate,
-            showlegend=True,
+            showlegend=False,
             marker={
                 "color": colormap[key],
                 "size": 8,
@@ -374,11 +387,11 @@ app.layout = html.Div(
                                 html.P(
                                     id="instructions",
                                     children="Select data points from the well map, ternary map or bar graph to "
-                                    "visualize cross-filtering to other plots. Selection could be done by "
-                                    "clicking on individual data points or using the lasso tool to capture "
-                                    "multiple data points or bars. With the box tool from modebar, multiple "
-                                    "regions can be selected by holding the SHIFT key while clicking and "
-                                    "dragging.",
+                                             "visualize cross-filtering to other plots. Selection could be done by "
+                                             "clicking on individual data points or using the lasso tool to capture "
+                                             "multiple data points or bars. With the box tool from modebar, multiple "
+                                             "regions can be selected by holding the SHIFT key while clicking and "
+                                             "dragging.",
                                 ),
                                 build_graph_title("Select Operator"),
                                 dcc.Dropdown(
@@ -569,12 +582,12 @@ def update_bar(map_selected_data, tern_selected_data, op_select):
     state=[State("ternary-map", "figure")],
 )
 def update_ternary_map(
-    map_selected_data,
-    bar_selected_data,
-    bar_click_data,
-    op_select,
-    layer_select,
-    curr_fig,
+        map_selected_data,
+        bar_selected_data,
+        bar_click_data,
+        op_select,
+        layer_select,
+        curr_fig,
 ):
     marker_visible = contour_visible = True
 
@@ -659,7 +672,7 @@ def update_ternary_map(
     ],
 )
 def update_well_map(
-    tern_selected_data, bar_selected_data, bar_click_data, op_select, mapbox_view
+        tern_selected_data, bar_selected_data, bar_click_data, op_select, mapbox_view
 ):
     dff = df[df["op"].isin(op_select)]
     formations = dff["fm_name"].unique().tolist()
