@@ -28,9 +28,7 @@
 /* This was actually not quite right -
    dropdowns were overlapping each other (edited October 26)
 
-.Select {
-    z-index: 1002;
-}*/
+
 
 /* Remove Undo Button
 --------------------------------------------------*/
@@ -371,8 +369,6 @@ input[type="button"].button-primary:focus {
 
 
 
-
-
 #tabs-content-example>div>div,
 .lower-canvas,
 .upper-canvas,
@@ -382,7 +378,6 @@ input[type="button"].button-primary:focus {
 
 
 /* Selection tabs */
-
 #stitching-tabs>div:nth-child(1),
 #stitching-tabs>div:nth-child(2),
 #stitching-tabs>div:nth-child(3) {
