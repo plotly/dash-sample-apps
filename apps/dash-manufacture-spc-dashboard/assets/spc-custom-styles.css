@@ -156,7 +156,7 @@ body {
   font-size: 1.5rem;
   text-align: left;
   padding: 1rem 2rem;
-  border-bottom:  1px solid #4b5460;
+  border-bottom: 1px solid #4b5460;
 }
 
 /* Main Dashboard Tab
@@ -172,7 +172,7 @@ body {
 
 #metric_header > div {
   font-weight: bold;
-  font-size:1.4rem;
+  font-size: 1.4rem;
 }
 
 #Diameter_button,
@@ -190,9 +190,10 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  align-items:center; /* vertical center row items*/
 }
 
-
+/*Dash Daq Graduatebar */
 #Diameter_OOC_graph > div > div,
 #Etch1_OOC_graph > div > div,
 #Film-Thickness_OOC_graph > div > div,
@@ -202,18 +203,8 @@ body {
 #Overlay_OOC_graph > div > div,
 #Volume_OOC_graph > div > div {
   width: 100%;
+  background-color: #1e2130 !important;
 }
-
-#stop-button {
-  border-color: darkgray !important;
-  color: white;
-}
-
-#tab-trigger-btn:hover, #stop-button:hover {
-  color: #91dfd2 !important;
-  border-color: white !important;
-}
-
 
 #quick-stats.row {
   display: flex;
@@ -242,15 +233,6 @@ body {
   flex: 1 1 auto;
 }
 
-#piechart {
-  /*height: ;*/
-  margin: 2px 0px;
-}
-
-#control-chart-live {
-  margin: 2px 0px;
-}
-
 #piechart.plot-container plotly {
   height: 100%;
 }
@@ -274,15 +256,9 @@ body {
   margin-top: 2rem;
 }
 
-#stop-button > div > button {
-  font-size: 16px;
-  border-radius: 4px;
-  height: 40px;
-  line-height: 40px;
-}
 
 #stop-button > div > button:hover {
-  color: #FFD15F;
+  color: #91dfd2 !important;
 }
 
 #card1 span {
@@ -448,7 +424,6 @@ body {
 
 #app-content {
   background: inherit;
-  /*min-height: calc(100% - 20px);*/
   padding: 0;
   width: 100%;
   max-width: 100%;
@@ -508,11 +483,11 @@ body {
   border-right: #23262E solid 0.8rem;
   flex: 1 1;
   padding: 2rem;
-  max-width:25%;
+  max-width: 25%;
 }
 
 #operator-led {
-  width: 80%;
+  width: 200px;
 }
 
 #operator-led > div {
@@ -525,37 +500,35 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 12px 8px;
 }
 
 #operator-led > div > div svg:nth-child(1) {
   margin-left: -1rem;
 }
 
-.kKWoYf {
+#progress-gauge > div > div > div > div {
   color: white !important;
+  margin-top: -25rem;
 }
 
+/*pressure-gauge track*/
 .eUJyCY .track {
   stroke: #f4d44d !important;
-  stroke-width: 15;
 }
 
 .eUJyCY .track.progress {
   stroke: #fff3c5 !important;
-  stroke-width: 15;
-}
-
-.sc-VigVT.kKWoYf {
-  margin-top: -25rem;
 }
 
 /* Tab 2 Specs
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-.sc-hMqMXs {
+#stop-button > div > button {
   color: white !important;
   background-color: #1d202d !important;
   border: darkgray solid 1px !important;
+  border-radius:4px;
+  height:40px;
+  line-height:40px;
 }
 
 .sc-hMqMXs:hover {
@@ -567,7 +540,7 @@ body {
 #card-1 P, #card-2 P {
   color: darkgray;
   font-weight: normal;
-  align-self:flex-start;
+  align-self: flex-start;
 }
 
 #card-1 P, #card-2 P {
@@ -595,7 +568,7 @@ body {
 }
 
 #metric-rows button {
-  margin-top: -10rem;
+  margin-top: -8rem;
 }
 
 #metric-div {

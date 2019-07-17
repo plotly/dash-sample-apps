@@ -288,6 +288,7 @@ def build_quick_stats_panel():
                         value="1704",
                         color="#92e0d3",
                         backgroundColor="#1e2130",
+                        size=50,
                     ),
                 ],
             ),
@@ -299,7 +300,7 @@ def build_quick_stats_panel():
                         id="progress-gauge",
                         max=max_length * 2,
                         min=0,
-                        showCurrentValue=True,
+                        showCurrentValue=True,  # default size 200 pixel
                     ),
                 ],
             ),
@@ -490,7 +491,7 @@ def generate_metric_row_helper(stopped_interval, index):
 
 def generate_metric_row(id, style, col1, col2, col3, col4, col5, col6):
     if style is None:
-        style = {"height": "10rem", "width": "100%"}
+        style = {"height": "8rem", "width": "100%"}
 
     return html.Div(
         id=id,
@@ -523,7 +524,7 @@ def generate_metric_row(id, style, col1, col2, col3, col4, col5, col6):
             ),
             html.Div(
                 id=col5["id"],
-                style={"height": "100%"},
+                style={"height": "100%", "margin-top": "5rem"},
                 className="three columns",
                 children=col5["children"],
             ),
@@ -644,7 +645,7 @@ def generate_graph(interval, specs_dict, col):
         xaxis={
             "zeroline": False,
             "showgrid": False,
-            "title": "Batch_Num",
+            "title": "Batch Number",
             "showline": False,
             "domain": [0, 0.8],
             "titlefont": {"color": "darkgray"},
