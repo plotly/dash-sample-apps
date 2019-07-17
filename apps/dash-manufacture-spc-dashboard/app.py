@@ -441,8 +441,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                    :stopped_interval
-                                ],
+                                     :stopped_interval
+                                     ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
@@ -472,7 +472,7 @@ def generate_metric_row_helper(stopped_interval, index):
                 id=ooc_graph_id,
                 color={
                     "ranges": {
-                        "#91dfd2": [0, 3],
+                        "#92e0d3": [0, 3],
                         "#f4d44d ": [3, 7],
                         "#f45060": [7, 15],
                     }
@@ -819,6 +819,8 @@ def update_count(interval, col, data):
         # Set indicator theme according to threshold 5%
         if 0 <= ooc_grad_val <= 5:
             color = theme["primary"]
+        elif 5 < ooc_grad_val < 7:
+            color = "#f4d44d"
         else:
             color = "#FF0000"
 
