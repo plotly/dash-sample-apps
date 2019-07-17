@@ -13,6 +13,4 @@ remotes::install_github("plotly/dash-html-components", ref="1.0.0-cran")
 remotes::install_github("plotly/dash-core-components", ref="1.0.0-cran")
 remotes::install_github("plotly/dash-daq", ref="update-for-dash-0.1.0")
 remotes::install_github('plotly/dash-bio', ref="update-for-dash-0.1.0")
-
-install.packages("bio3d")
-install.packages("jsonlite")
+remotes::install_github('plotly/dash-table')
