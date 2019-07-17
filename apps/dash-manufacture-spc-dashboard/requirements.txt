@@ -1,4 +1,4 @@
-dash>=0.42.0
+dash==1.0.0
 dash-daq>=0.1.4
 gunicorn>=19.9.0
 numpy>=1.16.2
