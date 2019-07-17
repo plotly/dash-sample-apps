@@ -19,10 +19,6 @@ lapply(nms, function(x) {
   list(label = x, value = x)
 })
 
-setwd(
-  "/Users/milaroisin/Documents/GitHub/plot.ly/dash-sample-apps/apps/dashr-shiny-diamond-explorer"
-)
-
 ######### CREATE GLOBAL OBJECTS ####
 
 DropDownMenuOptions <- list(
