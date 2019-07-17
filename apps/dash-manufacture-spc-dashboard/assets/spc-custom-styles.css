@@ -118,13 +118,6 @@ body {
   color: #91dfd2;
 }
 
-#tab-trigger-btn {
-  margin-right: 4%;
-  margin-top: 20px;
-  color: white;
-  border-color: darkgray !important;
-}
-
 /* Tabs
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -155,24 +148,22 @@ body {
 }
 
 #Specs-tab.custom-tab--selected, #Control-chart-tab.custom-tab--selected {
-  border-bottom: #91dfd2 solid 5px !important;
+  border-bottom: #91dfd2 solid 3px !important;
 }
 
 .section-banner {
   color: darkgray;
   font-size: 1.5rem;
-  background-color: #1d202d;
   text-align: left;
-  font-weight: normal;
-  padding: 2rem 3rem;
-  border-bottom: darkgray solid 1px;
+  padding: 1rem 2rem;
+  border-bottom:  1px solid #4b5460;
 }
 
 /* Main Dashboard Tab
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #top-section-container {
-  height: 50rem;
+  height: 40rem;
   flex-direction: row;
   display: flex;
   max-width: 100%;
@@ -181,6 +172,7 @@ body {
 
 #metric_header > div {
   font-weight: bold;
+  font-size:1.4rem;
 }
 
 #Diameter_button,
@@ -230,10 +222,6 @@ body {
   align-items: center;
 }
 
-#metric-summary-session, #ooc-piechart-outer, #control-chart-container {
-  background-color: #1d202d;
-}
-
 #control-chart-container {
   position: relative;
   z-index: 4;
@@ -243,14 +231,15 @@ body {
 
 #metric-summary-session {
   height: 100%;
-  flex-grow: 1;
+  /*flex-grow: 1;*/
+  flex: 1 1 auto;
 }
 
 #ooc-piechart-outer {
   height: 100%;
   margin: 0;
   border-left: #242633 solid 0.8rem;
-  flex-grow: 1;
+  flex: 1 1 auto;
 }
 
 #piechart {
@@ -277,12 +266,12 @@ body {
 }
 
 #card-1 {
-  margin-bottom: 7rem;
+  margin-bottom: 3rem;
 }
 
 #utility-card {
-  height: 6rem !important;
-  margin-top: 4rem;
+  height: 4rem !important;
+  margin-top: 2rem;
 }
 
 #stop-button > div > button {
@@ -297,7 +286,7 @@ body {
 }
 
 #card1 span {
-  font-size: 25px;
+  font-size: 1.4rem;
 }
 
 /* Tab1 content
@@ -355,8 +344,9 @@ body {
 }
 
 .output-datatable {
-  margin: 2rem 0rem 2rem 4rem;
+  margin: 2rem 0rem 2rem 2rem;
   line-height: 3;
+  align-self: flex-end;
 }
 
 /*Dropdown*/
@@ -386,11 +376,13 @@ body {
 /*view current setup table*/
 
 .dash-spreadsheet-container .dash-spreadsheet-inner table {
-  --hover: #92e0d3 !important;
+  --accent: #92e0d3 !important;
+  --border: #1e2130 !important;
+  --selected-background: #1e2130 !important;
 }
 
-.dash-spreadsheet-container .dash-spreadsheet-inner :not(.cell--selected) tr:hover, .dash-spreadsheet-container tr:hover input :not(.cell--selected) {
-  background-color: var(--hover);
+.dash-spreadsheet-container .dash-spreadsheet-inner tr {
+  background-color: #1e2130 !important;
 }
 
 /* Dropdown
@@ -477,6 +469,8 @@ body {
 #value-setter-menu {
   flex: 1 1 30%;
   margin-left: 5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 #status-container {
@@ -492,9 +486,8 @@ body {
 #graphs-container {
   display: flex;
   flex-direction: column;
-  flex: 3.5 1;
-  background-color: #242633;
-  max-width: 100%;
+  flex: 3 1;
+  max-width: calc(75% - 0.8rem);
 }
 
 /* Tab 1 Quick stats
@@ -508,29 +501,34 @@ body {
 /* Tab 2 Quick stats
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #quick-stats {
-  background-color: #1d202d;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   border-right: #23262E solid 0.8rem;
   flex: 1 1;
-  padding: 5rem 2rem;
+  padding: 2rem;
+  max-width:25%;
 }
 
-#card-1 > div, .sc-kgoBCf.hPtaXg {
-  width: 25rem;
-  margin-left: -0.8rem;
+#operator-led {
+  width: 80%;
 }
 
-.sc-kgoBCf.hPtaXg {
+#operator-led > div {
+  width: 80%;
+  margin: auto;
+}
+
+#operator-led > div > div {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  padding: 12px 8px;
 }
 
-.sc-kgoBCf.hPtaXg svg:nth-child(1) {
+#operator-led > div > div svg:nth-child(1) {
   margin-left: -1rem;
 }
 
@@ -566,17 +564,13 @@ body {
   background-color: #1d202d !important;
 }
 
-#card-1 h5, #card-2 h5 {
+#card-1 P, #card-2 P {
   color: darkgray;
   font-weight: normal;
-  float: left;
+  align-self:flex-start;
 }
 
-#card-1 h5 {
-  margin-bottom: 2rem;
-}
-
-#card-2 h5 {
+#card-1 P, #card-2 P {
   margin-bottom: 2rem;
 }
 
@@ -605,7 +599,7 @@ body {
 }
 
 #metric-div {
-  padding: 2rem 3rem 2rem 2rem;
+  padding: 1rem 2rem;
 }
 
 .jjODsN {
@@ -619,7 +613,7 @@ body {
 #metric-rows {
   overflow-y: scroll;
   width: 100%;
-  height: 33rem;
+  height: 30rem;
 }
 
 /*
