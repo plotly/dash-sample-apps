@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css?family=Dosis');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 1.5em;
+  line-height: 1.6;
+  font-weight: 400;
+  font-family: Dosis, Raleway, HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+}
+
+input[type="radio"] {
+  display: inline;
+  margin: 0px 5px;
+}
+
+.left-panel, .right-panel {
+  padding: 0rem 2rem;
+}
+
+.oscope-info {
+  margin: 15px;
+}
+
+.right-panel .Title {
+  font-size: 38px;
+  margin-top: 15px;
+  border-bottom: 1px solid rgb(216, 216, 216);
+}
+
+
+.right-panel .Title h3 {
+  font-size: 1.75rem;
+  border-bottom: rgb(216, 216, 216);
+  margin-top: 3px;
+  margin-left: 10px;
+  margin-bottom: 3px;
+}
+
+.power-settings-tab .Title {
+  margin-top: 15px;
+  border-bottom: 1px solid rgb(216, 216, 216);
+}
+
+.power-settings-tab .Title h3 {
+  font-size: 1.75rem;
+  border-bottom: rgb(216, 216, 216);
+  margin-top: 3px;
+  margin-left: 10px;
+  margin-bottom: 3px;
+}
+
+.seven.right-panel > div:nth-child(2) > div > div {
+  text-transform: uppercase;
+  font-weight: 800;
+  color: initial;
+}
+
+._dash-undo-redo {
+  display: none
+}
+
+.graph-param {
+  text-align: center;
+  font-size: 16px;
+  padding: 0 5px;
+  line-height: 20px;
+}
+
+.oscillator-tabs {
+  height: 80%;
+}
+
+.banner {
+  background-color: #6682C0;
+}
+
+.banner h2{
+  color: white;
+  display: inline-block;
+  text-align: center;
+  margin-left: 20px;
+}
+
+.banner h6{
+  display: none;
+}
+
+#color-picker > div {
+  background-color: inherit !important;
+}
+
+.logo{
+  position: relative;
+  float: right;
+  height: 75px;
+  padding: 3px;
+}
+
+.toggleDiv{
+  width: fit-content;
+  margin-left: 51%;
+}
+
+#toggleTheme{
+  transform: translate(-50%, 20%);
+  z-index: 9999;
+}
+
+#function-type{
+  display: flex;
+  width: 80%;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.knobs, .led-displays{
+  margin-left: 20%;
+  text-align: center;
+}
+
+.radio-items{
+  display: flex;
+  width: 80%;
+  align-items: center;
+  justify-content: space-between;
+  margin: 30px auto 0px auto;
+}
+
+@media only screen and (max-width: 966px){
+  .logo{
+    float: left;
+  }
+  .banner h2{
+    display: none;
+  }
+  .banner h6{
+    display: block;
+    float: left;
+    color: white;
+    display: block;
+    text-align: center;
+    margin-left: 10px;
+  }
+}
+
+@media only screen and (max-width: 768px){
+  .six.columns {
+    width: 48%;
+  }
+
+  .four.columns{
+    width: 30%;
+  }
+
+  .five.columns, .seven.columns{
+    width: 100%
+  }
+
+  .left-panel, .right-panel{
+    width: 100%;
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 550px){
+  .knobs, .led-displays{
+    display: flex;
+    width: 80%;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 18%;
+
+  }
+  .four.columns{
+    margin: 0;
+  }
+}
