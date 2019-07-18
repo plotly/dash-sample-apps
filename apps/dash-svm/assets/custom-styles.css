@@ -18,48 +18,6 @@
     max-width: none;
 }
 
-@media (max-width: 1300px) {
-
-    .banner .container.scalable {
-        display: flex;
-        flex-direction: column-reverse;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .banner h2 {
-        font-size: 4rem;
-    }
-
-    .banner Img {
-        height: 8rem;
-        margin-bottom: 5rem;
-    }
-}
-
-@media (max-width: 700px) {
-    .banner .container.scalable {
-        padding: 0
-    }
-
-    .banner Img {
-        height: 4rem;
-        margin-bottom: 2rem;
-    }
-
-    .banner h2 {
-        font-size: 3rem;
-    }
-}
-
-@media (max-width: 700px) {
-    #first-card {
-        margin: 0;
-        padding-right: 0;
-        padding-left: 0;
-    }
-}
-
 /* Banner
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .banner {
@@ -88,6 +46,55 @@
     float: right;
     height: 5rem;
     margin-top: 1.25rem
+}
+
+@media (max-width: 1300px) {
+
+    .banner .container.scalable {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .banner h2 {
+        font-size: 4rem;
+    }
+
+    .banner Img {
+        height: 8rem;
+        margin-bottom: 3rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .banner .container.scalable {
+        padding: 0
+    }
+
+    .banner Img {
+        height: 4rem;
+        margin-bottom: 2rem;
+    }
+
+    .banner h2 {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .banner{
+        padding: 1rem 0;
+        margin-bottom: 1rem;
+    }
+    .banner Img {
+        height: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .banner h2 {
+        font-size: 2.5rem;
+    }
 }
 
 /* app-container
@@ -179,6 +186,8 @@
     }
 }
 
+
+
 @media (max-width: 650px) {
     .rc-slider-mark-text {
         font-size: 2vw;
@@ -240,6 +249,13 @@
     }
 }
 
+@media (max-width: 700px) {
+    #first-card {
+        margin: 0;
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
 /* Slider
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
