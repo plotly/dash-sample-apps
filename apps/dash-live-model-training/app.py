@@ -172,7 +172,7 @@ app.layout = html.Div(
                                                         "value": "fashion",
                                                     },
                                                 ],
-                                                value='mnist',
+                                                value="mnist",
                                                 placeholder="Select a demo dataset",
                                                 searchable=False,
                                             ),
