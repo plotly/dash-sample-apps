@@ -131,6 +131,10 @@ app.layout = html.Div(
     children=[
         html.Div(
             [
+                html.Img(
+                    src=app.get_asset_url("dash-logo.png"),
+                    className='plotly-logo'
+                ),
                 html.H1(children="Stitching App"),
                 instructions(),
                 html.Div(
