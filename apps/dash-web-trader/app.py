@@ -17,12 +17,12 @@ from dash.dependencies import Input, Output, State
 from plotly import tools
 
 
-server = flask.Flask(__name__)
 app = dash.Dash(
     __name__,
-    server=server,
     meta_tags=[{"name": "viewport", "content": "width=device-width"}],
 )
+
+server = app.server
 
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
