@@ -1,3 +1,5 @@
+Issue for app: #[issue number here]
+
 # App pull request
 - [ ] This is a new app
 - [ ] I am improving an existing app (redesigns/code "makeovers")
@@ -6,7 +8,6 @@
 
 - Playground deployment URL (new version):
 - Current gallery app URL: (delete this line if inapplicable)
-- Streambed issue card with link to redesign mockup:
 - Python app repository link: (delete this line if you are working on a Python app)
 
 ## Workflow
@@ -16,9 +17,13 @@
 - [ ] If the app is a redesigned and/or restyled version of an
   existing gallery app, I've summarized the changes requested in the
   appropriate Streambed issue and confirm that they have been applied.
+- [ ] If the app is on the Dash Gallery portal, I have added a link to
+  the GitHub repository for the source code in the portal description.
 - [ ] If the app is a reimplementation of a Python gallery app for the
   DashR gallery, the app in this PR mimics, as closely as possible,
-  the style and functionality of the existing app.
+  the style and functionality of the existing app.=
+- [ ] I have removed *all Google Analytics code* from the app's
+  `assets/` folder.
 
 ## The pre-review review
 
