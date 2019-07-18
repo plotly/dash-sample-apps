@@ -1217,10 +1217,7 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.Div(
-                            [html.P(lorem.paragraph() * 3)],
-                            className="page-6",
-                        ),
+                        html.Div([html.P(lorem.paragraph() * 3)], className="page-6"),
                         html.Div(
                             [
                                 html.Strong(
