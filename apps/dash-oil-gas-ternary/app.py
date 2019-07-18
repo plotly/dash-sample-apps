@@ -11,7 +11,8 @@ import dash_html_components as html
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
 
-constants = importlib.import_module("apps.dash-oil-gas-ternary.constants")
+# constants = importlib.import_module("apps.dash-oil-gas-ternary.constants")
+import constants
 
 # app initialize
 app = dash.Dash(
@@ -56,6 +57,11 @@ def build_graph_title(title):
 
 
 def generate_production_plot(processed_data):
+    """
+    :param processed_data: List containing two lists, one containing well ID information, and the second containing
+    rock formation type associated with the well
+    :return: Figure object
+    """
     layout = dict(
         xaxis=dict(title="Year"), yaxis=dict(title="GAS Production (mcf)", type="log")
     )
