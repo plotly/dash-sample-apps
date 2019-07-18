@@ -1,0 +1,6 @@
+dash==1.0.0
+plotly
+gunicorn
+pg8000
+pandas
+sqlalchemy

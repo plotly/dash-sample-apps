@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath apps/dash-sql-editor --preload app:server --workers 2

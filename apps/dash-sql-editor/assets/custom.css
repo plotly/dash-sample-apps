@@ -1,0 +1,95 @@
+body {
+    background-color: #212B36;
+    font-family: monospace !important;
+    color: #50B83C !important;
+}
+
+h4,
+h5 {
+    color: #50B83C;
+    font-weight: bold;
+}
+
+pre {
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+code {
+    background-color:#111111 !important;
+    color: white !important;
+    border-radius: 0.5rem;
+    padding: 15px !important;
+}
+
+.sql__textarea:focus,
+.sql__textarea {
+    background-color: #111111;
+    border: 1px solid #50B83C;
+    border-radius: 0.5rem;
+    color: #50B83C;
+    font-size: 1.6em;
+    width: 100%;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    resize: none; 
+    margin-bottom: 25px;
+    padding: 15px;
+    min-height: 250px !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.btn--group {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sql__button {
+    background-color: #50B83C;
+    border: 1px solid #50B83C;
+    color: white;
+    float: right;
+    margin-right: 15px;
+}
+.sql__button--red {
+    background-color: #BF0711;
+    border: 1px solid #BF0711;
+    color: white;
+    float: right;
+}
+
+.sql__button--red:hover {
+    opacity: 0.5;
+    border: 1px solid #BF0711;
+}
+.sql__button:hover {
+    opacity: 0.5;
+    border: 1px solid #50B83C;
+}
+
+.sql__pre {
+    color: #F4F6F8;
+    font-size: 1.2em;
+    border-left: 1px solid white;
+    padding: 6px 10px;
+}
+
+.mt-2 {
+    padding-top: 20px;
+}
+
+.right__section {
+    background-color: #001429;
+}
+
+.sql__history__pre {
+    font-size: 14px;
+    color: #50B83C;
+    margin-bottom: 50px;
+}
