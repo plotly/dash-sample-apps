@@ -1,4 +1,4 @@
-## Getting Started with the Demo
+## Getting Started With the Demo
 
 The purpose of this demo is to show what can be done with the Viewer. Therefore, the trainings shown above are displayed using pre-generated data. To try with your own data, please visit the [project repo](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-live-model-training).
 
