@@ -50,7 +50,7 @@ def generate_data(n_samples, dataset, noise):
 
     else:
         raise ValueError(
-            "Data type incorrectly specified. Please choose an existing " "dataset."
+            "Data type incorrectly specified. Please choose an existing dataset."
         )
 
 
@@ -266,7 +266,12 @@ app.layout = html.Div(
                         html.Div(
                             id="div-graphs",
                             children=dcc.Graph(
-                                id="graph-sklearn-svm", style={"display": "none"}
+                                id="graph-sklearn-svm",
+                                figure=dict(
+                                    layout=dict(
+                                        plot_bgcolor="#282b38", paper_bgcolor="#282b38"
+                                    )
+                                ),
                             ),
                         ),
                     ],
@@ -417,16 +422,12 @@ def update_svm_graph(
         model=clf, X_test=X_test, y_test=y_test, Z=Z, threshold=threshold
     )
 
-    print(f"Total Time Taken: {time.time() - t_start:.3f} sec")
-
     return [
         html.Div(
-            # className="six columns",
             id="svm-graph-container",
             children=[dcc.Graph(id="graph-sklearn-svm", figure=prediction_figure)],
         ),
         html.Div(
-            # className="three columns",
             id="graphs-container",
             children=[
                 dcc.Graph(id="graph-line-roc-curve", figure=roc_figure),
