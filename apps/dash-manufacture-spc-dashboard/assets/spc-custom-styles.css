@@ -409,7 +409,7 @@ body {
 
 /*Placeholder*/
 .Select--single > .Select-control .Select-value, .Select-placeholder {
-  border: 1px solid darkgray;
+  /*border: 1px solid darkgray;*/
   border-radius: 4px;
   background-color: #242633;
   cursor: pointer;
@@ -603,13 +603,84 @@ body {
 /*
   ##Device = Most of the Smartphones Mobiles / ipad (Portrait)
   */
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 550px) {
+
+  body {
+    font-size: 1.3rem;
+  }
+
+  #big-app-container {
+    padding: 1rem;
+  }
+
+  .banner {
+    height: 5rem;
+    padding: 0 0.5rem;
+  }
+
+  .banner h5, .banner h6 {
+    font-size: 1.4rem;
+    letter-spacing: -0.1rem;
+    line-height: 1;
+  }
+
+  .banner h6 {
+    font-size: 1.3rem;
+  }
+
   #banner-logo button {
     display: none;
   }
 
+  .banner Img {
+    height: 2rem;
+  }
 
+  #app-container {
+    height:auto;
+  }
 
+  #set-specs-intro-container {
+    margin: 4rem 2rem;
+    font-size:inherit;
+  }
+
+  #settings-menu {
+    margin:4rem 2rem;
+    flex-direction:column;
+  }
+
+  #settings-menu > div {
+    width:100%;
+    flex:none;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    flex-basis:auto;
+  }
+
+  #value-setter-panel-header {
+    display:none;
+  }
+
+  #button-div{
+    display:block;
+    text-align:center;
+  }
+
+  #button-div button {
+    margin: 1rem auto;
+    display:block;
+  }
+
+  .output-datatable {
+    align-self:center;
+    margin: 2rem;
+  }
+
+  .dash-spreadsheet-container .dash-spreadsheet-inner td, .dash-spreadsheet-container .dash-spreadsheet-inner th {
+    padding: 0px 2px !important;
+  }
 
 
 }
