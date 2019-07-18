@@ -115,7 +115,7 @@ def instructions():
     - If automatic stitching did not work, adjust the overlap parameter
     """
         ],
-        style={"margin-top": "-20px", "margin-bottom": "20px"},
+        className="instructions-sidebar",
     )
 
 
@@ -132,8 +132,7 @@ app.layout = html.Div(
         html.Div(
             [
                 html.Img(
-                    src=app.get_asset_url("dash-logo.png"),
-                    className='plotly-logo'
+                    src=app.get_asset_url("dash-logo.png"), className="plotly-logo"
                 ),
                 html.H1(children="Stitching App"),
                 instructions(),
@@ -361,7 +360,6 @@ def estimate_translation(string):
 
 @app.callback(Output("memory-stitch", "data"), [Input("button-stitch", "n_clicks")])
 def update_store(click):
-
     return click
 
 
