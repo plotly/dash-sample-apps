@@ -419,7 +419,7 @@ def generate_graph(cur_inputs, theme_value, tab_index: str):
                 range=[-10, 10],
                 titlefont=dict(family="Dosis", size=13),
             ),
-            margin={"l": 40, "b": 40, "t": 20, "r": 50},
+            margin={"l": 0, "b": 40, "t": 20, "r": 50},
             plot_bgcolor="rgba(0,0,0,0)",
             paper_bgcolor="rgba(0,0,0,0)",
         ),
