@@ -68,7 +68,7 @@ def build_banner():
 def build_tabs():
     return html.Div(
         id="tabs",
-        className="row container scalable",
+        className="tabs",
         children=[
             dcc.Tabs(
                 id="app-tabs",
@@ -441,8 +441,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                     :stopped_interval
-                                     ],
+                                    :stopped_interval
+                                ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
@@ -501,7 +501,7 @@ def generate_metric_row(id, style, col1, col2, col3, col4, col5, col6):
             html.Div(
                 id=col1["id"],
                 className="one column",
-                style={"margin-right": "2.5rem"},
+                style={"margin-right": "2.5rem", "minWidth": "50px"},
                 children=col1["children"],
             ),
             html.Div(
@@ -635,6 +635,7 @@ def generate_graph(interval, specs_dict, col):
     len_figure = len(fig["data"][0]["x"])
 
     fig["layout"] = dict(
+        margin=dict(t=40),
         hovermode="closest",
         uirevision=col,
         paper_bgcolor="rgba(0,0,0,0)",
