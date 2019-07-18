@@ -35,7 +35,7 @@ body {
 }
 
 .banner {
-  height: 6rem;
+  height: fit-content;
   background-color: #1e2130;
   display: flex;
   flex-direction: row;
@@ -153,7 +153,7 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  height:18px;
+  height: 18px;
 }
 
 #Specs-tab.custom-tab--selected, #Control-chart-tab.custom-tab--selected {
@@ -181,7 +181,7 @@ body {
 
 #metric_header > div {
   font-weight: bold;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   line-height: 3rem;
 }
 
@@ -189,22 +189,16 @@ body {
   margin-top: 0rem !important;
 }
 
-#Diameter_button,
-#Etch1_button,
-#Film-Thickness_button,
-#Etch2_button,
-#Line-Width_button,
-#Overlay_button,
-#Volume_button {
-  padding: 0px 0px;
-  color: #95969A;
-}
-
 .metric-row {
+  font-size: 1.3rem;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  align-items:center; /* vertical center row items*/
+  align-items: center; /* vertical center row items*/
+}
+
+.metric-row:hover {
+  background-color: #0F1328;
 }
 
 /*Dash Daq Graduatebar */
@@ -459,7 +453,7 @@ body {
 
 #status-container {
   width: 100%;
-  max-width:100%;
+  max-width: 100%;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -510,14 +504,24 @@ body {
   margin-left: -1rem;
 }
 
+#progress-gauge > div, #progress-gauge > div > div, #progress-gauge > div > div > div {
+  width: 100%;
+  text-align: center;
+}
+
+#progress-gauge svg {
+  width: 80%;
+  height: auto;
+}
+
 #progress-gauge > div > div > div > div {
   color: white !important;
-  margin-top: -25rem;
 }
 
 /*pressure-gauge track*/
 .eUJyCY .track {
   stroke: #f4d44d !important;
+  stroke-width: 10;
 }
 
 .eUJyCY .track.progress {
@@ -530,9 +534,9 @@ body {
   color: white !important;
   background-color: #1d202d !important;
   border: darkgray solid 1px !important;
-  border-radius:4px;
-  height:40px;
-  line-height:40px;
+  border-radius: 4px;
+  height: 40px;
+  line-height: 40px;
 }
 
 #stop-button > div > button:hover {
@@ -548,7 +552,9 @@ body {
 }
 
 #card-1 P, #card-2 P {
-  margin-bottom: 2rem;
+  margin: 2rem;
+  font-weight: bold;
+  color: inherit;
 }
 
 #card-2 .scale, #card-2 .needle, #card-2 .needle-knob {
@@ -559,20 +565,15 @@ body {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .metric-row-button {
   border: none;
-  color: darkgray;
+  padding: 0px 0px;
+  color: #95969A;
+  font-size: 1rem;
+  letter-spacing: 0.02rem;
 }
 
 .metric-row-button:hover {
   border: none;
   color: white !important;
-}
-
-.metric-row-button-text {
-  margin-top: -0.25rem;
-}
-
-#metric-rows button {
-  margin-top: -8rem;
 }
 
 #metric-div {
@@ -603,7 +604,7 @@ body {
 /*
   ##Device = Most of the Smartphones Mobiles / ipad (Portrait)
   */
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 950px) {
 
   body {
     font-size: 1.3rem;
@@ -614,14 +615,16 @@ body {
   }
 
   .banner {
-    height: 5rem;
-    padding: 0 0.5rem;
+    flex-direction: column-reverse;
+    padding: 1rem 0.5rem;
   }
 
-  .banner h5, .banner h6 {
+  #banner-text {
+    text-align: center;
+  }
+
+  .banner h5 {
     font-size: 1.4rem;
-    letter-spacing: -0.1rem;
-    line-height: 1;
   }
 
   .banner h6 {
@@ -633,53 +636,78 @@ body {
   }
 
   .banner Img {
-    height: 2rem;
+    height: 3rem;
+    margin: 1rem;
   }
 
   #app-container {
-    height:auto;
+    height: auto;
   }
 
   #set-specs-intro-container {
     margin: 4rem 2rem;
-    font-size:inherit;
+    font-size: inherit;
   }
 
   #settings-menu {
-    margin:4rem 2rem;
-    flex-direction:column;
+    margin: 4rem 2rem;
+    flex-direction: column;
   }
 
   #settings-menu > div {
-    width:100%;
-    flex:none;
-    margin:0;
-    display:flex;
-    flex-direction:column;
-    flex-basis:auto;
+    width: 100%;
+    flex: none;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    flex-basis: auto;
   }
 
   #value-setter-panel-header {
-    display:none;
+    display: none;
   }
 
-  #button-div{
-    display:block;
-    text-align:center;
+  #button-div {
+    display: block;
+    text-align: center;
   }
 
   #button-div button {
     margin: 1rem auto;
-    display:block;
+    display: block;
   }
 
   .output-datatable {
-    align-self:center;
+    align-self: center;
     margin: 2rem;
   }
 
   .dash-spreadsheet-container .dash-spreadsheet-inner td, .dash-spreadsheet-container .dash-spreadsheet-inner th {
-    padding: 0px 2px !important;
+    padding: 0px 5px !important;
+  }
+
+  #status-container, #top-section-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  #quick-stats {
+    max-width: 100%;
+  }
+
+  #graphs-container {
+    flex: 1;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  #top-section-container > div {
+    width: 100%;
+    height: auto;
+  }
+
+  #card-1 P, #card-2 P {
+    align-self: auto;
   }
 
 
