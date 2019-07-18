@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath apps/dash-daq-tektronix350/app_mock:server --timeout 300
+web: gunicorn --pythonpath apps/dash-daq-tektronix350 app_mock:server

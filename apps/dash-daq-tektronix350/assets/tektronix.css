@@ -40,7 +40,6 @@ input[type="radio"] {
   font-size: 1.75rem;
   border-bottom: rgb(216, 216, 216);
   margin-top: 3px;
-  margin-left: 10px;
   margin-bottom: 3px;
 }
 
@@ -104,12 +103,17 @@ input[type="radio"] {
   padding: 3px;
 }
 
+.div-power-buttons{
+  margin: 15px 0;
+}
+
 .toggleDiv{
   width: fit-content;
   margin-left: 51%;
 }
 
 #toggleTheme{
+  position: relative;
   transform: translate(-50%, 20%);
   z-index: 9999;
 }
@@ -169,6 +173,10 @@ input[type="radio"] {
     width: 100%;
     padding: 0;
   }
+
+  .right-panel, .seven.columns{
+    margin-left: 0px;
+  }
 }
 
 @media only screen and (max-width: 550px){
@@ -183,4 +191,5 @@ input[type="radio"] {
   .four.columns{
     margin: 0;
   }
+
 }
