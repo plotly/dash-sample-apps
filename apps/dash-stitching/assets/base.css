@@ -160,6 +160,11 @@ body {
   background-color: white;
 }
 
+.plotly-logo {
+  width: 40%;
+  margin-left: 9%;
+  margin-top: 70px;
+}
 
 
 /* Typography
@@ -171,7 +176,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 9%;
 }
 
-h1 { font-size: 3.2rem; line-height: 1.2;  letter-spacing: -.1rem; margin-bottom: 2rem; color:#407DFA; margin-top: 55px;}
+h1 { font-size: 3.2rem; line-height: 1.2;  letter-spacing: -.1rem; margin-bottom: 2rem; color:#407DFA;}
 h2 { font-size: 2.9rem; line-height: 1.25; letter-spacing: -.1rem; margin-bottom: 1.8rem; color:rgb(214, 219, 233); margin-top: 1.8rem;}
 h3 { font-size: 2.8rem; line-height: 1.3;  letter-spacing: -.1rem; margin-bottom: 1.5rem; margin-top: 1.5rem;}
 h4 { font-size: 2.6rem; line-height: 1.35; letter-spacing: -.08rem; margin-bottom: 1.2rem; margin-top: 1.2rem;}
@@ -748,10 +753,17 @@ there.
     margin: 0 auto;
   }
 
+  .plotly-logo {
+    width: 40%;
+    margin: 0 auto;
+    margin-top: 40px;
+  }
+
+
   h1 {
     font-size: 5.5rem;
     margin-bottom: 2rem;
-    margin-top: 60px;
+    margin-top: 20px;
   }
 
   p {
