@@ -453,10 +453,16 @@ def generate_metric_row_helper(stopped_interval, index):
                             "uirevision": True,
                             "margin": dict(l=0, r=0, t=4, b=4, pad=0),
                             "xaxis": dict(
-                                showline=False, showgrid=False, zeroline=False, showticklabels=False
+                                showline=False,
+                                showgrid=False,
+                                zeroline=False,
+                                showticklabels=False,
                             ),
                             "yaxis": dict(
-                                showline=False, showgrid=False, zeroline=False, showticklabels=False
+                                showline=False,
+                                showgrid=False,
+                                zeroline=False,
+                                showticklabels=False,
                             ),
                             "paper_bgcolor": "rgba(0,0,0,0)",
                             "plot_bgcolor": "rgba(0,0,0,0)",

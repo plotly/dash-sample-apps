@@ -710,5 +710,18 @@ body {
     align-self: auto;
   }
 
+  /*Removing borders}*/
+  #ooc-piechart-outer {
+    border-left:none;
+  }
+  #quick-stats {
+    border-right:none;
+  }
+
+}
+
+@media only screen and (max-width: 550px) {
+  /* Display measurement rows scrollable on mobile*/
+
 
 }
