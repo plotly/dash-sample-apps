@@ -9,7 +9,7 @@ Dash abstracts away all of the technologies and protocols required to build an i
 
 Try out the [demo app here](https://dash-gallery.plotly.host/dash-live-model-training/).
 
-![animated1](images/animated1.gif)
+![animated1](images/animated.gif)
 
 ## Getting Started
 
