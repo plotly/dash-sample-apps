@@ -443,8 +443,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                     :stopped_interval
-                                     ],
+                                    :stopped_interval
+                                ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
@@ -492,7 +492,9 @@ def generate_metric_row_helper(stopped_interval, index):
         },
         {
             "id": item + "_pf",
-            "children": daq.Indicator(id=indicator_id, value=True, color="#91dfd2", size=12),
+            "children": daq.Indicator(
+                id=indicator_id, value=True, color="#91dfd2", size=12
+            ),
         },
     )
 
@@ -648,7 +650,7 @@ def generate_graph(interval, specs_dict, col):
         uirevision=col,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        legend={"font": {"color": "darkgray"}, "orientation": 'h', "x": 0, "y": 1.1},
+        legend={"font": {"color": "darkgray"}, "orientation": "h", "x": 0, "y": 1.1},
         font={"color": "darkgray"},
         showlegend=True,
         xaxis={
@@ -1056,22 +1058,22 @@ def show_current_specs(n_clicks, dd_select, store_data):
             style_as_list_view=True,
             fill_width=True,
             style_cell_conditional=[
-                {
-                    "if": {"column_id": "Specs"},
-                    "textAlign": "left"
-                }
+                {"if": {"column_id": "Specs"}, "textAlign": "left"}
             ],
             style_cell={
                 "backgroundColor": "#1e2130",
                 "fontFamily": "Open Sans",
                 "padding": "0 2rem",
                 "color": "darkgray",
-                "border": 'none'
+                "border": "none",
             },
             css=[
-                {'selector': "tr:hover td", 'rule': 'color: #91dfd2 !important;'},
-                {'selector': '.dash-cell.focused', 'rule': 'background-color: #1e2130 !important;'},
-                {'selector': 'table', 'rule': '--accent: #1e2130;'}
+                {"selector": "tr:hover td", "rule": "color: #91dfd2 !important;"},
+                {
+                    "selector": ".dash-cell.focused",
+                    "rule": "background-color: #1e2130 !important;",
+                },
+                {"selector": "table", "rule": "--accent: #1e2130;"},
             ],
             data=new_df.to_dict("rows"),
             columns=[{"id": c, "name": c} for c in ["Specs", "Current Setup"]],
