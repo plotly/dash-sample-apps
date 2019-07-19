@@ -437,14 +437,12 @@ def update_svm_graph(
                 dcc.Loading(
                     className="graph-wrapper",
                     children=dcc.Graph(id="graph-line-roc-curve", figure=roc_figure),
-                    style={"display": "none"},
                 ),
                 dcc.Loading(
                     className="graph-wrapper",
                     children=dcc.Graph(
                         id="graph-pie-confusion-matrix", figure=confusion_figure
                     ),
-                    style={"display": "none"},
                 ),
             ],
         ),
