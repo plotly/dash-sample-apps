@@ -54,5 +54,7 @@ This Dash app adapts the excellent [NY Times report A 3-D View of a Chart That P
 The following are screenshots for the app in this repo:
 
 ![screenshot](screenshots/screenshot1.png)
+
 ![screenshot](screenshots/screenshot2.png)
+
 ![animated](screenshots/dash-yield-curve-demo.gif)
