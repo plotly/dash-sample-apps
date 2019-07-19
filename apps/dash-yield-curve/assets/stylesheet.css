@@ -527,10 +527,13 @@ on small devices, paste the mobile query code up in the buttons section and styl
 there.
 */
 
-/* Larger than mobile */
+/* for screen sizes smaller than 450px */
 @media (max-width: 450px) {
+  h3 {
+    font-size: 2.3rem !important;
+  }
   .title {
-    font-size: 1.3rem !important;
+    padding: 0 15px;
   }
   .timeline-slider {
     padding: 15px 50px !important;
@@ -538,20 +541,17 @@ there.
   .text-box {
     margin: 30px 20px;
   }
+  .plotly-logo {
+    height: 40px;
+    padding: 10px;
+  }
   #text {
     padding: 15px;
-    margin-left: 25px;
+    margin-left: 15px;
   }
 }
 
-/* Larger than phablet (also point when grid becomes active) */
-@media (max-width: 750px) {
-  .title {
-    font-size: 2.6rem !important;
-  }
-}
-
-/* Larger than tablet */
+/* for screen sizes smaller than 900px */
 @media (max-width: 900px) {
   .flex-display {
     display: block;
