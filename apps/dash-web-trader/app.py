@@ -17,12 +17,11 @@ from dash.dependencies import Input, Output, State
 from plotly import tools
 
 
-server = flask.Flask(__name__)
 app = dash.Dash(
-    __name__,
-    server=server,
-    meta_tags=[{"name": "viewport", "content": "width=device-width"}],
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
+
+server = app.server
 
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
@@ -796,7 +795,7 @@ app.layout = html.Div(
                     className="div-info",
                     children=[
                         html.Img(
-                            className="logo", src=app.get_asset_url("dash-logo.png")
+                            className="logo", src=app.get_asset_url("dash-logo-new.png")
                         ),
                         html.H6(className="title-header", children="FOREX TRADER"),
                         html.P(
