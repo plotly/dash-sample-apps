@@ -12,6 +12,7 @@ app = dash.Dash(
 )
 server = app.server
 
+
 def generate_elements(tree, xlen=30, ylen=30, grabbable=False):
     def get_col_positions(tree, column_width=80):
         """Create a mapping of each clade to its column position."""
@@ -162,26 +163,22 @@ stylesheet = [
 ]
 
 app.layout = html.Div(
-    [            
-        html.Img(
-            className="logo",
-            src=app.get_asset_url("dash-logo.png")
-        ),
+    [
+        html.Img(className="logo", src=app.get_asset_url("dash-logo.png")),
         html.Div(
             className="header",
             children=[
                 html.Div(
                     className="div-info",
                     children=[
-                        html.H2(
-                            className="title",
-                            children="Cytoscape Phylogeny"
-                        ),
-                        html.P("""
+                        html.H2(className="title", children="Cytoscape Phylogeny"),
+                        html.P(
+                            """
                             Dash Cytoscape is a graph visualization component for creating easily customizable, high-perform
                             interactive, and web-based networks. 
-                            """),
-                    ]
+                            """
+                        ),
+                    ],
                 ),
                 html.H4("Phylogeny"),
                 cyto.Cytoscape(
@@ -190,15 +187,14 @@ app.layout = html.Div(
                     stylesheet=stylesheet,
                     layout={"name": "preset"},
                     style={
-                        "height": "650px", 
+                        "height": "650px",
                         "width": "100%",
-                        "backgroundColor":"white",
-                        "margin":"auto"
+                        "backgroundColor": "white",
+                        "margin": "auto",
                     },
-                )
-            ]
+                ),
+            ],
         ),
-
     ]
 )
 
