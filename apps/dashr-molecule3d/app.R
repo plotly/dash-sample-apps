@@ -739,7 +739,6 @@ app$callback(
       content_string <- unlist(strsplit(contents, ","))[2]
       decoded <- jsonlite::base64_dec(content_string)
       pdbData <- get_pdb(rawToChar(decoded))
-      browser()
     } else return('demostr and contents are none')
 
     atom_data <- pdbData$atom
