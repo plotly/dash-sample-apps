@@ -441,8 +441,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                    :stopped_interval
-                                ],
+                                     :stopped_interval
+                                     ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
@@ -490,7 +490,7 @@ def generate_metric_row_helper(stopped_interval, index):
         },
         {
             "id": item + "_pf",
-            "children": daq.Indicator(id=indicator_id, value=True, color="#91dfd2"),
+            "children": daq.Indicator(id=indicator_id, value=True, color="#91dfd2", size=12),
         },
     )
 
@@ -646,7 +646,7 @@ def generate_graph(interval, specs_dict, col):
         uirevision=col,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        legend={"font": {"color": "darkgray"}},
+        legend={"font": {"color": "darkgray"}, "orientation": 'h', "x": 0, "y": 1.1},
         font={"color": "darkgray"},
         showlegend=True,
         xaxis={
@@ -765,7 +765,7 @@ def generate_graph(interval, specs_dict, col):
             },
         ],
         xaxis2={
-            "title": "count",
+            "title": "Count",
             "domain": [0.8, 1],  # 70 to 100 % of width
             "titlefont": {"color": "darkgray"},
             "showgrid": False,
@@ -1050,28 +1050,28 @@ def show_current_specs(n_clicks, dd_select, store_data):
         }
         new_df = pd.DataFrame.from_dict(new_df_dict)
         return dash_table.DataTable(
-            style_header={"fontWeight": "bold"},
+            style_header={"fontWeight": "bold", "color": "inherit"},
             style_as_list_view=True,
+            fill_width = True,
             style_cell_conditional=[
                 {
                     "if": {"column_id": "Specs"},
-                    "textAlign": "left",
-                    "paddingRight": "10rem",
-                },
-                {"if": {"column_id": "Current Setup"}, "paddingLeft": "10rem"},
+                    "textAlign": "left"
+                }
             ],
             style_cell={
                 "backgroundColor": "#1e2130",
                 "fontFamily": "Open Sans",
                 "padding": "0 2rem",
                 "color": "darkgray",
-                "border-top": "#1e2130",
-                "border-bottom": "#1e2130",
-                "border-left": "#1e2130",
-                "border-right": "#1e2130",
+                "border": 'none'
             },
+            css=[
+                {'selector': "tr:hover td", 'rule': 'color: #91dfd2 !important;'},
+                {'selector': '.dash-cell.focused', 'rule': 'background-color: #1e2130 !important;'},
+                {'selector': 'table', 'rule': '--accent: #1e2130;'}
+            ],
             data=new_df.to_dict("rows"),
-            # css=[{'selector': 'tr:hover', 'rule': 'color: #92e0d3 !important;'}],  #tr hover rule doesn't apply for table1.0.0
             columns=[{"id": c, "name": c} for c in ["Specs", "Current Setup"]],
         )
 

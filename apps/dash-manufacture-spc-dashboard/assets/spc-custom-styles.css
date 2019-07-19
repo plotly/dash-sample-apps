@@ -326,6 +326,7 @@ body {
   margin: 2rem 0rem 2rem 2rem;
   line-height: 3;
   align-self: flex-end;
+  width: 80%;
 }
 
 /*Dropdown*/
@@ -352,17 +353,6 @@ body {
   border-color: white transparent transparent !important;
 }
 
-/*view current setup table*/
-
-.dash-spreadsheet-container .dash-spreadsheet-inner table {
-  --accent: #92e0d3 !important;
-  --border: #1e2130 !important;
-  --selected-background: #1e2130 !important;
-}
-
-.dash-spreadsheet-container .dash-spreadsheet-inner tr {
-  background-color: #1e2130 !important;
-}
 
 /* Dropdown
 ----------------------------------------------*/
@@ -577,15 +567,7 @@ body {
 }
 
 #metric-div {
-  padding: 1rem 2rem;
-}
-
-.jjODsN {
-  background-color: #91dfd2 !important;
-}
-
-.cvYEqW {
-  background-color: #f45060 !important;
+  padding: 1rem 2rem 1rem 1rem;
 }
 
 #metric-rows {
@@ -645,22 +627,22 @@ body {
   }
 
   #set-specs-intro-container {
-    margin: 4rem 2rem;
+    margin: 4rem 2rem 0rem 2rem;
     font-size: inherit;
   }
 
   #settings-menu {
-    margin: 4rem 2rem;
+    margin: 2rem;
     flex-direction: column;
   }
 
   #settings-menu > div {
     width: 100%;
     flex: none;
-    margin: 0;
     display: flex;
     flex-direction: column;
     flex-basis: auto;
+    margin: 2rem 0rem;
   }
 
   #value-setter-panel-header {
@@ -680,10 +662,6 @@ body {
   .output-datatable {
     align-self: center;
     margin: 2rem;
-  }
-
-  .dash-spreadsheet-container .dash-spreadsheet-inner td, .dash-spreadsheet-container .dash-spreadsheet-inner th {
-    padding: 0px 5px !important;
   }
 
   #status-container, #top-section-container {
@@ -712,16 +690,102 @@ body {
 
   /*Removing borders}*/
   #ooc-piechart-outer {
-    border-left:none;
+    border-left: none;
   }
+
   #quick-stats {
-    border-right:none;
+    border-right: none;
   }
 
 }
 
-@media only screen and (max-width: 550px) {
-  /* Display measurement rows scrollable on mobile*/
+@media only screen and (max-width: 600px) {
+  /* Display measurement row contents block-level on mobile*/
+  /** Display every row content in block*!*/
+  #metric_header {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  #metric-rows {
+    height: fit-content;
+  }
+
+  #value-setter-panel {
+    line-height: 2.5;
+  }
 
 
+  .metric-row {
+    flex-direction: column;
+    height: fit-content !important;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-top: 1px solid #23262E;
+    border-bottom: 1px solid #23262E;
+  }
+
+  #metric-rows .column, #metric-rows .columns {
+    width: 100% !important;
+    float: none;
+    margin: 0.25rem 0 !important;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  #metric-rows .column:before, #metric-rows .columns:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+
+  /** Attach header vertically to table */
+  .metric-row > div {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+
+  /*Hide Sparkline*/
+  .metric-row > div:nth-of-type(3) {
+    display: none;
+  }
+
+  .metric-row > div:nth-of-type(6) > div {
+    margin-top: 6.5px !important;
+  }
+
+  /*Add table header column*/
+  .metric-row > div:nth-of-type(1):before {
+    content: "Parameter";
+  }
+
+  .metric-row > div:nth-of-type(2):before {
+    content: "Total Measurement";
+  }
+
+  .metric-row > div:nth-of-type(3):before {
+    content: "   ";
+  }
+
+  .metric-row > div:nth-of-type(4):before {
+    content: "OOC %";
+  }
+
+  .metric-row > div:nth-of-type(5) {
+    margin-top: 0 !important;
+  }
+
+  .metric-row > div:nth-of-type(5):before {
+    content: "Out of Control";
+  }
+
+  .metric-row > div:nth-of-type(6):before {
+    content: "Pass / Fail";
+  }
 }
