@@ -716,7 +716,6 @@ body {
     line-height: 2.5;
   }
 
-
   .metric-row {
     flex-direction: column;
     height: fit-content !important;
@@ -787,5 +786,9 @@ body {
 
   .metric-row > div:nth-of-type(6):before {
     content: "Pass / Fail";
+  }
+
+  .output-datatable{
+    width:auto;
   }
 }

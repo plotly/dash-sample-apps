@@ -8,7 +8,6 @@ from dash.dependencies import Input, Output, State
 import dash_table
 import plotly.graph_objs as go
 import dash_daq as daq
-from textwrap import dedent
 
 import pandas as pd
 
@@ -251,19 +250,22 @@ def generate_modal():
                     html.Div(
                         className="markdown-text",
                         children=dcc.Markdown(
-                            children=dedent(
+                            children=(
                                 """
-                        **What is this mock app about?**
+                        ###### What is this mock app about?
 
                         'dash-manufacture-spc-dashboard` is a dashboard for monitoring read-time process quality along manufacture production line. 
 
-                        **What does this app shows**
+                        ###### What does this app shows
 
                         Click on buttons in `Parameter' column to visualize details of measurement trendlines on the bottom panel.
 
                         The Sparkline on top panel and Control chart on bottom panel show Shewhart process monitor using mock data. 
                         The trend is updated every other second to simulate real-time measurements. Data falling outside of six-sigma control limit are signals indicating 'Out of Control(OOC)', and will 
                         trigger alerts instantly for a detailed checkup. 
+                        
+                        Operators may stop measurement by clicking on 'Stop' button, and edit specification parameters by clicking specification tab.
+
                     """
                             )
                         ),
@@ -1052,7 +1054,7 @@ def show_current_specs(n_clicks, dd_select, store_data):
         return dash_table.DataTable(
             style_header={"fontWeight": "bold", "color": "inherit"},
             style_as_list_view=True,
-            fill_width = True,
+            fill_width=True,
             style_cell_conditional=[
                 {
                     "if": {"column_id": "Specs"},
@@ -1202,6 +1204,4 @@ def update_piechart(interval, stored_data):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(
-        debug=True, dev_tools_ui=False, dev_tools_hot_reload=False, port=8050
-    )
+    app.run_server(debug=True, port=8050)
