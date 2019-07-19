@@ -7,6 +7,10 @@ import pathlib
 
 from Bio import Phylo
 
+app = dash.Dash(
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+)
+server = app.server
 
 def generate_elements(tree, xlen=30, ylen=30, grabbable=False):
     def get_col_positions(tree, column_width=80):
@@ -125,7 +129,6 @@ tree = Phylo.read(DATA_PATH.joinpath("apaf.xml"), "phyloxml")
 nodes, edges = generate_elements(tree)
 elements = nodes + edges
 
-layout = {"name": "preset"}
 
 stylesheet = [
     {
@@ -158,19 +161,44 @@ stylesheet = [
     },
 ]
 
-# Start the app
-app = dash.Dash(__name__)
-server = app.server
-
 app.layout = html.Div(
-    [
-        cyto.Cytoscape(
-            id="cytoscape",
-            elements=elements,
-            stylesheet=stylesheet,
-            layout=layout,
-            style={"height": "95vh", "width": "100%"},
-        )
+    [            
+        html.Img(
+            className="logo",
+            src=app.get_asset_url("dash-logo.png")
+        ),
+        html.Div(
+            className="header",
+            children=[
+                html.Div(
+                    className="div-info",
+                    children=[
+                        html.H2(
+                            className="title",
+                            children="Cytoscape Phylogeny"
+                        ),
+                        html.P("""
+                            Dash Cytoscape is a graph visualization component for creating easily customizable, high-perform
+                            interactive, and web-based networks. 
+                            """),
+                    ]
+                ),
+                html.H4("Phylogeny"),
+                cyto.Cytoscape(
+                    id="cytoscape",
+                    elements=elements,
+                    stylesheet=stylesheet,
+                    layout={"name": "preset"},
+                    style={
+                        "height": "650px", 
+                        "width": "100%",
+                        "backgroundColor":"white",
+                        "margin":"auto"
+                    },
+                )
+            ]
+        ),
+
     ]
 )
 
@@ -188,7 +216,7 @@ def color_children(edgeData):
         val = edgeData["source"]
 
     children_style = [
-        {"selector": f'edge[source *= "{val}"]', "style": {"line-color": "blue"}}
+        {"selector": f'edge[source *= "{val}"]', "style": {"line-color": "#3ed6d2"}}
     ]
 
     return stylesheet + children_style
