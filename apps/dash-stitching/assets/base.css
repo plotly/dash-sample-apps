@@ -794,6 +794,12 @@ there.
   #demo-explanation>div>div>div>div>div>p:nth-child(8) {
     text-align: justify;
   }
+
+  .instructions-sidebar {
+    margin-top: -20px;
+    margin-bottom: 20px
+  }
+
   
 
   .button_instruction,
@@ -985,11 +991,7 @@ there.
     margin: 0 auto;
   }
 
-  #_dash-app-content>div>div.four.columns.instruction>p {
-    margin-top: 10px;
-    margin-bottom: -20px;
-
-  }
+  
 
   #_dash-app-content>div>div.four.columns.instruction>label {
     margin: 0 auto;
@@ -1093,4 +1095,49 @@ there.
 
 }
 
+@media (max-width: 500px) {
 
+  .instructions-sidebar {
+    margin-top: -20px;
+    margin-bottom: 20px
+  }
+
+}
+
+@media (max-width: 320px) {
+
+  .instructions-sidebar {
+    margin-top: -20px;
+    margin-bottom: 20px
+  }
+
+  input[type="email"],
+  input[type="number"],
+  input[type="search"],
+  input[type="text"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="password"],
+  textarea,
+  select {
+
+    margin-left: 9%;
+    height: 30px;
+    width: 70%;
+    box-sizing: border-box;
+    padding: 6px 10px;
+    /* The 6px vertically centers text on FF, ignored by Webkit */
+    background-color: transparent;
+    border: 1px solid #8898B2;
+    border-radius: 4px;
+    box-shadow: none;
+    box-sizing: border-box;
+    font-family: 'Geneva';
+    font-size: inherit;
+    color: #D1D1D1;
+
+  }
+
+
+
+}
