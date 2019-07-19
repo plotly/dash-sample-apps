@@ -425,13 +425,27 @@ def update_svm_graph(
     return [
         html.Div(
             id="svm-graph-container",
-            children=[dcc.Graph(id="graph-sklearn-svm", figure=prediction_figure)],
+            children=dcc.Loading(
+                className="graph-wrapper",
+                children=dcc.Graph(id="graph-sklearn-svm", figure=prediction_figure),
+                style={"display": "none"},
+            ),
         ),
         html.Div(
             id="graphs-container",
             children=[
-                dcc.Graph(id="graph-line-roc-curve", figure=roc_figure),
-                dcc.Graph(id="graph-pie-confusion-matrix", figure=confusion_figure),
+                dcc.Loading(
+                    className="graph-wrapper",
+                    children=dcc.Graph(id="graph-line-roc-curve", figure=roc_figure),
+                    style={"display": "none"},
+                ),
+                dcc.Loading(
+                    className="graph-wrapper",
+                    children=dcc.Graph(
+                        id="graph-pie-confusion-matrix", figure=confusion_figure
+                    ),
+                    style={"display": "none"},
+                ),
             ],
         ),
     ]
