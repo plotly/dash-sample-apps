@@ -858,6 +858,7 @@ there.
 
   .button_submit {
     margin: 0 auto;
+    width: 89.5%;
   }
 
   .mobile_buttons {
@@ -911,6 +912,17 @@ there.
     display: inherit;
     margin-left: 0;
     margin-bottom: 7px;
+  }
+
+  #react-entry-point>div>div.four.columns.instruction>label {
+    margin: 0 auto;
+    
+  }
+
+  #_dash-app-content>div>div.four.columns.instruction>label {
+    margin: 0 auto;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
   }
 
 
