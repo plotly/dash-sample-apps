@@ -17,7 +17,8 @@ body{
 
 .title{
     color: #1f1f1f;
-    font-weight: bold;
+    font-weight: 900;
+    font-size: 3.2em;
 }
 
 .logo{
@@ -41,5 +42,13 @@ h4{
 }
 
 .div-info{
+    padding-bottom: 14px;
     border-bottom: 1px solid #1f1f1f60
 }
+
+.button{
+    background-color: #3ed6d2;
+    color: white;
+    border: none;
+}
+

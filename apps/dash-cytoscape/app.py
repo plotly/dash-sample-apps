@@ -174,10 +174,17 @@ app.layout = html.Div(
                         html.H2(className="title", children="Cytoscape Phylogeny"),
                         html.P(
                             """
-                            Dash Cytoscape is a graph visualization component for creating easily customizable, high-perform
-                            interactive, and web-based networks. 
+                            Dash Cytoscape is a graph visualization component for creating easily customizable,
+                            high-performance interactive, and web-based networks. 
                             """
                         ),
+                        html.A(
+                            children=html.Button(
+                                "Learn More",
+                                className="button"
+                            ),
+                            href="https://dash.plot.ly/cytoscape"
+                        )
                     ],
                 ),
                 html.H4("Phylogeny"),
@@ -185,7 +192,14 @@ app.layout = html.Div(
                     id="cytoscape",
                     elements=elements,
                     stylesheet=stylesheet,
-                    layout={"name": "preset"},
+                    layout={
+                        "name": "preset",
+                        "fit":True,
+                        "animate":True,
+                        "boundingBox":{
+                            
+                        }
+                    },
                     style={
                         "height": "650px",
                         "width": "100%",
