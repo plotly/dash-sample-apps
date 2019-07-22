@@ -163,7 +163,7 @@ body {
 .plotly-logo {
   width: 40%;
   margin-left: 9%;
-  margin-top: 70px;
+  margin-top: 40px;
 }
 
 .instructions-sidebar {
@@ -177,7 +177,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   text-align: left;
   font-weight: 300;
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
   margin-left: 9%;
 }
 
@@ -190,7 +190,7 @@ h6 { font-size: 2.0rem; line-height: 1.6;  letter-spacing: 0; margin-bottom: 0.7
 
 p {
   margin-top: 0;
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
   white-space: pre-line;
   color: #8898B2;
   overflow-wrap: normal;
@@ -203,7 +203,7 @@ label {
   margin-top: 20px;
   margin-left: 9%;
   color:#407DFA;
-  font-family: 'Geneva'
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif"
 }
 
 .result {
@@ -214,7 +214,7 @@ label {
 .tabs {
   max-width: 550px;
   width: 100%;
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
 }
 
 .demo_container {
@@ -257,7 +257,7 @@ input[type="button"] {
   color: rgb(42, 209, 209);
   text-align: center;
   font-size: 11px;
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
   font-weight: normal !important;
   letter-spacing: .1rem;
   text-transform: uppercase;
@@ -282,7 +282,7 @@ input[type="button"] {
   color: white;
   text-align: center;
   font-size: 9px;
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
   font-weight: 200;
   line-height: 38px;
   letter-spacing: .1rem;
@@ -304,7 +304,7 @@ input[type="button"] {
   color: white;
   text-align: center;
   font-size: 9px;
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
   font-weight: 200;
   line-height: 38px;
   letter-spacing: .1rem;
@@ -328,7 +328,7 @@ input[type="button"] {
   color: white;
   text-align: center;
   font-size: 9px;
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
   font-weight: 200;
   line-height: 38px;
   letter-spacing: .1rem;
@@ -451,7 +451,7 @@ input[type="button"].button-primary:focus {
   color: #FBFFFF !important;
   text-align: center;
   font-size: 11px;
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
   font-weight: 200;
   line-height: 38px;
   letter-spacing: .1rem;
@@ -480,7 +480,7 @@ input[type="button"].button-primary:focus {
   color: #FBFFFF;
   text-align: center;
   font-size: 11px;
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
   font-weight: 200;
   letter-spacing: .1rem;
   text-transform: uppercase;
@@ -520,7 +520,7 @@ input[type="button"].button-primary:focus {
 }
 
 .upload_zone {
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
   width: 80%;
   margin-top: 15px;
 }
@@ -548,7 +548,7 @@ select {
   border-radius: 4px;
   box-shadow: none;
   box-sizing: border-box; 
-  font-family: 'Geneva';
+  font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
   font-size: inherit; 
   color: #D1D1D1;
 
@@ -734,6 +734,57 @@ there.
 
 /* Larger than Desktop HD */
 @media (max-width: 950px) {
+  .button_instruction,
+  input[type="submit"],
+  input[type="reset"],
+  input[type="button"] {
+    height: 38px;
+    width: 90px;
+    padding: 0;
+    color: #FBFFFF;
+    text-align: center;
+    font-size: 11px;
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
+    font-weight: 200;
+    line-height: 38px;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: #4181FF;
+    border: 1px solid white;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: -20px;
+    margin-bottom: -50px;
+
+  }
+
+  .demo_button {
+    height: 38px;
+    width: 125px;
+    padding: 0;
+    color: #FBFFFF;
+    text-align: center;
+    font-size: 9.5px;
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
+    font-weight: 200;
+    line-height: 38px;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: turquoise;
+    border: 1px solid white;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: -20px;
+    margin-bottom: -50px;
+  }
   
 }
 
@@ -754,7 +805,7 @@ there.
   h1, h2, h3, h4, h5, h6 {
     text-align: center;
     font-weight: 300;
-    font-family: 'Geneva';  
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";  
     margin: 0 auto;
   }
 
@@ -773,7 +824,7 @@ there.
 
   p {
     
-    font-family: 'Geneva';
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
     white-space: pre-line;
     color: #8898B2;
     overflow-wrap: normal;
@@ -807,12 +858,12 @@ there.
   input[type="reset"],
   input[type="button"] {
     height: 38px;
-    width: 145px;
+    width: 140px;
     padding: 0;
     color: #FBFFFF;
     text-align: center;
     font-size: 11px;
-    font-family: 'Geneva';
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
     font-weight: 200;
     line-height: 38px;
     letter-spacing: .1rem;
@@ -831,12 +882,12 @@ there.
   }
   .demo_button {
     height: 38px;
-    width: 145px;
+    width: 140px;
     padding: 0;
     color: #FBFFFF;
     text-align: center;
     font-size: 11px;
-    font-family: 'Geneva';
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
     font-weight: 200;
     line-height: 38px;
     letter-spacing: .1rem;
@@ -885,7 +936,7 @@ there.
     border: 1px solid #D1D1D1;
     border-radius: 4px;
     box-shadow: none;
-    font-family: 'Geneva';
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
     font-size: inherit;
     margin-left: 7px;
     margin-right: 7px;
@@ -907,7 +958,7 @@ there.
   label {
     margin-top: 15px;
     color: #407DFA;
-    font-family: 'Geneva';
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
     text-align: center;
     display: inherit;
     margin-left: 0;
@@ -921,7 +972,7 @@ there.
 
   #_dash-app-content>div>div.four.columns.instruction>label {
     margin: 0 auto;
-    margin-top: 10px !important;
+    margin-top: 1cd0px !important;
     margin-bottom: 10px !important;
   }
 
@@ -972,7 +1023,7 @@ there.
   .tabs {
     width: 100%;
     margin: auto;
-    font-family: 'Geneva';
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
     text-align: center;
   }
   
@@ -1082,7 +1133,7 @@ there.
     color: #FBFFFF !important;
     text-align: center;
     font-size: 11px;
-    font-family: 'Geneva';
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
     font-weight: 200;
     line-height: 38px;
     letter-spacing: .1rem;
@@ -1144,7 +1195,7 @@ there.
     border-radius: 4px;
     box-shadow: none;
     box-sizing: border-box;
-    font-family: 'Geneva';
+    font-family: "Geneva", "Tahoma", "Verdana", "sans-serif";
     font-size: inherit;
     color: #D1D1D1;
 
