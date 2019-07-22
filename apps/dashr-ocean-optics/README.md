@@ -1,6 +1,6 @@
 # dashr-ocean-optics
 ## Introduction
-`dashr-ocean-optics` is a demo app created to demonstrate control and read data from [Ocean Optics](https://oceanoptics.com) spectrometers. Python version (contains also non-demo version) of the application can be found [here](https://github.com/plotly/dash-ocean-optics)  
+`dashr-ocean-optics` is a demo R app created to demonstrate controlling and reading data from [Ocean Optics](https://oceanoptics.com) spectrometers. Python version (contains also non-demo version) of the application can be found [here](https://github.com/plotly/dash-ocean-optics).
 
 ### Absorption Spectroscopy
 Certain wavelengths of electromagnetic radiation correspond to frequencies that allow the electrons in certain atoms to transition to higher or lower energy levels; as these wavelengths are absorbed by the sample, the resulting spectrum can yield insight into the chemical composition of the sample. Read more about spectroscopy [here](https://en.wikipedia.org/wiki/Spectroscopy). 
@@ -16,18 +16,15 @@ Clone the git repo:
 git clone https://github.com/plotly/dash-sample-apps
 cd dash-sample-apps/apps/dashr-ocean-optics
 ```
-Run `init.R` to install all of the required packages
-Run `app.R`:
+Run `Rscript init.R` to install all of the required packages
+
+Run `Rscript app.R`:
 
 The app will load into your default browser window. If it does not, navigate to 127.0.0.1:8050. You should see something like this: 
 
-![initial](screenshots/initial.png)
-
-The controls are all disabled until the "on" button is pressed:
-
 ![on](screenshots/on.png)
 
-Then, the demo spectrometer data should appear on the plot, and the model of the spectrometer should appear above the plot. Note that the "autoscale" feature is on by default. To improve the speed and animations of the graph, it is necessary to turn this feature off. 
+The demo spectrometer data should appear on the plot, and the model of the spectrometer should appear above the plot. Note that the "autoscale" feature is on by default. To improve the speed and animations of the graph, it is necessary to turn this feature off. 
 
 ![autoscale](screenshots/autoscale.png)
 
