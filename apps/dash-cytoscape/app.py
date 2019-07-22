@@ -179,12 +179,9 @@ app.layout = html.Div(
                             """
                         ),
                         html.A(
-                            children=html.Button(
-                                "Learn More",
-                                className="button"
-                            ),
-                            href="https://dash.plot.ly/cytoscape"
-                        )
+                            children=html.Button("Learn More", className="button"),
+                            href="https://dash.plot.ly/cytoscape",
+                        ),
                     ],
                 ),
                 html.H4("Phylogeny"),
@@ -192,18 +189,14 @@ app.layout = html.Div(
                     id="cytoscape",
                     elements=elements,
                     stylesheet=stylesheet,
-                    layout={
-                        "name": "preset",
-                        "fit":True,
-                        "animate":True
-                    },
+                    layout={"name": "preset", "fit": True, "animate": True},
                     style={
                         "height": "650px",
                         "width": "100%",
                         "backgroundColor": "white",
                         "margin": "auto",
                     },
-                    minZoom=0.25
+                    minZoom=0.25,
                 ),
             ],
         ),
