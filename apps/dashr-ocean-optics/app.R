@@ -298,7 +298,7 @@ controlValuesState <- lapply(1:length(controls), function(i) {
 # generates intensities
 SampleSpectrum <- function(scale, knobIntensity, x) {
   scale * (exp(-1 * ( (x - 500) / 5) ** 2) +
-             0.01 * runif(1)) + knobIntensity * 10
+             0.01 * runif(length(x))) + knobIntensity * 10
 }
 
 
@@ -498,13 +498,10 @@ app$callback(
     scale <- as.numeric(unlist(scale))
 
     # intensity computation lags behind when `length.out` is more than 1000!
-    wavelengths <- seq(400, 900, length.out = 1000L)
+    wavelengths <- seq(400, 900, length.out = 5000L)
 
     if (pwr) {
-      intensities <- sapply(wavelengths, SampleSpectrum,
-                            scale = scale,
-                            knobIntensity = knobIntensity)
-
+      intensities <- SampleSpectrum(scale = scale, knobIntensity = knobIntensity, wavelengths)
     } else {
       intensities <- rep(0, length(wavelengths))
     }
