@@ -195,10 +195,7 @@ app.layout = html.Div(
                     layout={
                         "name": "preset",
                         "fit":True,
-                        "animate":True,
-                        "boundingBox":{
-                            
-                        }
+                        "animate":True
                     },
                     style={
                         "height": "650px",
@@ -206,6 +203,7 @@ app.layout = html.Div(
                         "backgroundColor": "white",
                         "margin": "auto",
                     },
+                    minZoom=0.25
                 ),
             ],
         ),
