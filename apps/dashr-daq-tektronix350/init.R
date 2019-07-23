@@ -59,4 +59,4 @@ install.packages('https://cran.r-project.org/src/contrib/stringr_1.4.0.tar.gz', 
 install.packages('https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz', repos=NULL)
 install.packages('https://cran.r-project.org/src/contrib/stringi_1.4.3.tar.gz', repos=NULL)
 
-remotes::install_github("plotly/dash-player")
+
