@@ -24,6 +24,30 @@ if (appName != ""){
 app <- Dash$new(name = "DashR Manufacture SPC Dashboard", suppress_callback_exceptions = TRUE)
 
 ########################################################################################################################
+# DEFINE GLOBAL VARIABLES
+
+theme <- list(              # old      new
+  "dark1" = "#1E2130",      # #2D3038  #1E2130
+  "dark2" = "#171A29",      # #1D202D  #171A29
+  "gray" = "darkgray",      # darkgray #A7ADB9
+  "white" = "#FFFFFF",      # #FFFFFF  #F9FEFE
+  "blue" = "#91DFD2",       # #91DFD2  #90E0D4
+  "yellow" = "#F4D44D",     # #F4D44D  #F5D54C
+  "red" = "#F45060"         # #F45060  #F45060
+)
+
+suffix <- list(
+  row = "_row",
+  button_id = "_button",
+  count = "_count",
+  sparkline_id = "_sparkline_id",
+  sparkline_graph = "_sparkline_graph",
+  ooc_n = "_OOC_number",
+  ooc_g = "_OOC_graph",
+  indicator = "_indicator"
+)
+
+########################################################################################################################
 # HANDLE & STORE DATA
 
 df <- read.table(paste("data", "spc_data.csv", sep="/"), header = TRUE, sep = ",")
@@ -71,32 +95,7 @@ init_df <- function() {
 }
 
 state_dict <- init_df()
-
-init_value_setter_store <- function() {
-  return(init_df())
-}
-
-########################################################################################################################
-# DEFINE GLOBAL VARIABLES
-
-suffix <- list(
-  row = "_row",
-  button_id = "_button",
-  count = "_count",
-  sparkline_id = "_sparkline_id",
-  sparkline_graph = "_sparkline_graph",
-  ooc_n = "_OOC_number",
-  ooc_g = "_OOC_graph",
-  indicator = "_indicator"
-)
-
-theme <- list(
-  "dark" = TRUE,
-  "detail" = "#2d3038", # background
-  "primary" = "#007439", # green
-  "secondary" = "#FFD15F", # yellow
-  "red" = "#F45060" # red
-)
+init_value_setter_store <- function() {return(init_df())} # TODO: check if this needs to called this way
 
 ########################################################################################################################
 # DEFINE FUNCTIONS FOR APP LAYOUT AND CALLBACKS
@@ -108,16 +107,15 @@ generate_modal <- function() {
       className = "modal",
       children = list(
         htmlDiv(
-          id = "markdown-container",
           className = "markdown-container",
           children = list(
             htmlDiv(
               className = "close-container",
               children = htmlButton(
+                id = "close-button",
+                className = "button",
                 children = "Close",
-                id = "markdown_close",
-                n_clicks = 0,
-                className = "closeButton"
+                n_clicks = 0
               )
             ),
             htmlDiv(
@@ -146,7 +144,6 @@ generate_modal <- function() {
 build_banner <- function() {
   return(
     htmlDiv(
-      id = "banner",
       className = "banner",
       children = list(
         htmlDiv(
@@ -160,7 +157,6 @@ build_banner <- function() {
           id = "banner-logo",
           children = list(
             htmlButton(
-              className = "trigger-button", # DELETE?
               id = "learn-more-button",
               children = "LEARN MORE",
               n_clicks = 0
@@ -180,48 +176,24 @@ build_tabs <- function() {
   return(
     htmlDiv(
       id = "tabs",
-      className = "row container scalable",
       children = list(
         dccTabs(
           id = "app-tabs",
-          value = "tab1",
-          className = "custom-tabs",
+          value = "tab2",
           children = list(
             dccTab(
-              id = "Specs-tab",
+              id = "specs-tab",
               label = "Specification Settings",
               value = "tab1",
-              className = "custom-tab",
-              selected_className = "custom-tab--selected",
-              disabled_style = list(
-                "backgroundColor" = "#1d202d",
-                "color" = "white",
-                "border" = "#23262E solid 3px",
-                "display" = "flex",
-                "flex-direction" = "column",
-                "alignItems" = "center",
-                "justifyContent" = "center",
-                "cursor" = "default"
-              ),
-              disabled = FALSE
+              className = "tab",
+              selected_className = "tab--selected"
             ),
             dccTab(
-              id = "Control-chart-tab",
+              id = "control-chart-tab",
               label = "Control Charts Dashboard",
               value = "tab2",
-              className = "custom-tab",
-              selected_className = "custom-tab--selected",
-              disabled_style = list(
-                "backgroundColor" = "#1d202d",
-                "color" = "white",
-                "border" = "#23262E solid 3px",
-                "display" = "flex",
-                "flex-direction" = "column",
-                "alignItems" = "center",
-                "justifyContent" = "center",
-                "cursor" = "default"
-              ),
-              disabled = FALSE
+              className = "tab",
+              selected_className = "tab--selected"
             )
           )
         )
@@ -230,12 +202,73 @@ build_tabs <- function() {
   )
 }
 
-# Generate Layout for Tab 1 --------------------------------------------------------------------------------------------
+# TAB 1 ----------------------------------------------------------------------------------------------------------------
 
-build_value_setter_line <- function(line_num, label, value, col3) {
+build_tab_1 <- function() {
   return(
     htmlDiv(
-      id = line_num,
+      id = "specs-container",
+      children = list(
+        htmlP("Use historical control limits to establish a benchmark, or set new values."),
+        htmlDiv(
+          id = "settings-menu",
+          children = list(
+          htmlDiv(
+              id = "metric-select-menu",
+              children = list(
+                htmlDiv(
+                  className = "row",
+                  children = htmlLabel(
+                    children = htmlH6("Select Metrics")
+                  )
+                ),
+                htmlDiv(
+                  className = "row",
+                  children = htmlDiv(
+                    children = dccDropdown(
+                      id = "metric-select-dropdown",
+                      options = lapply(params[-1], function(x) {return(list(label = x, value = x))}),
+                      value = params[[2]]
+                    )
+                  )
+                )
+              )
+            ),
+            htmlDiv(
+              id = "value-setter-menu",
+              children = list(
+                htmlDiv(id = "value-setter-panel"),
+                htmlBr(),
+                htmlDiv(
+                  id = "value-setter-buttons",
+                  children = list(
+                    htmlButton(
+                      id = "value-setter-set-btn",
+                      children = "Update"
+                    ),
+                    htmlButton(
+                      id = "value-setter-view-btn",
+                      children = "View current setup",
+                      n_clicks = 0
+                    )
+                  )
+                ),
+                htmlDiv(
+                  id = "value-setter-view-output",
+                  className = "output-datatable"
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+}
+
+build_value_setter_line <- function(label, hist_value, new_value) {
+  return(
+    htmlDiv(
       className = "row",
       children = list(
         htmlLabel(
@@ -244,69 +277,36 @@ build_value_setter_line <- function(line_num, label, value, col3) {
         ),
         htmlLabel(
           className = "four columns",
-          children = value
+          children = hist_value
         ),
         htmlDiv(
           className = "four columns",
-          children = col3
+          children = new_value
         )
       )
     )
   )
 }
 
-build_tab_1 <- function() {
+# TAB 2 ----------------------------------------------------------------------------------------------------------------
+
+build_tab_2 <- function() {
   return(
-    list(
-      htmlDiv(
-        id = "set-specs-intro-container",
-        children = htmlP("Use historical control limits to establish a benchmark, or set new values.")
-      ),
-      htmlDiv(
-        id = "settings-menu",
-        children = list(
-          htmlDiv(
-            id = "metric-select-menu",
-            children = list(
-              htmlLabel(
-                id = "metric-select-title",
-                children = "Select Metrics"
-              ),
-              htmlBr(),
-              dccDropdown(
-                id = "metric-select-dropdown",
-                options = lapply(params[-1], function(x) {return(list(label = x, value = x))}),
-                value = params[[2]]
-              )
-            )
-          ),
-          htmlDiv(
-            id = "value-setter-menu",
-            children = list(
-              htmlDiv(id = "value-setter-panel"),
-              htmlBr(),
-              htmlButton(
-                id = "value-setter-set-btn",
-                children = "Update"
-              ),
-              htmlButton(
-                id = "value-setter-view-btn",
-                children = "View current setup",
-                n_clicks = 0
-              ),
-              htmlDiv(
-                id = "value-setter-view-output",
-                className = "output-datatable"
-              )
-            )
+    htmlDiv(
+      id = "status-container",
+      children = list(
+        build_quick_stats_panel(),
+        htmlDiv(
+          id = "graphs-container",
+          children = list(
+            build_top_panel(),
+            build_chart_panel()
           )
         )
       )
     )
   )
 }
-
-# Generate Layout for Tab 2 --------------------------------------------------------------------------------------------
 
 build_quick_stats_panel <- function() {
   return(
@@ -317,19 +317,20 @@ build_quick_stats_panel <- function() {
         htmlDiv(
           id = "card-1",
           children = list(
-            htmlH5("Operator ID"),
+            htmlH6("Operator ID"),
             daqLEDDisplay(
+              id = "operator-led",
               value = "1704",
-              color = "#91dfd2",
-              backgroundColor = "#242633",
-              size = "55"
+              color = theme$blue,
+              backgroundColor = theme$dark1,
+              size = "50"
             )
           )
         ),
         htmlDiv(
           id = "card-2",
           children = list(
-            htmlH5("Time to completion"),
+            htmlH6("Time to completion"),
             daqGauge(
               id = "progress-gauge",
               value = 0,
@@ -358,7 +359,7 @@ generate_section_banner <- function(title) {
   return(
     htmlDiv(
       className = "section-banner",
-      children = title
+      children = htmlH6(title)
     )
   )
 }
@@ -456,6 +457,8 @@ generate_metric_list_header <- function() {
 
 generate_metric_row_helper <- function(index) {
   param <- params[-1][[index]]
+  ooc_colors <- list(list(0, 3), list(3, 7), list(7, 15))
+  names(ooc_colors) <- list(theme$blue, theme$yellow, theme$red)
   return(
     generate_metric_row(
       id = sprintf("%s%s", param, suffix$row),
@@ -496,14 +499,14 @@ generate_metric_row_helper <- function(index) {
                 y = list(),
                 mode = "lines+markers",
                 name = param,
-                line = list("color" = "#f4d44d")
+                line = list("color" = theme$yellow)
               )
             ),
             layout = list(
               uirevision = TRUE,
               margin = list(l=0, r=0, t=4, b=4, pad=0),
-              paper_bgcolor = "#1d202d",
-              plot_bgcolor = "#1d202d"
+              paper_bgcolor = theme$dark2,
+              plot_bgcolor = theme$dark2
             )
           )
         )
@@ -516,13 +519,7 @@ generate_metric_row_helper <- function(index) {
         id = sprintf("%s%s", param, "_OOC_graph_container"),
         children = daqGraduatedBar(
           id = sprintf("%s%s", param, suffix$ooc_g),
-          color = list(
-            ranges = list(
-              "#91dfd2" = list(0, 3),
-              "#f4d44d " = list(3, 7),
-              "#f45060" = list(7, 15)
-            )
-          ),
+          color = list(ranges = ooc_colors),
           showCurrentValue = FALSE,
           #size = 146.16,
           max = 15,
@@ -534,7 +531,7 @@ generate_metric_row_helper <- function(index) {
         children = daqIndicator(
           id = sprintf("%s%s", param, suffix$indicator),
           value = TRUE,
-          color = "#91dfd2"
+          color = theme$blue
         )
       )
     )
@@ -552,7 +549,7 @@ generate_piechart <- function() {
             "values" = lapply(1:7, function(x) {return(1)}),
             "type" = "pie",
             "marker" = list(
-              "colors" = lapply(1:7, function(x) {return("#91dfd2")}),
+              "colors" = lapply(1:7, function(x) {return(theme$blue)}),
               "line" = list("color" = "white", "width" = 2)
             ),
             "hoverinfo" = "label",
@@ -561,8 +558,9 @@ generate_piechart <- function() {
         ),
         "layout" = list(
           "font" = list("color" = "white"),
-          "paper_bgcolor" = "#1d202d",
-          "plot_bgcolor" = "#1d202d",
+          "paper_bgcolor" = theme$dark2,
+          "plot_bgcolor" = theme$dark2,
+          "margin" = list(t = 40, b = 40, r = 60, l = 60), # TODO: edit margins
           "uirevision" = TRUE,
           "showlegend" = FALSE,
           "autosize" = TRUE
@@ -623,15 +621,6 @@ build_chart_panel <- function() {
       className = "twelve columns",
       children = list(
         generate_section_banner("Live SPC Chart"),
-        dccInterval(
-          id = "interval-component",
-          interval = 2*1000,  # in milliseconds
-          n_intervals = 0,
-          disabled = TRUE
-        ),
-        dccStore(
-          id = "control-chart-state"
-        ),
         dccGraph(
           id = "control-chart-live",
           figure = generate_graph(0, state_dict, params[-1][[1]])
@@ -646,8 +635,8 @@ generate_graph <- function(interval, specs_dict, col) {
     mean = list(data = state_dict[[col]][["mean"]], label = "Targeted Mean", color = "rgb(255,127,80)", style = "solid", width = 2),
     ucl = list(data = specs_dict[[col]][["ucl"]], label = "ucl", color = "rgb(255,127,80)", style = "dot", width = 1),
     lcl = list(data = specs_dict[[col]][["lcl"]], label = "lcl", color = "rgb(255,127,80)", style = "dot", width = 1),
-    usl = list(data = specs_dict[[col]][["usl"]], label = "usl", color = "#91dfd2", style = "dot", width = 1),
-    lsl = list(data = specs_dict[[col]][["lsl"]], label = "lsl", color = "#91dfd2", style = "dot", width = 1)
+    usl = list(data = specs_dict[[col]][["usl"]], label = "usl", color = theme$blue, style = "dot", width = 1),
+    lsl = list(data = specs_dict[[col]][["lsl"]], label = "lsl", color = theme$blue, style = "dot", width = 1)
   )
   total_count <- ifelse(interval < max_length, interval, max_length)
   x_data <- list()
@@ -670,7 +659,7 @@ generate_graph <- function(interval, specs_dict, col) {
         y = y_data,
         mode = "lines+markers",
         name = col,
-        line = list("color" = "#f4d44d")
+        line = list("color" = theme$yellow)
       ),
       # ooc trace
       list(
@@ -679,7 +668,7 @@ generate_graph <- function(interval, specs_dict, col) {
         y = y_data_ooc,
         mode = "markers",
         name = "Out of Control",
-        marker = list(color = theme[["red"]], symbol = "square", size = 11)
+        marker = list(color = theme$red, symbol = "square", size = 11)
       ),
       # histogram
       list(
@@ -690,16 +679,17 @@ generate_graph <- function(interval, specs_dict, col) {
         xaxis = "x2",
         yaxis = "y2",
         name = "Distribution",
-        marker = list("color" = "#f4d44d")
+        marker = list("color" = theme$yellow)
       )
     ),
     layout = list(
       hovermode = "closest",
       uirevision = col,
-      paper_bgcolor = "#1d202d",
-      plot_bgcolor = "#1d202d",
-      legend = list("font" = list("color" = "darkgray")),
-      font = list("color" = "darkgray"),
+      paper_bgcolor = theme$dark2,
+      plot_bgcolor = theme$dark2,
+      margin = list(t = 40), # TODO: fix margins
+      legend = list("font" = list("color" = theme$gray)),
+      font = list("color" = theme$gray),
       showlegend = TRUE,
       shapes = lapply(
         unname(stats),
@@ -739,46 +729,28 @@ generate_graph <- function(interval, specs_dict, col) {
         title = "Batch_Num",
         showline = FALSE,
         domain = list(0, 0.8),
-        titlefont = list("color" = "darkgray")
+        titlefont = list("color" = theme$gray)
       ),
       yaxis = list(
         title = col,
         autorange = TRUE,
-        titlefont = list("color" = "darkgray")
+        titlefont = list("color" = theme$gray)
       ),
       xaxis2 = list(
         title = "Count",
         domain = list(0.8, 1),  # 70 to 100 % of width
-        titlefont = list("color" = "darkgray")
+        titlefont = list("color" = theme$gray)
       ),
       yaxis2 = list(
         anchor = "free",
         overlaying = "y",
         side = "right",
         showticklabels = FALSE,
-        titlefont = list("color" = "darkgray")
+        titlefont = list("color" = theme$gray)
       )
     )
   )
   return(fig)
-}
-
-build_tab_2 <- function() {
-  return(
-    htmlDiv(
-      id = "status-container",
-      children = list(
-        build_quick_stats_panel(),
-        htmlDiv(
-          id = "graphs-container",
-          children = list(
-            build_top_panel(),
-            build_chart_panel()
-          )
-        )
-      )
-    )
-  )
 }
 
 ########################################################################################################################
@@ -793,16 +765,18 @@ app$layout(
         id = "app-container",
         children = list(
           build_tabs(),
-          htmlDiv(
-            id = "app-content",
-            className = "container scalable"
-          ),
-          htmlButton(
-            children = "Proceed to Measurement",
-            id = "tab-trigger-btn",
-            n_clicks = 0
-          )
+          htmlDiv(id = "app-content")
         )
+      ),
+      dccInterval(
+        id = "interval-component",
+        interval = 2*1000, # in milliseconds
+        n_intervals = 10, # TODO: change this to 50 as final, to 10 for trials
+        disabled = TRUE
+      ),
+      dccStore(
+        id = "interval-component-store",
+        data = 10 # TODO: change this to 50 as final, to 10 for trials
       ),
       dccStore(
         id = "value-setter-store",
@@ -821,7 +795,7 @@ app$callback(
   output = list(id = "markdown", property = "style"),
   params = list(
     input(id = "learn-more-button", property = "n_clicks"),
-    input(id = "markdown_close", property = "n_clicks")
+    input(id = "close-button", property = "n_clicks")
   ),
   function(button_click, close_click) {
     if (button_click > close_click) {
@@ -831,11 +805,60 @@ app$callback(
   }
 )
 
+# callbacks for switching tabs
+app$callback(
+  output = list(id = "app-content", property = "children"),
+  params = list(input(id = "app-tabs", property = "value")),
+  function(tab) {
+    if (tab == "tab1") {
+      return(build_tab_1())
+    } else if (tab == "tab2") {
+      return(build_tab_2())
+    }
+  }
+)
+app$callback(
+  output = list(id = "interval-component", property = "n_intervals"),
+  params = list(
+    input(id = "app-tabs", property = "value"),
+    state(id = "interval-component-store", property = "data")
+  ),
+  function(tab, stopped_interval) {
+    return(stopped_interval)
+  }
+)
+app$callback(
+  output = list(id = "interval-component-store", property = "data"),
+  params = list(
+    input(id = "app-tabs", property = "value"),
+    state(id = "interval-component", property = "disabled"),
+    state(id = "interval-component", property = "n_intervals"),
+    state(id = "interval-component-store", property = "data")
+  ),
+  function(tab, disabled, cur_interval, cur_stage) {
+    if (disabled) {
+      return(cur_interval)
+    }
+    if (tab == "tab1") {
+      return(cur_interval)
+    }
+    return(cur_stage)
+    # TODO: change back to the following:
+    # if (disabled) {
+    #   return(cur_interval)
+    # } else if (tab == "tab1") {
+    #   return(cur_interval)
+    # } else if (tab == "tab2") {
+    #   return(cur_stage)
+    # }
+  }
+)
+
 # TAB 1 ----------------------------------------------------------------------------------------------------------------
 
 # callbacks to update values based on stored data and dropdown selection
 app$callback(
-  list(id = "value-setter-panel", property = "children"),
+  output = list(id = "value-setter-panel", property = "children"),
   params = list(
     input(id = "metric-select-dropdown", property = "value"),
     state(id = "value-setter-store", property = "data")
@@ -844,14 +867,12 @@ app$callback(
     return(
       list(
         build_value_setter_line(
-          "value-setter-panel-header",
-          "Specs",
-          "Historical Value",
-          "Set new value"
+          htmlH6("Specs"),
+          htmlH6("Historical Value"),
+          htmlH6("Set new value")
         ),
         build_value_setter_line(
-          "value-setter-panel-usl",
-          "Upper Specification limit",
+          "Upper Specification Limit",
           state_dict[[dd_select]][["usl"]],
           daqNumericInput(
             id = "ud_usl_input",
@@ -862,8 +883,7 @@ app$callback(
           )
         ),
         build_value_setter_line(
-          "value-setter-panel-lsl",
-          "Lower Specification limit",
+          "Lower Specification Limit",
           state_dict[[dd_select]][["lsl"]],
           daqNumericInput(
             id = "ud_lsl_input",
@@ -874,8 +894,7 @@ app$callback(
           )
         ),
         build_value_setter_line(
-          "value-setter-panel-ucl",
-          "Upper Control limit",
+          "Upper Control Limit",
           state_dict[[dd_select]][["ucl"]],
           daqNumericInput(
             id = "ud_ucl_input",
@@ -886,8 +905,7 @@ app$callback(
           )
         ),
         build_value_setter_line(
-          "value-setter-panel-lcl",
-          "Lower Control limit",
+          "Lower Control Limit",
           state_dict[[dd_select]][["lcl"]],
           daqNumericInput(
             id = "ud_lcl_input",
@@ -953,15 +971,15 @@ app$callback(
       return(
         dashDataTable(
           style_header = list(
-            "backgroundColor" = "#2d3038",
+            "backgroundColor" = theme$dark1,
             "fontWeight" = "bold"
           ),
           style_as_list_view = TRUE,
           style_cell_conditional = lapply(list("Specs"), function(x) {return(list("if" = list("column_id" = x), "textAlign" = "left"))}),
           style_cell = list(
-            "backgroundColor" = "#2d3038",
-            "color" = "darkgray",
-            "border" = "darkgray"
+            "backgroundColor" = theme$dark1,
+            "color" = theme$gray,
+            "border" = theme$gray
           ),
           data = df_to_list(new_df),
           columns = lapply(colnames(new_df), function(x) {return(list("id" = x, "name" = x))})
@@ -971,66 +989,9 @@ app$callback(
   }
 )
 
-# callbacks for switching tabs when clicking "Proceed To Measurement" button
-app$callback(
-  output = list(id = "app-tabs", property = "value"),
-  params = list(input(id = "tab-trigger-btn", property = "n_clicks")),
-  function(tab_switch) {
-    if (tab_switch == 0) {
-      return("tab1")
-    } else if (tab_switch) {
-      return("tab2")
-    }
-  }
-)
-app$callback(
-  output = list(id = "app-content", property = "children"),
-  params = list(input(id = "tab-trigger-btn", property = "n_clicks")),
-  function(tab_switch) {
-    if (tab_switch == 0) {
-      return(build_tab_1())
-    } else if (tab_switch) {
-      return(build_tab_2())
-    }
-  }
-)
-app$callback(
-  output = list(id = "Specs-tab", property = "disabled"),
-  params = list(input(id = "tab-trigger-btn", property = "n_clicks")),
-  function(tab_switch) {
-    if (tab_switch == 0) {
-      return(FALSE)
-    } else if (tab_switch) {
-      return(TRUE)
-    }
-  }
-)
-app$callback(
-  output = list(id = "Control-chart-tab", property = "disabled"),
-  params = list(input(id = "tab-trigger-btn", property = "n_clicks")),
-  function(tab_switch) {
-    if (tab_switch == 0) {
-      return(TRUE)
-    } else if (tab_switch) {
-      return(FALSE)
-    }
-  }
-)
-app$callback(
-  output = list(id = "tab-trigger-btn", property = "style"),
-  params = list(input(id = "tab-trigger-btn", property = "n_clicks")),
-  function(tab_switch) {
-    if (tab_switch == 0) {
-      return(list("display" = "inline-block", "float" = "right"))
-    } else {
-      return(list("display" = "none"))
-    }
-  }
-)
-
 # TAB 2 ----------------------------------------------------------------------------------------------------------------
 
-# callbacks for stopping interval update when clicking "Stop/Start" button
+# callbacks for pausing interval when clicking "Stop/Start" button
 app$callback(
   output = list(id = "interval-component", property = "disabled"),
   params = list(
@@ -1038,7 +999,7 @@ app$callback(
     state(id = "interval-component", property = "disabled")
   ),
   function(n_clicks, current) {
-    return(ifelse(n_clicks == 0, current, !current))
+    return(ifelse(n_clicks == 0, TRUE, !current))
   }
 )
 app$callback(
@@ -1090,7 +1051,7 @@ update_metric_summary <- function(param) {
     ),
     function(interval, stored_data) {
       total_count <- ifelse(interval < max_length, interval, max_length)
-      ooc_n <- ifelse(total_count == 0, 0, stored_data[[param]][["ooc"]][[total_count]]*100)
+      ooc_n <- ifelse(total_count == 0, 0, stored_data[[param]][["ooc"]][[total_count]]*100) # ERROR?
       return(sprintf("%.2f%%", ooc_n))
     }
   )
@@ -1116,7 +1077,7 @@ update_metric_summary <- function(param) {
     function(interval, stored_data) {
       total_count <- ifelse(interval < max_length, interval, max_length)
       ooc_n <- ifelse(total_count == 0, 0, stored_data[[param]][["ooc"]][[total_count]]*100)
-      color <- ifelse(ooc_n <= 5, theme$primary, "#FF0000")
+      color <- ifelse(ooc_n <= 5, theme$blue, "#FF0000")
       return(color)
     }
   )
@@ -1139,7 +1100,7 @@ app$callback(
       for (param in params[-1]) {
         ooc_param <- stored_data[[param]][["ooc"]][[total_count]]*100+1
         values <- append(values, ooc_param)
-        colors <- append(colors, ifelse(ooc_param > 6, "#f45060", "#91dfd2"))
+        colors <- append(colors, ifelse(ooc_param > 6, theme$red, theme$blue))
       }
       fig$data[[1]]$values <- values
       fig$data[[1]]$marker$colors <- colors
