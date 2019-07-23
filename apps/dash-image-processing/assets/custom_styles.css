@@ -84,6 +84,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    background-color: #272a31;
 }
 
 #root {
@@ -129,6 +130,18 @@ html, body {
     }
 }
 
+@media (max-width: 600px) {
+    #app-container {
+        padding: 2rem 5%;
+    }
+}
+
+@media (max-width: 350px) {
+    #app-container {
+        padding: 1.5rem 5%;
+    }
+}
+
 /* banner
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 #banner {
@@ -144,7 +157,7 @@ html, body {
 }
 
 #logo {
-    height: 4rem !important;
+    height: 3rem;
 }
 
 #title {
@@ -167,10 +180,47 @@ html, body {
     }
 
     #title {
-        padding-top: 2rem;
+        padding-top: 2.5rem;
         margin: 0;
     }
 }
+
+@media only screen and (max-width: 600px) {
+    #logo {
+        height: 2.5rem;
+    }
+
+    #title {
+        font-size: 1.75rem;
+    }
+
+    #banner {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    #logo {
+        height: 2rem;
+    }
+
+    #title {
+        font-size: 1.5rem;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    #logo {
+        height: 1.5rem;
+    }
+
+    #title {
+        font-size: 1.2rem;
+        padding-top: 1.5rem !important;
+    }
+}
+
 
 /* image
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -191,6 +241,23 @@ html, body {
     stroke: darkgray !important;
 }
 
+@media (min-width: 1311px) {
+    #div-interactive-image, #interactive-image {
+        height: 45rem;
+    }
+}
+
+@media (max-width: 600px) {
+    #div-interactive-image, #interactive-image {
+        height: 30rem;
+    }
+}
+
+@media (max-width: 500px) {
+    #div-interactive-image, #interactive-image {
+        height: 20rem;
+    }
+}
 
 /* sidebar
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -211,25 +278,6 @@ html, body {
     }
 }
 
-@media only screen and (max-width: 1310px) {
-    #sidebar {
-        padding: 3rem 2rem 0 2rem;
-    }
-
-    #sidebar section:nth-child(1) {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #button-group {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        width: 100%;
-
-    }
-}
 
 #upload-image A {
     color: #fccd61;
@@ -327,5 +375,90 @@ html, body {
 }
 
 #div-storage {
+    display: none;
+}
+
+@media only screen and (max-width: 1310px) {
+    #sidebar {
+        padding: 3rem 2rem 0 2rem;
+        font-size: 0.9rem;
+    }
+
+    #sidebar section:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #button-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+
+    }
+
+    #upload-image {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .g-gtitle text {
+        font-size: 1rem !important;
+    }
+
+    #sidebar {
+        padding: 2rem 1rem 0 1rem;
+        font-size: 0.8rem;
+    }
+
+    #upload-image div {
+        padding: 1rem 0 !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    #sidebar section:nth-child(1) {
+        padding-bottom: 0 !important;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .g-gtitle text {
+        font-size: 0.9rem !important;
+    }
+
+    .ytick text, .xtick text {
+        font-size: 0.6rem !important;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    #sidebar {
+        font-size: 0.6rem;
+    }
+
+    #upload-image div {
+        padding: 0.3rem 0 !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .g-gtitle text {
+        font-size: 0.9rem !important;
+    }
+
+    .ytick text, .xtick text {
+        font-size: 0.6rem !important;
+    }
+
+    #sidebar section:nth-child(2) {
+        margin-bottom: 0;
+    }
+    #button-group button{
+        font-size: 0.7rem !important;
+    }
+}
+
+.dash-error-card.dash-error-card--container {
     display: none;
 }
