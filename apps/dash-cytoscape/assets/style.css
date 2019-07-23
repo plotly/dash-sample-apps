@@ -51,5 +51,11 @@ h4{
     background-color: #3ed6d2;
     color: white;
     border: none;
+}   
+
+@media only screen and (max-width: 550px){
+    .button{
+        width: 100%;
+    }
 }
 
