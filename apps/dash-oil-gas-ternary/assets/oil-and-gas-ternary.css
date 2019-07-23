@@ -1,0 +1,522 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,800');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700');
+
+.container.scalable {
+    width: 95%;
+    max-width: none;
+}
+
+/* Remove Undo
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+._dash-undo-redo {
+    display: none;
+}
+
+/* Top-row
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#top-row {
+    background-color: #192444;
+    padding: 0 5rem;
+    display: flex;
+    align-items: stretch;
+}
+
+@media (min-width: 1400px) {
+    #top-row {
+        flex-direction: row;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    #top-row {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+}
+
+/* Top-row-header
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#top-row-header {
+    background-color: #1f2c56;
+    padding: 6rem 3rem 9rem 3rem;
+}
+
+.banner h6 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: normal;
+    color: white;
+}
+
+.banner Img {
+    height: 5rem;
+    margin-bottom: 5rem;
+}
+
+#well-map-container .graph-title, #ternary-map-container .graph-title, #header-container .graph-title {
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: white;
+}
+
+#instructions {
+    font-size: 1.5rem;
+    font-style: italic;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    color: white;
+    margin: 2rem 0 4rem 0;
+}
+
+.Select-control, .Select-multi-value-wrapper, .Select-menu-outer div {
+    background-color: #1f2c56;
+}
+
+.Select-control, .Select, .Select-value-label, .Select-clear-zone {
+    color: white;
+}
+
+.Select-menu-outer {
+    background-color: #1f2c56;
+    border: 1px solid gray !important;
+}
+
+.Select-menu-outer div:hover {
+    background-color: rgba(255, 255, 255, 0.01);
+    cursor: pointer;
+}
+
+.Select--single > .Select-control .Select-value, .Select-placeholder {
+    border: 1px solid white;
+    border-radius: 4px;
+    color: white;
+    background-color: #1f2c56;
+}
+
+.Select--multi .Select-value-label, .Select--multi .Select-value {
+    color: #3c81e8;
+    background-color: #dfecff;
+}
+
+.Select-arrow {
+    border-color: white transparent transparent;
+}
+
+.Select-arrow-zone, .Select-clear-zone, .is-open > .Select-control {
+    background-color: #1f2c56 !important;
+}
+
+#selected-rows .Select-multi-value-wrapper, #selected-columns .Select-multi-value-wrapper {
+    max-height: 20rem;
+}
+
+#operator-select .Select-control {
+    padding: 1rem;
+}
+
+@media only screen and (max-width: 750px) {
+    #banner h6 {
+        font-size: 3rem;
+    }
+
+    #instructions {
+        font-size: 1.25rem;
+    }
+
+    .Select-value-label, .Select-menu-outer {
+        font-size: 1rem;
+    }
+
+    .banner Img {
+        height: 3.5rem;
+        margin-bottom: 2rem;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    #banner h6 {
+        font-size: 3rem;
+    }
+
+    #instructions {
+        font-size: 1.25rem;
+    }
+
+    .Select-value-label, .Select-menu-outer {
+        font-size: 1rem;
+    }
+
+    .banner Img {
+        height: 3rem;
+        margin-bottom: 2rem;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    #banner h6 {
+        font-size: 2.5rem;
+    }
+
+    #instructions {
+        font-size: 1.1rem;
+    }
+
+    .Select-value-label, .Select-menu-outer {
+        font-size: 0.8rem;
+    }
+
+    .banner Img {
+        height: 3rem;
+        margin-bottom: 2rem;
+    }
+
+    #header-container .graph-title {
+        font-size: 1.25rem;
+    }
+
+}
+
+@media (min-width: 1401px) {
+    #top-row-header {
+        flex-grow: 1;
+        padding: 6rem 3rem 9rem 3rem;
+    }
+
+    .banner h6 {
+        width: 35rem;
+    }
+
+    #instructions {
+        width: 30rem;
+    }
+
+    #operator-select {
+        width: 35rem;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    #top-row-header {
+        flex-grow: 1;
+        padding: 6rem 3rem 5rem 3rem;
+    }
+}
+
+
+/* Top-row-graphs
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#top-row-graphs {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-grow: 1;
+}
+
+#well-map-container {
+    margin: 0 -2rem 0 4rem;
+    flex-grow: 1;
+}
+
+#ternary-map-container {
+    flex-grow: 1;
+}
+
+#mapbox-view-selector, #ternary-layer-select {
+    margin-bottom: 1rem;
+}
+
+/* hides the svg dom element that has the click handler responsible for toggling */
+#well-map .legend .traces .legendtoggle {
+    display: none;
+}
+
+#ternary-map .legend .traces .legendtoggle {
+    display: none;
+}
+
+#mapbox-view-selector label, #ternary-layer-select label {
+    color: white;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 300;
+    display: inline-block;
+}
+
+.graph-title {
+    font-size: 2rem;
+}
+
+@media only screen and (max-width: 1000px) {
+    #top-row-graphs {
+        flex-direction: column;
+    }
+
+    #well-map-container {
+        margin: 5rem 0 0 0;
+    }
+
+    #ternary-header {
+        margin: 5rem 0 0 0;
+    }
+
+    #ternary-map-container {
+        margin-bottom: 5rem;
+    }
+}
+
+@media (min-width: 1001px) {
+    #well-map-container {
+        margin: 0 -2rem 0 4rem;
+    }
+
+    #ternary-header {
+        margin: 0 0 0 5rem;
+    }
+}
+
+@media (min-width: 1001px) and (max-width: 1400px) {
+    #top-row-graphs {
+        padding: 5rem 0;
+        flex-direction: row;
+        align-items: stretch;
+    }
+}
+
+@media (min-width: 1401px) {
+    #top-row-graphs {
+        display: flex;
+        padding: 15rem 0 5rem 0;
+        flex-direction: row;
+        align-items: stretch;
+    }
+}
+
+@media (min-width: 1551px) {
+    #ternary-map * {
+        font-size: 1rem;
+    }
+
+    #top-row .legendtext {
+        font-size: 1.25rem !important;
+    }
+
+    .atitle, .btitle, .ctitle {
+        font-size: 1.25rem !important;
+    }
+
+    .ytick text, .xtick text {
+        font-size: 1.1rem !important;
+    }
+
+}
+
+@media (max-width: 1550px) {
+    #ternary-map * {
+        font-size: 0.85rem;
+    }
+
+    #top-row .legendtext {
+        font-size: 1.25rem !important;
+    }
+
+    .atitle, .btitle, .ctitle {
+        font-size: 1.25rem !important;
+    }
+
+    .ytick text, .xtick text {
+        font-size: 1.1rem !important;
+    }
+
+}
+
+@media (max-width: 1400px) {
+    #ternary-map * {
+        font-size: 0.9rem;
+    }
+
+    #top-row .legendtext {
+        font-size: 1.25rem !important;
+    }
+
+    .atitle, .btitle, .ctitle {
+        font-size: 1.25rem !important;
+    }
+
+    .ytick text, .xtick text {
+        font-size: 1.1rem !important;
+    }
+
+}
+
+@media (max-width: 1000px) {
+    #top-row {
+        padding: 0 4vw;
+    }
+
+    #ternary-map {
+        margin-left: -6.5rem;
+    }
+
+    #ternary-map * {
+        font-size: 1rem;
+    }
+
+    #top-row .legendtext {
+        font-size: 1.25rem !important;
+    }
+
+    .atitle, .btitle, .ctitle {
+        font-size: 1.25rem !important;
+    }
+
+    .ytick text, .xtick text {
+        font-size: 1.1rem !important;
+    }
+}
+
+@media (max-width: 750px) {
+    /*For some reason, at around 700px, a font-size is set to the ternary map text, so !important tag is needed to
+    override it*/
+    #ternary-map * {
+        font-size: 1.1rem !important;
+    }
+
+    #top-row .legendtext {
+        font-size: 1.25rem !important;
+    }
+
+    .atitle, .btitle, .ctitle {
+        font-size: 1.25rem !important;
+    }
+
+    .ytick text, .xtick text {
+        font-size: 1.1rem !important;
+    }
+
+    .hovertext text{
+        font-size: 1.1rem !important;
+    }
+}
+
+@media (max-width: 550px) {
+    .graph-title {
+        font-size: 1.5rem;
+    }
+
+    /*#mapbox-view-selector, #*/
+    #ternary-map-container {
+        margin-bottom: 0;
+    }
+
+    #ternary-header {
+        position: relative;
+        z-index: 3;
+    }
+
+    #ternary-map {
+        position: relative;
+        margin: -3rem 0 0 -6.5rem;
+        z-index: 1;
+    }
+
+    #ternary-map * {
+        font-size: 1.8vw !important;
+    }
+
+    #top-row .legendtext {
+        font-size: 1.1rem !important;
+    }
+
+    .atitle, .btitle, .ctitle {
+        font-size: 1.1rem !important;
+    }
+
+    .ytick text, .xtick text {
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 400px) {
+    #ternary-map * {
+        font-size: 2vw !important;
+    }
+
+    #top-row {
+        position: relative;
+        z-index: 0;
+    }
+
+    #bottom-row {
+        position: relative;
+        z-index: 1;
+        margin-top: -5rem;
+    }
+
+    #ternary-map {
+        margin: -7rem 0 0 -6.5rem;
+    }
+
+    .hovertext text{
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 350px) {
+    #well-map{
+        height: 35rem;
+    }
+    #bottom-row {
+        margin-top: -8rem;
+    }
+
+    #ternary-map {
+        margin: -9rem 0 0 -6.5rem;
+    }
+}
+
+/* Bottom row
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#bottom-row {
+    padding: 5rem;
+    background-color: #f2f5fa;
+}
+
+#bottom-row .graph-title {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 800;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 1000px) {
+    #bottom-row {
+        display: flex;
+        flex-direction: column;
+        padding: 4rem 4vw;
+    }
+
+    #form-bar-container, #well-production-container {
+        width: 100%;
+        margin: 0;
+    }
+
+    #form-bar-container {
+        margin-bottom: 5rem;
+    }
+}
+
+@media (max-width: 550px) {
+    #bottom-row .xtitle, #bottom-row .ytitle {
+        font-size: 1.2rem !important
+    }
+}
+
+@media (max-width: 550px) {
+    #bottom-row .xtitle, #bottom-row .ytitle {
+        font-size: 1rem !important
+    }
+    #bottom-row .legendtext{
+        font-size: 0.8rem !important;
+    }
+}
