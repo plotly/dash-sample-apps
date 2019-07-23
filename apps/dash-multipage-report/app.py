@@ -2658,10 +2658,7 @@ app.layout = html.Div(
                                         html.H6(
                                             "Ultrices phasellus dignissim, accumsan platea volutpat, sapien mi enim. Pharetra ipsum netus in turpis, \
                                     lorem tempus et. Eget sed. Eu porta cum tempor convallis sed nostra, pellentesque eros.",
-                                            style={
-                                                "color": color_1,
-                                                "margin-top": "30px",
-                                            },
+                                            className="page-6c",
                                         ),
                                         html.Div(
                                             [
