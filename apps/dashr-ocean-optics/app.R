@@ -18,13 +18,10 @@ if (!appName == "") {
 colorsRaw <- read.table("colors.txt", sep = ' ', comment.char = '',
   stringsAsFactors = FALSE)
 
-colors <- list()
-colors <- sapply(1:nrow(colorsRaw), function(i) {
-  colors[colorsRaw[i, 1]] <- colorsRaw[i, 2]
-  colors
-})
+colors <- setNames(as.list(colorsRaw[, 2]), colorsRaw[, 1])
 
 app <- Dash$new()
+
 
 ############################
 # Controls
@@ -32,7 +29,7 @@ app <- Dash$new()
 
 # integration time, microseconds
 intTime <- htmlDiv(children = list(
-  htmlDiv(children = list('int. time (μs)'), className = 'option-name'),
+  htmlDiv(children = list('int. time (\U{00B5}s)'), className = 'option-name'),
   daqNumericInput(
     id = 'integration-time-input',
     value = 1000,
@@ -72,7 +69,7 @@ id = 'continuous-strobe-toggle')
 
 # strobe period
 strobePeriod <- htmlDiv(children = list(
-  htmlDiv(children = list('strobe pd. (μs)'), className = 'option-name'),
+  htmlDiv(children = list('strobe pd. (\U{00B5}s)'), className = 'option-name'),
   daqNumericInput(
     id = 'continuous-strobe-period-input',
     value = 1,
@@ -87,7 +84,7 @@ id = 'continuous-strobe-period')
 
 lightOptions <- list(list('label' = 'Lamp 1 at 127.0.0.1', 'value' = 'l1'),
                      list('label' = 'Lamp 2 at 127.0.0.1', 'value' = 'l2'))
-                     
+
 # light sources
 lightSources <- htmlDiv(children = list(
   htmlDiv(children = list('light source'), className = 'option-name'),
@@ -121,7 +118,7 @@ pageLayout <- list(htmlDiv(id = 'page', children = list(
       'zIndex' = 100
     ),
     children = list(htmlA(
-      htmlImg(src = "https://s3-us-west-1.amazonaws.com/plotly-tutorials/excel/dash-daq/dash-daq-logo-by-plotly-stripe+copy.png",
+      htmlImg(src = "/assets/dash-daq-logo-by-plotly-stripe+copy.png",
               style = list('height' = '65px')),
       href = "http://www.dashdaq.io"
     ))
@@ -207,8 +204,7 @@ pageLayout <- list(htmlDiv(id = 'page', children = list(
       # displays whether the parameters were successfully changed
       htmlDiv(
         id = 'submit-status',
-        title = 'Contains information about the success or failure of your commands.',
-        children = list("")
+        title = 'Contains information about the success or failure of your commands.'
       )
     )
   ),
@@ -267,7 +263,7 @@ pageLayout <- list(htmlDiv(id = 'page', children = list(
           )
         )
 )))
-  
+
 app$layout(htmlDiv(id = 'main', children = pageLayout))
 
 
@@ -365,8 +361,8 @@ app$callback(
     input(id = "light-source-input", property = "value")
   ),
 
-  function(pwr, ls) {
-    return(!(pwr && ls != "NULL" && ls != ""))
+  function(pwr, lsi) {
+    return(!(pwr && !is.null(lsi[[1]]) && lsi != ""))
   }
 )
 
@@ -383,10 +379,11 @@ app$callback(
 
     # handle `NULL` args`
     nullCheck <- sapply(args, class)
-    nullCheck == "list"
-    if (sum(nullCheck == "list") > 0 ) {
-      args[[which(nullCheck == "list")]] <- "None"
+    if ("list" %in% nullCheck) {
+      args[[which(nullCheck == "list")]] <- "NULL"
     }
+
+    print(args)
 
     # power-button off case
     if (!args[[length(args)]]) {
@@ -418,16 +415,14 @@ app$callback(
       # append updated controls to sumList
       for (i in 1:length(controls)) {
 
-        if (args[[i + 1]] == "l1") {
-          next
+        if (!(args[[i + 1]] == "l1")) {
+          argName <- controls[[i]]$props$children[[1]]$props$children[[1]]
+          sumList <- c(sumList,
+                       toupper(argName),
+                       list(": "),
+                       list(as.character(args[[i + 1]])),
+                       list(htmlBr()))
         }
-
-        argName <- controls[[i]]$props$children[[1]]$props$children[[1]]
-        sumList <- c(sumList,
-                     toupper(argName),
-                     list(": "),
-                     list(as.character(args[[i + 1]])),
-                     list(htmlBr()))
       }
       return(sumList)
     }
@@ -467,12 +462,12 @@ app$callback(
     if (on) {
       # Handle the case when value is removed
       if ( is.list(value) ) {
-        list("None")
+        list("NULL")
       } else {
       list(value)
       }
     } else {
-      list('l2')
+      list("l2")
     }
   }
 )
@@ -490,14 +485,13 @@ app$callback(
     state(id = "hidden-div-light-source", property = "children")
   ),
 
-  function(n, pwr, auto_range, knob_intensity, scale, ls) {
+  function(n, pwr, auto_range, knob_intensity, scale, lsi) {
 
-    ls <- unlist(ls)
-    knobIntensity <- ifelse(ls == "l2", as.numeric(unlist(knob_intensity)), 0)
+    lsi <- unlist(lsi)
+    knobIntensity <- ifelse(lsi == "l2", as.numeric(unlist(knob_intensity)), 0)
 
     scale <- as.numeric(unlist(scale))
 
-    # intensity computation lags behind when `length.out` is more than 1000!
     wavelengths <- seq(400, 900, length.out = 5000L)
 
     if (pwr) {

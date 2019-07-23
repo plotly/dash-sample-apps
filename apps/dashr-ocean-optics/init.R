@@ -37,5 +37,5 @@ install.packages("https://cloud.r-project.org/src/contrib/fiery_1.1.1.tar.gz", t
 
 remotes::install_github("plotly/dash-html-components")
 remotes::install_github("plotly/dash-core-components")
-remotes::install_github("plotly/dash-daq")
 remotes::install_github("plotly/dashR")
+remotes::install_github("plotly/dash-daq")
