@@ -55,12 +55,12 @@ Click on **Learn more** button to learn more about how this app works.
 
 ## What does this app shows
 
-Click on buttons in `Parameter' column to visualize details of trendline on the bottom panel.
+Click on buttons in `Parameter` column to visualize details of trendline on the bottom panel.
 
-Click 'Start' button, trends are updated every two seconds to simulate real-time measurements. The Sparkline on top panel and Control chart on bottom panel show Shewhart process control using mock data. Data falling outside of control limit are signals indicating 'Out of Control(OOC)', and will 
+Click `Start` button, trends are updated every two seconds to simulate real-time measurements. The Sparkline on top panel and Control chart on bottom panel show Shewhart process control using mock data. Data falling outside of control limit are signals indicating 'Out of Control(OOC)', and will 
 trigger alerts instantly for a detailed checkup. 
 
-Operators may stop measurement by clicking 'Stop' button, and edit specification parameters for selected process line(metrics) in Specification Tab.
+Operators may stop measurement by clicking `Stop` button, and edit specification parameters for selected process line(metrics) in Specification Tab.
 
 ## Resources and references
 * [Shewhart statistical process control](https://en.wikipedia.org/wiki/Shewhart_individuals_control_chart)
