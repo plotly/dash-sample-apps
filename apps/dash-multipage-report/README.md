@@ -44,7 +44,7 @@ python app.py
 
 ## Screenshot
 
-![screenshot](Img/multipage.gif)
+![screenshot](Img/multipage-demo.png)
 
 ## Resources
 
