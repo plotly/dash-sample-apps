@@ -145,6 +145,13 @@ h5 {
   height: calc(100vh - 10rem - 6px);
 }
 
+/* TODO: decide if the following is needed for mobile version:
+#app-container * {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+*/
+
 #app-content {
   background: inherit;
   padding: 0;
@@ -192,6 +199,16 @@ h5 {
 
 #app-tabs .tab--selected {
   border-bottom: #92E0D3 solid 6px !important;
+}
+
+@media only screen and (max-width: 600px) {
+  #specs-tab.tab {
+    margin-right: 3px;
+  }
+
+  #control-chart-tab.tab {
+    margin-left: 3px;
+  }
 }
 
 /* Tab 1 Content
