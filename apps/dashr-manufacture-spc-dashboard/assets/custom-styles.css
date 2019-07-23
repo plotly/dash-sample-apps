@@ -161,16 +161,15 @@ h5 {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #app-tabs {
-  width: 100%;
-  height: 38px;
+  height: fit-content;
   background-color: #1E2130;
-  border-bottom: #1E2130 solid 6px !important;
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
 }
 
 #app-tabs .tab {
+  height: 18px;
   border: 0;
   border-bottom: #1E2130 solid 6px !important;
   background-color: #161A28;
