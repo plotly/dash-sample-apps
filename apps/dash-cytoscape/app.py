@@ -181,6 +181,7 @@ app.layout = html.Div(
                         html.A(
                             children=html.Button("Learn More", className="button"),
                             href="https://dash.plot.ly/cytoscape",
+                            target="_blank"
                         ),
                     ],
                 ),
