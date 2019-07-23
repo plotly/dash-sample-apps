@@ -35,16 +35,15 @@ PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
 
-def demo_explanation(demo_mode):
-    if demo_mode:
-        # Markdown files
-        with open(PATH.joinpath("demo.md"), "r") as file:
-            demo_md = file.read()
+def demo_explanation():
+    # Markdown files
+    with open(PATH.joinpath("demo.md"), "r") as file:
+        demo_md = file.read()
 
-        return html.Div(
-            html.Div([dcc.Markdown(demo_md, className="markdown")]),
-            style={"margin": "10px"},
-        )
+    return html.Div(
+        html.Div([dcc.Markdown(demo_md, className="markdown")]),
+        style={"margin": "10px"},
+    )
 
 
 def tile_images(list_of_images, n_rows, n_cols):
@@ -465,8 +464,8 @@ def upload_content(
         res = demo_data()
         tmp = array_to_data_url(res)
         return tmp
-    else:
-        raise PreventUpdate
+    
+    raise PreventUpdate
 
 
 @app.callback(
@@ -482,13 +481,13 @@ def learn_more(n_clicks):
             html.Div(
                 className="demo_container",
                 style={"margin-bottom": "30px"},
-                children=[demo_explanation(True)],
+                children=[demo_explanation()],
             ),
             "Close",
         )
-    else:
-        n_clicks += 1
-        return (html.Div(), "Learn More")
+    
+    n_clicks += 1
+    return (html.Div(), "Learn More")
 
 
 if __name__ == "__main__":

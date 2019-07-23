@@ -402,8 +402,9 @@ input[type="button"].button-primary:focus {
 }
 
 #stitching-tabs>div:nth-child(3)>span {
-  font-size: smaller;
+  font-size: 11px;
 }
+ 
 
 
 /*Zoom In*/
