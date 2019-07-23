@@ -15,5 +15,5 @@ def StaticUrlPath(resource):
         )
     if "DYNO" in os.environ:
         return "/{}/static/{}".format(os.environ["DASH_APP_NAME"], resource)
-    
+
     return "/static/{}".format(resource)

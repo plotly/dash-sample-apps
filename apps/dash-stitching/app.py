@@ -464,7 +464,7 @@ def upload_content(
         res = demo_data()
         tmp = array_to_data_url(res)
         return tmp
-    
+
     raise PreventUpdate
 
 
@@ -485,7 +485,7 @@ def learn_more(n_clicks):
             ),
             "Close",
         )
-    
+
     n_clicks += 1
     return (html.Div(), "Learn More")
 
