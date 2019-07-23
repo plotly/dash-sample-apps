@@ -112,7 +112,7 @@ def serve_roc_curve(model, X_test, y_test):
         xaxis=dict(title="False Positive Rate", gridcolor="#2f3445"),
         yaxis=dict(title="True Positive Rate", gridcolor="#2f3445"),
         legend=dict(x=0, y=1.05, orientation="h"),
-        margin=dict(l=70, r=10, t=25, b=40),
+        margin=dict(l=100, r=10, t=25, b=40),
         plot_bgcolor="#282b38",
         paper_bgcolor="#282b38",
         font={"color": "#a5b1cd"},
@@ -147,13 +147,13 @@ def serve_pie_confusion_matrix(model, X_test, y_test, Z, threshold):
         text=labels,
         sort=False,
         marker=dict(colors=colors),
-        insidetextfont={"color": "black"},
-        rotation=0,
+        insidetextfont={"color": "white"},
+        rotation=90,
     )
 
     layout = go.Layout(
         title="Confusion Matrix",
-        margin=dict(l=50, r=10, t=150, b=10),
+        margin=dict(l=50, r=50, t=100, b=10),
         legend=dict(bgcolor="#282b38", font={"color": "#a5b1cd"}, orientation="h"),
         plot_bgcolor="#282b38",
         paper_bgcolor="#282b38",
