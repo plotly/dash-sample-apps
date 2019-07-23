@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import dash
 import pathlib
+from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
@@ -22,6 +23,7 @@ DATA_PATH = PATH.joinpath("data").resolve()
 
 app.layout = html.Div(
     [
+        dcc.Store(id="click-output"),
         html.Div(
             [
                 html.Div(
@@ -58,6 +60,7 @@ app.layout = html.Div(
                         html.A(
                             html.Button("Learn More", className="learn-more-button"),
                             href="https://plot.ly/dash/pricing/",
+                            target="_blank",
                         )
                     ],
                     className="info-button",
@@ -77,12 +80,16 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Button(
-                            "Back", id="back", style={"display": "inline-block"}
+                            "Back",
+                            id="back",
+                            style={"display": "inline-block"},
+                            n_clicks=0,
                         ),
                         html.Button(
                             "Next",
                             id="next",
                             style={"display": "inline-block", "marginLeft": "10px"},
+                            n_clicks=0,
                         ),
                     ],
                     className="page-buttons",
@@ -102,11 +109,6 @@ app.layout = html.Div(
     className="row flex-display",
     style={"height": "100vh"},
 )
-
-
-# Internal logic
-last_back = 0
-last_next = 0
 
 df = pd.read_csv(DATA_PATH.joinpath("yield_curve.csv"))
 
@@ -396,28 +398,25 @@ def make_text(value):
 
 # Button controls
 @app.callback(
-    Output("slider", "value"),
+    [Output("slider", "value"), Output("click-output", "data")],
     [Input("back", "n_clicks"), Input("next", "n_clicks")],
-    [State("slider", "value")],
+    [State("slider", "value"), State("click-output", "data")],
 )
-def advance_slider(back, nxt, slider):
+def advance_slider(back, nxt, slider, last_history):
 
-    if back is None:
-        back = 0
-    if nxt is None:
-        nxt = 0
-    if slider is None:
-        slider = 0
+    try:
+        if back > last_history["back"]:
+            last_history["back"] = back
+            return max(0, slider - 1), last_history
 
-    global last_back
-    global last_next
+        if nxt > last_history["next"]:
+            last_history["next"] = nxt
+            return min(5, slider + 1), last_history
 
-    if back > last_back:
-        last_back = back
-        return max(0, slider - 1)
-    if nxt > last_next:
-        last_next = nxt
-        return min(5, slider + 1)
+    # if last_history store is None
+    except Exception as error:
+        last_history = {"back": 0, "next": 0}
+        return slider, last_history
 
 
 # Run the Dash app
