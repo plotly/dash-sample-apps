@@ -4,11 +4,7 @@
 
 This is a demo of the Dash interactive Python framework developed by Plotly.
 
-
-
 ## How to run this app
-
-(The following instructions apply to Windows command line.)
 
 To run this app first clone repository and then open a terminal to the app folder.
 
