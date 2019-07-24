@@ -523,7 +523,8 @@ app.layout = html.Div(
                                             "dest_city",
                                         ]
                                     ],
-                                    filtering=True,
+                                    filter_action="native",
+                                    fill_width=True,
                                     data=[],
                                     style_as_list_view=True,
                                     style_header={
@@ -532,7 +533,7 @@ app.layout = html.Div(
                                         "backgroundColor": "#ffffff",
                                         "padding": "10px 0px",
                                     },
-                                    style_cell_conditional=[
+                                    style_data_conditional=[
                                         {
                                             "if": {"row_index": "even"},
                                             "backgroundColor": "#f5f6f7",
