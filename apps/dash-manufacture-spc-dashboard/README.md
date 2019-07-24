@@ -1,7 +1,7 @@
 # Manufacturing SPC Dashboard
 
 ## Introduction
-`Dash-manufacture-spc-dashboard` is a dashboard for monitoring read-time process quality along manufacture production line. 
+`Dash-manufacture-spc-dashboard` is a dashboard for monitoring real-time process quality along manufacture production line. 
 This is a demo of Dash interactive Python framework developed by [Plotly](https//plot.ly/).
 
 ## Screenshots
