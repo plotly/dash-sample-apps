@@ -14,6 +14,8 @@ library(dashCoreComponents)
 library(magrittr)
 library(purrr)
 library(rlang)
+library(compiler)
+library(plotly)
 
 
 app <- Dash$new()
@@ -40,7 +42,7 @@ init_input <- list(list(
 
 ##HELPERS
 
-sawtooth <- function(t, width=1){
+sawtooth <- cmpfun(function(t, width=1){
   w <- width+ numeric(length(t))
   y <- numeric(length(t))
   mask1 <- (w>1 || w<0)
@@ -56,9 +58,9 @@ sawtooth <- function(t, width=1){
   wsub_ <- w[mask3]
   y[mask3] <- (pi*(wsub_+1)-tsub_)/(pi*(1-wsub_))
   return(y)
-}
+})
 
-header <- function(){
+header <- cmpfun(function(){
   return(htmlDiv(
     id='header',
     className='banner',
@@ -73,7 +75,8 @@ header <- function(){
           'text-align'='center'
           )),
       htmlImg(
-        src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/excel/dash-daq/dash-daq-logo-by-plotly-stripe+copy.png",
+        #src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/excel/dash-daq/dash-daq-logo-by-plotly-stripe+copy.png",
+        src='assets/dash-logo.png',
         style=list(
           position='relative',
           float='right',
@@ -82,9 +85,9 @@ header <- function(){
         )
         )
     )))
-}
+})
 
-knobs <- function(cur_input, cur_tab){
+knobs <- cmpfun(function(cur_input, cur_tab){
   return(htmlDiv(list(
     ###FREQ INPUT
     daqKnob(
@@ -127,8 +130,8 @@ knobs <- function(cur_input, cur_tab){
     )
   ),
   style=list(marginLeft='20%', textAlign='center')))
-}
-led_displays <- function(cur_input, cur_tab){
+})
+led_displays <- cmpfun(function(cur_input, cur_tab){
   return(htmlDiv(list(
     daqLEDDisplay(
       id='frequency-display',
@@ -158,9 +161,9 @@ led_displays <- function(cur_input, cur_tab){
       color=theme[['primary']],
       className='four columns')
     ), style=list(marginLeft = '20%', textAlign = 'center')))
-}
+})
 
-radioitem <- function(cur_input, cur_tab){
+radioitem <- cmpfun(function(cur_input, cur_tab){
   return(dccRadioItems(
     id='function-type',
     options=list(
@@ -177,10 +180,10 @@ radioitem <- function(cur_input, cur_tab){
       alignItems = 'center',
       justifyContent = 'space-between'
       )))
-  }
+  })
 
 
-power_setting_div <- function(cur_inputs, cur_tab){
+power_setting_div <- cmpfun(function(cur_inputs, cur_tab){
   if(is.na(cur_inputs)||rlang::is_empty(cur_inputs)){
   cur_inputs = init_input
   }
@@ -216,10 +219,10 @@ return(htmlDiv(
           style=list('margin-bottom'='15px'))
         ),style=list(margin='15px 0'))
     )))
-}
+})
 
 
-function_setting_div <- function(cur_input, cur_tab){
+function_setting_div <- cmpfun(function(cur_input, cur_tab){
   if(is.na(cur_input)||rlang::is_empty(cur_input)){
     cur_input = init_input
   }
@@ -238,7 +241,7 @@ function_setting_div <- function(cur_input, cur_tab){
       # # RadioItems
       radioitem(cur_input, cur_tab)
     )))
-}
+})
 
 app$layout(htmlDiv(
   id='main-page',
@@ -370,13 +373,13 @@ app$callback(
               state(id='control-inputs', property='value'),
               state(id='oscilloscope', property='on'),
               state(id='function-generator', property='on')),
-  function(tab_index, cur_inputs, osci_on, func_gen){
+  cmpfun(function(tab_index, cur_inputs, osci_on, func_gen){
     if(!tab_index %in% names(cur_inputs)){
       return(osci_on)
     }
     td <- cur_inputs[[tab_index]]
     return(td[['oscilloscope']])
-  }
+  })
 )
 
 app$callback(
@@ -385,13 +388,13 @@ app$callback(
               state(id='control-inputs', property='value'),
               state(id='oscilloscope', property='on'),
               state(id='function-generator', property='on')),
-  function(tab_index, cur_inputs, osci_on, func_gen){
+  cmpfun(function(tab_index, cur_inputs, osci_on, func_gen){
     if(!tab_index %in% names(cur_inputs)){
       return(func_gen)
     }
     td <- cur_inputs[[tab_index]]
     return(td[['function_generator']])
-  }
+  })
 )
 
 
@@ -401,13 +404,13 @@ app$callback(
               state(id='control-inputs', property='value'),
               state(id='oscilloscope', property='on'),
               state(id='function-generator', property='on')),
-  function(tab_index, cur_inputs, osci_on, func_gen){
+  cmpfun(function(tab_index, cur_inputs, osci_on, func_gen){
     if(!tab_index %in% names(cur_inputs)){
       return(1000000)
     }
     td <- cur_inputs[[tab_index]]
     return(td[['frequency_input']])
-  }
+  })
 )
 
 app$callback(
@@ -416,13 +419,13 @@ app$callback(
               state(id='control-inputs', property='value'),
               state(id='oscilloscope', property='on'),
               state(id='function-generator', property='on')),
-  function(tab_index, cur_inputs, osci_on, func_gen){
+  cmpfun(function(tab_index, cur_inputs, osci_on, func_gen){
     if(!tab_index %in% names(cur_inputs)){
       return(1)
     }
     td <- cur_inputs[[tab_index]]
     return(td[['amplitude_input']])
-  }
+  })
 )
 
 app$callback(
@@ -431,13 +434,13 @@ app$callback(
               state(id='control-inputs', property='value'),
               state(id='oscilloscope', property='on'),
               state(id='function-generator', property='on')),
-  function(tab_index, cur_inputs, osci_on, func_gen){
+  cmpfun(function(tab_index, cur_inputs, osci_on, func_gen){
     if(!tab_index %in% names(cur_inputs)){
       return(0)
     }
     td <- cur_inputs[[tab_index]]
     return(td[['offset_input']])
-  }
+  })
 )
 
 app$callback(
@@ -446,13 +449,13 @@ app$callback(
               state(id='control-inputs', property='value'),
               state(id='oscilloscope', property='on'),
               state(id='function-generator', property='on')),
-  function(tab_index, cur_inputs, osci_on, func_gen){
+  cmpfun(function(tab_index, cur_inputs, osci_on, func_gen){
     if(!tab_index %in% names(cur_inputs)){
       return('SIN')
     }
     td <- cur_inputs[[tab_index]]
     return(td[['function_type']])
-  }
+  })
 )
 
 app$callback(
@@ -466,7 +469,7 @@ app$callback(
     input(id='function-type',property='value'),
     state(id='tabs', property='value'),
     state(id='control-inputs', property='data')),
-  function(osc_on, fnct_on, freq, amp, offset, wave, sel_tab, cur_inputs){
+  cmpfun(function(osc_on, fnct_on, freq, amp, offset, wave, sel_tab, cur_inputs){
     cur_inputs[[sel_tab]] = list(oscilloscope=osc_on, 
                                  function_generator=fnct_on, 
                                  frequency_input=freq,
@@ -474,7 +477,7 @@ app$callback(
                                  offset_input=offset,
                                  function_type=wave)
     return(cur_inputs)
-  }
+  })
 )
 
 # new tab created, not saved to store unless control inputs changes 
@@ -484,7 +487,7 @@ app$callback(
   params=list(input(id='control-inputs', property='data'),
               input(id='toggleTheme', property='value'),
               state(id='tabs', property='value')),
-  function(cur_inputs, theme_value, tab_index){
+  cmpfun(function(cur_inputs, theme_value, tab_index){
     theme_select <- ifelse(theme_value, 'dark', 'light')
     axis <- axis_color[[theme_select]]
     marker <- marker_color[[theme_select]]
@@ -527,7 +530,7 @@ app$callback(
 
     if(tab_data[['function_type']]=='SIN'){
       Y <- unlist(lapply(time, function(n){
-          return(tab_data[['offset_input']]+tab_data[['amplitude_input']]*sin(2*pi*tab_data[['frequency_input']]*(2*pi)/(360)*n))
+          return(tab_data[['offset_input']]+tab_data[['amplitude_input']]*sin(2*pi*0.1*tab_data[['frequency_input']]*n))
           }))
       base_figure <- plot_ly(
         type='scatter',
@@ -560,7 +563,7 @@ app$callback(
     } else {
       return(base_figure %>% base_layout)
     }
-  }
+  })
 )
 
 app$callback(
@@ -568,28 +571,28 @@ app$callback(
   params=list(input(id='control-inputs', property='data'),
               input(id='toggleTheme', property='value'),
               state(id='tabs', property='value')),
-  function(cur_inputs, theme_value, tab_index){
+  cmpfun(function(cur_inputs, theme_value, tab_index){
     tab_data <- cur_inputs[[tab_index]]
     return(sprintf('%s | %.3f Hz | %.3f mV | %.3f mV', tab_data[['function_type']], tab_data[['frequency_input']], tab_data[['amplitude_input']], tab_data[['offset_input']]))
-  }
+  })
 )
 
 app$callback(
   output=list(id='frequency-display', property='value'),
   params=list(input(id='frequency-input', property='value')),
-  function(val){return(round(val, 3))}
+  cmpfun(function(val){return(round(val, 3))})
 )
 
 app$callback(
   output=list(id='amplitude-display', property='value'),
   params=list(input(id='amplitude-input', property='value')),
-  function(val){return(round(val, 3))}
+  cmpfun(function(val){return(round(val, 3))})
 )
 
 app$callback(
   output=list(id='offset-display', property='value'),
   params=list(input(id='offset-input', property='value')),
-  function(val){return(round(val, 3))}
+  cmpfun(function(val){return(round(val, 3))})
 )
 
 app$callback(
@@ -600,7 +603,7 @@ app$callback(
     state(id='control-inputs', property='data'),
     state(id='tabs', property='value')
     ),
-  function(turn_dark, color_pick, cur_inputs, cur_tab_value){
+  cmpfun(function(turn_dark, color_pick, cur_inputs, cur_tab_value){
     theme[['dark']] <- turn_dark
     if(rlang::is_empty(color_pick)||is.na(color_pick)){
       theme[['primary']] <- color_pick[['hex']]
@@ -613,117 +616,117 @@ app$callback(
         function_setting_div(cur_inputs, cur_tab_value)
       ))
     )
-  }
+  })
 )
 
 app$callback(
   output=list(id='power-title', property='style'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+   cmpfun(function(color){
     return(list('color'=color[['hex']]))
-  }
+  })
 )
 app$callback(
   output=list(id='function-title', property='style'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(list('color'=color[['hex']]))
-  }
+  })
 )
 app$callback(
   output=list(id='graph-title', property='style'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(list('color'=color[['hex']]))
-  }
+  })
 )
 
 app$callback(
   output=list(id='graph-info', property='style'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(list(border=sprintf('1px solid %s', color[['hex']]),'color'='inherit'))
-  }
+  })
 )
 
 app$callback(
   output=list(id='tabs', property='colors'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(list('border'=color[['hex']], primary=color[['hex']], background='#f2f2f2'))
-  }
+  })
 )
 
 app$callback(
   output=list(id='header', property='style'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(list('backgroundColor'=color[['hex']]))
-  }
+  })
 )
 
 app$callback(
   output=list(id='function-generator', property='color'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(color[['hex']])
-  }
+  })
 )
 
 app$callback(
   output=list(id='oscilloscope', property='color'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(color[['hex']])
-  }
+  })
 )
 
 app$callback(
   output=list(id='frequency-input', property='color'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(color[['hex']])
-  }
+  })
 )
 
 app$callback(
   output=list(id='amplitude-input', property='color'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(color[['hex']])
-  }
+  })
 )
 
 app$callback(
   output=list(id='offset-input', property='color'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(color[['hex']])
-  }
+  })
 )
 
 app$callback(
   output=list(id='frequency-display', property='color'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(color[['hex']])
-  }
+  })
 )
 
 app$callback(
   output=list(id='amplitude-display', property='color'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(color[['hex']])
-  }
+  })
 )
 
 app$callback(
   output=list(id='offset-display', property='color'),
   params=list(input(id='color-picker', property='value')),
-  function(color){
+  cmpfun(function(color){
     return(color[['hex']])
-  }
+  })
 )
 
 ############################ DARK THEME CALLBACKS
@@ -731,7 +734,7 @@ app$callback(
   output=list(id='new-tab', property='style'),
   params=list(input(id='toggleTheme', property='value'),
               state(id='new-tab', property='style')),
-  function(turn_dark, cur_style){
+  cmpfun(function(turn_dark, cur_style){
     if(turn_dark){
       cur_style[['backgroundColor']] <- background_color[['dark']]
       return(cur_style)
@@ -739,13 +742,13 @@ app$callback(
       cur_style[['backgroundColor']] <- background_color[['light']]
       return(cur_style)
     }
-  }
+  })
 )
 app$callback(
 output=list(id='del-tab', property='style'),
 params=list(input(id='toggleTheme', property='value'),
             state(id='del-tab', property='style')),
-function(turn_dark, cur_style){
+cmpfun(function(turn_dark, cur_style){
   if(turn_dark){
     cur_style[['backgroundColor']] <- background_color[['dark']]
     return(cur_style)
@@ -753,19 +756,19 @@ function(turn_dark, cur_style){
     cur_style[['backgroundColor']] <- background_color[['light']]
     return(cur_style)
   }
-}
+})
 )
 
 app$callback(
   output = list(id='main-page', property='style'),
   params = list(input(id='toggleTheme', property='value')),
-  function(turn_dark){
+  cmpfun(function(turn_dark){
     if(turn_dark){
       return(list(backgroundColor=background_color[['dark']], color=font_color[['dark']]))
     }else{
       return(list(backgroundColor=background_color[['light']], color=font_color[['light']]))
     }
-  }
+  })
 )
 
 ####### GENERATING TABS
@@ -773,18 +776,18 @@ app$callback(
   output=list(id='tabs', property='children'),
   params=list(input(id='new-tab', property='n_clicks'),
               state(id='control-inputs', 'data')),
-  function(n_clicks, cur_inputs){
+  cmpfun(function(n_clicks, cur_inputs){
     return(lapply(1:(n_clicks), function(n){return(dccTab(label=sprintf('Run #%d', n), value=sprintf('%d',n)))}))
-  }
+  })
 )
 ####### DELETING TABS
 app$callback(
   output=list(id='new-tab', property='n_clicks'),
   params=list(input(id='del-tab', property='n_clicks'),
               state(id='new-tab', property='n_clicks')),
-  function(d, n){
+  cmpfun(function(d, n){
     return(max(n-1, 1))
-  }
+  })
 )
 
 ####### LAUNCH THE APP
