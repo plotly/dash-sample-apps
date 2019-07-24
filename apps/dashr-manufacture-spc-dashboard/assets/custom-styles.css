@@ -75,12 +75,12 @@ h5 {
   justify-content: flex-end;
 }
 
-.banner Img {
+#banner-logo Img {
   height: 38px; /* same as button height */
   margin: 0 1rem;
 }
 
-.banner button {
+#banner-logo button {
   margin-right: 1rem; /* TODO: change to 2% */
   line-height: 3rem;
   color: #ABBACC;
@@ -88,7 +88,7 @@ h5 {
   border-color: #4B5460;
 }
 
-.banner button:hover {
+#banner-logo button:hover {
   color: #92E0D3;
   border-color: whitesmoke;
 }
@@ -204,11 +204,13 @@ h5 {
   border-bottom: #92E0D3 solid 6px !important;
 }
 
+/* TO DO: add below
 @media only screen and (max-width: 600px) {
   #app-tabs .tab {
     margin: 0;
   }
 }
+*/
 
 /* Tab 1 Settings
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -545,4 +547,66 @@ h5 {
   position: relative;
   z-index: 4;
   border-top: 6px solid #1E2130;
+}
+
+/* Other Devices
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+@media only screen and (max-width: 950px) {
+
+  body {
+    font-size: 13px;
+  }
+
+  #big-app-container {
+    padding: 0 1rem;
+  }
+
+  .banner {
+    flex-direction: column-reverse;
+    padding: 1rem 0.5rem;
+  }
+
+  #banner-text {
+    text-align: center;
+  }
+
+  #banner-text h5 {
+    font-size: 14px;
+  }
+
+  #banner-text h6 {
+    font-size: 13px;
+  }
+
+  #banner-logo button {
+    display: none;
+  }
+
+  #banner-logo Img {
+    height: 3rem;
+    margin: 1rem;
+  }
+
+  #app-container {
+    height: auto;
+  }
+
+  #specs-container {
+    margin: 2rem;
+  }
+
+  #settings-menu {
+    margin-top: 2rem; /* TO DO: toggle */
+  }
+
+  #settings-menu > div {
+    width: 100%;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    flex-basis: auto;
+    margin: 2rem 0rem;
+  }
+
 }
