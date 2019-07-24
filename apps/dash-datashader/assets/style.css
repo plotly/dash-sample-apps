@@ -30,45 +30,10 @@ h3 {
     justify-content: space-evenly;
 }
 
-@media only screen and (max-width: 800px) {
-    #header {
-        max-width: 100%;
-        padding: 4rem 5rem 2rem 5rem;
-        display: flex;
-        flex-direction: column-reverse;
-        align-items: center;
-        justify-content: space-evenly;
-    }
-
-    #logo {
-        margin-bottom: 1rem;
-    }
-
-    #header h3 {
-        text-align: center;
-        font-size: 2rem;
-        max-width: none;
-    }
-
-    #header-1 {
-        text-align: center;
-    }
-
-    #header-2 {
-        margin-top: 3rem !important;
-        text-align: center;
-    }
-
-    #header-2-p {
-        margin: 0;
-    }
-
-}
-
 
 p, #header-2 {
     font-family: 'Open Sans', sans-serif;
-    font-size: 2rem !important;
+    font-size: 2rem;
     margin: 0 11%;
 }
 
@@ -94,4 +59,46 @@ p, #header-2 {
 
 #logo {
     height: 5rem;
+}
+
+@media (max-width: 800px) {
+    #header {
+        max-width: 100%;
+        padding: 4rem 5rem 2rem 5rem;
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    #logo {
+        margin-bottom: 1rem;
+    }
+
+    #header h3 {
+        text-align: center;
+        font-size: 2rem;
+        max-width: none;
+    }
+
+    #header-1, #header-2{
+        font-size: 1.5rem;
+    }
+
+    #header-1 {
+        text-align: center;
+    }
+
+    #header-2 {
+        margin-top: 3rem !important;
+        text-align: center;
+    }
+
+    #header-2-p {
+        margin: 0;
+    }
+
+    #graph-1, #graph-2 {
+        margin: 0 3% 5% 3%;
+    }
 }
