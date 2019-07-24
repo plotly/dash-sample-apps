@@ -36,7 +36,7 @@ theme = {
     "detail": "#2d3038",  # Background-card
     "primary": "#007439",  # Green
     "secondary": "#FFD15F",  # Accent
-}  # todo: change all dash-daq classname in stylesheet
+}
 
 
 def build_banner():
@@ -254,7 +254,7 @@ def generate_modal():
                                 """
                         ###### What is this mock app about?
 
-                        This is a dashboard for monitoring read-time process quality along manufacture production line. 
+                        This is a dashboard for monitoring real-time process quality along manufacture production line. 
 
                         ###### What does this app shows
 
@@ -554,7 +554,6 @@ def build_chart_panel():
         className="twelve columns",
         children=[
             generate_section_banner("Live SPC Chart"),
-            dcc.Store(id="control-chart-state"),
             dcc.Graph(
                 id="control-chart-live",
                 figure=go.Figure(
@@ -725,7 +724,7 @@ def generate_graph(interval, specs_dict, col):
                 "y0": usl,
                 "x1": len_figure + 1,
                 "y1": usl,
-                "line": {"color": "#91dfd2", "width": 1, "dash": "dashdot"},
+                "line": {"color": "#91dfd2", "width": 1, "dash": "dot"},
             },
             {
                 "type": "line",
@@ -735,7 +734,7 @@ def generate_graph(interval, specs_dict, col):
                 "y0": lsl,
                 "x1": len_figure + 1,
                 "y1": lsl,
-                "line": {"color": "#91dfd2", "width": 1, "dash": "dashdot"},
+                "line": {"color": "#91dfd2", "width": 1, "dash": "dot"},
             },
             {
                 "type": "line",
@@ -745,7 +744,7 @@ def generate_graph(interval, specs_dict, col):
                 "y0": ucl,
                 "x1": len_figure + 1,
                 "y1": ucl,
-                "line": {"color": "rgb(255,127,80)", "width": 1, "dash": "dashdot"},
+                "line": {"color": "rgb(255,127,80)", "width": 1, "dash": "dot"},
             },
             {
                 "type": "line",
@@ -765,7 +764,7 @@ def generate_graph(interval, specs_dict, col):
                 "y0": lcl,
                 "x1": len_figure + 1,
                 "y1": lcl,
-                "line": {"color": "rgb(255,127,80)", "width": 1, "dash": "dashdot"},
+                "line": {"color": "rgb(255,127,80)", "width": 1, "dash": "dot"},
             },
         ],
         xaxis2={
@@ -853,7 +852,7 @@ app.layout = html.Div(
             children=[
                 build_tabs(),
                 # Main app
-                html.Div(id="app-content", className="container scalable"),
+                html.Div(id="app-content"),
             ],
         ),
         dcc.Store(id="value-setter-store", data=init_value_setter_store()),

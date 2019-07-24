@@ -10,7 +10,7 @@
 - Media Queries
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-* {
+#app-container * {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
@@ -41,8 +41,8 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-bottom: darkgray solid 1px;
-  padding: 1rem 4rem;
+  border-bottom: 1px solid #4B5460;
+  padding: 1rem 10rem;
   width: 100%;
 }
 
@@ -57,7 +57,6 @@ body {
 }
 
 .banner h6 {
-  color: darkgray;
   font-size: 1.6rem;
   line-height: 1;
 }
@@ -65,8 +64,8 @@ body {
 .banner button {
   color: #95969A;
   margin-right: 10px;
-  height: 30px;
-  line-height: 30px;
+  height: 3rem;
+  line-height: 3rem;
 }
 
 #banner-logo {
@@ -135,7 +134,7 @@ body {
 }
 
 .custom-tabs {
-  background-color: #161a28;
+  background-color: #1E2130;
   text-transform: uppercase;
   font-weight: 600;
   font-size: 14px;
@@ -144,10 +143,11 @@ body {
 }
 
 #Specs-tab.custom-tab, #Control-chart-tab.custom-tab {
-  background-color: inherit;
+  background-color: #161a28;
   letter-spacing: 1px;
   color: inherit;
-  border: #23262E solid 2px;
+  border: 0;
+  border-bottom: #1E2130 solid 4px !important;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -157,7 +157,15 @@ body {
 }
 
 #Specs-tab.custom-tab--selected, #Control-chart-tab.custom-tab--selected {
-  border-bottom: #91dfd2 solid 3px !important;
+  border-bottom: #91dfd2 solid 4px !important;
+}
+
+#Specs-tab.custom-tab {
+  margin-right: 3px;
+}
+
+#Control-chart-tab.custom-tab {
+  margin-left: 3px;
 }
 
 .section-banner {
@@ -225,19 +233,18 @@ body {
   position: relative;
   z-index: 4;
   width: 100%;
-  border-top: #242633 solid 0.8rem;
+  border-top: #1E2130 solid 0.8rem;
 }
 
 #metric-summary-session {
   height: 100%;
-  /*flex-grow: 1;*/
   flex: 1 1 auto;
 }
 
 #ooc-piechart-outer {
   height: 100%;
   margin: 0;
-  border-left: #242633 solid 0.8rem;
+  border-left: #1E2130 solid 0.8rem;
   flex: 1 1 auto;
 }
 
@@ -309,7 +316,7 @@ body {
 }
 
 #value-setter-view-btn, #value-setter-set-btn {
-  border-color: darkgray;
+  border: 1px solid #4B5460;
   color: darkgray;
 }
 
@@ -456,7 +463,7 @@ body {
   display: flex;
   flex-direction: column;
   flex: 3 1;
-  max-width: calc(75% - 0.8rem);
+  max-width: calc(75%);
   width: 70%;
 }
 
@@ -468,7 +475,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  border-right: #23262E solid 0.8rem;
+  border-right: #1E2130 solid 0.8rem;
   flex: 1 1;
   padding: 2rem;
   max-width: 25%;
@@ -523,7 +530,7 @@ body {
 #stop-button > div > button {
   color: white !important;
   background-color: #1d202d !important;
-  border: darkgray solid 1px !important;
+  border: 1px solid #4B5460 !important;
   border-radius: 4px;
   height: 40px;
   line-height: 40px;
@@ -536,15 +543,10 @@ body {
 }
 
 #card-1 P, #card-2 P {
-  color: darkgray;
+  margin: 2rem;
+  color: inherit;
   font-weight: bold;
   align-self: flex-start;
-}
-
-#card-1 P, #card-2 P {
-  margin: 2rem;
-  font-weight: bold;
-  color: inherit;
 }
 
 #card-2 .scale, #card-2 .needle, #card-2 .needle-knob {
@@ -574,13 +576,6 @@ body {
   overflow-y: scroll;
   width: 100%;
   height: 30rem;
-}
-
-/* Scalable Container
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-.container.scalable {
-  width: 95%;
-  max-width: none;
 }
 
 /*
@@ -721,8 +716,8 @@ body {
     height: fit-content !important;
     justify-content: space-between;
     align-items: flex-start;
-    border-top: 1px solid #23262E;
-    border-bottom: 1px solid #23262E;
+    border-top: 1px solid #1E2130;
+    border-bottom: 1px solid #1E2130;
   }
 
   #metric-rows .column, #metric-rows .columns {
@@ -788,7 +783,17 @@ body {
     content: "Pass / Fail";
   }
 
-  .output-datatable{
-    width:auto;
+  .output-datatable {
+    width: auto;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #Specs-tab.custom-tab {
+    margin-right: 0;
+  }
+
+  #Control-chart-tab.custom-tab {
+    margin-left: 0;
   }
 }
