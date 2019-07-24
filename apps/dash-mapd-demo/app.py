@@ -27,7 +27,7 @@ password = "HyperInteractive"
 db_name = "mapd"
 
 # Get credentials from env
-if "DASH_APP_NAME" in os.environ:
+if "DB_HOST" in os.environ:
     host = os.environ.get("DB_HOST")
 else:
     host = "localhost"
