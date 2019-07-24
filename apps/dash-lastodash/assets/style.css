@@ -185,21 +185,41 @@ body {
     position: relative;
     top: 40px;
     background-color: white;
-    margin-right: 20px;
-    display: inline
+    display: inline-block;
+}
+
+.dash-logo {
+    height: 70px;
+    float: right;
+    margin-top: 30px;
+    position: absolute;
+    right: 120px;
 }
 
 #frontpage {
     margin-left: 50px;
     padding: 10px;
 }
+
+#las-header {
+    display: inline-flex;
+    width: 100%;
+}
+
 #las-header-text {
-    display: inline;
+    
     position: relative;
-    top: -10px;
+    margin-top: 20px;
+    
 }
 #las-header-text h1 {
     position: relative;
+    margin-top: 50px;
+    margin-left: 20px
+}
+
+#las-filename {
+    margin-left: -60px;
 }
 
 #controls {
