@@ -437,8 +437,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                     :stopped_interval
-                                     ],
+                                    :stopped_interval
+                                ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
