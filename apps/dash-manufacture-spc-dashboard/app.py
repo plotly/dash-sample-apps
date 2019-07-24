@@ -32,12 +32,6 @@ suffix_ooc_n = "_OOC_number"
 suffix_ooc_g = "_OOC_graph"
 suffix_indicator = "_indicator"
 
-theme = {
-    "detail": "#2d3038",  # Background-card
-    "primary": "#007439",  # Green
-    "secondary": "#FFD15F",  # Accent
-}
-
 
 def build_banner():
     return html.Div(
@@ -443,8 +437,8 @@ def generate_metric_row_helper(stopped_interval, index):
                         "data": [
                             {
                                 "x": state_dict["Batch"]["data"].tolist()[
-                                    :stopped_interval
-                                ],
+                                     :stopped_interval
+                                     ],
                                 "y": state_dict[item]["data"][:stopped_interval],
                                 "mode": "lines+markers",
                                 "name": item,
@@ -805,7 +799,7 @@ def update_sparkline(interval, param):
 
 def update_count(interval, col, data):
     if interval == 0:
-        return "0", "0.00%", 0.00001, theme["primary"]
+        return "0", "0.00%", 0.00001, "#92e0d3"
 
     if interval > 0:
 
@@ -828,7 +822,7 @@ def update_count(interval, col, data):
 
         # Set indicator theme according to threshold 5%
         if 0 <= ooc_grad_val <= 5:
-            color = theme["primary"]
+            color = "#92e0d3"
         elif 5 < ooc_grad_val < 7:
             color = "#f4d44d"
         else:
@@ -1068,6 +1062,7 @@ def show_current_specs(n_clicks, dd_select, store_data):
             },
             css=[
                 {"selector": "tr:hover td", "rule": "color: #91dfd2 !important;"},
+                {"selector": "td", "rule": "border: none !important;"},
                 {
                     "selector": ".dash-cell.focused",
                     "rule": "background-color: #1e2130 !important;",
