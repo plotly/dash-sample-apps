@@ -10,8 +10,8 @@
 - white1:  whitesmoke  #??????   #F5F5F5
 - gray1:   darkgray    #4B5460   #4B5460
 - gray2:   darkgray    darkgray  #ABBACC
-- black1:  #2D3038     #1E2130   #1E2130
-- black2:  #1D202D     #161A28   #171A29
+- dark1:   #2D3038     #1E2130   #1E2130
+- dark2:   #1D202D     #161A28   #171A29
 - blue:    #91DFD2     #92E0D3   #92E0D3
 - yellow:  #F4D44D     #??????   #F5D54C
 - red:     #F45060     #??????   #F45060
@@ -30,12 +30,14 @@ body {
 }
 
 h6 {
+  margin: 0;
   color: #ABBACC;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1;
 }
 
 h5 {
+  margin: 0;
   font-family: 'Open Sans Semi Bold', sans-serif;
   font-weight: 500;
   font-size: 20px;
@@ -58,7 +60,7 @@ h5 {
 .banner {
   height: fit-content; /* TODO: change to 6rem */
   width: 100%;
-  padding: 1rem 10rem; /* TODO: change to 1rem 4rem */
+  padding: 2rem 10rem; /* TODO: change to 1rem 4rem */
   border-bottom: 1px solid #4B5460;
   display: flex;
   flex-direction: row;
@@ -79,9 +81,10 @@ h5 {
 }
 
 .banner button {
-  color: #ABBACC;
   margin-right: 1rem; /* TODO: change to 2% */
   line-height: 3rem;
+  color: #ABBACC;
+  background-color: #1E2130 !important;
   border-color: #4B5460;
 }
 
@@ -118,10 +121,10 @@ h5 {
 }
 
 .close-container .button {
-  color: #ABBACC;
-  font-weight: normal;
   float: right;
   height: 100%;
+  color: #ABBACC;
+  font-weight: normal;
   border: none;
 }
 
@@ -142,7 +145,7 @@ h5 {
   background: #161A28;
   width: 100%;
   max-width: 100%;
-  height: calc(100vh - 10rem - 6px);
+  height: calc(100vh - 10rem - 1px);
 }
 
 /* TODO: decide if the following is needed for mobile version:
@@ -160,7 +163,7 @@ h5 {
 }
 
 .section-banner {
-  padding: 1rem 2rem;
+  padding: 1.5rem 2rem;
   border-bottom: 1px solid #4B5460;
 }
 
@@ -202,16 +205,12 @@ h5 {
 }
 
 @media only screen and (max-width: 600px) {
-  #specs-tab.tab {
-    margin-right: 3px;
-  }
-
-  #control-chart-tab.tab {
-    margin-left: 3px;
+  #app-tabs .tab {
+    margin: 0;
   }
 }
 
-/* Tab 1 Content
+/* Tab 1 Settings
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #specs-container {
@@ -262,18 +261,16 @@ h5 {
 }
 
 #value-setter-buttons button {
-  color: #ABBACC;
-  border-color: #4B5460;
   margin-left: 20px;
+  color: #ABBACC;
+  background-color: #1E2130 !important;
+  border-color: #4B5460;
 }
 
 #value-setter-buttons button:hover {
   color: #92E0D3;
   border-color: whitesmoke;
 }
-
-/* Dropdown
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 .Select-control {
   border: 1px solid #4B5460 !important;
@@ -313,9 +310,6 @@ h5 {
   cursor: pointer;
 }
 
-/* Numeric Input
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
 .react-numeric-input, .react-numeric-input input {
   width: 100% !important;
   height: 100%;
@@ -335,7 +329,7 @@ h5 {
   border-color: #ABBACC transparent transparent !important;
 }
 
-/* Tab 2 Content
+/* Tab 2 Status
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #status-container {
@@ -351,7 +345,7 @@ h5 {
 
 #quick-stats {
   max-width: 25%;
-  padding: 5rem 0;
+  padding: 0;
   background-color: #171A29;
   border-right: 6px solid #1E2130;
   flex: 1 1;
@@ -361,33 +355,42 @@ h5 {
   justify-content: flex-start;
 }
 
-#card-1, #card-2, #utility-card {
+#quick-stats .card {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  margin: 0;
   padding: 0;
+  margin: 0;
   width: 100%;
 }
 
-#card-1 {
-  margin-bottom: 3rem;
+#quick-stats .card:nth-child(1) {
+  margin-top: 8rem;
+  margin-bottom: 4rem;
 }
 
-#utility-card {
+#quick-stats .card:nth-child(2) {
+  margin-top: 4rem;
+}
+
+#quick-stats .card:nth-child(3) {
   height: 4rem !important;
-  margin-top: 2rem;
+  margin-bottom: 8rem;
 }
 
-
-
+#quick-stats h6 {
+  margin-bottom: 2rem;
+  /* TO DO: add the following if left text align wanted:
+  margin-left: 2rem;
+  align-self: flex-start; */
+}
 
 #quick-stats button {
   height: 40px;
-  background-color: #1E2130 !important;
   line-height: 40px;
   color: #ABBACC;
+  background-color: #1E2130 !important;
   border: 1px solid #4B5460;
   border-radius: 4px;
 }
@@ -396,66 +399,6 @@ h5 {
   color: #92E0D3;
   border-color: whitesmoke;
 }
-
-#graphs-container {
-  max-width: calc(75% - 6px);
-  background-color: #171A29;
-  flex: 3 1;
-  display: flex;
-  flex-direction: column;
-}
-
-#top-section-container {
-  height: 40rem;
-  max-width: 100%;
-  display: flex;
-  flex-direction: row;
-}
-
-#metric-summary-session {
-  height: 100%;
-  flex: 1 1 auto;
-}
-
-#metric-div {
-  padding: 1rem 2rem;
-}
-
-#metric-rows {
-  overflow-y: scroll;
-  width: 100%;
-  height: 30rem;
-}
-
-#metric-rows button {
-  padding: 0;
-  color: #ABBACC;
-  font-weight: normal;
-  border: none;
-}
-
-#metric-rows button:hover, #metric-rows button:focus {
-  color: whitesmoke;
-}
-
-#ooc-piechart-outer {
-  height: 100%;
-  margin: 0;
-  border-left: 6px solid #1E2130;
-  flex: 1 1 auto;
-}
-
-#control-chart-container {
-  position: relative;
-  z-index: 4;
-  width: 100%;
-  border-top: 6px solid #1E2130;
-}
-
-
-
-/* LED Display
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #operator-led > div > div {
   padding: 1rem;
@@ -469,9 +412,6 @@ h5 {
 #operator-led > div > div svg:nth-child(1) path {
   stroke: transparent;
 }
-
-/* Gauge
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #progress-gauge > div, #progress-gauge > div > div, #progress-gauge > div > div > div {
   width: 100%;
@@ -489,14 +429,120 @@ h5 {
 }
 
 #progress-gauge .track {
-  stroke: #f4d44d !important;
+  stroke: #F4D44D !important;
   stroke-width: 10;
 }
 
 #progress-gauge .track.progress {
-  stroke: #fff3c5 !important;
+  stroke: #FFF3C5 !important;
 }
 
 #progress-gauge .scale, #progress-gauge .needle, #progress-gauge .needle-knob {
   display: none !important;
+}
+
+/* Tab 2 Graphs & Stats
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#graphs-container {
+  max-width: calc(75% - 6px);
+  max-height: 100%; /* TO DO: toggle */
+  background-color: #171A29;
+  flex: 3 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#top-section-container {
+  max-width: 100%;
+  max-height: 40rem; /* TO DO: toggle to make app fit screen height */
+  display: flex;
+  flex-direction: row;
+}
+
+#metric-summary-session {
+  max-height: 100%;
+  flex: 1 1 auto;
+}
+
+#metric-div {
+  padding: 1rem 1.5rem;
+}
+
+#metric-div .row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center; /* vertical center row items*/
+}
+
+#metric-header-3 {
+  height: auto !important;
+}
+
+#metric-rows {
+  overflow-y: scroll;
+  width: 100%;
+  height: 30rem; /* TO DO: toggle to make app fit screen height */
+  font-size: 12px;
+}
+
+#metric-rows .row:hover {
+  background-color: #1E2130;
+}
+
+#metric-rows button {
+  padding: 0;
+  color: #ABBACC;
+  font-weight: normal;
+  border: none;
+}
+
+#metric-rows button:hover, #metric-rows button:focus {
+  color: whitesmoke;
+}
+
+#metric-rows .graduated-bar {
+  margin: 15% 0;
+}
+
+#metric-rows .graduated-bar > div > div {
+  width: 100%;
+  background-color: #1E2130 !important;
+}
+
+#metric-rows .graduated-bar > div > div > div {
+  margin: 0 !important;
+}
+
+#metric-rows .row:hover .graduated-bar > div > div {
+  background-color: #171A29 !important;
+}
+
+#metric-rows .indicator > div > div {
+  width: 12px;
+  height: 12px;
+}
+
+#ooc-piechart-outer {
+  height: 40rem; /* TO DO: toggle to make app fit screen height */
+  margin: 0;
+  border-left: 6px solid #1E2130;
+  flex: 1 1 auto;
+}
+
+#piechart {
+  height: 100%;
+}
+
+#piechart > div > div {
+  height: 100%;
+}
+
+#control-chart-container {
+  max-width: 100%;
+  max-height: 50%;
+  position: relative;
+  z-index: 4;
+  border-top: 6px solid #1E2130;
 }
