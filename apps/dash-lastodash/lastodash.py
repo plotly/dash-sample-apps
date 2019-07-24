@@ -84,6 +84,10 @@ def generate_frontpage():
                                         else "Unknown version"
                                     )
                                 ),
+                                html.Img(
+                                    src=app.get_asset_url("dash-logo.png"),
+                                    className="dash-logo",
+                                ),
                             ],
                         ),
                     ],
