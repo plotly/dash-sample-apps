@@ -6,10 +6,6 @@
 
 /* Remove Undo
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-._dash-undo-redo {
-    display: none;
-}
-
 body {
     background-color: #f5f6f7;
     color: #515151;
