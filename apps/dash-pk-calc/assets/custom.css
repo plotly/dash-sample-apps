@@ -5,8 +5,10 @@
   padding-bottom: 0px;
   transition-duration: 500ms;
 }
-#dashbio-logo > img {
-  height: 40px !important;
+#dash-logo > img {
+  height: 26px !important;
+  margin-top: 5px;
+  margin-left: 20px;
 }
 .pkcalc-banner > a > img:hover {
   filter: brightness(2);
@@ -14,18 +16,17 @@
 .pkcalc-banner > img {
   height: 36px;
   float: right;
-  margin-top: 12px;
-  margin-right: 10px;
+  margin: 10px;
   transition-duration: 500ms;
 }
 .pkcalc-banner h2 {
-  font-size: 22pt;
+  font-size: 20pt;
   font-family: "Times";
   font-weight: 200 !important;
   letter-spacing: 1px;
   position: absolute;
-  top: -5px;
-  display: inline-block;
+  top: 5px;
+  margin-left: 15%;
 }
 
 #gh-link {
@@ -35,10 +36,7 @@
   color: white;
   border: solid 1px white;
   border-radius: 2px;
-  padding: 2px;
-  padding-top: 5px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 5px 15px;
   font-weight: 100;
   position: relative;
   top: 15px;
@@ -53,18 +51,16 @@
 }
 .container {
   max-width: 1200px;
-  position: absolute;
-  top: 60px;
-  width: 100%;
-  padding: 50px 100px;
-  margin: 0px 150px;
+  position: relative;
+  top: 100px;
+  margin-bottom: 30px;
 }
 
 .pkcalc-banner {
   position: absolute;
   top: 0px;
   left: 0px;
-  height: 60px !important;
+  padding: 10px 0px;
   width: 100%;
   background: rgb(2, 21, 70);
   color: white;
