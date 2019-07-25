@@ -20,7 +20,8 @@ body {
   margin: 0.5rem;
   padding: 1rem;
   position: relative;
-  box-shadow: 2px 2px 2px lightgrey;
+  border: 1px solid #f1f1f1;
+  /* box-shadow: 1px 1px 1px lightgrey; */
 }
 
 input {
@@ -44,29 +45,6 @@ input {
 
 .row {
   align-items: center;
-}
-
-._dash-undo-redo {
-  display: none;
-}
-
-.header {
-  margin: 0px;
-  background-color: white;
-  color: black;
-  padding-right: 7%;
-  padding-left: 8%;
-  display: flex;
-}
-
-.header Img {
-  margin-left: auto;
-  max-height: 100px;
-  max-width: 50%;
-}
-
-.control .Select-control {
-  border: none;
 }
 
 .modal {
@@ -101,6 +79,62 @@ input {
   border-radius: 10px;
 }
 
+#tabs {
+  border-top: 1px solid lightgrey;
+  display: flex;
+  flex-direction: row;
+  padding: 1rem 10%;
+  margin-bottom: 1rem;
+  background-color: white;
+}
+
+#tabs > a {
+  width: 15%;
+  text-decoration: none;
+  color: black;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+#tabs > a::after {
+  content:''; 
+  width:1px; 
+  height:90%; 
+  background:lightgrey; 
+  position:relative;
+}
+
+#tab:last-child {
+
+}
+
+button {
+  height: 3rem;
+  background-color: white;
+  box-shadow: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 1rem;
+}
+
+.header {
+  margin: 0px;
+  background-color: white;
+  color: black;
+  padding: 1rem 10%;
+  display: flex;
+}
+
+.header Img {
+  margin-left: auto;
+  max-height: 6rem;
+  max-width: 50%;
+}
+
+.control .Select-control {
+  border: none;
+}
+
 ._dash-undo-redo {
   display: none;
 }
@@ -111,7 +145,6 @@ input {
   letter-spacing: -.1rem;
   vertical-align: middle;
 }
-
 
 table {
   border: 1px;
@@ -132,15 +165,6 @@ table {
 .indicator {
   flex: 1;
 }
-.tab {
-  border-left: none !important;
-  border-right: none !important;
-  border-bottom: none !important;
-}
-
-.tab--selected {
-  background-image: linear-gradient(white, #f9f9f9);
-}
 
 ::-webkit-scrollbar {
   width: 0px;  /* Remove scrollbar space */
@@ -154,7 +178,7 @@ table {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: auto;
-    width: 90%;
+    width:80%;
     margin-left: auto;
     margin-right: auto;
   }
@@ -219,7 +243,7 @@ table {
   #opportunity_grid {
     display: -ms-grid;
     display: grid;
-    width: 90%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -278,7 +302,7 @@ table {
   #cases_grid {
     display: -ms-grid;
     display: grid;
-    width: 90%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
