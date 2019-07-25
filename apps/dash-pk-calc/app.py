@@ -29,7 +29,6 @@ table_header_style = {
 
 
 app = dash.Dash(__name__)
-
 server = app.server
 
 APP_PATH = str(pl.Path(__file__).parent.resolve())
@@ -46,10 +45,8 @@ app.layout = html.Div(
             className="pkcalc-banner",
             children=[
                 html.A(
-                    id="dashbio-logo",
-                    children=[
-                        html.Img(src=app.get_asset_url("dashbio_logo_transparent.png"))
-                    ],
+                    id="dash-logo",
+                    children=[html.Img(src=app.get_asset_url("dash-logo.png"))],
                     href="/Portal",
                 ),
                 html.H2("Noncompartmental Pharmacokinetics Analysis"),
