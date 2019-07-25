@@ -16,21 +16,6 @@
 - Media Queries
 */
 
-/* PLotly.js
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-/* plotly.js's modebar's z-index is 1001 by default
- * https://github.com/plotly/plotly.js/blob/7e4d8ab164258f6bd48be56589dacd9bdd7fded2/src/css/_modebar.scss#L5
- * In case a dropdown is above the graph, the dropdown's options
- * will be rendered below the modebar
- * Increase the select option's z-index
- */
-
-/* This was actually not quite right -
-   dropdowns were overlapping each other (edited October 26)
-
-.Select {
-    z-index: 1002;
-}*/
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -126,6 +111,7 @@ html is set to 62.5% so that all the REM measurements throughout Skeleton
 are based on 10px sizing. So basically 1.5rem = 15px :) */
 html {
   font-size: 62.5%; }
+
 body {
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;

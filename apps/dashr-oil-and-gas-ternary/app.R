@@ -4,7 +4,16 @@ library(dash)
 library(plotly)
 library(rlist)
 
-setwd('/Users/kevinphan/Desktop/dash-sample-apps/apps/dashr-oil-and-gas-ternary')
+appName <- Sys.getenv("DASH_APP_NAME")
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
+  
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  
+  setwd(sprintf("/app/apps/%s", appName))
+}
+
 
 source('constants.R')
 source('dataprep.R')
@@ -31,7 +40,7 @@ build_banner = function(){
     children=list(
       htmlH6("Oil and gas ternary map"),
       htmlImg(
-        src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png"
+        src="assets/dash-logo.png"
       )
     )
   ))}
@@ -58,7 +67,7 @@ generate_production_plot = function(processed_data){
                                      'formation' = unlist(processed_data[['formation']][x]))})
   
   for (well_id in welllist) {
-    well_prod = df_prod[df_prod['RecordNumber'] == well_id$well_id,]
+    well_prod = df_prod[df_prod$RecordNumber %in% well_id$well_id,]
     new_trace = list(
       x=well_prod$Year,
       y=well_prod$VolumeMCF,
@@ -105,7 +114,7 @@ generate_well_map = function(dff,selected_data,style){
         lat = dff[dff$fm_name == formation,'nlat83'],
         lon = dff[dff$fm_name == formation,'wlon83'],
         mode = 'markers',
-        marker = list('color' = colormap, 'size' = 9),
+        marker = list('color' = colormap[[formation]], 'size' = 9),
         text= unlist(text_list),
         name = c(unlist(formation)),
         selectedpoints = selected_index,
@@ -116,32 +125,27 @@ generate_well_map = function(dff,selected_data,style){
   }
   
   layout = list(
-    annotations=list(
-      list(
-        x=1.1,
-        y=0.85,
-        align="right",
-        valign="top",
-        text="<b>Formations</b>",
-        showarrow=FALSE,
-        xref="paper",
-        yref="paper",
-        font=list(family="sans-serif", size=13, color="#000")
-      )
-    ),
     clickmode="event+select",
     dragmode="lasso",
-    showlegend=FALSE,
+    showlegend=TRUE,
     autosize=TRUE,
     hovermode="closest",
-    margin=list(l=0, r=0, t=0, b=0),
-    mapbox=list(
+    margin= list(l=0, r=0, t=0, b=0),
+    mapbox = list(
       accesstoken=mapbox_access_token,
       bearing=0,
-      center=list(lat=37.497562, lon=-82.755728),
+      center= list(lat=37.497562, lon=-82.755728),
       pitch=0,
       zoom=8,
       style=style
+    ),
+    legend=list(
+      bgcolor="#1f2c56",
+      orientation="h",
+      font=list(color="white"),
+      x=0,
+      y=0,
+      yanchor="bottom"
     )
   )
   
@@ -181,11 +185,11 @@ generate_ternary_map = function(dff, selected_data, contour_visible, marker_visi
     'margin' = list(l=50, r=10, b=40, t=40, pad=5),
     'ternary' = list('sum' = 100, 'aaxis' = list(
       'title'= list('text'= 'Quartz',
-                    'font' = list('family'= 'Open Sans', 'size'= 15, 'color'= '#000')), 
+                    'font' = list('family'= 'Open Sans', 'size'= 15, 'color'= "white")), 
       'min'= -2,'linewidth'= 1.5,'ticks'= 'outside'),
       'baxis'= list('title'= list('text'= 'Carbonate', 'font'= list('family'= 'Open Sans', 'size'= 15, 
-                                                                    'color'= '#000')), 'min'= -2, 'linewidth'= 1.5,'ticks'= 'outside'),
-      'caxis'= list('title'= list('text'= 'Clay', 'font'= list('family'= 'Open Sans', 'size'= 15, 'color'= '#000')),
+                                                                    'color'= "white")), 'min'= -2, 'linewidth'= 1.5,'ticks'= 'outside'),
+      'caxis'= list('title'= list('text'= 'Clay', 'font'= list('family'= 'Open Sans', 'size'= 15, 'color'= "white")),
                     'min'= -2, 'linewidth'= 1.5, 'ticks'= 'outside')),
     "margin" = list(l=60, r=0, t=0, b=0),
     "paper_bgcolor" = "#192444",
@@ -267,49 +271,54 @@ generate_contour_text = function(a, b, c, name, text, visible){
 generate_formation_bar = function(dff, selected_data){
   
   formations = list(unique(dff['fm_name']))
+  xform <- list(categoryorder = "array", 
+                categoryarray = formations[[1]]$fm_name,
+                tickangle=-45, title="Formations")
   data = list()
   countt = list()
   color = list()
+  
   for (i in formations[[1]]$fm_name) {
     counttt = nrow(dff[dff$fm_name == i,])
     countt = append(countt, counttt)
-    colorr =unname(colormap[i])
+    colorr =unname(colormap[[i]])
     color = append(color,colorr)
   }
   if(length(selected_data) > 0){
     selected_points = list()
+    select = list()
     for (i in formations[[1]]$fm_name) {
       select_indices = selected_data[[i]]
       if(length(select_indices) > 0 && is.null(select_indices) == FALSE){
-        selected_points = list(0)
+        select = list(which(names(selected_data) == i))
       }
-      selected_points = append(selected_points, select_indices)
+      selected_points = append(selected_points, select)
     }
     new_trace = plot_ly(
       type = 'bar',
-      x = unlist(formations),
-      y = unlist(countt),
+      x = formations[[1]]$fm_name,
+      y = countt,
       name = i,
       hoverinfo = 'x+y',
       marker = list(color = c(unlist(color))),
-      selectedpoints = c(unlist(selected_points))
+      selectedpoints = selected_points
     ) %>% layout(showlegend=FALSE,
                  hovermode="closest",
-                 xaxis=list(tickangle=-45, title="Formations"),
+                 xaxis=xform,
                  yaxis=list(title="Well Counts"),
                  clickmode="event+select")
   }
   else{
     new_trace = plot_ly(
       type = 'bar',
-      x = unlist(formations),
+      x = as.vector(as.character(formations[[1]]$fm_name)),
       y = unlist(countt),
       name = i,
       marker = list(color = c(unlist(color))),
       selectedpoints = NULL
     )%>% layout(showlegend=FALSE,
                 hovermode="closest",
-                xaxis=list(tickangle=-45, title="Formations"),
+                xaxis=xform,
                 yaxis=list(title="Well Counts"),
                 clickmode="event+select")
   }
@@ -322,11 +331,23 @@ generate_formation_bar = function(dff, selected_data){
 get_selection = function(OurData,formation,selection_data,starting_index){
   ind = list()
   current_curve = which(sapply(as.list(unique(OurData$fm_name)), 
-                               FUN=function(X) formation %in% X))
+                               FUN=function(X){formation %in% X})) 
   for (point in selection_data[['points']]) {
     if(point[['curveNumber']] - starting_index == current_curve){
-      ind = append(ind,point[['pointNumber']])
-    }
+      ind = append(ind, point[['pointNumber']])
+    } 
+  }
+  return(ind)
+}
+
+get_selectionFormation = function(OurData,formation,selection_data,starting_index){
+  ind = list()
+  current_curve = which(sapply(as.list(unique(OurData$fm_name)), 
+                               FUN=function(X){formation %in% X})) -1
+  for (point in selection_data[['points']]) {
+    if(point[['curveNumber']] - starting_index == current_curve){
+      ind = append(ind, point[['pointNumber']])
+    } 
   }
   return(ind)
 }
@@ -354,16 +375,17 @@ app$layout(htmlDiv(
           id="top-row-header",
           children=list(
             htmlDiv(
-              className="six columns",
               id="header-container",
               children=list(
                 build_banner(),
                 htmlP(
                   id="instructions",
-                  children="Select data points from the well map, ternary map or bar graph to visualize cross-filtering to
-                  other plots. Selection could be done by clicking on individual data points or using the lasso tool 
-                  to capture multiple data points or bars. With the box tool from modebar, multiple regions can be selected by holding SHIFT
-                  button while click-and-drag."
+                  children="Select data points from the well map, ternary map or bar graph to
+                  visualize cross-filtering to other plots. Selection could be done by 
+                  clicking on individual data points or using the lasso tool to capture 
+                  multiple data points or bars. With the box tool from modebar, multiple 
+                  regions can be selected by holding the SHIFT key while clicking and 
+                  dragging."
                 ),
                 build_graph_title("Select Operator"),
                 dccDropdown(
@@ -378,112 +400,121 @@ app$layout(htmlDiv(
                 )
               )
           )
-      ),
-      htmlDiv(
-        className="row",
-        id="top-row-graphs",
-        children=list(
-          # Well map
-          htmlDiv(
-            id="well-map-container",
-            className="six columns",
-            children=list(
-              build_graph_title("Well Map"),
-              dccRadioItems(
-                id="mapbox-view-selector",
-                options=list(
-                  list("label"= "basic", "value"= "basic"),
-                  list("label"= "satellite", "value"= "satellite"),
-                  list("label"= "outdoors", "value"= "outdoors"),
-                  list(
-                    "label"= "satellite-street",
-                    "value"= "mapbox=//styles/mapbox/satellite-streets-v9"
-                  )
-                ),
-                value="basic"
-              ),
-              dccGraph(
-                id="well-map",
-                figure = list(),
-                config=list("scrollZoom"= TRUE, "displayModeBar"= TRUE)
-              )
-            )
-          ),
-          # Ternary map
-          htmlDiv(
-            id="ternary-map-container",
-            className="six columns",
-            children=list(
-              htmlDiv(
-                id="ternary-header",
-                children=list(
-                  build_graph_title(
-                    "Shale Mineralogy Composition"
-                  ),
-                  dccChecklist(
-                    id="ternary-layer-select",
-                    options=list(
-                      list(
-                        "label"= "Well Data",
-                        "value"= "Well Data"
-                      ),
-                      list(
-                        "label"= "Rock Type",
-                        "value"= "Rock Type"
-                      )
-                    ),
-                    value=list("Well Data", "Rock Type")
-                  )
-                )
-              ),
-              dccGraph(
-                id="ternary-map",
-                figure = list(),
-                config=list("scrollZoom"= TRUE, "displayModeBar"= TRUE)
-              )
-            )
-          )
-        )
-      )
-    )
-    ),
-    htmlDiv(
-      className="row",
-      id="bottom-row",
-      children=list(
-        # Formation bar plots
-        htmlDiv(
-          id="form-bar-container",
-          className="six columns",
-          children=list(
-            build_graph_title("Well count by formations"),
-            dccGraph(id="form-by-bar")
-          )
         ),
         htmlDiv(
-          # Selected well productions
-          id="well-production-container",
-          className="six columns",
+          className="row",
+          id="top-row-graphs",
           children=list(
-            build_graph_title("Individual well annual production"),
-            dccGraph(id="production-fig",
-                     figure = list())
+            # Well map
+            htmlDiv(
+              id="well-map-container",
+              children=list(
+                build_graph_title("Well Map"),
+                dccRadioItems(
+                  id="mapbox-view-selector",
+                  options=list(
+                    list("label"= "basic", "value"= "basic"),
+                    list("label"= "satellite", "value"= "satellite"),
+                    list("label"= "outdoors", "value"= "outdoors"),
+                    list(
+                      "label"= "satellite-street",
+                      "value"= "mapbox=//styles/mapbox/satellite-streets-v9"
+                    )
+                  ),
+                  value="basic"
+                ),
+                dccGraph(
+                  id="well-map",
+                  figure=list(
+                    "layout"= list(
+                      "paper_bgcolor"= "#192444",
+                      "plot_bgcolor"= "#192444"
+                    )
+                  ),
+                  config=list("scrollZoom"= TRUE, "displayModeBar"= TRUE)
+                )
+              )
+            ),
+            # Ternary map
+            htmlDiv(
+              id="ternary-map-container",
+              children=list(
+                htmlDiv(
+                  id="ternary-header",
+                  children=list(
+                    build_graph_title(
+                      "Shale Mineralogy Composition"
+                    ),
+                    dccChecklist(
+                      id="ternary-layer-select",
+                      options=list(
+                        list(
+                          "label"= "Well Data",
+                          "value"= "Well Data"
+                        ),
+                        list(
+                          "label"= "Rock Type",
+                          "value"= "Rock Type"
+                        )
+                      ),
+                      value=list("Well Data", "Rock Type")
+                    )
+                  )
+                ),
+                dccGraph(
+                  id="ternary-map",
+                  figure=list(
+                    "layout"= list(
+                      "paper_bgcolor"= "#192444",
+                      "plot_bgcolor"= "#192444"
+                    )
+                  ),
+                  config=list(
+                    "scrollZoom"= TRUE,
+                    "displayModeBar"= TRUE
+                  )
+                )
+              )
+            )
           )
         )
       )
+  ),
+  htmlDiv(
+    className="row",
+    id="bottom-row",
+    children=list(
+      # Formation bar plots
+      htmlDiv(
+        id="form-bar-container",
+        className="six columns",
+        children=list(
+          build_graph_title("Well count by formations"),
+          dccGraph(id="form-by-bar")
+        )
+      ),
+      htmlDiv(
+        # Selected well productions
+        id="well-production-container",
+        className="six columns",
+        children=list(
+          build_graph_title("Individual well annual production"),
+          dccGraph(id="production-fig")
+        )
+      )
     )
+  )
 )
 ))
-
 app$callback(output = list(id = "form-by-bar", property = "figure"),
              params = list(
                input("well-map", "selectedData"),
                input("ternary-map", "selectedData"),
                input("operator-select", "value")),
              function(map_selected_data, tern_selected_data, op_select){
-               dff = df[df$op == op_select,]
+               dff = df[df$op %in% op_select,]
                #browser()
-               formations = as.list(unique(dff$fm_name)) 
+               formations = list(unique(dff['fm_name']))
                ctx = app$callback_context()
                prop_id = ""
                prop_type = ""
@@ -494,7 +525,7 @@ app$callback(output = list(id = "form-by-bar", property = "figure"),
                }
                processed_data = list()
                if(prop_id == 'well-map' & prop_type == 'selectedData'){
-                 for (formation in unlist(formations)) {
+                 for (formation in formations[[1]]$fm_name) {
                    if(length(map_selected_data) == 0){
                      processed_data[[formation]] = list(0)
                    } else{
@@ -503,7 +534,7 @@ app$callback(output = list(id = "form-by-bar", property = "figure"),
                  }
                }
                else if (prop_id == 'ternary-map' & prop_type == 'selectedData'){
-                 for (formation in unlist(formations)) {
+                 for (formation in formations[[1]]$fm_name) {
                    if (length(tern_selected_data) == 0){
                      processed_data[[formation]] = list(0)
                    }
@@ -531,7 +562,7 @@ app$callback(output = list(id = "ternary-map", property = "figure"),
                #browser()
                marker_visible = TRUE
                contour_visible = TRUE
-               dff = df[df$op == op_select,]
+               dff = df[df$op %in% op_select,]
                formations = list(unique(dff['fm_name']))
                ctx = app$callback_context()
                prop_id = ""
@@ -549,7 +580,7 @@ app$callback(output = list(id = "ternary-map", property = "figure"),
                      if(length(map_selected_data) == 0){
                        processed_data[[formation]] = NULL
                      } else{
-                       processed_data[[formation]] = get_selection(dff, formation, map_selected_data, 0)
+                       processed_data[[formation]] = get_selectionFormation(dff, formation, map_selected_data, 0)
                      }
                    }
                  }
@@ -606,7 +637,7 @@ app$callback(output = list(id = "well-map", property = "figure"),
                            input("mapbox-view-selector", "value")),
              function(tern_selected_data, bar_selected_data, bar_click_data, op_select, mapbox_view){
                #browser()
-               dff = df[df$op == op_select,]
+               dff = df[df$op %in% op_select,]
                formations = list(unique(dff['fm_name']))
                ctx = app$callback_context()
                prop_id = ""
@@ -660,7 +691,7 @@ app$callback(output = list(id = "production-fig", property = "figure"),
                            input("operator-select", "value")),
              function(map_select, tern_select, bar_select, op_select){
                #browser()
-               dff = df[df$op == op_select,]
+               dff = df[df$op %in% op_select,]
                ctx = app$callback_context()
                prop_id = ""
                prop_type = ""
@@ -678,9 +709,9 @@ app$callback(output = list(id = "production-fig", property = "figure"),
                  if(length(map_select) > 0){
                    processed_data = list('well_id' = list(), 'formation' = list())
                    for (point in map_select[['points']]) {
-                     processed_data[["well_id"]] = append(processed_data[["well_id"]], point$customdata)
+                     processed_data[["well_id"]] = append(processed_data[["well_id"]], point[['customdata']])
                      processed_data[['formation']] = append(processed_data[['formation']],
-                                                            list(dff[dff$RecordNumber == point$customdata, 
+                                                            list(dff[dff$RecordNumber %in% point[['customdata']], 
                                                                      'fm_name']))
                    }
                  } else{
@@ -723,4 +754,8 @@ app$callback(output = list(id = "production-fig", property = "figure"),
                return(generate_production_plot(processed_data))
              })
 
-app$run_server()
+if (appName != "") {
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+} else {
+  app$run_server()
+}

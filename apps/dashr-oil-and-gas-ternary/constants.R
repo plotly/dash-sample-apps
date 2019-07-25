@@ -4,8 +4,21 @@ ternary_color = list('#FFDF7F', '#FFDF7F', '#FFDF7F',
                  '#FDFFE9', '#FDFFE9', '#FDFFE9', '#FDFFE9')
 
 # Colors for legend
-colors = list('#001f3f', '#0074d9', '#3d9970', '#111111', '#01ff70', '#ffdc00', '#ff851B', '#ff4136',
-          '#85144b', '#f012be', '#b10dc9', '#AAAAAA', '#111111')
+colors = list(
+  "#001f3f",
+  "#0074d9",
+  "#3d9970",
+  "#111111",
+  "#01ff70",
+  "#ffdc00",
+  "#ff851B",
+  "#ff4136",
+  "#85144b",
+  "#f012be",
+  "#b10dc9",
+  "#AAAAAA",
+  "#111111"
+)
 
 # Ternary axis contour
 ternary_contour = list(
