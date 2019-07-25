@@ -370,7 +370,6 @@ def display_selected_data(selectedData, chart_dropdown, year):
         fig_data[0]["marker"]["color"] = "#2cfec1"
         fig_data[0]["marker"]["opacity"] = 1
         fig_data[0]["marker"]["line"]["width"] = 0
-        # TODO: Why doesn't the text show up over the bars?
         fig_data[0]["textposition"] = "outside"
         fig_layout["paper_bgcolor"] = "#1f2630"
         fig_layout["plot_bgcolor"] = "#1f2630"
