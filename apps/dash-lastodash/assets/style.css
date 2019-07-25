@@ -190,10 +190,10 @@ body {
 
 .dash-logo {
     height: 70px;
-    float: right;
-    margin-top: 30px;
+    margin-top: 40px;
+    right: 0;
     position: absolute;
-    right: 120px;
+    
 }
 
 #frontpage {
