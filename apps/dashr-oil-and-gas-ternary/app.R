@@ -75,7 +75,7 @@ generate_production_plot = function(processed_data){
       mode='lines+markers',
       hoverinfo='x+y+name',
       marker=list(symbol="hexagram-open", 
-                  color=unlist(colormap[well_id$formation]),
+                  color=colormap[[as.character(well_id$formation)]],
                   line=list("width" = "0.5")),
       line=list(
         shape='spline'
