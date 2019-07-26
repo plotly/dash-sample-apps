@@ -1068,6 +1068,7 @@ def show_current_specs(n_clicks, dd_select, store_data):
                     "rule": "background-color: #1e2130 !important;",
                 },
                 {"selector": "table", "rule": "--accent: #1e2130;"},
+                {"selector": "tr", "rule": "background-color: transparent"}
             ],
             data=new_df.to_dict("rows"),
             columns=[{"id": c, "name": c} for c in ["Specs", "Current Setup"]],
