@@ -140,10 +140,6 @@ button {
   border: none;
 }
 
-._dash-undo-redo {
-  display: none;
-}
-
 .app-title {
   color: black;
   font-size: 2rem;
