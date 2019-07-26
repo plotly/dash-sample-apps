@@ -1,8 +1,12 @@
 appName <- Sys.getenv("DASH_APP_NAME")
-pathPrefix <- sprintf("/%s/", appName)
-
-Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-           DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+if (appName != "") {
+  pathPrefix <- sprintf("/%s/", appName)
+  
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  
+  setwd(sprintf("/app/apps/%s", appName))
+}
 
 library(dashR)
 library(dashCoreComponents)
@@ -43,8 +47,7 @@ SampleSlider <- dccSlider(id = "sample-slider",
                             "20K" = "20K",
                             "30K" = "30K",
                             "40K" = "40K", 
-                            "53940" = "53940")
-                          ,
+                            "53940" = "53940"),
                           value = 1000
 )
 
@@ -141,6 +144,18 @@ app$layout(
 )
 
 ################ CALLBACKS #####################
+
+app$callback(
+  
+  
+  
+  
+  
+  
+  
+  
+  
+)
              
 ########CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL
 
