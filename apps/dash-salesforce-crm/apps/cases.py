@@ -43,7 +43,9 @@ def pie_chart(df, column, priority, origin):
 
     # if no results were found
     if types == []:
-        layout = dict(annotations=[dict(text="No results found", showarrow=False)])
+        layout = dict(
+            autosize=True, annotations=[dict(text="No results found", showarrow=False)]
+        )
         return {"data": [], "layout": layout}
 
     for case_type in types:
@@ -51,8 +53,8 @@ def pie_chart(df, column, priority, origin):
         values.append(nb_type / nb_cases * 100)
 
     layout = go.Layout(
+        autosize=True,
         margin=dict(l=0, r=0, b=0, t=4, pad=8),
-        legend=dict(orientation="h"),
         paper_bgcolor="white",
         plot_bgcolor="white",
     )
@@ -109,6 +111,7 @@ def cases_by_period(df, period, priority, origin):
         data.append(data_trace)
 
     layout = go.Layout(
+        autosize=True,
         barmode="stack",
         margin=dict(l=40, r=25, b=40, t=0, pad=4),
         paper_bgcolor="white",
@@ -132,6 +135,7 @@ def cases_by_account(cases):
     ]  # x could be any column value since its a count
 
     layout = go.Layout(
+        autosize=True,
         barmode="stack",
         margin=dict(l=210, r=25, b=20, t=0, pad=4),
         paper_bgcolor="white",
@@ -578,7 +582,8 @@ def right_cases_indicator_callback(df):
 )
 def cases_reasons_callback(priority, origin, df):
     df = pd.read_json(df, orient="split")
-    return pie_chart(df, "Reason", priority, origin)
+    chart = pie_chart(df, "Reason", priority, origin)
+    return chart
 
 
 @app.callback(
@@ -591,7 +596,9 @@ def cases_reasons_callback(priority, origin, df):
 )
 def cases_types_callback(priority, origin, df):
     df = pd.read_json(df, orient="split")
-    return pie_chart(df, "Type", priority, origin)
+    chart = pie_chart(df, "Type", priority, origin)
+    chart["layout"]["legend"]["orientation"] = "h"
+    return chart
 
 
 @app.callback(

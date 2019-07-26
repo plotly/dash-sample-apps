@@ -96,6 +96,7 @@ def choropleth_map(status, df):
     ]
 
     layout = dict(
+        autosize=True,
         geo=dict(
             scope="usa",
             projection=dict(type="albers usa"),
@@ -135,7 +136,7 @@ def lead_source(status, df):
         marker={"colors": ["#264e86", "#0074e4", "#74dbef", "#eff0f4"]},
     )
 
-    layout = dict(margin=dict(l=15, r=10, t=0, b=65))
+    layout = dict(autosize=True, margin=dict(l=15, r=10, t=0, b=65))
     return dict(data=[trace], layout=layout)
 
 
@@ -161,6 +162,7 @@ def converted_leads_count(period, df):
     data = [trace]
 
     layout = go.Layout(
+        autosize=True,
         xaxis=dict(showgrid=False),
         margin=dict(l=33, r=25, b=37, t=5, pad=4),
         paper_bgcolor="white",
