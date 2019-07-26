@@ -8,7 +8,7 @@ if (appName != "") {
   setwd(sprintf("/app/apps/%s", appName))
 }
 
-library(dashR)
+library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(plotly)
@@ -43,9 +43,9 @@ SampleSlider <- dccSlider(id = "sample-slider",
                           max = 53940,
                           marks = list(
                             "1" = "1", 
-                            "10K" = "10K",
-                            "20K" = "20K",
-                            "30K" = "30K",
+                            "10K" = "10000",
+                            "20K" = "20000",
+                            "30K" = "30000",
                             "40K" = "40K", 
                             "53940" = "53940"),
                           value = 1000
@@ -56,7 +56,7 @@ heightSlider <- dccSlider(id = "height-slider",
                           max = 2000,
                           marks = list(
                             "100" = "100",
-                            "290" = "290",
+                            "290" = "290", 
                             "480" = "480",
                             "670" = "670",
                             "860" = "860",
@@ -69,14 +69,13 @@ heightSlider <- dccSlider(id = "height-slider",
                           value = 1000
 )
 
-
 ##### CREATE LAYOUT VARIABLES #######
 
-pageTitle <- htmlH2("Diamonds Explorer ")
+pageTitle <- htmlH2("Diamonds Explorer")
 
 plotlyLogo <-
   htmlA(list(htmlImg(id = "banner-image", src = "assets/image.png")), className = "logo",
-        href = "https://dashr-docs.herokuapp.com/")
+        href = "https://dashr.plot.ly")
 
 xDropDown <- dccDropdown(id = "x-dropdown",
                          options = DropDownMenuOptions,
@@ -108,54 +107,46 @@ app = Dash$new()
 app$layout(
   htmlDiv(list(
       plotlyLogo,
-      pageTitle), className = "five columns"
+      pageTitle
+      ), className = "twelve columns"
   ),
   
   htmlDiv(list(
-      htmlLabel("SampleSize"),
-      SampleSlider,
-      htmlLabel("X"),
-      xDropDown,
-      htmlLabel("Y"),
-      yDropdown,
-      ClarityDropDown,
-      htmlLabel("Color"),
-      ClarityDropDown,
-      htmlLabel("FacetRow"),
-      ClarityDropDown,
-      htmlLabel("FacetColumn"),
-      FacetDropDown,
-      htmlLabel("Height of plot (in pixels)"),
-      heightSlider
-    ), className = "five columns"
+    htmlLabel("SampleSize"),
+    SampleSlider,
+    htmlLabel("X"),
+    xDropDown,
+    htmlLabel("Y"),
+    yDropDown,
+    htmlLabel("Color"),
+    htmlLabel("FacetRow"),
+    htmlLabel("FacetColumn"),
+    FacetDropDown,
+    htmlLabel("Height of plot (in pixels)"),
+    heightSlider
+  ), className = "three columns"
   ),
-  
+
+
   htmlDiv(list(
-      dccGraph(id = "scatter-purple"),
-      dccGraph(id = "scatter-blue"),
-      dccGraph(id = "scatter-indigo"),
-      dccGraph(id = "scatter-teal"),
-      dccGraph(id = "scatter-green"),
-      dccGraph(id = "scatter-light-green"),
-      dccGraph(id = "scatter-yellow"),
-      className = "seven columns"
-    )
+    dccGraph(id = "scatter-purple"),
+    dccGraph(id = "scatter-blue"),
+    dccGraph(id = "scatter-indigo"),
+    dccGraph(id = "scatter-teal"),
+    dccGraph(id = "scatter-green"),
+    dccGraph(id = "scatter-light-green"),
+    dccGraph(id = "scatter-yellow")
+  ),
+  className = "eight columns"
   )
 )
 
+
 ################ CALLBACKS #####################
 
-app$callback(
+#app$callback(
   
-  
-  
-  
-  
-  
-  
-  
-  
-)
+#)
              
 ########CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL
 
