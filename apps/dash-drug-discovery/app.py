@@ -38,7 +38,7 @@ FIGURE = create_plot(
 app.layout = html.Div(
     [
         html.Div(
-            [html.Img(src=app.get_asset_url("dash-logo-stripe.png"))],
+            [html.Img(src=app.get_asset_url("dash-logo-inverted.png"))],
             className="app__banner",
         ),
         html.Div(

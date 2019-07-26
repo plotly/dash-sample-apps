@@ -57,6 +57,10 @@ h3 {
         max-width: none;
     }
 
+    #header-1, #header-2{
+        font-size: 1.5rem;
+    }
+
     #header-1 {
         text-align: center;
     }
