@@ -36,7 +36,9 @@ def converted_opportunities(period, source, df):
 
     # if no results were found
     if df.empty:
-        layout = dict(autosize=True, annotations=[dict(text="No results found", showarrow=False)])
+        layout = dict(
+            autosize=True, annotations=[dict(text="No results found", showarrow=False)]
+        )
         return {"data": [], "layout": layout}
 
     trace = go.Scatter(
