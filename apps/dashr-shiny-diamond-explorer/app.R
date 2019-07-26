@@ -34,14 +34,6 @@ DropDownMenuOptions <- list(
   list(label = "z", value = "z")
 )
 
-
-FacetOptions <- list(
-  list(label = "None", value = "None"),
-  list(label = "cut", value = "cut-labels"),
-  list(label = "color", value = "color-labels"),
-  list(label = "clarity", value = "clarity")
-)
-
 SampleSlider <- dccSlider(id = "sample-slider",
                           min = 1,
                           max = 53940,
@@ -94,9 +86,14 @@ yDropDown <- dccDropdown(id = "y-dropdown",
                          clearable = FALSE)
 
 FacetDropDown <- dccDropdown(id="facet-row-dropdown",
-                             options = FacetOptions,
+                             options = DropDownMenuOptions,
                              value = "None",
                              clearable = FALSE)
+
+ClarityDropDown <- dccDropdown(id = "clarity-dropdown",
+                               options = DropDownMenuOptions,
+                               value = "clarity",
+                               clearable = FALSE)
 
 
 ###### APP START #######
@@ -118,9 +115,13 @@ app$layout(
       xDropDown,
       htmlLabel("Y"),
       yDropdown,
+      ClarityDropDown,
       htmlLabel("Color"),
+      ClarityDropDown,
       htmlLabel("FacetRow"),
+      ClarityDropDown,
       htmlLabel("FacetColumn"),
+      FacetDropDown,
       htmlLabel("Height of plot (in pixels)"),
       heightSlider
     ), className = "five columns"
