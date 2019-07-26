@@ -36,7 +36,7 @@ def converted_opportunities(period, source, df):
 
     # if no results were found
     if df.empty:
-        layout = dict(annotations=[dict(text="No results found", showarrow=False)])
+        layout = dict(autosize=True, annotations=[dict(text="No results found", showarrow=False)])
         return {"data": [], "layout": layout}
 
     trace = go.Scatter(
@@ -50,6 +50,7 @@ def converted_opportunities(period, source, df):
     data = [trace]
 
     layout = go.Layout(
+        autosize=True,
         xaxis=dict(showgrid=False),
         margin=dict(l=35, r=25, b=23, t=5, pad=4),
         paper_bgcolor="white",
@@ -75,6 +76,7 @@ def heat_map_fig(df, x, y):
         type="heatmap", z=z, x=x, y=y, name="mean probability", colorscale="Blues"
     )
     layout = dict(
+        autosize=True,
         margin=dict(t=25, l=210, b=85, pad=4),
         paper_bgcolor="white",
         plot_bgcolor="white",
