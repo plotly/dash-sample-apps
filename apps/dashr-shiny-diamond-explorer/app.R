@@ -109,7 +109,7 @@ app$layout(
   ),
   
   htmlDiv(list(
-      htmllabel("SampleSize"),
+      htmlLabel("SampleSize"),
       SampleSlider,
       htmlLabel("X"),
       xDropDown,
