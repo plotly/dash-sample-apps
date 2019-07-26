@@ -4,3 +4,4 @@ vv/
 venv/
 .idea/
 .DS_Store
+.Rproj.user
