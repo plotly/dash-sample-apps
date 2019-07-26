@@ -45,8 +45,8 @@ def millify(n):
 def indicator(color, text, id_value):
     return html.Div(
         [
-            html.P(text, className="twelve columns indicator_text"),
             html.P(id=id_value, className="indicator_value"),
+            html.P(text, className="twelve columns indicator_text"),
         ],
         className="four columns indicator pretty_container",
     )

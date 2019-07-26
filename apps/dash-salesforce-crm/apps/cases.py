@@ -547,7 +547,7 @@ layout = [
 def left_cases_indicator_callback(df):
     df = pd.read_json(df, orient="split")
     low = len(df[(df["Priority"] == "Low") & (df["Status"] == "New")]["Priority"].index)
-    return low
+    return dcc.Markdown("**{}**".format(low))
 
 
 @app.callback(Output("middle_cases_indicator", "children"), [Input("cases_df", "data")])
@@ -556,7 +556,7 @@ def middle_cases_indicator_callback(df):
     medium = len(
         df[(df["Priority"] == "Medium") & (df["Status"] == "New")]["Priority"].index
     )
-    return medium
+    return dcc.Markdown("**{}**".format(medium))
 
 
 @app.callback(Output("right_cases_indicator", "children"), [Input("cases_df", "data")])
@@ -565,7 +565,7 @@ def right_cases_indicator_callback(df):
     high = len(
         df[(df["Priority"] == "High") & (df["Status"] == "New")]["Priority"].index
     )
-    return high
+    return dcc.Markdown("**{}**".format(high))
 
 
 @app.callback(
