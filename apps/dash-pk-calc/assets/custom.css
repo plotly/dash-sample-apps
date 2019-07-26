@@ -8,7 +8,7 @@
 #dash-logo > img {
   height: 26px !important;
   margin-top: 5px;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 .pkcalc-banner > a > img:hover {
   filter: brightness(2);
@@ -26,7 +26,7 @@
   letter-spacing: 1px;
   position: absolute;
   top: 5px;
-  margin-left: 15%;
+  margin-left: 165px;
 }
 
 #gh-link {
