@@ -30,6 +30,12 @@ h3 {
     justify-content: space-evenly;
 }
 
+#logo {
+    width: 150px;
+    height: 30px;
+    padding-left: 50px;
+}
+
 @media only screen and (max-width: 800px) {
     #header {
         max-width: 100%;
@@ -42,6 +48,7 @@ h3 {
 
     #logo {
         margin-bottom: 1rem;
+        padding-left: 0px;
     }
 
     #header h3 {
@@ -61,6 +68,10 @@ h3 {
 
     #header-2-p {
         margin: 0;
+    }
+
+    #graph-2>div {
+        margin-bottom: 40px;
     }
 
 }
@@ -92,6 +103,3 @@ p, #header-2 {
     display: none;
 }
 
-#logo {
-    height: 5rem;
-}
