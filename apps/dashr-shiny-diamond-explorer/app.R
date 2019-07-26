@@ -106,43 +106,41 @@ app = Dash$new()
 ########### CREATE LAYOUT ##############
 
 app$layout(
-  htmlDiv(
-    list(
-      htmlDiv(list(
-        plotlyLogo
-      ))
+  htmlDiv(list(
+      plotlyLogo,
+      pageTitle), className = "five columns"
+  ),
+  
+  htmlDiv(list(
+      htmllabel("SampleSize"),
+      SampleSlider,
+      htmlLabel("X"),
+      xDropDown,
+      htmlLabel("Y"),
+      yDropdown,
+      htmlLabel("Color"),
+      htmlLabel("FacetRow"),
+      htmlLabel("FacetColumn"),
+      htmlLabel("Height of plot (in pixels)"),
+      heightSlider
+    ), className = "five columns"
+  ),
+  
+  htmlDiv(list(
+      dccGraph(id = "scatter-purple"),
+      dccGraph(id = "scatter-blue"),
+      dccGraph(id = "scatter-indigo"),
+      dccGraph(id = "scatter-teal"),
+      dccGraph(id = "scatter-green"),
+      dccGraph(id = "scatter-light-green"),
+      dccGraph(id = "scatter-yellow"),
+      className = "seven columns"
     )
   )
 )
 
-
 ################ CALLBACKS #####################
-
-app$callback(output = list(id = "histogram", property = "figure"),
-             params = list(input(id = "movies-slider", property = "value")),
              
-             function(input, output) {
-               #add reactive data information. Dataset = built in diamonds data
-               dataset <- reactive({
-                 diamonds[sample(nrow(diamonds), sampleSize)]
-                          
-             # build graph with ggplot syntax
-             p <- ggplot(dataset(), 
-                         aes_string(x = x, 
-                                    y = y, 
-                                    color = color)) + geom_point()
-               )
-             # if at least one facet column/row is specified, add it
-             facets <- paste(input$facet_row, '~', input$facet_col)
-             if (facets != '. ~ .') p <- p + facet_grid(facets)
-             
-             ggplotly(p) %>% 
-               layout(height = input$plotHeight, autosize=TRUE)
-             
-             }
-             return(p)
-             })
-)
 ########CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL
 
 if (appName != "") {
