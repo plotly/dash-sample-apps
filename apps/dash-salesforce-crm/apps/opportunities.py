@@ -508,7 +508,7 @@ def converted_opportunity_callback(period, source, df):
 def left_opportunities_indicator_callback(df):
     df = pd.read_json(df, orient="split")
     won = millify(str(df[df["IsWon"] == 1]["Amount"].sum()))
-    return won
+    return dcc.Markdown("**{}**".format(won))
 
 
 # updates middle indicator value based on df updates
@@ -519,7 +519,7 @@ def left_opportunities_indicator_callback(df):
 def middle_opportunities_indicator_callback(df):
     df = pd.read_json(df, orient="split")
     active = millify(str(df[(df["IsClosed"] == 0)]["Amount"].sum()))
-    return active
+    return dcc.Markdown("**{}**".format(active))
 
 
 # updates right indicator value based on df updates
@@ -530,7 +530,7 @@ def middle_opportunities_indicator_callback(df):
 def right_opportunities_indicator_callback(df):
     df = pd.read_json(df, orient="split")
     lost = millify(str(df[(df["IsWon"] == 0) & (df["IsClosed"] == 1)]["Amount"].sum()))
-    return lost
+    return dcc.Markdown("**{}**".format(lost))
 
 
 # hide/show modal

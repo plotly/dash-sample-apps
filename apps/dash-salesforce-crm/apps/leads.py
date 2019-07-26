@@ -135,7 +135,7 @@ def lead_source(status, df):
         marker={"colors": ["#264e86", "#0074e4", "#74dbef", "#eff0f4"]},
     )
 
-    layout = dict(margin=dict(l=15, r=10, t=0, b=65), legend=dict(orientation="h"))
+    layout = dict(margin=dict(l=15, r=10, t=0, b=65))
     return dict(data=[trace], layout=layout)
 
 
@@ -408,7 +408,7 @@ layout = [
 def left_leads_indicator_callback(df):
     df = pd.read_json(df, orient="split")
     converted_leads = len(df[df["Status"] == "Closed - Converted"].index)
-    return converted_leads
+    return dcc.Markdown("**{}**".format(converted_leads))
 
 
 # updates middle indicator based on df updates
@@ -421,7 +421,7 @@ def middle_leads_indicator_callback(df):
             | (df["Status"] == "Working - Contacted")
         ].index
     )
-    return open_leads
+    return dcc.Markdown("**{}**".format(open_leads))
 
 
 # updates right indicator based on df updates
@@ -432,7 +432,7 @@ def right_leads_indicator_callback(df):
     lost_leads = len(df[df["Status"] == "Closed - Not Converted"].index)
     conversion_rates = converted_leads / (converted_leads + lost_leads) * 100
     conversion_rates = "%.2f" % conversion_rates + "%"
-    return conversion_rates
+    return dcc.Markdown("**{}**".format(conversion_rates))
 
 
 # update pie chart figure based on dropdown's value and df updates
