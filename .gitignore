@@ -2,3 +2,4 @@ vv/
 *.pyc
 venv/
 .idea/
+.DS_Store
