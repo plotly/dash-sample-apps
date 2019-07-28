@@ -1173,5 +1173,5 @@ app$callback(
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
-  app$run_server(port = 8080)
+  app$run_server(port = 8050)
 }
