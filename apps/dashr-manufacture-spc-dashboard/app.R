@@ -26,16 +26,16 @@ app <- Dash$new(name = "DashR Manufacture SPC Dashboard", suppress_callback_exce
 ########################################################################################################################
 # DEFINE GLOBAL VARIABLES
 
-theme <- list(              # old      new
-  "white" = "whitesmoke",
-  "dark1" = "#1E2130",      # #2D3038  #1E2130
-  "dark2" = "#171A29",      # #1D202D  #171A29
-  "gray1" = "#4B5460",
-  "gray2" = "#ABBACC",      # darkgray #A7ADB9
-  "white" = "#FFFFFF",      # #FFFFFF  #F9FEFE
-  "blue" = "#91DFD2",       # #91DFD2  #90E0D4
-  "yellow" = "#F4D44D",     # #F4D44D  #F5D54C
-  "red" = "#F45060"         # #F45060  #F45060
+theme <- list(            # old      new
+  white = "whitesmoke",
+  dark1 = "#1E2130",      # #2D3038  #1E2130
+  dark2 = "#171A29",      # #1D202D  #171A29
+  gray1 = "#4B5460",
+  gray2 = "#ABBACC",      # darkgray #A7ADB9
+  white = "#FFFFFF",      # #FFFFFF  #F9FEFE
+  blue = "#91DFD2",       # #91DFD2  #90E0D4
+  yellow = "#F4D44D",     # #F4D44D  #F5D54C
+  red = "#F45060"         # #F45060  #F45060
 )
 
 suffix <- list(
@@ -65,7 +65,7 @@ populate_ooc <- function(data, ucl, lcl) {
     if (data[[i]] >= ucl | data[[i]] <= lcl) {
       ooc_count <- ooc_count + 1
     }
-    output[[i]] <- ooc_count / (i+1)
+    output[[i]] <- ooc_count / i
   }
   return(output)
 }
@@ -80,24 +80,24 @@ init_df <- function() {
     usl <- stats[["Mean"]]+sd(data)
     lsl <- stats[["Mean"]]-sd(data)
     output[[param]] <- list(
-      "count" = as.numeric(length(data)),
-      "data" = data,
-      "mean" = as.numeric(stats[["Mean"]]),
-      "std" = as.numeric(sd(data)),
-      "ucl" = round(ucl, 3),
-      "lcl" = round(lcl, 3),
-      "usl" = round(usl, 3),
-      "lsl" = round(lsl, 3),
-      "min" = as.numeric(stats[["Min."]]),
-      "max" = as.numeric(stats[["Max."]]),
-      "ooc" = populate_ooc(data, ucl, lcl)
+      count = as.numeric(length(data)),
+      data = data,
+      mean = as.numeric(stats[["Mean"]]),
+      std = as.numeric(sd(data)),
+      ucl = round(ucl, 3),
+      lcl = round(lcl, 3),
+      usl = round(usl, 3),
+      lsl = round(lsl, 3),
+      min = as.numeric(stats[["Min."]]),
+      max = as.numeric(stats[["Max."]]),
+      ooc = populate_ooc(data, ucl, lcl)
     )
   }
   return(output)
 }
 
 state_dict <- init_df()
-init_value_setter_store <- function() {return(init_df())} # TODO: check if this needs to called this way
+init_value_setter_store <- function() {return(init_df())} # TODO: check if this needs to be called this way
 
 ########################################################################################################################
 # DEFINE FUNCTIONS FOR APP LAYOUT AND CALLBACKS
@@ -215,7 +215,7 @@ build_tab_1 <- function() {
         htmlDiv(
           id = "settings-menu",
           children = list(
-          htmlDiv(
+            htmlDiv(
               id = "metric-select-menu",
               children = list(
                 htmlDiv(
@@ -256,8 +256,7 @@ build_tab_1 <- function() {
                   )
                 ),
                 htmlDiv(
-                  id = "value-setter-view-output",
-                  className = "output-datatable"
+                  id = "value-setter-view-output"
                 )
               )
             )
@@ -375,19 +374,19 @@ generate_metric_row <- function(style, col1, col2, col3, col4, col5, col6) {
         htmlDiv(
           id = col1$id,
           className = "one column",
-          style = list("margin-right" = "3.5rem"),
+          style = list(marginRight = "3.5rem"), # TODO: edit margin right
           children = col1$children
         ),
         htmlDiv(
           id = col2$id,
           className = "one column",
-          style = list("textAlign" = "center", "margin-right" = "-3.5rem"),
+          style = list(textAlign = "center", marginRight = "-3.5rem"), # TODO: edit margin right
           children = col2$children
         ),
         htmlDiv(
           id = col3$id,
           className = "four columns",
-          style = list("height" = "100%"),
+          style = list(height = "100%"),
           children = col3$children
         ),
         htmlDiv(
@@ -403,7 +402,7 @@ generate_metric_row <- function(style, col1, col2, col3, col4, col5, col6) {
         htmlDiv(
           id = col6$id,
           className = "one column",
-          style = list("display" = "flex", "justifyContent" = "center"),
+          style = list(display = "flex", justifyContent = "center"),
           children = col6$children
         )
       )
@@ -493,7 +492,7 @@ generate_metric_row_helper <- function(stopped_interval, index) {
                 y = state_dict[[param]]$data[1:stopped_interval],
                 mode = "lines+markers",
                 name = param,
-                line = list("color" = theme$yellow)
+                line = list(color = theme$yellow)
               )
             ),
             layout = list(
@@ -558,7 +557,7 @@ generate_piechart <- function() {
             type = "pie",
             marker = list(
               colors = lapply(1:7, function(x) {return(theme$blue)}),
-              line = list("color" = theme$white, "width" = 2)
+              line = list(color = theme$white, width = 2)
             ),
             insidetextfont = list(color = theme$dark2), # TODO: remove?
             hoverinfo = "label",
@@ -570,7 +569,7 @@ generate_piechart <- function() {
           font = list(color = theme$white),
           paper_bgcolor = theme$dark2,
           plot_bgcolor = theme$dark2,
-          margin = list(t = 0, b = 0, r = 60, l = 60), # TODO: edit margins
+          margin = list(t = 40, b = 40, r = 40, l = 40), # TODO: edit margins
           uirevision = TRUE,
           showlegend = FALSE,
           autosize = TRUE
@@ -642,11 +641,11 @@ build_chart_panel <- function(stopped_interval) {
 
 generate_graph <- function(interval, specs_dict, col) {
   stats <- list(
-    mean = list(data = state_dict[[col]][["mean"]], label = "Targeted Mean", color = "rgb(255,127,80)", style = "solid", width = 2),
-    ucl = list(data = specs_dict[[col]][["ucl"]], label = "ucl", color = "rgb(255,127,80)", style = "dot", width = 1),
-    lcl = list(data = specs_dict[[col]][["lcl"]], label = "lcl", color = "rgb(255,127,80)", style = "dot", width = 1),
-    usl = list(data = specs_dict[[col]][["usl"]], label = "usl", color = theme$blue, style = "dot", width = 1),
-    lsl = list(data = specs_dict[[col]][["lsl"]], label = "lsl", color = theme$blue, style = "dot", width = 1)
+    mean = list(data = state_dict[[col]]$mean, label = "Targeted Mean", color = "rgb(255,127,80)", style = "solid", width = 2),
+    ucl = list(data = specs_dict[[col]]$ucl, label = "ucl", color = "rgb(255,127,80)", style = "dot", width = 1),
+    lcl = list(data = specs_dict[[col]]$lcl, label = "lcl", color = "rgb(255,127,80)", style = "dot", width = 1),
+    usl = list(data = specs_dict[[col]]$usl, label = "usl", color = theme$blue, style = "dot", width = 1),
+    lsl = list(data = specs_dict[[col]]$lsl, label = "lsl", color = theme$blue, style = "dot", width = 1)
   )
   total_count <- ifelse(interval < max_length, interval, max_length)
   x_data <- list()
@@ -669,7 +668,7 @@ generate_graph <- function(interval, specs_dict, col) {
         y = y_data,
         mode = "lines+markers",
         name = col,
-        line = list("color" = theme$yellow)
+        line = list(color = theme$yellow)
       ),
       # ooc trace
       list(
@@ -689,7 +688,7 @@ generate_graph <- function(interval, specs_dict, col) {
         xaxis = "x2",
         yaxis = "y2",
         name = "Distribution",
-        marker = list("color" = theme$yellow)
+        marker = list(color = theme$yellow)
       )
     ),
     layout = list(
@@ -697,9 +696,9 @@ generate_graph <- function(interval, specs_dict, col) {
       uirevision = col,
       paper_bgcolor = theme$dark2,
       plot_bgcolor = theme$dark2,
-      margin = list(t = 40), # TODO: fix margins
-      legend = list("font" = list("color" = theme$gray2)),
-      font = list("color" = theme$gray2),
+      margin = list(t = 70, r = 40, b = 90), # TODO: fix margins
+      legend = list(font = list(color = theme$gray2), orientation = "h", x = 0, y = 1.15),
+      font = list(color = theme$gray2),
       showlegend = TRUE,
       shapes = lapply(
         unname(stats),
@@ -729,15 +728,15 @@ generate_graph <- function(interval, specs_dict, col) {
               yref = "y",
               text = sprintf("%s: %.3f", ifelse(line$label == "Targeted Mean", line$label, toupper(line$label)), line$data),
               showarrow = FALSE,
-              font = list("color" = "white")
+              font = list(color = "white")
             )
           )
         }
       ),
       xaxis = list(
         title = "Batch Number",
-        domain = list(0, 0.8),
-        titlefont = list("color" = theme$gray2),
+        titlefont = list(color = theme$gray2),
+        domain = list(0, 0.8), # set 4:1 width ratio
         showgrid = FALSE,
         showline = FALSE,
         zeroline = FALSE
@@ -745,22 +744,23 @@ generate_graph <- function(interval, specs_dict, col) {
       yaxis = list(
         title = col,
         autorange = TRUE,
-        titlefont = list("color" = theme$gray2),
+        titlefont = list(color = theme$gray2),
         showgrid = FALSE,
         showline = FALSE,
         zeroline = FALSE
       ),
       xaxis2 = list(
         title = "Count",
-        domain = list(0.8, 1),  # 70 to 100 % of width
-        titlefont = list("color" = theme$gray2),
-        showgrid = FALSE
+        titlefont = list(color = theme$gray2),
+        domain = list(0.8, 1), # set 4:1 width ratio
+        showgrid = FALSE,
+        zeroline = FALSE
       ),
       yaxis2 = list(
         anchor = "free",
         overlaying = "y",
         side = "right",
-        titlefont = list("color" = theme$gray2),
+        titlefont = list(color = theme$gray2),
         showticklabels = FALSE
       )
     )
@@ -814,9 +814,9 @@ app$callback(
   ),
   function(button_click, close_click) {
     if (button_click > close_click) {
-      return(list("display" = "block"))
+      return(list(display = "block"))
     }
-    return(list("display" = "none"))
+    return(list(display = "none"))
   }
 )
 
@@ -891,46 +891,46 @@ app$callback(
         ),
         build_value_setter_line(
           "Upper Specification Limit",
-          state_dict[[dd_select]][["usl"]],
+          state_dict[[dd_select]]$usl,
           daqNumericInput(
             id = "ud_usl_input",
             className = "setting-input",
             size = 200,
             max = 9999999,
-            value = state_value[[dd_select]][["usl"]]
+            value = state_value[[dd_select]]$usl
           )
         ),
         build_value_setter_line(
           "Lower Specification Limit",
-          state_dict[[dd_select]][["lsl"]],
+          state_dict[[dd_select]]$lsl,
           daqNumericInput(
             id = "ud_lsl_input",
             className = "setting-input",
             size = 200,
             max = 9999999,
-            value = state_value[[dd_select]][["lsl"]]
+            value = state_value[[dd_select]]$lsl
           )
         ),
         build_value_setter_line(
           "Upper Control Limit",
-          state_dict[[dd_select]][["ucl"]],
+          state_dict[[dd_select]]$ucl,
           daqNumericInput(
             id = "ud_ucl_input",
             className = "setting-input",
             size = 200,
             max = 9999999,
-            value = state_value[[dd_select]][["ucl"]]
+            value = state_value[[dd_select]]$ucl
           )
         ),
         build_value_setter_line(
           "Lower Control Limit",
-          state_dict[[dd_select]][["lcl"]],
+          state_dict[[dd_select]]$lcl,
           daqNumericInput(
             id = "ud_lcl_input",
             className = "setting-input",
             size = 200,
             max = 9999999,
-            value = state_value[[dd_select]][["lcl"]]
+            value = state_value[[dd_select]]$lcl
           )
         )
       )
@@ -952,11 +952,11 @@ app$callback(
   ),
   function(set_btn, param, stats, usl, lsl, ucl, lcl) {
     if (is.integer(set_btn)) {
-      stats[[param]][["usl"]] <- usl
-      stats[[param]][["lsl"]] <- lsl
-      stats[[param]][["ucl"]] <- ucl
-      stats[[param]][["lcl"]] <- lcl
-      stats[[param]][["ooc"]] <- populate_ooc(df[[param]], ucl, lcl)
+      stats[[param]]$usl <- usl
+      stats[[param]]$lsl <- lsl
+      stats[[param]]$ucl <- ucl
+      stats[[param]]$lcl <- lcl
+      stats[[param]]$ooc <- populate_ooc(df[[param]], ucl, lcl)
     }
     return(stats)
   }
@@ -980,27 +980,35 @@ app$callback(
           "Lower Control Limit"
         ),
         "Current Setup" = c(
-          store_data[[dd_select]][["usl"]],
-          store_data[[dd_select]][["lsl"]],
-          store_data[[dd_select]][["ucl"]],
-          store_data[[dd_select]][["lcl"]]
+          store_data[[dd_select]]$usl,
+          store_data[[dd_select]]$lsl,
+          store_data[[dd_select]]$ucl,
+          store_data[[dd_select]]$lcl
         )
       )
       return(
         dashDataTable(
+          style_cell = list(
+            padding = "0 1.5rem 1.5rem",
+            border = "none",
+            backgroundColor = theme$dark1,
+            color = theme$gray2,
+            fontFamily = "Open Sans"
+          ),
           style_header = list(
-            "backgroundColor" = theme$dark1,
-            "fontWeight" = "bold"
+            padding = "1.5rem 1.5rem",
+            color = "inherit"
           ),
           style_as_list_view = TRUE,
-          style_cell_conditional = lapply(list("Specs"), function(x) {return(list("if" = list("column_id" = x), "textAlign" = "left"))}),
-          style_cell = list(
-            "backgroundColor" = theme$dark1,
-            "color" = theme$gray2,
-            "border" = theme$gray2
+          style_cell_conditional = lapply(list("Specs"), function(col) {return(list("if" = list(column_id = col), textAlign = "left"))}),
+          css = list(
+            list(selector = "tr:hover td", rule = "color: #91DFD2 !important;"),
+            list(selector = "td", rule = "border: none !important;"),
+            list(selector = ".dash-cell.focused", rule = "background-color: #1E2130 !important;"),
+            list(selector = "table", rule = "--accent: #1E2130; width: 100%;")
           ),
           data = df_to_list(new_df),
-          columns = lapply(colnames(new_df), function(x) {return(list("id" = x, "name" = x))})
+          columns = lapply(colnames(new_df), function(col) {return(list(id = col, name = col))})
         )
       )
     }
@@ -1069,7 +1077,7 @@ update_metric_summary <- function(param) {
     ),
     function(interval, stored_data) {
       total_count <- ifelse(interval < max_length, interval, max_length)
-      ooc_n <- ifelse(total_count == 0, 0, stored_data[[param]][["ooc"]][[total_count]]*100) # ERROR?
+      ooc_n <- ifelse(total_count == 0, 0, stored_data[[param]]$ooc[[total_count]]*100) # ERROR?
       return(sprintf("%.2f%%", ooc_n))
     }
   )
@@ -1081,7 +1089,7 @@ update_metric_summary <- function(param) {
     ),
     function(interval, stored_data) {
       total_count <- ifelse(interval < max_length, interval, max_length)
-      ooc_n <- ifelse(total_count == 0, 0, stored_data[[param]][["ooc"]][[total_count]]*100)
+      ooc_n <- ifelse(total_count == 0, 0, stored_data[[param]]$ooc[[total_count]]*100)
       ooc_g <- ifelse(ooc_n == 0, 0.00001, ifelse(ooc_n <= 15, ooc_n, 15))
       return(ooc_g)
     }
@@ -1094,8 +1102,8 @@ update_metric_summary <- function(param) {
     ),
     function(interval, stored_data) {
       total_count <- ifelse(interval < max_length, interval, max_length)
-      ooc_n <- ifelse(total_count == 0, 0, stored_data[[param]][["ooc"]][[total_count]]*100)
-      color <- ifelse(ooc_n <= 5, theme$blue, theme$red)
+      ooc_n <- ifelse(total_count == 0, 0, stored_data[[param]]$ooc[[total_count]]*100)
+      color <- ifelse(ooc_n <= 5, theme$blue, ifelse(ooc_n < 7, theme$yellow, theme$red))
       return(color)
     }
   )
@@ -1116,7 +1124,7 @@ app$callback(
       values <- list()
       colors <- list()
       for (param in params[-1]) {
-        ooc_param <- stored_data[[param]][["ooc"]][[total_count]]*100+1
+        ooc_param <- stored_data[[param]]$ooc[[total_count]]*100+1
         values <- append(values, ooc_param)
         colors <- append(colors, ifelse(ooc_param > 6, theme$red, theme$blue))
       }
@@ -1153,7 +1161,7 @@ app$callback(
       if (input[[2]] == "n_clicks") {
         id <- gsub('.{7}$', '', input[[1]])
       } else if (input[[2]] == "n_intervals") {
-        id <- cur_fig$data[[1]][["name"]]
+        id <- cur_fig$data[[1]]$name
       }
     }
     return(generate_graph(interval, data, id))

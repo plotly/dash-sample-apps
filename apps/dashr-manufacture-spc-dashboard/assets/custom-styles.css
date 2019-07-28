@@ -1,7 +1,12 @@
 /* Table of contents
 ––––––––––––––––––––––––––––––––––––––––––––––––––
+- Containers
 - Banner
--
+- Tabs
+- Tab 1 Settings
+- Tab 2 Status
+- Tab 2 Status
+- Tab 2 Graphs & Stats
 */
 
 /* Colors
@@ -46,12 +51,60 @@ h5 {
   text-transform: uppercase;
 }
 
+@media only screen and (max-width: 950px) {
+  body {
+    font-size: 13px;
+  }
+  h6 {
+    font-size: 14px;
+  }
+  h5 {
+    font-size: 15px;
+  }
+}
+
+/* Containers
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
 #big-app-container {
   max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 0 6rem;
+}
+
+#app-container {
+  background: #161A28;
+  width: 100%;
+  max-width: 100%;
+  height: calc(100vh - 10rem - 1px);
+}
+
+#app-container * {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+#app-content {
+  background: inherit;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.section-banner {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #4B5460;
+}
+
+@media only screen and (max-width: 950px) {
+  #big-app-container {
+    padding: 0 1rem;
+  }
+  #app-container {
+    height: auto;
+  }
 }
 
 /* Banner
@@ -132,39 +185,25 @@ h5 {
   color: #92E0D3;
 }
 
-/*@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 950px) {
   .banner {
-    height: 12rem;
+    flex-direction: column-reverse;
+    padding: 1rem 0.5rem;
   }
-}*/
-
-/* Container
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-#app-container {
-  background: #161A28;
-  width: 100%;
-  max-width: 100%;
-  height: calc(100vh - 10rem - 1px);
-}
-
-/* TODO: decide if the following is needed for mobile version:
-#app-container * {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-}
-*/
-
-#app-content {
-  background: inherit;
-  padding: 0;
-  width: 100%;
-  max-width: 100%;
-}
-
-.section-banner {
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid #4B5460;
+  #banner-text {
+    margin: 0.5rem 0;
+    text-align: center;
+  }
+  #banner-text h5 {
+    margin-bottom: 0.5rem;
+  }
+  #banner-logo button {
+    display: none;
+  }
+  #banner-logo Img {
+    height: 3rem;
+    margin: 1rem;
+  }
 }
 
 /* Tabs
@@ -204,13 +243,12 @@ h5 {
   border-bottom: #92E0D3 solid 6px !important;
 }
 
-/* TO DO: add below
-@media only screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
+  /* Remove margins when tabs in column format */
   #app-tabs .tab {
     margin: 0;
   }
 }
-*/
 
 /* Tab 1 Settings
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -251,7 +289,7 @@ h5 {
   margin-top: 0;
 }
 
-#value-setter-menu .row:nth-child(1) {
+#value-setter-panel .row:nth-child(1) {
   border-bottom: 1px solid #4B5460;
 }
 
@@ -331,6 +369,19 @@ h5 {
   border-color: #ABBACC transparent transparent !important;
 }
 
+#value-setter-view-output {
+  margin: 1.5rem 0 2rem 2rem;
+  align-self: flex-end;
+  width: 80%;
+}
+
+@media only screen and (max-width: 600px) {
+  /* Stretch output table */
+  #value-setter-view-output {
+    width: 100%;
+  }
+}
+
 /* Tab 2 Status
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -355,6 +406,13 @@ h5 {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+}
+
+#quick-stats.row {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 #quick-stats .card {
@@ -443,12 +501,32 @@ h5 {
   display: none !important;
 }
 
+@media only screen and (max-width: 950px) {
+  #specs-container {
+    margin: 4rem 2rem;
+  }
+  #settings-menu {
+    margin-top: 3rem; /* TO DO: toggle */
+    flex-direction: column;
+  }
+  #settings-menu > div {
+    width: 100%;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    flex-basis: auto;
+    margin: 1rem 0;
+  }
+  #value-setter-panel .row:nth-child(1) {
+    display: none;
+  }
+}
+
 /* Tab 2 Graphs & Stats
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #graphs-container {
   max-width: calc(75% - 6px);
-  max-height: 100%; /* TO DO: toggle */
   background-color: #171A29;
   flex: 3 1;
   display: flex;
@@ -457,7 +535,7 @@ h5 {
 
 #top-section-container {
   max-width: 100%;
-  max-height: 40rem; /* TO DO: toggle to make app fit screen height */
+  height: 40rem; /* TO DO: toggle to make app fit screen height */
   display: flex;
   flex-direction: row;
 }
@@ -468,6 +546,7 @@ h5 {
 }
 
 #metric-div {
+  height: calc(100% - 4.5rem);
   padding: 1rem 1.5rem;
 }
 
@@ -485,7 +564,7 @@ h5 {
 #metric-rows {
   overflow-y: scroll;
   width: 100%;
-  height: 30rem; /* TO DO: toggle to make app fit screen height */
+  height: calc(100% - 4rem); /* TO DO: toggle to make app fit screen height */
   font-size: 12px;
 }
 
@@ -534,11 +613,7 @@ h5 {
 }
 
 #piechart {
-  height: 100%;
-}
-
-#piechart > div > div {
-  height: 100%;
+  height: calc(100% - 4.5rem);
 }
 
 #control-chart-container {
@@ -549,64 +624,106 @@ h5 {
   border-top: 6px solid #1E2130;
 }
 
-/* Other Devices
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
 @media only screen and (max-width: 950px) {
-
-  body {
-    font-size: 13px;
-  }
-
-  #big-app-container {
-    padding: 0 1rem;
-  }
-
-  .banner {
-    flex-direction: column-reverse;
-    padding: 1rem 0.5rem;
-  }
-
-  #banner-text {
-    text-align: center;
-  }
-
-  #banner-text h5 {
-    font-size: 14px;
-  }
-
-  #banner-text h6 {
-    font-size: 13px;
-  }
-
-  #banner-logo button {
-    display: none;
-  }
-
-  #banner-logo Img {
-    height: 3rem;
-    margin: 1rem;
-  }
-
-  #app-container {
+  #status-container, #top-section-container {
+    flex-direction: column;
     height: auto;
   }
-
-  #specs-container {
-    margin: 2rem;
+  #quick-stats {
+    max-width: 100%;
   }
-
-  #settings-menu {
-    margin-top: 2rem; /* TO DO: toggle */
-  }
-
-  #settings-menu > div {
+  #graphs-container {
+    flex: 1;
+    max-width: 100%;
     width: 100%;
-    flex: none;
-    display: flex;
-    flex-direction: column;
-    flex-basis: auto;
-    margin: 2rem 0rem;
   }
+  #top-section-container > div {
+    width: 100%;
+    height: auto;
+  }
+  /* Adjust borders */
+  #quick-stats {
+    border-right: none;
+    border-bottom: 6px solid #1E2130;
+  }
+  #ooc-piechart-outer {
+    border-left: none;
+    border-top: 6px solid #1E2130;
+  }
+}
 
+@media only screen and (max-width: 600px) {
+  /* Display table rows as blocks */
+  #metric-div {
+    padding: 1rem;
+  }
+  #metric-div .row:nth-child(1) {
+    display: none;
+  }
+  #metric-rows .row:nth-child(1) {
+    border: 0;
+    display: flex;
+  }
+  #metric-rows {
+    height: fit-content;
+  }
+  #metric-rows .row {
+    height: fit-content !important;
+    border-top: 1px solid #1E2130;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  #metric-rows .column, #metric-rows .columns {
+    width: 100% !important;
+    float: none;
+    margin: 0.25rem 0 !important;
+    padding-left: 50%;
+    position: relative;
+  }
+  #metric-rows .column:before, #metric-rows .columns:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    left: 5px;
+    width: 45%;
+    padding-right: 1rem;
+    white-space: nowrap;
+  }
+  /* Attach header vertically to table */
+  #metric-rows .row > div {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+  /* Add table header column */
+  #metric-rows .row > div:nth-of-type(1):before {
+    content: "Parameter";
+  }
+  #metric-rows .row > div:nth-of-type(2):before {
+    content: "Count";
+  }
+  #metric-rows .row > div:nth-of-type(3):before {
+    content: "   ";
+  }
+  #metric-rows .row > div:nth-of-type(4):before {
+    content: "OOC %";
+  }
+  #metric-rows .row > div:nth-of-type(5):before {
+    content: "OOC Graph";
+  }
+  #metric-rows .row > div:nth-of-type(6):before {
+    content: "Pass / Fail";
+  }
+  /* Adjust graduated bar margins */
+  #metric-rows .graduated-bar {
+    margin: 0 1rem;
+  }
+  /* Hide sparkline */
+  #metric-rows .row > div:nth-of-type(3) {
+    display: none;
+  }
+  #metric-rows .row > div:nth-of-type(6) > div {
+    margin-top: 6.5px !important;
+  }
 }
