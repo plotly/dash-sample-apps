@@ -695,7 +695,7 @@ generate_graph <- function(interval, specs_dict, col) {
       uirevision = col,
       paper_bgcolor = theme$dark2,
       plot_bgcolor = theme$dark2,
-      margin = list(t = 50, r = 40, b = 60), # TODO: fix margins
+      margin = list(t = 50, r = 30, b = 60, l = 70), # TODO: adjust margins
       legend = list(font = list(color = theme$gray2), orientation = "h", x = 0, y = 1.15),
       font = list(color = theme$gray2),
       showlegend = TRUE,

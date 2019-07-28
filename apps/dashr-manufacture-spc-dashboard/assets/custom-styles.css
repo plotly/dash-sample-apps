@@ -92,6 +92,9 @@ h5 {
   #app-container {
     height: auto;
   }
+  #app-content {
+    border-bottom: #1E2130 solid 6px !important;
+  }
 }
 
 /* Banner
@@ -489,9 +492,6 @@ h5 {
 }
 
 @media only screen and (max-width: 950px) {
-  #specs-container {
-    margin: 4rem 2rem;
-  }
   #settings-menu {
     margin-top: 3rem;
     flex-direction: column;
@@ -632,6 +632,13 @@ h5 {
   #top-section-container > div {
     width: 100%;
     height: auto;
+  }
+  #ooc-piechart-outer {
+    height: 40rem !important;
+  }
+  #control-chart-container {
+    height: 40rem !important;
+    padding-bottom: 6rem;
   }
   /* Adjust borders */
   #quick-stats {
