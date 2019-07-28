@@ -1,27 +1,57 @@
-# DashR Manufacture SPC Dashboard
+# Manufacture SPC Dashboard
 
 ## About this app
 
-[add a simple description of what the app does, or represents, here]
+Manufacture SPC Dashboard is a dashboard for monitoring real-time process quality along manufacture production line.
 
-### [technique or field associated with the app]
+## How to run this app locally
 
-[add a small description of the context in which this app might be
-used here]
+Clone the repository:
 
-## How to run this app
+```
+$ git clone https://github.com/plotly/dash-sample-apps.git
+```
 
-[add the *full instructions* for someone who has cloned the repo to
-run your app; this includes setting up a virtual environment,
-activating the virtual environment, installing requirements, and
-running your app from the root directory (the instructions should all
-be in the form of shell commands)]
+Redirect to the respective app directory:
+
+```
+$ cd dash-sample-apps/apps/dashr-manufacture-spc-dashboard
+```
+
+Install the requirements:
+
+```
+$ Rscript init.R
+```
+
+Run the app:
+
+```
+$ Rscript app.R
+```
+
+View in your browser at http://127.0.0.1:8050.
+
+## How to use this app
+
+Click on buttons in `Parameter` column to visualize details of trendline on the bottom panel.
+
+Click `Start` button, trends are updated every two seconds to simulate real-time measurements. The Sparkline on top panel and Control chart on bottom panel show Shewhart process control using mock data. Data falling outside of control limit are signals indicating 'Out of Control (OOC)', and will 
+trigger alerts instantly for a detailed checkup. 
+
+Operators may stop measurement by clicking `Stop` button, and edit specification parameters for selected process line(metrics) in Specification Tab.
 
 ## Screenshots
 
-[add a screenshot or (ideally) a gif of the app in action]
+![demo/demo.gif](demo/demo.gif)
 
-## Resources
+## Built with
 
-[add a list of references that you used here during development of the
-app; if you don't have anything to put here, delete this section]
+* [Dash R](https://dashr.plot.ly/) - Main server and interactive components 
+* [Plotly R](https://plot.ly/r/) - Used to create the interactive plots
+* [Dash DAQ](https://dashr.plot.ly/dash-daq) - Styled technical components for industrial applications
+
+## Resources/References
+
+* [Dash documentation for R](https://dashr.plotly.com/)
+* [Shewhart statistical process control](https://en.wikipedia.org/wiki/Shewhart_individuals_control_chart)
