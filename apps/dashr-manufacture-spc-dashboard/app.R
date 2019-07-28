@@ -26,16 +26,15 @@ app <- Dash$new(name = "DashR Manufacture SPC Dashboard", suppress_callback_exce
 ########################################################################################################################
 # DEFINE GLOBAL VARIABLES
 
-theme <- list(            # old      new
+theme <- list(
   white = "whitesmoke",
-  dark1 = "#1E2130",      # #2D3038  #1E2130
-  dark2 = "#171A29",      # #1D202D  #171A29
+  dark1 = "#1E2130",
+  dark2 = "#171A29",
   gray1 = "#4B5460",
-  gray2 = "#ABBACC",      # darkgray #A7ADB9
-  white = "#FFFFFF",      # #FFFFFF  #F9FEFE
-  blue = "#91DFD2",       # #91DFD2  #90E0D4
-  yellow = "#F4D44D",     # #F4D44D  #F5D54C
-  red = "#F45060"         # #F45060  #F45060
+  gray2 = "#ABBACC",
+  blue = "#92E0D3",
+  yellow = "#F4D44D",
+  red = "#F45060"
 )
 
 suffix <- list(
@@ -696,7 +695,7 @@ generate_graph <- function(interval, specs_dict, col) {
       uirevision = col,
       paper_bgcolor = theme$dark2,
       plot_bgcolor = theme$dark2,
-      margin = list(t = 70, r = 40, b = 90), # TODO: fix margins
+      margin = list(t = 50, r = 40, b = 60), # TODO: fix margins
       legend = list(font = list(color = theme$gray2), orientation = "h", x = 0, y = 1.15),
       font = list(color = theme$gray2),
       showlegend = TRUE,
@@ -1002,7 +1001,7 @@ app$callback(
           style_as_list_view = TRUE,
           style_cell_conditional = lapply(list("Specs"), function(col) {return(list("if" = list(column_id = col), textAlign = "left"))}),
           css = list(
-            list(selector = "tr:hover td", rule = "color: #91DFD2 !important;"),
+            list(selector = "tr:hover td", rule = "color: #92E0D3 !important;"),
             list(selector = "td", rule = "border: none !important;"),
             list(selector = ".dash-cell.focused", rule = "background-color: #1E2130 !important;"),
             list(selector = "table", rule = "--accent: #1E2130; width: 100%;")

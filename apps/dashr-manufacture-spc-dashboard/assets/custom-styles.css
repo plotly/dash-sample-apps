@@ -5,21 +5,7 @@
 - Tabs
 - Tab 1 Settings
 - Tab 2 Status
-- Tab 2 Status
 - Tab 2 Graphs & Stats
-*/
-
-/* Colors
-––––––––––––––––––––––––––––––––––––––––––––––––––
-- label    old         kris      aanika
-- white1:  whitesmoke  #??????   #F5F5F5
-- gray1:   darkgray    #4B5460   #4B5460
-- gray2:   darkgray    darkgray  #ABBACC
-- dark1:   #2D3038     #1E2130   #1E2130
-- dark2:   #1D202D     #161A28   #171A29
-- blue:    #91DFD2     #92E0D3   #92E0D3
-- yellow:  #F4D44D     #??????   #F5D54C
-- red:     #F45060     #??????   #F45060
 */
 
 body {
@@ -31,7 +17,7 @@ body {
   width: 100%;
   max-width: 100% !important;
   overflow-x: hidden;
-  margin: 0; /*TODO: remove*/
+  margin: 0;
 }
 
 h6 {
@@ -75,10 +61,10 @@ h5 {
 }
 
 #app-container {
-  background: #161A28;
-  width: 100%;
   max-width: 100%;
-  height: calc(100vh - 10rem - 1px);
+  width: 100%;
+  height: calc(100vh - 8rem - 6px);
+  background: #171A29;
 }
 
 #app-container * {
@@ -87,10 +73,11 @@ h5 {
 }
 
 #app-content {
-  background: inherit;
-  padding: 0;
-  width: 100%;
   max-width: 100%;
+  width: 100%;
+  height: calc(100% - 4rem - 6px); /* TODO: toggle to make app fit screen height */
+  padding: 0;
+  background: inherit;
 }
 
 .section-banner {
@@ -111,9 +98,9 @@ h5 {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 .banner {
-  height: fit-content; /* TODO: change to 6rem */
+  height: fit-content;
   width: 100%;
-  padding: 2rem 10rem; /* TODO: change to 1rem 4rem */
+  padding: 2rem 10rem;
   border-bottom: 1px solid #4B5460;
   display: flex;
   flex-direction: row;
@@ -134,7 +121,7 @@ h5 {
 }
 
 #banner-logo button {
-  margin-right: 1rem; /* TODO: change to 2% */
+  margin-right: 1rem;
   line-height: 3rem;
   color: #ABBACC;
   background-color: #1E2130 !important;
@@ -147,16 +134,16 @@ h5 {
 }
 
 .modal {
-  display: none; /*Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1005; /* Sit on top */
+  display: none; /* hidden by default */
+  position: fixed; /* stay in place */
+  z-index: 1005; /* sit on top */
   left: 0;
   top: 0;
-  width: 100vw; /* Full width */
-  height: 100vh; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  width: 100vw; /* full width */
+  height: 100vh; /* full height */
+  overflow: auto; /* enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* black w/ opacity */
 }
 
 .markdown-container {
@@ -221,7 +208,7 @@ h5 {
   height: 18px;
   border: 0;
   border-bottom: #1E2130 solid 6px !important;
-  background-color: #161A28;
+  background-color: #171A29;
   color: inherit;
   letter-spacing: 1px;
   cursor: pointer;
@@ -254,7 +241,7 @@ h5 {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #specs-container {
-  margin: 5rem;
+  padding: 5rem;
 }
 
 #settings-menu {
@@ -317,7 +304,7 @@ h5 {
 }
 
 .Select.is-focused:not(.is-open) > .Select-control {
-  border: 1px solid #91DFD2 !important;
+  border: 1px solid #92E0D3 !important;
 }
 
 .Select-control div {
@@ -346,7 +333,7 @@ h5 {
 }
 
 .Select-menu-outer div:hover {
-  background-color: #161A28 !important;
+  background-color: #171A29 !important;
   cursor: pointer;
 }
 
@@ -370,7 +357,7 @@ h5 {
 }
 
 #value-setter-view-output {
-  margin: 1.5rem 0 2rem 2rem;
+  margin: -0.5rem 0 0 2rem;
   align-self: flex-end;
   width: 80%;
 }
@@ -386,8 +373,8 @@ h5 {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 #status-container {
-  width: 100%;
   max-width: 100%;
+  width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -441,7 +428,7 @@ h5 {
 
 #quick-stats h6 {
   margin-bottom: 2rem;
-  /* TO DO: add the following if left text align wanted:
+  /* TODO: add the following if left text align desired:
   margin-left: 2rem;
   align-self: flex-start; */
 }
@@ -506,7 +493,7 @@ h5 {
     margin: 4rem 2rem;
   }
   #settings-menu {
-    margin-top: 3rem; /* TO DO: toggle */
+    margin-top: 3rem;
     flex-direction: column;
   }
   #settings-menu > div {
@@ -527,6 +514,7 @@ h5 {
 
 #graphs-container {
   max-width: calc(75% - 6px);
+  height: calc(100% - 5rem);
   background-color: #171A29;
   flex: 3 1;
   display: flex;
@@ -535,7 +523,7 @@ h5 {
 
 #top-section-container {
   max-width: 100%;
-  height: 40rem; /* TO DO: toggle to make app fit screen height */
+  height: calc(50% - 6px); /* TODO: toggle to make app fit screen height */
   display: flex;
   flex-direction: row;
 }
@@ -564,7 +552,7 @@ h5 {
 #metric-rows {
   overflow-y: scroll;
   width: 100%;
-  height: calc(100% - 4rem); /* TO DO: toggle to make app fit screen height */
+  height: calc(100% - 4rem);
   font-size: 12px;
 }
 
@@ -606,7 +594,7 @@ h5 {
 }
 
 #ooc-piechart-outer {
-  height: 40rem; /* TO DO: toggle to make app fit screen height */
+  height: 100%;
   margin: 0;
   border-left: 6px solid #1E2130;
   flex: 1 1 auto;
@@ -618,10 +606,14 @@ h5 {
 
 #control-chart-container {
   max-width: 100%;
-  max-height: 50%;
+  height: calc(50% - 6px); /* TODO: toggle to make app fit screen height */
   position: relative;
   z-index: 4;
   border-top: 6px solid #1E2130;
+}
+
+#control-chart-live {
+  height: 100%;
 }
 
 @media only screen and (max-width: 950px) {
