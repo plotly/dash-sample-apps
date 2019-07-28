@@ -4,8 +4,8 @@ library(plotly)
 library(dash)
 library(dashHtmlComponents)
 library(dashCoreComponents)
-library(dashTable)
 library(dashDaq)
+library(dashTable)
 library(data.table)
 
 ########################################################################################################################
