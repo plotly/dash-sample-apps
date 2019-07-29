@@ -4,7 +4,7 @@
 
 This demo lets you interactively explore the phylogeny and spread of selected diseases. 
 
-## Use the app
+## Use this app
 
 Select a disease from the "Dataset" dropdown, and the date range you want from the "Data Range" slider, and it will display:
 
@@ -15,7 +15,7 @@ Select a disease from the "Dataset" dropdown, and the date range you want from t
 
 ![demo/demo.gif](demo/demo.gif)
 
-## Run the app locally
+## Run this app locally
 
 Clone the repository:
 
