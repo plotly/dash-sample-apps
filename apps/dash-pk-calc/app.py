@@ -46,7 +46,9 @@ app.layout = html.Div(
             children=[
                 html.A(
                     id="dash-logo",
-                    children=[html.Img(src=app.get_asset_url("dash-logo.png"))],
+
+                    children=[html.Img(src=app.get_asset_url("dash-bio-logo.png"))],
+
                     href="/Portal",
                 ),
                 html.H2("Noncompartmental Pharmacokinetics Analysis"),
