@@ -82,6 +82,9 @@ convert_las <- function(las_path) {
 
 las_data <- convert_las(las_path)
 
+####################################################################################################
+# DEFINE GLOBAL VARIABLES
+
 table_header <- list (
   "mnemonic" = list(name = "mnemonic", id = "mnemonic", width = "10%"),
   "description" = list(name = "description", id = "description", width = "40%"),
@@ -123,8 +126,8 @@ generate_table <- function() {
   return(
     dashDataTable(
       id = "table",
-      sort_action = TRUE,
-      filter_action = TRUE,
+      sort_action = 'native',
+      filter_action = 'native',
       row_deletable = TRUE,
       css = list(list(
         selector = '.dash-cell div.dash-cell-value',
