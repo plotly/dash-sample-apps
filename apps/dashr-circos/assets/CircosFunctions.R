@@ -1,4 +1,8 @@
-# Description for gallery
+# Dataframe for Table
+
+df <- circos_dataframe[['chords']]
+
+df <- flatten(df, recursive = TRUE)
 
 
 
@@ -35,8 +39,17 @@ layout <- function() {
       children= list(
         dccLoading(className = 'dashbio-loading', children = htmlDiv(
           id='circos-hold',
-          children = list()
+          className = 'circos-hold',
+          children = list(),
+          style = list()
         )),
+        dccLoading(className = 'dashbio-loading', children = htmlDiv(
+          id='chords-plot',
+          className = 'circos-hold',
+          children = list(),
+          style = list()
+        )),
+        
       
       htmlDiv(id = 'circos-control-tabs', className = 'control-tabs', children=list(
         dccTabs(id='circos-tabs', value = 'what-is', children = list(
@@ -114,10 +127,11 @@ layout <- function() {
                   className = 'control-download',
                   children = 'Download Sample Data'
                 ),
-                href ="https://google.com" #Placeholder
+                href ="assets/circos_graph_data.json",
+                download = 'circos_graph_data.json'
               ),
               
-              htmlDiv(id = 'circos-uploaded-data', children = list(
+              htmlDiv(id = 'circos-uploaded-data', children = list(htmlDiv(id = 'options', style = list(), list(
                 dccUpload(
                   id='upload-data',
                   className = 'control-upload',
@@ -145,7 +159,7 @@ layout <- function() {
                 )
               ))
               
-            ))
+            ))))
           ),
           
           dccTab(
@@ -167,7 +181,7 @@ layout <- function() {
                     list('label' = 'Scatter', 'value' = 'scatter')
                     
                   ),
-                  value = 'chords'
+                  value = 'heatmap'
                 ),
                 htmlDiv(className = 'app-controls-desc', id = 'chords-text')
               )),
@@ -184,7 +198,8 @@ layout <- function() {
               htmlHr(),
               htmlH5('Hover Data'),
               htmlDiv(
-                id = 'event-data-select'
+                id = 'event-data-select',
+                children = list()
               )
             ))
           ),
@@ -198,12 +213,62 @@ layout <- function() {
                 dccDropdown(
                   id = 'circos-view-dataset',
                   options = list(
-                    list('label' = 'Layout', 'value'= 'layout')
+                    list('label' = 'Cytobands', 'value'= 'cytobands'),
+                    list('label' = 'Chords', 'value'= 'chords'),
+                    list('label' = 'Highlight' , 'value' = 'highlights')
                     
-                  ), value = 'layout'
+                  ), value = 'chords'
                 )
-              ))
-              #datatable goes here
+              )),
+              htmlDiv(id = 'circos-table-container',
+                      children = list(
+                        dashDataTable(
+                          id = 'data-table',
+                          columns = lapply(colnames(df), 
+                                           function(colName){
+                                             list(
+                                               id = colName,
+                                               name = colName
+                                             )
+                                           }),
+                          data= df_to_list(df),
+                          row_selectable='multi',
+                          selected_rows = character(0),
+                          # sorting = TRUE,
+                          # filtering = TRUE,
+                          # css = list(list(
+                          #   'selector' = '.dash-cell div.dash-cell-value',
+                          #   'rule' = 'display: inline;',
+                          #            'white-space: inherit;',
+                          #            'overflow: auto;',
+                          #            'text-overflow: inherit;'
+                          # )),
+                          style_cell = list(
+                            'whiteSpace' = 'no-wrap',
+                            'overflow' = 'hidden',
+                            'textOverflow' = 'ellipsis',
+                            'maxWidth' = 100,
+                            'fontWeight' = 100,
+                            'fontSize' = '11pt',
+                            'fontFamily' = 'Courier New',
+                            'backgroundColor' = '#1F2132'
+                          ),
+                          
+                          style_header = list(
+                            'backgroundColor' = '#1F2132',
+                            'textAlign' = 'center'
+                          ),
+                          
+                          style_table = list(
+                            'maxHeight' = '310px',
+                            'width' = '320px',
+                            'marginTop' = '5px',
+                            'marginBottom' = '10px'
+                          )
+                        )
+                      )),
+              
+              htmlDiv(id = 'expected-index')
             ))
           )
         ))

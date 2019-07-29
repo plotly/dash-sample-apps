@@ -43,8 +43,8 @@ body ::-webkit-scrollbar-thumb {
     color: #7CD3F7 !important;
 }
 
-#circos-hold {
-    display: inline-block !important;
+.circos-hold {
+    display: inline-block;
     padding: 40px;
     margin-left: 50px;
 }
