@@ -217,10 +217,6 @@
         overflow-x: hidden;
         overflow-y: auto;
     }
-
-    .card {
-        padding-left: 2rem;
-    }
 }
 
 @media (max-width: 1200px) {
