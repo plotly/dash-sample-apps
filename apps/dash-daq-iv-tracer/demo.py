@@ -458,7 +458,7 @@ def generate_main_layout(
                         # ),
                     ],
                 ),
-                dcc.Store(id="control-inputs", data={})
+                dcc.Store(id="control-inputs", data={}),
             ],
         )
     ]
@@ -759,7 +759,7 @@ def update_click_output(button_click, close_click):
         Output("source-display", "label"),
         Output("measure-display", "label"),
     ],
-    [Input("source-choice-toggle", "value"), Input("mode-choice-toggle", "value")], 
+    [Input("source-choice-toggle", "value"), Input("mode-choice-toggle", "value")],
     # [State("control-inputs", "data")]
 )
 def update_labels(src_choice, _):

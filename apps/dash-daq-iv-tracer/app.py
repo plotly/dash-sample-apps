@@ -177,7 +177,7 @@ def generate_main_layout(
                 html.Div(
                     id="IV_graph_div",
                     className="eight columns",
-                    style={"margin":"20px"},
+                    style={"margin": "20px"},
                     children=[
                         dcc.Graph(
                             id="IV_graph",
@@ -202,7 +202,8 @@ def generate_main_layout(
                 ),
                 # controls for the connexion to the instrument
                 html.Div(
-                    id="instr_controls", className="two columns",
+                    id="instr_controls",
+                    className="two columns",
                     children=[
                         html.H4(sourcemeter.instr_user_name),
                         # A button to turn the instrument on or off
@@ -248,7 +249,7 @@ def generate_main_layout(
                         ),
                     ],
                     style={
-                        "margin":"50px",
+                        "margin": "50px",
                         "display": "flex",
                         "flex-direction": "column",
                         "alignItems": "center",
@@ -532,7 +533,7 @@ root_layout = html.Div(
             id="header",
             className="banner",
             children=[
-                html.H2("Dash DAQ: IV curve tracer", style={"margin-left":"25px"}),
+                html.H2("Dash DAQ: IV curve tracer", style={"margin-left": "25px"}),
                 daq.ToggleSwitch(
                     id="toggleTheme",
                     label="Dark/Light layout",
@@ -541,8 +542,8 @@ root_layout = html.Div(
                 ),
                 html.Img(
                     src=app.get_asset_url("dash-logo.png"),
-                    className="logo", style={"margin-right":"25px"}
-
+                    className="logo",
+                    style={"margin-right": "25px"},
                 ),
             ],
             style={
@@ -561,7 +562,8 @@ root_layout = html.Div(
             # className='ten columns',
             style={"width": "100%"},
         ),
-    ], style={"background-color":"rgb(243, 246, 250)"}
+    ],
+    style={"background-color": "rgb(243, 246, 250)"},
 )
 
 # Create app layout

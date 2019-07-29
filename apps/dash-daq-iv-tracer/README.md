@@ -58,12 +58,14 @@ Run the app
 
 ```
 
-python app.py
+python demo.py
 
 ```
 
 ## Screenshots
 
-![IV Curve Tracer](screenshots/screenshot.png)
+![IV Curve Tracer](screenshots/iv-tracer-screenshot.png)
 
-![animated](screenshots/dash-daq-iv-tracer-demo.gif)
+![IV Curve Tracer](screenshots/iv-tracer-dark.png)
+
+![animated](screenshots/iv-tracer-demo.gif)
