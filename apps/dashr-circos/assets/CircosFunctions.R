@@ -90,7 +90,7 @@ layout <- function() {
                 
                 htmlDiv(list(
                   'Reference:  ',
-                  htmlA('Seminal paper', href='http://www.doi.org/10.1101/gr.092759.109)')
+                  htmlA('Seminal paper', href='http://www.doi.org/10.1101/gr.092759.109')
                 )),
                 
                 htmlBr(),
@@ -98,7 +98,7 @@ layout <- function() {
                 htmlDiv(list(
                   'For a look into Circos and the Circos API, please visit the 
               original repository ',
-                  htmlA('here', href='https://github.com/nicgirault/circosJS)'),
+                  htmlA('here', href='https://github.com/nicgirault/circosJS'),
                   '.'
                 ))
               )
