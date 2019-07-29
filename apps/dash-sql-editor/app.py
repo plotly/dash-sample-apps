@@ -29,41 +29,6 @@ app.layout = html.Div(
                     [
                         html.Div(
                             [
-                                dcc.Markdown(
-                                    """
-                    ##### Sample Queries
-
-                    ```
-                    CREATE TABLE Account (
-                        Email varchar(255) PRIMARY KEY,
-                        Username varchar(255)
-                    );
-                    ```
-
-                    ```
-                    INSERT INTO Account (Email, Username)
-                    VALUES ('chriswoo@gmail.com', 'Chris');
-                    ```
-
-                    ```
-                    SELECT * FROM Account;
-                    ```
-
-                    ```
-                    DROP TABLE Account;
-                    ```
-
-                """
-                                )
-                            ]
-                        )
-                    ],
-                    width=5,
-                ),
-                Column(
-                    [
-                        html.Div(
-                            [
                                 html.H5("SQL Editor"),
                                 dcc.Textarea(
                                     id="sql__textarea__input",
@@ -95,40 +60,73 @@ app.layout = html.Div(
                     ],
                     width=7,
                 ),
+                Column(
+                    [
+                        html.Div(
+                            [
+                                dcc.Markdown(
+                                    """
+                    ##### Sample Queries
+
+                    ```
+                    CREATE TABLE Account (
+                        Email varchar(255) PRIMARY KEY,
+                        Username varchar(255)
+                    );
+                    ```
+
+                    ```
+                    INSERT INTO Account (Email, Username)
+                    VALUES ('chriswoo@gmail.com', 'Chris');
+                    ```
+
+                    ```
+                    SELECT * FROM Account;
+                    ```
+
+                    ```
+                    DROP TABLE Account;
+                    ```
+
+                """
+                                )
+                            ]
+                        ),
+                        html.Div(
+                            [
+                                html.H5("Log History"),
+                                html.Pre(
+                                    ["No history."],
+                                    id="sql__history__output",
+                                    className="sql__history__pre",
+                                ),
+                            ],
+                            className="mt-2 log__history",
+                        ),
+                    ],
+                    width=5,
+                ),
             ]
         ),
         Row(
             [
+                html.H5("Query Output"),
+                html.Table(id="table__output"),
                 html.Div(
-                    [
-                        html.H5("Query Output"),
-                        html.Pre(
-                            ["No output."], id="sql__output", className="sql__pre"
-                        ),
-                    ]
-                ),
-                html.Div(
-                    [
-                        html.H5("Log History"),
-                        html.Pre(
-                            ["No history."],
-                            id="sql__history__output",
-                            className="sql__history__pre",
-                        ),
-                    ],
-                    className="mt-2",
+                    [html.Pre(["No output."], id="sql__output", className="sql__pre")]
                 ),
             ]
         ),
         dcc.Store(id="log_storage"),
     ],
-    className="container",
+    className="app__container",
 )
 
 
 @app.callback(
     [
         Output("sql__output", "children"),
+        Output("table__output", "children"),
         Output("sql__history__output", "children"),
         Output("log_storage", "data"),
     ],
@@ -143,26 +141,42 @@ def execute_query(btn_execute, btn_reset, value, history):
     # reset button clicked
     if int(btn_execute) < int(btn_reset):
         history_storage = add_to_history(int(btn_reset), "DROP TABLES", history)
-        return drop_all_tables(), output_history(history_storage), history_storage
+        payload = drop_all_tables()
+        return payload["status"], None, output_history(history_storage), history_storage
 
     # execute button clicked
     if value == "" or value is None:
         raise PreventUpdate
 
     history_storage = add_to_history(int(btn_execute), value, history)
-    return execute_query(value), output_history(history_storage), history_storage
+    payload = execute_query(value)
+
+    # no table to show
+    if not isinstance(payload["status"], list):
+        return payload["status"], None, output_history(history_storage), history_storage
+
+    # if the data is a list/table
+    return None, payload["status"], output_history(history_storage), history_storage
 
 
 def execute_query(statement):
     """ Execute PostgreSQL statement. """
 
     try:
-        result = connection.execute(statement).fetchall()
-        print(result)
-        return f"Success: \n {result}"
+        results = connection.execute(statement).fetchall()
+        headers = connection.execute(statement).keys()
+
+        table = [html.Tr([html.Th([header]) for header in headers])]
+        rows = [
+            html.Tr([html.Td(item[header]) for header in headers]) for item in results
+        ]
+        table.extend(rows)
+
+        return {"status": table}
+
     except Exception as error:
         print(error)
-        return f"Error: \n {error}"
+        return {"status": f"{error}"}
 
 
 def drop_all_tables():
@@ -171,9 +185,9 @@ def drop_all_tables():
     try:
         first_stmt = connection.execute("DROP SCHEMA public CASCADE;")
         second_stmt = connection.execute("CREATE SCHEMA public;")
-        return f"Success: \n {first_stmt} \n {second_stmt}"
+        return {"status": f"\n {first_stmt} \n {second_stmt}"}
     except Exception as error:
-        return f"Error: \n {error}"
+        return {"status": f"\n {error}"}
 
 
 def add_to_history(timestamp, statement, history):

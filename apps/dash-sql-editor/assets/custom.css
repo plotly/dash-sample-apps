@@ -41,7 +41,7 @@ code {
     resize: none; 
     margin-bottom: 25px;
     padding: 15px;
-    min-height: 250px !important;
+    min-height: 450px !important;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
@@ -76,8 +76,8 @@ code {
 .sql__pre {
     color: #F4F6F8;
     font-size: 1.2em;
-    border-left: 1px solid white;
-    padding: 6px 10px;
+    padding: 6px 0px;
+    margin-top: 0px;
 }
 
 .mt-2 {
@@ -92,4 +92,33 @@ code {
     font-size: 14px;
     color: #50B83C;
     margin-bottom: 50px;
+}
+
+.app__container {
+    margin: 5%;
+}
+
+.log__history {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+#table__output {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+#table__output th {
+    background-color: #111111;
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-transform: uppercase;
+}
+
+#table__output td {
+    border: 1px solid #dddddd;
+    padding: 8px;
 }
