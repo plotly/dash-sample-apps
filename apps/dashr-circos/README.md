@@ -24,7 +24,7 @@ For a look into Circos and the Circos API, please visit the original repository 
 
 
 
-![screenshot](assets/dashr-circos-screenshot.png)
+![screenshot](assets/dashr-circos-screenshot.PNG)
 
 ### Running the app locally
 
