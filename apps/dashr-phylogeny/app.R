@@ -68,17 +68,15 @@ getCladeLines <- function(tree, fig){
   x0h <- xx[edge[, 1]]
   x1h <- xx[edge[, 2]]
   y0h <- yy[edge[, 2]]
-  fig %>%
-    add_segments(
-      inherit = FALSE, x0h, y0h, x1h, y0h,
-      line = list(color = "black", width = 1),
-      showlegend = FALSE
-      ) %>%
-    add_segments(
-      inherit = FALSE, x0v, y0v, x0v, y1v,
-      line = list(color = "black", width = 1),
-      showlegend = FALSE
-    )
+  fig %>% add_segments(
+    inherit = FALSE, x0h, y0h, x1h, y0h,
+    line = list(color = "black", width = 1),
+    showlegend = FALSE
+  ) %>% add_segments(
+    inherit = FALSE, x0v, y0v, x0v, y1v,
+    line = list(color = "black", width = 1),
+    showlegend = FALSE
+  )
 }
 
 # Create the tree graph
@@ -173,39 +171,37 @@ createMapBubbleYear <- function(virus_name, metadata_file_stat, min_date, max_da
     showframe = FALSE,
     projection = list(type = "Mercator")
   )
-  plot_geo(full_df) %>%
-    add_trace(
-      z = ~count, color = ~count,
-      colorscale = clr, locations = ~ISO3,
-      hoverinfo = "text",
-      text = ~sprintf(
-        "%s<br>Number of cases: %s",
-        Country, count
-      )
-    ) %>%
-    colorbar(
-      title = sprintf(
-        "Number of %s virus cases",
-        paste0(toupper(substring(virus_name, 1, 1)), substring(virus_name, 2))
-      ),
-      titleside = "right",
-      autotick = FALSE,
-      len = 1
-    ) %>% layout(
-      font = list(family = "Roboto", size = "13"),
-      margin = list(t = 70, r = 30, b = 30, l = 30),
-      title = list(
-        text = sprintf(
-          "%s virus cases<br>between %s and %s",
-          paste0(toupper(substring(virus_name, 1, 1)), substring(virus_name, 2)),
-          min_date,
-          max_date
-        ),
-        font = list(size = "18")
-      ),
-      geo = g,
-      autosize = TRUE
+  plot_geo(full_df) %>% add_trace(
+    z = ~count, color = ~count,
+    colorscale = clr, locations = ~ISO3,
+    hoverinfo = "text",
+    text = ~sprintf(
+      "%s<br>Number of cases: %s",
+      Country, count
     )
+  ) %>% colorbar(
+    title = sprintf(
+      "Number of %s virus cases",
+      paste0(toupper(substring(virus_name, 1, 1)), substring(virus_name, 2))
+    ),
+    titleside = "right",
+    autotick = FALSE,
+    len = 1
+  ) %>% layout(
+    font = list(family = "Roboto", size = "13"),
+    margin = list(t = 70, r = 30, b = 30, l = 30),
+    title = list(
+      text = sprintf(
+        "%s virus cases<br>between %s and %s",
+        paste0(toupper(substring(virus_name, 1, 1)), substring(virus_name, 2)),
+        min_date,
+        max_date
+      ),
+      font = list(size = "18")
+    ),
+    geo = g,
+    autosize = TRUE
+  )
 }
 
 # Create the curve graph
@@ -676,14 +672,7 @@ app$layout(
                   boxSizing = "border-box"
                 )
               )
-            ),
-            #style = list(
-              #display = "flex",
-              #marginTop = "5rem",
-              #width = "100%",
-              #float = "left",
-              #boxSizing = "border-box"
-            #)
+            )
           )
         )
       )
