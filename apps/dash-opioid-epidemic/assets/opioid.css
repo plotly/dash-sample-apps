@@ -686,6 +686,12 @@ hr {
     }
 }
 
+@media (max-width: 550px) {
+    #county-choropleth .annotation-text{
+        font-size: 1.2rem !important;
+    }
+}
+
 /* Left column
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 @media only screen and (max-width: 1250px) {
@@ -727,6 +733,10 @@ hr {
     #graph-container {
         margin-top: 5rem;
     }
+
+    #selected-data {
+        height: 55rem;
+    }
 }
 
 @media (min-width: 1251px) {
@@ -748,28 +758,29 @@ hr {
         align-items: stretch;
         justify-content: flex-start;
     }
+
+    #selected-data {
+        flex-grow: 1;
+    }
 }
 
 @media (max-width: 550px) {
     #graph-container {
         padding: 2.5rem;
     }
+
+    #selected-data .xtick text{
+        font-size: 1.1rem !important;
+    }
+
+    #selected-data .gtitle{
+        font-size: 1.7rem !important;
+    }
 }
 
 
 #chart-dropdown {
     margin-bottom: 6.6rem;
-}
-
-@media (max-width: 1250px){
-    #selected-data{
-        height: 55rem;
-    }
-}
-@media (min-width: 1251px){
-    #selected-data{
-        flex-grow: 1;
-    }
 }
 
 /* Dropdown

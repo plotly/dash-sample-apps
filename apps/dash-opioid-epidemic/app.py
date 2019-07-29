@@ -206,6 +206,7 @@ app.layout = html.Div(
                                     paper_bgcolor="#F4F4F8",
                                     plot_bgcolor="#F4F4F8",
                                     autofill=True,
+                                    margin=dict(t=75, r=50, b=100, l=50),
                                 ),
                             ),
                         ),
@@ -330,6 +331,7 @@ def display_selected_data(selectedData, chart_dropdown, year):
                 paper_bgcolor="#1f2630",
                 plot_bgcolor="#1f2630",
                 font=dict(color="#2cfec1"),
+                margin=dict(t=75, r=50, b=100, l=75),
             ),
         )
     pts = selectedData["points"]
@@ -379,6 +381,11 @@ def display_selected_data(selectedData, chart_dropdown, year):
         fig_layout["yaxis"]["tickfont"]["color"] = "#2cfec1"
         fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
         fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
+        fig_layout["margin"]["t"] = 75
+        fig_layout["margin"]["r"] = 50
+        fig_layout["margin"]["b"] = 100
+        fig_layout["margin"]["l"] = 50
+
         return fig
 
     fig = dff.iplot(
