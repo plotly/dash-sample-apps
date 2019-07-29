@@ -139,7 +139,7 @@ app.layout = html.Div(
 def execute_query(btn_execute, btn_reset, value, history):
 
     # reset button clicked
-    if int(btn_execute) < int(btn_reset):
+    if btn_execute < btn_reset:
         history_storage = add_to_history(int(btn_reset), "DROP TABLES", history)
         payload = drop_all_tables()
         return payload["status"], None, output_history(history_storage), history_storage
