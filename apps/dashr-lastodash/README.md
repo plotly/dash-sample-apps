@@ -6,7 +6,9 @@ LAStoDash is a sample Dash project that takes a [Log ASCII Standard (LAS) file](
 
 As indicated in the [LAS 2.0 Specifications](http://www.cwls.org/wp-content/uploads/2017/02/Las2_Update_Feb2017.pdf), LAS files contain sections that are marked by a ~. The [LAS file](data/alcor2.las) used for this app contains four of these sections, including version and wrap mode information (~V), well identification (~W), curve information (~C), and ASCII log data (~A), all of which are displayed in some format (e.g. graph, table) in the demo app and the [printable report in PDF format](demo/alcor2.pdf).
 
-## How to run this app locally
+![demo/demo.gif](demo/demo.gif)
+
+## Run this app locally
 
 Clone the repository:
 
@@ -32,13 +34,10 @@ Run the app:
 $ Rscript app.R
 ```
 
-View in your browser at http://127.0.0.1:8050.
+Open a browser at http://127.0.0.1:8050.
 
-## Screenshots
+## References
 
-![demo/demo.gif](demo/demo.gif)
-
-## Resources
-
-* [Dash documentation for R](https://dashr-docs.herokuapp.com/)
+* [Dash R](https://dashr.plot.ly/) - Main server and interactive components 
+* [Plotly R](https://plot.ly/r/) - Used to create the interactive plots
 * [Log ASCII Standard (LAS) file](http://www.cwls.org/las/)
