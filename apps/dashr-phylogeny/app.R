@@ -355,13 +355,17 @@ app$layout(
           display = "flex",
           justifyContent = "space-around",
           height = "10%",
-          width = "80%",
-          paddingBottom = "3rem"
+          width = "80%"
         ),
         children = list(
           htmlDiv(
             id = "controls-dropdown",
-            style = list(width = "45%"),
+            style = list(
+              width = "calc(49% - 20.9px)",
+              paddingRight = "2rem",
+              paddingBottom = "2rem",
+              borderRight = "1px solid #ccc"
+            ),
             children = list(
               htmlH6("Dataset"),
               dccDropdown(
@@ -375,6 +379,7 @@ app$layout(
               ),
               htmlDiv(
                 id = "output-container",
+                style = list(marginTop = "1rem", marginBottom = "1rem"),
                 children = list(
                   "You have selected the ",
                   htmlSpan(id = "v-name", style = list(color = "#8480f8")),
@@ -446,10 +451,7 @@ app$layout(
                   dccDropdown(
                     id = "d_avian_opt1",
                     options = list(
-                      list(
-                        label = "h7n9",
-                        value = "h7n9"
-                      )
+                      list(label = "h7n9", value = "h7n9")
                     ),
                     value = "h7n9"
                   ),

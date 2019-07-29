@@ -91,24 +91,24 @@
   box-shadow: 2px 2px 1px #f2f2f2;
 }
 
+
+
 @media only screen and (max-width: 1300px){
-  #controls-card{
-    flex-direction: column;
-    align-items: center;
-  }
-  #top-graphs {
-    flex-direction: column;
-    align-items: center;
-    width: 80% !important;
-  }
+  #controls-card,
+  #top-graphs,
   #bottom-graphs {
     flex-direction: column;
     align-items: center;
     width: 80% !important;
   }
+  #controls-card {
+    padding: 1rem 2rem 4rem !important;
+  }
   #controls-dropdown,
   #controls-datarange {
-    width:100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    border: 0 !important;
   }
   #left-top-graphs,
   #right-top-graphs,
