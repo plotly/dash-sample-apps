@@ -15,8 +15,14 @@ In the "Data" tab, you can opt to use preloaded datasets; additionally, you can 
 In the "Graph" tab, you can choose the type of Circos graph to display, control the size of the graph, and access data that are generated upon hovering over parts of the graph.
 
 In the "Table" tab, you can view the datasets that define the parameters of the graph, such as the layout, the highlights, and the chords. You can interact with Circos through this table by selecting the "Chords" graph in the "Graph" tab, then viewing the "Chords" dataset in the "Table" tab.
+
+
 Reference: [Seminal Paper](http://www.doi.org/10.1101/gr.092759.109)
+
+
 For a look into Circos and the Circos API, please visit the original repository [here](https://github.com/nicgirault/circosJS).
+
+
 
 ![screenshot](assets/dashr-circos-screenshot.png)
 
