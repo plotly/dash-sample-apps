@@ -24,7 +24,11 @@ acquisition and controls into your Dash applications.
 
 ### Controls
 
-<!-- FILL ONCE DOUBLE CHECK WITH SHAM -->
+- Single measurement mode: Adjust the value of the source with the knob at the bottom of the graph area and click on the `SINGLE MEASURE` button, the measured value will be displayed. Repetition of this procedure for different source values will reveal the full IV curve.
+
+- Sweep mode: Set the sweep parameters `start`, `stop` and `step` as well as the timevspent on each step, then click on the button `START SWEEP`, the result of the sweep will be displayed on the graph. The data is never erased unless the button `CLEAR GRAPH` is pressed, or if the source type is changed.
+
+- Dark/light theme: Click on theme toggle on top of the page to view dark/light layout.
 
 ### Running the app locally
 

@@ -162,7 +162,6 @@ def generate_main_layout(
                             style={
                                 "backgroundColor": card_color[theme],
                                 "color": text_color[theme],
-                                "marginTop": "10px",
                             },
                             children=[
                                 # Display the sourced and measured values
@@ -459,7 +458,7 @@ def generate_main_layout(
                         # ),
                     ],
                 ),
-                # dcc.Store(id="control-inputs", data={})
+                dcc.Store(id="control-inputs", data={})
             ],
         )
     ]
@@ -559,7 +558,7 @@ app.layout = html.Div(
             },
             children=[
                 html.Img(
-                    src=app.get_asset_url("dash-daq-logo.png"),
+                    src=app.get_asset_url("dash-logo.png"),
                     className="logo three columns",
                 ),
                 html.H6("Dash DAQ: IV Curve Tracer", className="title six columns"),
@@ -760,7 +759,8 @@ def update_click_output(button_click, close_click):
         Output("source-display", "label"),
         Output("measure-display", "label"),
     ],
-    [Input("source-choice-toggle", "value"), Input("mode-choice-toggle", "value")],
+    [Input("source-choice-toggle", "value"), Input("mode-choice-toggle", "value")], 
+    # [State("control-inputs", "data")]
 )
 def update_labels(src_choice, _):
     if src_choice:

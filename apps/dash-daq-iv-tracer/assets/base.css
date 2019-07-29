@@ -544,7 +544,7 @@ there.
 /* Larger than tablet */
 @media (max-width: 750px) {
   .flex-display {
-    display: block;
+    display: block !important;
   }
   #figure-card {
     margin-left: 0 !important;
@@ -575,9 +575,6 @@ there.
   .logo {
     padding-left: 0 !important;
   }
-  /* #toggleTheme {
-    margin-left: 17%;
-  } */
   .title {
     font-size: 20px !important;
   }
@@ -588,9 +585,6 @@ there.
   #control-sections {
     width: auto;
   }
-  /* .intro-banner {
-    margin-top: 4.5%;
-  } */
   #page-content {
     margin: 5%;
   }

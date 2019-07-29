@@ -177,6 +177,7 @@ def generate_main_layout(
                 html.Div(
                     id="IV_graph_div",
                     className="eight columns",
+                    style={"margin":"20px"},
                     children=[
                         dcc.Graph(
                             id="IV_graph",
@@ -199,6 +200,69 @@ def generate_main_layout(
                         )
                     ],
                 ),
+                # controls for the connexion to the instrument
+                html.Div(
+                    id="instr_controls", className="two columns",
+                    children=[
+                        html.H4(sourcemeter.instr_user_name),
+                        # A button to turn the instrument on or off
+                        html.Div(
+                            children=[
+                                html.Div(
+                                    id="power_button_div",
+                                    children=daq.PowerButton(
+                                        id="power_button", on="false"
+                                    ),
+                                ),
+                                html.Br(),
+                                html.Div(
+                                    children=daq.Indicator(
+                                        id="mock_indicator",
+                                        value=sourcemeter.mock_mode,
+                                        label="is mock?",
+                                    ),
+                                    style={"margin": "20px"},
+                                    title="If the indicator is on, it means "
+                                    "the instrument is in mock mode",
+                                ),
+                            ],
+                            style=h_style,
+                        ),
+                        # An input to choose the COM/GPIB port
+                        dcc.Input(
+                            id="instr_port_input",
+                            placeholder="Enter port name...",
+                            type="text",
+                            value="",
+                        ),
+                        html.Br(),
+                        # A button which will initiate the connexion
+                        daq.StopButton(
+                            id="instr_port_button", buttonText="Connect", disabled=True
+                        ),
+                        html.Br(),
+                        html.Div(
+                            id="instr_status_div",
+                            children="",
+                            style={"margin": "10 px"},
+                        ),
+                    ],
+                    style={
+                        "margin":"50px",
+                        "display": "flex",
+                        "flex-direction": "column",
+                        "alignItems": "center",
+                        "justifyContent": "space-between",
+                        "border": "2px solid #C8D4E3",
+                        "background": "#f2f5fa",
+                    },
+                ),
+            ],
+        ),
+        html.Div(
+            id="measure_controls_div",
+            className="row",
+            children=[
                 # controls and options for the IV tracer
                 html.Div(
                     className="two columns",
@@ -249,68 +313,6 @@ def generate_main_layout(
                         ),
                     ],
                 ),
-                # controls for the connexion to the instrument
-                html.Div(
-                    id="instr_controls",
-                    children=[
-                        html.H4(sourcemeter.instr_user_name),
-                        # A button to turn the instrument on or off
-                        html.Div(
-                            children=[
-                                html.Div(
-                                    id="power_button_div",
-                                    children=daq.PowerButton(
-                                        id="power_button", on="false"
-                                    ),
-                                ),
-                                html.Br(),
-                                html.Div(
-                                    children=daq.Indicator(
-                                        id="mock_indicator",
-                                        value=sourcemeter.mock_mode,
-                                        label="is mock?",
-                                    ),
-                                    style={"margin": "20px"},
-                                    title="If the indicator is on, it means "
-                                    "the instrument is in mock mode",
-                                ),
-                            ],
-                            style=h_style,
-                        ),
-                        # An input to choose the COM/GPIB port
-                        dcc.Input(
-                            id="instr_port_input",
-                            placeholder="Enter port name...",
-                            type="text",
-                            value="",
-                        ),
-                        html.Br(),
-                        # A button which will initiate the connexion
-                        daq.StopButton(
-                            id="instr_port_button", buttonText="Connect", disabled=True
-                        ),
-                        html.Br(),
-                        html.Div(
-                            id="instr_status_div",
-                            children="",
-                            style={"margin": "10 px"},
-                        ),
-                    ],
-                    style={
-                        "display": "flex",
-                        "flex-direction": "column",
-                        "alignItems": "center",
-                        "justifyContent": "space-between",
-                        "border": "2px solid #C8D4E3",
-                        "background": "#f2f5fa",
-                    },
-                ),
-            ],
-        ),
-        html.Div(
-            id="measure_controls_div",
-            className="row",
-            children=[
                 # Sourcing controls
                 html.Div(
                     id="source-div",
@@ -458,7 +460,7 @@ def generate_main_layout(
                 ),
             ],
             style={
-                "width": "100%",
+                # "width": "100%",
                 "flexDirection": "column",
                 "alignItems": "center",
                 "justifyContent": "space-between",
@@ -503,11 +505,9 @@ dashdaq.io](https://www.dashdaq.io/)
                     """
                     ),
                     style={
-                        "max-width": "600px",
-                        "margin": "15px auto 300 px auto",
-                        "padding": "40px",
+                        "margin": "20px",
+                        "padding": "50px",
                         "alignItems": "left",
-                        "box-shadow": "10px 10px 5px rgba(0, 0, 0, 0.2)",
                         "border": "1px solid #DFE8F3",
                         "color": text_color[theme],
                         "background": bkg_color[theme],
@@ -532,7 +532,7 @@ root_layout = html.Div(
             id="header",
             className="banner",
             children=[
-                html.H2("Dash DAQ: IV curve tracer"),
+                html.H2("Dash DAQ: IV curve tracer", style={"margin-left":"25px"}),
                 daq.ToggleSwitch(
                     id="toggleTheme",
                     label="Dark/Light layout",
@@ -540,10 +540,9 @@ root_layout = html.Div(
                     style={"display": "none"},
                 ),
                 html.Img(
-                    src="https://s3-us-west-1.amazonaws.com/plotly"
-                    "-tutorials/excel/dash-daq/dash-daq-logo"
-                    "-by-plotly-stripe.png",
-                    style={"height": "100", "float": "right"},
+                    src=app.get_asset_url("dash-logo.png"),
+                    className="logo", style={"margin-right":"25px"}
+
                 ),
             ],
             style={
@@ -562,7 +561,7 @@ root_layout = html.Div(
             # className='ten columns',
             style={"width": "100%"},
         ),
-    ],
+    ], style={"background-color":"rgb(243, 246, 250)"}
 )
 
 # Create app layout
