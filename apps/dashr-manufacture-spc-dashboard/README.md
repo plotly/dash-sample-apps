@@ -41,7 +41,7 @@ Run the app:
 $ Rscript app.R
 ```
 
-View in your browser at http://127.0.0.1:8050.
+Open a browser at http://127.0.0.1:8050.
 
 ## Resources/References
 
