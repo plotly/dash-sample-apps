@@ -7,7 +7,7 @@ import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.plotly as py
+import chart_studio.plotly as py
 from plotly import graph_objs as go
 
 from app import app, indicator, millify, df_to_table, sf_manager
@@ -407,18 +407,6 @@ layout = [
                 className="button button--primary add pretty_container",
             ),
             html.Div(
-                id="converted_count_container",
-                className="chart_div pretty_container",
-                children=[
-                    html.P("Converted Opportunities count"),
-                    dcc.Graph(
-                        id="converted_count",
-                        style={"height": "90%", "width": "98%"},
-                        config=dict(displayModeBar=False),
-                    ),
-                ],
-            ),
-            html.Div(
                 id="opportunity_indicators",
                 className="row indicators",
                 children=[
@@ -432,6 +420,18 @@ layout = [
                     ),
                     indicator(
                         "#EF553B", "Lost opportunities", "right_opportunities_indicator"
+                    ),
+                ],
+            ),
+            html.Div(
+                id="converted_count_container",
+                className="chart_div pretty_container",
+                children=[
+                    html.P("Converted Opportunities count"),
+                    dcc.Graph(
+                        id="converted_count",
+                        style={"height": "90%", "width": "98%"},
+                        config=dict(displayModeBar=False),
                     ),
                 ],
             ),

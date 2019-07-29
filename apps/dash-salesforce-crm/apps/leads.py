@@ -6,7 +6,7 @@ import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.plotly as py
+import chart_studio.plotly as py
 from plotly import graph_objs as go
 
 from app import app, indicator, millify, df_to_table, sf_manager
@@ -354,6 +354,16 @@ layout = [
                 n_clicks=0,
                 className="button button--primary pretty_container",
             ),
+
+            html.Div(
+                className="row indicators",
+                children=[
+                    indicator("#00cc96", "Converted Leads", "left_leads_indicator"),
+                    indicator("#119DFF", "Open Leads", "middle_leads_indicator"),
+                    indicator("#EF553B", "Conversion Rates", "right_leads_indicator"),
+                ],
+            ),
+
             html.Div(
                 id="leads_per_state",
                 className="chart_div pretty_container",
@@ -366,14 +376,7 @@ layout = [
                     ),
                 ],
             ),
-            html.Div(
-                className="row indicators",
-                children=[
-                    indicator("#00cc96", "Converted Leads", "left_leads_indicator"),
-                    indicator("#119DFF", "Open Leads", "middle_leads_indicator"),
-                    indicator("#EF553B", "Conversion Rates", "right_leads_indicator"),
-                ],
-            ),
+            
             html.Div(
                 id="leads_source_container",
                 className="six columns chart_div pretty_container",

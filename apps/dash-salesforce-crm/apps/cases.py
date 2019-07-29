@@ -6,7 +6,7 @@ import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.plotly as py
+import chart_studio.plotly as py
 from plotly import graph_objs as go
 
 from app import app, indicator, millify, df_to_table, sf_manager
@@ -492,18 +492,7 @@ layout = [
                 n_clicks=0,
                 className="button button--primary add pretty_container",
             ),
-            html.Div(
-                id="cases_types_container",
-                className="pretty_container chart_div",
-                children=[
-                    html.P("Cases Type"),
-                    dcc.Graph(
-                        id="cases_types",
-                        config=dict(displayModeBar=False),
-                        style={"height": "89%", "width": "98%"},
-                    ),
-                ],
-            ),
+
             html.Div(
                 id="cases_indicators",
                 className="row indicators",
@@ -517,6 +506,20 @@ layout = [
                     ),
                 ],
             ),
+
+            html.Div(
+                id="cases_types_container",
+                className="pretty_container chart_div",
+                children=[
+                    html.P("Cases Type"),
+                    dcc.Graph(
+                        id="cases_types",
+                        config=dict(displayModeBar=False),
+                        style={"height": "89%", "width": "98%"},
+                    ),
+                ],
+            ),
+            
             html.Div(
                 id="cases_reasons_container",
                 className="chart_div pretty_container",

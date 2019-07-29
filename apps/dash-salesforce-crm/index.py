@@ -4,7 +4,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import flask
-import plotly.plotly as py
+import chart_studio.plotly as py
 import pathlib
 
 from app import app, server, sf_manager
@@ -15,19 +15,38 @@ app.layout = html.Div(
         html.Div(
             className="row header",
             children=[
+                html.Button(id="menu", children=dcc.Markdown("&#8801")),
                 html.Span(
-                    dcc.Markdown("**CRM App** using Salesforce API"),
                     className="app-title",
+                    children=[
+                        dcc.Markdown("**CRM App**"),
+                        html.Span(
+                            id="subtitle",
+                            children=dcc.Markdown("&nbsp using Salesforce API"),
+                        ),
+                    ],
                 ),
                 html.Img(src=app.get_asset_url("logo.png")),
                 html.A(
-                    children=html.Button("Learn More"), href="https://plot.ly/dash/"
+                    id="learn_more",
+                    children=html.Button("Learn More"),
+                    href="https://plot.ly/dash/",
                 ),
             ],
         ),
         html.Div(
             id="tabs",
-            className="row tabs_div",
+            className="row tabs",
+            children=[
+                dcc.Link(dcc.Markdown("Opportunities"), href="/opportunities"),
+                dcc.Link(dcc.Markdown("Leads"), href="/leads"),
+                dcc.Link(dcc.Markdown("Cases"), href="/cases"),
+            ],
+        ),
+        html.Div(
+            id="mobile_tabs",
+            className="row tabs",
+            style={"display": "none"},
             children=[
                 dcc.Link(dcc.Markdown("Opportunities"), href="/opportunities"),
                 dcc.Link(dcc.Markdown("Leads"), href="/leads"),
@@ -69,6 +88,7 @@ app.layout = html.Div(
     [
         dash.dependencies.Output("tab_content", "children"),
         dash.dependencies.Output("tabs", "children"),
+        dash.dependencies.Output("mobile_tabs", "children"),
     ],
     [dash.dependencies.Input("url", "pathname")],
 )
@@ -83,12 +103,26 @@ def display_page(pathname):
         tabs[0] = dcc.Link(
             dcc.Markdown("**&#9632 Opportunities**"), href="/opportunities"
         )
-        return opportunities.layout, tabs
+        return opportunities.layout, tabs, tabs
     elif pathname == "/cases":
         tabs[2] = dcc.Link(dcc.Markdown("**&#9632 Cases**"), href="/leads")
-        return cases.layout, tabs
+        return cases.layout, tabs, tabs
     tabs[1] = dcc.Link(dcc.Markdown("**&#9632 Leads**"), href="/leads")
-    return leads.layout, tabs
+    return leads.layout, tabs, tabs
+
+
+@app.callback(
+    dash.dependencies.Output("mobile_tabs", "style"),
+    [dash.dependencies.Input("menu", "n_clicks")],
+    [dash.dependencies.State("mobile_tabs", "style")],
+)
+def show_menu(n_clicks, tabs_style):
+    if n_clicks:
+        if tabs_style["display"] == "none":
+            tabs_style["display"] = "flex"
+        else:
+            tabs_style["display"] = "none"
+    return tabs_style
 
 
 # @app.callback(Output("tab_content", "children"), [Input("tabs", "value")])
