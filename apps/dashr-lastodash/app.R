@@ -116,6 +116,9 @@ generate_frontpage <- function() {
               )
             )
           )
+          # htmlDiv(
+          #   htmlImg(id = "dash-logo", src = "assets/dash-logo.png")
+          # )
         )
       )
     )
