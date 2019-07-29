@@ -9,7 +9,7 @@ This demo lets you interactively explore the phylogeny and spread of selected di
 - A map showing the number of cases per country
 - A histogram of the distribution of cases by country
 
-![screenshot](assets/dashr-phylogeny-screenshot.png)
+![demo/demo.gif](demo/demo.gif)
 
 ### Running the app locally
 Clone the git repo
