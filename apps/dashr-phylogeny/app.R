@@ -97,23 +97,12 @@ createTree <- function(virus_name, tree_file, metadata_file){
   DT2 <- merge(DT, df, by = "Strain", all.x = TRUE)
   DT2 <- merge(DT2, regions, by = "Country", all.x = TRUE)
   nb_genome <- DT2[Clade == TRUE, .N]
-  graph_title <- sprintf(
-    paste0(
-      "Phylogeny of %s Virus<br>",
-      " %s genomes colored according to region and country"
-    ),
-    paste0(
-      toupper(substring(virus_name, 1, 1)),
-      substring(virus_name, 2)
-    ),
-    nb_genome
-  )
   p <- plot_ly(
     data = DT2[Clade == "FALSE"],
     x = ~x, y = ~y,
     color = I("#646464"),
     type = "scatter", mode = "markers",
-    name = "</br> Nodes",
+    name = "</br>Nodes",
     hoverinfo = "text",
     text = ~paste(
       sprintf("Node: %s </br>", Strain),
@@ -121,52 +110,54 @@ createTree <- function(virus_name, tree_file, metadata_file){
       sprintf("Y: %s", round(y, 3)),
       sep = "</br> "
     )
-  ) %>%
-    add_markers(
-      inherit = FALSE,
-      data = DT2[Clade == "TRUE"], x = ~x, y = ~y,
-      color = ~Country,
-      type = "scatter", mode = "markers",
-      hoverinfo = "text",
-      text = ~paste(
-        sprintf("%s </br>", Strain),
-        sprintf("Country: %s", Country),
-        sprintf("Region: %s", region),
-        sprintf("Collection Date: %s", Date),
-        sprintf("Journal: %s", Journal),
-        sprintf("Authors: ", Authors),
-        sep = "</br>"
-      )
-    ) %>%
-    layout(
-      title = graph_title,
-      font = list(family = "Roboto", size = "14"),
-      hovermode = "closest",
-      margin = list(
-        t = 70
-      ),
-      autosize = TRUE,
-      xaxis = list(
-        showline = FALSE,
-        zeroline = FALSE,
-        showgrid = FALSE,
-        showticklabels = FALSE,
-        title = ""
-      ),
-      yaxis = list(
-        showline = FALSE,
-        zeroline = FALSE,
-        showticklabels = FALSE,
-        showgrid = FALSE,
-        title = ""
-      )
+  ) %>% add_markers(
+    inherit = FALSE,
+    data = DT2[Clade == "TRUE"], x = ~x, y = ~y,
+    color = ~Country,
+    type = "scatter", mode = "markers",
+    hoverinfo = "text",
+    text = ~paste(
+      sprintf("%s </br>", Strain),
+      sprintf("Country: %s", Country),
+      sprintf("Region: %s", region),
+      sprintf("Collection Date: %s", Date),
+      sprintf("Journal: %s", Journal),
+      sprintf("Authors: ", Authors),
+      sep = "</br>"
     )
+  ) %>% layout(
+    font = list(family = "Roboto", size = "13"),
+    margin = list(t = 70, r = 0, b = 0, l = 70),
+    hovermode = "closest",
+    autosize = TRUE,
+    title = list(
+      text = sprintf(
+        paste0("Phylogeny of %s virus<br>", " %s genomes colored according to region and country"),
+        paste0(toupper(substring(virus_name, 1, 1)), substring(virus_name, 2)),
+        nb_genome
+      ),
+      font = list(size = "18")
+    ),
+    xaxis = list(
+      showline = FALSE,
+      zeroline = FALSE,
+      showgrid = FALSE,
+      showticklabels = FALSE,
+      title = ""
+    ),
+    yaxis = list(
+      showline = FALSE,
+      zeroline = FALSE,
+      showticklabels = FALSE,
+      showgrid = FALSE,
+      title = ""
+    )
+  )
   getCladeLines(tree, p)
 }
 
 # Create the map graph
-createMapBubbleYear <- function(virus_name, metadata_file_stat,
-                                 min_date, max_date){
+createMapBubbleYear <- function(virus_name, metadata_file_stat, min_date, max_date){
   df <- fread(metadata_file_stat)
   # replace USA with United States
   df[df$Country == "USA", "Country"] <- "United States"
@@ -194,28 +185,23 @@ createMapBubbleYear <- function(virus_name, metadata_file_stat,
     ) %>%
     colorbar(
       title = sprintf(
-        "Number of %s Virus Cases",
-        paste0(
-          toupper(substring(virus_name, 1, 1)),
-          substring(virus_name, 2)
-        )
+        "Number of %s virus cases",
+        paste0(toupper(substring(virus_name, 1, 1)), substring(virus_name, 2))
       ),
       titleside = "right",
       autotick = FALSE,
       len = 1
-    ) %>%
-    layout(
-      title = sprintf(
-        "%s Virus Cases<br>Between %s and %s",
-        paste0(
-          toupper(substring(virus_name, 1, 1)),
-          substring(virus_name, 2)
+    ) %>% layout(
+      font = list(family = "Roboto", size = "13"),
+      margin = list(t = 70, r = 30, b = 30, l = 30),
+      title = list(
+        text = sprintf(
+          "%s virus cases<br>between %s and %s",
+          paste0(toupper(substring(virus_name, 1, 1)), substring(virus_name, 2)),
+          min_date,
+          max_date
         ),
-        min_date, max_date
-      ),
-      font = list(family = "Roboto", size = "14"),
-      margin = list(
-        t = 35
+        font = list(size = "18")
       ),
       geo = g,
       autosize = TRUE
@@ -223,8 +209,7 @@ createMapBubbleYear <- function(virus_name, metadata_file_stat,
 }
 
 # Create the curve graph
-createCurveLine <- function(metadata_file_stat, virus_name,
-                            min_date, max_date){
+createCurveLine <- function(metadata_file_stat, virus_name, min_date, max_date){
   df <- fread(metadata_file_stat)
   df <- df[(Year >= min_date) & (Year <= max_date)]
   casesByYear <- CJ(min_date:max_date, unique(df[, Country]))
@@ -235,45 +220,43 @@ createCurveLine <- function(metadata_file_stat, virus_name,
   )
   casesByYear[is.na(casesByYear)] <- 0
   plot_ly(
-    data = casesByYear, x = ~Year, y = ~N,
-    type = "scatter", mode = "markers+lines",
+    data = casesByYear,
+    x = ~Year,
+    y = ~N,
+    type = "scatter",
+    mode = "markers+lines",
     color = ~Country,
     marker = list(color = "black"),
     line = list(width = 1)
-  ) %>%
-    layout(
+  ) %>% layout(
+    font = list(family = "Roboto", size = "13"),
+    margin = list(t = 70, r = 70, b = 70, l = 70),
+    title = list(
+      text = sprintf(
+        paste0("Evolution of %s virus cases<br>", "between %s and %s by country"),
+        paste0(toupper(substring(virus_name, 1, 1)), substring(virus_name, 2)),
+        min_date,
+        max_date
+      ),
+      font = list(size = "18")
+    ),
+    xaxis = list(
+      autotick = FALSE,
+      tickmode = "array",
+      tickvals = seq(min_date, max_date, slicer(min_date, max_date)$step),
+      dtick = 1
+    ),
+    yaxis = list(
       title = sprintf(
-        paste0(
-          "Number of %s Virus Cases<br>",
-          "Between %s and %s by Country"
-        ),
-        paste0(
-          toupper(substring(virus_name, 1, 1)),
-          substring(virus_name, 2)
-        ),
-        min_date, max_date
-      ),
-      xaxis = list(
-        autotick = FALSE,
-        tickmode = "array",
-        tickvals = seq(min_date, max_date, slicer(min_date, max_date)$step),
-        dtick = 1
-      ),
-      yaxis = list(
-        title = sprintf(
-          "Number of %s Virus Cases",
-          paste0(
-            toupper(substring(virus_name, 1, 1)),
-            substring(virus_name, 2)
-          )
-        )
+        "Number of %s Virus Cases",
+        paste0(toupper(substring(virus_name, 1, 1)), substring(virus_name, 2))
       )
     )
+  )
 }
 
 # Create histogram
-createHistogram <- function(metadata_file_stat, virus_name,
-                            min_date, max_date){
+createHistogram <- function(metadata_file_stat, virus_name, min_date, max_date){
   df <- fread(metadata_file_stat)
   df <- df[(Year >= min_date) & (Year <= max_date)]
   plot_ly(
@@ -281,40 +264,32 @@ createHistogram <- function(metadata_file_stat, virus_name,
     histfunc = "count", type = "histogram",
     marker = list(color = "#8180ff"),
     hoverinfo = "y"
-  ) %>%
-    layout(
-      title = sprintf(
-        paste0(
-          "Distribution of %s Virus Cases<br>",
-          "Between %s and %s"
-        ),
-        paste0(
-          toupper(substring(virus_name, 1, 1)),
-          substring(virus_name, 2)
-        ),
-        min_date, max_date
+  ) %>% layout(
+    font = list(family = "Roboto", size = "13"),
+    margin = list(t = 70, r = 30, b = 30, l = 30),
+    title = list(
+      text = sprintf(
+        paste0("Distribution of %s virus cases<br>", "between %s and %s"),
+        paste0(toupper(substring(virus_name, 1, 1)), substring(virus_name, 2)),
+        min_date,
+        max_date
       ),
-      xaxis = list(
-        title = "",
-        tickangle = 45
-      )
+      font = list(size = "18")
+    ),
+    xaxis = list(
+      title = "",
+      tickangle = 45
     )
+  )
 }
 
 createPathsFile <- function(virus_name, ...){
   dir <- paste0("data/", virus_name, "/")
   lvls_dir <- paste(c(list(...), ""), collapse = "/")
   lvls_file <- paste(c("", list(...)), collapse = "_")
-  tree_file <- paste0(
-    dir, lvls_dir, "nextstrain_", virus_name, lvls_file, "_tree.new"
-  )
-  metadata_file <- paste0(
-    dir, lvls_dir, "nextstrain_", virus_name, lvls_file, "_metadata.csv"
-  )
-  stat_file <- paste0(
-    dir, lvls_dir, "stat_year_nextstrain_",
-    virus_name, lvls_file, "_metadata.csv"
-  )
+  tree_file <- paste0(dir, lvls_dir, "nextstrain_", virus_name, lvls_file, "_tree.new")
+  metadata_file <- paste0(dir, lvls_dir, "nextstrain_", virus_name, lvls_file, "_metadata.csv")
+  stat_file <- paste0(dir, lvls_dir, "stat_year_nextstrain_", virus_name, lvls_file, "_metadata.csv")
   list(
     tree_file = tree_file,
     metadata_file = metadata_file,
