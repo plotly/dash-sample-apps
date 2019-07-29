@@ -125,7 +125,7 @@ createTree <- function(virus_name, tree_file, metadata_file){
     )
   ) %>% layout(
     font = list(family = "Roboto", size = "13"),
-    margin = list(t = 70, r = 0, b = 0, l = 70),
+    margin = list(t = 70, r = 0, b = 0, l = 0),
     hovermode = "closest",
     autosize = TRUE,
     title = list(
@@ -328,45 +328,34 @@ app <- Dash$new(name = "DashR Phylogeny")
 app$layout(
   htmlDiv(
     list(
+      # Banner
       htmlDiv(
-        list(
+        className = "banner",
+        children = list(
           htmlDiv(
             list(
-              htmlImg(
-                src = "assets/dash-logo.png"
-              ),
-              htmlH2(
-                "Phylogeny trees and global spread of 6 viruses",
-              )
+              htmlImg(src = "assets/dash-logo.png"),
+              htmlH2("Phylogeny trees and global spread of 6 viruses")
             )
           ),
           htmlButton(
             htmlA(
               "Learn More",
               href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-phylogeny",
-              style = list(
-                color = "white",
-                textDecoration = "none"
-              )
-            ),
-            style = list(
-              width = "15rem",
-              border = "1px white solid"
             )
           )
-        ),
-        className = "banner"
+        )
       ),
-      # Body
+      # Controls
       htmlDiv(
         id = "controls-card",
         className = "container",
         style = list(
-          height = "10%",
           display = "flex",
           justifyContent = "space-around",
-          paddingBottom = "3rem",
-          width = "80%"
+          height = "10%",
+          width = "80%",
+          paddingBottom = "3rem"
         ),
         children = list(
           htmlDiv(
@@ -393,6 +382,7 @@ app$layout(
               ),
               htmlDiv(
                 id = "controls-container_mumps",
+                style = list(display = "none"),
                 children = list(
                   htmlSpan(
                     "Region:", style = list(fontStyle = "italic")
@@ -405,11 +395,11 @@ app$layout(
                     ),
                     value = "global"
                   )
-                ),
-                style = list(display = "none")
+                )
               ),
               htmlDiv(
                 id = "controls-container_dengue",
+                style = list(display = "none"),
                 children = list(
                   htmlSpan(
                     "Serotype:", style = list(fontStyle = "italic")
@@ -424,11 +414,11 @@ app$layout(
                     ),
                     value = "all"
                   )
-                ),
-                style = list(display = "none")
+                )
               ),
               htmlDiv(
                 id = "controls-container_lassa",
+                style = list(display = "none"),
                 children = list(
                   htmlSpan(
                     "RNA:", style = list(fontStyle = "italic")
@@ -443,11 +433,11 @@ app$layout(
                     ),
                     value = "s"
                   )
-                ),
-                style = list(display = "none")
+                )
               ),
               htmlDiv(
                 id = "controls-container_avian",
+                style = list(display = "none"),
                 children = list(
                   htmlSpan(
                     "Subtype:", style = list(fontStyle = "italic")
@@ -458,7 +448,6 @@ app$layout(
                       list(
                         label = "h7n9",
                         value = "h7n9"
-                        #display = "block"
                       )
                     ),
                     value = "h7n9"
@@ -470,21 +459,18 @@ app$layout(
                     id = "d_avian_opt2",
                     # RNA segments?
                     options = lapply(
-                      list(
-                        "ha", "mp", "na", "ns",
-                        "np", "pa", "pb2", "pb1"
-                      ),
+                      list("ha", "mp", "na", "ns", "np", "pa", "pb2", "pb1"),
                       function(x){
                         list(label = x, value = x)
                       }
                     ),
                     value = "ha"
                   )
-                ),
-                style = list(display = "none")
+                )
               ),
               htmlDiv(
                 id = "controls-container_flu",
+                style = list(display = "none"),
                 children = list(
                   dccDropdown(
                     id = "d_flu_opt1",
@@ -516,8 +502,7 @@ app$layout(
                     ),
                     value = "3y"
                   )
-                ),
-                style = list(display = "none")
+                )
               )
             )
           ),
@@ -528,6 +513,7 @@ app$layout(
               htmlH6("Data Range"),
               htmlDiv(
                 id = "id-slicer",
+                style = list(margin = "0 1.5rem"),
                 children = list(
                   dccRangeSlider(
                     id = "id-year",
@@ -537,18 +523,16 @@ app$layout(
                     marks = slicer(min_date, max_date)$marks,
                     value = list(min_date, max_date)
                   )
-                ),
-                style = list(margin = "0 1.5rem")
+                )
               ),
               htmlDiv(id = "output-container-range-slider")
             )
           )
         )
       ),
+      # Charts
       htmlDiv(
-        style = list(
-          marginBottom = "5rem"
-        ),
+        style = list(marginBottom = "5rem"),
         list(
           htmlDiv(
             id = "top-graphs",
@@ -562,54 +546,52 @@ app$layout(
               htmlDiv(
                 id = "left-top-graphs",
                 className = "container",
-                list(
+                style = list(
+                  float = "left",
+                  width = "49%",
+                  marginTop = "1rem",
+                  marginBottom = "1rem",
+                  marginLeft = 0
+                ),
+                children = list(
                   htmlDiv(
                     style = list(width = "100%"),
                     list(
                       dccGraph(
                         id = "curve-line-graph",
+                        style = list(maxHeight = 1000),
                         figure = createCurveLine(
                           metadata_file_stat,
                           virus_name,
                           min_date,
                           max_date
-                        ),
-                        style = list(maxHeight = 1000)
+                        )
                       )
                     )
                   )
-                ),
-                style = list(
-                  marginTop = "1rem",
-                  marginBottom = "1rem",
-                  marginLeft = 0,
-                  width = "49%",
-                  float = "left",
-                  boxSizing = "border-box"
                 )
               ),
               htmlDiv(
                 id = "right-top-graphs",
                 className = "container",
                 style = list(
+                  float = "left",
+                  width = "49%",
                   marginTop = "1rem",
                   marginBottom = "1rem",
-                  marginRight = 0,
-                  width = "49%",
-                  float = "left",
-                  boxSizing = "border-box"
+                  marginRight = 0
                 ),
                 children = htmlDiv(
                   list(
                     htmlDiv(
                       children = dccGraph(
                         id = "tree-graph",
+                        style = list(height = 1000),
                         figure = createTree(
                           virus_name,
                           tree_file,
                           metadata_file
-                        ),
-                        style = list(height = 1000)
+                        )
                       )
                     )
                   )
@@ -629,7 +611,14 @@ app$layout(
               htmlDiv(
                 id = "left-bottom-graphs",
                 className = "container",
-                list(
+                style = list(
+                  float = "left",
+                  width = "59%",
+                  marginTop = "1rem",
+                  marginBottom = "1rem",
+                  marginLeft = 0
+                ),
+                children = list(
                   dccGraph(
                     id = "graph_map",
                     figure = createMapBubbleYear(
@@ -639,20 +628,19 @@ app$layout(
                       max_date
                     )
                   )
-                ),
-                style = list(
-                  width = "59%",
-                  marginLeft = 0,
-                  marginTop = "1rem",
-                  marginBottom = "1rem",
-                  float = "left",
-                  boxSizing = "border-box"
                 )
               ),
               htmlDiv(
                 id = "right-bottom-graphs",
                 className = "container",
-                list(
+                style = list(
+                  float = "left",
+                  width = "39%",
+                  marginTop = "1rem",
+                  marginBottom = "1rem",
+                  marginRight = 0
+                ),
+                children = list(
                   dccGraph(
                     id = "id-histo",
                     figure = createHistogram(
@@ -662,14 +650,6 @@ app$layout(
                       max_date
                     )
                   )
-                ),
-                style = list(
-                  width = "39%",
-                  float = "left",
-                  marginTop = "1rem",
-                  marginBottom = "1rem",
-                  marginRight = 0,
-                  boxSizing = "border-box"
                 )
               )
             )
