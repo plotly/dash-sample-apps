@@ -362,7 +362,7 @@ app$layout(
           htmlDiv(
             list(
               htmlImg(
-                src = "assets/dash-logo-white.png"
+                src = "assets/dash-logo.png"
               ),
               htmlH2(
                 "Phylogeny trees and global spread of 6 viruses",
@@ -377,7 +377,7 @@ app$layout(
                 color = "white",
                 textDecoration = "none"
               )
-            ), 
+            ),
             style = list(
               width = "15rem",
               border = "1px white solid"
@@ -415,10 +415,10 @@ app$layout(
               htmlDiv(
                 id = "output-container",
                 children = list(
-                  "You have selected the ", 
-                  htmlSpan(id = "v-name", style = list(color = "#8480f8")), 
+                  "You have selected the ",
+                  htmlSpan(id = "v-name", style = list(color = "#8480f8")),
                   " Virus"
-                ) 
+                )
               ),
               htmlDiv(
                 id = "controls-container_mumps",
@@ -582,8 +582,8 @@ app$layout(
           htmlDiv(
             id = "top-graphs",
             style = list(
-              display = "flex", 
-              justifyContent = "space-between", 
+              display = "flex",
+              justifyContent = "space-between",
               width = "80%",
               margin = "0 auto"
             ),
@@ -609,11 +609,11 @@ app$layout(
                   )
                 ),
                 style = list(
-                  marginTop = "1rem", 
+                  marginTop = "1rem",
                   marginBottom = "1rem",
                   marginLeft = 0,
-                  width = "49%", 
-                  float = "left", 
+                  width = "49%",
+                  float = "left",
                   boxSizing = "border-box"
                 )
               ),
@@ -621,11 +621,11 @@ app$layout(
                 id = "right-top-graphs",
                 className = "container",
                 style = list(
-                  marginTop = "1rem", 
+                  marginTop = "1rem",
                   marginBottom = "1rem",
                   marginRight = 0,
-                  width = "49%", 
-                  float = "left", 
+                  width = "49%",
+                  float = "left",
                   boxSizing = "border-box"
                 ),
                 children = htmlDiv(
@@ -649,8 +649,8 @@ app$layout(
           htmlDiv(
             id = "bottom-graphs",
             style = list(
-              display = "flex", 
-              justifyContent = "space-between", 
+              display = "flex",
+              justifyContent = "space-between",
               width = "80%",
               margin = "0 auto"
             ),
@@ -670,11 +670,11 @@ app$layout(
                   )
                 ),
                 style = list(
-                  width = "59%", 
+                  width = "59%",
                   marginLeft = 0,
                   marginTop = "1rem",
                   marginBottom = "1rem",
-                  float = "left", 
+                  float = "left",
                   boxSizing = "border-box"
                 )
               ),
@@ -693,8 +693,8 @@ app$layout(
                   )
                 ),
                 style = list(
-                  width = "39%", 
-                  float = "left", 
+                  width = "39%",
+                  float = "left",
                   marginTop = "1rem",
                   marginBottom = "1rem",
                   marginRight = 0,
@@ -704,9 +704,9 @@ app$layout(
             ),
             #style = list(
               #display = "flex",
-              #marginTop = "5rem", 
-              #width = "100%", 
-              #float = "left", 
+              #marginTop = "5rem",
+              #width = "100%",
+              #float = "left",
               #boxSizing = "border-box"
             #)
           )
@@ -991,7 +991,7 @@ app$callback(
 )
 
 if (appName != "") {
-  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
   app$run_server(debug = TRUE)
 }

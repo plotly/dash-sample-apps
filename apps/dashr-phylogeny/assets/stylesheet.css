@@ -48,8 +48,8 @@
 .banner Img {
     position: relative;
     float: right;
-    height: 8rem;
-    margin: 0 -1rem 0 48px;
+    height: 4rem;
+    margin: 0 0 0 48px;
   }
 
 
@@ -397,7 +397,7 @@ ol {
 .u-pull-left {
   float: left; }
 
-/* Slider 
+/* Slider
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .rc-slider-track {
   background-color: #8480f8;
@@ -461,7 +461,7 @@ there.
     align-items: center;
     width: 80% !important;
   }
-  #controls-dropdown, 
+  #controls-dropdown,
   #controls-datarange {
     width:100% !important;
   }
