@@ -333,9 +333,10 @@ app$layout(
         className = "banner",
         children = list(
           htmlDiv(
-            list(
-              htmlImg(src = "assets/dash-logo.png"),
-              htmlH2("Phylogeny trees and global spread of 6 viruses")
+            id = "title",
+            children = list(
+              htmlH2("Phylogeny trees and global spread of 6 viruses"),
+              htmlImg(src = "assets/dash-logo.png")
             )
           ),
           htmlButton(
