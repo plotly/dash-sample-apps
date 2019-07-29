@@ -146,7 +146,7 @@ def show_histogram(image):
         fill = go.Scatter(
             x=list(range(0, 256)),
             y=hg,
-            mode="fill",
+            mode="lines",
             name=name,
             line=dict(color=(color)),
             fill="tozeroy",
