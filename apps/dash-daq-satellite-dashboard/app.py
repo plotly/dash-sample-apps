@@ -6,130 +6,19 @@ import dash_html_components as html
 from dash.dependencies import State, Input, Output
 import dash_daq as daq
 
-app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__,
+    meta_tags=[
+        {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
+    ],
+)
 
 # This is for gunicorn
 server = app.server
 
-##############################################################################################################
-# Side panel
-##############################################################################################################
-
-satellite_dropdown = dcc.Dropdown(
-    id="satellite-dropdown-component",
-    options=[
-        {"label": "H45-K1", "value": "h45-k1"},
-        {"label": "L12-5", "value": "l12-5"},
-    ],
-    clearable=False,
-    value="h45-k1",
-)
-
-satellite_dropdown_text = html.P(
-    id="satellite-dropdown-text", children=["Satellite Dashboard"]
-)
-
-satellite_title = html.H1(id="satellite-name", children="")
-
-satellite_body = html.P(
-    className="satellite-description", id="satellite-description", children=[""]
-)
-
-side_panel_layout = html.Div(
-    id="panel-side",
-    children=[
-        satellite_dropdown_text,
-        html.Div(id="satellite-dropdown", children=satellite_dropdown),
-        html.Div(id="panel-side-text", children=[satellite_title, satellite_body]),
-    ],
-)
-
-
-##############################################################################################################
-# Satellite location tracker
-##############################################################################################################
-
-# Helper to straighten lines on the map
-def flatten_path(xy1, xy2):
-    diff_rate = (xy2 - xy1) / 100
-    res_list = []
-    for i in range(100):
-        res_list.append(xy1 + i * diff_rate)
-    return res_list
-
-
-map_data = [
-    {
-        "type": "scattergeo",
-        "lat": [0],
-        "lon": [0],
-        "hoverinfo": "none",
-        "mode": "lines",
-        "line": {"width": 2, "color": "#707070"},
-    },
-    {
-        "type": "scattergeo",
-        "lat": [0],
-        "lon": [0],
-        "hoverinfo": "text+lon+lat",
-        "text": "Current Position",
-        "mode": "markers",
-        "marker": {"size": 10, "color": "#ffe102"},
-    },
-]
-
-map_layout = {
-    "geo": {
-        "showframe": False,
-        "showcoastlines": False,
-        "showland": True,
-        "showocean": True,
-        "resolution": 100,
-        "landcolor": "#303030",
-        "oceancolor": "#0f0f0f",
-        "scope": "world",
-        "showgrid": True,
-    },
-    "width": 865,
-    "height": 610,
-    "showlegend": False,
-}
-
-map_graph = dcc.Graph(
-    id="world-map",
-    figure={"data": map_data, "layout": map_layout},
-    config={"displayModeBar": False, "scrollZoom": False},
-)
-
-##############################################################################################################
-# Histogram
-##############################################################################################################
-
-histogram = dcc.Graph(
-    id="graph-panel",
-    figure={
-        "data": [
-            {
-                "x": [i for i in range(60)],
-                "y": [i for i in range(60)],
-                "type": "scatter",
-                "marker": {"color": "#ffe102"},
-            }
-        ],
-        "layout": {
-            "title": "Select A Property To Display",
-            "width": 400,
-            "height": 350,
-            "margin": {"l": 35, "r": 70, "t": 100, "b": 45},
-            "xaxis": {"dtick": 5, "gridcolor": "#999999"},
-            "yaxis": {"gridcolor": "#999999"},
-            "plot_bgcolor": "#0f0f0f",
-            "paper_bgcolor": "#0f0f0f",
-            "font": {"color": "white"},
-        },
-    },
-    config={"displayModeBar": False},
-)
+# Mapbox
+MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
+MAPBOX_STYLE = "mapbox://styles/plotlymapbox/cjyivwt3i014a1dpejm5r7dwr"
 
 ##############################################################################################################
 # Dash_DAQ elements
@@ -143,7 +32,8 @@ utc = html.Div(
             value="16:23",
             label="Time",
             size=50,
-            color="#ffe102",
+            color="#fec036",
+            backgroundColor="#2b2b2b",
         )
     ],
     n_clicks=0,
@@ -161,7 +51,7 @@ speed = html.Div(
             value=27.859,
             size=200,
             units="1000km/h",
-            color="#ffe102",
+            color="#fec036",
         )
     ],
     n_clicks=0,
@@ -212,7 +102,7 @@ fuel_indicator = html.Div(
             value=76,
             step=1,
             showCurrentValue=True,
-            color="#303030",
+            color="#fec036",
         )
     ],
     n_clicks=0,
@@ -229,7 +119,7 @@ battery_indicator = html.Div(
             value=85,
             step=1,
             showCurrentValue=True,
-            color="#303030",
+            color="#fec036",
         )
     ],
     n_clicks=0,
@@ -243,8 +133,9 @@ longitude = html.Div(
             value="0000.0000",
             label="Longitude",
             size=24,
-            color="#ffe102",
+            color="#fec036",
             style={"color": "#black"},
+            backgroundColor="#2b2b2b",
         )
     ],
     n_clicks=0,
@@ -258,8 +149,9 @@ latitude = html.Div(
             value="0050.9789",
             label="Latitude",
             size=24,
-            color="#ffe102",
+            color="#fec036",
             style={"color": "#black"},
+            backgroundColor="#2b2b2b",
         )
     ],
     n_clicks=0,
@@ -271,7 +163,7 @@ solar_panel_0 = daq.Indicator(
     label="Solar-Panel-0",
     labelPosition="bottom",
     value=True,
-    color="#ffe102",
+    color="#fec036",
     style={"color": "#black"},
 )
 
@@ -281,7 +173,7 @@ solar_panel_1 = daq.Indicator(
     label="Solar-Panel-1",
     labelPosition="bottom",
     value=True,
-    color="#ffe102",
+    color="#fec036",
     style={"color": "#black"},
 )
 
@@ -291,7 +183,7 @@ camera = daq.Indicator(
     label="Camera",
     labelPosition="bottom",
     value=True,
-    color="#ffe102",
+    color="#fec036",
     style={"color": "#black"},
 )
 
@@ -301,7 +193,7 @@ thrusters = daq.Indicator(
     label="Thrusters",
     labelPosition="bottom",
     value=True,
-    color="#ffe102",
+    color="#fec036",
     style={"color": "#black"},
 )
 
@@ -311,7 +203,7 @@ motor = daq.Indicator(
     label="Motor",
     labelPosition="bottom",
     value=True,
-    color="#ffe102",
+    color="#fec036",
     style={"color": "#black"},
 )
 
@@ -321,7 +213,7 @@ communication_signal = daq.Indicator(
     label="Signal",
     labelPosition="bottom",
     value=True,
-    color="#ffe102",
+    color="#fec036",
     style={"color": "#black"},
 )
 
@@ -341,24 +233,155 @@ minute_toggle = daq.ToggleSwitch(
     style={"color": "#black"},
 )
 
+##############################################################################################################
+# Side panel
+##############################################################################################################
+
+satellite_dropdown = dcc.Dropdown(
+    id="satellite-dropdown-component",
+    options=[
+        {"label": "H45-K1", "value": "h45-k1"},
+        {"label": "L12-5", "value": "l12-5"},
+    ],
+    clearable=False,
+    value="h45-k1",
+)
+
+satellite_dropdown_text = html.P(
+    id="satellite-dropdown-text", children=["Satellite", html.Br(), " Dashboard"]
+)
+
+satellite_title = html.H1(id="satellite-name", children="")
+
+satellite_body = html.P(
+    className="satellite-description", id="satellite-description", children=[""]
+)
+
+side_panel_layout = html.Div(
+    id="panel-side",
+    children=[
+        satellite_dropdown_text,
+        html.Div(id="satellite-dropdown", children=satellite_dropdown),
+        html.Div(id="panel-side-text", children=[satellite_title, satellite_body]),
+    ],
+)
+
+
+##############################################################################################################
+# Satellite location tracker
+##############################################################################################################
+
+# Helper to straighten lines on the map
+def flatten_path(xy1, xy2):
+    diff_rate = (xy2 - xy1) / 100
+    res_list = []
+    for i in range(100):
+        res_list.append(xy1 + i * diff_rate)
+    return res_list
+
+
+map_data = [
+    {
+        "type": "scattermapbox",
+        "lat": [0],
+        "lon": [0],
+        "hoverinfo": "text+lon+lat",
+        "text": "Satellite Path",
+        "mode": "lines",
+        "line": {"width": 2, "color": "#707070"},
+    },
+    {
+        "type": "scattermapbox",
+        "lat": [0],
+        "lon": [0],
+        "hoverinfo": "text+lon+lat",
+        "text": "Current Position",
+        "mode": "markers",
+        "marker": {"size": 10, "color": "#fec036"},
+    },
+]
+
+map_layout = {
+    "mapbox": {
+        "accesstoken": MAPBOX_ACCESS_TOKEN,
+        "style": MAPBOX_STYLE,
+        "center": {
+            "lat": 45,
+        }
+    },
+    "showlegend": False,
+    "autosize": True,
+    "paper_bgcolor": "#1e1e1e",
+    "plot_bgcolor": "#1e1e1e",
+    "margin": {"t": 0, "r": 0, "b": 0, "l": 0},
+}
+
+map_graph = html.Div(
+    id='world-map-wrapper',
+    children=[
+        map_toggle,
+        dcc.Graph(
+            id="world-map",
+            figure={"data": map_data, "layout": map_layout},
+            config={"displayModeBar": False, "scrollZoom": False},
+        )
+    ]
+)
+
+##############################################################################################################
+# Histogram
+##############################################################################################################
+
+histogram = html.Div(
+    id='histogram-container',
+    children=[
+        html.Div(
+            id='histogram-header',
+            children=[
+                html.H1(id='histogram-title', children=["Select A Property To Display"]),
+                minute_toggle
+            ]
+        ),
+        dcc.Graph(
+            id="histogram-graph",
+            figure={
+                "data": [
+                    {
+                        "x": [i for i in range(60)],
+                        "y": [i for i in range(60)],
+                        "type": "scatter",
+                        "marker": {"color": "#fec036"},
+                    }
+                ],
+                "layout": {
+                    "margin": {"t": 30, "r": 35, "b": 40, "l": 50},
+                    "xaxis": {"dtick": 5, "gridcolor": "#636363", "showline": False},
+                    "yaxis": {"showgrid": False},
+                    "plot_bgcolor": "#2b2b2b",
+                    "paper_bgcolor": "#2b2b2b",
+                    "font": {"color": "gray"},
+                },
+            },
+            config={"displayModeBar": False},
+        )
+    ]
+)
+
 ###############################################################################################################
 # Control panel + map
 ##############################################################################################################
 main_panel_layout = html.Div(
     id="panel-upper-lower",
     children=[
-        dcc.Interval(id="interval", interval=1 * 2000, n_intervals=0),
-        html.Div(id="panel-upper", children=[map_graph, histogram]),
+        dcc.Interval(id="interval", interval=1 * 5000, n_intervals=0),
+        map_graph,
         html.Div(
-            id="panel-lower",
+            id="panel",
             children=[
-                daq.DarkThemeProvider(
-                    theme={"dark": True},
+                histogram,
+                html.Div(
+                    id="panel-lower",
                     children=[
-                        html.Div(
-                            id="panel-lower-top-break",
-                            children=[map_toggle, minute_toggle],
-                        ),
                         html.Div(
                             id="panel-lower-0",
                             children=[elevation, temperature, speed, utc],
@@ -394,8 +417,8 @@ main_panel_layout = html.Div(
                             ],
                         ),
                     ],
-                )
-            ],
+                ),
+            ]
         ),
     ],
 )
@@ -581,8 +604,8 @@ def update_data(interval, data):
                 data[h_data_key]["temperature"][0]
             )
             new_data[h_data_key]["temperature"] = new_data[h_data_key]["temperature"][
-                1:61
-            ]
+                                                  1:61
+                                                  ]
             new_data[h_data_key]["speed"].append(data[h_data_key]["speed"][0])
             new_data[h_data_key]["speed"] = new_data[h_data_key]["speed"][1:61]
             new_data[h_data_key]["latitude"].append(
@@ -607,7 +630,11 @@ def update_data(interval, data):
 
 # Update the graph
 @app.callback(
-    [Output("graph-panel", "figure"), Output("store-data-config", "data")],
+    [
+        Output("histogram-graph", "figure"),
+        Output("store-data-config", "data"),
+        Output("histogram-title", "children"),
+    ],
     [
         Input("interval", "n_intervals"),
         Input("satellite-dropdown-component", "value"),
@@ -620,23 +647,31 @@ def update_data(interval, data):
         Input("control-panel-fuel", "n_clicks"),
         Input("control-panel-battery", "n_clicks"),
     ],
-    [State("store-data", "data"), State("store-data-config", "data")],
+    [
+        State("store-data", "data"),
+        State("store-data-config", "data"),
+        State("histogram-graph", "figure"),
+        State("store-data-config", "data"),
+        State("histogram-title", "children")
+    ],
 )
 def update_graph(
-    interval,
-    satellite_type,
-    minute_mode,
-    elevation_n_clicks,
-    temperature_n_clicks,
-    speed_n_clicks,
-    latitude_n_clicks,
-    longitude_n_clicks,
-    fuel_n_clicks,
-    battery_n_clicks,
-    data,
-    data_config,
+        interval,
+        satellite_type,
+        minute_mode,
+        elevation_n_clicks,
+        temperature_n_clicks,
+        speed_n_clicks,
+        latitude_n_clicks,
+        longitude_n_clicks,
+        fuel_n_clicks,
+        battery_n_clicks,
+        data,
+        data_config,
+        old_figure,
+        old_data,
+        old_title
 ):
-    # Used to check stuff
     new_data_config = data_config
     info_type = data_config["info_type"]
     ctx = dash.callback_context
@@ -736,60 +771,40 @@ def update_graph(
             )
 
         # Graph title changes depending on graphed data
-        figure["layout"]["title"] = data_key.capitalize() + " Histogram"
-        return data_key
+        new_title = data_key.capitalize() + " Histogram"
+        return [data_key, new_title]
 
     # A default figure option to base off everything else from
-    figure = {
-        "data": [
-            {
-                "x": [i for i in range(60)],
-                "y": [i for i in range(60)],
-                "type": "scatter",
-                "marker": {"color": "#ffe102"},
-            }
-        ],
-        "layout": {
-            "title": "Select A Property To Display",
-            "width": 400,
-            "height": 350,
-            "margin": {"l": 35, "r": 70, "t": 100, "b": 45},
-            "xaxis": {"dtick": 5, "gridcolor": "#999999"},
-            "yaxis": {"gridcolor": "#999999"},
-            "plot_bgcolor": "#0f0f0f",
-            "paper_bgcolor": "#0f0f0f",
-            "font": {"color": "white"},
-        },
-    }
+    figure = old_figure
 
     # First pass checks if a component has been selected
     if trigger_input == "control-panel-elevation":
         set_y_range("elevation")
-        info_type = update_graph_data("elevation")
+        info_type, new_title = update_graph_data("elevation")
 
     elif trigger_input == "control-panel-temperature":
         set_y_range("temperature")
-        info_type = update_graph_data("temperature")
+        info_type, new_title = update_graph_data("temperature")
 
     elif trigger_input == "control-panel-speed":
         set_y_range("speed")
-        info_type = update_graph_data("speed")
+        info_type, new_title = update_graph_data("speed")
 
     elif trigger_input == "control-panel-latitude":
         set_y_range("latitude")
-        info_type = update_graph_data("latitude")
+        info_type, new_title = update_graph_data("latitude")
 
     elif trigger_input == "control-panel-longitude":
         set_y_range("longitude")
-        info_type = update_graph_data("longitude")
+        info_type, new_title = update_graph_data("longitude")
 
     elif trigger_input == "control-panel-fuel":
         set_y_range("fuel")
-        info_type = update_graph_data("fuel")
+        info_type, new_title = update_graph_data("fuel")
 
     elif trigger_input == "control-panel-battery":
         set_y_range("battery")
-        info_type = update_graph_data("battery")
+        info_type, new_title = update_graph_data("battery")
 
     # If no component has been selected, check for most recent info_type, to prevent graph from always resetting
     else:
@@ -803,14 +818,12 @@ def update_graph(
             "battery",
         ]:
             set_y_range(info_type)
-            update_graph_data(info_type)
+            nil, new_title = update_graph_data(info_type)
+            return [figure, new_data_config, new_title]
         else:
-            set_y_range("elevation")
-            update_graph_data("elevation")
-        return [figure, new_data_config]
-    # Update store-data-config['info_type']
+            return [old_figure, old_data, old_title]
     new_data_config["info_type"] = info_type
-    return [figure, new_data_config]
+    return [figure, new_data_config, new_title]
 
 
 ##############################################################################################################
@@ -836,7 +849,6 @@ def update_satellite_name(val):
     [Input("satellite-dropdown-component", "value")],
 )
 def update_satellite_description(val):
-
     text = "Select a satellite to view using the dropdown above."
 
     if val == "h45-k1":
@@ -1007,7 +1019,7 @@ def update_gps_color(clicks, satellite_type, data_config, data):
         if value < 0:
             new_data.append("#ff8e77")
         else:
-            new_data.append("#ffe102")
+            new_data.append("#fec036")
 
     return new_data
 
