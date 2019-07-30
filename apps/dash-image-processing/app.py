@@ -14,7 +14,6 @@ import dash_core_components as dcc
 import dash_html_components as html
 import requests
 from dash.dependencies import Input, Output, State
-from dotenv import load_dotenv, find_dotenv
 from flask_caching import Cache
 
 drc = importlib.import_module("apps.dash-image-processing.dash_reusable_components")
