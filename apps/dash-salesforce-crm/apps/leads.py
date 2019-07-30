@@ -92,6 +92,7 @@ def choropleth_map(status, df):
             z=df["Id"],
             locationmode="USA-states",
             marker=dict(line=dict(color="rgb(255,255,255)", width=2)),
+            colorbar=dict(len=0.8),
         )
     ]
 
@@ -354,7 +355,6 @@ layout = [
                 n_clicks=0,
                 className="button button--primary pretty_container",
             ),
-
             html.Div(
                 className="row indicators",
                 children=[
@@ -363,7 +363,6 @@ layout = [
                     indicator("#EF553B", "Conversion Rates", "right_leads_indicator"),
                 ],
             ),
-
             html.Div(
                 id="leads_per_state",
                 className="chart_div pretty_container",
@@ -376,7 +375,6 @@ layout = [
                     ),
                 ],
             ),
-            
             html.Div(
                 id="leads_source_container",
                 className="six columns chart_div pretty_container",

@@ -81,6 +81,10 @@ input {
   transition: box-shadow 0.5s;
 }
 
+.chart_div:first-child {
+  text-align: center;
+}
+
 .header {
   margin: 0px;
   background-color: white;
@@ -314,7 +318,7 @@ table {
     -ms-grid-column: 1;
     -ms-grid-column-span: 6;
     grid-column: 1 / 7;
-    /* max-height: 500px; */
+    max-height: 500px;
   }
 
   #opportunity_grid {
