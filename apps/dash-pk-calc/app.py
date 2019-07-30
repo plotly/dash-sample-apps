@@ -6,6 +6,7 @@ Created on Thu Apr  4 17:43:39 2019
 """
 
 import os
+import base64
 import pathlib
 import statistics
 from collections import OrderedDict
@@ -29,6 +30,7 @@ table_header_style = {
 
 
 app = dash.Dash(__name__)
+
 server = app.server
 
 APP_PATH = str(pl.Path(__file__).parent.resolve())
@@ -45,8 +47,10 @@ app.layout = html.Div(
             className="pkcalc-banner",
             children=[
                 html.A(
-                    id="dash-logo",
-                    children=[html.Img(src=app.get_asset_url("dash-bio-logo.png"))],
+                    id="dashbio-logo",
+                    children=[
+                        html.Img(src=app.get_asset_url("dashbio_logo_transparent.png"))
+                    ],
                     href="/Portal",
                 ),
                 html.H2("Noncompartmental Pharmacokinetics Analysis"),
@@ -119,7 +123,7 @@ app.layout = html.Div(
                                     + [
                                         {
                                             "name": "Conc{} (uM)".format(subject),
-                                            "id": str(subject),
+                                            "id": subject,
                                             "type": "numeric",
                                         }
                                         for subject in pkdata.subject_index.unique()
@@ -127,8 +131,8 @@ app.layout = html.Div(
                                     data=utils.pkdata2dt(pkdata),
                                     editable=True,
                                     style_header=table_header_style,
-                                    active_cell={"row": 0, "column": 0},
-                                    selected_cells=[{"row": 0, "column": 0}],
+                                    active_cell=[0, 0],
+                                    selected_cells=[[0, 0]],
                                 )
                             ],
                         ),
@@ -147,7 +151,7 @@ app.layout = html.Div(
                                 dash_table.DataTable(
                                     id="results-table",
                                     style_header=table_header_style,
-                                    style_data_conditional=[
+                                    style_cell_conditional=[
                                         {
                                             "if": {"column_id": "param"},
                                             "textAlign": "right",
@@ -178,7 +182,7 @@ def update_data_table(subjects, rows, records):
     columns = [{"name": "Time (hr)", "id": "time", "type": "numeric"}] + [
         {
             "name": "Subj{} Conc (uM)".format(subject + 1),
-            "id": str(subject),
+            "id": subject,
             "type": "numeric",
         }
         for subject in range(subjects)
@@ -257,18 +261,16 @@ def update_output(records):
             plot_bgcolor="rgb(245, 247, 249)",
         ),
     )
+
     columns = (
         [{"name": "Parameter", "id": "param"}]
         + [
-            {
-                "name": "Subj{}".format(subject + 1),
-                "id": str(subject),
-                "type": "numeric",
-            }
+            {"name": "Subj{}".format(subject + 1), "id": subject, "type": "numeric"}
             for subject in subjects
         ]
         + [{"name": "Mean", "id": "mean"}, {"name": "StDev", "id": "stdev"}]
     )
+
     result_names = OrderedDict(
         t_half="T½ (hr)",
         auc0_t="AUC_0-t (uM*hr)",

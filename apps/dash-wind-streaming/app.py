@@ -42,7 +42,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Img(
-                            src=app.get_asset_url("dash-new-logo.png"),
+                            src=app.get_asset_url("dash-logo-stripe-inverted.png"),
                             className="app__menu__img",
                         )
                     ],
@@ -114,7 +114,7 @@ app.layout = html.Div(
                                             options=[
                                                 {"label": "Auto", "value": "Auto"}
                                             ],
-                                            value=["Auto"],
+                                            values=["Auto"],
                                             inputClassName="auto__checkbox",
                                             labelClassName="auto__label",
                                         ),
@@ -293,7 +293,7 @@ def gen_wind_direction(interval):
     [
         State("wind-speed", "figure"),
         State("bin-slider", "value"),
-        State("bin-auto", "value"),
+        State("bin-auto", "values"),
     ],
 )
 def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
@@ -424,7 +424,7 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
 
 
 @app.callback(
-    Output("bin-auto", "value"),
+    Output("bin-auto", "values"),
     [Input("bin-slider", "value")],
     [State("wind-speed", "figure")],
 )
@@ -442,7 +442,7 @@ def deselect_auto(slider_value, wind_speed_figure):
 
 @app.callback(
     Output("bin-size", "children"),
-    [Input("bin-auto", "value")],
+    [Input("bin-auto", "values")],
     [State("bin-slider", "value")],
 )
 def show_num_bins(autoValue, slider_value):
