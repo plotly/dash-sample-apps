@@ -441,10 +441,6 @@
 
 /* Remove Undo
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-._dash-undo-redo {
-    display: none;
-}
-
 #graph-line-roc-curve .modebar, #graph-pie-confusion-matrix .modebar {
     display: none;
 }

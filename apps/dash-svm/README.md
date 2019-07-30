@@ -6,7 +6,7 @@ Dash abstracts away all of the technologies and protocols required to build an i
 
 Try out the [demo app here](https://dash-svm.plot.ly/).
 
-![animated1](images/animated1.gif)
+![alt text](images/screenshot.png "Screenshot")
 
 
 ## Getting Started
@@ -32,8 +32,8 @@ source venv/bin/activate
 
 Clone the git repo, then install the requirements with pip
 ```
-git clone https://github.com/plotly/dash-svm.git
-cd dash-svm
+git clone https://github.com/plotly/dash-sample-apps/apps/dash-svm.git
+cd dash-sample-apps/apps/dash-svm
 pip install -r requirements.txt
 ```
 
@@ -62,8 +62,8 @@ An SVM is a popular Machine Learning model used in many different fields. You ca
 
 * **Xing Han Lu** - *Initial Work* - [@xhlulu](https://github.com/xhlulu)
 * **Matthew Chan** - *Code Review* - [@matthewchan15](https://github.com/matthewchan15)
-
-See also the list of [contributors](https://github.com/plotly/dash-svm/contributors) who participated in this project.
+* **Yunke Xiao** - *Redesign* - [@YunkXiao](https://github.com/YunkeXiao)
+* **celinehuang** - *Code Review* - [@celinehuang](https://github.com/celinehuang)
 
 
 ## Acknowledgments
