@@ -1,0 +1,8 @@
+vv/
+*.pyc
+*.DS_Store
+venv/
+.idea/
+.Rproj.user
+||||||| merged common ancestors
+.DS_Store
