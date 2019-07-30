@@ -102,7 +102,7 @@ jobs:
               echo $PLOTLY_GA_CODE > ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js
               git add ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js && git commit -m "Deployed commit: $CIRCLE_SHA1"
               git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
-              git push $APP master --force || echo "Deploy failed because there is no such app on Dash Gallery: $APP. Please use the web interface to create an app with this name."; exit 1
+              git push $APP master --force || echo "Deploy failed because there is no such app on Dash Gallery: $APP. Please use the web interface to create an app with this name. Continuing deployments..."
             done
       - run:
           name: Push to production
