@@ -399,16 +399,36 @@ there.
 
 
 /* Larger than mobile */
-@media (min-width: 400px) {}
+@media (min-width: 300px) {
+  #logo-mobile {
+    margin: 0 auto;
+  }
+}
 
 /* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {}
+@media (min-width: 550px) {
+  #logo-mobile {
+    margin: 0 auto;
+  }
+}
 
 /* Larger than tablet */
-@media (min-width: 750px) {}
+@media (min-width: 750px) {
+  #logo-mobile {
+    margin: 0 auto;
+  }
+}
 
 /* Larger than desktop */
-@media (min-width: 1000px) {}
+@media (min-width: 1000px) {
+  #logo-mobile {
+    margin: 0 auto;
+  }
+}
 
 /* Larger than Desktop HD */
-@media (min-width: 1200px) {}
+@media (min-width: 1200px) {
+  #logo-mobile {
+    margin: 0 auto;
+  }
+}
