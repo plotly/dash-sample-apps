@@ -45,7 +45,7 @@ p {
 }
 
 .app__banner img {
-    height: 80px;
+    height: 60px;
     width: auto;
 }
 
@@ -136,6 +136,10 @@ p {
 
 .table__container a:hover {
     opacity: 0.6;
+}
+
+._dash-undo-redo {
+    display: none;
 }
 
 @media only screen and (max-width: 600px) {

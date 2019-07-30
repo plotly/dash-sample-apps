@@ -273,6 +273,9 @@ a:active {
   margin: 25px 25px;
 }
 
+._dash-undo-redo {
+  display: none;
+}
 /* for screens smaller than 768px */
 @media only screen and (max-width: 550px) {
   .tab {

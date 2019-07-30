@@ -20,7 +20,7 @@
 }
 
 .logo {
-  height: 60px;
+  height: 50px;
   width: auto;
   float: left;
 }
@@ -179,7 +179,7 @@ body {
   }
 
   #plotly-image {
-    height: 50px;
+    height: 40px;
   }
 
   .header_img {
@@ -204,7 +204,7 @@ body {
 }
 @media only screen and (max-width: 550px) {
   #plotly-image {
-    height: 45px;
+    height: 35px;
     width: auto;
   }
 }

@@ -1,5 +1,5 @@
 cloudpickle>=1.1.1
-dash>=1.0.0
+dash>=0.42.0
 dask>=0.17.1
 datashader>=0.6.9
 gunicorn>=19.9.0

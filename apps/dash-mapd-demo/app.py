@@ -27,7 +27,7 @@ password = "HyperInteractive"
 db_name = "mapd"
 
 # Get credentials from env
-if "DB_HOST" in os.environ:
+if "DASH_APP_NAME" in os.environ:
     host = os.environ.get("DB_HOST")
 else:
     host = "localhost"
@@ -132,8 +132,6 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
     start_f = f"{start} 00:00:00"
     end_f = f"{end} 00:00:00"
 
-    con = db_connect()
-
     if select:
         state_query = f"origin_state = '{state}' AND "
 
@@ -144,7 +142,7 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
         )
 
         try:
-            hm_df = pd.read_sql(hm_query, con)
+            hm_df = pd.read_sql(hm_query, db_connect())
             hm_df = hm_df.set_index("flight_dayofweek")
             hm.append(hm_df)
         except Exception as e:
@@ -332,8 +330,6 @@ def generate_city_graph(state_select, dd_select, start, end):
     state_col = "origin_state" if dd_select == "arr" else "dest_state"
     city_col = "origin_city" if dd_select == "arr" else "dest_city"
 
-    con = db_connect()
-
     for i, day in enumerate(days):
         count_query = (
             f"SELECT AVG(arrdelay) AS {day}, {city_col} AS city FROM {table} WHERE {state_col} ='{state_f}' AND flight_dayofweek = {i + 1}"
@@ -341,7 +337,7 @@ def generate_city_graph(state_select, dd_select, start, end):
         )
 
         try:
-            df_city_count = pd.read_sql(count_query, con).set_index("city")
+            df_city_count = pd.read_sql(count_query, db_connect()).set_index("city")
         except Exception as e:
             print("Error reading count queries", e)
             return {}
@@ -523,8 +519,7 @@ app.layout = html.Div(
                                             "dest_city",
                                         ]
                                     ],
-                                    filter_action="native",
-                                    fill_width=True,
+                                    filtering=True,
                                     data=[],
                                     style_as_list_view=True,
                                     style_header={
@@ -533,7 +528,7 @@ app.layout = html.Div(
                                         "backgroundColor": "#ffffff",
                                         "padding": "10px 0px",
                                     },
-                                    style_data_conditional=[
+                                    style_cell_conditional=[
                                         {
                                             "if": {"row_index": "even"},
                                             "backgroundColor": "#f5f6f7",
@@ -647,15 +642,13 @@ def update_sel_for_table(
             if dd_select == "dep":
                 city_col = "origin_city"
 
-            con = db_connect()
-
             for wk_day in wk_days:
                 for city in cities:
                     q = q_template.format(
                         table, dd_select, start_f, end_f, wk_map[wk_day], city_col, city
                     )
                     try:
-                        dff = pd.read_sql(q, con)
+                        dff = pd.read_sql(q, db_connect())
                         dff["flightnum"] = dff["carrier"] + dff["flightnum"].map(str)
                         dff.drop(["carrier"], axis=1)
                         frames.append(dff)
