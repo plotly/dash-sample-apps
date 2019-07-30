@@ -1,21 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Playfair+Display|Roboto');
 
 body {
-    background-color: #0f0f0f;
+    background-color: #1e1e1e;
     color: #f3f6fa;
     margin: 0;
     padding: 0;
-    max-width: 100%;
+    width: 100%;
     font-family: 'Open Sans', sans-serif;
     font-weight: 100;
-    letter-spacing: 0.025rem;
 }
 
 #root {
-    max-width: 100%;
+    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: stretch;
 }
 
 #interval {
@@ -26,70 +25,103 @@ body {
 /*Side panel*/
 /**********************************************************************************************************************/
 #panel-side {
+    padding: 7rem 4rem;
     display: flex;
     flex-direction: column;
-    background-color: #0f0f0f;
-    position: relative;
-    z-index: 5;
-    width: 81%;
+    justify-content: start;
+    align-items: flex-start;
+    background-color: #2b2b2b;
+    flex: 1 16%;
 }
 
-#satellite-dropdown .Select {
-    background-color: white;
-}
-.Select-control {
-    background-color: #0f0f0f !important;
-    color: #f3f6fa !important;
-}
-.Select-control .Select-value-label {
-    color: #f3f6fa !important;
-}
 #satellite-dropdown-text {
-    padding: 5px;
-    margin-left: 40px;
-    color: #f3f6fa;
-    background-color: #0f0f0f;
+    color: #fec036;
     font-family: "Open Sans", sans-serif;
-    font-size: 3rem;
-    width: calc(100% - 50px);
-    font-weight: bold;
+    font-size: 2rem;
+    font-weight: normal;
+    word-break: normal;
+    margin: 0 0 1rem 0;
+}
+
+.has-value.Select--single > .Select-control .Select-value .Select-value-label,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+    color: white !important;
+    cursor: pointer;
+    text-align: left;
+}
+
+.Select--single > .Select-control .Select-value, .Select-placeholder {
+    border: 1px solid gray;
+    border-radius: 4px;
+    color: white;
+    background-color: #2b2b2b;
+    cursor: pointer;
+}
+
+#satellite-dropdown:hover, #satellite-dropdown .Select:hover {
+    cursor: pointer;
+}
+
+#satellite-dropdown {
+    width: 100%;
+}
+
+.Select-control, .Select-multi-value-wrapper, .Select-menu-outer div {
+    background-color: #2b2b2b;
+}
+
+.Select-control, .Select, .Select-value-label, .Select-clear-zone {
+    color: white;
+}
+
+.Select-menu-outer {
+    background-color: #2b2b2b;
+    border: 1px solid gray !important;
+}
+
+.Select-menu-outer div:hover {
+    background-color: rgba(255, 255, 255, 0.01);
+    cursor: pointer;
+}
+
+.Select-arrow {
+    border-color: gray transparent transparent;
+}
+
+.Select-arrow-zone, .Select-clear-zone, .is-open > .Select-control {
+    background-color: #2b2b2b !important;
 }
 
 #panel-side-text {
-    padding: 10vh 2rem 0 2rem;
-    max-width: 100%;
+    margin-top: 3rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color: #0f0f0f;
+    align-items: flex-start;
     color: white;
 }
 
 #satellite-name {
-    margin-bottom: 1rem;
-}
-
-#satellite-name {
     font-family: "Open Sans", sans-serif;
-    text-align: center;
-    font-size: 1.5rem;
-    margin: -0.5rem 0 0 0;
+    font-size: 1.2rem;
     letter-spacing: 0.1rem;
+    font-weight: normal;
+    color: #fec036;
+    text-align: left;
 }
 
-#satellite-dropdown-component{
+#satellite-dropdown-component {
     color: #0f0f0f;
     text-align: center;
     cursor: pointer;
 }
 
 .satellite-description {
-    font-size: 10pt;
-    line-height: 12pt;
-    text-align: center;
+    font-weight: lighter;
+    font-size: 0.9rem;
+    margin: 0;
 }
 
-._dash-undo-redo{
+._dash-undo-redo {
     display: none;
 }
 
@@ -100,7 +132,55 @@ body {
 #panel-upper-lower {
     display: flex;
     flex-direction: column;
-    width: 76%;
+    flex: 5 83%;
+    padding: 4rem 3rem;
+}
+
+/**********************************************************************************************************************/
+/*Upper Panel*/
+/**********************************************************************************************************************/
+
+#world-map-wrapper {
+    height: 50rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+}
+
+#world-map {
+    height: 100%;
+    width: 100%;
+}
+
+#control-panel-toggle-map {
+    margin: 0 !important;
+}
+
+.sc-bdVaJa.fsmTNM, .sc-bdVaJa.bQWqnK {
+    background-color: #1e1e1e;
+}
+
+.sc-bxivhb.iArJfC, .sc-bxivhb.cmSQpo {
+    background-color: #2b2b2b;
+}
+
+.sc-ifAKCX.dlqMgb, .sc-ifAKCX.dlqMgb:hover, .sc-ifAKCX.igrnnx, .sc-ifAKCX.igrnnx:hover {
+    background-color: #fec036;
+    border-color: #fec036;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+}
+
+
+/**********************************************************************************************************************/
+/*Lower Panel*/
+/**********************************************************************************************************************/
+
+#panel {
+    display: flex;
+    flex-direction: row;
 }
 
 #placeholder {
@@ -108,84 +188,67 @@ body {
 }
 
 /**********************************************************************************************************************/
-/*Upper Panel*/
+/*Lower Panel Graph*/
 /**********************************************************************************************************************/
 
-#panel-upper {
-    margin-top: 10px;
-    height: 350px;
+#histogram-container {
+    background-color: #2b2b2b;
+    flex: 3 30%;
+}
+
+#histogram-header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
-    position: relative;
-    z-index: 2;
+    justify-content: space-between;
+    border-bottom: 1px solid gray;
+    padding: 0.75rem 2rem;
 }
 
-#world-map {
-    margin: -20px 0 0 -80px;
-    position: relative;
-    z-index: 0;
+#histogram-header .sc-bdVaJa.fsmTNM, .sc-bdVaJa.bQWqnK {
+    background-color: #2b2b2b;
 }
 
-#graph-panel {
-    margin-left: -80px;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
+#histogram-header .sc-bxivhb.iArJfC, .sc-bxivhb.cmSQpo {
+    background-color: #484848;
 }
 
-#world-map > div > div > svg:nth-child(1) {
-    background: #0f0f0f !important;
+#histogram-title {
+    flex: 1 66%;
+    font-size: 1rem;
+    font-weight: normal;
 }
+
+#control-panel-toggle-minute {
+    margin: 0;
+    width: 8rem;
+}
+
+#control-panel-toggle-minute label{
+    font-size: 0.7rem !important;
+}
+
 
 /**********************************************************************************************************************/
 /*Lower Panel*/
 /**********************************************************************************************************************/
 
 #panel-lower {
-    height: 500px;
-    max-width: 100%;
-    position: relative;
-    z-index: 4;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-evenly;
-    background-color: #0f0f0f;
-    padding: 75px 0;
-}
-
-#panel-lower-top-break {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin-top: -40px;
-    padding: 0 0 20px 0;
-}
-
-#control-panel-toggle-map {
-    margin-left: 75px;
-    margin-right: 75px;
-}
-
-#control-panel-toggle-minute {
-    margin-left: 100px;
-    margin-right: 25px;
+    flex: 7 70%;
+    margin-left: 2rem;
+    background-color: #2b2b2b;
+    font-weight: normal;
 }
 
 #panel-lower-0, #panel-lower-1 {
-    width: 95%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
-}
-
-#panel-lower-0 {
-    margin-bottom: 10px;
-    padding-left: 30px;
-    padding-top: 20px
 }
 
 #control-panel-elevation, #control-panel-temperature, #control-panel-latitude, #control-panel-longitude,
@@ -194,19 +257,12 @@ body {
     color: #f3f6fa !important;
 }
 
-
 #control-panel-speed-component {
-    margin-bottom: -35px;
+    margin-bottom: -45px;
 }
 
 #control-panel-latitude {
     margin-bottom: 15px;
-}
-
-#panel-lower > div {
-    width:80%;
-    margin-left: 10%;
-    margin-right: 10%;
 }
 
 #panel-lower-indicators {
@@ -234,26 +290,57 @@ body {
     padding-top: 15px;
 }
 
+/*Daq Tank*/
 .kicevw {
-    background: white !important;
+    background: #383838 !important;
 }
 
-.hZlAvw .scale {
-    fill: #0f0f0f !important;
+.sc-jWBwVP{
+    background-color: #fec036 !important;
 }
 
-.hZlAvw .track {
+.fZEiGQ, .giEVwx{
+    color: white !important;
+}
+
+.fuHQEk .track{
+    stroke: #383838 !important;
+}
+
+.fuHQEk .track.progress{
+    stroke: #fec036 !important;
+}
+
+.fuHQEk .tick{
+    stroke: #2b2b2b !important;
+}
+
+/*Gauge*/
+.giEVwx{
+    font-size: 0.5rem !important;
+}
+#control-panel-speed-component .scale text{
+    fill: white !important;
+}
+.fuHQEk .needle{
     stroke: white !important;
 }
-
-.hZlAvw .track.progress {
-    stroke: #0f0f0f !important;
+.fuHQEk .needle-knob{
+    stroke: #fec036 !important;
+    fill: #2b2b2b;
 }
 
-.coiBuO {
-    background-color: white !important;
+/*LEDDisplays*/
+.sc-kgoBCf.gcgTwS, .sc-kgoBCf.gcgTwS, .sc-kgoBCf.gcgTwS{
+    border: none !important;
 }
 
-.cmSQpo {
-    background-color: black !important;
+/*Indicators*/
+.dCWfnu{
+    background-color:#ffe9b8 !important;
+}
+
+/*Graduated bars*/
+.sc-jzJRlG.coiBuO{
+    background-color: #383838 !important;
 }
