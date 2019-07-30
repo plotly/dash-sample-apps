@@ -492,7 +492,6 @@ layout = [
                 n_clicks=0,
                 className="button button--primary add pretty_container",
             ),
-
             html.Div(
                 id="cases_indicators",
                 className="row indicators",
@@ -506,7 +505,6 @@ layout = [
                     ),
                 ],
             ),
-
             html.Div(
                 id="cases_types_container",
                 className="pretty_container chart_div",
@@ -519,7 +517,6 @@ layout = [
                     ),
                 ],
             ),
-            
             html.Div(
                 id="cases_reasons_container",
                 className="chart_div pretty_container",
