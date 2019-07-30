@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": "54109", "name": "Wyoming", "FIPS": "54109", "Year": 2003, "State": "West Virginia", "ST": "WV", "FIPS State": 54, "County": "Wyoming County, WV", "Population": 24777.0, "Estimated Age-adjusted Death Rate, 16 Categories (in ranges)": "28.1-30" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -81.515401, 37.788942 ], [ -81.219646, 37.509618 ], [ -81.312754, 37.421987 ], [ -81.838541, 37.547957 ], [ -81.854971, 37.547957 ], [ -81.800202, 37.662973 ], [ -81.608509, 37.788942 ], [ -81.515401, 37.788942 ] ] ] } }
+]
+}
