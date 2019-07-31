@@ -455,6 +455,7 @@ margin-right: auto;
 
   #grid {
     padding: 4% -8%;
+    display: -ms-grid;
     display: grid;
     -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-columns: repeat(12, 1fr);
@@ -466,6 +467,9 @@ margin-right: auto;
     -ms-grid-column: 1;
     -ms-grid-column-span: 12;
     grid-column: 1 / span 12;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 1;
+    grid-row: 1 / 2;
     display: flex;
   }
 
@@ -478,23 +482,35 @@ margin-right: auto;
     -ms-grid-column: 1;
     -ms-grid-column-span: 6;
     grid-column: 1 / span 6;
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 1;
+    grid-row: 2 / span 1;
   }
 
   #phylogeny-graph {
     -ms-grid-column: 7;
     -ms-grid-column-span: 6;
     grid-column: 7 / span 6;
+    -ms-grrid-row: 3;
+    -ms-grid-row-span: 1;
+    grid-row: 2 / span 1;
   }
 
   #map-graph {
     -ms-grid-column: 1;
-    -ms-grid-column-span: 6;
+    -ms-grid-column-span: 7;
     grid-column: 1 / span 7;
+    -ms-grid-row: 3;
+    -ms-grid-row-span: 1;
+    grid-row: 3 / 4;
   }
 
   #histo-graph {
     -ms-grid-column: 8;
     -ms-grid-column-span: 5;
     grid-column: 8 / span 5;
+    -ms-grid-row: 3;
+    -ms-grid-row-span: 1;
+    grid-row: 3 / 4;
   }
 }

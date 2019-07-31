@@ -41,6 +41,39 @@ fig_map_bubble = create_map_bubble_year(
 
 fig_curve_line = create_curve_line(df_stat_metadata, virus_name, min_date, max_date)
 
+# df = pd.read_csv(metadata_file_stat)
+# min_date_mumps, max_date_mumps = min_max_date_value
+
+# # To select only the data between min_date and max_date
+# df_mumps = df[df["Year"] >= min_date_mumps]
+# df_mumps = df[df["Year"] <= max_date_mumps]
+
+# # Count the number of viruses by Country
+# df_mumps = df_mumps.groupby(["Country"])["Value"].sum()
+# # Translate groupby object in dataframe
+# df_mumps = df_mumps.to_frame()
+# # Rename the first column in Value
+# df_mumps.columns = ["Value"]
+# # Move the index values (i.e. Country column) in column and reset index
+# df_mumps = df_mumps.reset_index()
+
+# fig_mumps = {
+#     "data": [
+#         {
+#             "x": df_mumps["Country"],
+#             "y": df_mumps["Value"],
+#             "type": "bar",
+#         }
+#     ],
+#     "layout": {
+#         "autosize": True,
+#         "margin": "0px 0px 0px 0px",
+#         "title": "<br>Distribution of {} <br>Between {} and {}".format(
+#             virus_name.title(), min_date, max_date
+#         ),
+#     },
+# }
+
 
 ######################################### MAIN APP #########################################
 app.layout = html.Div(
@@ -263,6 +296,7 @@ app.layout = html.Div(
                 dcc.Graph(
                     id="phylogeny-graph",
                     className="div-card",
+                    figure=fig,
                 ),
 
                 dcc.Graph(
@@ -274,6 +308,7 @@ app.layout = html.Div(
                 dcc.Graph(
                     id="histo-graph",
                     className="div-card",
+                    # figure=fig_mumps,
                 ),
             ],
         ),
