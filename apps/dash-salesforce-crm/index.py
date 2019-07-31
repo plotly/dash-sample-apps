@@ -1,8 +1,8 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from app import sf_manager
-from apps import opportunities, cases, leads
+from app import sf_manager, app
+from panels import opportunities, cases, leads
 
 app.layout = html.Div(
     [
@@ -18,6 +18,7 @@ app.layout = html.Div(
                             id="subtitle",
                             children=dcc.Markdown(
                                 "&nbsp using Salesforce API"),
+                            style={"font-size": "1.8rem", "margin-top": "15px"}
                         ),
                     ],
                 ),
@@ -90,7 +91,7 @@ app.layout = html.Div(
     [dash.dependencies.Input("url", "pathname")],
 )
 def display_page(pathname):
-    print("display_page({})".format(pathname))
+    # print("display_page({})".format(pathname))
     tabs = [
         dcc.Link(dcc.Markdown("Opportunities"), href="/opportunities"),
         dcc.Link(dcc.Markdown("Leads"), href="/leads"),

@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f9f9f9;
-  font-family: 'Asap', sans-serif;
+  font-family: "Asap", sans-serif;
   -webkit-user-select: none;
   /* Chrome all / Safari all */
   -moz-user-select: none;
@@ -27,7 +27,6 @@ input {
   padding: 0.5rem 0;
   border-radius: 5px;
 }
-
 
 .button:hover {
   box-shadow: 4px 4px 4px grey;
@@ -71,39 +70,60 @@ input {
 }
 
 .button {
-  background-color: #436cff;
+  background-color: #4998c9;
   color: white;
   display: block;
-  border-radius: 10px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  border: none;
+  letter-spacing: 0.1rem;
   box-shadow: 4px 4px 4px lightgrey;
   transition: box-shadow 0.5s;
+  width: 50%;
+  text-align: center;
+  margin-left: 25%;
+}
+.subtitle {
+  text-align: center;
+  color: #333333;
+  font-size: 20px;
 }
 
-.chart_div:first-child {
-  : center;
+tr:nth-child(even) {
+  background-color: #f0f0f0;
+}
+tr:nth-child(odd) {
+  background-color: #fafafa;
+}
+
+td,
+th {
+  border: 0px solid #ddd;
+  padding: 8px;
+  /* float: left; */
 }
 
 .header {
   margin: 0px;
   background-color: white;
   color: black;
-  padding: 1rem 5%;
+  padding-right: 3%;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
 }
 
-.header Img {
+.header img {
   margin-left: auto;
-  max-height: 6rem;
+  height: 75px;
   max-width: 33%;
 }
 
 .app-title {
   color: black;
   padding-left: 5%;
-  font-size: 2rem;
-  letter-spacing: -.1rem;
+  font-size: 2.25rem;
+  letter-spacing: -0.1rem;
   vertical-align: middle;
   display: flex;
   flex: 1;
@@ -117,9 +137,9 @@ input {
 .header button {
   background-color: white;
   box-shadow: none;
-  border-radius: 10px;
+  border-radius: 5px;
   font-size: 1rem;
-  padding: 1rem;
+  padding: 12px;
   cursor: pointer;
 }
 
@@ -142,25 +162,33 @@ input {
   border-top: 1px solid lightgrey;
   display: none;
   flex-direction: column;
-  padding: 1rem 10%;
+  padding: 1rem 5%;
   margin-bottom: 1rem;
   background-color: white;
 }
-
+.dropdown-styles {
+  border-radius: 5px;
+  background-color: white;
+  margin: 0.5rem;
+  padding-top: 7px;
+  position: relative;
+  border: 1px solid #f1f1f1;
+}
 .tabs > a {
   text-decoration: none;
   color: black;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   text-align: center;
 }
 
-.control .Select-control {
-  border: none;
+.control,
+.Select-control {
+  border: none !important;
 }
 
 table {
   border: 1px;
-  font-size: 1.3rem;
+  font-size: 1rem;
   width: 100%;
   font-family: Ubuntu;
 }
@@ -176,10 +204,11 @@ table {
 
 .indicator {
   flex: 1;
-  padding: 2rem;
+  padding: 0.75rem 1.75rem;
+  text-align: center;
 }
 
-.indicator_value{
+.indicator_value {
   font-size: 2rem;
   margin: 1rem 0;
 }
@@ -189,8 +218,8 @@ table {
 }
 
 ::-webkit-scrollbar {
-  width: 0px;  /* Remove scrollbar space */
-  background: transparent;  /* Optional: just make scrollbar invisible */
+  width: 0px; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
 }
 
 #cases_reasons {
@@ -207,14 +236,13 @@ table {
   .indicator:first-child {
     margin-right: 0;
   }
-  
+
   .indicator:last-child {
     margin-left: 0;
   }
 }
 
 @media (min-width: 900px) {
-
   .header {
     flex-direction: row;
   }
@@ -231,18 +259,18 @@ table {
   }
 
   .tabs {
-    display: flex;;
+    display: flex;
     flex-direction: row;
   }
 
   .tabs > a {
-    width: 20%;
+    width: 15%;
   }
-  
+
   .tabs > a:first-child {
     border-right: 1px solid lightgrey;
   }
-  
+
   .tabs > a:last-child {
     border-left: 1px solid lightgrey;
   }
@@ -254,7 +282,8 @@ table {
     -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: auto;
     -ms-grid-rows: auto;
-    width:80%;
+    width: 80%;
+    margin-bottom: 10%;
     margin-left: auto;
     margin-right: auto;
   }
@@ -266,7 +295,7 @@ table {
     -ms-grid-row: 1;
     -ms-grid-row-span: 1;
     grid-row: 1 / 2;
-    align-self: end
+    align-self: end;
   }
 
   #leads_per_state {
@@ -288,7 +317,7 @@ table {
   }
 
   #submit_new_lead {
-    padding: 10px
+    padding: 10px;
   }
 
   #leads_source_container {
@@ -323,6 +352,7 @@ table {
     display: -ms-grid;
     display: grid;
     width: 80%;
+    margin-bottom: 10%;
     margin-left: auto;
     margin-right: auto;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -390,6 +420,7 @@ table {
     display: -ms-grid;
     display: grid;
     width: 80%;
+    margin-bottom: 10%;
     margin-left: auto;
     margin-right: auto;
     -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
