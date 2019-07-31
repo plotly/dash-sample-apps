@@ -319,7 +319,7 @@ layout = [
         id="lead_grid",
         children=[
             html.Div(
-                className="two columns pretty_container control",
+                className="two columns dropdown-styles",
                 children=dcc.Dropdown(
                     id="converted_leads_dropdown",
                     options=[
@@ -332,7 +332,7 @@ layout = [
                 ),
             ),
             html.Div(
-                className="two columns pretty_container control",
+                className="two columns dropdown-styles",
                 children=dcc.Dropdown(
                     id="lead_source_dropdown",
                     options=[
@@ -349,7 +349,7 @@ layout = [
                 "Add new",
                 id="new_lead",
                 n_clicks=0,
-                className="button button--primary pretty_container",
+                className="button pretty_container",
             ),
             html.Div(
                 className="row indicators",

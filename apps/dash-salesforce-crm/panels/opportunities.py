@@ -356,7 +356,7 @@ layout = [
         id="opportunity_grid",
         children=[
             html.Div(
-                className="control pretty_container",
+                className="control dropdown-styles",
                 children=dcc.Dropdown(
                     id="converted_opportunities_dropdown",
                     options=[
@@ -369,7 +369,7 @@ layout = [
                 ),
             ),
             html.Div(
-                className="control pretty_container",
+                className="control dropdown-styles",
                 children=dcc.Dropdown(
                     id="heatmap_dropdown",
                     options=[
@@ -383,7 +383,7 @@ layout = [
                 ),
             ),
             html.Div(
-                className="control pretty_container",
+                className="control dropdown-styles",
                 children=dcc.Dropdown(
                     id="source_dropdown",
                     options=[
@@ -403,7 +403,7 @@ layout = [
                 "Add new",
                 id="new_opportunity",
                 n_clicks=0,
-                className="button button--primary add pretty_container",
+                className="button pretty_container",
             ),
             html.Div(
                 id="opportunity_indicators",
@@ -450,7 +450,9 @@ layout = [
                 id="top_open_container",
                 className="pretty_container",
                 children=[
-                    html.P("Top Open opportunities"),
+                    html.Div([
+                        html.P("Top Open opportunities"),
+                    ], className="subtitle"),
                     html.Div(id="top_open_opportunities", className="table"),
                 ],
             ),
@@ -458,7 +460,9 @@ layout = [
                 id="top_lost_container",
                 className="pretty_container",
                 children=[
-                    html.P("Top Lost opportunities"),
+                    html.Div([
+                        html.P("Top Lost opportunities"),
+                    ], className="subtitle"),
                     html.Div(id="top_lost_opportunities", className="table"),
                 ],
             ),

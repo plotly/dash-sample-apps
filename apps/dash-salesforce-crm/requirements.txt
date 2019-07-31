@@ -2,5 +2,6 @@ certifi==2019.6.16
 simple_salesforce==0.74.2
 pandas==0.24.2
 dash==1.0.0
+Flask==1.0.3
 python-dotenv==0.10.3
 gunicorn==19.9.0

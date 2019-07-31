@@ -14,7 +14,7 @@ contacts = sf_manager.get_contacts()
 users = sf_manager.get_users()
 
 # returns pie chart based on filters values
-# column makes the fonction reusable
+# column makes the function reusable
 
 
 def pie_chart(df, column, priority, origin):
@@ -131,6 +131,7 @@ def cases_by_account(cases):
             y=cases.index.get_level_values("Name"),
             x=cases["IsDeleted"],
             orientation="h",
+            marker=dict(color="#0073e4"),
         )
     ]  # x could be any column value since its a count
 
@@ -453,7 +454,7 @@ layout = [
         id="cases_grid",
         children=[
             html.Div(
-                className="control pretty_container",
+                className="control dropdown-styles",
                 children=dcc.Dropdown(
                     id="cases_period_dropdown",
                     options=[
@@ -466,7 +467,7 @@ layout = [
                 ),
             ),
             html.Div(
-                className="control pretty_container",
+                className="control dropdown-styles",
                 children=dcc.Dropdown(
                     id="priority_dropdown",
                     options=[
@@ -480,7 +481,7 @@ layout = [
                 ),
             ),
             html.Div(
-                className="control pretty_container",
+                className="control dropdown-styles",
                 children=dcc.Dropdown(
                     id="origin_dropdown",
                     options=[
