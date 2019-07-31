@@ -2,6 +2,7 @@ from simple_salesforce import Salesforce
 from simple_salesforce.exceptions import SalesforceExpiredSession
 import pandas as pd
 import os
+
 # from dotenv import load_dotenv
 
 # load_dotenv(verbose=True)
@@ -30,8 +31,7 @@ class sf_Manager:
             val: dict(query_result["records"][val])
             for val in range(query_result["totalSize"])
         }
-        df = pd.DataFrame.from_dict(
-            items, orient="index").drop(["attributes"], axis=1)
+        df = pd.DataFrame.from_dict(items, orient="index").drop(["attributes"], axis=1)
 
         if date:  # date indicates if the df contains datetime column
             df["CreatedDate"] = pd.to_datetime(

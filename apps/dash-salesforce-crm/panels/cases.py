@@ -34,8 +34,7 @@ def pie_chart(df, column, priority, origin):
             types = df[df["Priority"] == priority][column].unique().tolist()
         else:
             types = (
-                df[(df["Priority"] == priority) & (
-                    df["Origin"] == origin)][column]
+                df[(df["Priority"] == priority) & (df["Origin"] == origin)][column]
                 .unique()
                 .tolist()
             )
@@ -81,8 +80,7 @@ def cases_by_period(df, period, priority, origin):
         df["CreatedDate"] = pd.to_datetime(df["CreatedDate"]) - pd.to_timedelta(
             7, unit="d"
         )
-    df = df.groupby(
-        [pd.Grouper(key="CreatedDate", freq=period), "Type"]).count()
+    df = df.groupby([pd.Grouper(key="CreatedDate", freq=period), "Type"]).count()
 
     dates = df.index.get_level_values("CreatedDate").unique()
     dates = [str(i) for i in dates]
@@ -223,8 +221,7 @@ def modal():
                                             id="new_case_priority",
                                             options=[
                                                 {"label": "High", "value": "High"},
-                                                {"label": "Medium",
-                                                    "value": "Medium"},
+                                                {"label": "Medium", "value": "Medium"},
                                                 {"label": "Low", "value": "Low"},
                                             ],
                                             value="Medium",
@@ -241,11 +238,9 @@ def modal():
                                         dcc.Dropdown(
                                             id="new_case_origin",
                                             options=[
-                                                {"label": "Phone",
-                                                    "value": "Phone"},
+                                                {"label": "Phone", "value": "Phone"},
                                                 {"label": "Web", "value": "Web"},
-                                                {"label": "Email",
-                                                    "value": "Email"},
+                                                {"label": "Email", "value": "Email"},
                                             ],
                                             value="Phone",
                                             clearable=False,
@@ -285,8 +280,7 @@ def modal():
                                                     "label": "Feedback",
                                                     "value": "Feedback",
                                                 },
-                                                {"label": "Other",
-                                                    "value": "Other"},
+                                                {"label": "Other", "value": "Other"},
                                             ],
                                             value="Installation",
                                             clearable=False,
@@ -362,8 +356,7 @@ def modal():
                                                     "label": "Structural",
                                                     "value": "Structural",
                                                 },
-                                                {"label": "Other",
-                                                    "value": "Other"},
+                                                {"label": "Other", "value": "Other"},
                                             ],
                                             value="Electrical",
                                         ),
@@ -387,8 +380,7 @@ def modal():
                                                     "label": "Escalated",
                                                     "value": "Escalated",
                                                 },
-                                                {"label": "Closed",
-                                                    "value": "Closed"},
+                                                {"label": "Closed", "value": "Closed"},
                                             ],
                                             value="New",
                                         ),
@@ -438,8 +430,7 @@ def modal():
                         ),
                     ],
                     className="modal-content",
-                    style={"textAlign": "center",
-                           "border": "1px solid #C8D4E3"},
+                    style={"textAlign": "center", "border": "1px solid #C8D4E3"},
                 )
             ],
             className="modal",
@@ -504,8 +495,7 @@ layout = [
                 id="cases_indicators",
                 className="row indicators",
                 children=[
-                    indicator("#00cc96", "Low priority cases",
-                              "left_cases_indicator"),
+                    indicator("#00cc96", "Low priority cases", "left_cases_indicator"),
                     indicator(
                         "#119DFF", "Medium priority cases", "middle_cases_indicator"
                     ),
@@ -531,8 +521,7 @@ layout = [
                 className="chart_div pretty_container",
                 children=[
                     html.P("Cases Reasons"),
-                    dcc.Graph(id="cases_reasons", config=dict(
-                        displayModeBar=False)),
+                    dcc.Graph(id="cases_reasons", config=dict(displayModeBar=False)),
                 ],
             ),
             html.Div(
@@ -540,8 +529,7 @@ layout = [
                 className="pretty_container chart_div",
                 children=[
                     html.P("Cases over Time"),
-                    dcc.Graph(id="cases_by_period",
-                              config=dict(displayModeBar=False)),
+                    dcc.Graph(id="cases_by_period", config=dict(displayModeBar=False)),
                 ],
             ),
             html.Div(
@@ -549,8 +537,7 @@ layout = [
                 className="pretty_container chart_div",
                 children=[
                     html.P("Cases by Company"),
-                    dcc.Graph(id="cases_by_account",
-                              config=dict(displayModeBar=False)),
+                    dcc.Graph(id="cases_by_account", config=dict(displayModeBar=False)),
                 ],
             ),
         ],
@@ -562,8 +549,7 @@ layout = [
 @app.callback(Output("left_cases_indicator", "children"), [Input("cases_df", "data")])
 def left_cases_indicator_callback(df):
     df = pd.read_json(df, orient="split")
-    low = len(df[(df["Priority"] == "Low") & (
-        df["Status"] == "New")]["Priority"].index)
+    low = len(df[(df["Priority"] == "Low") & (df["Status"] == "New")]["Priority"].index)
     return dcc.Markdown("**{}**".format(low))
 
 
@@ -571,8 +557,7 @@ def left_cases_indicator_callback(df):
 def middle_cases_indicator_callback(df):
     df = pd.read_json(df, orient="split")
     medium = len(
-        df[(df["Priority"] == "Medium") & (
-            df["Status"] == "New")]["Priority"].index
+        df[(df["Priority"] == "Medium") & (df["Status"] == "New")]["Priority"].index
     )
     return dcc.Markdown("**{}**".format(medium))
 
@@ -644,8 +629,7 @@ def display_cases_modal_callback(n):
 
 @app.callback(
     Output("new_case", "n_clicks"),
-    [Input("cases_modal_close", "n_clicks"),
-     Input("submit_new_case", "n_clicks")],
+    [Input("cases_modal_close", "n_clicks"), Input("submit_new_case", "n_clicks")],
 )
 def close_modal_callback(n, n2):
     return 0
