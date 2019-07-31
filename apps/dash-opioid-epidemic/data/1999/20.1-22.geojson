@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": "21013", "name": "Bell", "FIPS": "21013", "Year": 1999, "State": "Kentucky", "ST": "KY", "FIPS State": 21, "County": "Bell County, KY", "Population": 30026.0, "Estimated Age-adjusted Death Rate, 16 Categories (in ranges)": "20.1-22" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -83.509007, 36.940016 ], [ -83.492576, 36.896201 ], [ -83.459715, 36.666169 ], [ -83.673316, 36.600446 ], [ -83.930732, 36.589492 ], [ -83.875962, 36.688077 ], [ -83.591161, 36.956447 ], [ -83.509007, 36.940016 ] ] ] } },
+{ "type": "Feature", "properties": { "id": "54059", "name": "Mingo", "FIPS": "54059", "Year": 1999, "State": "West Virginia", "ST": "WV", "FIPS State": 54, "County": "Mingo County, WV", "Population": 29098.0, "Estimated Age-adjusted Death Rate, 16 Categories (in ranges)": "20.1-22" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -82.30408, 37.942297 ], [ -82.189065, 37.975158 ], [ -81.800202, 37.662973 ], [ -81.854971, 37.547957 ], [ -81.926172, 37.509618 ], [ -81.969987, 37.537003 ], [ -82.145249, 37.569865 ], [ -82.331465, 37.73965 ], [ -82.413619, 37.854665 ], [ -82.30408, 37.942297 ] ] ] } }
+]
+}
