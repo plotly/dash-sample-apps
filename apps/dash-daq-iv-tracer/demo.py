@@ -110,7 +110,15 @@ accent_color = {"dark": "#FFD15F", "light": "#ff9827"}
 
 
 def generate_main_layout(
-    theme="light", src_type="Voltage", mode_val="Single measure", fig=None, meas_src=0.00, meas_display=0.0000, src_knob=0.00, source_toggle=False, mode_toggle=False
+    theme="light",
+    src_type="Voltage",
+    mode_val="Single measure",
+    fig=None,
+    meas_src=0.00,
+    meas_display=0.0000,
+    src_knob=0.00,
+    source_toggle=False,
+    mode_toggle=False,
 ):
     """generate the layout of the app"""
 
@@ -599,12 +607,22 @@ app.layout = html.Div(
             "source-display", "value"
         ),  # Keep measure LED display while changing themes
         State("measure-display", "value"),
-        State("source-knob","value"),
-        State("source-choice-toggle","value"),
-        State("mode-choice-toggle","value")
+        State("source-knob", "value"),
+        State("source-choice-toggle", "value"),
+        State("mode-choice-toggle", "value"),
     ],
 )
-def page_layout(value, src_choice, mode_choice, fig, meas_src, meas_display, src_knob,source_toggle , mode_toggle):
+def page_layout(
+    value,
+    src_choice,
+    mode_choice,
+    fig,
+    meas_src,
+    meas_display,
+    src_knob,
+    source_toggle,
+    mode_toggle,
+):
     """update the theme of the daq components"""
     if src_choice:
         src_type = "Current"
@@ -617,9 +635,29 @@ def page_layout(value, src_choice, mode_choice, fig, meas_src, meas_display, src
         mode_val = "Single measure"
 
     if value:
-        return generate_main_layout("dark", src_type, mode_val, fig, meas_src, meas_display, src_knob, source_toggle, mode_toggle)
+        return generate_main_layout(
+            "dark",
+            src_type,
+            mode_val,
+            fig,
+            meas_src,
+            meas_display,
+            src_knob,
+            source_toggle,
+            mode_toggle,
+        )
     else:
-        return generate_main_layout("light", src_type, mode_val, fig, meas_src, meas_display, src_knob, source_toggle, mode_toggle)
+        return generate_main_layout(
+            "light",
+            src_type,
+            mode_val,
+            fig,
+            meas_src,
+            meas_display,
+            src_knob,
+            source_toggle,
+            mode_toggle,
+        )
 
 
 @app.callback(
@@ -1118,7 +1156,7 @@ def update_graph(
             # The change to the graph was triggered by a measure
 
             # Sort the stored data so the are ascending in x
-            
+
             data_array = local_vars.sorted_values()
 
             xdata = data_array[0, :]
