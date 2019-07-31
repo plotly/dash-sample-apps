@@ -1,7 +1,6 @@
 import os
 import pathlib
 import re
-import json
 
 import dash
 import dash_core_components as dcc
@@ -59,7 +58,7 @@ BINS = [
     "24.1-26",
     "26.1-28",
     "28.1-30",
-    "30+",
+    ">30",
 ]
 
 DEFAULT_COLORSCALE = [
@@ -290,22 +289,18 @@ def display_map(year, figure):
         dragmode="lasso",
     )
 
-    # base_url = "https://raw.githubusercontent.com/jackparmer/mapbox-counties/master/"
+    base_url = "https://raw.githubusercontent.com/jackparmer/mapbox-counties/master/"
     for bin in BINS:
-        link = os.path.join(APP_PATH, os.path.join("data", os.path.join(str(year) + "/" + bin + ".geojson")))
-
         geo_layer = dict(
             sourcetype="geojson",
-            source=link,
+            source=base_url + str(year) + "/" + bin + ".geojson",
             type="fill",
             color=cm[bin],
-            # color="blue",
             opacity=DEFAULT_OPACITY,
             # CHANGE THIS
             fill=dict(outlinecolor="#afafaf"),
         )
         layout["mapbox"]["layers"].append(geo_layer)
-
 
     fig = dict(data=data, layout=layout)
     return fig
