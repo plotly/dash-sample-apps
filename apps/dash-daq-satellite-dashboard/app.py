@@ -31,7 +31,7 @@ utc = html.Div(
             id="control-panel-utc-component",
             value="16:23",
             label="Time",
-            size=50,
+            size=40,
             color="#fec036",
             backgroundColor="#2b2b2b",
         )
@@ -49,7 +49,7 @@ speed = html.Div(
             max=40,
             showCurrentValue=True,
             value=27.859,
-            size=200,
+            size=175,
             units="1000km/h",
             color="#fec036",
         )
@@ -373,7 +373,7 @@ histogram = html.Div(
 main_panel_layout = html.Div(
     id="panel-upper-lower",
     children=[
-        dcc.Interval(id="interval", interval=1 * 5000, n_intervals=0),
+        dcc.Interval(id="interval", interval=1 * 20000, n_intervals=0),
         map_graph,
         html.Div(
             id="panel",
