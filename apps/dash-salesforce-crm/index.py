@@ -125,17 +125,5 @@ def show_menu(n_clicks, tabs_style):
     return tabs_style
 
 
-# @app.callback(Output("tab_content", "children"), [Input("tabs", "value")])
-# def render_content(tab):
-#     if tab == "opportunities_tab":
-#         return opportunities.layout
-#     elif tab == "cases_tab":
-#         return cases.layout
-#     elif tab == "leads_tab":
-#         return leads.layout
-#     else:
-#         return opportunities.layout
-
-
 if __name__ == "__main__":
     app.run_server(debug=True)

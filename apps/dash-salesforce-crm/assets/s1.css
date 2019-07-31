@@ -4,7 +4,6 @@ body {
   padding: 0;
   background-color: #f9f9f9;
   font-family: 'Asap', sans-serif;
-  /* color: #506784; */
   -webkit-user-select: none;
   /* Chrome all / Safari all */
   -moz-user-select: none;
@@ -22,7 +21,6 @@ body {
   padding: 1rem;
   position: relative;
   border: 1px solid #f1f1f1;
-  /* box-shadow: 1px 1px 1px lightgrey; */
 }
 
 input {
@@ -82,7 +80,7 @@ input {
 }
 
 .chart_div:first-child {
-  text-align: center;
+  : center;
 }
 
 .header {
