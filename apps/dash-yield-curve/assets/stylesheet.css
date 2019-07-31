@@ -16,7 +16,7 @@
 - Media Queries
 */
 
-/* PLotly.js
+/* PLotly.js 
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 /* plotly.js's modebar's z-index is 1001 by default
  * https://github.com/plotly/plotly.js/blob/7e4d8ab164258f6bd48be56589dacd9bdd7fded2/src/css/_modebar.scss#L5
@@ -27,6 +27,7 @@
 
 /* This was actually not quite right -
    dropdowns were overlapping each other (edited October 26)
+
 .Select {
     z-index: 1002;
 }*/
@@ -61,10 +62,10 @@
   .container {
     width: 80%;
   }
-  .column,
+  /* .column,
   .columns {
     margin-left: 4%;
-  }
+  } */
   .column:first-child,
   .columns:first-child {
     margin-left: 0;
@@ -526,16 +527,61 @@ on small devices, paste the mobile query code up in the buttons section and styl
 there.
 */
 
-/* Larger than mobile */
-@media (min-width: 400px) {
+/* for screen sizes smaller than 450px */
+@media (max-width: 450px) {
+  h3 {
+    font-size: 2.3rem !important;
+  }
+  .title {
+    padding: 0 15px;
+  }
+  .timeline-slider {
+    padding: 15px 50px !important;
+  }
+  .text-box {
+    margin: 30px 20px;
+  }
+  .plotly-logo {
+    height: 40px;
+    padding: 10px;
+  }
+  #text {
+    padding: 15px;
+    margin-left: 15px;
+  }
 }
 
-/* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {
-}
-
-/* Larger than tablet */
-@media (min-width: 750px) {
+/* for screen sizes smaller than 900px */
+@media (max-width: 900px) {
+  .flex-display {
+    display: block;
+  }
+  .four.columns {
+    width: 100%;
+    padding-bottom: 60px;
+  }
+  .eight.columns {
+    width: 100%;
+  }
+  .title {
+    text-align: center;
+  }
+  .subtitle {
+    text-align: center;
+  }
+  .info-button {
+    text-align: center;
+  }
+  #text {
+    text-align: center;
+    width: 80%;
+  }
+  .timeline-slider {
+    padding: 20px 120px;
+  }
+  .page-buttons {
+    text-align: center;
+  }
 }
 
 /* Larger than desktop */
