@@ -200,6 +200,7 @@ body {
   flex-direction: row;
   width: 90%;
   justify-content: space-between;
+  padding-top: 25px;
 }
 
 #trigger-div {

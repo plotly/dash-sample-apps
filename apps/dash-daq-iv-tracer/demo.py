@@ -107,8 +107,10 @@ card_color = {"dark": "#2D3038", "light": "#FFFFFF"}
 accent_color = {"dark": "#FFD15F", "light": "#ff9827"}
 
 # Create controls using a function
+
+
 def generate_main_layout(
-    theme="light", src_type="Voltage", mode_val="Single measure", fig=None
+    theme="light", src_type="Voltage", mode_val="Single measure", fig=None, meas_src=0.00, meas_display=0.0000, src_knob=0.00, source_toggle=False, mode_toggle=False
 ):
     """generate the layout of the app"""
 
@@ -172,14 +174,14 @@ def generate_main_layout(
                                             id="source-display",
                                             label="Applied %s (%s)"
                                             % (source_label, source_unit),
-                                            value=0.00,
+                                            value=meas_src,
                                             color=accent_color[theme],
                                         ),
                                         daq.LEDDisplay(
                                             id="measure-display",
                                             label="Measured %s (%s)"
                                             % (measure_label, measure_unit),
-                                            value=0.0000,
+                                            value=meas_display,
                                             color=accent_color[theme],
                                         ),
                                     ],
@@ -218,7 +220,7 @@ def generate_main_layout(
                                                         "width": "150px",
                                                         "margin": "auto",
                                                     },
-                                                    value=False,
+                                                    value=source_toggle,
                                                 ),
                                             ],
                                         ),
@@ -234,7 +236,7 @@ def generate_main_layout(
                                                     id="mode-choice-toggle",
                                                     label=["Single measure", "Sweep"],
                                                     style={"width": "150px"},
-                                                    value=False,
+                                                    value=mode_toggle,
                                                 ),
                                             ],
                                         ),
@@ -273,7 +275,7 @@ def generate_main_layout(
                                                 daq.Knob(
                                                     id="source-knob",
                                                     size=100,
-                                                    value=0.00,
+                                                    value=src_knob,
                                                     min=0,
                                                     max=10,
                                                     color=accent_color[theme],
@@ -283,7 +285,7 @@ def generate_main_layout(
                                                 daq.LEDDisplay(
                                                     id="source-knob-display",
                                                     label="Knob readout",
-                                                    value=0.00,
+                                                    value=src_knob,
                                                     color=accent_color[theme],
                                                 ),
                                             ],
@@ -389,10 +391,6 @@ def generate_main_layout(
                                                                     value=0.2,
                                                                     min=0.01,
                                                                     style={
-                                                                        # "color": text_color[
-                                                                        #     theme
-                                                                        # ],
-                                                                        # "backgroundColor":bkg_color[theme],
                                                                         "margin": "5px"
                                                                     },
                                                                 ),
@@ -426,39 +424,8 @@ def generate_main_layout(
                                 ),
                             ],
                         ),
-                        # html.Div(
-                        #     id="bottom-card",
-                        #     style={
-                        #         "backgroundColor": card_color[theme],
-                        #         "color": text_color[theme],
-                        #         "marginTop": "10px",
-                        #     },
-                        #     children=[
-                        #         # Display the sourced and measured values
-                        #         html.Div(
-                        #             id="measure-div",
-                        #             children=[
-                        #                 daq.LEDDisplay(
-                        #                     id="source-display",
-                        #                     label="Applied %s (%s)"
-                        #                     % (source_label, source_unit),
-                        #                     value=0.00,
-                        #                     color=accent_color[theme],
-                        #                 ),
-                        #                 daq.LEDDisplay(
-                        #                     id="measure-display",
-                        #                     label="Measured %s (%s)"
-                        #                     % (measure_label, measure_unit),
-                        #                     value=0.0000,
-                        #                     color=accent_color[theme],
-                        #                 ),
-                        #             ],
-                        #         )
-                        #     ],
-                        # ),
                     ],
                 ),
-                dcc.Store(id="control-inputs", data={}),
             ],
         )
     ]
@@ -545,7 +512,7 @@ def generate_modal():
 app.layout = html.Div(
     id="main-page",
     className="container",
-    style={"backgroundColor": bkg_color["light"], "height": "100vh"},
+    style={"backgroundColor": bkg_color["light"]},
     children=[
         dcc.Location(id="url", refresh=False),
         dcc.Interval(id="refresher", interval=1000000),
@@ -619,6 +586,8 @@ app.layout = html.Div(
 )
 
 # ======= Dark/light themes callbacks =======
+
+
 @app.callback(
     Output("page-content", "children"),
     [Input("toggleTheme", "value")],
@@ -630,9 +599,12 @@ app.layout = html.Div(
             "source-display", "value"
         ),  # Keep measure LED display while changing themes
         State("measure-display", "value"),
+        State("source-knob","value"),
+        State("source-choice-toggle","value"),
+        State("mode-choice-toggle","value")
     ],
 )
-def page_layout(value, src_choice, mode_choice, fig, meas_src, meas_display):
+def page_layout(value, src_choice, mode_choice, fig, meas_src, meas_display, src_knob,source_toggle , mode_toggle):
     """update the theme of the daq components"""
     if src_choice:
         src_type = "Current"
@@ -645,9 +617,9 @@ def page_layout(value, src_choice, mode_choice, fig, meas_src, meas_display):
         mode_val = "Single measure"
 
     if value:
-        return generate_main_layout("dark", src_type, mode_val, fig)
+        return generate_main_layout("dark", src_type, mode_val, fig, meas_src, meas_display, src_knob, source_toggle, mode_toggle)
     else:
-        return generate_main_layout("light", src_type, mode_val, fig)
+        return generate_main_layout("light", src_type, mode_val, fig, meas_src, meas_display, src_knob, source_toggle, mode_toggle)
 
 
 @app.callback(
@@ -760,7 +732,6 @@ def update_click_output(button_click, close_click):
         Output("measure-display", "label"),
     ],
     [Input("source-choice-toggle", "value"), Input("mode-choice-toggle", "value")],
-    # [State("control-inputs", "data")]
 )
 def update_labels(src_choice, _):
     if src_choice:
@@ -966,7 +937,6 @@ def set_source_display(
     swp_on,
 ):
     """"set the source value to the instrument"""
-
     # Default answer
     answer = old_source_display_val
 
@@ -1121,7 +1091,6 @@ def update_graph(
                     line={"color": accent_color[theme], "width": 2},
                 )
             ]
-
             return {
                 "data": data_for_graph,
                 "layout": dict(
@@ -1142,13 +1111,14 @@ def update_graph(
             }
         else:
             if clear_graph:
-                graph_data["data"] = local_vars.sorted_values()
+                graph_data["data"] = []
             return graph_data
     else:
         if swp_on:
             # The change to the graph was triggered by a measure
 
             # Sort the stored data so the are ascending in x
+            
             data_array = local_vars.sorted_values()
 
             xdata = data_array[0, :]
@@ -1163,7 +1133,6 @@ def update_graph(
                     line={"color": accent_color[theme], "width": 2},
                 )
             ]
-
             return {
                 "data": data_for_graph,
                 "layout": dict(
@@ -1184,7 +1153,7 @@ def update_graph(
             }
         else:
             if clear_graph:
-                graph_data["data"] = local_vars.sorted_values()
+                graph_data["data"] = []
             return graph_data
 
 
