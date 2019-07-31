@@ -97,10 +97,6 @@ h6 {
     justify-content: center;
 }
 
-._dash-undo-redo {
-    display: none;
-}
-
 @media only screen and (max-width: 600px) {
     .histogram__direction {
         margin: 15px 0px 20px 0px;
