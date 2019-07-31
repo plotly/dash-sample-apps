@@ -1,13 +1,7 @@
 import dash
-from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
-import pandas as pd
-import flask
-import chart_studio.plotly as py
-import pathlib
-
-from app import app, server, sf_manager
+from app import sf_manager
 from apps import opportunities, cases, leads
 
 app.layout = html.Div(
@@ -22,7 +16,8 @@ app.layout = html.Div(
                         dcc.Markdown("**CRM App**"),
                         html.Span(
                             id="subtitle",
-                            children=dcc.Markdown("&nbsp using Salesforce API"),
+                            children=dcc.Markdown(
+                                "&nbsp using Salesforce API"),
                         ),
                     ],
                 ),
@@ -84,6 +79,8 @@ app.layout = html.Div(
 )
 
 # Update the index
+
+
 @app.callback(
     [
         dash.dependencies.Output("tab_content", "children"),
