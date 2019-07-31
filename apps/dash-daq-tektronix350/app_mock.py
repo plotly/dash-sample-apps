@@ -48,7 +48,7 @@ def knobs(cur_input, cur_tab):
                 color=theme["primary"],
                 max=2500000,
                 min=1e5,
-                style={'backgroundColor':'transparent'},
+                style={"backgroundColor": "transparent"},
                 className="four columns",
             ),
             daq.Knob(
@@ -174,7 +174,7 @@ def power_setting_div(cur_inputs, cur_tab):
                         ],
                         className="six columns",
                     ),
-                ]
+                ],
             ),
         ],
     )
