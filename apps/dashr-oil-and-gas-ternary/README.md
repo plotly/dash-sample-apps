@@ -1,6 +1,6 @@
 ## dashr-oil-gas-ternary
 
-`dash-oil-gas-ternary` creates a dashboard for mineral composition evaluations from natural gas wells.  
+`dashr-oil-gas-ternary` creates a dashboard for mineral composition evaluations from natural gas wells.  
 By pairing a geographic map of well locations with ternary diagram, this app helps geologists to find out results of gas wells with relationship to formations or rock types.
 This is a demo of Dash interactive Python framework developed by [Plotly](https//plot.ly/).
 
@@ -14,26 +14,8 @@ We suggest you to create a separate virtual environment running Python 3 for thi
 
 ```
 git clone https://github.com/plotly/dash-sample-apps.git
-Run app.R in R Studio
+Rscript app.R
 ```
-In UNIX system: 
-
-```
-source venv/bin/activate
-```
-In Windows: 
-
-```
-venv\Scripts\activate
-```
-
-To install all of the required packages to this environment, simply run:
-
-```
-pip install -r requirements.txt
-```
-
-and all of the required `pip` packages, will be installed, and the app will be able to run.
 
 ## How to use the app
 Run this app locally by:
