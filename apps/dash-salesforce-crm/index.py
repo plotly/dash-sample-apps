@@ -16,9 +16,8 @@ app.layout = html.Div(
                         dcc.Markdown("**CRM App**"),
                         html.Span(
                             id="subtitle",
-                            children=dcc.Markdown(
-                                "&nbsp using Salesforce API"),
-                            style={"font-size": "1.8rem", "margin-top": "15px"}
+                            children=dcc.Markdown("&nbsp using Salesforce API"),
+                            style={"font-size": "1.8rem", "margin-top": "15px"},
                         ),
                     ],
                 ),
