@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
-import json
-
 import pandas as pd
-import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
-import chart_studio.plotly as py
 from plotly import graph_objs as go
 
-from app import app, indicator, millify, df_to_table, sf_manager
+from app import app, indicator, df_to_table, sf_manager
 
 states = [
     "AL",
@@ -358,9 +354,12 @@ layout = [
             html.Div(
                 className="row indicators",
                 children=[
-                    indicator("#00cc96", "Converted Leads", "left_leads_indicator"),
-                    indicator("#119DFF", "Open Leads", "middle_leads_indicator"),
-                    indicator("#EF553B", "Conversion Rates", "right_leads_indicator"),
+                    indicator("#00cc96", "Converted Leads",
+                              "left_leads_indicator"),
+                    indicator("#119DFF", "Open Leads",
+                              "middle_leads_indicator"),
+                    indicator("#EF553B", "Conversion Rates",
+                              "right_leads_indicator"),
                 ],
             ),
             html.Div(
@@ -499,7 +498,8 @@ def display_leads_modal_callback(n):
 # reset to 0 add button n_clicks property
 @app.callback(
     Output("new_lead", "n_clicks"),
-    [Input("leads_modal_close", "n_clicks"), Input("submit_new_lead", "n_clicks")],
+    [Input("leads_modal_close", "n_clicks"),
+     Input("submit_new_lead", "n_clicks")],
 )
 def close_modal_callback(n, n2):
     return 0

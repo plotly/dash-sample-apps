@@ -1,9 +1,6 @@
 import math
-
-import pandas as pd
 import flask
 import dash
-import dash_core_components as dcc
 import dash_html_components as html
 
 from sfManager import sf_Manager
@@ -34,7 +31,8 @@ def millify(n):
     millidx = max(
         0,
         min(
-            len(millnames) - 1, int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))
+            len(millnames) -
+            1, int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))
         ),
     )
 

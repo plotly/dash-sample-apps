@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-import json
 from datetime import date
-
 import pandas as pd
-import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
-import chart_studio.plotly as py
 from plotly import graph_objs as go
 
 from app import app, indicator, millify, df_to_table, sf_manager
@@ -92,7 +88,8 @@ def top_open_opportunities(df):
     df = df.sort_values("Amount", ascending=True)
     cols = ["CreatedDate", "Name", "Amount", "StageName"]
     df = df[cols].iloc[:5]
-    df["Name"] = df["Name"].apply(lambda x: x[:30])  # only display 21 characters
+    # only display 21 characters
+    df["Name"] = df["Name"].apply(lambda x: x[:30])
     return df_to_table(df)
 
 
@@ -101,7 +98,8 @@ def top_lost_opportunities(df):
     df = df[df["StageName"] == "Closed Lost"]
     cols = ["CreatedDate", "Name", "Amount", "StageName"]
     df = df[cols].sort_values("Amount", ascending=False).iloc[:5]
-    df["Name"] = df["Name"].apply(lambda x: x[:30])  # only display 21 characters
+    # only display 21 characters
+    df["Name"] = df["Name"].apply(lambda x: x[:30])
     return df_to_table(df)
 
 
@@ -236,7 +234,8 @@ def modal():
                                                     "label": "Purchased List",
                                                     "value": "Purchased List",
                                                 },
-                                                {"label": "Other", "value": "Other"},
+                                                {"label": "Other",
+                                                    "value": "Other"},
                                             ],
                                             value="Web",
                                         ),
@@ -533,13 +532,15 @@ def middle_opportunities_indicator_callback(df):
 )
 def right_opportunities_indicator_callback(df):
     df = pd.read_json(df, orient="split")
-    lost = millify(str(df[(df["IsWon"] == 0) & (df["IsClosed"] == 1)]["Amount"].sum()))
+    lost = millify(
+        str(df[(df["IsWon"] == 0) & (df["IsClosed"] == 1)]["Amount"].sum()))
     return dcc.Markdown("**{}**".format(lost))
 
 
 # hide/show modal
 @app.callback(
-    Output("opportunities_modal", "style"), [Input("new_opportunity", "n_clicks")]
+    Output("opportunities_modal", "style"), [
+        Input("new_opportunity", "n_clicks")]
 )
 def display_opportunities_modal_callback(n):
     if n > 0:
@@ -601,7 +602,8 @@ def add_opportunity_callback(
 
 # updates top open opportunities based on df updates
 @app.callback(
-    Output("top_open_opportunities", "children"), [Input("opportunities_df", "data")]
+    Output("top_open_opportunities", "children"), [
+        Input("opportunities_df", "data")]
 )
 def top_open_opportunities_callback(df):
     df = pd.read_json(df, orient="split")
@@ -610,7 +612,8 @@ def top_open_opportunities_callback(df):
 
 # updates top lost opportunities based on df updates
 @app.callback(
-    Output("top_lost_opportunities", "children"), [Input("opportunities_df", "data")]
+    Output("top_lost_opportunities", "children"), [
+        Input("opportunities_df", "data")]
 )
 def top_lost_opportunities_callback(df):
     df = pd.read_json(df, orient="split")
