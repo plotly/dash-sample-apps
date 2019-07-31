@@ -1,6 +1,7 @@
 import os
 import pathlib
 import re
+import json
 
 import dash
 import dash_core_components as dcc
@@ -289,18 +290,28 @@ def display_map(year, figure):
         dragmode="lasso",
     )
 
-    base_url = "https://raw.githubusercontent.com/jackparmer/mapbox-counties/master/"
+    # base_url = "https://raw.githubusercontent.com/jackparmer/mapbox-counties/master/"
+    base_url = APP_PATH
     for bin in BINS:
         geo_layer = dict(
             sourcetype="geojson",
-            source=base_url + str(year) + "/" + bin + ".geojson",
+            source=os.path.join(base_url, os.path.join("data", os.path.join(str(year) + "/" + bin + ".geojson"))),
             type="fill",
             color=cm[bin],
+            # color="blue",
             opacity=DEFAULT_OPACITY,
             # CHANGE THIS
             fill=dict(outlinecolor="#afafaf"),
         )
         layout["mapbox"]["layers"].append(geo_layer)
+
+        link = os.path.join(base_url, os.path.join("data", os.path.join(str(year) + "/" + "10.1-12" + ".geojson")))
+
+        with open("/home/kids_on_drugs/Documents/Plotly/dash-sample-apps/apps/dash-opioid-epidemic/data/1999/0-2.geojson") as f:
+            data = json.load(f)
+        print("REACH")
+        for feature in data["features"]:
+            print(feature)
 
     fig = dict(data=data, layout=layout)
     return fig
