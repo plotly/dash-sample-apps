@@ -2,7 +2,6 @@ library(dashHtmlComponents)
 library(dashCoreComponents)
 library(dash)
 library(plotly)
-library(rlist)
 
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
@@ -14,7 +13,6 @@ if (appName != ""){
   setwd(sprintf("/app/apps/%s", appName))
 }
 
-
 source('constants.R')
 source('dataprep.R')
 
@@ -25,12 +23,7 @@ Sys.setenv('MAPBOX_TOKEN' = mapbox_access_token)
 df = read.csv("data/test_compositionR.csv")
 df_prod = read.csv("data/YearlyProduction_table_1.csv")
 
-colormap = list()
-j = 1
-for (i in unique(df$fm_name)) {
-  colormap[[i]] = colors[[j]]
-  j = j + 1
-}
+colormap <- setNames(colors[1:length(unique(df$fm_name))], unique(df$fm_name))
 
 
 build_banner = function(){
@@ -82,7 +75,7 @@ generate_production_plot = function(processed_data){
       ),
       showlegend=TRUE
     )
-    data = list.append(data,new_trace)
+    data = append(data,list(new_trace))
   }
   return(list('data' = data, 'layout' = layout))
   
@@ -175,7 +168,6 @@ generate_ternary_map = function(dff, selected_data, contour_visible, marker_visi
       visible=contour_visible
     )
     j = j+1
-    #contour_traces = append(contour_traces,as.list(trace))
   }
   
   contour_text = generate_contour_text_layer(contour_visible)
@@ -227,7 +219,6 @@ generate_ternary_map = function(dff, selected_data, contour_visible, marker_visi
       selectedpoints=select_indices,
       visible=marker_visible
     )
-    #data_traces = append(data_traces,new_data_trace)
     j = j+1
   }
   FData = append(contour_traces, contour_text)
@@ -513,7 +504,6 @@ app$callback(output = list(id = "form-by-bar", property = "figure"),
                input("operator-select", "value")),
              function(map_selected_data, tern_selected_data, op_select){
                dff = df[df$op %in% op_select,]
-               #browser()
                formations = list(unique(dff['fm_name']))
                ctx = app$callback_context()
                prop_id = ""
@@ -559,7 +549,6 @@ app$callback(output = list(id = "ternary-map", property = "figure"),
                state("ternary-map", "figure")),
              function(map_selected_data, bar_selected_data, bar_click_data, op_select,
                       layer_select, curr_fig){
-               #browser()
                marker_visible = TRUE
                contour_visible = TRUE
                dff = df[df$op %in% op_select,]
@@ -636,7 +625,6 @@ app$callback(output = list(id = "well-map", property = "figure"),
                            input("operator-select", "value"),
                            input("mapbox-view-selector", "value")),
              function(tern_selected_data, bar_selected_data, bar_click_data, op_select, mapbox_view){
-               #browser()
                dff = df[df$op %in% op_select,]
                formations = list(unique(dff['fm_name']))
                ctx = app$callback_context()
@@ -690,7 +678,6 @@ app$callback(output = list(id = "production-fig", property = "figure"),
                            input("form-by-bar", "selectedData"),
                            input("operator-select", "value")),
              function(map_select, tern_select, bar_select, op_select){
-               #browser()
                dff = df[df$op %in% op_select,]
                ctx = app$callback_context()
                prop_id = ""
@@ -721,15 +708,12 @@ app$callback(output = list(id = "production-fig", property = "figure"),
                  if(length(tern_select) > 0){
                    processed_data = list('well_id' = list(), 'formation' = list())
                    for (point in tern_select[['points']]) {
-                     #if('customdata' %in% point){
                      processed_data[["well_id"]] = append(processed_data[["well_id"]], point$customdata)
                      processed_data[['formation']] = append(processed_data[['formation']],
                                                             list(dff[dff$RecordNumber == point$customdata, 
                                                                      'fm_name']))
-                     #}
                    }
                  } 
-                 
                  
                  else{
                    processed_data = processed_data_init
@@ -753,6 +737,7 @@ app$callback(output = list(id = "production-fig", property = "figure"),
                }
                return(generate_production_plot(processed_data))
              })
+
 
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
