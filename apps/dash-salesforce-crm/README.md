@@ -32,15 +32,17 @@ pip install -r requirements.txt
 
 ```
 
+To run the app, please create a SalesForce developer account (link is in the `About the App` section)and put the credentials in the `secrets.example.sh` file.
+
 Run the app
 
 ```
-
+source secrets.example.sh
 python index.py
 
 ```
 
-## About the app
+## About the App
 
 This app uses Salesforce API in order to implement a custom CRM dashboard. The API is used via the module [Simple-Salesforce](https://pypi.org/project/simple-salesforce/). Create a free SalesForce developer trial account: [https://developer.salesforce.com/signup](https://developer.salesforce.com/signup) to utilize this API and run the app.
 
@@ -53,4 +55,10 @@ This app uses Salesforce API in order to implement a custom CRM dashboard. The A
 
 The following are screenshots for the app in this repo:
 
-<!-- ![Screenshot1](screenshots/dash-salesforce-crm.gif) -->
+![Screenshot1](screenshots/opportunities_screenshot.png)
+
+![Screenshot1](screenshots/leads_screenshot.png)
+
+![Screenshot1](screenshots/cases_screenshot.png)
+
+![Animated](screenshots/dash-salesforce-demo.gif)
