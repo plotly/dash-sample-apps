@@ -6,8 +6,11 @@ import dash_html_components as html
 from sfManager import sf_Manager
 
 server = flask.Flask(__name__)
-app = dash.Dash(__name__, meta_tags=[
-                {"name": "viewport", "content": "width=device-width"}], server=server)
+app = dash.Dash(
+    __name__,
+    meta_tags=[{"name": "viewport", "content": "width=device-width"}],
+    server=server,
+)
 app.config.suppress_callback_exceptions = True
 
 sf_manager = sf_Manager()
@@ -32,8 +35,7 @@ def millify(n):
     millidx = max(
         0,
         min(
-            len(millnames) -
-            1, int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))
+            len(millnames) - 1, int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))
         ),
     )
 
