@@ -1,5 +1,5 @@
 body {
-  font-size: 1rem;
+  font-size: 0.75rem;
   margin: 0;
   padding: 0;
   background-color: #f9f9f9;
@@ -70,7 +70,7 @@ input {
 }
 
 .button {
-  background-color: #4998c9;
+  background-color: #3a7cef;
   color: white;
   display: block;
   border-radius: 5px;
@@ -80,6 +80,7 @@ input {
   box-shadow: 4px 4px 4px lightgrey;
   transition: box-shadow 0.5s;
   width: 50%;
+  padding: 0.75rem;
   text-align: center;
   margin-left: 25%;
 }
@@ -226,6 +227,38 @@ table {
   height: 100%;
 }
 
+/* Layouts for different screen sizes */
+@media (max-width: 350px) {
+  .app-title {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 450px) {
+  .dropdown-styles {
+    width: 25% !important;
+    display: inline-block !important;
+  }
+  .app-title {
+    font-size: 1.5rem !important;
+    padding-left: 4% !important;
+    margin-left: 5%;
+  }
+  .header img {
+    height: 35px !important;
+    padding-left: 3% !important;
+  }
+  .indicator_value {
+    font-size: 1.25rem !important;
+  }
+  .indicator {
+    padding: 0.5rem;
+  }
+  .button {
+    width: 25% !important;
+  }
+}
+
 @media (max-width: 900px) {
   .indicator {
     align-content: center;
@@ -239,6 +272,32 @@ table {
 
   .indicator:last-child {
     margin-left: 0;
+  }
+
+  #opportunity_grid,
+  #lead_grid,
+  #cases_grid {
+    margin: 10px;
+    margin-bottom: 10%;
+  }
+  .app-title {
+    font-size: 2rem;
+    padding-left: 20%;
+  }
+  .header img {
+    height: 50px;
+    padding-left: 5%;
+  }
+  .button {
+    margin: 2% auto;
+    width: 20%;
+  }
+  .dropdown-styles {
+    width: 30%;
+    display: inline-block;
+  }
+  .indicator_value {
+    font-size: 1.5rem;
   }
 }
 
@@ -264,7 +323,7 @@ table {
   }
 
   .tabs > a {
-    width: 15%;
+    width: 20%;
   }
 
   .tabs > a:first-child {
