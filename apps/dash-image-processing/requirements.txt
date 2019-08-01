@@ -1,0 +1,13 @@
+dash==1.0.0
+numpy==1.16.3
+pandas==0.24.2
+plotly>=2.7.0
+flask==1.0.1
+gunicorn==19.8.1
+scipy==1.2.1
+pillow==6.0.0
+Flask-Caching==1.4.0
+redis==2.10.6
+boto3==1.7.48
+requests==2.18.4
+python-dotenv==0.8.2
