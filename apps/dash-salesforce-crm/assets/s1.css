@@ -107,7 +107,7 @@ th {
 .header {
   margin: 0px;
   background-color: white;
-  color: black;
+  color: #333333;
   padding-right: 3%;
   display: flex;
   flex-direction: row-reverse;
@@ -121,7 +121,7 @@ th {
 }
 
 .app-title {
-  color: black;
+  color: #333333;
   padding-left: 5%;
   font-size: 2.25rem;
   letter-spacing: -0.1rem;
@@ -135,6 +135,9 @@ th {
   display: none;
 }
 
+.indicator_value {
+  color: #333333;
+}
 .header button {
   background-color: white;
   box-shadow: none;
@@ -177,7 +180,7 @@ th {
 }
 .tabs > a {
   text-decoration: none;
-  color: black;
+  color: #333333;
   font-size: 1.25rem;
   text-align: center;
 }
