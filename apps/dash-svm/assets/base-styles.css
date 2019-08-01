@@ -1,6 +1,5 @@
 /* Table of contents
 ––––––––––––––––––––––––––––––––––––––––––––––––––
-- Plotly.js
 - Grid
 - Base Styles
 - Typography
@@ -16,29 +15,14 @@
 - Media Queries
 */
 
-/* PLotly.js
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-/* plotly.js's modebar's z-index is 1001 by default
- * https://github.com/plotly/plotly.js/blob/7e4d8ab164258f6bd48be56589dacd9bdd7fded2/src/css/_modebar.scss#L5
- * In case a dropdown is above the graph, the dropdown's options
- * will be rendered below the modebar
- * Increase the select option's z-index
- */
-
-/* This was actually not quite right -
-   dropdowns were overlapping each other (edited October 26)
-
-.Select {
-    z-index: 1002;
-}*/
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .container {
   position: relative;
   width: 100%;
-  /*max-width: 960px;*/
-  /*margin: 0 auto;*/
+  max-width: 960px;
+  margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box; }
 .column,
@@ -50,33 +34,33 @@
 /* For devices larger than 400px */
 @media (min-width: 400px) {
   .container {
-    width: 100%;
+    width: 85%;
     padding: 0; }
 }
 
 /* For devices larger than 550px */
 @media (min-width: 550px) {
   .container {
-    width: 100%; }
+    width: 80%; }
   .column,
   .columns {
-    margin-left: 0; }
+    margin-left: 0.5%; }
   .column:first-child,
   .columns:first-child {
     margin-left: 0; }
 
   .one.column,
-  .one.columns                    { width: 4.66666666667%; }
-  .two.columns                    { width: 13.3333333333%; }
+  .one.columns                    { width: 8%;             }
+  .two.columns                    { width: 16.25%;         }
   .three.columns                  { width: 22%;            }
-  .four.columns                   { width: 32.6666666667%; }
+  .four.columns                   { width: 33%;            }
   .five.columns                   { width: 39.3333333333%; }
-  .six.columns                    { width: 48%;            }
+  .six.columns                    { width: 49.75%;          }
   .seven.columns                  { width: 56.6666666667%; }
-  .eight.columns                  { width: 65.3333333333%; }
+  .eight.columns                  { width: 66.5%;          }
   .nine.columns                   { width: 74.0%;          }
   .ten.columns                    { width: 82.6666666667%; }
-  .eleven.columns                 { width: 91.3333333333%; }
+  .eleven.columns                 { width: 91.5%; }
   .twelve.columns                 { width: 100%; margin-left: 0; }
 
   .one-third.column               { width: 30.6666666667%; }
@@ -118,7 +102,6 @@
 
 }
 
-
 /* Base Styles
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 /* NOTE
@@ -131,8 +114,9 @@ body {
   line-height: 1.6;
   font-weight: 400;
   font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: rgb(50, 50, 50); }
-
+  color: #a5b1cd;
+  background-color: #282b38;
+}
 
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -154,7 +138,7 @@ p {
 /* Blockquotes
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 blockquote {
-  border-left: 4px lightgrey solid;
+  border-left: 4px #282b38 solid;
   padding-left: 1rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -165,9 +149,7 @@ blockquote {
 /* Links
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a {
-  color: #1EAEDB;
-  text-decoration: underline;
-  cursor: pointer;}
+  color: #1EAEDB; }
 a:hover {
   color: #0FA0CE; }
 
@@ -191,7 +173,7 @@ input[type="button"] {
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
-  background-color: transparent;
+  background-color: #282b38;
   border-radius: 4px;
   border: 1px solid #bbb;
   cursor: pointer;
@@ -245,7 +227,7 @@ textarea,
 select {
   height: 38px;
   padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
-  background-color: #fff;
+  background-color: #282b38;
   border: 1px solid #D1D1D1;
   border-radius: 4px;
   box-shadow: none;
@@ -316,14 +298,11 @@ li {
 
 /* Tables
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-table {
-  border-collapse: collapse;
-}
 th,
 td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #E1E1E1; }
+  border-bottom: 1px solid #282b38; }
 th:first-child,
 td:first-child {
   padding-left: 0; }
@@ -373,7 +352,7 @@ hr {
   margin-top: 3rem;
   margin-bottom: 3.5rem;
   border-width: 0;
-  border-top: 1px solid #E1E1E1; }
+  border-top: 1px solid #282b38; }
 
 
 /* Clearing
@@ -399,36 +378,16 @@ there.
 
 
 /* Larger than mobile */
-@media (min-width: 300px) {
-  #logo-mobile {
-    margin: 0 auto;
-  }
-}
+@media (min-width: 400px) {}
 
 /* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {
-  #logo-mobile {
-    margin: 0 auto;
-  }
-}
+@media (min-width: 550px) {}
 
 /* Larger than tablet */
-@media (min-width: 750px) {
-  #logo-mobile {
-    margin: 0 auto;
-  }
-}
+@media (min-width: 750px) {}
 
 /* Larger than desktop */
-@media (min-width: 1000px) {
-  #logo-mobile {
-    margin: 0 auto;
-  }
-}
+@media (min-width: 1000px) {}
 
 /* Larger than Desktop HD */
-@media (min-width: 1200px) {
-  #logo-mobile {
-    margin: 0 auto;
-  }
-}
+@media (min-width: 1200px) {}
