@@ -305,9 +305,7 @@ map_layout = {
     "mapbox": {
         "accesstoken": MAPBOX_ACCESS_TOKEN,
         "style": MAPBOX_STYLE,
-        "center": {
-            "lat": 45,
-        }
+        "center": {"lat": 45},
     },
     "showlegend": False,
     "autosize": True,
@@ -317,15 +315,15 @@ map_layout = {
 }
 
 map_graph = html.Div(
-    id='world-map-wrapper',
+    id="world-map-wrapper",
     children=[
         map_toggle,
         dcc.Graph(
             id="world-map",
             figure={"data": map_data, "layout": map_layout},
             config={"displayModeBar": False, "scrollZoom": False},
-        )
-    ]
+        ),
+    ],
 )
 
 ##############################################################################################################
@@ -333,14 +331,16 @@ map_graph = html.Div(
 ##############################################################################################################
 
 histogram = html.Div(
-    id='histogram-container',
+    id="histogram-container",
     children=[
         html.Div(
-            id='histogram-header',
+            id="histogram-header",
             children=[
-                html.H1(id='histogram-title', children=["Select A Property To Display"]),
-                minute_toggle
-            ]
+                html.H1(
+                    id="histogram-title", children=["Select A Property To Display"]
+                ),
+                minute_toggle,
+            ],
         ),
         dcc.Graph(
             id="histogram-graph",
@@ -363,8 +363,8 @@ histogram = html.Div(
                 },
             },
             config={"displayModeBar": False},
-        )
-    ]
+        ),
+    ],
 )
 
 ###############################################################################################################
@@ -373,7 +373,7 @@ histogram = html.Div(
 main_panel_layout = html.Div(
     id="panel-upper-lower",
     children=[
-        dcc.Interval(id="interval", interval=1 * 20000, n_intervals=0),
+        dcc.Interval(id="interval", interval=1 * 1000, n_intervals=0),
         map_graph,
         html.Div(
             id="panel",
@@ -418,7 +418,7 @@ main_panel_layout = html.Div(
                         ),
                     ],
                 ),
-            ]
+            ],
         ),
     ],
 )
@@ -604,8 +604,8 @@ def update_data(interval, data):
                 data[h_data_key]["temperature"][0]
             )
             new_data[h_data_key]["temperature"] = new_data[h_data_key]["temperature"][
-                                                  1:61
-                                                  ]
+                1:61
+            ]
             new_data[h_data_key]["speed"].append(data[h_data_key]["speed"][0])
             new_data[h_data_key]["speed"] = new_data[h_data_key]["speed"][1:61]
             new_data[h_data_key]["latitude"].append(
@@ -652,25 +652,25 @@ def update_data(interval, data):
         State("store-data-config", "data"),
         State("histogram-graph", "figure"),
         State("store-data-config", "data"),
-        State("histogram-title", "children")
+        State("histogram-title", "children"),
     ],
 )
 def update_graph(
-        interval,
-        satellite_type,
-        minute_mode,
-        elevation_n_clicks,
-        temperature_n_clicks,
-        speed_n_clicks,
-        latitude_n_clicks,
-        longitude_n_clicks,
-        fuel_n_clicks,
-        battery_n_clicks,
-        data,
-        data_config,
-        old_figure,
-        old_data,
-        old_title
+    interval,
+    satellite_type,
+    minute_mode,
+    elevation_n_clicks,
+    temperature_n_clicks,
+    speed_n_clicks,
+    latitude_n_clicks,
+    longitude_n_clicks,
+    fuel_n_clicks,
+    battery_n_clicks,
+    data,
+    data_config,
+    old_figure,
+    old_data,
+    old_title,
 ):
     new_data_config = data_config
     info_type = data_config["info_type"]
