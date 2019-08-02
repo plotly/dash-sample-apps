@@ -444,6 +444,9 @@ body {
 }
 
 @media (max-width: 500px) {
+    #panel-lower {
+        margin: 5rem 0 0 0;
+    }
     #panel-lower-0 {
         display: grid;
         grid-template-columns: 1fr;
