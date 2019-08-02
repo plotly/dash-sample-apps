@@ -32,12 +32,12 @@ pip install -r requirements.txt
 
 ```
 
-To run the app, please create a SalesForce developer account (link is in the `About the App` section) and put the credentials in the `secrets.example.sh` file.
+To run the app, please create a SalesForce developer account (link is in the `About the App` section). There is an example of how the bash script should look like in the `secrets.example.sh` file. Be sure to create a new file named `secrets.sh` file and put your credentials in the file. Therefore, your credentials will not get pushed to github as the `secrets.sh` file is in the `.gitignore`.
 
 Run the app
 
 ```
-source secrets.example.sh
+source secrets.sh
 python index.py
 
 ```
