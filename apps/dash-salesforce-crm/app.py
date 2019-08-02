@@ -1,15 +1,11 @@
 import math
 import dash
-import flask
 import dash_html_components as html
 
 from sfManager import sf_Manager
 
-server = flask.Flask(__name__)
 app = dash.Dash(
-    __name__,
-    meta_tags=[{"name": "viewport", "content": "width=device-width"}],
-    server=server,
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
 
 app.config.suppress_callback_exceptions = True
