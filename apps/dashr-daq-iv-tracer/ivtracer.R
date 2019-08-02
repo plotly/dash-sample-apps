@@ -10,6 +10,10 @@ localVars <- list()
 
 localVars['nClicks'] <- 0
 localVars['nClicksClearGraph'] <- 0
+localVars['sourcedValues'] <- NA
+localVars['measuredValues'] <- NA
+localVars['isSourceBeingChanged'] <- FALSE
+
 
 # Define the app
 app <- Dash$new()
@@ -42,6 +46,28 @@ GetSourceUnits <- function(source = "Voltage") {
     measureUnit <- "V"
   }
   return(c(sourceUnit, measureUnit))
+}
+
+# '''
+#     Generates MeasureVals from the srcVal
+#     based on srcType either "I" or "V"
+# '''
+SourceAndMeasure <- function(srcType, srcVal,
+                             vOc = 20.5, iSc = 3.45,
+                             c1 = 0.000002694, c2 = 0.077976842) {
+  srcVal <- srcVal * 2.1
+  answer <- rep(0, length(srcVal))
+
+  if (srcType == "I") {
+    # Values of the input smaller than the short circuit current
+    idxOk <- which(srcVal < iSc)
+    answer[idxOk] <- c2 * vOc * log(1 + (1 - srcVal[idxOk] / iSc) / c1)
+    return(round(answer,4))
+  } else if (srcType == "V") {
+    idxOk <- which(srcVal < vOc)
+    answer[idxOk] <- iSc * (1 - c1 * (exp(srcVal[idxOk] / (c2 * vOc)) -1))
+    return(round(answer,4))
+  }
 }
 
 # Font and background colors associated with each theme
@@ -509,7 +535,10 @@ app$layout(htmlDiv(
       className = "flex-display",
       style = list("backgroundColor" = bkgColor[["light"]], "padding" = "2%")
     ),
-    GenerateModal()
+    GenerateModal(),
+    htmlDiv(id = 'hidden-div-sourced-values', children = list(NA)),
+    htmlDiv(id = 'hidden-div-measured-values', children = list(NA)),
+    htmlDiv(id = 'hidden-div-source', children = c("V",FALSE))
   )
 ))
 
@@ -953,26 +982,63 @@ app$callback(
 
 # ======= Applied/measured values display =======
 app$callback(
-  output = list(id = "source-knob", property = "value"),
+  output = list(id = "hidden-div-source", property = "children"),
   params = list(
-    input(id = "source-choice-toggle", property = "value")
+    input(id = "source-choice-toggle", property = "value"),
+    state(id = "hidden-div-source", property = "children"),
+    state(id = "source-knob", property = "value")
+
   ),
 
   # '''
-  # modification upon source-change change
-  # the source type in local_vars reset the
-  # knob to zero reset the measured values on the graph
+  # This callback updates the hidden-div-source's
+  # source value ("V"/"I") and is_sourced_changed T/F
+  # status similar to python version
   #'''
-  function(srcType) {
+  function(srcType, hiddenSource, knobVal) {
 
     if (srcType) {
-      localVars['source'] <- "A" # -> Updating localVars like in the python version
-                                 # -> also code `local_vars.is_source_being_changed` later IF NECESSARY
+      srcT <- "I"
     } else {
-      localVars['source'] <- "V"
+      srcT <- "V"
     }
-    return(0) # -> Simply setting the source-knob value to 0 if fireback is called. This handles knob
-              # -> RESET GRAPH AFTER CODING THE CALLBACKS FOR IT.
+
+    if (srcT != hiddenSource[[1]]) {
+      hiddenSource[[1]] <- srcT
+      hiddenSource[[2]] <- TRUE
+      return(hiddenSource)
+    } else {
+      hiddenSource[[2]] <- FALSE
+      return(hiddenSource)
+    }
+  }
+)
+
+
+app$callback(
+  output = list(id = "source-knob", property = "value"),
+  params = list(
+    input(id = "source-choice-toggle", property = "value"),
+    state(id = "hidden-div-source", property = "children"),
+    state(id = "source-knob", property = "value")
+
+  ),
+
+  # '''
+  # Reset the knob value when
+  # source changed
+  #'''
+  function(srcType, hiddenSource, knobVal) {
+    if (srcType) {
+      srcT <- "I"
+    } else {
+      srcT <- "V"
+    }
+    if (srcT != hiddenSource[[1]]) {
+      return(0)
+    } else {
+      return(knobVal)
+    }
   }
 )
 
@@ -988,9 +1054,7 @@ app$callback(
 
   # '''change the interval to high frequency for sweep'''
   function(swpOn, modeChoice, sweepDt) {
-    # print(swpOn)
-    # print(modeChoice)
-    # print(sweepDt)
+
 
     if (modeChoice && swpOn) {
       return (sweepDt * 1000) # -> ! TEST THIS AFTER connecting sweep with button
@@ -1013,9 +1077,7 @@ app$callback(
 
   # '''reset the n_interval of the dccInterval once a sweep is done'''
   function(clicks, modeChoice, swpOn, nInterval) {
-    # print(swpOn)
-    # print(modeChoice)
-    # print(sweepDt)
+
 
     if (modeChoice && swpOn) {
       return(nInterval)
@@ -1048,9 +1110,7 @@ app$callback(
   #'''
   function(clicks, sourcedVal, measTriggered, swpOn, swpStop, swpStep, modeChoice) {
 
-    # print(class(sourcedVal))
-    # print(swpStop)
-    # print(swpStep)
+
 
     if (!(modeChoice)) {
       return(FALSE)
@@ -1059,12 +1119,12 @@ app$callback(
         # The condition of continuation is to source lower than the sweep
         # limit minus one sweep step
 
-        #print("in answer")
+
         answer <- sourcedVal <= swpStop - swpStep
         return(answer)
       } else {
 
-        #print("inside else")
+
         if (!(measTriggered)) { # -> measTriggered NOT implemented YET CHECK BACK after coding
           # The 'trigger-measure_btn' wasn't pressed yet
           return(FALSE)
@@ -1127,7 +1187,7 @@ app$callback(
 
 
 app$callback(
-  output = list(id = "sweep-status", property = "value"),
+  output = list(id = "source-display", property = "value"),
   params = list(
     input(id = "refresher", property = "n_intervals"),
     input(id = "measure-triggered", property = "value"),
@@ -1145,15 +1205,371 @@ app$callback(
   function(nInterval, measTriggered, knobVal,
            oldSourceDisplayVal, swpStart,
            swpStop, swpStep, modeChoice, swpOn) {
-    print(oldSourceDisplayVal)
+
+    # Default answer
+    answer <- oldSourceDisplayVal
+
+    if (!(modeChoice)) {
+      answer <- knobVal
+    } else {
+      if (measTriggered) {
+        if (swpOn) {
+          answer <- swpStart + (nInterval - 1) * swpStep
+        }
+        if (answer > swpStop) {
+          answer <- oldSourceDisplayVal
+        }
+      }
+    }
+    answer <- sprintf("%.4f", answer)
+    return(as.numeric(answer)) # THIS PART IS THROWING ERROR WITH 4 DIGIT CHARACTER!
+  }
+)
+
+
+app$callback(
+  output = list(id = "measure-display", property = "value"),
+  params = list(
+    input(id = "source-display", property = "value"),
+    state(id = "measure-triggered", property = "value"),
+    state(id = "measure-display", property = "value"),
+    state(id = "source-choice-toggle", property = "value"),
+    state(id = "mode-choice-toggle", property = "value"),
+    state(id = "sweep-status", property = "value")
+
+  ),
+
+
+  # '''
+  # read the measured value from the instrument
+  # check if a measure should be made
+  # initiate a measure of the KT2400
+  # read the measure value and return it
+  # by default it simply return the value previously available
+  #'''
+  function(srcVal, measTriggered, measOldVal, srcChoice, modeChoice, swpOn) {
+
+    if (srcChoice) {
+      srcType <- "I"
+    } else {
+      srcType <- "V"
+    }
+
+    measuredValue <- measOldVal
+
+    if (!(modeChoice)) { # Single measure
+      if (measTriggered) {
+        # Initiate a measurement
+        measuredValue <- SourceAndMeasure(srcType = srcType, srcVal = srcVal)
+      }
+    } else { # Sweep
+        if (measTriggered && swpOn) {
+          # Initiate a measurement
+          measuredValue <- SourceAndMeasure(srcType = srcType, srcVal = srcVal)
+        }
+    }
+
+    return(round(measuredValue,2))
+  }
+)
+
+
+app$callback(
+  output = list(id = "hidden-div-sourced-values", property = "children"),
+  params = list(
+    input(id = "source-display", property = "value"),
+    state(id = "measure-triggered", property = "value"),
+    state(id = "source-choice-toggle", property = "value"),
+    state(id = "mode-choice-toggle", property = "value"),
+    state(id = "sweep-status", property = "value"),
+    state(id = "hidden-div-sourced-values", property = "children")
+
+  ),
+
+
+  # ''' Save sourcedValue to hidden-div to retrieve for graph later '''
+  function(srcVal, measTriggered, srcChoice, modeChoice, swpOn, sourceDiv) {
+
+    if (srcChoice) {
+      srcType <- "I"
+    } else {
+      srcType <- "V"
+    }
+
+    if (!(modeChoice)) { #single measure
+      if (measTriggered) {
+        # Save the sourced value
+        if (is.null(sourceDiv[[1]])) {
+          sourceDiv <- list(srcVal)
+        } else {
+          sourceDiv <- c(sourceDiv, srcVal)
+        }
+      }
+    } else { #sweep mode
+      if (measTriggered && swpOn) {
+        # Save the sourced value
+        if (is.null(sourceDiv[[1]])) {
+          sourceDiv <- list(srcVal)
+        } else {
+          sourceDiv <- c(sourceDiv, srcVal)
+        }
+      }
+    }
+    return(sourceDiv)
+  }
+)
+
+
+app$callback(
+  output = list(id = "hidden-div-measured-values", property = "children"),
+  params = list(
+    input(id = "source-display", property = "value"),
+    state(id = "measure-triggered", property = "value"),
+    state(id = "measure-display", property = "value"),
+    state(id = "source-choice-toggle", property = "value"),
+    state(id = "mode-choice-toggle", property = "value"),
+    state(id = "sweep-status", property = "value"),
+    state(id = "hidden-div-measured-values", property = "children")
+
+  ),
+
+  # ''' Save measuredValue to hidden-div to retrieve for graph later '''
+  function(srcVal, measTriggered, measuredValue, srcChoice, modeChoice, swpOn, measDiv) {
+
+    if (srcChoice) {
+      srcType <- "I"
+    } else {
+      srcType <- "V"
+    }
+
+    if (!(modeChoice)) {
+      if (measTriggered) {
+        # Initiate a measurement
+        measuredValue <- SourceAndMeasure(srcType = srcType, srcVal = srcVal)
+        # Save the measured value
+        if (is.null(measDiv[[1]])) {
+          measDiv <- list(measuredValue)
+        } else {
+          measDiv <- c(measDiv, measuredValue)
+        }
+
+      }
+    } else {
+      if (measTriggered && swpOn) {
+        # Save the measured value
+        measuredValue <- SourceAndMeasure(srcType = srcType, srcVal = srcVal)
+        if (is.null(measDiv[[1]])) {
+          measDiv <- list(measuredValue)
+        } else {
+          measDiv <- c(measDiv, measuredValue)
+        }
+      }
+    }
+    return(measDiv)
   }
 )
 
 
 
 
+
+# ======= Graph related callbacks =======
+app$callback(
+  output = list(id = "clear-graph_ind", property = "value"),
+  params = list(
+    input(id = "clear-graph_btn", property = "n_clicks")
+  ),
+
+  # ''' Turn on indicator light if clear-graph_btn clicked
+  function(nClick) {
+
+    if (is.list(nClick)) {
+      nClick <- 0
+    }
+    if (nClick > 0) {
+      return(TRUE)
+    } else {
+      return(FALSE)
+    }
+  }
+)
+
+
+# app$callback(
+#   output = list(id = "clear-graph_ind", property = "value"),
+#   params = list(
+#     input(id = "clear-graph_btn", property = "n_clicks"),
+#   ),
+#
+#   # ''' Turn on indicator light if clear-graph_btn clicked
+#   function(nClick) {
+#
+#     if (nClick) {
+#       return(TRUE)
+#     }
+#   }
+# )
+
+
+app$callback(
+  output = list(id = "IV_graph", property = "figure"),
+  params = list(
+    input(id = "measure-display", property = "value"),
+    input(id = "clear-graph_ind", property = "value"),
+    state(id = "toggleTheme", property = "value"),
+    state(id = "measure-triggered", property = "value"),
+    state(id = "IV_graph", property = "figure"),
+    state(id = "source-choice-toggle", property = "value"),
+    state(id = "mode-choice-toggle", property = "value"),
+    state(id = "sweep-status", property = "value"),
+    state(id = "hidden-div-sourced-values", property = "children"),
+    state(id = "hidden-div-measured-values", property = "children")
+  ),
+
+  # ''' update the IV graph '''
+  function(measuredVal,
+           clearGraph,
+           theme,
+           measTriggered,
+           graphData,
+           srcChoice,
+           modeChoice,
+           swpOn,
+           sourceDiv,
+           measDiv) {
+
+    # print(c(measuredVal, #0
+    #         clearGraph, #FALSE
+    #         theme, #FALSE
+    #         measTriggered, #FALSE
+    #         graphData, #NULL
+    #         srcChoice, #FALSE
+    #         modeChoice, #FALSE #Single measure
+    #         swpOn)) #FALSE
+
+    # print("source & measure 2")
+    # print(localVars[['sourcedValues']])
+    # print(localVars[['measuredValues']])
+
+    if (theme) {
+      theme <- "dark"
+    } else {
+      theme <- "light"
+    }
+
+    if (srcChoice) {
+      srcType <- "Current"
+    } else {
+      srcType <- "Voltage"
+    }
+
+    # Labels for sourced and measured quantities
+    sourceLabel <- GetSourceLabels(srcType)[1]
+    measureLabel <- GetSourceLabels(srcType)[2]
+    sourceUnit <- GetSourceUnits(srcType)[1]
+    measureUnit <- GetSourceUnits(srcType)[2]
+
+    if (!(modeChoice)) { #Single measure case
+      if (measTriggered) {
+        # The change to the graph was triggered by a measure
+
+      xdata <- sort(unlist(sourceDiv), decreasing = TRUE)
+      ydata <- sort(unlist(measDiv), decreasing = FALSE)
+      figData <- list(
+        list(
+        x = xdata,
+        y = ydata,
+        mode = "lines+markers",
+        name = "IV curve",
+        line = list("color" = accentColor[[theme]], "width" = 2)
+        )
+      )
+      return(list(
+        "data" = figData,
+        "layout" = list(
+          xaxis = list(
+            "title" = sprintf("Applied %s (%s)", sourceLabel, sourceUnit),
+            "color" = textColor[[theme]],
+            "gridcolor" = gridColor[[theme]]
+          ),
+          yaxis = list(
+            "title" = sprintf("Measured %s (%s)", measureLabel, measureUnit),
+            "color" = textColor[[theme]],
+            "gridcolor" = gridColor[[theme]]
+          ),
+          font = list(color = textColor[[theme]], size = 12),
+          automargin = TRUE,
+          plot_bgcolor = cardColor[[theme]],
+          paper_bgcolor = cardColor[[theme]]
+        )
+      ))
+      } else { #meas not triggered
+        if (clearGraph) {
+            figureClear <- list(
+              "data" = list(),
+              "layout" = list(
+                paper_bgcolor = cardColor[[theme]],
+                plot_bgcolor = cardColor[[theme]],
+                automargin = TRUE,
+                font = list(color = textColor[[theme]], size = 12),
+                xaxis = list(
+                  "color" = gridColor[[theme]],
+                  "gridcolor" = gridColor[[theme]]
+                ),
+                yaxis = list(
+                  "color" = gridColor[[theme]],
+                  "gridcolor" = gridColor[[theme]]
+                )
+              )
+            )
+            return(figureClear)
+        }
+
+      }
+    } else { # Sweep case
+      if (swpOn) {
+        # The change to the graph was triggered by a measure
+
+        # Sort the stored data so they are ascending in x
+        xdata <- sort(unlist(sourceDiv), decreasing = TRUE)
+        ydata <- sort(unlist(measDiv), decreasing = FALSE)
+        figData <- list(
+          list(
+            x = xdata,
+            y = ydata,
+            mode = "lines+markers",
+            name = "IV curve",
+            line = list("color" = accentColor[[theme]], "width" = 2)
+          )
+        )
+        return(list(
+          "data" = figData,
+          "layout" = list(
+            xaxis = list(
+              "title" = sprintf("Applied %s (%s)", sourceLabel, sourceUnit),
+              "color" = textColor[[theme]],
+              "gridcolor" = gridColor[[theme]]
+            ),
+            yaxis = list(
+              "title" = sprintf("Measured %s (%s)", measureLabel, measureUnit),
+              "color" = textColor[[theme]],
+              "gridcolor" = gridColor[[theme]]
+            ),
+            font = list(color = textColor[[theme]], size = 12),
+            automargin = TRUE,
+            plot_bgcolor = cardColor[[theme]],
+            paper_bgcolor = cardColor[[theme]]
+          )
+        ))
+      } else { #meas not triggered
+        if (clearGraph) {
+          graphData <- list(list())
+        }
+        return(graphData)
+      }
+    }
+  }
+)
+
+
 app$run_server(port = 8896, debug = TRUE)
-
-
-
-
