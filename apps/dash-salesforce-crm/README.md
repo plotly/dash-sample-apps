@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 ```
 
-To run the app, please create a SalesForce developer account (link is in the `About the App` section)and put the credentials in the `secrets.example.sh` file.
+To run the app, please create a SalesForce developer account (link is in the `About the App` section) and put the credentials in the `secrets.example.sh` file.
 
 Run the app
 

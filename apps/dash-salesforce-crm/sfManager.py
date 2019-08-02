@@ -3,10 +3,6 @@ from simple_salesforce.exceptions import SalesforceExpiredSession
 import pandas as pd
 import os
 
-# from dotenv import load_dotenv
-
-# load_dotenv(verbose=True)
-
 
 class sf_Manager:
     def __init__(self):

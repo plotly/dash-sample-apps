@@ -1,6 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output, State
 from app import sf_manager, app
 from panels import opportunities, cases, leads
 
@@ -83,11 +84,11 @@ app.layout = html.Div(
 
 @app.callback(
     [
-        dash.dependencies.Output("tab_content", "children"),
-        dash.dependencies.Output("tabs", "children"),
-        dash.dependencies.Output("mobile_tabs", "children"),
+        Output("tab_content", "children"),
+        Output("tabs", "children"),
+        Output("mobile_tabs", "children"),
     ],
-    [dash.dependencies.Input("url", "pathname")],
+    [Input("url", "pathname")],
 )
 def display_page(pathname):
     # print("display_page({})".format(pathname))
@@ -109,9 +110,9 @@ def display_page(pathname):
 
 
 @app.callback(
-    dash.dependencies.Output("mobile_tabs", "style"),
-    [dash.dependencies.Input("menu", "n_clicks")],
-    [dash.dependencies.State("mobile_tabs", "style")],
+    Output("mobile_tabs", "style"),
+    [Input("menu", "n_clicks")],
+    [State("mobile_tabs", "style")],
 )
 def show_menu(n_clicks, tabs_style):
     if n_clicks:
