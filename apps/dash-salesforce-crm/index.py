@@ -2,7 +2,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-from app import sf_manager, app
+from app import sf_manager, app, server
 from panels import opportunities, cases, leads
 
 app.layout = html.Div(
