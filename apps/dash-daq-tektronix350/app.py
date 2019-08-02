@@ -165,8 +165,7 @@ def power_setting_div(cur_inputs, cur_tab):
                         ],
                         className="six columns",
                     ),
-                ],
-                style={"margin": "15px 0"},
+                ]
             ),
         ],
     )
@@ -325,76 +324,67 @@ app.layout = html.Div(
     ],
 )
 
+# Callback to update theme layout
+@app.callback(
+    Output("dark-theme-components", "children"),
+    [Input("toggleTheme", "value"), Input("color-picker", "value")],
+    [State("control-inputs", "data"), State("tabs", "value")],
+)
+def turn_dark(turn_dark, color_pick, cur_inputs, cur_tab_value):
+    theme.update(dark=turn_dark)
 
-# Callbacks for color picker
-@app.callback(Output("frequency-input", "color"), [Input("color-picker", "value")])
-def color_frequency_input(color):
-    return color["hex"]
+    if color_pick is not None:
+        theme.update(primary=color_pick["hex"])
 
-
-@app.callback(Output("amplitude-input", "color"), [Input("color-picker", "value")])
-def color_amplitude_input(color):
-    return color["hex"]
-
-
-@app.callback(Output("offset-input", "color"), [Input("color-picker", "value")])
-def color_offset_input(color):
-    return color["hex"]
-
-
-@app.callback(Output("frequency-display", "color"), [Input("color-picker", "value")])
-def color_frequency_display(color):
-    return color["hex"]
-
-
-@app.callback(Output("frequency-display", "color"), [Input("color-picker", "value")])
-def color_amplitude_display(color):
-    return color["hex"]
+    return DarkThemeProvider(
+        theme=theme,
+        children=[
+            power_setting_div(cur_inputs, cur_tab_value),
+            function_setting_div(cur_inputs, cur_tab_value),
+        ],
+    )
 
 
-@app.callback(Output("offset-display", "color"), [Input("color-picker", "value")])
-def color_offset_display(color):
-    return color["hex"]
+# Callback updating backgrounds
+@app.callback(
+    [
+        Output("main-page", "className"),
+        Output("left-panel", "className"),
+        Output("card-right-panel-info", "className"),
+        Output("card-graph", "className"),
+    ],
+    [Input("toggleTheme", "value")],
+)
+def update_background(turn_dark):
+
+    if turn_dark:
+        return ["dark-main-page", "dark-card", "dark-card", "dark-card"]
+    else:
+        return ["light-main-page", "light-card", "light-card", "light-card"]
 
 
-@app.callback(Output("graph_info", "style"), [Input("color-picker", "value")])
+@app.callback(Output("graph-info", "style"), [Input("color-picker", "value")])
 def color_info(color):
     return {"textAlign": "center", "border": "2px solid " + color["hex"]}
 
 
-@app.callback(Output("tabs", "style"), [Input("color-picker", "value")])
-def color_tabs_background(color):
-    return {"backgroundColor": color["hex"]}
-
-
-@app.callback(Output("power-title", "style"), [Input("color-picker", "value")])
-def color_power_title(color):
-    return {"color": color["hex"]}
-
-
-@app.callback(Output("function-title", "style"), [Input("color-picker", "value")])
-def color_function_title(color):
-    return {"color": color["hex"]}
-
-
-@app.callback(Output("graph-title", "style"), [Input("color-picker", "value")])
-def color_graph_title(color):
-    return {"color": color["hex"]}
-
-
-@app.callback(Output("function-generator", "color"), [Input("color-picker", "value")])
-def color_fnct_power(color):
-    return color["hex"]
-
-
-@app.callback(Output("oscilloscope", "color"), [Input("color-picker", "value")])
-def color_osc_power(color):
-    return color["hex"]
-
-
-@app.callback(Output("header", "style"), [Input("color-picker", "value")])
-def color_banner(color):
-    return {"backgroundColor": color["hex"]}
+# Update colors upon color-picker changes
+@app.callback(
+    [
+        Output("power-title", "style"),
+        Output("function-title", "style"),
+        Output("graph-title", "style"),
+        Output("div-graph-info", "style"),
+        Output("tabs", "color"),
+    ],
+    [Input("color-picker", "value")],
+)
+def color_update(color):
+    return (
+        list({"color": color["hex"]} for _ in range(3))
+        + [{"border": ("1px solid " + color["hex"]), "color": "inherit"}]
+        + [{"border": color["hex"]}]
+    )
 
 
 # Callbacks for knob inputs
@@ -404,7 +394,7 @@ def update_frequency_display(value):
     return value
 
 
-@app.callback(Output("frequency-display", "value"), [Input("amplitude-input", "value")])
+@app.callback(Output("amplitude-display", "value"), [Input("amplitude-input", "value")])
 def update_amplitude_display(value):
     fgen.set_amplitude(value)
     return value
@@ -416,7 +406,7 @@ def update_offset_display(value):
     return value
 
 
-@app.callback(Output("offset-display", "value"), [Input("function_type", "value")])
+@app.callback(Output("function-type", "value"), [Input("function_type", "value")])
 def update_fgen_wave(value):
     fgen.set_wave(value)
     return value
@@ -424,7 +414,7 @@ def update_fgen_wave(value):
 
 # Callbacks graph and graph info
 @app.callback(
-    Output("graph_info", "children"),
+    Output("graph-info", "children"),
     [Input("oscope-graph", "figure"), Input("tabs", "value")],
 )
 def update_info(_, value):
@@ -506,37 +496,34 @@ def update_output(_, value):
         return figure
 
 
-@app.callback(Output("tabs", "tabs"), [Input("new_tab", "n_clicks")])
-def new_tabs(n_clicks):
-    if n_clicks is not None:
-        tabs.append(
-            {
-                "label": "Run #" + str(tabs[-1]["value"] + 1),
-                "value": int(tabs[-1]["value"]) + 1,
-            }
-        )
-        return tabs
-    return tabs
-
-
-external_css = [
-    "https://codepen.io/chriddyp/pen/bWLwgP.css",
-    "https://cdn.rawgit.com/samisahn/dash-app-stylesheets/"
-    + "eccb1a1a/dash-tektronix-350.css",
-    "https://fonts.googleapis.com/css?family=Dosis",
-]
-
-for css in external_css:
-    app.css.append_css({"external_url": css})
-
-if "DYNO" in os.environ:
-    app.scripts.append_script(
-        {
-            "external_url": "https://cdn.rawgit.com/chriddyp/"
-            + "ca0d8f02a1659981a0ea7f013a378bbd/raw/"
-            + "e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js"
-        }
+# Callback for adding tabs
+@app.callback(
+    [Output("tabs", "children"), Output("tabs", "value")],
+    [Input("new-tab", "n_clicks")],
+    [State("control-inputs", "data"), State("color-picker", "value")],
+)
+def update_total_tab_number(n_clicks, cur_inputs, color):
+    return (
+        list(
+            dcc.Tab(
+                label="Run #{}".format(i),
+                value="{}".format(i),
+                selected_style={
+                    "color": color["hex"],
+                    "backgroundColor": "transparent",
+                    "border": "none",
+                },
+                style={
+                    "color": "black",
+                    "backgroundColor": "transparent",
+                    "border": "none",
+                },
+            )
+            for i in range(1, len(cur_inputs) + 2)
+        ),
+        str(len(cur_inputs) + 1),
     )
+
 
 if __name__ == "__main__":
     app.run_server(port=8000, debug=True)
