@@ -188,15 +188,10 @@ app.layout = html.Div(
                 html.H4("Phylogeny"),
                 cyto.Cytoscape(
                     id="cytoscape",
+                    className="cytoscape",
                     elements=elements,
                     stylesheet=stylesheet,
                     layout={"name": "preset", "fit": True, "animate": True},
-                    style={
-                        "height": "650px",
-                        "width": "100%",
-                        "backgroundColor": "white",
-                        "margin": "auto",
-                    },
                     minZoom=0.25,
                 ),
             ],
