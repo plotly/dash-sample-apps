@@ -35,12 +35,13 @@ h4{
     font-size: 20px;
 }
 
-#cytoscape{
-    height: 95vh;
-    width: 100%;
+.cytoscape{
+    height: 650px !important;
+    width: 100% !important;
     background-color: white;
     margin:auto;
 }
+
 
 .div-info{
     padding-bottom: 14px;
