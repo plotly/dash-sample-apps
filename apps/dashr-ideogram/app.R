@@ -547,11 +547,11 @@ listOfOptions <- lapply(chromosomes, function(x) {
   
   header <- htmlDiv(children = list(
     htmlSpan(list(htmlA(
-      htmlImg(src='assets/index.png', height = '50', width = '50',
+      htmlImg(src='assets/plotly-dash-bio-logo.png', height = '36', width = '180',
               style = list('top' = '10', 'margin-left' = '10px')),
       href='https://dash-bio.plotly.host/Portal/'))),
     
-      "    Dash Ideogram",
+      "    Ideogram",
   
       
       htmlA(href="http://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_ideogram.py",
