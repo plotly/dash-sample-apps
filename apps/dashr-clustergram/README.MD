@@ -23,7 +23,7 @@ The app will load into your default browser window. If it does not, navigate to 
 
 ## Screenshots:
 
-![ClustergramMain.png](assets/ideogramMain.png)
+![ClustergramMain.png](assets/ClustergramMain.png)
 
 
 ## More:
