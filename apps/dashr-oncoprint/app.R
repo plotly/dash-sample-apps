@@ -106,7 +106,7 @@ app$layout(
             ),
             href = "/Portal"
           ),
-          htmlH2("Dash Onco Print"),
+          htmlH2("Onco Print"),
           htmlA(
             id = "gh-link",
             children = list("View on GitHub"),

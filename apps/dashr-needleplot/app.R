@@ -121,7 +121,7 @@ app$layout(
             ),
             href = "/Portal"
           ),
-          htmlH2("Dash Needle Plot"),
+          htmlH2("Needle Plot"),
           htmlA(
             id = "gh-link",
             children = list("View on GitHub"),

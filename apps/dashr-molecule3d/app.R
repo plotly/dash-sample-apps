@@ -558,7 +558,7 @@ header <- htmlDiv(
       ),
       href = "/Portal"
     ),
-    htmlH2("Dash Molecule3D"),
+    htmlH2("Molecule3D"),
     htmlA(
       id = "gh-link",
       children = list("View on GitHub"),

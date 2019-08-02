@@ -309,7 +309,7 @@ header <- htmlDiv(
       ),
       href = "/Portal"
     ),
-    htmlH2("Dash Speck"),
+    htmlH2("Speck"),
     htmlA(
       id = "gh-link",
       children = list("View on GitHub"),
