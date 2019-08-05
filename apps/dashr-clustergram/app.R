@@ -46,7 +46,7 @@ header <- htmlDiv(
       ),
       href = "/Portal"
     ),
-    htmlH2("    Clustergram"),
+    htmlH2("Clustergram"),
     htmlA(
       id = "gh-link",
       children = list("View on GitHub"),
