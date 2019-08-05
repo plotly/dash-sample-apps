@@ -37,12 +37,9 @@ app.layout = html.Div(
             id="tabs",
             className="row tabs",
             children=[
-                dcc.Link(
-                    dcc.Markdown("Opportunities"),
-                    href="dash-salesforce-crm/opportunities",
-                ),
-                dcc.Link(dcc.Markdown("Leads"), href="dash-salesforce-crm/leads"),
-                dcc.Link(dcc.Markdown("Cases"), href="dash-salesforce-crm/cases"),
+                dcc.Link("Opportunities", href="/"),
+                dcc.Link("Leads", href="/"),
+                dcc.Link("Cases", href="/"),
             ],
         ),
         html.Div(
@@ -50,12 +47,9 @@ app.layout = html.Div(
             className="row tabs",
             style={"display": "none"},
             children=[
-                dcc.Link(
-                    dcc.Markdown("Opportunities"),
-                    href="dash-salesforce-crm/opportunities",
-                ),
-                dcc.Link(dcc.Markdown("Leads"), href="dash-salesforce-crm/leads"),
-                dcc.Link(dcc.Markdown("Cases"), href="dash-salesforce-crm/cases"),
+                dcc.Link("Opportunities", href="/"),
+                dcc.Link("Leads", href="/"),
+                dcc.Link("Cases", href="/"),
             ],
         ),
         dcc.Store(  # opportunities df
@@ -100,27 +94,24 @@ app.layout = html.Div(
     [Input("url", "pathname")],
 )
 def display_page(pathname):
-    # print("display_page({})".format(pathname))
     tabs = [
-        dcc.Link(
-            dcc.Markdown("Opportunities"), href="dash-salesforce-crm/opportunities"
-        ),
-        dcc.Link(dcc.Markdown("Leads"), href="dash-salesforce-crm/leads"),
-        dcc.Link(dcc.Markdown("Cases"), href="dash-salesforce-crm/cases"),
+        dcc.Link("Opportunities", href="/dash-salesforce-crm/opportunities"),
+        dcc.Link("Leads", href="/dash-salesforce-crm/leads"),
+        dcc.Link("Cases", href="/dash-salesforce-crm/cases"),
     ]
-    if pathname == "/opportunities":
+    if pathname == "/dash-salesforce-crm/opportunities":
         tabs[0] = dcc.Link(
             dcc.Markdown("**&#9632 Opportunities**"),
-            href="dash-salesforce-crm/opportunities",
+            href="/dash-salesforce-crm/opportunities",
         )
         return opportunities.layout, tabs, tabs
-    elif pathname == "/cases":
+    elif pathname == "/dash-salesforce-crm/cases":
         tabs[2] = dcc.Link(
-            dcc.Markdown("**&#9632 Cases**"), href="dash-salesforce-crm/leads"
+            dcc.Markdown("**&#9632 Cases**"), href="/dash-salesforce-crm/cases"
         )
         return cases.layout, tabs, tabs
     tabs[1] = dcc.Link(
-        dcc.Markdown("**&#9632 Leads**"), href="dash-salesforce-crm/leads"
+        dcc.Markdown("**&#9632 Leads**"), href="/dash-salesforce-crm/leads"
     )
     return leads.layout, tabs, tabs
 
