@@ -36,8 +36,50 @@ circos_graph_data <- read_json(path = json_file)
 applayout <- layout()
 
 
+header_colors <- function() {
+  return(list('bg_color' = '#262B3D', 'font_color' = '#FFF', 'light_logo' = TRUE))
+}
+  
+  
+  
+  
+ 
+
+header <- htmlDiv(
+  id = "app-page-header",
+  style = list(
+    width = "100%",
+    background = header_colors()[["bg_color"]],
+    color = header_colors()[["font_color"]]
+  ),
+  children = list(
+    htmlA(
+      id = "dashbio-logo",
+      children = list(
+        htmlImg(src='assets/plotly-dash-bio-logo.png', height = '36', width = '190',
+                style = list('top' = '10', 'margin-left' = '10px'))
+      ),
+      href = "/Portal"
+    ),
+    htmlH2("Circos"),
+    htmlA(
+      id = "gh-link",
+      children = list("View on GitHub"),
+      href = "https://github.com/plotly/dash-sample-apps/blob/master/apps/dashr-circos/app.R",
+      style = list(color = "white", border = "solid 1px white")
+    ),
+    htmlImg(
+      src = "assets/GitHub-Mark-Light-64px.png"
+    )
+  )
+)
+
+
 
 app$layout(htmlDiv(list(
+  header,
+  htmlBr(),
+  htmlBr(),
   applayout
 )))
 
