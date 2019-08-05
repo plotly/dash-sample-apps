@@ -31,7 +31,7 @@ empty <- dashbioCircos(
 )
 
 
-layout <- function() {
+circos_layout <- function() {
   return(
     htmlDiv(
       id='circos-body',

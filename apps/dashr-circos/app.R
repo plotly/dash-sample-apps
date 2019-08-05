@@ -20,20 +20,21 @@ if (appName != ""){
 app <- Dash$new()
 
 
-
-source("assets/CircosFunctions.R")
-
-# Load up the preloaded dataset into R structures.
-
-json_file <- "assets/circos_graph_data.json"
-
 circos_dataframe <- jsonlite::fromJSON("assets/circos_graph_data.json")
 
 
 circos_graph_data <- read_json(path = json_file)
 
+json_file <- "assets/circos_graph_data.json"
 
-applayout <- layout()
+
+source("assets/CircosFunctions.R")
+
+# Load up the preloaded dataset into R structures.
+
+
+
+applayout <- circos_layout()
 
 
 header_colors <- function() {
@@ -115,7 +116,6 @@ app$callback(
   ),
 
   update_table <- function(selection) {
-    
     df <- circos_dataframe[[selection]]
 
     df <- flatten(df, recursive = TRUE)
