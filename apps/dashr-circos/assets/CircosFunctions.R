@@ -37,12 +37,13 @@ layout <- function() {
       id='circos-body',
       className = 'app-body',
       children= list(
+        htmlDiv(id = 'graph-container', className = 'circos-hold',children = list(
         dccLoading(className = 'dashbio-loading', children = htmlDiv(
           id='circos-hold',
           className = 'circos-hold',
           children = list(),
           style = list()
-        )),
+        )))),
         dccLoading(className = 'dashbio-loading', children = htmlDiv(
           id='chords-plot',
           className = 'circos-hold',
@@ -181,7 +182,7 @@ layout <- function() {
                     list('label' = 'Scatter', 'value' = 'scatter')
                     
                   ),
-                  value = 'heatmap'
+                  value = 'chords'
                 ),
                 htmlDiv(className = 'app-controls-desc', id = 'chords-text')
               )),

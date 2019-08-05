@@ -4,6 +4,7 @@ library(dashHtmlComponents)
 library(jsonlite)
 library(dashBio)
 library(GEOquery)
+library(dashTable)
 
 
 appName <- Sys.getenv("DASH_APP_NAME")
@@ -143,7 +144,7 @@ app$callback(output = list( id= 'circos-hold',property = 'children'),
 
 # Callback to show and hide graphs based on the table rows selected or not selected.
 
-app$callback(output = list( id= 'circos-hold',property = 'style'),
+app$callback(output = list( id= 'graph-container',property = 'style'),
              params = list(input(id = 'data-table', property = 'selected_rows')
              ),
              hide_graph <- function(selected_rows) {
@@ -155,17 +156,16 @@ app$callback(output = list( id= 'circos-hold',property = 'style'),
 )
 
 
-
-app$callback(output = list( id= 'chords-plot',property = 'style'),
-             params = list(input(id = 'data-table', property = 'selected_rows')
-             ),
-             hide_graph <- function(selected_rows) {
-               if (length(selected_rows) <= 0) {
-                 style = list('display' = 'none')
-                 return(style)
-               }
-             }
-)
+ app$callback(output = list( id= 'chords-plot',property = 'style'),
+              params = list(input(id = 'data-table', property = 'selected_rows')
+              ),
+              hide_graph <- function(selected_rows) {
+                if (length(selected_rows) <= 0) {
+                  style = list('display' = 'none')
+                  return(style)
+                }
+              }
+ )
 
 
 
@@ -190,58 +190,59 @@ app$callback(
   ),
 
   update_rows <- function(rows, size) {
-    for (i in 0:length(circos_graph_data$chords)) {
-      if (i %in% rows) {
-        circos_graph_data$chords[[i + 1]]$color <- '#00cc96'
-        print(circos_graph_data$chords[[i + 1]]$color)
+    if (length(rows) > 0) {
+      for (i in 0:length(circos_graph_data$chords)) {
+        if (i %in% rows) {
+          circos_graph_data$chords[[i + 1]]$color <- '#00cc96'
+        }
       }
-    }
-    return(dashbioCircos(
-      id = 'random-circos',
-      selectEvent = list('0' = 'both', '1' = 'both'),
-      layout = circos_graph_data[['GRCh37']],
-      config = list(
-        'innerRadius' = size/2 - 80,
-        'outerRadius' = size/2 - 30,
-        'ticks' = list('display' = FALSE, 'labelDenominator' = 1000000),
-        'labels' = list(
-          'position' = 'center',
-          'display' = TRUE,
-          'size' = 11,
-          'color' = '#fff',
-          'radialOffset' = 75
-        )
-      ),
-
-      tracks = list(
-        list(
-          'type' = 'HIGHLIGHT',
-          'data' = circos_graph_data[['cytobands']],
-          'config' = list(
-            'innerRadius' = size/2 - 80,
-            'outerRadius' = size/2 - 40,
-            'opacity' = 0.3,
-            'tooltipContent' = list('name' = 'all'),
-            'color' = list('name' = 'color')
+      return(dashbioCircos(
+        id = 'random-circos',
+        selectEvent = list('0' = 'both', '1' = 'both'),
+        layout = circos_graph_data[['GRCh37']],
+        config = list(
+          'innerRadius' = size/2 - 80,
+          'outerRadius' = size/2 - 30,
+          'ticks' = list('display' = FALSE, 'labelDenominator' = 1000000),
+          'labels' = list(
+            'position' = 'center',
+            'display' = TRUE,
+            'size' = 11,
+            'color' = '#fff',
+            'radialOffset' = 75
           )
         ),
-        list(
-          'type' = 'CHORDS',
-          'data' = circos_graph_data[['chords']],
-          'config' = list(
-            'opacity' = 0.7,
-            'color' = list('name' = 'color'),
-            'tooltipContent' = list(
-              'source' = 'source',
-              'sourceID' = 'id',
-              'target' = 'target',
-              'targetID' = 'id',
-              'targetEnd' = 'end'
+  
+        tracks = list(
+          list(
+            'type' = 'HIGHLIGHT',
+            'data' = circos_graph_data[['cytobands']],
+            'config' = list(
+              'innerRadius' = size/2 - 80,
+              'outerRadius' = size/2 - 40,
+              'opacity' = 0.3,
+              'tooltipContent' = list('name' = 'all'),
+              'color' = list('name' = 'color')
+            )
+          ),
+          list(
+            'type' = 'CHORDS',
+            'data' = circos_graph_data[['chords']],
+            'config' = list(
+              'opacity' = 0.7,
+              'color' = list('name' = 'color'),
+              'tooltipContent' = list(
+                'source' = 'source',
+                'sourceID' = 'id',
+                'target' = 'target',
+                'targetID' = 'id',
+                'targetEnd' = 'end'
+              )
             )
           )
-        )
-      ), size = 700
-    ))
+        ), size = 700
+      ))
+    }
   }
 )
 
