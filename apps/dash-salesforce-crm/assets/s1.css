@@ -178,6 +178,14 @@ th {
   position: relative;
   border: 1px solid #f1f1f1;
 }
+.dd-styles {
+  border-radius: 5px;
+  background-color: white;
+  margin: 0.5rem;
+  padding-top: 7px;
+  position: relative;
+  border: 1px solid #f1f1f1;
+}
 .tabs > a {
   text-decoration: none;
   color: #333333;
@@ -226,6 +234,14 @@ table {
   background: transparent; /* Optional: just make scrollbar invisible */
 }
 
+.has-value.Select--single > .Select-control .Select-value .Select-value-label,
+.has-value.is-pseudo-focused.Select--single
+  > .Select-control
+  .Select-value
+  .Select-value-label {
+  color: #848484;
+}
+
 #cases_reasons {
   height: 100%;
 }
@@ -239,7 +255,7 @@ table {
 
 @media (max-width: 450px) {
   .dropdown-styles {
-    width: 25% !important;
+    width: 28% !important;
     display: inline-block !important;
   }
   .app-title {
@@ -297,6 +313,10 @@ table {
   }
   .dropdown-styles {
     width: 30%;
+    display: inline-block;
+  }
+  .dd-styles {
+    width: 44%;
     display: inline-block;
   }
   .indicator_value {
