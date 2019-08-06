@@ -2,12 +2,22 @@ library(dash)
 library(dashDaq)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-source("/Users/Caner/Desktop/plotly/dashR-daq-iv-tracer/helperfuns.R")
 
-setwd("/Users/Caner/Desktop/plotly/dashR-daq-iv-tracer/")
+appName <- Sys.getenv("DASH_APP_NAME")
+
+if (!appName == "") {
+  pathPrefix <- sprintf("/%s/", appName)
+
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+
+  setwd(sprintf("/app/apps/%s", appName))
+}
+
+source("utils/helperfuns.R")
 
 # Define the app
-app <- Dash$new()
+app <- Dash$new(name = "DashR DAQ IV Tracer")
 
 # Font and background colors associated with each theme
 bannerColor <- list("dark" = "#23262e", "light" = "#ffffff")
@@ -1491,4 +1501,8 @@ app$callback(
   }
 )
 
-app$run_server(port = 8896, debug = TRUE)
+if (!appName == ""){
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+} else {
+  app$run_server(debug = TRUE)
+}
