@@ -1,4 +1,4 @@
-# Dash DAQ IV Curve Tracer
+# DashR DAQ IV Curve Tracer
 
 Dash abstracts away all of the technologies and protocols required to build an interactive web-based application, and
 is a simple and effective way to bind a user interface around your R or Python code. To learn more about Dash, check out our
