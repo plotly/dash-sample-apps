@@ -780,9 +780,7 @@ dividends_data$Distribution.Yield <- "-"
 
 dividends_data[2:6,8] <- "-"
 
-
-
-dividends_table <- generate_table(dividends_data)
+dividends_table <- generate_table(remove.factors(dividends_data))
 
 
 dividends <- htmlDiv(list(
