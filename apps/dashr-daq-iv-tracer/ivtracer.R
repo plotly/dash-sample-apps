@@ -2,99 +2,37 @@ library(dash)
 library(dashDaq)
 library(dashCoreComponents)
 library(dashHtmlComponents)
+source("/Users/Caner/Desktop/plotly/dashR-daq-iv-tracer/helperfuns.R")
 
 setwd("/Users/Caner/Desktop/plotly/dashR-daq-iv-tracer/")
-
-# List to store information useful to callbacks
-localVars <- list()
-
-localVars['nClicks'] <- 0
-localVars['nClicksClearGraph'] <- 0
-localVars['sourcedValues'] <- NA
-localVars['measuredValues'] <- NA
-localVars['isSourceBeingChanged'] <- FALSE
-
 
 # Define the app
 app <- Dash$new()
 
-# '''labels for source/measure elements'''
-GetSourceLabels <- function(source = "Voltage") {
-
-  if (source == "Voltage") {
-    # we source voltage and measure current
-    sourceLabel <- "Voltage"
-    measureLabel <- "Current"
-  } else if (source == "Current") {
-    # we source current and measure voltage
-    sourceLabel <- "Current"
-    measureLabel <- "Voltage"
-  }
-  return(c(sourceLabel, measureLabel))
-}
-
-# '''units for source/measure elements'''
-GetSourceUnits <- function(source = "Voltage") {
-
-  if (source == "Voltage") {
-    # we source voltage and measure current
-    sourceUnit <- "V"
-    measureUnit <- "A"
-  } else if (source == "Current") {
-    # we source current and measure voltage
-    sourceUnit <- "A"
-    measureUnit <- "V"
-  }
-  return(c(sourceUnit, measureUnit))
-}
-
-# '''
-#     Generates MeasureVals from the srcVal
-#     based on srcType either "I" or "V"
-# '''
-SourceAndMeasure <- function(srcType, srcVal,
-                             vOc = 20.5, iSc = 3.45,
-                             c1 = 0.000002694, c2 = 0.077976842) {
-  srcVal <- srcVal * 2.1
-  answer <- rep(0, length(srcVal))
-
-  if (srcType == "I") {
-    # Values of the input smaller than the short circuit current
-    idxOk <- which(srcVal < iSc)
-    answer[idxOk] <- c2 * vOc * log(1 + (1 - srcVal[idxOk] / iSc) / c1)
-    return(round(answer,4))
-  } else if (srcType == "V") {
-    idxOk <- which(srcVal < vOc)
-    answer[idxOk] <- iSc * (1 - c1 * (exp(srcVal[idxOk] / (c2 * vOc)) -1))
-    return(round(answer,4))
-  }
-}
-
 # Font and background colors associated with each theme
-bannerColor = list("dark" = "#23262e", "light" = "#ffffff")
-bkgColor = list("dark" = "#23262e", "light" = "#f6f6f7")
-gridColor = list("dark" = "#53555B", "light" = "#969696")
-textColor = list("dark" = "#95969A", "light" = "#595959")
-cardColor = list("dark" = "#2D3038", "light" = "#FFFFFF")
-accentColor = list("dark" = "#FFD15F", "light" = "#ff9827")
+bannerColor <- list("dark" = "#23262e", "light" = "#ffffff")
+bkgColor <- list("dark" = "#23262e", "light" = "#f6f6f7")
+gridColor <- list("dark" = "#53555B", "light" = "#969696")
+textColor <- list("dark" = "#95969A", "light" = "#595959")
+cardColor <- list("dark" = "#2D3038", "light" = "#FFFFFF")
+accentColor <- list("dark" = "#FFD15F", "light" = "#ff9827")
 
-# """generate the layout of the app"""
+# ''' Generate the layout of the app '''
 GenerateMainLayout <- function(theme = "light",
                                srcType = "Voltage",
                                modeVal ="Single measure",
-                               fig = NULL) {
+                               fig = NULL,
+                               measSrc = 0,
+                               measDisplay = 0,
+                               srcKnob = 0,
+                               sourceToggle = FALSE,
+                               modeToggle = FALSE) {
 
   sourceLabel <- GetSourceLabels(srcType)[1]
   measureLabel <- GetSourceLabels(srcType)[2]
   sourceUnit <- GetSourceUnits(srcType)[1]
   measureUnit <- GetSourceUnits(srcType)[2]
 
-  # As the trigger-measure btn will have its n_clicks reset by the reloading
-  # of the layout we need to reset this one as well
-  localVars['nClicks'] <- 0
-  localVars['nClicksClearGraph'] <- 0
-
-  # Doesn't clear the data of the graph
   if (is.null(fig)) {
     data <- list()
   } else {
@@ -137,8 +75,7 @@ GenerateMainLayout <- function(theme = "light",
               id = "bottom-card",
               style = list(
                 "backgroundColor" = cardColor[[theme]],
-                "color" = textColor[[theme]],
-                "marginTop" = "10px"
+                "color" = textColor[[theme]]
               ),
               children = list(# Display the sourced and measured values
                 htmlDiv(
@@ -146,14 +83,16 @@ GenerateMainLayout <- function(theme = "light",
                   children = list(
                     daqLEDDisplay(
                       id = "source-display",
-                      label = sprintf("Applied %s (%s)", sourceLabel, sourceUnit),
-                      value = 0.00,
+                      label = sprintf("Applied %s (%s)",
+                                      sourceLabel, sourceUnit),
+                      value = measSrc,
                       color = accentColor[[theme]]
                     ),
                     daqLEDDisplay(
                       id = "measure-display",
-                      label = sprintf("Measured %s (%s)", measureLabel, measureUnit),
-                      value = 0.0000,
+                      label = sprintf("Measured %s (%s)",
+                                      measureLabel, measureUnit),
+                      value = measDisplay,
                       color = accentColor[[theme]]
                     )
                   )
@@ -167,7 +106,7 @@ GenerateMainLayout <- function(theme = "light",
           className = "five columns",
           children = list(
             htmlDiv(
-              # controls and options for the IV tracer
+              # Controls and options for the IV tracer
               id = "up-control-card",
               style = list(
                 "backgroundColor" = cardColor[[theme]],
@@ -181,14 +120,17 @@ GenerateMainLayout <- function(theme = "light",
                       className = "IV-source-options",
                       children = list(
                         htmlLabel("Sourcing",
-                                  title = "Choose whether you want to source voltage and measure current, or source current and measure voltage"
+                                  title = paste0("Choose whether you want to ",
+                                    "source voltage and measure current, or ",
+                                    "source current and measure voltage",
+                                    sep = "")
                         ),
                         daqToggleSwitch(
                           id = "source-choice-toggle",
                           label = list("Voltage", "Current"),
                           style = list("width" = "150px",
                                        "margin" = "auto"),
-                          value = FALSE
+                          value = sourceToggle
                         )
                       )
                     ),
@@ -197,13 +139,15 @@ GenerateMainLayout <- function(theme = "light",
                       children = list(
                         htmlLabel(
                           "Measure mode",
-                          title = "Choose if you want to do single measurement or to start a sweep mode"
+                          title = paste0("Choose if you want to do single ",
+                          "measurement or to start a sweep mode",
+                          sep = "")
                         ),
                         daqToggleSwitch(
                           id = "mode-choice-toggle",
                           label = list("Single measure", "Sweep"),
                           style = list("width" = "150px"),
-                          value = FALSE
+                          value = modeToggle
                         )
                       )
                     )
@@ -234,7 +178,8 @@ GenerateMainLayout <- function(theme = "light",
                 htmlDiv(
                   id = "source-div",
                   children = list(
-                    # To perform single measures adjusting the source with a knob
+                    # To perform single measures
+                    # adjusting the source with a knob
                     htmlDiv(
                       id = "single_div",
                       className = "single_div_toggle_style",
@@ -242,7 +187,7 @@ GenerateMainLayout <- function(theme = "light",
                         daqKnob(
                           id = "source-knob",
                           size = 100,
-                          value = 0.00,
+                          value = srcKnob,
                           min = 0,
                           max = 10,
                           color = accentColor[[theme]],
@@ -251,7 +196,7 @@ GenerateMainLayout <- function(theme = "light",
                         daqLEDDisplay(
                           id = "source-knob-display",
                           label = "Knob readout",
-                          value = 0.00,
+                          value = srcKnob,
                           color = accentColor[[theme]]
                         )
                       )
@@ -289,96 +234,96 @@ GenerateMainLayout <- function(theme = "light",
                             )
                           )
                         ),
-                        htmlDiv(
-                          className = "sweep-div-row",
-                          children = list(
-                            htmlDiv(
-                              className = "sweep-div-row-inner",
-                              children = list(
-                                "Start",
-                                daqPrecisionInput(
-                                  id = "sweep-start",
-                                  precision = 4,
-                                  label = sprintf(" %s", sourceUnit),
-                                  labelPosition = "right",
-                                  value = 0,
-                                  style = list("marginLeft" = "5px")
-                                )
-                              ),
-                              title = "The lowest value of the sweep"
+                      htmlDiv(
+                        className = "sweep-div-row",
+                        children = list(
+                          htmlDiv(
+                            className = "sweep-div-row-inner",
+                            children = list(
+                              "Start",
+                              daqPrecisionInput(
+                                id = "sweep-start",
+                                precision = 4,
+                                label = sprintf(" %s", sourceUnit),
+                                labelPosition = "right",
+                                value = 0,
+                                style = list("marginLeft" = "5px")
+                              )
                             ),
-                            htmlDiv(
-                              className = "sweep-div-row-inner",
-                              children = list(
-                                "Stop",
-                                daqPrecisionInput(
-                                  id = "sweep-stop",
-                                  precision = 4,
-                                  label = sprintf(" %s", sourceUnit),
-                                  labelPosition = "right",
-                                  value = 10
-                                )
-                              ),
-                              title = "The highest value of the sweep"
-
-                            )
+                            title = "The lowest value of the sweep"
+                          ),
+                          htmlDiv(
+                            className = "sweep-div-row-inner",
+                            children = list(
+                              "Stop",
+                              daqPrecisionInput(
+                                id = "sweep-stop",
+                                precision = 4,
+                                label = sprintf(" %s", sourceUnit),
+                                labelPosition = "right",
+                                value = 10
+                              )
+                            ),
+                            title = "The highest value of the sweep"
                           )
-                        ),
-                        htmlDiv(
-                          className = "sweep-div-row",
-                          children = list(
-                            htmlDiv(
-                              className = "sweep-div-row-inner",
-                              children = list(
-                                "Step",
-                                daqPrecisionInput(
-                                  id = "sweep-step",
-                                  precision = 4,
-                                  label = sprintf(" %s", sourceUnit),
-                                  labelPosition = "right",
-                                  value = 0.2
-                                )
-                              ),
-                              title = "The increment of the sweep",
+                        )
+                      ),
+                      htmlDiv(
+                        className = "sweep-div-row",
+                        children = list(
+                          htmlDiv(
+                            className = "sweep-div-row-inner",
+                            children = list(
+                              "Step",
+                              daqPrecisionInput(
+                                id = "sweep-step",
+                                precision = 4,
+                                label = sprintf(" %s", sourceUnit),
+                                labelPosition = "right",
+                                min = 0.2,
+                                value = 0.2
+                              )
                             ),
-                            htmlDiv(
-                              className = "sweep-div-row-inner",
-                              children = list(
-                                "Time of a step",
-                                daqNumericInput(
-                                  id = "sweep-dt",
-                                  value = 0.2,
-                                  min = 0.01,
-                                  style = list("margin" = "5px")
-                                ),
-                                "s"
+                            title = "The increment of the sweep",
+                          ),
+                          htmlDiv(
+                            className = "sweep-div-row-inner",
+                            children = list(
+                              "Time of a step",
+                              daqNumericInput(
+                                id = "sweep-dt",
+                                value = 0.2,
+                                min = 0.01,
+                                style = list("margin" = "5px")
                               ),
-                              title = "The time spent on each increment"
-                            )
+                              "s"
+                            ),
+                            title = "The time spent on each increment"
                           )
                         )
                       )
-                    )
-                  )
-                ),
-                # Measure button and indicator
-                htmlDiv(
-                  id = "trigger-div",
-                  children = list(
-                    daqStopButton(
-                      id = "trigger-measure_btn",
-                      buttonText = "Single measure",
-                      className = "daq-button",
-                      size = 120
-                    ),
-                    daqIndicator(
-                      id = "measure-triggered",
-                      color = accentColor[[theme]],
-                      value = FALSE,
-                      label = "Measure active"
-                    )
                   )
                 )
+              )
+            ),
+            # Measure button and indicator
+            htmlDiv(
+              id = "trigger-div",
+              children = list(
+                daqStopButton(
+                  id = "trigger-measure_btn",
+                  buttonText = "Single measure",
+                  className = "daq-button",
+                  size = 120
+                ),
+                daqIndicator(
+                  id = "measure-triggered",
+                  color = accentColor[[theme]],
+                  value = FALSE,
+                  label = "Measure active"
+                )
+              )
+            )
               )
             )
           )
@@ -394,7 +339,6 @@ GenerateMainLayout <- function(theme = "light",
     return(children = htmlLayout)
   }
 }
-
 
 GenerateModal <- function() {
 
@@ -464,11 +408,10 @@ GenerateModal <- function() {
   ))
 }
 
-
 app$layout(htmlDiv(
   id = "main-page",
   className = "container",
-  style = list("backgroundColor" = bkgColor[["light"]], "height" = "100vh"),
+  style = list("backgroundColor" = bkgColor[["light"]]),
   children = list(
     dccLocation(id = "url", refresh = FALSE),
     dccInterval(id = "refresher", interval = 1000000),
@@ -478,7 +421,7 @@ app$layout(htmlDiv(
       style = list("backgroundColor" = bannerColor[["light"]],
                    "color" = textColor[["light"]]),
       children = list(
-        htmlImg(src = "/assets/dash-daq-logo.png",
+        htmlImg(src = "/assets/dash-logo.png",
                 className = "logo three columns"),
         htmlH6("Dash DAQ: IV Curve Tracer", className = "title six columns"),
         htmlDiv(
@@ -503,7 +446,8 @@ app$layout(htmlDiv(
     htmlDiv(
       id = "intro-banner",
       className = "intro-banner",
-      style = list("color" = "#FFFFFF", "backgroundColor" = accentColor[["light"]]),
+      style = list("color" = "#FFFFFF",
+                   "backgroundColor" = accentColor[["light"]]),
       children = htmlDiv(
         className = "intro-banner-content",
         children = list(
@@ -526,7 +470,6 @@ app$layout(htmlDiv(
             )
           )
         )
-
       )
     ),
     htmlDiv(
@@ -536,13 +479,11 @@ app$layout(htmlDiv(
       style = list("backgroundColor" = bkgColor[["light"]], "padding" = "2%")
     ),
     GenerateModal(),
-    dccStore(id = 'store-sourced-values', data = list(NA)),
-    dccStore(id = 'store-measured-values', data = list(NA)),
-    dccStore(id = 'store-source', data = c("V",FALSE)),
-    dccStore(id = 'store-nclick', data = 0),
-    dccStore(id = 'store-mode-choice', data = FALSE)
-
-
+    dccStore(id = "store-sourced-values", data = list(NA)),
+    dccStore(id = "store-measured-values", data = list(NA)),
+    dccStore(id = "store-source", data = c("V", FALSE)),
+    dccStore(id = "store-nclick", data = 0),
+    dccStore(id = "store-mode-choice", data = FALSE)
   )
 ))
 
@@ -555,12 +496,17 @@ app$callback(
     state(id = "source-choice-toggle", property = "value"),
     state(id = "mode-choice-toggle", property = "value"),
     state(id = "IV_graph", property = "figure"),
-    state(id = "source-display", property = "value"), # Keep measure LED display while changing themes
-    state(id = "measure-display", property = "value")
+    state(id = "source-display", property = "value"),
+    state(id = "measure-display", property = "value"),
+    state(id = "source-knob", property = "value"),
+    state(id = "source-choice-toggle", property = "value"),
+    state(id = "mode-choice-toggle", property = "value")
   ),
 
-  # '''update the theme of the daq components'''
-  function(value, srcChoice, modeChoice, fig, measSrc, measDisplay) { # CHECK LATER IF last 2 args necessary !
+  # ''' Update the theme of the daq components '''
+  function(value, srcChoice, modeChoice, fig,
+           measSrc, measDisplay, srcKnob,
+           sourceToggle, modeToggle) {
 
     if (srcChoice) {
       srcType <- "Current"
@@ -575,11 +521,14 @@ app$callback(
     }
 
     if (value) {
-      return(GenerateMainLayout("dark", srcType, modeVal, fig))
+      return(GenerateMainLayout("dark", srcType, modeVal, fig,
+                                measSrc, measDisplay, srcKnob,
+                                sourceToggle, modeToggle))
     } else {
-      return(GenerateMainLayout("light", srcType, modeVal, fig))
+      return(GenerateMainLayout("light", srcType, modeVal, fig,
+                                measSrc, measDisplay, srcKnob,
+                                sourceToggle, modeToggle))
     }
-
   }
 )
 
@@ -591,7 +540,7 @@ app$callback(
     state(id = "page-content", property = "style")
   ),
 
-  # '''update the theme of the app'''
+  # ''' Update the theme of the app '''
   function(value, styleList) {
 
     if (value) {
@@ -604,7 +553,6 @@ app$callback(
     styleList[["backgroundColor"]] <- bkgColor[[theme]]
 
     return(styleList)
-
   }
 )
 
@@ -616,7 +564,7 @@ app$callback(
     state(id = "header", property = "style")
   ),
 
-  # '''update the theme of the header'''
+  # ''' Update the theme of the header '''
   function(value, styleList) {
 
     if (value) {
@@ -629,7 +577,6 @@ app$callback(
     styleList[["backgroundColor"]] <- bkgColor[[theme]]
 
     return(styleList)
-
   }
 )
 
@@ -641,7 +588,7 @@ app$callback(
     state(id = "intro-banner", property = "style")
   ),
 
-  # '''update the theme of the banner'''
+  # ''' Update the theme of the banner '''
   function(value, styleList) {
 
     if (value) {
@@ -653,7 +600,6 @@ app$callback(
     styleList[["color"]] <- "#FFFFFF"
 
     return(styleList)
-
   }
 )
 
@@ -665,7 +611,7 @@ app$callback(
     state(id = "markdown-container", property = "style")
   ),
 
-  # '''update the theme of markdown'''
+  # ''' Update the theme of markdown '''
   function(value, styleList) {
 
     if (value) {
@@ -678,7 +624,6 @@ app$callback(
     styleList[["backgroundColor"]] <- cardColor[[theme]]
 
     return(styleList)
-
   }
 )
 
@@ -690,7 +635,7 @@ app$callback(
     state(id = "main-page", property = "style")
   ),
 
-  # '''update the theme of entire page'''
+  # ''' Update the theme of entire page '''
   function(value, styleList) {
 
     if (value) {
@@ -728,7 +673,6 @@ app$callback(
     styleList[["backgroundColor"]] <- bkgColor[[theme]]
 
     return(styleList)
-
   }
 )
 
@@ -738,11 +682,10 @@ app$callback(
 app$callback(
   output = list(id = "source-knob", property = "label"),
   params = list(
-    input(id = "source-choice-toggle", "value"),
-    input(id = "mode-choice-toggle", property = "value") # Only required to fire callback CHECK IF NECESSARY!
+    input(id = "source-choice-toggle", "value")
   ),
 
-  function(srcChoice, modeChoice) {
+  function(srcChoice) {
 
     if (srcChoice) {
       srcType <- "Current"
@@ -759,11 +702,10 @@ app$callback(
 app$callback(
   output = list(id = "source-knob-display", property = "label"),
   params = list(
-    input(id = "source-choice-toggle", "value"),
-    input(id = "mode-choice-toggle", property = "value")
+    input(id = "source-choice-toggle", "value")
   ),
 
-  function(srcChoice, modeChoice) {
+  function(srcChoice) {
 
     if (srcChoice) {
       srcType <- "Current"
@@ -782,11 +724,10 @@ app$callback(
 app$callback(
   output = list(id = "sweep-start", property = "label"),
   params = list(
-    input(id = "source-choice-toggle", "value"),
-    input(id = "mode-choice-toggle", property = "value")
+    input(id = "source-choice-toggle", "value")
   ),
 
-  function(srcChoice, modeChoice) {
+  function(srcChoice) {
 
     if (srcChoice) {
       srcType <- "Current"
@@ -804,11 +745,10 @@ app$callback(
 app$callback(
   output = list(id = "sweep-stop", property = "label"),
   params = list(
-    input(id = "source-choice-toggle", "value"),
-    input(id = "mode-choice-toggle", property = "value")
+    input(id = "source-choice-toggle", "value")
   ),
 
-  function(srcChoice, modeChoice) {
+  function(srcChoice) {
 
     if (srcChoice) {
       srcType <- "Current"
@@ -826,11 +766,10 @@ app$callback(
 app$callback(
   output = list(id = "sweep-step", property = "label"),
   params = list(
-    input(id = "source-choice-toggle", "value"),
-    input(id = "mode-choice-toggle", property = "value")
+    input(id = "source-choice-toggle", "value")
   ),
 
-  function(srcChoice, modeChoice) {
+  function(srcChoice) {
 
     if (srcChoice) {
       srcType <- "Current"
@@ -848,11 +787,10 @@ app$callback(
 app$callback(
   output = list(id = "sweep-title", property = "children"),
   params = list(
-    input(id = "source-choice-toggle", "value"),
-    input(id = "mode-choice-toggle", property = "value")
+    input(id = "source-choice-toggle", "value")
   ),
 
-  function(srcChoice, modeChoice) {
+  function(srcChoice) {
 
     if (srcChoice) {
       srcType <- "Current"
@@ -870,11 +808,10 @@ app$callback(
 app$callback(
   output = list(id = "source-display", property = "label"),
   params = list(
-    input(id = "source-choice-toggle", "value"),
-    input(id = "mode-choice-toggle", property = "value")
+    input(id = "source-choice-toggle", "value")
   ),
 
-  function(srcChoice, modeChoice) {
+  function(srcChoice) {
 
     if (srcChoice) {
       srcType <- "Current"
@@ -894,11 +831,10 @@ app$callback(
 app$callback(
   output = list(id = "measure-display", property = "label"),
   params = list(
-    input(id = "source-choice-toggle", "value"),
-    input(id = "mode-choice-toggle", property = "value")
+    input(id = "source-choice-toggle", "value")
   ),
 
-  function(srcChoice, modeChoice) {
+  function(srcChoice) {
 
     if (srcChoice) {
       srcType <- "Current"
@@ -921,7 +857,7 @@ app$callback(
     input(id = "mode-choice-toggle", property = "value")
   ),
 
-  # '''update the measure button upon choosing single or sweep'''
+  # ''' Update the measure button upon choosing single or sweep '''
   function(modeChoice) {
 
     if (modeChoice) {
@@ -984,14 +920,13 @@ app$callback(
     input(id = "source-choice-toggle", property = "value"),
     state(id = "store-source", property = "data"),
     state(id = "source-knob", property = "value")
-
   ),
 
   # '''
   # This callback updates the store-source's
   # source value ("V"/"I") and is_sourced_changed T/F
   # status similar to python version
-  #'''
+  # '''
   function(srcType, hiddenSource, knobVal) {
 
     if (srcType) {
@@ -1018,13 +953,12 @@ app$callback(
     input(id = "source-choice-toggle", property = "value"),
     state(id = "store-source", property = "data"),
     state(id = "source-knob", property = "value")
-
   ),
 
   # '''
   # Reset the knob value when
   # source changed
-  #'''
+  # '''
   function(srcType, hiddenSource, knobVal) {
     if (srcType) {
       srcT <- "I"
@@ -1049,12 +983,12 @@ app$callback(
     state(id = "sweep-dt", property = "value")
   ),
 
-  # '''change the interval to high frequency for sweep'''
+  # ''' Change the interval to high frequency for sweep '''
   function(swpOn, modeChoice, sweepDt) {
 
 
     if (modeChoice && swpOn) {
-      return (sweepDt * 1000) # -> ! TEST THIS AFTER connecting sweep with button
+      return (sweepDt * 1000)
     } else {
       return(1000000)
     }
@@ -1072,14 +1006,13 @@ app$callback(
 
   ),
 
-  # '''reset the n_interval of the dccInterval once a sweep is done'''
+  # ''' Reset the n_interval of the dccInterval once a sweep is done'''
   function(clicks, modeChoice, swpOn, nInterval) {
 
 
     if (modeChoice && swpOn) {
       return(nInterval)
     } else {
-      localVars['nRefresh'] <- 0 # For Parity w python. Delete later if redundant!
       return(0)
     }
   }
@@ -1087,7 +1020,7 @@ app$callback(
 
 
 app$callback(
-  output = list(id = "sweep-status", property = "value"),
+  output = list(id = "sweep-status", property = "value"), #daqIndicator
   params = list(
     input(id = "trigger-measure_btn", property = "n_clicks"),
     input(id = "source-display", property = "value"),
@@ -1099,15 +1032,14 @@ app$callback(
   ),
 
   # '''
-  # decide whether to turn on or off the sweep
+  # Decide whether to turn on or off the sweep
   # when single mode is selected, it is off by default
-  # when sweep mode is selected, it enables the sweep if is wasn't on
+  # when sweep mode is selected, it enables the sweep if it wasn't on
   # otherwise it stops the sweep once the sourced value gets higher or equal
   # than the sweep limit minus the sweep step
   #'''
-  function(clicks, sourcedVal, measTriggered, swpOn, swpStop, swpStep, modeChoice) {
-
-
+  function(clicks, sourcedVal, measTriggered,
+           swpOn, swpStop, swpStep, modeChoice) {
 
     if (!(modeChoice)) {
       return(FALSE)
@@ -1116,18 +1048,15 @@ app$callback(
         # The condition of continuation is to source lower than the sweep
         # limit minus one sweep step
 
-
         answer <- sourcedVal <= swpStop - swpStep
+
         return(answer)
       } else {
-
-
-        if (!(measTriggered)) { # -> measTriggered NOT implemented YET CHECK BACK after coding
-          # The 'trigger-measure_btn' wasn't pressed yet
-          return(FALSE)
-        }
-        # Initiate a sweep
-        return(TRUE)
+          if (!(measTriggered)) {
+            return(FALSE)
+          }
+          # Initiate a sweep
+          return(TRUE)
       }
     }
   }
@@ -1141,10 +1070,9 @@ app$callback(
     input(id = "source-knob", property = "value")
   ),
 
-  # '''set the value of the knob on a LED display'''
+  # ''' Set the value of the knob on a LED display '''
   function(knobVal) {
     return(knobVal)
-
   }
 )
 
@@ -1159,10 +1087,10 @@ app$callback(
   ),
 
   # '''
-  # controls if a measure can be made or not
+  # Controls if a measure can be made or not
   # the indicator 'measure-triggered' can be set to TRUE only by a click
   # on the 'trigger-measure_btn' button or by the 'refresher' interval
-  #'''
+  # '''
   function(nClick, trigger, storeNclick, storeMode) {
 
     if (is.null(unlist(nClick))) {
@@ -1173,12 +1101,8 @@ app$callback(
       storeNclick <- 0
     }
 
-    #print(nClick)
-    #print(storeNclick)
     if (nClick != storeNclick && trigger == storeMode) {
       # It was triggered by a click on the trigger-measure_btn button
-
-      #print(nClick)
       return(TRUE)
     } else {
       # It was triggered by a change of the mode
@@ -1187,6 +1111,7 @@ app$callback(
   }
 )
 
+
 app$callback(
   output = list(id = "store-mode-choice", property = "data"),
   params = list(
@@ -1194,7 +1119,7 @@ app$callback(
     state(id = "store-mode-choice", property = "data")
   ),
 
-  # ''' Store & Update modeChoice
+  # ''' Store & Update modeChoice '''
   function(currentMode, prevMode) {
 
     if (currentMode == prevMode) {
@@ -1222,7 +1147,7 @@ app$callback(
   ),
 
 
-  # '''set the source value to the instrument'''
+  # ''' Set the source value to the instrument '''
   function(nInterval, measTriggered, knobVal,
            oldSourceDisplayVal, swpStart,
            swpStop, swpStep, modeChoice, swpOn) {
@@ -1236,14 +1161,13 @@ app$callback(
       if (measTriggered) {
         if (swpOn) {
           answer <- swpStart + (nInterval - 1) * swpStep
-        }
-        if (answer > swpStop) {
-          answer <- oldSourceDisplayVal
+          if (answer > swpStop) {
+            answer <- oldSourceDisplayVal
+          }
         }
       }
     }
-    answer <- sprintf("%.4f", answer)
-    return(as.numeric(answer)) # THIS PART IS THROWING ERROR WITH 4 DIGIT CHARACTER!
+    return(answer)
   }
 )
 
@@ -1257,17 +1181,15 @@ app$callback(
     state(id = "source-choice-toggle", property = "value"),
     state(id = "mode-choice-toggle", property = "value"),
     state(id = "sweep-status", property = "value")
-
   ),
 
-
   # '''
-  # read the measured value from the instrument
+  # Read the measured value from the instrument
   # check if a measure should be made
   # initiate a measure of the KT2400
   # read the measure value and return it
-  # by default it simply return the value previously available
-  #'''
+  # by default it simply returns the value previously available
+  # '''
   function(srcVal, measTriggered, measOldVal, srcChoice, modeChoice, swpOn) {
 
     if (srcChoice) {
@@ -1281,15 +1203,15 @@ app$callback(
     if (!(modeChoice)) { # Single measure
       if (measTriggered) {
         # Initiate a measurement
-        measuredValue <- SourceAndMeasure(srcType = srcType, srcVal = srcVal)
+        measuredValue <- SourceAndMeasure(srcType, srcVal)
       }
     } else { # Sweep
-      if (measTriggered && swpOn) {
-        # Initiate a measurement
-        measuredValue <- SourceAndMeasure(srcType = srcType, srcVal = srcVal)
-      }
+        if (measTriggered && swpOn) {
+          # Initiate a measurement
+          measuredValue <- SourceAndMeasure(srcType, srcVal)
+        }
     }
-    return(round(measuredValue,2))
+    return(round(measuredValue, 2))
   }
 )
 
@@ -1310,7 +1232,8 @@ app$callback(
 
 
   # ''' Save sourcedValue to store-sourced-value to retrieve for graph later '''
-  function(srcVal, nClicks, measTriggered, srcChoice, modeChoice, swpOn, sourceStore, storeNclick) {
+  function(srcVal, nClicks, measTriggered, srcChoice,
+           modeChoice, swpOn, sourceStore, storeNclick) {
 
     if (srcChoice) {
       srcType <- "I"
@@ -1326,7 +1249,7 @@ app$callback(
     }
 
     if (nClicks == storeNclick) { # clear button not clicked
-      if (!(modeChoice)) { #single measure
+      if (!(modeChoice)) { # single measure
         if (measTriggered) {
           # Save the sourced value
           if (is.null(sourceStore[[1]])) {
@@ -1335,7 +1258,7 @@ app$callback(
             sourceStore <- c(sourceStore, srcVal)
           }
         }
-      } else { #sweep mode
+      } else { # sweep mode
         if (measTriggered && swpOn) {
           # Save the sourced value
           if (is.null(sourceStore[[1]])) {
@@ -1345,8 +1268,8 @@ app$callback(
           }
         }
       }
-    } else { #clear button clicked
-      sourceStore <- list(NA)
+    } else { # clear button clicked
+        sourceStore <- NA
     }
     return(sourceStore)
   }
@@ -1368,7 +1291,8 @@ app$callback(
   ),
 
   # ''' Save measuredValue to dccStore to retrieve for graph later '''
-  function(srcVal, nClicks, measTriggered, measuredValue, srcChoice, modeChoice, swpOn, measStore, storeNclick) {
+  function(srcVal, nClicks, measTriggered, measuredValue,
+           srcChoice, modeChoice, swpOn, measStore, storeNclick) {
 
     if (srcChoice) {
       srcType <- "I"
@@ -1376,10 +1300,10 @@ app$callback(
       srcType <- "V"
     }
 
-    if (is.list(nClicks)){
+    if (is.list(nClicks)) {
       nClicks <- 0
     }
-    if (is.list(storeNclick)){
+    if (is.list(storeNclick)) {
       storeNclick <- 0
     }
     if (nClicks == storeNclick) { # clear button not clicked
@@ -1393,7 +1317,6 @@ app$callback(
           } else {
             measStore <- c(measStore, measuredValue)
           }
-
         }
       } else {
         if (measTriggered && swpOn) {
@@ -1407,14 +1330,11 @@ app$callback(
         }
       }
     } else { # clear button clicked
-      measStore <- list(NA)
+        measStore <- NA
     }
     return(measStore)
   }
 )
-
-
-
 
 
 # ======= Graph related callbacks =======
@@ -1431,13 +1351,9 @@ app$callback(
     if (is.list(nClick)) {
       nClick <- 0
     }
-
-    #print(nClick)
-    #print(trigMeasClicks)
     if (nClick != storeNclick) {
       storeNclick <- nClick
     }
-
     return(storeNclick)
   }
 )
@@ -1453,18 +1369,17 @@ app$callback(
   ),
 
   # '''
-  # Turn on indicator light if clear-graph_btn clicked
-  # Turn off indicator lifgt if source-knob or measure-triggered values change
+  # Turn on indicator light, if clear-graph_btn clicked
+  # Turn off indicator light, if source-knob or measure-triggered values change
+  # '''
   function(nClick, knobVal, measTriggered, storeNclick) {
 
     if (is.list(nClick)) {
       nClick <- 0
     }
-
     if (is.list(storeNclick)) {
       storeNclick <- 0
     }
-
 
     if (nClick != storeNclick) {
       return(TRUE)
@@ -1490,9 +1405,9 @@ app$callback(
     state(id = "store-measured-values", property = "data")
   ),
 
-  # ''' update the IV graph '''
+  # ''' Update the IV-Graph '''
   function(measuredVal,
-           clearGraph, # Just to firecallback on reset
+           clearGraph, # to fire callback on reset
            theme,
            measTriggered,
            graphData,
@@ -1501,16 +1416,6 @@ app$callback(
            swpOn,
            sourceStore,
            measStore) {
-
-    # print(c(measuredVal, #0
-    #         clearGraph, #FALSE
-    #         theme, #FALSE
-    #         measTriggered, #FALSE
-    #         graphData, #NULL
-    #         srcChoice, #FALSE
-    #         modeChoice, #FALSE #Single measure
-    #         swpOn)) #FALSE
-
 
     if (theme) {
       theme <- "dark"
@@ -1530,8 +1435,7 @@ app$callback(
     sourceUnit <- GetSourceUnits(srcType)[1]
     measureUnit <- GetSourceUnits(srcType)[2]
 
-
-
+    # Sorting data
     if (!is.null(sourceStore[[1]])) {
       xdata <- sort(unlist(sourceStore), decreasing = TRUE)
       ydata <- sort(unlist(measStore), decreasing = FALSE)
@@ -1539,9 +1443,8 @@ app$callback(
       xdata <- NA
       ydata <- NA
     }
-    print(xdata)
-    print(ydata)
-    emptyFigureData <- list(
+
+    figureData <- list(
       list(
         x = xdata,
         y = ydata,
@@ -1550,8 +1453,8 @@ app$callback(
         line = list("color" = accentColor[[theme]], "width" = 2)
       )
     )
-    emptyFigure <- list(
-      "data" = emptyFigureData,
+    ivFigure <- list(
+      "data" = figureData,
       "layout" = list(
         xaxis = list(
           "title" = sprintf("Applied %s (%s)", sourceLabel, sourceUnit),
@@ -1570,94 +1473,22 @@ app$callback(
       )
     )
 
-
-    if (!(modeChoice)) { #Single measure case
+    if (!(modeChoice)) { # Single measure case
       if (measTriggered) {
-        # The change to the graph was triggered by a measure
 
-        xdata <- sort(unlist(sourceStore), decreasing = TRUE)
-        ydata <- sort(unlist(measStore), decreasing = FALSE)
-
-        if (length(xdata) == 1) { # Single data point does not draw graph,
-          xdata <- rep(xdata, 2)  # duplicating data to show single data point
+        # Single data point does not draw graph,
+        # duplicating data to show single data point
+        if (length(xdata) == 1 && !(NA %in% xdata)) {
+          xdata <- rep(xdata, 2)
           ydata <- rep(ydata, 2)
+          figureData[[1]][["x"]] <- xdata
+          figureData[[1]][["y"]] <- ydata
+          ivFigure[["data"]] <- figureData
         }
-        figData <- list(
-          list(
-            x = xdata,
-            y = ydata,
-            mode = "lines+markers",
-            name = "IV curve",
-            line = list("color" = accentColor[[theme]], "width" = 2)
-          )
-        )
-
-        return(list(
-          "data" = figData,
-          "layout" = list(
-            xaxis = list(
-              "title" = sprintf("Applied %s (%s)", sourceLabel, sourceUnit),
-              "color" = textColor[[theme]],
-              "gridcolor" = gridColor[[theme]]
-            ),
-            yaxis = list(
-              "title" = sprintf("Measured %s (%s)", measureLabel, measureUnit),
-              "color" = textColor[[theme]],
-              "gridcolor" = gridColor[[theme]]
-            ),
-            font = list(color = textColor[[theme]], size = 12),
-            automargin = TRUE,
-            plot_bgcolor = cardColor[[theme]],
-            paper_bgcolor = cardColor[[theme]]
-          )
-        ))
-      } else { #meas not triggered
-        return(emptyFigure)
-      }
-    } else { # Sweep case
-      if (swpOn) {
-        # The change to the graph was triggered by a measure
-
-        # Sort the stored data so they are ascending in x
-        xdata <- sort(unlist(sourceStore), decreasing = TRUE)
-        ydata <- sort(unlist(measStore), decreasing = FALSE)
-
-        figData <- list(
-          list(
-            x = xdata,
-            y = ydata,
-            mode = "lines+markers",
-            name = "IV curve",
-            line = list("color" = accentColor[[theme]], "width" = 2)
-          )
-        )
-        return(list(
-          "data" = figData,
-          "layout" = list(
-            xaxis = list(
-              "title" = sprintf("Applied %s (%s)", sourceLabel, sourceUnit),
-              "color" = textColor[[theme]],
-              "gridcolor" = gridColor[[theme]]
-            ),
-            yaxis = list(
-              "title" = sprintf("Measured %s (%s)", measureLabel, measureUnit),
-              "color" = textColor[[theme]],
-              "gridcolor" = gridColor[[theme]]
-            ),
-            font = list(color = textColor[[theme]], size = 12),
-            automargin = TRUE,
-            plot_bgcolor = cardColor[[theme]],
-            paper_bgcolor = cardColor[[theme]]
-          )
-        ))
-      } else { #meas not triggered
-
-        return(emptyFigure)
       }
     }
+    return(ivFigure)
   }
 )
 
-
 app$run_server(port = 8896, debug = TRUE)
-
