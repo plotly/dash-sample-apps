@@ -9,6 +9,7 @@ is a simple and effective way to bind a user interface around your R or Python c
 `dashr-daq-iv-tracer` uses the graphic elements of Dash DAQ to create an interface for acquiring current-voltage I-V curves with a Keithley 2400 SourceMeter.
 [Try this demo app](https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-daq-iv-tracer) on the Dash Deployment Server.
 
+Also, you can access to python version in the [Dash Gallery](https://dash-gallery.plotly.host/dash-daq-iv-tracer/).
 ### IV Curves
 
 I-V curve is a good way to characterize electronic components (diode, transistor or solar cells) and extract their operating properties. It is widely used in electrical engineering and physics.
