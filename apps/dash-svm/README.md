@@ -32,7 +32,7 @@ source venv/bin/activate
 
 Clone the git repo, then install the requirements with pip
 ```
-git clone https://github.com/plotly/dash-sample-apps/apps/dash-svm.git
+git clone https://github.com/plotly/dash-sample-apps
 cd dash-sample-apps/apps/dash-svm
 pip install -r requirements.txt
 ```
