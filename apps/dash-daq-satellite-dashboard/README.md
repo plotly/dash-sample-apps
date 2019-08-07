@@ -6,7 +6,7 @@ is a simple and effective way to bind a user interface around your Python code. 
 
 ## About the app
 
-A Dash application that tracks satellites and displays live data captured by them.
+A Dash application that simulates satellite tracking and displays live data captured by them.
 
 ### Satellite
 
@@ -15,11 +15,18 @@ across the world. It's important to monitor satellites to ensure that they can a
 their position and elevation are, for example, useful to determine whether or not a satellite is deviating from its original path
 due to unforeseen circumstances.
 
-### dash-daq
+### Dash-DAQ
 
 [Dash-DAQ](http://dash-daq.netlify.com/#about) is a data acquisition and control package built on top of Plotly's
 [Dash](https://plot.ly/products/dash/). It comprises a robust set of controls that make it simpler to integrate data
 acquisition and controls into your Dash applications.
+
+Try out the [demo app here](https://dash-gallery.plotly.host/dash-daq-satellite-dashboard/).
+
+
+## Screenshots
+
+![Satellite Dashboard](screenshots/screenshot.png)
 
 ## Getting Started
 
@@ -62,7 +69,3 @@ Run the app
 python app.py
 
 ```
-
-## Screenshots
-
-![Satellite Dashboard](screenshots/screenshot.png)
