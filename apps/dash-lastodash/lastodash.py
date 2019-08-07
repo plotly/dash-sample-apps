@@ -88,12 +88,10 @@ def generate_frontpage():
                         ),
                     ],
                 ),
-                # html.Div(
-                #     html.Img(
-                #         id="dash-logo",
-                #         src=app.get_asset_url("dash-logo.png") 
-                #     )
-                # ),
+                html.Img(
+                    id="dash-logo",
+                    src=app.get_asset_url("dash-logo.png") 
+                )
             ],
         )
     )
