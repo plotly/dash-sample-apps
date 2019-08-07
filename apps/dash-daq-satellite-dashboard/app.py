@@ -1,4 +1,7 @@
 import time
+import pathlib
+import os
+
 import pandas as pd
 import dash
 import dash_core_components as dcc
@@ -428,22 +431,44 @@ main_panel_layout = html.Div(
 ##############################################################################################################
 
 # Pandas
-df_non_gps_h = pd.read_csv("./data/non_gps_data_h.csv")
-df_non_gps_m = pd.read_csv("./data/non_gps_data_m.csv")
-df_gps_m = pd.read_csv("./data/gps_data_m.csv")
-df_gps_h = pd.read_csv("./data/gps_data_h.csv")
+APP_PATH = str(pathlib.Path(__file__).parent.resolve())
+
+df_non_gps_h = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "non_gps_data_h.csv"))
+)
+df_non_gps_m = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "non_gps_data_m.csv"))
+)
+df_gps_m = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "gps_data_m.csv")))
+df_gps_h = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "gps_data_h.csv")))
 
 # Satellite H45-K1 data
-df_non_gps_h_0 = pd.read_csv("./data/non_gps_data_h_0.csv")
-df_non_gps_m_0 = pd.read_csv("./data/non_gps_data_m_0.csv")
-df_gps_m_0 = pd.read_csv("./data/gps_data_m_0.csv")
-df_gps_h_0 = pd.read_csv("./data/gps_data_h_0.csv")
+df_non_gps_h_0 = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "non_gps_data_h_0.csv"))
+)
+df_non_gps_m_0 = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "non_gps_data_m_0.csv"))
+)
+df_gps_m_0 = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "gps_data_m_0.csv"))
+)
+df_gps_h_0 = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "gps_data_h_0.csv"))
+)
 
 # Satellite L12-5 data
-df_non_gps_h_1 = pd.read_csv("./data/non_gps_data_h_1.csv")
-df_non_gps_m_1 = pd.read_csv("./data/non_gps_data_m_1.csv")
-df_gps_m_1 = pd.read_csv("./data/gps_data_m_1.csv")
-df_gps_h_1 = pd.read_csv("./data/gps_data_h_1.csv")
+df_non_gps_h_1 = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "non_gps_data_h_1.csv"))
+)
+df_non_gps_m_1 = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "non_gps_data_m_1.csv"))
+)
+df_gps_m_1 = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "gps_data_m_1.csv"))
+)
+df_gps_h_1 = pd.read_csv(
+    os.path.join(APP_PATH, os.path.join("data", "gps_data_h_1.csv"))
+)
 
 ##############################################################################################################
 # Root
