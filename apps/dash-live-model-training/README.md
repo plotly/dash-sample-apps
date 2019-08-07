@@ -82,12 +82,13 @@ At the moment, the logging only works for iterative Tensorflow models. We are pl
 ## Authors
 
 - **Celine Huang** [@celinehuang](https://github.com/celinehuang)
+- **Chris Jeon** [@christopherjeon](https://github.com/christopherjeon)
 - **Xing Han Lu** - _Initial Work_ - [@xhlulu](https://github.com/xhlulu)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## Screenshots
 
-![screenshot1](images/screenshot1.png)
+![screenshot1](images/screenshot-1.png)
 
-![screenshot2](images/screenshot2.png)
+![screenshot2](images/screenshot-2.png)

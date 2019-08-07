@@ -122,8 +122,7 @@ app.layout = html.Div(
                     className="eight columns",
                     children=[
                         html.Img(
-                            id="logo-mobile",
-                            src=app.get_asset_url("dash-logo-stripe.png"),
+                            id="logo-mobile", src=app.get_asset_url("dash-logo.png")
                         ),
                         html.Div(
                             id="header-section",
@@ -278,8 +277,7 @@ app.layout = html.Div(
                         html.Div(
                             className="img-container",
                             children=html.Img(
-                                id="logo-web",
-                                src=app.get_asset_url("dash-logo-stripe.png"),
+                                id="logo-web", src=app.get_asset_url("dash-logo.png")
                             ),
                         ),
                         html.Div(id="div-visual-mode"),
