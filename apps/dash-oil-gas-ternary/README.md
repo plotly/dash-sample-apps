@@ -4,6 +4,8 @@
 By pairing a geographic map of well locations with ternary diagram, this app helps geologists to find out results of gas wells with relationship to formations or rock types.
 This is a demo of Dash interactive Python framework developed by [Plotly](https//plot.ly/).
 
+Try out the [demo app here](https://dash-gallery.plotly.host/dash-oil-gas-ternary/).
+
 ![Animated](assets/Screencast.gif)
 
 ## Screenshots
