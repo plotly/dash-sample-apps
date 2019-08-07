@@ -64,6 +64,10 @@
         -webkit-print-color-adjust: exact;
     }
 
+    #dash-logo {
+        display: none;
+    }
+
     #las-logo {
         position: absolute !important;
         display: block !important;
@@ -195,6 +199,11 @@ body {
     color: black;
     margin-left: 70px;
     font-weight: 100 !important;
+}
+
+#dash-logo {
+    height: 70px;
+    position: relative;
 }
 
 #las-logo {
