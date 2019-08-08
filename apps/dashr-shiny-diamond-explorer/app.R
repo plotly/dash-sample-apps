@@ -46,11 +46,11 @@ SampleSlider <- dccSlider(id = "sample-slider",
                             "10000" = list("label" = "10K"),
                             "20000" = list("label" = "20K"),
                             "30000" = list("label" = "30K"),
-                            "40000" = list("label = "40K"),
+                            "40000" = list("label" = "40K"),
                             "53940" = "53940",
                           value = 1000
+                          )
 )
-
 heightSlider <- dccSlider(id = "height-slider",
                           min = 100,
                           max = 2000,
@@ -68,42 +68,30 @@ heightSlider <- dccSlider(id = "height-slider",
                             "2,000" = "2,000"),
                           value = 1000
 )
-
 ##### CREATE LAYOUT VARIABLES #######
-
 pageTitle <- htmlH2("Diamonds Explorer")
-
 plotlyLogo <-
   htmlA(list(htmlImg(id = "banner-image", src = "assets/image.png")), className = "logo",
         href = "https://dashr.plot.ly")
-
 xDropDown <- dccDropdown(id = "x-dropdown",
                          options = DropDownMenuOptions,
                          value = "carat",
                          clearable = FALSE)
-
 yDropDown <- dccDropdown(id = "y-dropdown",
                          options = DropDownMenuOptions,
                          value = "cut",
                          clearable = FALSE)
-
 FacetDropDown <- dccDropdown(id="facet-row-dropdown",
                              options = DropDownMenuOptions,
                              value = "None",
                              clearable = FALSE)
-
 ClarityDropDown <- dccDropdown(id = "clarity-dropdown",
                                options = DropDownMenuOptions,
                                value = "clarity",
                                clearable = FALSE)
-
-
 ###### APP START #######
-
 app = Dash$new()
-
 ########### CREATE LAYOUT ##############
-
 app$layout(
   htmlDiv(list(
       plotlyLogo,
@@ -126,8 +114,6 @@ app$layout(
     heightSlider
   ), className = "three columns"
   ),
-
-
   htmlDiv(list(
     dccGraph(id = "scatter-purple"),
     dccGraph(id = "scatter-blue"),
@@ -140,16 +126,12 @@ app$layout(
   className = "eight columns"
   )
 )
-
-
 ################ CALLBACKS #####################
-
 #app$callback(
   
 #)
              
 ########CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL
-
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
 } else {
