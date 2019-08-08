@@ -110,7 +110,7 @@ pageLayout <- list(htmlDiv(id = 'page', children = list(
   # banner
   htmlDiv(
     id = 'logo',
-    title = 'Dash DAQ by Plotly',
+    title = 'Dash by Plotly',
     style = list(
       'position' = 'absolute',
       'left' = '10px',
@@ -118,9 +118,9 @@ pageLayout <- list(htmlDiv(id = 'page', children = list(
       'zIndex' = 100
     ),
     children = list(htmlA(
-      htmlImg(src = "/assets/dash-daq-logo-by-plotly-stripe+copy.png",
-              style = list('height' = '65px')),
-      href = "http://www.dashdaq.io"
+      htmlImg(src = "/assets/logo-white.png",
+              style = list('height' = '50px')),
+      href = "https://plot.ly/dash"
     ))
   ),
 
@@ -382,8 +382,6 @@ app$callback(
     if ("list" %in% nullCheck) {
       args[[which(nullCheck == "list")]] <- "NULL"
     }
-
-    print(args)
 
     # power-button off case
     if (!args[[length(args)]]) {
