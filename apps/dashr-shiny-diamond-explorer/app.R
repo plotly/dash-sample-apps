@@ -26,6 +26,7 @@ lapply(nms, function(x) {
 ######### CREATE GLOBAL OBJECTS ####
 
 DropDownMenuOptions <- list(
+  list(label = "None", value = "None"),
   list(label = "carat", value = "carat"),
   list(label = "cut", value = "cut"),
   list(label = "color", value = "color"),
@@ -47,9 +48,8 @@ SampleSlider <- dccSlider(id = "sample-slider",
                             "20000" = list("label" = "20K"),
                             "30000" = list("label" = "30K"),
                             "40000" = list("label" = "40K"),
-                            "53940" = "53940",
+                            "53940" = "53940"),
                           value = 1000
-                          )
 )
 heightSlider <- dccSlider(id = "height-slider",
                           min = 100,
@@ -62,13 +62,14 @@ heightSlider <- dccSlider(id = "height-slider",
                             "860" = "860",
                             "1050" = "1,050",
                             "1240" = "1,240",
-                            "1,430" = "1,430",
-                            "1,620" = "1,620",
-                            "1,810" = "1,810",
-                            "2,000" = "2,000"),
+                            "1430" = "1,430",
+                            "1620" = "1,620",
+                            "1810" = "1,810",
+                            "2000" = list("label" = 2,000)),
                           value = 1000
 )
 ##### CREATE LAYOUT VARIABLES #######
+
 pageTitle <- htmlH2("Diamonds Explorer")
 plotlyLogo <-
   htmlA(list(htmlImg(id = "banner-image", src = "assets/image.png")), className = "logo",
@@ -79,18 +80,24 @@ xDropDown <- dccDropdown(id = "x-dropdown",
                          clearable = FALSE)
 yDropDown <- dccDropdown(id = "y-dropdown",
                          options = DropDownMenuOptions,
-                         value = "cut",
+                         value = "price",
                          clearable = FALSE)
-FacetDropDown <- dccDropdown(id="facet-row-dropdown",
+ColorDropDown <- dccDropdown(id="color-dropdown",
                              options = DropDownMenuOptions,
-                             value = "None",
+                             value = "clarity",
                              clearable = FALSE)
-ClarityDropDown <- dccDropdown(id = "clarity-dropdown",
+
+FacetRowDropDown <- dccDropdown(id="facet-row-dropdown",
+                              options = DropDownMenuOptions,
+                              value = "clarity",
+                              clearable = FALSE)
+FacetColumnDropDown <- dccDropdown(id ="facet-column-dropdown",
                                options = DropDownMenuOptions,
-                               value = "clarity",
+                               value = "None",
                                clearable = FALSE)
 ###### APP START #######
 app = Dash$new()
+
 ########### CREATE LAYOUT ##############
 app$layout(
   htmlDiv(list(
@@ -98,19 +105,22 @@ app$layout(
       pageTitle
       ), className = "twelve columns"
   ),
-  
   htmlDiv(list(
     htmlLabel("SampleSize"),
-    SampleSlider,
+    htmlDiv(SampleSlider, style = list('marginBottom' = 25)
+    ),
     htmlLabel("X"),
     xDropDown,
     htmlLabel("Y"),
     yDropDown,
     htmlLabel("Color"),
+    ColorDropDown,
     htmlLabel("FacetRow"),
+    FacetRowDropDown,
     htmlLabel("FacetColumn"),
-    FacetDropDown,
+    FacetColumnDropDown,
     htmlLabel("Height of plot (in pixels)"),
+    htmlBr(),
     heightSlider
   ), className = "three columns"
   ),
