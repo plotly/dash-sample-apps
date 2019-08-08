@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath apps/dash-monthly-fund-report app:server
