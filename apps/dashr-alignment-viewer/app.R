@@ -504,13 +504,13 @@ alignlayout <- htmlDiv(id="alignment-body", className="app-body",children=list(
 ###HEADER###
 header <- htmlDiv(children = list(
   htmlSpan(list(htmlA(
-    htmlImg(src='assets/index.png', 
-            height = '50', 
-            width = '50',
-            style = list('top' = '10', 'margin-left' = '10px')),
+    children = list(
+      htmlImg(src='assets/plotly-dash-bio-logo.png', height = '36', width = '180',
+              style = list('top' = '10', 'margin-left' = '10px', 'margin-top' = '20px', 'margin-right' = '20px'))
+    ),
     href='https://dash-bio.plotly.host/Portal/'
   ))),
-  "Dash Alignment Viewer",
+  "Alignment Viewer",
   
   htmlA(href="https://github.com/plotly/dash-sample-apps/blob/master/apps/dashr-alignment-viewer/app.R",
         style = list("color" = "white",
