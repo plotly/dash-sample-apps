@@ -63,7 +63,7 @@ app$layout(htmlDiv(
     plotlyLogo,
     pageTitle,
     firstP,
-    htmlDiv(list(slider), className = "five columns"),
+    htmlDiv(list(slider), style=list('marginBottom' = 50), className = "five columns"),
     htmlDiv(list(dccGraph(id = 'histogram')), className = 'seven columns')
   )
 ))
