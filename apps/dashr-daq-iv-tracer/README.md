@@ -9,7 +9,7 @@ is a simple and effective way to bind a user interface around your R or Python c
 `dashr-daq-iv-tracer` uses the graphic elements of Dash DAQ to create an interface for acquiring current-voltage I-V curves with a Keithley 2400 SourceMeter.
 [Try this demo app](https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-daq-iv-tracer) on the Dash Deployment Server.
 
-Also, you can access to python version in the [Dash Gallery](https://dash-gallery.plotly.host/dash-daq-iv-tracer/).
+Also, you can access the Python version in the [Dash Gallery](https://dash-gallery.plotly.host/dash-daq-iv-tracer/).
 ### IV Curves
 
 I-V curve is a good way to characterize electronic components (diode, transistor or solar cells) and extract their operating properties. It is widely used in electrical engineering and physics.
@@ -25,25 +25,13 @@ acquisition and controls into your Dash applications.
 
 ### Controls
 
-- Single measurement mode: Adjust the value of the source with the knob at the bottom of the graph area and click on the `SINGLE MEASURE` button, the measured value will be displayed. Repetition of this procedure for different source values will reveal the full IV curve.
+- Single measurement mode: Adjust the value of the source with the knob at the bottom of the graph area and click on the `Single Measure` button, the measured value will be displayed. Repetition of this procedure for different source values will reveal the full IV curve.
 
-- Sweep mode: Set the sweep parameters `start`, `stop` and `step` as well as the time spent on each step, then click on the button `START SWEEP`, the result of the sweep will be displayed on the graph. The data is never erased unless the button `CLEAR GRAPH` is pressed, or if the source type is changed.
+- Sweep mode: Set the sweep parameters `start`, `stop` and `step` as well as the time spent on each step, then click on the button `Start Sweep`, the result of the sweep will be displayed on the graph. The data is never erased unless the button `Clear Graph` is pressed, or if the source type is changed.
 
 - Dark/light theme: Click on theme toggle on top of the page to view dark/light layout.
 
 ### Running the app locally
-
-First create a virtual environment with conda or venv inside a temp folder, then activate it.
-
-```
-virtualenv venv
-
-# Windows
-venv\Scripts\activate
-# Or Linux
-source venv/bin/activate
-
-```
 
 Clone the git repo:
 
@@ -56,7 +44,7 @@ Run `Rscript init.R` to install all of the required packages
 
 Run `Rscript app.R`:
 
-The app will load into your default browser window. If it does not, navigate to 127.0.0.1:8050. You should see something like this: 
+The app should automatically open in your default browser. If it does not, navigate to 127.0.0.1:8050. You should see something like this: 
 
 
 ## Screenshots
