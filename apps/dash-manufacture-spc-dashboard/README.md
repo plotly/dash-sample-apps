@@ -53,7 +53,7 @@ Open http://0.0.0.0:8050/ in your browser, you will see a live-updating dashboar
 
 Click on **Learn more** button to learn more about how this app works.
 
-## What does this app shows
+## What does this app show
 
 Click on buttons in `Parameter` column to visualize details of trendline on the bottom panel.
 
