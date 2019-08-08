@@ -435,6 +435,9 @@ body {
 }
 
 @media (max-width: 700px) {
+    #panel-lower{
+        padding: 1rem 0.5rem;
+    }
     #panel-lower-0 {
         display: grid;
         grid-template-columns: 1fr 1fr;
