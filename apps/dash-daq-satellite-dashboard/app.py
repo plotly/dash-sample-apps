@@ -376,7 +376,7 @@ histogram = html.Div(
 main_panel_layout = html.Div(
     id="panel-upper-lower",
     children=[
-        dcc.Interval(id="interval", interval=1 * 1000, n_intervals=0),
+        dcc.Interval(id="interval", interval=1 * 2000, n_intervals=0),
         map_graph,
         html.Div(
             id="panel",
