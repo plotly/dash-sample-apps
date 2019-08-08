@@ -379,36 +379,37 @@ GenerateModal <- function() {
             **What is this mock app about?**
 
             This is an app to show the graphic elements of Dash DAQ used to create an
-            interface for an IV curve tracer using a Keithley 2400 SourceMeter. This mock
-            demo does not actually connect to a physical instrument the values displayed
-            are generated from an IV curve model for demonstration purposes.
+            interface for an IV curve tracer using a Keithley 2400 SourceMeter.
+            Please note that this application does not interface with a physical instrument;
+            the values displayed are simulated using an IV curve model for demonstration purposes.
 
-            **How to use the mock app**
+            **How to use the application**
 
-            First choose if you want to source (apply) current or voltage, using the toggle switch under **Sourcing** label.
+            First, select either current or voltage as the source using the toggle
+            switch below the **Sourcing** label.
             Then choose if you want to operate in a **single measurement mode** or in a **sweep mode**.
 
             ***Single measurement mode***
 
-            Adjust the value of the source with the knob at the bottom of the graph area
-            and click on the `SINGLE MEASURE` button, the measured value will be displayed.
-            Repetition of this procedure for different source values will reveal the full
-            IV curve.
+            When selecting single measurement mode, a knob will appear to specify
+            current (amperes) or voltage (volts). Use this knob to adjust the value
+            of the source, then click the "Single Measure" button to display the result.
+            Repeating this process using a range of source values will reveal the full IV curve.
 
             ***Sweep mode***
 
             Set the sweep parameters `start`, `stop` and `step` as well as the time
-            spent on each step, then click on the button `START SWEEP`, the result of the
+            spent on each step, then click on the button `Start Sweep`, the result of the
             sweep will be displayed on the graph.
 
-            The data is never erased unless the button `CLEAR GRAPH` is pressed, or if the
+            The data is never erased unless the button `Clear Graph` is pressed, or if the
             source type is changed.
 
             ***Dark/light theme***
 
             Click on theme toggle on top of the page to view dark/light layout.
 
-            You can purchase the Dash DAQ components at [
+            You can check out the Dash DAQ components at [
             dashdaq.io](https://www.dashdaq.io/)
             '
           )
@@ -464,9 +465,8 @@ app$layout(htmlDiv(
           htmlP(
             children = "This app uses graphic elements of Dash DAQ to create
             an interface for an IV curve tracer using a Keithley 2400 SourceMeter.
-            The mock demo does not actually connect to a physical instrument,
-            the values displayed are generated from an IV curve model for
-            demonstration purposes.",
+            Please note that this application does not interface with a physical instrument;
+            the values displayed are simulated using an IV curve model for demonstration purposes.",
             className = "intro-banner-text"
           ),
           htmlButton(
