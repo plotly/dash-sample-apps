@@ -74,25 +74,37 @@
         top: 50% !important;
         padding: 0px !important;
         margin: 0px !important;
-        right: calc(100% - 420px) !important;
+        right: calc(100% - 424px) !important;
         height: 182px !important;
         clip-path: none !important;
+    }
+
+    #las-header {
+        display: auto;
+        width: auto;
     }
 
     #las-header-text {
         position: absolute !important;
         top: 50% !important;
         right: 0px;
-        padding: 50px;
+        margin-top: 0px !important;
+        padding: 55px;
         background-color: #0057a5;
+    }
+
+    #las-header-text h1 {
+        font-size: 35pt !important;
+        font-weight: bolder;
+        color: white !important;
     }
 
     #las-file-info {
         font-size: 12pt;
-        margin-left: -5px !important;
+        margin-left: -2px !important;
         background-color: #0057a5 !important;
         color: white !important;
-        padding: 0px;
+        padding: 10px;
         font-weight: 100 !important;
     }
 
@@ -101,12 +113,6 @@
         position: relative;
         top: -125px;
         left: -125px;
-    }
-
-    #las-header-text h1 {
-        font-size: 35pt !important;
-        font-weight: bolder;
-        color: white !important;
     }
 
     #las-table {
@@ -192,18 +198,17 @@ body {
     display: inline;
 }
 
-#las-file-info {
-    margin-top: -10px;
-    display: block;
+#frontpage {
+    margin-left: 50px;
     padding: 10px;
-    color: black;
-    margin-left: 70px;
-    font-weight: 100 !important;
 }
 
 #dash-logo {
-    height: 70px;
-    position: relative;
+    height: 55px;
+    position: absolute;
+    right: 0;
+    margin-top: 40px;
+    padding-right: 120px;
 }
 
 #las-logo {
@@ -212,22 +217,28 @@ body {
     top: 40px;
     background-color: white;
     margin-right: 20px;
-    display: inline
+    display: inline-block;
 }
 
-#frontpage {
-    margin-left: 50px;
-    padding: 10px;
+#las-header {
+    display: inline-flex;
+    width: 100%;
 }
 
 #las-header-text {
-    display: inline;
     position: relative;
-    top: -10px;
+    margin-top: 24px;
 }
 
 #las-header-text h1 {
     position: relative;
+}
+
+#las-file-info {
+    display: block;
+    padding: 0px 3px;
+    color: black;
+    font-weight: 100 !important;
 }
 
 #controls {
@@ -262,6 +273,7 @@ body {
     border-radius: 5px;
     transition-duration: 500ms;
 }
+
 #las-print:hover {
     color: #232323;
     border-color: #232323;

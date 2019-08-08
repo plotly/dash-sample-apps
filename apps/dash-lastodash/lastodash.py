@@ -90,7 +90,10 @@ def generate_frontpage():
                 ),
                 html.Img(
                     id="dash-logo",
-                    src=app.get_asset_url("dash-logo.png") 
+                    #src=app.get_asset_url("dash-logo.png")
+                    src="data:image/png;base64,{}".format(
+                        base64.b64encode(open("assets/dash-logo.png", "rb").read()).decode()
+                    ),
                 )
             ],
         )
