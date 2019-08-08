@@ -35,7 +35,6 @@ remotes::install_github("plotly/dashR", dependencies=TRUE)
 remotes::install_github("plotly/dash-html-components")
 remotes::install_github("plotly/dash-core-components")
 remotes::install_github("plotly/dash-bio", dependencies=TRUE)
-remotes::install_github("plotly/dash-daq", dependencies=TRUE)
 
 install.packages("plotly")
 install.packages("plyr")

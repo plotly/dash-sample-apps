@@ -1,5 +1,6 @@
 #alignment-body ::-webkit-scrollbar-thumb {
     background-color: #34AD99 !important;
+    padding-top: 50px;
 }
 
 #alignment-control-tabs {
