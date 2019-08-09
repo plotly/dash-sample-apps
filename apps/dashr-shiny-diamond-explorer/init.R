@@ -10,7 +10,7 @@ options(repos=r)
 
 # packages go here
 install.packages("remotes")
-install.packages("ggplot2movies")
+install.packages("ggplot2")
 
 # installs crayon, digest, htmltools, mime, sourcetools, xtable
 remotes::install_version("shiny", version = "1.2.0", repos = "http://cloud.r-project.org", upgrade="never")
