@@ -13,7 +13,7 @@ We suggest you to create a separate virtual environment running Python 3 for thi
 
 ```
 git clone https://github.com/plotly/dash-sample-apps
-cd dash-sample-apps/apps/dash-oil-gas-ternary
+cd dash-sample-apps/apps/dash-datashader
 python3 -m virtualenv venv
 ```
 In UNIX system: 
