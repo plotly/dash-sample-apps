@@ -1,5 +1,6 @@
 appName <- Sys.getenv("DASH_APP_NAME")
 
+
 if (appName != ""){
   
   pathPrefix <- sprintf("/%s/", appName)
@@ -26,9 +27,12 @@ library(readr)
 library(jsonlite)
 library(RCurl)
 
-dataset1 <- read_file("./data/alignment_viewer_sample.fasta")
-dataset2 <- read_file("./data/alignment_viewer_p53.fasta")
-dataset3 <- read_file("./data/alignment_viewer_p53_clustalo.fasta")
+
+app <- Dash$new()
+
+dataset1 <- read_file("data/alignment_viewer_sample.fasta")
+dataset2 <- read_file("data/alignment_viewer_p53.fasta")
+dataset3 <- read_file("data/alignment_viewer_p53_clustalo.fasta")
 
 DATASETS <- list("dataset1"=dataset1,
                  "dataset2"=dataset2,
@@ -596,7 +600,7 @@ app$callback(
 app$callback(
   output("alignment-chart",'data'),
   list(input('alignment-data-store',"data")),
-  
+
   update_chart <- function(input_data){
     return(input_data)
   }
@@ -606,7 +610,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'colorscale'),
   list(input('alignment-colorscale-dropdown', 'value')),
-  
+
   customize_colorscale <- function(val) {
     return(val)
   }
@@ -615,7 +619,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'overview'),
   list(input('alignment-overview-dropdown', 'value')),
-  
+
   customize_overview <- function(val) {
     return(val)
   }
@@ -624,7 +628,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'showconsensus'),
   list(input('alignment-showconsensus-radio', 'value')),
-  
+
   customize_showconsensus <- function(val){
     return(val)
   }
@@ -633,7 +637,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'textsize'),
   list(input('alignment-textsize-slider', 'value')),
-  
+
   customize_textsize <- function(val){
     return(val)
   }
@@ -642,7 +646,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'showconservation'),
   list(input('alignment-showconservation-radio', 'value')),
-  
+
   customize_showconservation <- function(val){
     return(val)
   }
@@ -651,7 +655,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'conservationcolorscale'),
   list(input('alignment-conservationcolorscale-dropdown', 'value')),
-  
+
   customize_conservationcolorscale <- function(val){
     return(val)
   }
@@ -660,7 +664,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'conservationmethod'),
   list(input('alignment-conservationmethod-dropdown', 'value')),
-  
+
   customize_conservationmethod <- function(val){
     return(val)
   }
@@ -669,7 +673,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'correctgap'),
   list(input('alignment-correctgap-radio', 'value')),
-  
+
   customize_correctgap <- function(val){
     return(val)
   }
@@ -678,7 +682,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'showgap'),
   list(input('alignment-showgap-radio', 'value')),
-  
+
   customize_showgap <- function(val){
     return(val)
   }
@@ -687,7 +691,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'gapcolor'),
   list(input('alignment-gapcolor-dropdown', 'value')),
-  
+
   customize_gapcolor <- function(val){
     return(val)
   }
@@ -696,16 +700,15 @@ app$callback(
 app$callback(
   output('alignment-chart', 'groupbars'),
   list(input('alignment-groupbars-radio', 'value')),
-  
+
   customize_groupbars <- function(val)
-    return(val)
-  
+    return(val)  
 )
 
 app$callback(
   output('alignment-chart', 'showlabel'),
   list(input('alignment-showlabel-radio', 'value')),
-  
+
   customize_showlabe <- function(val){
     return(val)
   }
@@ -714,7 +717,7 @@ app$callback(
 app$callback(
   output('alignment-chart', 'showid'),
   list(input('alignment-showid-radio', 'value')),
-  
+
   customize_showid <- function(val){
     return(val)
   }
@@ -729,3 +732,4 @@ if (appName != "") {
   app$run_server(showcase = TRUE)
   
 }
+
