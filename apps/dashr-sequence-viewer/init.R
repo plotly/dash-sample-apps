@@ -35,3 +35,12 @@ remotes::install_github("plotly/dash-bio", dependencies=TRUE)
 
 install.packages("plotly")
 install.packages("plyr")
+install.pacakges("stringr")
+install.packages("sets")
+
+#BioStrings
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install("Biostrings")
+
+
