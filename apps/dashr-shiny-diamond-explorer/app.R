@@ -147,12 +147,22 @@ app$layout(
   )
 )
 ################ CALLBACKS #####################
+
 app$callback(output = list(id = 'scatter-purple', property = 'figure'), 
              params = list(
                input(id = 'sample-slider', property = 'value'),
-               input(id = 'height-slider', property = 'value')),
+               input(id = 'height-slider', property = 'value'),
+               input(id = 'x-dropdown', property = 'value'),
+               input(id = 'y-dropdown', property = 'value'),
+               input(id = 'color-dropdown', property = 'value'),
+               input(id = 'facet-row-dropdown', property = 'value'),
+               input(id = 'facet-col-dropdown', property = 'value')),
              
-function(x, y, color, facet_row, facet_col) {
+##add several callbacks
+             
+function(value) {
+  
+  ##multiple outputs, with similar callbacks but different datasets
     
 #graph built with ggplot syntax - note that ggplot layout height/width deprecated, find equivalent
   p <- ggplot(
@@ -161,20 +171,60 @@ function(x, y, color, facet_row, facet_col) {
       x = x, 
       y = y, color = color)) + 
     geom_point()
-
+  
   # if at least one facet column/row is specified, add it
   facets <- paste(
-    input$facet_row,
+    facet_row,
     '~', 
-    input$facet_col)
+    facet_col)
   
   if (facets != '. ~ .')
     p <- p + facet_grid(facets)
 
 %>% 
-    
   layout(height = input$plotHeight, autosize=TRUE)
+  
+  return(p)
+  
 })
+
+app$callback(output = list(id = 'scatter-blue', property = 'figure'), 
+             params = list(
+               input(id = 'sample-slider', property = 'value'),
+               input(id = 'height-slider', property = 'value'),
+               input(id = 'x-dropdown', property = 'value'),
+               input(id = 'y-dropdown', property = 'value'),
+               input(id = 'color-dropdown', property = 'value'),
+               input(id = 'facet-row-dropdown', property = 'value'),
+               input(id = 'facet-col-dropdown', property = 'value')),
+             
+function(value) {
+               
+##multiple outputs, with similar callbacks but different datasets
+               
+#graph built with ggplot syntax - note that ggplot layout height/width deprecated, find equivalent
+p <- ggplot(
+dataset(), 
+aes_string(
+x = x, 
+y = y, color = color)) + 
+geom_point()
+               
+# if at least one facet column/row is specified, add it
+facets <- paste(
+facet_row,
+'~', 
+facet_col)
+               
+if (facets != '. ~ .')
+p <- p + facet_grid(facets)
+               
+%>% 
+layout(height = input$plotHeight, autosize=TRUE)
+               
+  return(p)
+               
+             })
              
 ########CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL
 if (appName != '') {
