@@ -5,6 +5,10 @@ Dash abstracts away all of the technologies and protocols required to build an i
 
 Try out the [demo app here](https://dash-gallery.plotly.host/dash-datashader/).
 
-![screenshot](assets/datashader.png "Screenshot")
 
 To learn more check out our [documentation](https://dash.plot.ly).
+
+### Contributing
+
+
+Changes to master will get deployed automatically.
