@@ -1,4 +1,7 @@
 vv/
 *.pyc
+*.DS_Store
 venv/
 .idea/
+.DS_Store
+.Rproj.user
