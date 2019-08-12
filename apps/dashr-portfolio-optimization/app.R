@@ -6,9 +6,9 @@ library(data.table)
 source("helperFunctions.R")
 
 # Load default data
-load("portfolioData.RData")
+load("data/portfolioData.RData")
 # load list of all symbols
-allSymbols <- readRDS("allSymbols.rds")
+allSymbols <- readRDS("data/allSymbols.rds")
 
 
 app <- Dash$new()
