@@ -1,5 +1,7 @@
+import lasio
 import argparse
 import os
+import re
 import pandas
 import pathlib
 
@@ -8,14 +10,10 @@ from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table as dt
-import base64
 
 from plotly import tools
 import plotly.graph_objs as go
 
-import lasio
-
-import re
 
 app = dash.Dash(__name__)
 
@@ -36,7 +34,11 @@ def parse_args():
         help="Log ASCII Standard (LAS) file",
     )
 
-    parser.add_argument("--debug", "-d", action="store_true", help="enable debug mode")
+    parser.add_argument(
+        "--debug", "-d", 
+        action="store_true", 
+        help="enable debug mode"
+    )
 
     args = parser.parse_args()
 
@@ -53,50 +55,40 @@ lf = lasio.read(lasfile)
 
 
 def generate_frontpage():
-
     filename = os.path.basename(lasfile.name)
 
-    frontpage = []
-
-    # get the header
-    frontpage.append(
-        html.Div(
-            id="las-header",
-            children=[
-                html.Img(
-                    id="las-logo",
-                    src="data:image/png;base64,{}".format(
-                        base64.b64encode(open("assets/logo.png", "rb").read()).decode()
+    return html.Div(
+        id="las-header",
+        children=[
+            html.Img(
+                id="las-logo",
+                src=app.get_asset_url("logo.png")
+            ),
+            html.Div(
+                id="las-header-text",
+                children=[
+                    html.H1("LAS Report"),
+                    html.Div(
+                        id="las-file-info",
+                        children=[
+                            html.Span(id="las-filename", children=filename),
+                            html.Span(
+                                " ({0})".format(
+                                    lf.version["VERS"].descr
+                                    if "VERS" in lf.version
+                                    else "Unknown version"
+                                )
+                            ),
+                        ],
                     ),
-                ),
-                html.Div(
-                    id="las-header-text",
-                    children=[
-                        html.H1("LAS Report"),
-                        html.Div(
-                            id="las-file-info",
-                            children=[
-                                html.Span(id="las-filename", children=filename),
-                                html.Span(
-                                    " ({0})".format(
-                                        lf.version["VERS"].descr
-                                        if "VERS" in lf.version
-                                        else "Unknown version"
-                                    )
-                                ),
-                            ],
-                        ),
-                    ],
-                ),
-                html.Img(
-                    id="dash-logo",
-                    src=app.get_asset_url("dash-logo.png")
-                )
-            ],
-        )
+                ],
+            ),
+            html.Img(
+                id="dash-logo",
+                src=app.get_asset_url("dash-logo.png")
+            )
+        ],
     )
-
-    return frontpage
 
 
 def generate_axis_title(descr, unit):
@@ -306,7 +298,10 @@ app.layout = html.Div(
 )
 
 
-@app.callback(Output("las-table-print", "children"), [Input("table", "data")])
+@app.callback(
+    Output("las-table-print", "children"), 
+    [Input("table", "data")]
+)
 def update_table_print(data):
     colwidths = {
         "mnemonic": "100px",
@@ -340,5 +335,4 @@ def update_table_print(data):
 
 
 if __name__ == "__main__":
-
     app.run_server(debug=debug)
