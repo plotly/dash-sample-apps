@@ -32,11 +32,7 @@ def parse_args():
         help="Log ASCII Standard (LAS) file",
     )
 
-    parser.add_argument(
-        "--debug", "-d", 
-        action="store_true", 
-        help="enable debug mode"
-    )
+    parser.add_argument("--debug", "-d", action="store_true", help="enable debug mode")
 
     args = parser.parse_args()
 
@@ -58,10 +54,7 @@ def generate_frontpage():
     return html.Div(
         id="las-header",
         children=[
-            html.Img(
-                id="las-logo",
-                src=app.get_asset_url("logo.png")
-            ),
+            html.Img(id="las-logo", src=app.get_asset_url("logo.png")),
             html.Div(
                 id="las-header-text",
                 children=[
@@ -81,10 +74,7 @@ def generate_frontpage():
                     ),
                 ],
             ),
-            html.Img(
-                id="dash-logo",
-                src=app.get_asset_url("dash-logo.png")
-            )
+            html.Img(id="dash-logo", src=app.get_asset_url("dash-logo.png")),
         ],
     )
 
@@ -296,10 +286,7 @@ app.layout = html.Div(
 )
 
 
-@app.callback(
-    Output("las-table-print", "children"), 
-    [Input("table", "data")]
-)
+@app.callback(Output("las-table-print", "children"), [Input("table", "data")])
 def update_table_print(data):
     colwidths = {
         "mnemonic": "100px",
