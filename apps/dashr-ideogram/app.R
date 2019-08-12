@@ -259,7 +259,7 @@ listOfOptions <- lapply(chromosomes, function(x) {
         dccDropdown(
           className = 'ideogram-dropdown',
           id = 'displayed-chromosomes',
-          options = listOfoptions,
+          options = listOfOptions,
           multi = TRUE,
           value = listofchromosomes
         )
@@ -274,14 +274,14 @@ listOfOptions <- lapply(chromosomes, function(x) {
       dccDropdown(
         className = 'ideogram-dropdown',
         id = 'chr-select-1',
-        options = listofOptions , value = '1'
+        options = listOfOptions , value = '1'
       ),
       
       dccDropdown(
         className = 'ideogram-dropdown',
         id = 'chr-select-2',
         value = '2',
-        options = listofOptions
+        options = listOfOptions
       ),
       
       chromosome_div(
@@ -309,7 +309,7 @@ listOfOptions <- lapply(chromosomes, function(x) {
         dccDropdown(
           className = 'ideogram-dropdown',
           id = 'chr-brush',
-          options = listofOptions, value = 'X'
+          options = listOfOptions, value = 'X'
         )
       )),
       
@@ -547,11 +547,11 @@ listOfOptions <- lapply(chromosomes, function(x) {
   
   header <- htmlDiv(children = list(
     htmlSpan(list(htmlA(
-      htmlImg(src='assets/index.png', height = '50', width = '50',
-              style = list('top' = '10', 'margin-left' = '10px')),
+      htmlImg(src='assets/plotly-dash-bio-logo.png', height = '36', width = '180',
+              style = list('top' = '10', 'margin-left' = '10px', 'margin-right' = '15px')),
       href='https://dash-bio.plotly.host/Portal/'))),
     
-      "    Dash Ideogram",
+      "Ideogram",
   
       
       htmlA(href="http://github.com/plotly/dash-bio/blob/master/tests/dashbio_demos/app_ideogram.py",
@@ -1064,3 +1064,5 @@ if (appName != "") {
   app$run_server(showcase = TRUE)
   
 }
+
+  

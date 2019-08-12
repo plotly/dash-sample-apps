@@ -1,12 +1,5 @@
 /* custom styling for the new refreshed app */
 
-/* .container {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  border-radius: 0.75rem;
-} */
-
-
-
 #div-total-step-count > h6 {
   font-weight: bold;
   font-size: 20px;
@@ -31,8 +24,9 @@
   display: none;
 }
 
-.two.columns {
-  /* padding: 0px 5px; */
+#plotly-logo {
+  margin-top: 10px;
+  margin-left: 4px;
 }
 
 #learn-more-button {
