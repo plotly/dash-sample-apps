@@ -17,42 +17,32 @@ if (appName != ""){
 
 app <- Dash$new()
 
-setwd(sprintf("./app/apps/%s", appName))
-
 df <- read.csv('./data/clinical_analytics.csv', header = TRUE, sep = ",")
 
+colnames(df) <- c("admit_source", "admit_type", "appt_start_time", "care_score",
+                  "check_in_time", "clinic_name", "department", "diagnosis_primary",
+                  "discharge_datetime_new", "encounter_number","encounter_status",
+                  "number_of_records", "wait_time_min")
 
-#list of clinics
-clinics = unique(df$Clinic.Name)
-clinic_list <- list()
-for (i in 1:length(clinics)){
-  clinic_list[[i]] <- list(label = clinics[i], value = clinics[i])
-}
+clinic_list <- as.list(unique(df$clinic_name))
 
-#list of check in times
-times = unique(df$Check.In.Time)
-times_list <- list()
-for (i in 1:length(clinics)){
-  times_list[[i]] <- list(label = times[i], value = times[i])
-}
+times_list <- as.list(unique(df$check_in_time))
 
-#list of all departments 
-deps = unique(df$Department)
-all_departments = list()
-for(i in 1:length(deps)){
-  all_departments[[i]] = toString(deps[[i]])
-}
+all_departments <- as.list(unique(df$department))
 
-df$Admit.Source[df$Admit.Source==""] <- "Not Identified"
+levels(df$admit_source)[levels(df$admit_source)==""] <- "Not Identified"
 
-df$Days.of.Wk = df$Check.In.Hour = df$Check.In.Time
+#creating days_of_wk column 
+df$days_of_wk <- df$check_in_time 
 
-#add Days of Wk column to df
-#this is so slow sos
-df$Days.of.Wk = weekdays(as.POSIXlt(df$Days.of.Wk))
+#creating check_in_hour column
+df$check_in_hour <- df$check_in_time 
 
-#add Check In Hour column to df
-printHour <- function(date_time_string) {
+#add days of wk column to df
+df$days_of_wk <- as.vector(apply(as.matrix(df$check_in_time ), 2, function(x) format(as.Date(x), "%A")))
+
+#add check in hour column to df
+print_hour <- function(date_time_string) {
   s1 = strsplit(date_time_string, split=' ', fixed=TRUE)
   #s1 = "Y-M-D" "H:M:S" "AM/PM"
   
@@ -70,12 +60,11 @@ printHour <- function(date_time_string) {
   time = paste(hour, am_pm)
 }
 
-#also very slow :(
-df$Check.In.Hour = lapply(df$Check.In.Hour, printHour)
+df$check_in_hour <- lapply(df$check_in_hour, print_hour)
 
-df$Check.In.Time = as.Date(df$Check.In.Time)
+df$check_in_time  <- as.Date(df$check_in_time )
 
-admits = unique(df$Admit.Source)
+admits <- unique(df$admit_source)
 admit_list <- list()
 for (i in 1:length(admits)){
   admit_list[[i]] <- toString(admits[i])
@@ -87,9 +76,9 @@ for (i in 1:length(admits)){
   admit_list1[[i]] <- list(label = admits[i], value = admits[i])
 }
 
-y_axis = list('Sunday', 'Saturday', 'Friday', 'Thursday','Wednesday','Tuesday', 'Monday')
+y_axis <- list('Sunday', 'Saturday', 'Friday', 'Thursday','Wednesday','Tuesday', 'Monday')
 
-x_axis = list('12 AM', '01 AM', '02 AM', '03 AM', '04 AM', '05 AM', '06 AM', '07 AM', '08 AM', '09 AM', '10 AM', '11 AM', 
+x_axis <- list('12 AM', '01 AM', '02 AM', '03 AM', '04 AM', '05 AM', '06 AM', '07 AM', '08 AM', '09 AM', '10 AM', '11 AM', 
               '12 PM', '01 PM', '02 PM', '03 PM', '04 PM', '05 PM', '06 PM', '07 PM', '08 PM', '09 PM', '10 PM', '11 PM') 
 
 ### FUNCTIONS ###
@@ -105,25 +94,25 @@ bold_labels <- function(department){
 }
 
 #generate heat map
-gen_heatmap1 = function(clinic_name,hm_click, start_date, end_date, admit_source){
+gen_heatmap1 <- function(clinic_name,hm_click, start_date, end_date, admit_source){
   
   #filter df by clinic name, start date, end date, and admit list
-  df_clinic = filter(df, df$Clinic.Name==clinic_name)
-  date_sequence = seq(as.Date(start_date), as.Date(end_date), "days")
-  df_date = filter(df_clinic,is.element(df_clinic$Check.In.Time, date_sequence))
-  df_date = df_date[order(df_date$Check.In.Time),]
-  df_date = filter(df_date,is.element(df_date$Admit.Source, admit_source))
+  df_clinic <- filter(df, df$clinic_name==clinic_name)
+  date_sequence <- seq(as.Date(start_date), as.Date(end_date), "days")
+  df_date <- filter(df_clinic,is.element(df_clinic$check_in_time, date_sequence))
+  df_date <- df_date[order(df_date$check_in_time),]
+  df_date <- filter(df_date,is.element(df_date$admit_source, admit_source))
   
   # z_axis holds the number of patient records for that given time and day
-  z_axis = matrix(0, 7,24)
-  annotations = list()
-  k=1
+  z_axis <- matrix(0, 7,24)
+  annotations <- list()
+  k <- 1
   
   for(i in 1:length(y_axis)){
-    df_day = filter(df_date, df_date$Days.of.Wk == y_axis[[i]])
+    df_day <- filter(df_date, df_date$days_of_wk == y_axis[[i]])
     for(j in 1:length(x_axis)){
-      df_hour = filter(df_day, df_day$Check.In.Hour==x_axis[[j]])
-      sum = sum(df_hour$Number.of.Records)
+      df_hour <- filter(df_day, df_day$check_in_hour==x_axis[[j]])
+      sum <- sum(df_hour$number_of_records)
       annotation = list(
         showarrow= FALSE,
         text = paste("<b>",toString(sum),"</b>"),
@@ -158,10 +147,10 @@ gen_heatmap1 = function(clinic_name,hm_click, start_date, end_date, admit_source
   }
   
   #hover text for heatmap
-  text1 = paste("<br>","%{y}" ,"%{x}", "<br><br>",
+  text1 <- paste("<br>","%{y}" ,"%{x}", "<br><br>",
                 "%{z}", " Patient Records")
 
-  heat_map = plot_ly(x=x_axis, y = y_axis, z = z_axis,
+  heat_map <- plot_ly(x=x_axis, y = y_axis, z = z_axis,
                      type = 'heatmap', name = "",
                      hovertemplate = text1,
                      colorscale=list(list(0, "#caf3ff"), list(1, "#2c82ff")),
@@ -188,28 +177,28 @@ make_tick_vals = function(dep_length){
 }
 
 #generate wait time graph
-generate_wait_time_graph = function(df1,clinic_name, admit_source, start_date, end_date){
+generate_wait_time_graph = function(df1,clin_name, admit_source, start_date, end_date){
 
   #filter by clinic, admit source, start date, end date
-  df_filter = filter(df1, df1$Clinic.Name==clinic_name)
-  df_filter = df_filter[is.element(df_filter$Admit.Source, admit_source),]
-  date_sequence = seq(as.Date(start_date), as.Date(end_date), "days")
-  df_filter = filter(df_filter,is.element(df_filter$Check.In.Time, date_sequence))
+  df_filter <- filter(df1, df1$clinic_name==clin_name)
+  df_filter <- df_filter[is.element(df_filter$admit_source, admit_source),]
+  date_sequence <- seq(as.Date(start_date), as.Date(end_date), "days")
+  df_filter <- filter(df_filter,is.element(df_filter$check_in_time, date_sequence))
 
   #get average wait time and care score
   x1 <- df_filter %>%
-    group_by(Department, Encounter.Number, Care.Score, Check.In.Time) %>%
-    summarize(mean_wait = mean(Wait.Time.Min),
-              mean_care_score = mean(Care.Score))
+    group_by(department, encounter_number, care_score, check_in_time) %>%
+    summarize(mean_wait = mean(wait_time_min),
+              mean_care_score = mean(care_score))
   
   #hover text
-  text_wait = paste("Patient # : ", x1$Encounter.Number, 
-                    "<br>Check in Time: ", x1$Check.In.Time,
+  text_wait <- paste("Patient # : ", x1$encounter_number, 
+                    "<br>Check in Time: ", x1$check_in_time,
                     "<br>Wait Time: ", x1$mean_wait, " Minutes <br>Care Score: ",
                     x1$mean_care_score)
 
-  p1 = plot_ly(data = x1, x = ~mean_wait, 
-               y = ~Department, 
+  p1 <- plot_ly(data = x1, x = ~mean_wait, 
+               y = ~department, 
                type = 'scatter',
                mode = "marker",
                hoverinfo = "text", text = text_wait,
@@ -243,26 +232,26 @@ generate_wait_time_graph = function(df1,clinic_name, admit_source, start_date, e
 }
 
 #generate care score graph
-generate_care_score_graph = function(df2,clinic_name, admit_source, start_date, end_date){
+generate_care_score_graph <- function(df2,clin_name, admit_source, start_date, end_date){
   #filter by clinic, admit source, start date, end date
-  df_filter = filter(df2, df2$Clinic.Name==clinic_name)
-  df_filter = df_filter[is.element(df_filter$Admit.Source, admit_source),]
-  date_sequence = seq(as.Date(start_date), as.Date(end_date), "days")
-  df_filter = filter(df_filter,is.element(df_filter$Check.In.Time, date_sequence))
+  df_filter <- filter(df2, df2$clinic_name==clin_name)
+  df_filter <- df_filter[is.element(df_filter$admit_source, admit_source),]
+  date_sequence <- seq(as.Date(start_date), as.Date(end_date), "days")
+  df_filter <- filter(df_filter,is.element(df_filter$check_in_time, date_sequence))
   
   #get average care score and wait time
   x1 <- df_filter %>%
-    group_by(Department, Encounter.Number, Check.In.Time) %>%
-    summarize(mean_care_score = mean(Care.Score),
-              mean_wait = mean(Wait.Time.Min))
+    group_by(department, encounter_number, check_in_time) %>%
+    summarize(mean_care_score = mean(care_score),
+              mean_wait = mean(wait_time_min))
   
   #hover text
-  text_care = paste("Patient # : ", x1$Encounter.Number, 
-                    "<br>Check in Time: ", x1$Check.In.Time,
+  text_care <- paste("Patient # : ", x1$encounter_number, 
+                    "<br>Check in Time: ", x1$check_in_time,
                     "<br>Wait Time: ", x1$mean_wait, " Minutes <br>Care Score: ",
                     x1$mean_care_score)
 
-  p2 = plot_ly(data = x1, x = ~mean_care_score, y = ~Department, type = 'scatter',
+  p2 <- plot_ly(data = x1, x = ~mean_care_score, y = ~department, type = 'scatter',
                hoverinfo = "text", text = text_care, 
                mode = "marker",
                marker = list(size = 14,
@@ -292,31 +281,31 @@ generate_care_score_graph = function(df2,clinic_name, admit_source, start_date, 
 }
 
 #### PLOTLY OBJECTS ####
-clinic_dropdown = dccDropdown(options = clinic_list,
+clinic_dropdown <- dccDropdown(options = clinic_list,
                               value = 'Madison Center',
                               id = 'clinic-select')
 
-check_in_time_picker = dccDatePickerRange(id = 'date-picker-select',
+check_in_time_picker <- dccDatePickerRange(id = 'date-picker-select',
                                           start_date = as.Date("2014-1-1"),
                                           end_date = as.Date("2014-1-15"),
                                           min_date_allowed = as.Date("2014-1-1"),
                                           max_date_allowed = as.Date("2014-12-31"),
                                           initial_visible_month = as.Date("2014-1-1"))
 
-admit_multi_select = dccDropdown(options = admit_list1,
+admit_multi_select <- dccDropdown(options = admit_list1,
                                  id="admit-select",
                                  value = admit_list,
                                  multi = TRUE)
 
-hm_click = list()
+hm_click <- list()
 
-starter_heat_map = gen_heatmap1("Madison Center", hm_click, "2014-1-1", "2014-1-15", admit_list)
+starter_heat_map <- gen_heatmap1("Madison Center", hm_click, "2014-1-1", "2014-1-15", admit_list)
 
-starter_wait_graph = generate_wait_time_graph(df,"Madison Center", admit_list, "2014-1-1", "2014-1-15")
+starter_wait_graph <- generate_wait_time_graph(df,"Madison Center", admit_list, "2014-1-1", "2014-1-15")
 
-starter_care_graph = generate_care_score_graph(df,"Madison Center", admit_list, "2014-1-1", "2014-1-15")
+starter_care_graph <- generate_care_score_graph(df,"Madison Center", admit_list, "2014-1-1", "2014-1-15")
 
-wait_care_graph = subplot(starter_wait_graph,starter_care_graph)
+wait_care_graph <- subplot(starter_wait_graph,starter_care_graph)
 
 
 ### APP LAYOUT ###
@@ -478,7 +467,7 @@ app$callback(
       return(wait_care_graph)
     }
     else{
-      df_fil = filter(df, df$Check.In.Hour==click$points[[1]]$x & df$Days.of.Wk==click$points[[1]]$y)
+      df_fil = filter(df, df$check_in_hour==click$points[[1]]$x & df$days_of_wk==click$points[[1]]$y)
       care = generate_care_score_graph(df_fil,clinic, admit_source, start, end)
       wait = generate_wait_time_graph(df_fil,clinic, admit_source, start, end)
       wait_care = subplot(wait,care)
@@ -489,4 +478,5 @@ app$callback(
 
 
 app$run_server(showcase = TRUE)
+
 
