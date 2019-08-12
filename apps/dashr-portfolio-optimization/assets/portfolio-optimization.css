@@ -1,0 +1,98 @@
+.container.scalable {
+  width: 100%;
+  max-width: none;
+}
+
+._dash-undo-redo {
+  display: none;
+}
+
+body {
+  background-color: #F8F8F8;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+}
+
+.banner {
+  background-color: #6c7480;
+  color: white;
+  height: 10rem;
+  margin-bottom: 1rem;
+  padding: 0rem 5rem 0rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.banner h6 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.banner Img {
+  position: relative;
+  height: 5rem;
+  width: auto;
+}
+
+#frontier-plot-outer {
+  height: 50vh;
+}
+
+#diversification-plot-outer {
+  padding-top: 2rem;
+  height: 40vh;
+}
+
+#diversification-plot {
+  height: 40vh;
+}
+
+#history-plot-outer {
+  height: 30vh;
+}
+
+#history-plot {
+  height: 30vh;
+}
+
+#app-body{
+  display: flex;
+  justify-content: space-around;
+}
+
+#controls-div{
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  height: auto;
+  max-height: calc(100vh - 20rem);
+  border: 1px solid gray;
+  border-radius: 5px;
+  margin-left: 2rem;
+  padding: 1rem 0 2rem;
+}
+
+#resample-button {
+  width: 50%;
+  margin: 0 auto;
+}
+
+#plots-div{
+  width: 60vw;
+  height: calc(100vh - 11rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.control{
+  padding: 1em 2em 2em 2em;
+}
+
+
