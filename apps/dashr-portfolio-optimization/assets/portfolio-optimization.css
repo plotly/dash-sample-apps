@@ -15,7 +15,7 @@ body {
 }
 
 .banner {
-  background-color: #6c7480;
+  background-color: #317e82;
   color: white;
   height: 10rem;
   margin-bottom: 1rem;
@@ -24,6 +24,10 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+
+.banner h1 {
+  margin-bottom: 0rem;
 }
 
 .banner h6 {
@@ -40,9 +44,9 @@ body {
   width: auto;
 }
 
-#frontier-plot-outer {
-  height: 50vh;
-}
+/*#frontier-plot-outer {*/
+  /*height: 50vh;*/
+/*}*/
 
 #diversification-plot-outer {
   padding-top: 2rem;
@@ -70,12 +74,13 @@ body {
   display: flex;
   flex-direction: column;
   width: 30vw;
-  height: auto;
+  height: calc(50vh - 11rem);
   max-height: calc(100vh - 20rem);
   border: 1px solid gray;
   border-radius: 5px;
   margin-left: 2rem;
-  padding: 1rem 0 2rem;
+  padding: 0 0 2rem;
+  overflow-y: scroll;
 }
 
 #resample-button {
@@ -95,4 +100,9 @@ body {
   padding: 1em 2em 2em 2em;
 }
 
+.control-submit-store{
+  padding: 1em 2em 2em 2em;
+  display: flex;
+  justify-content:space-between;
+}
 

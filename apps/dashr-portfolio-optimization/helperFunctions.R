@@ -143,30 +143,37 @@ generateFrontierPlot <- function(portfolioData){
   ) %>% 
     add_trace(inherit = FALSE, data = eff.frontier, 
               x = eff.frontier$Risk, y = eff.frontier$Return, mode = "markers", 
-              type = "scattergl", showlegend = F, 
+              type = "scattergl", #showlegend = F, 
+              name = "Efficient Frontier (no weight concentration)",
               marker = list(color = "#F7C873", size = 5)) %>% 
     add_trace(inherit = FALSE, data = eff.frontier.wc,
               x = eff.frontier.wc$Risk, y = eff.frontier.wc$Return, mode = "markers", 
-              type = "scattergl", showlegend = F, 
+              type = "scattergl", #showlegend = F, 
+              name = "Efficient Frontier (with weight concentration)",
               marker = list(color = "#ff471a", size = 5)) %>% 
     layout(title = "Random Portfolios with Plotly",
            yaxis = list(title = "Mean Returns", tickformat = ".2%", showgrid = FALSE),
            xaxis = list(title = "Standard Deviation (Risk)", tickformat = ".2%", showgrid = FALSE),
            plot_bgcolor = "#F8F8F8",
            paper_bgcolor = "#F8F8F8",
-           annotations = list(
-             list(x = eff.frontier[75, "Risk"], y = eff.frontier[75, "Return"], 
-                  ax = -30, ay = -30, 
-                  yshift = 10, xshift = 10,
-                  text = "<b>Efficient frontier</b>", 
-                  font = list(color = "black", size = 15),
-                  arrowcolor = "black"),
-             list(x = eff.frontier.wc[70, "Risk"], y = eff.frontier.wc[70, "Return"],
-                  ax = 60, ay = 60, yshift = -10, xshift = -10,
-                  text = "<b>Efficient Frontier\n(with weight conc.)</b>",
-                  font = list(color = "black", size = 15), 
-                  arrowcolor = "black")
-           ))
+           legend = list(
+             x = 0,
+             y = 1
+           )
+           #annotations = list(
+             #list(x = eff.frontier[75, "Risk"], y = eff.frontier[75, "Return"], 
+                  #ax = -30, ay = -30, 
+                  #yshift = 10, xshift = 10,
+                  #text = "<b>Efficient frontier</b>", 
+                  #font = list(color = "black", size = 15),
+                  #arrowcolor = "black"),
+             #list(x = eff.frontier.wc[70, "Risk"], y = eff.frontier.wc[70, "Return"],
+                  #ax = 60, ay = 60, yshift = -10, xshift = -10,
+                  #text = "<b>Efficient Frontier\n(with weight conc.)</b>",
+                  #font = list(color = "black", size = 15), 
+                  #arrowcolor = "black")
+           #)
+      )
     p
 }
 
@@ -234,11 +241,16 @@ getAllSymbols <- function(){
 }
 
 # Generate Default data
+#allSymbols <- getAllSymbols()
+#saveRDS(allSymbols, file = "allSymbols.rds")
+
 # 500000 permutations
 #symbolList <- c("MSFT", "SBUX", "IBM", "AAPL", "^GSPC", "AMZN")
 #x <- getSymbolData(symbolList)
 #portfolioData <- generatePortfolios(x, n_permutations = 500000, rp_method = "sample")
-#save(portfolioData, file = "portfolioData.RData")
+#save(portfolioData, file = "data/MSFT-SBUX-IBM-AAPL-GSPC-AMZN_500000.RData")
 
-#allSymbols <- getAllSymbols()
-#saveRDS(allSymbols, file = "allSymbols.rds")
+#symbolList <- c("FB", "WORK", "AAPL", "MSFT", "TSLA")
+#x <- getSymbolData(symbolList)
+#portfolioData <- generatePortfolios(x, n_permutations = 500000, rp_method = "sample")
+#save(portfolioData, file = "data/FB-WORK-AAPL-MSFT-TSLA_500000.RData")

@@ -6,7 +6,7 @@ library(data.table)
 source("helperFunctions.R")
 
 # Load default data
-load("data/portfolioData.RData")
+load("data/MSFT-SBUX-IBM-AAPL-GSPC-AMZN_500000.RData")
 # load list of all symbols
 allSymbols <- readRDS("data/allSymbols.rds")
 
@@ -21,7 +21,7 @@ app$layout(
         id = "banner-div",
         className = "banner",
         children = list(
-          htmlH1(id = "appTitle", "Portfolio Optimization"),
+          htmlH1(id = "appTitle", children = "Portfolio Optimization"),
           htmlImg(src = "assets/plotly_logo_white.png")
         )
       ),
@@ -34,63 +34,111 @@ app$layout(
             children = list(
               htmlDiv(
                 id = "controls-div",
-                list(
-                  htmlDiv(
-                    className = "control",
+                children = list(
+                  dccTabs(
                     children = list(
-                      htmlH6("Number of Permutations"),
-                      dccSlider(
-                        id = "nPermutationsSlider",
-                        value = 500000,
-                        min = 0,
-                        max = 500000,
-                        step = 1000,
-                        marks = list(
-                          "1" = 1,
-                          "100000" = 100000,
-                          "200000" = 200000,
-                          "300000" = 300000,
-                          "400000" = 400000,
-                          "500000" = 500000
+                      dccTab(
+                        label = "Load Portfolio",
+                        children = list(
+                          htmlDiv(
+                            className = "control",
+                            children = list(
+                              htmlH5("Load a pre-generated portfolio sample:") 
+                            ) 
+                          ),
+                          htmlDiv(
+                            className = "control",
+                            children = list(
+                              dccDropdown(
+                                id = "loadDataDropdown",
+                                options = list(
+                                  list(
+                                    label = "MSFT-SBUX-IBM-AAPL-GSPC-AMZN",
+                                    value = "MSFT-SBUX-IBM-AAPL-GSPC-AMZN"
+                                  ),
+                                  list(
+                                    label = "FB-WORK-AAPL-MSFT-TSLA",
+                                    value = "FB-WORK-AAPL-MSFT-TSLA"
+                                  )
+                                ),
+                                value = "MSFT-SBUX-IBM-AAPL-GSPC-AMZN"
+                              )
+                            )
+                          )
+                        )
+                      ),
+                      dccTab(
+                        label = "Simulate Portfolio",
+                        children = list(
+                          htmlDiv(
+                            className = "control",
+                            children = htmlH5("Generate a portfolio sample:")
+                          ),
+                          htmlDiv(
+                            className = "control",
+                            children = list(
+                              htmlH6("Number of Permutations"),
+                              dccSlider(
+                                id = "nPermutationsSlider",
+                                value = 5000,
+                                min = 10,
+                                max = 50000,
+                                step = 1000,
+                                marks = list(
+                                  "10" = 10,
+                                  "10000" = 10000,
+                                  "20000" = 20000,
+                                  "30000" = 30000,
+                                  "40000" = 40000,
+                                  "50000" = 50000
+                                )
+                              )
+                            )
+                          ),
+                          htmlDiv(
+                            className = "control",
+                            children = list(
+                              htmlH6("Symbols"),
+                              dccDropdown(
+                                id = "symbolsDropdown",
+                                options = lapply(
+                                  allSymbols,
+                                  function(symbol){
+                                    list(label = symbol, value = symbol)
+                                  }
+                                ),
+                                multi=TRUE,
+                                value = colnames(portfolioData$rportfolios)
+                              )
+                            )
+                          ),
+                          htmlDiv(
+                            className = "control",
+                            children = list(
+                              htmlH6("Random Permutation Method"),
+                              dccDropdown(
+                                id = "pMethodDropdown",
+                                options = list(
+                                  list(label = "Sample", value = "sample"),
+                                  list(label = "Simplex", value = "simplex"),
+                                  list(label = "Grid", value = "grid")
+                                ),
+                                value = "sample"
+                              )
+                            )
+                          ),
+                          htmlDiv(
+                            className = "control-submit-store",
+                            children = list(
+                              htmlButton(id = "resample-button", children = "resample"),
+                              dccLoading(
+                                dccStore(id = "data-store", data = portfolioData),
+                              )
+                            )
+                          )
                         )
                       )
                     )
-                  ),
-                  htmlDiv(
-                    className = "control",
-                    children = list(
-                      htmlH6("Symbols"),
-                      dccDropdown(
-                        id = "symbolsDropdown",
-                        options = lapply(
-                          allSymbols,
-                          function(symbol){
-                            list(label = symbol, value = symbol)
-                          }
-                        ),
-                        multi=TRUE,
-                        value = colnames(portfolioData$rportfolios)
-                      )
-                    )
-                  ),
-                  htmlDiv(
-                    className = "control",
-                    children = list(
-                      htmlH6("Random Permutation Method"),
-                      dccDropdown(
-                        id = "pMethodDropdown",
-                        options = list(
-                          list(label = "Sample", value = "sample"),
-                          list(label = "Simplex", value = "simplex"),
-                          list(label = "Grid", value = "grid")
-                        ),
-                        value = "sample"
-                      )
-                    )
-                  ),
-                  htmlButton(id = "resample-button", children = "resample"),
-                  dccLoading(
-                    dccStore(id = "data-store", data = portfolioData),
                   )
                 )
               ),
@@ -140,23 +188,6 @@ app$layout(
   )
 )
 
-#app$callback(
-  #output("frontier-plot", "figure"),
-  #list(
-    #input("resample-button", "n_clicks"),
-    #state("nPermutationsSlider", "value"),
-    #state("symbolsDropdown", "value"),
-    #state("pMethodDropdown", "value")
-  #),
-  #function(n_clicks, n_permutations, symbolList, rp_method){
-    #if (unlist(n_clicks) > 0){
-      #returns.data <- getSymbolData(unlist(symbolList))
-      #portfolioData <- generatePortfolios(returns.data, n_permutations, rp_method)
-      #generateFrontierPlot(portfolioData)
-    #}
-  #}
-#)
-
 app$callback(
   output("data-store", "data"),
   list(
@@ -164,17 +195,29 @@ app$callback(
     state("nPermutationsSlider", "value"),
     state("symbolsDropdown", "value"),
     state("pMethodDropdown", "value")
-    #input("nPermutationsSlider", "value"),
-    #input("symbolsDropdown", "value"),
-    #input("pMethodDropdown", "value")
   ),
   function(n_clicks, n_permutations, symbolList, rp_method){
     if (unlist(n_clicks) > 0){
+    #if (!is.null(unlist(n_clicks))){
       d <- getSymbolData(unlist(symbolList))
-      generatePortfolios(d, n_permutations, rp_method)      
+      generatePortfolios(d, n_permutations, rp_method)
+      }
     }
-  }
 )
+
+#app$callback(
+  #output("frontier-plot", "figure"),
+  #list(
+    #input("loadDataDropdown", "value")
+  #),
+  #function(dataset){
+    #print(dataset)
+    ##fname <- sprintf("data/%s_500000.RData", unlist(dataset))
+    ##print(fname)
+    ##load(fname)
+    ##generateFrontierPlot(portfolioData)     
+  #}
+#)
 
 app$callback(
   output("frontier-plot", "figure"),
@@ -201,7 +244,7 @@ app$callback(
   ),
   function(d, symbolnames){
     fw <- as.data.frame(rbindlist(d$frontier.weights))
-    colnames(fw) <- symbolnames
+    colnames(fw) <- unlist(symbolnames)
     d <- list(
       frontier.weights = fw 
     )
@@ -218,7 +261,7 @@ app$callback(
   function(d, symbolnames){
     pdata <- as.data.frame(rbindlist(d$price.data$price.data))
     pdata <- pdata[2:nrow(pdata),]
-    colnames(pdata) <- symbolnames
+    colnames(pdata) <- unlist(symbolnames)
     rownames(pdata) <- unlist(d$dates)
   d <- list(
     price.data = list(
