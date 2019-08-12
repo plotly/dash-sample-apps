@@ -140,11 +140,13 @@ p{ margin-bottom: 1rem }
 
 .iframe{ border: none; }
 
-.gs-header{ color: white !important; -webkit-print-color-adjust: exact; }
+.gs-header{ color: #506784 !important; -webkit-print-color-adjust: exact; }
 
-.gs-text-header{ background: #2C3859 !important; -webkit-print-color-adjust: exact; }
+.gs-text-header{ background: white !important; -webkit-print-color-adjust: exact; }
 
-.gs-table-header{ background: #7F91AC !important; -webkit-print-color-adjust: exact; }
+
+.gs-table-header{ background: white !important; -webkit-print-color-adjust: exact; }
+
 
 .gs-accent-header{ background: #65201F !important; -webkit-print-color-adjust: exact; }
 
@@ -162,7 +164,8 @@ table{ width: 100% }
 
 td{ padding: 2px 0px }
 
-tr:nth-child(even) { background-color: #D7DBE1; }
+tr:nth-child(even) { background-color: #f7fafc; }
+tr:nth-child(odd) { background-color: #eff6f9; }
 
 table.reversed tr:nth-child(odd) { background-color: #D7DBE1; }
 table.reversed tr:nth-child(even) { background-color: white; }
