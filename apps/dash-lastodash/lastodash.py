@@ -4,15 +4,13 @@ import os
 import re
 import pandas
 import pathlib
-
+from plotly import tools
+import plotly.graph_objs as go
 import dash
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table as dt
-
-from plotly import tools
-import plotly.graph_objs as go
 
 
 app = dash.Dash(__name__)
