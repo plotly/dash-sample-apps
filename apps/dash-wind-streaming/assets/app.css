@@ -25,7 +25,7 @@
  * Increase the select option's z-index
  */
 
-/* This was actually not quite right -
+/* This was actually not quite right ----
    dropdowns were overlapping each other (edited October 26)
 
 .Select {
