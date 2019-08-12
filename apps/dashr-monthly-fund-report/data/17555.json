@@ -1,0 +1,336 @@
+{
+    "data": [
+        {
+            "uid": "80eb70",
+            "name": "Col1",
+            "type": "bar",
+            "x": [
+                -50.8,
+                1.8,
+                1.8,
+                2.2,
+                2.3,
+                3.2,
+                4.2,
+                5.7,
+                6.6,
+                8,
+                8.9,
+                106.1
+            ],
+            "y": [
+                "Other",
+                "Russian Ruble",
+                "Chinese Yuan",
+                "Canadian Dollar",
+                "Hungarian Forint",
+                "Brazilian Real",
+                "Mexican Peso",
+                "Polish Zloty",
+                "Czech Koruna",
+                "Norwegian Krone",
+                "Swedish Krona",
+                "US Dollar"
+            ],
+            "marker": {
+                "color": "rgb(101, 32, 31)"
+            },
+            "autobinx": true,
+            "autobiny": true,
+            "orientation": "h"
+        }
+    ],
+    "layout": {
+        "font": {
+            "size": 11,
+            "family": "Raleway"
+        },
+        "title": "",
+        "width": 300,
+        "xaxis": {
+            "type": "linear",
+            "range": [
+                -62.13380540229584,
+                164.54230264362104
+            ],
+            "ticks": "outside",
+            "title": "",
+            "mirror": false,
+            "nticks": 6,
+            "showgrid": false,
+            "showline": true,
+            "zeroline": false,
+            "autorange": true,
+            "ticksuffix": "%"
+        },
+        "yaxis": {
+            "type": "category",
+            "range": [
+                -0.5,
+                11.5
+            ],
+            "title": "",
+            "showgrid": true,
+            "showline": false,
+            "zeroline": false,
+            "autorange": true
+        },
+        "height": 300,
+        "margin": {
+            "b": 40,
+            "l": 100,
+            "r": 5,
+            "t": 40,
+            "pad": 0
+        },
+        "autosize": false,
+        "titlefont": {
+            "size": 11,
+            "family": "Raleway"
+        },
+        "annotations": [
+            {
+                "x": 148.84934131736526,
+                "y": 11,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "106.1",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 37.39719228210246,
+                "y": 10,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "8.9",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 39.943712574850295,
+                "y": 9,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "8",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 36.2315635395875,
+                "y": 8,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "6.6",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 34.197192282102456,
+                "y": 7,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "5.7",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 32.697192282102456,
+                "y": 6,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "4.2",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 35.187119095143046,
+                "y": 5,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "3.2",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 35.50830339321357,
+                "y": 4,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "2.3",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 37.763858948769126,
+                "y": 3,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "2.2",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 33.830525615435796,
+                "y": 2,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "1.8",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 35.00830339321357,
+                "y": 1,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "1.8",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            },
+            {
+                "x": 33.031563539587495,
+                "y": 0,
+                "ax": 0,
+                "ay": -20,
+                "font": {
+                    "size": 10,
+                    "color": "rgb(60, 60, 60)",
+                    "family": "Raleway"
+                },
+                "text": "-50.8",
+                "xref": "x",
+                "yref": "y",
+                "align": "left",
+                "arrowhead": 0,
+                "showarrow": false,
+                "textangle": 0,
+                "arrowcolor": "rgb(60, 60, 60)",
+                "arrowwidth": 1
+            }
+        ],
+        "breakpoints": []
+    },
+    "frames": []
+}

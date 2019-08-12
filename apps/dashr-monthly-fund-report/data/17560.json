@@ -1,0 +1,85 @@
+{
+    "data": [
+        {
+            "uid": "353874",
+            "mode": "markers",
+            "name": "B",
+            "type": "bar",
+            "x": [
+                "Governments",
+                "Asset-Back Securities (ABS)",
+                "Residential Mortgages (RMBS)",
+                "Emerging Market Debt",
+                "Corporates - High Yield",
+                "Municipal",
+                "Commercial Mortgages (CMBS)",
+                "Corporates - Inv. Grade",
+                "Covered Bonds",
+                "Quasi-Governments",
+                "Derivatives",
+                "N/A"
+            ],
+            "y": [
+                "46.5",
+                "18.7",
+                "10.6",
+                "4.7",
+                "2.7",
+                "1.4",
+                "1.4",
+                "0.8",
+                "0.4",
+                "0.3",
+                "0.0",
+                "12.5"
+            ],
+            "marker": {
+                "color": "rgb(101, 32, 31)"
+            },
+            "autobinx": true,
+            "autobiny": true
+        }
+    ],
+    "layout": {
+        "font": {
+            "size": 9,
+            "family": "Raleway"
+        },
+        "width": 300,
+        "xaxis": {
+            "type": "category",
+            "range": [
+                -0.5,
+                11.5
+            ],
+            "title": "",
+            "autorange": true
+        },
+        "yaxis": {
+            "type": "linear",
+            "range": [
+                0,
+                48.94736842105263
+            ],
+            "title": "",
+            "autorange": true
+        },
+        "height": 300,
+        "margin": {
+            "b": 140,
+            "l": 20,
+            "r": 10,
+            "t": 0,
+            "pad": 0
+        },
+        "autosize": false,
+        "hovermode": "closest",
+        "titlefont": {
+            "size": 9,
+            "family": "Raleway"
+        },
+        "bargroupgap": 0.2,
+        "breakpoints": []
+    },
+    "frames": []
+}

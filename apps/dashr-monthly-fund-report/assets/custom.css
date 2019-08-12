@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css?family=Crimson+Text&display=swap');
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #FAFAFA;
+    font-size: 1.1rem;
+    line-height: 1.3;
+}
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+body, h1, h2, h3, h4, h5, h6{
+    font-family: 'Crimson Text', serif;
+}
+p, a{
+    font-family: Helvetica, sans-serif;
+}
+
+.page {
+    position: relative;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 0mm;
+    margin: 10mm auto;
+    border-radius: 5px;
+    background: white;
+}
+.subpage {
+    border: 5px #ccc solid;
+    height: 257mm;
+    outline: 2cm whitesmoke solid;
+    padding-top: 1cm;
+    padding-bottom: 1cm;
+}
+
+.row{
+    padding-left: 1cm;
+    padding-right: 1cm;
+}
+
+.logo{
+    width: 175px;
+    margin-left: -5px;
+}
+.header-left{
+    border-right: 1px solid #becdd6;
+}
+.header-left h1{
+    color: #506784;
+    font-size: 28px;
+}
+.header-left h2{
+    color: #a2b1c6;
+    font-size: 24px;    
+    margin: 0;
+}
+
+
+
+.header-right h1 span{
+    font-size: 55px;    
+}
+
+.header-right h2{ /* new */
+    color: #a2b1c6;
+    font-size: 16px;    
+   /*  margin: 0; */
+}
+
+.header-right { /* new */
+	margin-right: 5px;
+}
+
+
+.light-blue{color: #B4EFF7;}
+.blue{color: #129EFF;}
+
+.spec-row{
+    content: "";
+    display: table;
+    clear: both;
+}
+.spec-row .six.columns{
+    width: 50%;
+    height: 250px;
+}
+
+.div-investor-profile{
+    background-color: #F7FBFE;
+    color: #506784;
+    padding: 24px;
+}
+.div-fund-designed-for{
+    background-color: #e9f1f4;
+    color: #506784;
+    padding: 38px 24px 24px 24px;
+}
+
+.div-investor-profile h6, .div-fund-designed-for h4{
+    color: #119dff;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.div-investor-profile p, .div-fund-designed-for p{
+    font-size: 12px;
+}
+
+
+
+@page {
+    size: A4;
+    margin: 0;
+}
+@media print {
+    html, body {
+          width: 210mm;
+          height: 297mm;        
+    }
+    .page {
+          margin: 0;
+          border: initial;
+          border-radius: initial;
+          width: initial;
+          min-height: initial;
+          box-shadow: initial;
+          background: initial;
+          page-break-after: always;
+    }   
+  .no-print, .no-print * {
+      display: none !important;
+  }	 
+}
+
+p{ margin-bottom: 1rem }
+
+.iframe{ border: none; }
+
+.gs-header{ color: white !important; -webkit-print-color-adjust: exact; }
+
+.gs-text-header{ background: #2C3859 !important; -webkit-print-color-adjust: exact; }
+
+.gs-table-header{ background: #7F91AC !important; -webkit-print-color-adjust: exact; }
+
+.gs-accent-header{ background: #65201F !important; -webkit-print-color-adjust: exact; }
+
+div.padded{ padding: 10px; }
+
+h6.padded, p.padded{ 
+  padding: 2px 5px; 
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+
+.blue-text{ color: #8496B8; }
+
+table{ width: 100% }
+
+td{ padding: 2px 0px }
+
+tr:nth-child(even) { background-color: #D7DBE1; }
+
+table.reversed tr:nth-child(odd) { background-color: #D7DBE1; }
+table.reversed tr:nth-child(even) { background-color: white; }
+
+table{ 
+  font-size: 0.95rem; 
+  border-spacing: 0;
+ border-collapse: collapse;
+}
+
+table.tiny-header tr:first-child{
+  font-size: 8px;
+}
+
+.columns{ margin-left: 0 !important; }
+
+
+
+td, th { border: 0 }
+
