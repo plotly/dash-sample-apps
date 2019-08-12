@@ -6,10 +6,12 @@ library(data.table)
 source("helperFunctions.R")
 
 # Load default data
-load("data/MSFT-SBUX-IBM-AAPL-GSPC-AMZN_500000.RData")
+#load("data/MSFT-SBUX-IBM-AAPL-GSPC-AMZN_500000.RData")
+portfolioData1 <- readRDS("data/portfolioData1.rds")
+portfolioData2 <- readRDS("data/portfolioData2.rds")
+portfolioData3 <- readRDS("data/portfolioData3.rds")
 # load list of all symbols
 allSymbols <- readRDS("data/allSymbols.rds")
-
 
 app <- Dash$new()
 
@@ -54,14 +56,18 @@ app$layout(
                                 options = list(
                                   list(
                                     label = "MSFT-SBUX-IBM-AAPL-GSPC-AMZN",
-                                    value = "MSFT-SBUX-IBM-AAPL-GSPC-AMZN"
+                                    value = "portfolioData1"
                                   ),
                                   list(
                                     label = "FB-WORK-AAPL-MSFT-TSLA",
-                                    value = "FB-WORK-AAPL-MSFT-TSLA"
+                                    value = "portfolioData2"
+                                  ),
+                                  list(
+                                    label = "SBUX-NXPI-FB-SFIX-JNJ-CNC",
+                                    value = "portfolioData3"
                                   )
                                 ),
-                                value = "MSFT-SBUX-IBM-AAPL-GSPC-AMZN"
+                                value = "portfolioData1"
                               )
                             )
                           )
@@ -81,11 +87,11 @@ app$layout(
                               dccSlider(
                                 id = "nPermutationsSlider",
                                 value = 5000,
-                                min = 10,
+                                min = 100,
                                 max = 50000,
                                 step = 1000,
                                 marks = list(
-                                  "10" = 10,
+                                  "10" = 100,
                                   "10000" = 10000,
                                   "20000" = 20000,
                                   "30000" = 30000,
@@ -108,7 +114,7 @@ app$layout(
                                   }
                                 ),
                                 multi=TRUE,
-                                value = colnames(portfolioData$rportfolios)
+                                value = colnames(portfolioData1$rportfolios)
                               )
                             )
                           ),
@@ -132,7 +138,7 @@ app$layout(
                             children = list(
                               htmlButton(id = "resample-button", children = "resample"),
                               dccLoading(
-                                dccStore(id = "data-store", data = portfolioData),
+                                dccStore(id = "data-store", data = portfolioData1),
                               )
                             )
                           )
@@ -149,7 +155,7 @@ app$layout(
                   id = "diversification-loading",
                   dccGraph(
                     id = "diversification-plot",
-                    figure = generateDiversificationPlot(portfolioData)
+                    figure = generateDiversificationPlot(portfolioData1)
                   )
                 )
               )
@@ -165,7 +171,7 @@ app$layout(
                   id = "frontier-loading",
                   dccGraph(
                     id = "frontier-plot",
-                    figure = generateFrontierPlot(portfolioData)
+                    figure = generateFrontierPlot(portfolioData1)
                   )
                 )
               ),
@@ -176,7 +182,7 @@ app$layout(
                   id = "history-loading",
                   children = dccGraph(
                     id = "history-plot",
-                    figure = generateHistoryPlot(portfolioData)
+                    figure = generateHistoryPlot(portfolioData1)
                   )
                 )
               )            
@@ -188,6 +194,7 @@ app$layout(
   )
 )
 
+  #n_simulations <- length(portfolioData$rportfolios)
 app$callback(
   output("data-store", "data"),
   list(
@@ -205,34 +212,30 @@ app$callback(
     }
 )
 
-#app$callback(
-  #output("frontier-plot", "figure"),
-  #list(
-    #input("loadDataDropdown", "value")
-  #),
-  #function(dataset){
-    #print(dataset)
-    ##fname <- sprintf("data/%s_500000.RData", unlist(dataset))
-    ##print(fname)
-    ##load(fname)
-    ##generateFrontierPlot(portfolioData)     
-  #}
-#)
-
 app$callback(
   output("frontier-plot", "figure"),
   list(
-    input("data-store", "data")
+    input("data-store", "data"),
+    input("loadDataDropdown", "value")
   ),
-  function(d){
-    d <- list(
-      feasible.sd = as.numeric(d$feasible.sd),
-      feasible.means = as.numeric(d$feasible.means),
-      feasible.sr = as.numeric(d$feasible.sr),
-      eff.frontier = as.data.frame(rbindlist(d$eff.frontier)),
-      eff.frontier.wc = as.data.frame(rbindlist(d$eff.frontier.wc))
-    )
-    generateFrontierPlot(d)
+  function(d, dropdown){
+    ctx <- app$callback_context()
+    prop_id <- strsplit(
+      as.character(ctx[["triggered"]]["prop_id"]), "\\."
+      )[[1]][1]
+    if (prop_id == "data-store"){
+      d <- list(
+        feasible.sd = as.numeric(d$feasible.sd),
+        feasible.means = as.numeric(d$feasible.means),
+        feasible.sr = as.numeric(d$feasible.sr),
+        eff.frontier = as.data.frame(rbindlist(d$eff.frontier, fill = TRUE)),
+        eff.frontier.wc = as.data.frame(rbindlist(d$eff.frontier.wc, fill = TRUE))
+      )
+      return(generateFrontierPlot(d))
+    } else if (prop_id == "loadDataDropdown"){
+      d <- get(dropdown)
+      return(generateFrontierPlot(d))
+    }
   }
 )
 
@@ -240,15 +243,25 @@ app$callback(
   output("diversification-plot", "figure"),
   list(
     input("data-store", "data"),
+    input("loadDataDropdown", "value"),
     state("symbolsDropdown", "value")
   ),
-  function(d, symbolnames){
-    fw <- as.data.frame(rbindlist(d$frontier.weights))
-    colnames(fw) <- unlist(symbolnames)
-    d <- list(
-      frontier.weights = fw 
-    )
-    generateDiversificationPlot(d)
+  function(d, dropdown, symbolnames){
+    ctx <- app$callback_context()
+    prop_id <- strsplit(
+      as.character(ctx[["triggered"]]["prop_id"]), "\\."
+      )[[1]][1]
+    if (prop_id == "data-store"){
+      fw <- as.data.frame(rbindlist(d$frontier.weights))
+      colnames(fw) <- unlist(symbolnames)
+      d <- list(
+        frontier.weights = fw 
+      )
+      return(generateDiversificationPlot(d))
+    } else if (prop_id == "loadDataDropdown"){
+      d <- get(dropdown)
+      return(generateDiversificationPlot(d))
+    }
   }
 )
 
@@ -256,19 +269,29 @@ app$callback(
   output("history-plot", "figure"),
   list(
     input("data-store", "data"),
+    input("loadDataDropdown", "value"),
     state("symbolsDropdown", "value")
   ),
-  function(d, symbolnames){
-    pdata <- as.data.frame(rbindlist(d$price.data$price.data))
-    pdata <- pdata[2:nrow(pdata),]
-    colnames(pdata) <- unlist(symbolnames)
-    rownames(pdata) <- unlist(d$dates)
-  d <- list(
-    price.data = list(
-      price.data = pdata 
-    )
-  )
-  generateHistoryPlot(d)
+  function(d, dropdown, symbolnames){
+    ctx <- app$callback_context()
+    prop_id <- strsplit(
+      as.character(ctx[["triggered"]]["prop_id"]), "\\."
+      )[[1]][1]
+    if (prop_id == "data-store"){
+      pdata <- as.data.frame(rbindlist(d$price.data$price.data))
+      pdata <- pdata[2:nrow(pdata),]
+      colnames(pdata) <- unlist(symbolnames)
+      rownames(pdata) <- unlist(d$dates)
+      d <- list(
+        price.data = list(
+          price.data = pdata 
+        )
+      )
+      generateHistoryPlot(d)
+    } else if (prop_id == "loadDataDropdown"){
+      d <- get(dropdown)
+      return(generateHistoryPlot(d))
+    }
   }
 )
 

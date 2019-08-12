@@ -69,13 +69,10 @@ generatePortfolios <- function(d, n_permutations, rp_method = c("sample", "simpl
     eff.port <- add.constraint(port, type = "return", name = "mean", return_target = vec[i])
     eff.port <- add.objective(eff.port, type = "risk", name = "var")
     eff.port <- optimize.portfolio(returns.data, eff.port, optimize_method = "ROI")
-    
     eff.frontier$Risk[i] <- sqrt(t(eff.port$weights) %*% covMat %*% eff.port$weights)
     eff.frontier$Return[i] <- eff.port$weights %*% meanReturns
     eff.frontier$Sharperatio[i] <- eff.port$Return[i] / eff.port$Risk[i]
     frontier.weights[i,] = eff.port$weights
-    
-    cat("\r", paste(round(i/length(vec) * 100, 0), "% done..."))
   }
 
   # repeat w/ weight concentration
@@ -91,13 +88,11 @@ generatePortfolios <- function(d, n_permutations, rp_method = c("sample", "simpl
     eff.port <- add.objective(eff.port, type = "risk", name = "var")
     eff.port <- add.objective(eff.port, type = "weight_concentration", name = "HHI",
                               conc_aversion = 0.001)
-
     eff.port <- optimize.portfolio(returns.data, eff.port, optimize_method = "ROI")
     eff.frontier.wc$Risk[i] <- sqrt(t(eff.port$weights) %*% covMat %*% eff.port$weights)
     eff.frontier.wc$Return[i] <- eff.port$weights %*% meanReturns
     eff.frontier.wc$Sharperatio[i] <- eff.port$Return[i] / eff.port$Risk[i]
     frontier.weights.wc[i,] = eff.port$weights
-    cat("\r", paste(round(i/length(vec) * 100, 0), "% done..."))
   }
 
   feasible.sd <- apply(rportfolios, 1, function(x){
@@ -120,7 +115,6 @@ generatePortfolios <- function(d, n_permutations, rp_method = c("sample", "simpl
     rportfolios = rportfolios,
     frontier.weights = frontier.weights,
     frontier.weights.wc = frontier.weights.wc,
-    #eff.port = eff.port,
     price.data = d,
     dates = dates 
   )
@@ -134,13 +128,14 @@ generateFrontierPlot <- function(portfolioData){
   feasible.sr <- as.numeric(portfolioData$feasible.sr)
   eff.frontier <- as.data.frame(portfolioData$eff.frontier)
   eff.frontier.wc <- as.data.frame(portfolioData$eff.frontier.wc)
+  n_simulations <- length(portfolioData$feasible.means)
   p <- plot_ly(
     x = feasible.sd, y = feasible.means, color = feasible.sr, 
     mode = "markers", type = "scattergl", showlegend = FALSE,
-    marker = list(
-      size = 3, opacity = 0.5, colorbar = list(title = "Sharpe Ratio")
-    )
+    hoverinfo = "none",
+    marker = list(size = 3, opacity = 0.5)
   ) %>% 
+    colorbar(title = "Sharpe Ratio", len = 1) %>%
     add_trace(inherit = FALSE, data = eff.frontier, 
               x = eff.frontier$Risk, y = eff.frontier$Return, mode = "markers", 
               type = "scattergl", #showlegend = F, 
@@ -151,30 +146,22 @@ generateFrontierPlot <- function(portfolioData){
               type = "scattergl", #showlegend = F, 
               name = "Efficient Frontier (with weight concentration)",
               marker = list(color = "#ff471a", size = 5)) %>% 
-    layout(title = "Random Portfolios with Plotly",
-           yaxis = list(title = "Mean Returns", tickformat = ".2%", showgrid = FALSE),
-           xaxis = list(title = "Standard Deviation (Risk)", tickformat = ".2%", showgrid = FALSE),
-           plot_bgcolor = "#F8F8F8",
-           paper_bgcolor = "#F8F8F8",
-           legend = list(
-             x = 0,
-             y = 1
-           )
-           #annotations = list(
-             #list(x = eff.frontier[75, "Risk"], y = eff.frontier[75, "Return"], 
-                  #ax = -30, ay = -30, 
-                  #yshift = 10, xshift = 10,
-                  #text = "<b>Efficient frontier</b>", 
-                  #font = list(color = "black", size = 15),
-                  #arrowcolor = "black"),
-             #list(x = eff.frontier.wc[70, "Risk"], y = eff.frontier.wc[70, "Return"],
-                  #ax = 60, ay = 60, yshift = -10, xshift = -10,
-                  #text = "<b>Efficient Frontier\n(with weight conc.)</b>",
-                  #font = list(color = "black", size = 15), 
-                  #arrowcolor = "black")
-           #)
+    layout(
+      title = sprintf(
+        "Efficient Frontier based on <br> %s Randomly Generated Portfolios",
+        n_simulations
+      ),
+      yaxis = list(title = "Mean Returns", tickformat = ".2%", showgrid = FALSE),
+      xaxis = list(title = "Standard Deviation (Risk)", tickformat = ".2%", showgrid = FALSE),
+      plot_bgcolor = "#F8F8F8",
+      paper_bgcolor = "#F8F8F8",
+      hovermode = "colsest",
+      legend = list(
+        x = 0,
+        y = 1
       )
-    p
+    )
+  p
 }
 
 generateDiversificationPlot <- function(portfolioData){
@@ -196,6 +183,7 @@ generateDiversificationPlot <- function(portfolioData){
     layout(title = "Portfolio weights across frontier", barmode = "stack",
            plot_bgcolor = "#F8F8F8",
            paper_bgcolor = "#F8F8F8",
+           hovermode = "closest",
            xaxis = list(title = "Index"),
            yaxis = list(title = "Weights(%)", tickformat = ".0%"))
   q
@@ -247,10 +235,16 @@ getAllSymbols <- function(){
 # 500000 permutations
 #symbolList <- c("MSFT", "SBUX", "IBM", "AAPL", "^GSPC", "AMZN")
 #x <- getSymbolData(symbolList)
-#portfolioData <- generatePortfolios(x, n_permutations = 500000, rp_method = "sample")
-#save(portfolioData, file = "data/MSFT-SBUX-IBM-AAPL-GSPC-AMZN_500000.RData")
+#portfolioData1 <- generatePortfolios(x, n_permutations = 500000, rp_method = "sample")
 
 #symbolList <- c("FB", "WORK", "AAPL", "MSFT", "TSLA")
 #x <- getSymbolData(symbolList)
-#portfolioData <- generatePortfolios(x, n_permutations = 500000, rp_method = "sample")
-#save(portfolioData, file = "data/FB-WORK-AAPL-MSFT-TSLA_500000.RData")
+#portfolioData2 <- generatePortfolios(x, n_permutations = 500000, rp_method = "sample")
+
+#symbolList <- c("SBUX", "NXPI", "FB", "SFIX", "JNJ", "CNC")
+#x <- getSymbolData(symbolList)
+#portfolioData3 <- generatePortfolios(x, n_permutations = 500000, rp_method = "sample")
+
+#saveRDS(portfolioData1, "data/portfolioData1.rds")
+#saveRDS(portfolioData2, "data/portfolioData2.rds")
+#saveRDS(portfolioData3, "data/portfolioData3.rds")
