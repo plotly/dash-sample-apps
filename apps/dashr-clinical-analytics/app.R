@@ -94,10 +94,10 @@ bold_labels <- function(department){
 }
 
 #generate heat map
-gen_heatmap1 <- function(clinic_name,hm_click, start_date, end_date, admit_source){
+gen_heatmap <- function(clin_name,hm_click, start_date, end_date, admit_source){
   
   #filter df by clinic name, start date, end date, and admit list
-  df_clinic <- filter(df, df$clinic_name==clinic_name)
+  df_clinic <- filter(df, df$clinic_name==clin_name)
   date_sequence <- seq(as.Date(start_date), as.Date(end_date), "days")
   df_date <- filter(df_clinic,is.element(df_clinic$check_in_time, date_sequence))
   df_date <- df_date[order(df_date$check_in_time),]
@@ -214,8 +214,8 @@ generate_wait_time_graph = function(df1,clin_name, admit_source, start_date, end
                    automargin = TRUE,
                    showline =  FALSE,
                    tickmode = 'list',
-                   tickvals = make_tick_vals(length(unique(x1$Department))),
-                   ticktext = bold_labels(unique(x1$Department))
+                   tickvals = make_tick_vals(length(unique(x1$department))),
+                   ticktext = bold_labels(unique(x1$department))
                    
       ),
       xaxis = list(zeroline = FALSE,
@@ -299,7 +299,7 @@ admit_multi_select <- dccDropdown(options = admit_list1,
 
 hm_click <- list()
 
-starter_heat_map <- gen_heatmap1("Madison Center", hm_click, "2014-1-1", "2014-1-15", admit_list)
+starter_heat_map <- gen_heatmap("Madison Center", hm_click, "2014-1-1", "2014-1-15", admit_list)
 
 starter_wait_graph <- generate_wait_time_graph(df,"Madison Center", admit_list, "2014-1-1", "2014-1-15")
 
@@ -435,10 +435,10 @@ app$callback(
   function(click, start, end, clinic, admit_source, reset){
     if(reset ==1){
       reset=0
-      return(gen_heatmap1(clinic, list(), "2014-1-1", "2014-1-15", admit_list))
+      return(gen_heatmap(clinic, list(), "2014-1-1", "2014-1-15", admit_list))
     }
     else{
-      map = gen_heatmap1(clinic, click, start, end, admit_source)
+      map = gen_heatmap(clinic, click, start, end, admit_source)
       return(map)
     }
   }
