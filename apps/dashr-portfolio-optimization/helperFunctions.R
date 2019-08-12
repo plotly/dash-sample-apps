@@ -9,9 +9,14 @@ getSymbolData <- function(symbolList){
   getSymbols(symbolList)
   # Assign to dataframe
   # Get adjusted prices
-  p.data <- zoo(get(gsub("^", "", symbolList[1], fixed = TRUE))[,6])
+  p.data <- zoo(
+    get(gsub("^", "", symbolList[1], fixed = TRUE))[, 6]
+  )
   for (i in 2:length(symbolList)){
-    p.data <- merge.zoo(p.data, get(gsub("^", "", symbolList[i], fixed = TRUE))[,6])
+    p.data <- merge.zoo(
+      p.data, 
+      get(gsub("^", "", symbolList[i], fixed = TRUE))[, 6]
+    )
   }
   colnames(p.data) <- symbolList
   # calculate returns
@@ -21,7 +26,11 @@ getSymbolData <- function(symbolList){
 }
 
 # Generate random portfolios and efficient frontiers
-generatePortfolios <- function(d, n_permutations, rp_method = c("sample", "simplex", "grid")){
+generatePortfolios <- function(
+    d, 
+    n_permutations, 
+    rp_method = c("sample", "simplex", "grid")
+  ){
   if (class(d) == "list"){
     returns.data <- d$returns.data
   } else {
@@ -38,20 +47,23 @@ generatePortfolios <- function(d, n_permutations, rp_method = c("sample", "simpl
   port <- add.constraint(port, type = "box", min = 0.05, max = 0.8)
   # Leverage
   port <- add.constraint(portfolio = port, type = "full_investment")
-  #port <- add.constraint(portfolio = port, type = "leverage")
   # Generate random portfolios
-  rportfolios <- random_portfolios(port, permutations = n_permutations, rp_method = rp_method)
+  rportfolios <- random_portfolios(
+    port, permutations = n_permutations, rp_method = rp_method
+  )
 
   # Get minimum variance portfolio
   minvar.port <- add.objective(port, type = "risk", name = "var")
   # Optimize
-  minvar.opt <- optimize.portfolio(returns.data, minvar.port, optimize_method = "random", 
-                                   rp = rportfolios)
+  minvar.opt <- optimize.portfolio(
+    returns.data, minvar.port, optimize_method = "random", rp = rportfolios
+  )
   # Generate maximum return portfolio
   maxret.port <- add.objective(port, type = "return", name = "mean")
   # Optimize
-  maxret.opt <- optimize.portfolio(returns.data, maxret.port, optimize_method = "random", 
-                                   rp = rportfolios)
+  maxret.opt <- optimize.portfolio(
+    returns.data, maxret.port, optimize_method = "random", rp = rportfolios
+  )
   # Generate vector of returns
   minret <- 0.06/100
   maxret <- maxret.opt$weights %*% meanReturns
@@ -66,10 +78,16 @@ generatePortfolios <- function(d, n_permutations, rp_method = c("sample", "simpl
   colnames(frontier.weights) <- colnames(returns.data)
 
   for(i in 1:length(vec)){
-    eff.port <- add.constraint(port, type = "return", name = "mean", return_target = vec[i])
+    eff.port <- add.constraint(
+      port, type = "return", name = "mean", return_target = vec[i]
+    )
     eff.port <- add.objective(eff.port, type = "risk", name = "var")
-    eff.port <- optimize.portfolio(returns.data, eff.port, optimize_method = "ROI")
-    eff.frontier$Risk[i] <- sqrt(t(eff.port$weights) %*% covMat %*% eff.port$weights)
+    eff.port <- optimize.portfolio(
+      returns.data, eff.port, optimize_method = "ROI"
+    )
+    eff.frontier$Risk[i] <- sqrt(
+      t(eff.port$weights) %*% covMat %*% eff.port$weights
+    )
     eff.frontier$Return[i] <- eff.port$weights %*% meanReturns
     eff.frontier$Sharperatio[i] <- eff.port$Return[i] / eff.port$Risk[i]
     frontier.weights[i,] = eff.port$weights
@@ -84,12 +102,20 @@ generatePortfolios <- function(d, n_permutations, rp_method = c("sample", "simpl
   colnames(frontier.weights.wc) <- colnames(returns.data)
 
   for(i in 1:length(vec)){
-    eff.port <- add.constraint(port, type = "return", name = "mean", return_target = vec[i])
+    eff.port <- add.constraint(
+      port, type = "return", name = "mean", return_target = vec[i]
+    )
     eff.port <- add.objective(eff.port, type = "risk", name = "var")
-    eff.port <- add.objective(eff.port, type = "weight_concentration", name = "HHI",
-                              conc_aversion = 0.001)
-    eff.port <- optimize.portfolio(returns.data, eff.port, optimize_method = "ROI")
-    eff.frontier.wc$Risk[i] <- sqrt(t(eff.port$weights) %*% covMat %*% eff.port$weights)
+    eff.port <- add.objective(
+      eff.port, type = "weight_concentration", 
+      name = "HHI", conc_aversion = 0.001
+    )
+    eff.port <- optimize.portfolio(
+      returns.data, eff.port, optimize_method = "ROI"
+    )
+    eff.frontier.wc$Risk[i] <- sqrt(
+      t(eff.port$weights) %*% covMat %*% eff.port$weights
+    )
     eff.frontier.wc$Return[i] <- eff.port$weights %*% meanReturns
     eff.frontier.wc$Sharperatio[i] <- eff.port$Return[i] / eff.port$Risk[i]
     frontier.weights.wc[i,] = eff.port$weights
@@ -137,13 +163,15 @@ generateFrontierPlot <- function(portfolioData){
   ) %>% 
     colorbar(title = "Sharpe Ratio", len = 1) %>%
     add_trace(inherit = FALSE, data = eff.frontier, 
-              x = eff.frontier$Risk, y = eff.frontier$Return, mode = "markers", 
-              type = "scattergl", #showlegend = F, 
+              x = eff.frontier$Risk, y = eff.frontier$Return, 
+              mode = "markers", 
+              type = "scattergl", 
               name = "Efficient Frontier (no weight concentration)",
               marker = list(color = "#F7C873", size = 5)) %>% 
     add_trace(inherit = FALSE, data = eff.frontier.wc,
-              x = eff.frontier.wc$Risk, y = eff.frontier.wc$Return, mode = "markers", 
-              type = "scattergl", #showlegend = F, 
+              x = eff.frontier.wc$Risk, y = eff.frontier.wc$Return, 
+              mode = "markers", 
+              type = "scattergl",
               name = "Efficient Frontier (with weight concentration)",
               marker = list(color = "#ff471a", size = 5)) %>% 
     layout(
@@ -151,8 +179,13 @@ generateFrontierPlot <- function(portfolioData){
         "Efficient Frontier based on <br> %s Randomly Generated Portfolios",
         n_simulations
       ),
-      yaxis = list(title = "Mean Returns", tickformat = ".2%", showgrid = FALSE),
-      xaxis = list(title = "Standard Deviation (Risk)", tickformat = ".2%", showgrid = FALSE),
+      yaxis = list(
+        title = "Mean Returns", tickformat = ".2%", showgrid = FALSE
+      ),
+      xaxis = list(
+        title = "Standard Deviation (Risk)", 
+        tickformat = ".2%", showgrid = FALSE
+      ),
       plot_bgcolor = "#F8F8F8",
       paper_bgcolor = "#F8F8F8",
       hovermode = "colsest",
@@ -235,15 +268,21 @@ getAllSymbols <- function(){
 # 500000 permutations
 #symbolList <- c("MSFT", "SBUX", "IBM", "AAPL", "^GSPC", "AMZN")
 #x <- getSymbolData(symbolList)
-#portfolioData1 <- generatePortfolios(x, n_permutations = 500000, rp_method = "sample")
+#portfolioData1 <- generatePortfolios(
+  #x, n_permutations = 500000, rp_method = "sample"
+#)
 
 #symbolList <- c("FB", "WORK", "AAPL", "MSFT", "TSLA")
 #x <- getSymbolData(symbolList)
-#portfolioData2 <- generatePortfolios(x, n_permutations = 500000, rp_method = "sample")
+#portfolioData2 <- generatePortfolios(
+  #x, n_permutations = 500000, rp_method = "sample"
+#)
 
 #symbolList <- c("SBUX", "NXPI", "FB", "SFIX", "JNJ", "CNC")
 #x <- getSymbolData(symbolList)
-#portfolioData3 <- generatePortfolios(x, n_permutations = 500000, rp_method = "sample")
+#portfolioData3 <- generatePortfolios(
+  #x, n_permutations = 500000, rp_method = "sample"
+#)
 
 #saveRDS(portfolioData1, "data/portfolioData1.rds")
 #saveRDS(portfolioData2, "data/portfolioData2.rds")

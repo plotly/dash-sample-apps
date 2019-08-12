@@ -5,12 +5,11 @@ library(data.table)
 
 source("helperFunctions.R")
 
-# Load default data
-#load("data/MSFT-SBUX-IBM-AAPL-GSPC-AMZN_500000.RData")
+# Load pre-generated data
 portfolioData1 <- readRDS("data/portfolioData1.rds")
 portfolioData2 <- readRDS("data/portfolioData2.rds")
 portfolioData3 <- readRDS("data/portfolioData3.rds")
-# load list of all symbols
+# load list of all available symbols
 allSymbols <- readRDS("data/allSymbols.rds")
 
 app <- Dash$new()
@@ -136,9 +135,13 @@ app$layout(
                           htmlDiv(
                             className = "control-submit-store",
                             children = list(
-                              htmlButton(id = "resample-button", children = "resample"),
+                              htmlButton(
+                                id = "resample-button", children = "resample"
+                              ),
                               dccLoading(
-                                dccStore(id = "data-store", data = portfolioData1),
+                                dccStore(
+                                  id = "data-store", data = portfolioData1
+                                ),
                               )
                             )
                           )
@@ -194,7 +197,6 @@ app$layout(
   )
 )
 
-  #n_simulations <- length(portfolioData$rportfolios)
 app$callback(
   output("data-store", "data"),
   list(
@@ -204,6 +206,7 @@ app$callback(
     state("pMethodDropdown", "value")
   ),
   function(n_clicks, n_permutations, symbolList, rp_method){
+    # TODO: Error: argument of length 0 here:
     if (unlist(n_clicks) > 0){
     #if (!is.null(unlist(n_clicks))){
       d <- getSymbolData(unlist(symbolList))
@@ -229,7 +232,9 @@ app$callback(
         feasible.means = as.numeric(d$feasible.means),
         feasible.sr = as.numeric(d$feasible.sr),
         eff.frontier = as.data.frame(rbindlist(d$eff.frontier, fill = TRUE)),
-        eff.frontier.wc = as.data.frame(rbindlist(d$eff.frontier.wc, fill = TRUE))
+        eff.frontier.wc = as.data.frame(
+          rbindlist(d$eff.frontier.wc, fill = TRUE)
+        )
       )
       return(generateFrontierPlot(d))
     } else if (prop_id == "loadDataDropdown"){
