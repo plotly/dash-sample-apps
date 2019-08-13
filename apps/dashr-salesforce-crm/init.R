@@ -52,6 +52,7 @@ remotes::install_github("plotly/dash-core-components")
 install.packages('sqldf')
 install.packages('dplyr')
 install.packages('lubridate')
+install_github("StevenMMortimer/salesforcer")
 
 
 

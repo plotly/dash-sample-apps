@@ -1,4 +1,4 @@
-library(dashR)
+library(dash)
 library(dashHtmlComponents)
 library(dashCoreComponents)
 library(dplyr)
@@ -11,33 +11,12 @@ millnames = list("", " K", " M", " B", " T")
 
 app = Dash$new()
 
-df_to_table = function(df){
-  return(htmlTable(
-   htmlTr(for (col in colnames(df)) {
-     htmlTh(col)
-   }) +
-     list(
-       htmlTr(
-         list(
-           for (col in colnames(df)) {
-             htmlTd(df[i,c(col)])
-           }
-         )
-       )
-     )
-  ),
-  for (i in seq_along(length(df))) {
-    
-  }
-)
-}
-
-millify = function(n){
+millify <- function(n){
   n = n
   millidx = max(0, min(length(millnames)-1, integer(floor(
     if (n==0){
       0
-    }else{
+    } else {
       log10(abs(n))/3
     }
   ))))
@@ -46,7 +25,7 @@ millify = function(n){
 }
 
 
-indicator = function(color, text, id_value){
+indicator <- function(color, text, id_value){
   return(htmlDiv(
     list(htmlP(
         text,
@@ -58,19 +37,3 @@ indicator = function(color, text, id_value){
       )),
     className="four columns indicator"  
   ))}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

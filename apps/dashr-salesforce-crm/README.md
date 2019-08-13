@@ -1,44 +1,10 @@
-# Dash Wind Streaming
 
-## About this app
+# dash-salesforce-crm
+This is a demo of the Dash interactive R framework developed by [Plotly](https://plot.ly/).
 
-This app queries a SQL database every second and uses the data to update the wind speed diagram and the wind direction diagram. 
-The wind speed values are then binned in real time to generate the wind histogram plot.
+Dash abstracts away all of the technologies and protocols required to build an interactive web-based application and is a simple and effective way to bind a user interface around your R code.
 
-Original repo: [plotly/dash-wind-streaming](https://github.com/plotly/dash-wind-streaming)
+To learn more check out our [documentation](https://plot.ly/dash).
 
-
-## How to run this app
-
-(The following instructions apply to Posix/bash. Windows users should check
-[here](https://docs.python.org/3/library/venv.html).)
-
-First, clone this repository and open a terminal inside the root folder.
-
-Create and activate a new virtual environment (recommended) by running
-the following:
-
-```bash
-python3 -m venv myvenv
-source myvenv/bin/activate
-```
-
-Install the requirements:
-
-```bash
-pip install -r requirements.txt
-```
-Run the app:
-
-```bash
-python app.py
-```
-Open a browser at http://127.0.0.1:8050
-
-## Screenshots
-
-![demo.gif](demo.gif)
-
-## Resources
-
-- To learn more about Dash, check out our [documentation](https://plot.ly/dash).
+This app uses Salesforce API in order to implement a custom CRM dashboard. The API is utilized via the package [Salesforcer](https://github.com/StevenMMortimer/salesforcer) to query data. 
+Create a free SalesForce developer trial account: [https://developer.salesforce.com/signup](https://developer.salesforce.com/signup) to utilize this API and run the app.

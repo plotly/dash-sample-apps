@@ -1,14 +1,12 @@
 
-app = Dash$new()
+library(dash)
+library(dashCoreComponents)
+library(dashHtmlComponents)
+library(jsonlite)
+
+#app = Dash$new()
 colors = list('background' = "#F3F6FA",
               "background_div" = "white")
-
-accountoptions = list()
-k = 1
-for (i in 1:nrow(accounts)) {
-  accountoptions[[k]] = list('label' = accounts$Name[i], 'value' = accounts$AccountId[i])
-  k = k+1
-}
 
 pie_chart = function(df, column, priority, origin){
   df = df[complete.cases(df$Type,df$Reason,df$Origin),]
@@ -45,7 +43,7 @@ pie_chart = function(df, column, priority, origin){
     nb_type = dim(df[df[column] == case_type,])[1]
     values = append(values,(nb_type/nb_cases)*100)
   }
-
+  
   traces = plot_ly(labels = types, values = values, type = 'pie', orientation = 'h',
                    marker = list('colors' =list("#264e86", "#0074e4", "#74dbef", "#eff0f4")))%>%
     layout(
@@ -61,18 +59,21 @@ pie_chart = function(df, column, priority, origin){
 
 cases_by_period = function(df, period, priority, origin){
   df = df[complete.cases(df$Type,df$Reason,df$Origin),]
+  df$CreatedDate = substr(df$CreatedDate,1,10)
   stages = unique(df['Type'])
-  stages = stages$Type[c(2:6)]
+  stages = stages$Type[c(1:5)]
   
   if(priority != 'all_p'){
     df = df[df['Priority'] == priority,]
   }
   
   #Period filtering
-  df['CreatedDate'] = lapply(df$CreatedDate, function(x)as.POSIXct(x, origin="1970-01-01 00:00:00 UTC"))
-  #df['CreatedDate'] = as.Date(format(df$CreatedDate, '%Y-%m-%d'))
+  #df['CreatedDate'] = lapply(df$CreatedDate, function(x)as.POSIXct(x, origin="1970-01-01 00:00:00 UTC"))
+  #df['CreatedDate'] = format(df$CreatedDate, '%Y-%m-%d')
   if (period == 'W-MON'){
-    df$CreatedDate = df$CreatedDate- days(7)
+    df$CreatedDate = as.Date(df$CreatedDate)- 7
+  } else if (period == 'M'){
+    df$CreatedDate = format(as.Date(df$CreatedDate), "%B %Y")
   }
   
   df = count_(df %>% group_by(CreatedDate, Type, add=TRUE))
@@ -87,31 +88,13 @@ cases_by_period = function(df, period, priority, origin){
   colnames(df)[3] = 'IsDeleted'
   data = list()
   stage_rows = list()
-  for (stag in stages) {
-    if (stag %in% df$Type){
-      for (date in dates) {
-        row = df[df$Type == stag & df$CreatedDate == date,]
-        stage_rows = append(stage_rows, row$IsDeleted)
-      }
-    }
-    else{
-      stage_rows = append(stage_rows, 0)
-    }
-    
-  }
-  data_trace = plot_ly(
-    x = dates,
-    y = c(unlist(stage_rows)),
-    name = stages,
-    type = "bar",
-    marker = list(color = c(unlist(co)))
-  )%>%
-    layout(
-      barmode="stack",
-      margin=list(l=40, r=25, b=40, t=0, pad=4),
-      paper_bgcolor="white",
-      plot_bgcolor="white"
-    )
+  data_trace = df %>% group_by(CreatedDate) %>% arrange(Type) %>%
+    plot_ly( x = ~CreatedDate, y = ~IsDeleted, name= ~Type ,marker = list(color = c(co)), type = 'bar'
+    )%>%
+    layout(barmode="stack",
+           margin=list(l=40, r=25, b=40, t=0, pad=4),
+           paper_bgcolor="white",
+           plot_bgcolor="white")
   
   return(list('data' = list(data_trace)))
 }
@@ -197,7 +180,7 @@ modal = function(){
                     htmlDiv(
                       dccDropdown(
                         id="new_case_account",
-                        options=accountoptions,
+                        options=lapply(accounts$Name, function(x){ list('label' = x, 'value' = x)}),
                         clearable=FALSE
                         #value=accounts.iloclist(0).Id,
                       )
@@ -578,7 +561,7 @@ caseslayout = app$layout(
           htmlP("Cases by Company"),
           dccGraph(
             id="cases_by_account",
-            #figure=cases_by_account(cases),
+            #cases_by_account(cases)[[1]],
             config=list(displayModeBar=FALSE),
             style=list("height"= "87%", "width"= "98%")
           )
@@ -654,7 +637,7 @@ app$callback(output = list(id = 'cases_by_account', property = 'figure'),
                input(id = 'cases_df', property = 'children')),
              function(df){
                df = data.frame(fromJSON(df))
-               return(cases_by_account(df))
+               return(cases_by_account(df)[[1]])
              })
 
 app$callback(output = list(id = 'cases_modal', property = 'style'),
@@ -697,6 +680,4 @@ app$callback(output = list(id = 'cases_df', property = 'children'),
                return(current_df)
              })
 
-app$run_server()
-
-
+#app$run_server()
