@@ -22,6 +22,15 @@ dfBondAllocation <- read.csv("data/17538.csv")
 absReturnPlot <- fromJSON(file = "data/17553.json")
 absReturnPlot$data[[1]]$line$color <- '#129EFF'
 absReturnPlot$layout$plot_bgcolor <- "white"
+absReturnPlot$layout$height <- 195
+absReturnPlot$layout$font$family <- "HelveticaNeue"
+# Arranging annotation positions
+for (i in 1:length(currencyWeightPlot$layout$annotations)) {
+  currencyWeightPlot$layout$annotations[[i]]$font$family <- "HelveticaNeue"
+}
+absReturnPlot$layout$legend$bgcolor <- "#ecf7fd"
+absReturnPlot$data[[1]]$line$width <- 2
+absReturnPlot$data[[2]]$line$width <- 2
 
 sectorAllocationPlot <- fromJSON(file = "data/17560.json")
 sectorAllocationPlot$data[[1]]$marker$color <- "#119dff"
@@ -30,14 +39,15 @@ sectorAllocationPlot$layout$margin$b <- 58
 sectorAllocationPlot$data[[1]]$x[2] <- "Asset-Back Securities"
 sectorAllocationPlot$data[[1]]$x[3] <- "Residential Mortgages"
 sectorAllocationPlot$data[[1]]$x[7] <- "Commercial Mortgages"
+sectorAllocationPlot$layout$font$family <- "HelveticaNeue"
 
 
 currencyWeightPlot <- fromJSON(file = "data/17555.json")
 currencyWeightPlot$data[[1]]$marker$color <- "#119dff"
-currencyWeightPlot$layout$height <- 235
+currencyWeightPlot$layout$height <- 250
 currencyWeightPlot$layout$margin$t <- 0
 currencyWeightPlot$layout$margin$b <- 20
-
+currencyWeightPlot$layout$font$family <- "HelveticaNeue"
 # Arranging annotation positions
 for (i in 1:length(currencyWeightPlot$layout$annotations)) {
   a <- 20
@@ -48,16 +58,28 @@ for (i in 1:length(currencyWeightPlot$layout$annotations)) {
   }
   currencyWeightPlot$layout$annotations[[i]]$x <-
     currencyWeightPlot$layout$annotations[[i]]$x - a
+  currencyWeightPlot$layout$annotations[[i]]$font$family <- "HelveticaNeue"
 }
 
-creditAllocationPlotOrj <- fromJSON(file = "data/17557.json")
-creditAllocationPlotOrj$data[[1]]$marker$color <- "#c2ebff"
-creditAllocationPlotOrj$data[[2]]$marker$color <- "#119dff"
-creditAllocationPlotOrj$layout$height <- 195
-creditAllocationPlotOrj$layout$margin$b <- 20
-creditAllocationPlotOrj$layout$margin$t <- 0
+creditAllocationPlot <- fromJSON(file = "data/17557.json")
+creditAllocationPlot$data[[1]]$marker$color <- "#c2ebff"
+creditAllocationPlot$data[[2]]$marker$color <- "#119dff"
+creditAllocationPlot$layout$height <- 195
+creditAllocationPlot$layout$margin$b <- 20
+creditAllocationPlot$layout$margin$t <- 0
+creditAllocationPlot$layout$font$family <- "HelveticaNeue"
+creditAllocationPlot$layout$legend$bgcolor <- "#ecf7fd"
+creditAllocationPlot$layout$legend$x <- 0.6
+creditAllocationPlot$layout$legend$y <- 0.75
 
-# -> CONTINUE EDITING THIS ACCORDING TO NEW DESIGN AFTER FINISHING THE LAYOUT
+# Arranging annotation positions
+for (i in 1:length(creditAllocationPlot$layout$annotations)) {
+  a <- 5
+  creditAllocationPlot$layout$annotations[[i]]$x <-
+    creditAllocationPlot$layout$annotations[[i]]$x - a
+  creditAllocationPlot$layout$annotations[[i]]$font$family <- "HelveticaNeue"
+}
+
 
 # """ Return a dash definition of an HTML table for dataframe """
 MakeDashTable <- function(df) {
@@ -129,12 +151,13 @@ app$layout(htmlDiv(list(
           )
         )
       ),
+      htmlBr(),
       # Row 2
       htmlDiv(
         className = "spec-row",
         children = list(
           htmlDiv(
-            className = "six columns div-investor-profile",
+            className = "five columns div-investor-profile",
             children = list(
               htmlH5("Investor Profile"),
               htmlH6("Investor objective"),
@@ -144,9 +167,10 @@ app$layout(htmlDiv(list(
             )
           ),
           htmlDiv(
-            className = "six columns div-fund-designed-for",
+            className = "seven columns div-fund-designed-for",
             children = list(
               htmlH4("The fund is designed for:"),
+              htmlBr(),
               htmlP("The fund is designed for investors who are looking
                     for a flexible global investment and sub-investment
                     grade fixed income portfolio that has the ability
@@ -159,6 +183,7 @@ app$layout(htmlDiv(list(
           )
         )
       ),
+      htmlBr(),
       # Row 2.5
       htmlDiv(
         list(
@@ -166,23 +191,24 @@ app$layout(htmlDiv(list(
             list(
               htmlH6(
                 "Performance (%)",
-                className = "gs-header gs-text-header padded"
+                className = "gs-header"#gs-text-header padded
               ),
-              htmlTable(MakeDashTable(dfPerfPc), className = "tiny-header"),
+              htmlTable(MakeDashTable(dfPerfPc)),
               htmlH6(
                 "Fund Data",
-                className = "gs-header gs-text-header padded"),
-              htmlTable(MakeDashTable(dfFundData))
+                className = "gs-header"),#gs-text-header padded
+              htmlTable(MakeDashTable(dfFundData), className = "tiny-table")
             ), className = "five columns"
           ),
           htmlDiv(
             list(
               htmlH6(
                 list("Performance (Indexed)"),
-                className = "gs-header gs-table-header padded"
+                className = "gs-header title-perf-ind"#gs-table-header padded
               ),
               dccGraph(figure = absReturnPlot,
-                       style = list("border" = "0",
+                       style = list("padding-left" = "20px",
+                                    "border" = "0",
                                     "width" = "100%",
                                     "height" = "25%")
               ),
@@ -191,11 +217,13 @@ app$layout(htmlDiv(list(
                     of the fund and the performance of its reference benchmark
                     may diverge. In addition stated reference benchmark returns
                     do not reflect any management  or other charges to the fund,
-                    whereas stated returns of the fund do."),
-              htmlStrong("Past performance does not guarantee future results,
-                         which may vary. The value of investments and the income
-                         derived from investments will fluctuate and can go down
-                         as well as up. A loss of capital may occur.")
+                    whereas stated returns of the fund do.",
+                    className = "title-perf-ind"),
+              htmlP("*Past performance does not guarantee future results,
+                     which may vary. The value of investments and the income
+                     derived from investments will fluctuate and can go down
+                     as well as up. A loss of capital may occur.",
+                     className = "title-perf-ind")
 
             ), className = "seven columns"
           )
@@ -209,15 +237,15 @@ app$layout(htmlDiv(list(
             list(
               htmlH6(
                 "Performance Summary (%)",
-                className = "gs-header gs-table-header padded"),
-              htmlTable(modifiedPerfTable, className = "reversed")
+                className = "gs-header"),#gs-table-header padded
+              htmlTable(modifiedPerfTable, className = "table-tiny")
             )
           ),
           htmlDiv(
             list(
               htmlH6(
                 "Calendar Year Performance (%)",
-                className = "gs-header gs-table-header padded"
+                className = "gs-header"#gs-table-header padded
               ),
               htmlTable(MakeDashTable(dfCalYear))
             )
@@ -272,6 +300,7 @@ app$layout(htmlDiv(list(
           )
         )
       ),
+      htmlBr(),
         # Row 2
         htmlDiv(
           list(
@@ -283,15 +312,15 @@ app$layout(htmlDiv(list(
                 htmlTable(MakeDashTable(dfFundInfo)),
                 htmlH6(
                   "Fund Characteristics",
-                  className = "gs-header gs-text-header padded"),
+                  className = "gs-header"), #gs-text-header padded
                 htmlTable(MakeDashTable(dfFundCharacteristics)),
                 htmlH6(
                   "Fund Facts",
-                  className = "gs-header gs-text-header padded"),
+                  className = "gs-header"), #gs-text-header padded
                 htmlTable(MakeDashTable(dfFundFacts)),
                 htmlH6(
                   "Country Bond Allocation (%)",
-                  className = "gs-header gs-table-header padded"),
+                  className = "gs-header"),#gs-table-header padded
                 htmlTable(MakeDashTable(dfBondAllocation))
 
               ), className="six columns"
@@ -301,7 +330,7 @@ app$layout(htmlDiv(list(
               list(
                 htmlH6(
                   "Sector Allocation (%)",
-                  className = "gs-header"),#gs-table-header padded
+                  className = "gs-header title-pg2-right"),#gs-table-header padded
                 dccGraph(figure = sectorAllocationPlot,
                          style = list("padding-left" = "50px",
                                       "border" = "0",
@@ -309,7 +338,7 @@ app$layout(htmlDiv(list(
                                       "height" = "30%")),
                 htmlH6(
                   "Top 10 Currency Weights (%)",
-                  className="gs-header"), #gs-table-header padded
+                  className="gs-header title-pg2-right"), #gs-table-header padded
                 dccGraph(figure = currencyWeightPlot,
                          style = list("padding-left" = "50px",
                                       "border" = "0",
@@ -318,8 +347,8 @@ app$layout(htmlDiv(list(
                 #htmlBr(),
                 htmlH6(
                   "Credit Allocation (%)",
-                  className = "gs-header"),#gs-table-header padded
-                dccGraph(figure = creditAllocationPlotOrj,
+                  className = "gs-header title-pg2-right"),#gs-table-header padded
+                dccGraph(figure = creditAllocationPlot,
                          style = list("padding-left" = "50px",
                                       "border" = "0",
                                       "width" = "100%",

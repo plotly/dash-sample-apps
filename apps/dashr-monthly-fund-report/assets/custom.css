@@ -79,11 +79,11 @@ p, a{
     margin: 0;
 }
 .header-right h1 span{
-    font-size: 55px;    
+    font-size: 45px;    
 }
 .header-right h6{
     color: #a2b1c6;
-    font-size: 18px;
+    font-size: 16px;
     margin: 0;
 }
 .light-blue{color: #B4EFF7;}
@@ -99,21 +99,31 @@ p, a{
     height: 200px;
 }
 
+.spec-row .five.columns{
+    width: 41.66%;
+    height: 150px;
+}
+
+.spec-row .seven.columns{
+    width: 58.34%;
+    height: 150px;
+}
+
 .div-investor-profile{
     background-color: #F7FBFE;
     color: #506784;
-    padding: 24px;
+    padding: 16px 16px 24px 36px;;
 }
 .div-fund-designed-for{
     background-color: #e9f1f4;
     color: #506784;
-    padding: 38px 24px 24px 24px;
+    padding: 24px 24px 24px 24px;
 }
 
 .div-investor-profile h6, .div-fund-designed-for h4{
     color: #119dff;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .div-investor-profile p, .div-fund-designed-for p{
@@ -150,6 +160,11 @@ p{ margin-bottom: 1rem }
 
 .iframe{ border: none; }
 
+.gs-header{ color: #506784 !important; -webkit-print-color-adjust: exact; }
+
+h6.title-pg2-right{ margin-left: 7rem; }
+h6.title-perf-ind, p.title-perf-ind, strong.title-perf-ind{ margin-left: 3rem; }
+
 div.padded{ padding: 10px; }
 
 h6.padded, p.padded{ 
@@ -171,12 +186,17 @@ table.reversed tr:nth-child(odd) { background-color: #D7DBE1; }
 table.reversed tr:nth-child(even) { background-color: white; }
 
 table{
-  font-size: 0.95rem;  
+  font-size: 1rem;  
   border-spacing: 0;
   border-collapse: collapse;
+  margin-bottom: 1rem;
 }
 
 .columns{ margin-left: 0 !important; }
+
+table.tiny-table {
+  font-size: 0.95rem;
+}
 
 
 
