@@ -6,7 +6,7 @@ This dashboard allows you to explore clinic patient volume by time of the day, w
 
 ## Requirements
 
-* R version 3.6.0
+* R version 3.3.0 or higher
 
 ## How to run this app
 
