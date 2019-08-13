@@ -1,4 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Crimson+Text&display=swap');
+
+	@font-face {
+font-family: "HelveticaNeue";
+src: url("HelveticaNeue.ttf") format('opentype');
+}
+
+	@font-face {
+font-family: "SabonRoman";
+src: url("SabonRoman.ttf") format('opentype');
+}
+
+
+
 body {
     width: 100%;
     height: 100%;
@@ -13,11 +26,12 @@ body {
     -moz-box-sizing: border-box;
 }
 
-body, h1, h2, h3, h4, h5, h6{
-    font-family: 'Crimson Text', serif;
+h1, h2, h3, h4, h5, h6{
+    font-family: SabonRoman, serif;
+    margin: 0;
 }
 p, a{
-    font-family: Helvetica, sans-serif;
+    font-family: HelveticaNeue, sans-serif;
 }
 
 .page {
@@ -58,24 +72,20 @@ p, a{
     font-size: 24px;    
     margin: 0;
 }
-
-
-
+.header-right{
+    padding-left: 20px;
+}
+.header-right h1{
+    margin: 0;
+}
 .header-right h1 span{
     font-size: 55px;    
 }
-
-.header-right h2{ /* new */
+.header-right h6{
     color: #a2b1c6;
-    font-size: 16px;    
-   /*  margin: 0; */
+    font-size: 18px;
+    margin: 0;
 }
-
-.header-right { /* new */
-	margin-right: 5px;
-}
-
-
 .light-blue{color: #B4EFF7;}
 .blue{color: #129EFF;}
 
@@ -86,7 +96,7 @@ p, a{
 }
 .spec-row .six.columns{
     width: 50%;
-    height: 250px;
+    height: 200px;
 }
 
 .div-investor-profile{
@@ -140,16 +150,6 @@ p{ margin-bottom: 1rem }
 
 .iframe{ border: none; }
 
-.gs-header{ color: #506784 !important; -webkit-print-color-adjust: exact; }
-
-.gs-text-header{ background: white !important; -webkit-print-color-adjust: exact; }
-
-
-.gs-table-header{ background: white !important; -webkit-print-color-adjust: exact; }
-
-
-.gs-accent-header{ background: #65201F !important; -webkit-print-color-adjust: exact; }
-
 div.padded{ padding: 10px; }
 
 h6.padded, p.padded{ 
@@ -170,14 +170,10 @@ tr:nth-child(odd) { background-color: #eff6f9; }
 table.reversed tr:nth-child(odd) { background-color: #D7DBE1; }
 table.reversed tr:nth-child(even) { background-color: white; }
 
-table{ 
-  font-size: 0.95rem; 
+table{
+  font-size: 0.95rem;  
   border-spacing: 0;
- border-collapse: collapse;
-}
-
-table.tiny-header tr:first-child{
-  font-size: 8px;
+  border-collapse: collapse;
 }
 
 .columns{ margin-left: 0 !important; }
@@ -185,4 +181,3 @@ table.tiny-header tr:first-child{
 
 
 td, th { border: 0 }
-
