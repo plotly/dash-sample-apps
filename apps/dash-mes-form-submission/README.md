@@ -6,9 +6,9 @@ This app allows the user to create a SQL database by inputting data. This data u
 
 ## Screenshots
 
-![Screenshots](Tab1.png)
+![Tab1](Screenshots/Tab1.png)
 
-![Screenshots](Tab2.png)
+![Tab2](Screenshots/Tab2.png)
 
 ## How to run this app
 
