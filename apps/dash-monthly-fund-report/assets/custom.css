@@ -13,8 +13,9 @@ body {
     -moz-box-sizing: border-box;
 }
 
-body, h1, h2, h3, h4, h5, h6{
+h1, h2, h3, h4, h5, h6{
     font-family: 'Crimson Text', serif;
+    margin: 0;
 }
 p, a{
     font-family: Helevtica, sans-serif;
@@ -58,9 +59,19 @@ p, a{
     font-size: 24px;    
     margin: 0;
 }
-
+.header-right{
+    padding-left: 20px;
+}
+.header-right h1{
+    margin: 0;
+}
 .header-right h1 span{
     font-size: 55px;    
+}
+.header-right h6{
+    color: #a2b1c6;
+    font-size: 18px;
+    margin: 0;
 }
 .light-blue{color: #B4EFF7;}
 .blue{color: #129EFF;}
@@ -72,7 +83,7 @@ p, a{
 }
 .spec-row .six.columns{
     width: 50%;
-    height: 250px;
+    height: 200px;
 }
 
 .div-investor-profile{
@@ -126,14 +137,6 @@ p{ margin-bottom: 1rem }
 
 .iframe{ border: none; }
 
-.gs-header{ color: white !important; -webkit-print-color-adjust: exact; }
-
-.gs-text-header{ background: #2C3859 !important; -webkit-print-color-adjust: exact; }
-
-.gs-table-header{ background: #7F91AC !important; -webkit-print-color-adjust: exact; }
-
-.gs-accent-header{ background: #65201F !important; -webkit-print-color-adjust: exact; }
-
 div.padded{ padding: 10px; }
 
 h6.padded, p.padded{ 
@@ -154,13 +157,8 @@ table.reversed tr:nth-child(odd) { background-color: #D7DBE1; }
 table.reversed tr:nth-child(even) { background-color: white; }
 
 table{ 
-  font-size: 0.95rem; 
   border-spacing: 0;
- border-collapse: collapse;
-}
-
-table.tiny-header tr:first-child{
-  font-size: 8px;
+  border-collapse: collapse;
 }
 
 .columns{ margin-left: 0 !important; }
