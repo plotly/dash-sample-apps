@@ -12,7 +12,7 @@ body {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
-
+.columns{ margin-left: 0 !important; }
 h1, h2, h3, h4, h5, h6{
     font-family: 'Crimson Text', serif;
     margin: 0;
@@ -44,15 +44,17 @@ p, a{
 }
 
 .logo{
-    width: 175px;
+    width: 130px;
     margin-left: -5px;
 }
 .header-left{
+    display: inline-block;
+    width: 70%;
     border-right: 1px solid #becdd6;
 }
 .header-left h1{
     color: #506784;
-    font-size: 28px;
+    font-size: 24px;
 }
 .header-left h2{
     color: #a2b1c6;
@@ -60,13 +62,14 @@ p, a{
     margin: 0;
 }
 .header-right{
-    padding-left: 20px;
+    display: inline-block;
+    width: 27%;
+    vertical-align: top;
+    margin-left: 3%;
 }
 .header-right h1{
-    margin: 0;
-}
-.header-right h1 span{
-    font-size: 55px;    
+    margin: -10px 0px 0px 0px;
+    font-size: 48px;
 }
 .header-right h6{
     color: #a2b1c6;
@@ -83,18 +86,20 @@ p, a{
 }
 .spec-row .six.columns{
     width: 50%;
-    height: 200px;
+    height: 180px;
 }
-
+.six.columns{
+    width: 50%;
+}
 .div-investor-profile{
     background-color: #F7FBFE;
     color: #506784;
-    padding: 24px;
+    padding: 15px 1cm;
 }
 .div-fund-designed-for{
     background-color: #e9f1f4;
     color: #506784;
-    padding: 38px 24px 24px 24px;
+    padding: 15px 1cm;
 }
 
 .div-investor-profile h6, .div-fund-designed-for h4{
@@ -104,9 +109,12 @@ p, a{
 }
 
 .div-investor-profile p, .div-fund-designed-for p{
-    font-size: 12px;
+    font-size: 11px;
 }
 
+.div-graphs{
+    padding-left: 0.9cm;
+}
 
 
 @page {
@@ -149,20 +157,16 @@ h6.padded, p.padded{
 
 table{ width: 100% }
 
-td{ padding: 2px 0px }
-
-tr:nth-child(even) { background-color: #D7DBE1; }
-
-table.reversed tr:nth-child(odd) { background-color: #D7DBE1; }
-table.reversed tr:nth-child(even) { background-color: white; }
+tr:nth-child(even) { background-color: #f7fafc; }
+table.reversed tr:nth-child(odd) { background-color: #e9f1f4; }
+table.reversed tr:nth-child(even) { background-color: #f7fafc; }
 
 table{ 
   border-spacing: 0;
   border-collapse: collapse;
 }
-
-.columns{ margin-left: 0 !important; }
-
-
-
-td, th { border: 0 }
+td{ padding: 1px 0px }
+td, th { 
+    border: 0;
+    font-size: 10.5px;  
+}

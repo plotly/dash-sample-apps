@@ -56,6 +56,44 @@ df_fund_characteristics = pd.read_csv("https://plot.ly/~jackp/17542.csv")
 df_fund_facts = pd.read_csv("https://plot.ly/~jackp/17540.csv")
 df_bond_allocation = pd.read_csv("https://plot.ly/~jackp/17538.csv")
 
+
+def header():
+    return html.Div(
+        [
+            html.Div(
+                className="row",
+                children=html.Img(className="logo", src=app.get_asset_url("logo.png")),
+            ),
+            html.Div(
+                className="row",
+                children=[
+                    html.Div(
+                        className="header-left",
+                        children=[
+                            html.H1(
+                                "Goldman Sachs Strategic Absolute Return Bond II Portfolio"
+                            ),
+                            html.H2("A sub-fund of Goldman Sachs Funds, SICAV"),
+                        ],
+                    ),
+                    html.Div(
+                        className="header-right",
+                        children=[
+                            html.H1(
+                                children=[
+                                    html.Span("03", className="light-blue"),
+                                    html.Span("17", className="blue"),
+                                ]
+                            ),
+                            html.H6("Monthly Fund Update"),
+                        ],
+                    ),
+                ],
+            ),
+        ]
+    )
+
+
 # Describe the layout, or the UI, of the app
 app.layout = html.Div(
     [
@@ -66,44 +104,9 @@ app.layout = html.Div(
                 # Subpage 1
                 html.Div(
                     [
-                        # Header
-                        html.Div(
-                            className="row",
-                            children=html.Img(
-                                className="logo", src=app.get_asset_url("logo.png")
-                            ),
-                        ),
-                        html.Div(
-                            className="row",
-                            children=[
-                                html.Div(
-                                    className="nine columns header-left",
-                                    children=[
-                                        html.H1(
-                                            "Goldman Sachs Strategic Absolute Return Bond II Portfolio"
-                                        ),
-                                        html.H2(
-                                            "A sub-fund of Goldman Sachs Funds, SICAV"
-                                        ),
-                                    ],
-                                ),
-                                html.Div(
-                                    className="three columns header-right",
-                                    children=[
-                                        html.H1(
-                                            children=[
-                                                html.Span("03", className="light-blue"),
-                                                html.Span("17", className="blue"),
-                                            ]
-                                        ),
-                                        html.H6("Monthly Fund Update"),
-                                    ],
-                                ),
-                            ],
-                        ),
-
+                        # Row 1
+                        header(),
                         html.Br([]),
-
                         # Row 2
                         html.Div(
                             className="spec-row",
@@ -142,7 +145,6 @@ app.layout = html.Div(
                         html.Div(
                             className="row",
                             children=[
-
                                 # Left Side
                                 html.Div(
                                     className="six columns",
@@ -154,20 +156,20 @@ app.layout = html.Div(
                                                 html.Table(make_dash_table(df_perf_pc)),
                                             ]
                                         ),
-
-                                        # Fund Data 
+                                        # Fund Data
                                         html.Div(
                                             children=[
                                                 html.H6("Fund Data"),
-                                                html.Table(make_dash_table(df_fund_data)),
-                                            ],
-                                        )
-                                    ]
+                                                html.Table(
+                                                    make_dash_table(df_fund_data)
+                                                ),
+                                            ]
+                                        ),
+                                    ],
                                 ),
-                                
                                 # Right Side
                                 html.Div(
-                                    className="six columns",
+                                    className="six columns div-graphs",
                                     children=[
                                         html.Div(
                                             [
@@ -193,33 +195,25 @@ app.layout = html.Div(
                                                 ),
                                             ]
                                         )
-                                    ]
-                                )
-                                
+                                    ],
+                                ),
                             ],
                         ),
-
                         # Row 3
                         html.Div(
                             className="row",
                             children=[
                                 html.Div(
                                     children=[
-                                        html.H6(
-                                            "Performance Summary (%)",
-                                            className="gs-header gs-table-header padded",
-                                        ),
+                                        html.H6("Performance Summary (%)"),
                                         html.Table(
                                             modifed_perf_table, className="reversed"
                                         ),
-                                        html.H6(
-                                            "Calendar Year Performance (%)",
-                                            className="gs-header gs-table-header padded",
-                                        ),
+                                        html.H6("Calendar Year Performance (%)"),
                                         html.Table(make_dash_table(df_cal_year)),
                                     ]
-                                ),
-                            ]
+                                )
+                            ],
                         ),
                     ],
                     className="subpage",
@@ -227,129 +221,64 @@ app.layout = html.Div(
             ],
             className="page",
         ),
+        # Page 2
         html.Div(
-            [  # page 2
-                html.A(
-                    ["Print PDF"],
-                    className="button no-print",
-                    style={"position": "absolute", "top": "-40", "right": "0"},
-                ),
+            [
+                html.A(["Print PDF"], className="button no-print"),
+                # Subpage 2
                 html.Div(
-                    [  # subpage 2
-                        # Row 1 (Header)
-                        html.Div(
-                            [
-                                html.Div(
-                                    [
-                                        html.H5(
-                                            "Goldman Sachs Strategic  Absolute Return Bond II Portfolio"
-                                        ),
-                                        html.H6(
-                                            "A sub-fund of Goldman Sachs Funds, SICAV",
-                                            style={"color": "#7F90AC"},
-                                        ),
-                                    ],
-                                    className="nine columns padded",
-                                ),
-                                html.Div(
-                                    [
-                                        html.H1(
-                                            [
-                                                html.Span(
-                                                    "03", style={"opacity": "0.5"}
-                                                ),
-                                                html.Span("17"),
-                                            ]
-                                        ),
-                                        html.H6("Monthly Fund Update"),
-                                    ],
-                                    className="three columns gs-header gs-accent-header padded",
-                                    style={"float": "right"},
-                                ),
-                            ],
-                            className="row gs-header gs-text-header",
-                        ),
+                    children=[
+                        # Row 1
+                        header(),
+                        html.Br([]),
                         # Row 2
                         html.Div(
-                            [
-                                # Data tables on this page:
-                                # ---
-                                # df_fund_info = pd.read_csv('https://plot.ly/~jackp/17544/.csv')
-                                # df_fund_characteristics = pd.read_csv('https://plot.ly/~jackp/17542/.csv')
-                                # df_fund_facts = pd.read_csv('https://plot.ly/~jackp/17540/.csv')
-                                # df_bond_allocation = pd.read_csv('https://plot.ly/~jackp/17538/')
-                                # Column 1
+                            className="row",
+                            children=[
+                                # Left Column
                                 html.Div(
-                                    [
-                                        html.H6(
-                                            "Financial Information",
-                                            className="gs-header gs-text-header padded",
-                                        ),
+                                    className="five columns",
+                                    children=[
+                                        html.H6("Financial Information"),
                                         html.Table(make_dash_table(df_fund_info)),
-                                        html.H6(
-                                            "Fund Characteristics",
-                                            className="gs-header gs-text-header padded",
-                                        ),
+                                        html.H6("Fund Characteristics"),
                                         html.Table(
                                             make_dash_table(df_fund_characteristics)
                                         ),
-                                        html.H6(
-                                            "Fund Facts",
-                                            className="gs-header gs-text-header padded",
-                                        ),
+                                        html.H6("Fund Facts"),
                                         html.Table(make_dash_table(df_fund_facts)),
+                                        html.H6("Country Bond Allocation (%)"),
+                                        html.Table(make_dash_table(df_bond_allocation)),
                                     ],
-                                    className="four columns",
                                 ),
-                                # Column 2
+                                # Right Column
                                 html.Div(
-                                    [
-                                        html.H6(
-                                            "Sector Allocation (%)",
-                                            className="gs-header gs-table-header padded",
-                                        ),
+                                    className="seven columns div-graphs",
+                                    children=[
+                                        html.H6("Sector Allocation (%)"),
                                         html.Iframe(
                                             src="https://plot.ly/~jackp/17560.embed?modebar=false&link=false&autosize=true",
                                             style={"border": "0"},
                                             width="100%",
-                                            height="300",
+                                            height="230px",
                                         ),
-                                        html.H6(
-                                            "Country Bond Allocation (%)",
-                                            className="gs-header gs-table-header padded",
-                                        ),
-                                        html.Table(make_dash_table(df_bond_allocation)),
-                                    ],
-                                    className="four columns",
-                                ),
-                                # Column 3
-                                html.Div(
-                                    [
-                                        html.H6(
-                                            "Top 10 Currency Weights (%)",
-                                            className="gs-header gs-table-header padded",
-                                        ),
+                                        html.H6("Top 10 Currency Weights (%)"),
                                         html.Iframe(
                                             src="https://plot.ly/~jackp/17555.embed?modebar=false&link=false&autosize=true",
                                             style={"border": "0"},
                                             width="100%",
-                                            height="300",
+                                            height="230px",
                                         ),
-                                        html.H6(
-                                            "Credit Allocation (%)",
-                                            className="gs-header gs-table-header padded",
-                                        ),
+                                        html.H6("Credit Allocation (%)"),
                                         html.Iframe(
                                             src="https://plot.ly/~jackp/17557.embed?modebar=false&link=false&autosize=true",
                                             style={"border": "0"},
                                             width="100%",
-                                            height="300",
+                                            height="230px",
                                         ),
                                     ],
-                                    className="four columns",
                                 ),
                             ],
-                            className="row",
                         ),
                     ],
                     className="subpage",
@@ -359,23 +288,6 @@ app.layout = html.Div(
         ),
     ]
 )
-
-if "DYNO" in os.environ:
-    app.scripts.append_script(
-        {
-            "external_url": "https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js"
-        }
-    )
-
-
-external_js = [
-    "https://code.jquery.com/jquery-3.2.1.min.js",
-    "https://cdn.rawgit.com/plotly/dash-app-stylesheets/a3401de132a6d0b652ba11548736b1d1e80aa10d/dash-goldman-sachs-report-js.js",
-]
-
-for js in external_js:
-    app.scripts.append_script({"external_url": js})
-
 
 if __name__ == "__main__":
     app.server.run()
