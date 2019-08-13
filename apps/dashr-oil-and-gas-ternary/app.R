@@ -409,7 +409,7 @@ app$layout(htmlDiv(
                     list("label"= "outdoors", "value"= "outdoors"),
                     list(
                       "label"= "satellite-street",
-                      "value"= "mapbox=//styles/mapbox/satellite-streets-v9"
+                      "value"= "mapbox://styles/mapbox/satellite-streets-v9"
                     )
                   ),
                   value="basic"
