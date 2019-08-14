@@ -154,7 +154,7 @@ app$layout(htmlDiv(list(
             className = "nine columns header-left",
             children = list(
               htmlH1(
-                "Dash Monthly Fund Absolute Return Bond II Portfolio"
+                "Dash Financial Absolute Return Bond II Portfolio"
               ),
               htmlH2("A sub-fund of Dash Monthly Fund, SICAV")
             )
@@ -286,7 +286,7 @@ app$layout(htmlDiv(list(
             className = "nine columns header-left",
             children = list(
               htmlH1(
-                "Dash Monthly Fund Absolute Return Bond II Portfolio"
+                "Dash Financial Absolute Return Bond II Portfolio"
               ),
               htmlH2("A sub-fund of Dash Monthly Fund, SICAV")
             )
