@@ -3,10 +3,11 @@ library(quantmod)
 library(PerformanceAnalytics)
 library(zoo)
 library(plotly)
+library(parallel)
 
 # Get data
 getSymbolData <- function(symbolList){
-  getSymbols(symbolList)
+  getSymbols(symbolList, auto.assign = TRUE)
   # Assign to dataframe
   # Get adjusted prices
   p.data <- zoo(

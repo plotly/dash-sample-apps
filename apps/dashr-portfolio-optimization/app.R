@@ -39,40 +39,6 @@ app$layout(
                   dccTabs(
                     children = list(
                       dccTab(
-                        label = "Load Portfolio",
-                        children = list(
-                          htmlDiv(
-                            className = "control",
-                            children = list(
-                              htmlH5("Load a pre-generated portfolio sample:") 
-                            ) 
-                          ),
-                          htmlDiv(
-                            className = "control",
-                            children = list(
-                              dccDropdown(
-                                id = "loadDataDropdown",
-                                options = list(
-                                  list(
-                                    label = "MSFT-SBUX-IBM-AAPL-GSPC-AMZN",
-                                    value = "portfolioData1"
-                                  ),
-                                  list(
-                                    label = "FB-WORK-AAPL-MSFT-TSLA",
-                                    value = "portfolioData2"
-                                  ),
-                                  list(
-                                    label = "SBUX-NXPI-FB-SFIX-JNJ-CNC",
-                                    value = "portfolioData3"
-                                  )
-                                ),
-                                value = "portfolioData1"
-                              )
-                            )
-                          )
-                        )
-                      ),
-                      dccTab(
                         label = "Simulate Portfolio",
                         children = list(
                           htmlDiv(
@@ -136,12 +102,48 @@ app$layout(
                             className = "control-submit-store",
                             children = list(
                               htmlButton(
-                                id = "resample-button", children = "resample"
+                                id = "resample-button", 
+                                children = "resample", 
+                                n_clicks = 0
                               ),
                               dccLoading(
                                 dccStore(
                                   id = "data-store", data = portfolioData1
                                 ),
+                              )
+                            )
+                          )
+                        )
+                      ),
+                      dccTab(
+                        label = "Load Portfolio",
+                        children = list(
+                          htmlDiv(
+                            className = "control",
+                            children = list(
+                              htmlH5("Load a pre-generated portfolio sample:") 
+                            ) 
+                          ),
+                          htmlDiv(
+                            className = "control",
+                            children = list(
+                              dccDropdown(
+                                id = "loadDataDropdown",
+                                options = list(
+                                  list(
+                                    label = "MSFT-SBUX-IBM-AAPL-GSPC-AMZN",
+                                    value = "portfolioData1"
+                                  ),
+                                  list(
+                                    label = "FB-WORK-AAPL-MSFT-TSLA",
+                                    value = "portfolioData2"
+                                  ),
+                                  list(
+                                    label = "SBUX-NXPI-FB-SFIX-JNJ-CNC",
+                                    value = "portfolioData3"
+                                  )
+                                ),
+                                value = "portfolioData1"
                               )
                             )
                           )
@@ -206,13 +208,12 @@ app$callback(
     state("pMethodDropdown", "value")
   ),
   function(n_clicks, n_permutations, symbolList, rp_method){
-    # TODO: Error: argument of length 0 here:
     if (unlist(n_clicks) > 0){
-    #if (!is.null(unlist(n_clicks))){
       d <- getSymbolData(unlist(symbolList))
-      generatePortfolios(d, n_permutations, rp_method)
-      }
+      return(generatePortfolios(d, n_permutations, rp_method))
     }
+    return(dashNoUpdate())
+  }
 )
 
 app$callback(
