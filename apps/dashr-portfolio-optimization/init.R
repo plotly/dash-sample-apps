@@ -8,10 +8,10 @@ options(repos=r)
 
 # ======================================================================
 
-install.packages(PortfolioAnalytics)
-install.packages(quantmod)
-install.packages(PerformanceAnalytics)
-install.packages(zoo)
+install.packages("PortfolioAnalytics")
+install.packages("quantmod")
+install.packages("PerformanceAnalytics")
+install.packages("zoo")
 
 remotes::install_github("plotly/dash-table", ref="4.0.0-cran")
 remotes::install_github("plotly/dash-html-components", ref="1.0.0-cran")
