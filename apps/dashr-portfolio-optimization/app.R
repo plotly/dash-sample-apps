@@ -3,7 +3,7 @@ library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
 
-source("helperFunctions.R")
+source("utils/helperFunctions.R")
 
 appName <- Sys.getenv("DASH_APP_NAME")
 
