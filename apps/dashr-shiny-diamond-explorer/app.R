@@ -20,10 +20,6 @@ nms <- names(diamonds)
 
 #Adding Reactive data info, dataset is built in diamonds data
 
-dataset <- reactive({
-  diamonds[sample(nrow(diamonds), input$sampleSize),]
-})
-
 #rendering dropdown lists
 lapply(nms, function(x) {
   list(label = x, value = x)
@@ -160,7 +156,7 @@ app$callback(output = list(id = 'scatter-purple', property = 'figure'),
              
 ##add several callbacks
              
-function(value) {
+function(sampleSize, plotHeight, x, y, color, facet_row, facet_col) {
   
   ##multiple outputs, with similar callbacks but different datasets
     
@@ -172,6 +168,9 @@ function(value) {
       y = y, color = color)) + 
     geom_point()
   
+  dataset <- reactive({
+      diamonds[sample(nrow(diamonds), sampleSize),]
+  })
   # if at least one facet column/row is specified, add it
   facets <- paste(
     facet_row,
@@ -182,7 +181,7 @@ function(value) {
     p <- p + facet_grid(facets)
 
 %>% 
-  layout(height = input$plotHeight, autosize=TRUE)
+  layout(height = plotHeight, autosize=TRUE)
   
   return(p)
   
@@ -209,6 +208,10 @@ aes_string(
 x = x, 
 y = y, color = color)) + 
 geom_point()
+
+dataset <- reactive({
+    diamonds[sample(nrow(diamonds), sampleSize),]
+})
                
 # if at least one facet column/row is specified, add it
 facets <- paste(
