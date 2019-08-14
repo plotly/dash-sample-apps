@@ -12,6 +12,8 @@ install.packages("PortfolioAnalytics")
 install.packages("quantmod")
 install.packages("PerformanceAnalytics")
 install.packages("zoo")
+install.packages("ROI.plugin.quadprog")
+install.packages("ROI.plugin.glpk")
 
 remotes::install_github("plotly/dash-table")
 remotes::install_github("plotly/dash-html-components")
