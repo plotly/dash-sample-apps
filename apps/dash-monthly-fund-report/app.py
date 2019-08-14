@@ -56,6 +56,8 @@ df_fund_characteristics = pd.read_csv("https://plot.ly/~jackp/17542.csv")
 df_fund_facts = pd.read_csv("https://plot.ly/~jackp/17540.csv")
 df_bond_allocation = pd.read_csv("https://plot.ly/~jackp/17538.csv")
 
+df_sector_allocation = pd.read_csv("data/sector-allocation.csv")
+
 
 def header():
     return html.Div(
@@ -256,25 +258,245 @@ app.layout = html.Div(
                                     className="seven columns div-graphs",
                                     children=[
                                         html.H6("Sector Allocation (%)"),
-                                        html.Iframe(
-                                            src="https://plot.ly/~jackp/17560.embed?modebar=false&link=false&autosize=true",
-                                            style={"border": "0"},
-                                            width="100%",
-                                            height="230px",
+                                        dcc.Graph(
+                                            figure={
+                                                "data": [
+                                                    {
+                                                        "uid": "353874",
+                                                        "mode": "markers",
+                                                        "name": "B",
+                                                        "type": "bar",
+                                                        "x": df_sector_allocation["x"],
+                                                        "y": df_sector_allocation["y"],
+                                                        "marker": {"color": "#119dff"},
+                                                    }
+                                                ],
+                                                "layout": {
+                                                    "width": 300,
+                                                    "font": "8px",
+                                                    "xaxis": {
+                                                        "type": "category",
+                                                        "range": [-0.5, 11.5],
+                                                        "autorange": True,
+                                                    },
+                                                    "yaxis": {
+                                                        "type": "linear",
+                                                        "range": [0, 48.94736842105263],
+                                                        "autorange": True,
+                                                    },
+                                                    "height": 300,
+                                                    "margin": dict(
+                                                        t=0, r=0, b=160, l=0
+                                                    ),
+                                                    "hovermode": "closest",
+                                                    "bargroupgap": 0.2,
+                                                },
+                                            }
                                         ),
                                         html.H6("Top 10 Currency Weights (%)"),
-                                        html.Iframe(
-                                            src="https://plot.ly/~jackp/17555.embed?modebar=false&link=false&autosize=true",
-                                            style={"border": "0"},
-                                            width="100%",
-                                            height="230px",
+                                        dcc.Graph(
+                                            figure={
+                                                "data": [
+                                                    {
+                                                        "uid": "80eb70",
+                                                        "name": "Col1",
+                                                        "type": "bar",
+                                                        "x": [
+                                                            -50.8,
+                                                            1.8,
+                                                            1.8,
+                                                            2.2,
+                                                            2.3,
+                                                            3.2,
+                                                            4.2,
+                                                            5.7,
+                                                            6.6,
+                                                            8,
+                                                            8.9,
+                                                            106.1,
+                                                        ],
+                                                        "y": [
+                                                            "Other",
+                                                            "Russian Ruble",
+                                                            "Chinese Yuan",
+                                                            "Canadian Dollar",
+                                                            "Hungarian Forint",
+                                                            "Brazilian Real",
+                                                            "Mexican Peso",
+                                                            "Polish Zloty",
+                                                            "Czech Koruna",
+                                                            "Norwegian Krone",
+                                                            "Swedish Krona",
+                                                            "US Dollar",
+                                                        ],
+                                                        "marker": {"color": "#119dff"},
+                                                        "orientation": "h",
+                                                    }
+                                                ],
+                                                "layout": {
+                                                    "title": "",
+                                                    "width": 300,
+                                                    "xaxis": {
+                                                        "type": "linear",
+                                                        "range": [
+                                                            -62.13380540229584,
+                                                            164.54230264362104,
+                                                        ],
+                                                        "ticks": "outside",
+                                                        "title": "",
+                                                        "mirror": False,
+                                                        "nticks": 6,
+                                                        "showgrid": False,
+                                                        "showline": True,
+                                                        "zeroline": False,
+                                                        "autorange": True,
+                                                        "ticksuffix": "%",
+                                                    },
+                                                    "yaxis": {
+                                                        "type": "category",
+                                                        "range": [-0.5, 11.5],
+                                                        "title": "",
+                                                        "showgrid": True,
+                                                        "showline": False,
+                                                        "zeroline": False,
+                                                        "autorange": True,
+                                                    },
+                                                    "height": 300,
+                                                    "margin": {
+                                                        "b": 40,
+                                                        "l": 100,
+                                                        "r": 5,
+                                                        "t": 40,
+                                                        "pad": 0,
+                                                    },
+                                                },
+                                            }
                                         ),
                                         html.H6("Credit Allocation (%)"),
-                                        html.Iframe(
-                                            src="https://plot.ly/~jackp/17557.embed?modebar=false&link=false&autosize=true",
-                                            style={"border": "0"},
-                                            width="100%",
-                                            height="230px",
+                                        dcc.Graph(
+                                            figure={
+                                                "data": [
+                                                    {
+                                                        "uid": "a8c61b",
+                                                        "name": "GS Strategic<br>Absolute<br>Return<br>Bond II<br>Portfolio",
+                                                        "type": "bar",
+                                                        "xsrc": "jackp:17802:62c223",
+                                                        "x": [
+                                                            "0",
+                                                            "100",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                        ],
+                                                        "ysrc": "jackp:17802:d66b98",
+                                                        "y": [
+                                                            "Derivatives",
+                                                            "Cash",
+                                                            "NR",
+                                                            "D",
+                                                            "C",
+                                                            "CC",
+                                                            "CCC",
+                                                            "B",
+                                                            "BB",
+                                                            "BBB",
+                                                            "A",
+                                                            "AA",
+                                                            "AAA",
+                                                        ],
+                                                        "marker": {"color": "#c2ebff"},
+                                                        "visible": True,
+                                                        "orientation": "h",
+                                                    },
+                                                    {
+                                                        "uid": "f84602",
+                                                        "name": "3 Month<br>USD Libor",
+                                                        "type": "bar",
+                                                        "xsrc": "jackp:17802:4a6d89",
+                                                        "x": [
+                                                            "0",
+                                                            "12.6",
+                                                            "0.6",
+                                                            "0.1",
+                                                            "0.2",
+                                                            "1.1",
+                                                            "2.3",
+                                                            "1.6",
+                                                            "2.1",
+                                                            "1.9",
+                                                            "31.8",
+                                                            "3.7",
+                                                            "42.1",
+                                                        ],
+                                                        "ysrc": "jackp:17802:d66b98",
+                                                        "y": [
+                                                            "Derivatives",
+                                                            "Cash",
+                                                            "NR",
+                                                            "D",
+                                                            "C",
+                                                            "CC",
+                                                            "CCC",
+                                                            "B",
+                                                            "BB",
+                                                            "BBB",
+                                                            "A",
+                                                            "AA",
+                                                            "AAA",
+                                                        ],
+                                                        "marker": {"color": "#119dff"},
+                                                        "orientation": "h",
+                                                    },
+                                                ],
+                                                "layout": {
+                                                    "title": "",
+                                                    "width": 301,
+                                                    "xaxis": {
+                                                        "type": "linear",
+                                                        "range": [0, 100],
+                                                        "ticks": "outside",
+                                                        "title": "",
+                                                        "nticks": 11,
+                                                        "showgrid": False,
+                                                        "showline": True,
+                                                        "autorange": False,
+                                                        "ticksuffix": "%",
+                                                    },
+                                                    "yaxis": {
+                                                        "type": "category",
+                                                        "range": [
+                                                            -0.5,
+                                                            12.592783505154639,
+                                                        ],
+                                                        "title": "",
+                                                        "showgrid": True,
+                                                        "autorange": True,
+                                                        "ticksuffix": "",
+                                                    },
+                                                    "height": 300,
+                                                    "legend": {
+                                                        "x": 0.14793708706277642,
+                                                        "y": 0.6998496240601503,
+                                                        "bgcolor": "rgba(255, 255, 255, 0)",
+                                                        "bordercolor": "rgba(68, 68, 68, 0)",
+                                                    },
+                                                    "margin": {
+                                                        "b": 40,
+                                                        "l": 60,
+                                                        "r": 0,
+                                                        "t": 10,
+                                                        "pad": 0,
+                                                    },
+                                                },
+                                            }
                                         ),
                                     ],
                                 ),
