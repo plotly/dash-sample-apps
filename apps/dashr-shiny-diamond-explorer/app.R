@@ -187,7 +187,7 @@ function(sampleSize, plotHeight, x, y, color, facet_row, facet_col) {
   
 })
 
-app$callback(output = list(id = 'scatter-blue', property = 'figure'), 
+app$callback(output = list(id = 'scatter-indigo', property = 'figure'), 
              params = list(
                input(id = 'sample-slider', property = 'value'),
                input(id = 'height-slider', property = 'value'),
@@ -197,35 +197,208 @@ app$callback(output = list(id = 'scatter-blue', property = 'figure'),
                input(id = 'facet-row-dropdown', property = 'value'),
                input(id = 'facet-col-dropdown', property = 'value')),
              
-function(value) {
+             ##add several callbacks
+             
+             function(sampleSize, plotHeight, x, y, color, facet_row, facet_col) {
                
-##multiple outputs, with similar callbacks but different datasets
+               ##multiple outputs, with similar callbacks but different datasets
                
-#graph built with ggplot syntax - note that ggplot layout height/width deprecated, find equivalent
-p <- ggplot(
-dataset(), 
-aes_string(
-x = x, 
-y = y, color = color)) + 
-geom_point()
+               #graph built with ggplot syntax - note that ggplot layout height/width deprecated, find equivalent
+               p <- ggplot(
+                 dataset(), 
+                 aes_s(
+                   x = x, 
+                   y = y, color = color)) + 
+                 geom_point()
+               
+               dataset <- reactive({
+                 diamonds[sample(nrow(diamonds), sampleSize),]
+               })
+               # if at least one facet column/row is specified, add it
+               facets <- paste(
+                 facet_row,
+                 '~', 
+                 facet_col)
+               
+               if (facets != '. ~ .')
+                 p <- p + facet_grid(facets)
+               
+               %>% 
+                 layout(height = plotHeight, autosize=TRUE)
+               
+               return(p)
+               
+             })
 
-dataset <- reactive({
-    diamonds[sample(nrow(diamonds), sampleSize),]
-})
+app$callback(output = list(id = 'scatter-teal', property = 'figure'), 
+             params = list(
+               input(id = 'sample-slider', property = 'value'),
+               input(id = 'height-slider', property = 'value'),
+               input(id = 'x-dropdown', property = 'value'),
+               input(id = 'y-dropdown', property = 'value'),
+               input(id = 'color-dropdown', property = 'value'),
+               input(id = 'facet-row-dropdown', property = 'value'),
+               input(id = 'facet-col-dropdown', property = 'value')),
+             
+             ##add several callbacks
+             
+             function(sampleSize, plotHeight, x, y, color, facet_row, facet_col) {
                
-# if at least one facet column/row is specified, add it
-facets <- paste(
-facet_row,
-'~', 
-facet_col)
+               ##multiple outputs, with similar callbacks but different datasets
                
-if (facets != '. ~ .')
-p <- p + facet_grid(facets)
+               #graph built with ggplot syntax - note that ggplot layout height/width deprecated, find equivalent
+               p <- ggplot(
+                 dataset(), 
+                 aes_s(
+                   x = x, 
+                   y = y, color = color)) + 
+                 geom_point()
                
-%>% 
-layout(height = input$plotHeight, autosize=TRUE)
+               dataset <- reactive({
+                 diamonds[sample(nrow(diamonds), sampleSize),]
+               })
+               # if at least one facet column/row is specified, add it
+               facets <- paste(
+                 facet_row,
+                 '~', 
+                 facet_col)
                
-  return(p)
+               if (facets != '. ~ .')
+                 p <- p + facet_grid(facets)
+               
+               %>% 
+                 layout(height = plotHeight, autosize=TRUE)
+               
+               return(p)
+               
+             })
+
+app$callback(output = list(id = 'scatter-green', property = 'figure'), 
+             params = list(
+               input(id = 'sample-slider', property = 'value'),
+               input(id = 'height-slider', property = 'value'),
+               input(id = 'x-dropdown', property = 'value'),
+               input(id = 'y-dropdown', property = 'value'),
+               input(id = 'color-dropdown', property = 'value'),
+               input(id = 'facet-row-dropdown', property = 'value'),
+               input(id = 'facet-col-dropdown', property = 'value')),
+             
+             ##add several callbacks
+             
+             function(sampleSize, plotHeight, x, y, color, facet_row, facet_col) {
+               
+               ##multiple outputs, with similar callbacks but different datasets
+               
+               #graph built with ggplot syntax - note that ggplot layout height/width deprecated, find equivalent
+               p <- ggplot(
+                 dataset(), 
+                 aes_s(
+                   x = x, 
+                   y = y, color = color)) + 
+                 geom_point()
+               
+               dataset <- reactive({
+                 diamonds[sample(nrow(diamonds), sampleSize),]
+               })
+               # if at least one facet column/row is specified, add it
+               facets <- paste(
+                 facet_row,
+                 '~', 
+                 facet_col)
+               
+               if (facets != '. ~ .')
+                 p <- p + facet_grid(facets)
+               
+               %>% 
+                 layout(height = plotHeight, autosize=TRUE)
+               
+               return(p)
+               
+             })
+
+app$callback(output = list(id = 'scatter-light-green', property = 'figure'), 
+             params = list(
+               input(id = 'sample-slider', property = 'value'),
+               input(id = 'height-slider', property = 'value'),
+               input(id = 'x-dropdown', property = 'value'),
+               input(id = 'y-dropdown', property = 'value'),
+               input(id = 'color-dropdown', property = 'value'),
+               input(id = 'facet-row-dropdown', property = 'value'),
+               input(id = 'facet-col-dropdown', property = 'value')),
+             
+             ##add several callbacks
+             
+             function(sampleSize, plotHeight, x, y, color, facet_row, facet_col) {
+               
+               ##multiple outputs, with similar callbacks but different datasets
+               
+               #graph built with ggplot syntax - note that ggplot layout height/width deprecated, find equivalent
+               p <- ggplot(
+                 dataset(), 
+                 aes_s(
+                   x = x, 
+                   y = y, color = color)) + 
+                 geom_point()
+               
+               dataset <- reactive({
+                 diamonds[sample(nrow(diamonds), sampleSize),]
+               })
+               # if at least one facet column/row is specified, add it
+               facets <- paste(
+                 facet_row,
+                 '~', 
+                 facet_col)
+               
+               if (facets != '. ~ .')
+                 p <- p + facet_grid(facets)
+               
+               %>% 
+                 layout(height = plotHeight, autosize=TRUE)
+               
+               return(p)
+               
+             })
+
+app$callback(output = list(id = 'scatter-yellow', property = 'figure'), 
+             params = list(
+               input(id = 'sample-slider', property = 'value'),
+               input(id = 'height-slider', property = 'value'),
+               input(id = 'x-dropdown', property = 'value'),
+               input(id = 'y-dropdown', property = 'value'),
+               input(id = 'color-dropdown', property = 'value'),
+               input(id = 'facet-row-dropdown', property = 'value'),
+               input(id = 'facet-col-dropdown', property = 'value')),
+             
+             ##add several callbacks
+             
+             function(sampleSize, plotHeight, x, y, color, facet_row, facet_col) {
+               
+               ##multiple outputs, with similar callbacks but different datasets
+               
+               #graph built with ggplot syntax - note that ggplot layout height/width deprecated, find equivalent
+               p <- ggplot(
+                 dataset(), 
+                 aes_s(
+                   x = x, 
+                   y = y, color = color)) + 
+                 geom_point()
+               
+               dataset <- reactive({
+                 diamonds[sample(nrow(diamonds), sampleSize),]
+               })
+               # if at least one facet column/row is specified, add it
+               facets <- paste(
+                 facet_row,
+                 '~', 
+                 facet_col)
+               
+               if (facets != '. ~ .')
+                 p <- p + facet_grid(facets)
+               
+               %>% 
+                 layout(height = plotHeight, autosize=TRUE)
+               
+               return(p)
                
              })
              
