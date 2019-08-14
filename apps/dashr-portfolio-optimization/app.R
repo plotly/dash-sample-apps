@@ -5,6 +5,17 @@ library(data.table)
 
 source("helperFunctions.R")
 
+appName <- Sys.getenv("DASH_APP_NAME")
+
+if (!appName == "") {
+  pathPrefix <- sprintf("/%s/", appName)
+
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+
+  setwd(sprintf("/app/apps/%s", appName))
+}
+
 # Load pre-generated data
 portfolioData1 <- readRDS("data/portfolioData1.rds")
 portfolioData2 <- readRDS("data/portfolioData2.rds")
@@ -38,40 +49,6 @@ app$layout(
                 children = list(
                   dccTabs(
                     children = list(
-                      dccTab(
-                        label = "Load Portfolio",
-                        children = list(
-                          htmlDiv(
-                            className = "control",
-                            children = list(
-                              htmlH5("Load a pre-generated portfolio sample:") 
-                            ) 
-                          ),
-                          htmlDiv(
-                            className = "control",
-                            children = list(
-                              dccDropdown(
-                                id = "loadDataDropdown",
-                                options = list(
-                                  list(
-                                    label = "MSFT-SBUX-IBM-AAPL-GSPC-AMZN",
-                                    value = "portfolioData1"
-                                  ),
-                                  list(
-                                    label = "FB-WORK-AAPL-MSFT-TSLA",
-                                    value = "portfolioData2"
-                                  ),
-                                  list(
-                                    label = "SBUX-NXPI-FB-SFIX-JNJ-CNC",
-                                    value = "portfolioData3"
-                                  )
-                                ),
-                                value = "portfolioData1"
-                              )
-                            )
-                          )
-                        )
-                      ),
                       dccTab(
                         label = "Simulate Portfolio",
                         children = list(
@@ -136,12 +113,48 @@ app$layout(
                             className = "control-submit-store",
                             children = list(
                               htmlButton(
-                                id = "resample-button", children = "resample"
+                                id = "resample-button", 
+                                children = "resample", 
+                                n_clicks = 0
                               ),
                               dccLoading(
                                 dccStore(
                                   id = "data-store", data = portfolioData1
                                 ),
+                              )
+                            )
+                          )
+                        )
+                      ),
+                      dccTab(
+                        label = "Load Portfolio",
+                        children = list(
+                          htmlDiv(
+                            className = "control",
+                            children = list(
+                              htmlH5("Load a pre-generated portfolio sample:") 
+                            ) 
+                          ),
+                          htmlDiv(
+                            className = "control",
+                            children = list(
+                              dccDropdown(
+                                id = "loadDataDropdown",
+                                options = list(
+                                  list(
+                                    label = "MSFT-SBUX-IBM-AAPL-GSPC-AMZN",
+                                    value = "portfolioData1"
+                                  ),
+                                  list(
+                                    label = "FB-WORK-AAPL-MSFT-TSLA",
+                                    value = "portfolioData2"
+                                  ),
+                                  list(
+                                    label = "SBUX-NXPI-FB-SFIX-JNJ-CNC",
+                                    value = "portfolioData3"
+                                  )
+                                ),
+                                value = "portfolioData1"
                               )
                             )
                           )
@@ -206,13 +219,12 @@ app$callback(
     state("pMethodDropdown", "value")
   ),
   function(n_clicks, n_permutations, symbolList, rp_method){
-    # TODO: Error: argument of length 0 here:
     if (unlist(n_clicks) > 0){
-    #if (!is.null(unlist(n_clicks))){
       d <- getSymbolData(unlist(symbolList))
-      generatePortfolios(d, n_permutations, rp_method)
-      }
+      return(generatePortfolios(d, n_permutations, rp_method))
     }
+    return(dashNoUpdate())
+  }
 )
 
 app$callback(
@@ -300,5 +312,9 @@ app$callback(
   }
 )
 
-app$run_server()
+if (!appName == ""){
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+} else {
+  app$run_server()
+}
 
