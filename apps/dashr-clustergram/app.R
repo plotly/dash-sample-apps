@@ -41,13 +41,12 @@ header <- htmlDiv(
     htmlA(
       id = "dashbio-logo",
       children = list(
-        htmlImg(
-          src = "assets/dashbio_logo_transparent.png" 
-        )
+        htmlImg(src='assets/plotly-dash-bio-logo.png', height = '36', width = '180',
+                style = list('top' = '10', 'margin-left' = '10px'))
       ),
       href = "/Portal"
     ),
-    htmlH2("Dash Clustergram"),
+    htmlH2("Clustergram"),
     htmlA(
       id = "gh-link",
       children = list("View on GitHub"),
