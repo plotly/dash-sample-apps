@@ -3,8 +3,6 @@ library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
 
-source("utils/helperFunctions.R")
-
 appName <- Sys.getenv("DASH_APP_NAME")
 
 if (!appName == "") {
@@ -15,6 +13,8 @@ if (!appName == "") {
 
   setwd(sprintf("/app/apps/%s", appName))
 }
+
+source("utils/helperFunctions.R")
 
 # Load pre-generated data
 portfolioData1 <- readRDS("data/portfolioData1.rds")
