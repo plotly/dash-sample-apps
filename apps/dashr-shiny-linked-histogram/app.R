@@ -113,8 +113,10 @@ app$layout(htmlDiv(
     plotlyLogo,
     pageTitle,
     firstP,
+    htmlBr()
     htmlDiv(list(xSlider), style=list('marginBottom'= 50, className = 'five columns')),
     secondP,
+    htmlBr()
     htmlDiv(list(ySlider), style=list('marginBottom'= 50, className = 'seven columns'))
   )
 ))
