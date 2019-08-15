@@ -120,6 +120,14 @@ body {
   #app-body {
     flex-direction: column;
   }
+  #left-div{
+    width: 90vw;
+    margin: 0 auto;
+  }
+  #plots-div {
+    width: 90vw;
+    margin: 0 auto;
+  }
   #controls-div {
     width: 90vw;
   }
