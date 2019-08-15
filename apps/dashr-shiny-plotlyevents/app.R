@@ -43,6 +43,7 @@ pageTitle <- htmlB("Plotly Type")
 
 #radiobuttons
 radioButton <- dccRadioItems(
+  id = "radiobutton-selector",
   options = list(
   list("label" = "ggplotly", "value" = "ggp"),
   list("label" = "plotly", "value" = "plty")
@@ -55,10 +56,10 @@ app$layout(
     plotlyLogo,
     pageTitle,
     radioButton
-  ), className = 'twelve columns'),
+  ), className = "twelve columns"),
   
   htmlDiv(list(
-    dccGraph( id = "scatter-plot"))
+    dccGraph( id = "scatter-plot",)
   )
   )
   
@@ -68,6 +69,10 @@ app$layout(
 
 #################################### CALLBACKS START ###############################################
 
+app$callback(
+  output = list(id = "scatterplot", property = "figure"),
+  params = list(input(id = "radiobutton-selector", property = "value"))
+)
 
 ####################################################################################################
 
