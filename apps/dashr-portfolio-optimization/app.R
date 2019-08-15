@@ -55,7 +55,16 @@ app$layout(
                         children = list(
                           htmlDiv(
                             className = "control",
-                            children = htmlH5("Generate a portfolio sample:")
+                            style = list(
+                              paddingBottom = "0px"
+                            ),
+                            children = list(
+                              htmlH5("Generate a portfolio sample:"),
+                              htmlP(
+                                "Note that generating a portfolio sample may take a long time",
+                                style = list(color = "gray")
+                              )
+                            )
                           ),
                           htmlDiv(
                             className = "control",
