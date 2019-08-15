@@ -149,6 +149,24 @@ generatePortfolios <- function(
 
 
 # Generate plots:
+generateEmpty <- function(){
+  ax <- list(
+    title = "",
+    zeroline = FALSE,
+    showline = FALSE,
+    showticklabels = FALSE,
+    showgrid = FALSE
+  )
+  plot_ly() %>%
+    layout(
+      xaxis = ax,
+      yaxis = ax,
+      plot_bgcolor = "#F8F8F8",
+      paper_bgcolor = "#F8F8F8"
+    )
+
+}
+
 generateFrontierPlot <- function(portfolioData){
   feasible.sd <- as.numeric(portfolioData$feasible.sd)
   feasible.means <- as.numeric(portfolioData$feasible.means)

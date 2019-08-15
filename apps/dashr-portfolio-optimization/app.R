@@ -172,7 +172,7 @@ app$layout(
                   id = "diversification-loading",
                   dccGraph(
                     id = "diversification-plot",
-                    figure = generateDiversificationPlot(portfolioData1)
+                    figure = generateEmpty()
                   )
                 )
               )
@@ -188,7 +188,7 @@ app$layout(
                   id = "frontier-loading",
                   dccGraph(
                     id = "frontier-plot",
-                    figure = generateFrontierPlot(portfolioData1)
+                    figure = generateEmpty()
                   )
                 )
               ),
@@ -199,7 +199,7 @@ app$layout(
                   id = "history-loading",
                   children = dccGraph(
                     id = "history-plot",
-                    figure = generateHistoryPlot(portfolioData1)
+                    figure = generateEmpty()
                   )
                 )
               )            
@@ -224,7 +224,8 @@ app$callback(
       d <- getSymbolData(unlist(symbolList))
       return(generatePortfolios(d, n_permutations, rp_method))
     }
-    return(dashNoUpdate())
+    return(portfolioData1)
+    #return(dashNoUpdate())
   }
 )
 
