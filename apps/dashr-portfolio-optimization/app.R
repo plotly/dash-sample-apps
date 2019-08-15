@@ -37,6 +37,7 @@ app$layout(
           htmlImg(src = "assets/plotly_logo_white.png")
         )
       ),
+      htmlBr(),
       htmlDiv(
         id = "app-body",
         #className = "",

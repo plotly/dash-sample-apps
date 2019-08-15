@@ -44,17 +44,27 @@ body {
   width: auto;
 }
 
-/*#frontier-plot-outer {*/
-  /*height: 50vh;*/
-/*}*/
+#frontier-plot-outer {
+  height: 50vh;
+}
+
+#frontier-plot{
+  height:50vh;
+}
+
+#left-div{
+  width: 30vw;
+}
 
 #diversification-plot-outer {
   padding-top: 2rem;
   height: 40vh;
+  width: 30vw;
 }
 
 #diversification-plot {
   height: 40vh;
+  width: 30vw;
 }
 
 #history-plot-outer {
@@ -106,3 +116,30 @@ body {
   justify-content:space-between;
 }
 
+@media only screen and (max-width: 750px), (min-width: 768px) and (max-width: 1024px) {
+  #app-body {
+    flex-direction: column;
+  }
+  #controls-div {
+    width: 90vw;
+  }
+  #diversification-plot-outer {
+    width: 90vw;
+  }
+  #diversification-plot{
+    width: 90vw;
+  }
+  #history-plot-outer {
+    width: 90vw;
+  }
+  #history-plot{
+    width: 90vw;
+  }
+  #frontier-plot-outer {
+    width: 90vw;
+  }
+  #frontier-plot{
+    width: 90vw;
+  }
+
+}
