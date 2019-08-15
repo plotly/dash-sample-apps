@@ -131,6 +131,7 @@ body {
   }
   #controls-div {
     width: 90vw;
+    margin: 0 auto;
   }
   #diversification-plot-outer {
     width: 90vw;
