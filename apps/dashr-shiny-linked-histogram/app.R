@@ -21,6 +21,19 @@ data(cars)
 head(cars)
 summary(cars)
 
+#convenience function for computing xbin/ybin object given a number of bins
+
+compute_bins <- function(x, n) {
+  list(
+    start = min(x),
+    end = min(x),
+    size = (max(x) - min(x)) / n)
+}
+
+#marker objects 
+m <- list(color = toRGB("black"))
+m2 <- list(color = toRGN("black", 0.2))
+
 ####################################################################################################
 
 
@@ -47,32 +60,31 @@ secondP <- htmlDiv(htmlLabel("Number of y bins"), htmlBr())
 xSlider <- dccSlider(id = "x-slider",
                      min = 1,
                      max = 50,
-                     value = 20,
-                     width = 250)
+                     value = 20)
 
 ySlider <- dccSlider(id = "y-slider",
                      min = 1,
                      max = 50,
-                     value = 20,
-                     width = 250)
-
+                     value = 20)
 
 #################################### CREATE LAYOUT###################################################
 
-app$layout(
-  htmlDiv(list(
+app$layout(htmlDiv(
+  list(
     plotlyLogo,
     pageTitle,
-  ), className = "twelve columns"),
-  
+    firstP,
+    htmlDiv(list(xSlider), style = ('marginBottom' = 50), className = 'five columns'),
+    secondP,
+    htmlDiv(list(ySlider), style = ('marginBottom' = 50), className = 'seven columns')
+    )
+  )
 )
-
-
 
 #################################### CALLBACKS START ###############################################
 
 app$callback(
-  output = list(id = , property =),
+  output = list(id = "histogram", property = "figure"),
   params = list(input(id = , property = ))
 )
 
