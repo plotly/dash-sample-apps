@@ -53,20 +53,59 @@ plotlyLogo <-
 
 pageTitle <- htmlH2("Linked highlighting with plotly and DashR")
 
-firstP <- htmlDiv(htmlLabel("Number of x bins"), htmlBr())
+firstP <- htmlB("Number of x bins")
 
-secondP <- htmlDiv(htmlLabel("Number of y bins"), htmlBr())
+secondP <- htmlB("Number of y bins")
 
 xSlider <- dccSlider(id = "x-slider",
                      min = 1,
                      max = 50,
+                     marks = list(
+                       '1' = '1',
+                       '6' = '6',
+                       '11' = '11',
+                       '16' = '16',
+                       '21' = '21',
+                       '26' = '26',
+                       '31' = '31',
+                       '36' = '36',
+                       '41' = '41',
+                       '46' = '46',
+                       '50' = '50'
+                       ),
                      value = 20)
 
-ySlider <- dccSlider(id = "y-slider",
-                     min = 1,
-                     max = 50,
-                     value = 20)
+ySlider <- dccSlider(
+  id = "y-slider",
+  min = 1,
+  max = 50,
+  marks = list(
+    '1' = '1',
+    '6' = '6',
+    '11' = '11',
+    '16' = '16',
+    '21' = '21',
+    '26' = '26',
+    '31' = '31',
+    '36' = '36',
+    '41' = '41',
+    '46' = '46',
+    '50' = '50'
+  ),
+  value = 20
+)
 
+speedCountGraph -> dccGraph(
+  
+)
+
+scatterGraph -> dccGraph(
+  
+)
+
+yCountGraph -> dccGraph(
+  
+)
 #################################### CREATE LAYOUT###################################################
 
 app$layout(htmlDiv(
@@ -74,19 +113,18 @@ app$layout(htmlDiv(
     plotlyLogo,
     pageTitle,
     firstP,
-    htmlDiv(list(xSlider), style = ('marginBottom' = 50), className = 'five columns'),
+    htmlDiv(list(xSlider), style=list('marginBottom'= 50, className = 'five columns')),
     secondP,
-    htmlDiv(list(ySlider), style = ('marginBottom' = 50), className = 'seven columns')
-    )
+    htmlDiv(list(ySlider), style=list('marginBottom'= 50, className = 'seven columns'))
   )
-)
+))
 
 #################################### CALLBACKS START ###############################################
 
-app$callback(
-  output = list(id = "histogram", property = "figure"),
-  params = list(input(id = , property = ))
-)
+# app$callback(
+#   output = list(id = "histogram", property = "figure"),
+#   params = list(input(id = , property = ))
+# )
 
 ####################################################################################################
 
