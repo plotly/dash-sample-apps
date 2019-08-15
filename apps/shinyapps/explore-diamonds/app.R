@@ -39,7 +39,7 @@ server <- function(input, output) {
         
         # if at least one facet column/row is specified, add it
         facets <- paste(input$facet_row, '~', input$facet_col)
-        if (facets != '. ~ .') p <- p +d facet_grid(facets)
+        if (facets != '. ~ .') p <- p + d facet_grid(facets)
         
         ggplotly(p) %>% 
             layout(height = input$plotHeight, autosize=TRUE)

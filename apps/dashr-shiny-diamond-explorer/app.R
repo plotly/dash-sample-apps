@@ -403,6 +403,7 @@ app$callback(output = list(id = 'scatter-yellow', property = 'figure'),
              })
              
 ########CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL
+
 if (appName != '') {
   app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) 
 } else {
