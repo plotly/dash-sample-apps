@@ -131,20 +131,14 @@ app$layout(
   ), className = 'three columns'
   ),
   htmlDiv(list(
-    dccGraph(id = 'scatter-purple'),
-    dccGraph(id = 'scatter-blue'),
-    dccGraph(id = 'scatter-indigo'),
-    dccGraph(id = 'scatter-teal'),
-    dccGraph(id = 'scatter-green'),
-    dccGraph(id = 'scatter-light-green'),
-    dccGraph(id = 'scatter-yellow')
+    dccGraph(id = 'facetgrid')
   ),
   className = 'eight columns'
   )
 )
 ################ CALLBACKS #####################
 
-app$callback(output = list(id = 'scatter-purple', property = 'figure'), 
+app$callback(output = list(id = 'facetgrid', property = 'figure'), 
              params = list(
                input(id = 'sample-slider', property = 'value'),
                input(id = 'height-slider', property = 'value'),
