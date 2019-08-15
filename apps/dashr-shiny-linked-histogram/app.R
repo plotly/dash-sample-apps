@@ -13,8 +13,13 @@ library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 
+
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
 
+#cars {dataset - speed and stopping distances of cars}
+data(cars)
+head(cars)
+summary(cars)
 
 ####################################################################################################
 
@@ -27,16 +32,30 @@ app <- Dash$new(name = "dashr-shiny-linked-histogram")
 
 ####################################################################################################
 
-
-
-
 #################################### CREATE LAYOUT VARIABLES #######################################
 
 plotlyLogo <-
   htmlA(list(htmlImg(id = 'banner-image', src = 'assets/image.png')), className = 'logo',
         href = 'https://dashr.plot.ly')
 
-pageTitle <- g
+pageTitle <- htmlH2("Linked highlighting with plotly and DashR")
+
+firstP <- htmlDiv(htmlLabel("Number of x bins"), htmlBr())
+
+secondP <- htmlDiv(htmlLabel("Number of y bins"), htmlBr())
+
+xSlider <- dccSlider(id = "x-slider",
+                     min = 1,
+                     max = 50,
+                     value = 20,
+                     width = 250)
+
+ySlider <- dccSlider(id = "y-slider",
+                     min = 1,
+                     max = 50,
+                     value = 20,
+                     width = 250)
+
 
 #################################### CREATE LAYOUT###################################################
 
