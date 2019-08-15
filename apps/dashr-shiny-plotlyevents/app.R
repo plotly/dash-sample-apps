@@ -12,7 +12,6 @@ library(plotly)
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-library(mtca)
 
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
 
