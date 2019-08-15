@@ -12,9 +12,12 @@ library(plotly)
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
+library(mtca)
 
 #################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
 
+#Load dataset - mtcars
+data("mtcars")
 
 ####################################################################################################
 
@@ -32,10 +35,36 @@ app <- Dash$new(name = "dashr-shiny-plotlyevents")
 
 #################################### CREATE LAYOUT VARIABLES #######################################
 
+plotlyLogo <-
+  htmlA(list(htmlImg(id = 'banner-image', src = 'assets/image.png')), className = 'logo',
+        href = 'https://dashr.plot.ly')
+
+pageTitle <- htmlB("Plotly Type")
+
+#radiobuttons
+radioButton <- dccRadioItems(
+  options = list(
+  list("label" = "ggplotly", "value" = "ggp"),
+  list("label" = "plotly", "value" = "plty")
+), value = "ggp")
 
 #################################### CREATE LAYOUT###################################################
 
-app$layout()
+app$layout(
+  htmlDiv(list(
+    plotlyLogo,
+    pageTitle,
+    radioButton
+  ), className = 'twelve columns'),
+  
+  htmlDiv(list(
+    dccGraph( id = "scatter-plot"))
+  )
+  )
+  
+)
+
+
 
 #################################### CALLBACKS START ###############################################
 
