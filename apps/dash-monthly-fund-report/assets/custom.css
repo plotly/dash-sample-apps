@@ -1,4 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Crimson+Text&display=swap');
+    
+@font-face {
+    font-family: "Helvetica Neue";
+    src: url("HelveticaNeue.ttf") format('opentype');
+}
+
+@font-face {
+    font-family: "Sabon Roman";
+    src: url("SabonRoman.ttf") format('opentype');
+}
 body {
     width: 100%;
     height: 100%;
@@ -14,11 +23,11 @@ body {
 }
 .columns{ margin-left: 0 !important; }
 h1, h2, h3, h4, h5, h6{
-    font-family: 'Crimson Text', serif;
+    font-family: 'Sabon Roman', serif;
     margin: 0;
 }
 p, a{
-    font-family: Helevtica, sans-serif;
+    font-family: 'Helevtica Neue', sans-serif;
 }
 
 .page {
@@ -54,7 +63,7 @@ p, a{
 }
 .header-left h1{
     color: #506784;
-    font-size: 24px;
+    font-size: 26px;
 }
 .header-left h2{
     color: #a2b1c6;
@@ -69,11 +78,11 @@ p, a{
 }
 .header-right h1{
     margin: -10px 0px 0px 0px;
-    font-size: 48px;
+    font-size: 45px;
 }
 .header-right h6{
     color: #a2b1c6;
-    font-size: 18px;
+    font-size: 16px;
     margin: 0;
 }
 .light-blue{color: #B4EFF7;}
@@ -86,7 +95,7 @@ p, a{
 }
 .spec-row .six.columns{
     width: 50%;
-    height: 180px;
+    height: 160px;
 }
 .six.columns{
     width: 50%;
@@ -155,13 +164,14 @@ h6.padded, p.padded{
 
 .blue-text{ color: #8496B8; }
 
-table{ width: 100% }
 
 tr:nth-child(even) { background-color: #f7fafc; }
 table.reversed tr:nth-child(odd) { background-color: #e9f1f4; }
 table.reversed tr:nth-child(even) { background-color: #f7fafc; }
-
 table{ 
+  width: 100%;
+  font-size: 0.75rem;
+  margin-bottom: 0;
   border-spacing: 0;
   border-collapse: collapse;
 }

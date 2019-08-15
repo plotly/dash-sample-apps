@@ -2,6 +2,7 @@ import dash
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
+import pathlib
 
 from plotly import graph_objs as go
 from datetime import datetime as dt
@@ -9,19 +10,17 @@ import json
 import pandas as pd
 import os
 
+
 app = dash.Dash(__name__)
 server = app.server
 
 
 df_fund_data = pd.read_csv("https://plot.ly/~jackp/17534.csv")
 df_fund_data.head()
-
 df_perf_summary = pd.read_csv("https://plot.ly/~jackp/17530.csv")
 df_perf_summary.head()
-
 df_cal_year = pd.read_csv("https://plot.ly/~jackp/17528.csv")
 df_cal_year.head()
-
 df_perf_pc = pd.read_csv("https://plot.ly/~jackp/17532.csv")
 
 
@@ -56,7 +55,14 @@ df_fund_characteristics = pd.read_csv("https://plot.ly/~jackp/17542.csv")
 df_fund_facts = pd.read_csv("https://plot.ly/~jackp/17540.csv")
 df_bond_allocation = pd.read_csv("https://plot.ly/~jackp/17538.csv")
 
-df_sector_allocation = pd.read_csv("data/sector-allocation.csv")
+
+PATH = pathlib.Path(__file__).parent
+DATA_PATH = PATH.joinpath("data").resolve()
+
+df_sector_allocation = pd.read_csv(DATA_PATH.joinpath("sector-allocation.csv"))
+df_performance = pd.read_csv(DATA_PATH.joinpath("performance.csv"))
+df_currency_weights = pd.read_csv(DATA_PATH.joinpath("currency-weights.csv"))
+df_credit_allocation = pd.read_csv(DATA_PATH.joinpath("credit-allocation.csv"))
 
 
 def header():
@@ -72,10 +78,8 @@ def header():
                     html.Div(
                         className="header-left",
                         children=[
-                            html.H1(
-                                "Goldman Sachs Strategic Absolute Return Bond II Portfolio"
-                            ),
-                            html.H2("A sub-fund of Goldman Sachs Funds, SICAV"),
+                            html.H1("Dash Monthly Fund Report"),
+                            html.H2("A sub-fund of Dash Monthly Fund, SICAV"),
                         ],
                     ),
                     html.Div(
@@ -102,7 +106,6 @@ app.layout = html.Div(
         # Page 1
         html.Div(
             [
-                html.A(["Print PDF"], className="button no-print"),
                 # Subpage 1
                 html.Div(
                     [
@@ -176,13 +179,81 @@ app.layout = html.Div(
                                         html.Div(
                                             [
                                                 html.H6("Performance (Indexed)"),
-                                                html.Iframe(
-                                                    src="https://plot.ly/~jackp/17553.embed?modebar=false&link=false&autosize=true",
-                                                    style={
-                                                        "border": "0",
-                                                        "width": "100%",
-                                                        "height": "250",
-                                                    },
+                                                dcc.Graph(
+                                                    figure={
+                                                        "data": [
+                                                            {
+                                                                "uid": "4cd1a4",
+                                                                "line": {
+                                                                    "color": "#119df",
+                                                                    "width": 3,
+                                                                },
+                                                                "mode": "lines",
+                                                                "name": "Absolute Return Bond II Portfolio Base Shares",
+                                                                "type": "scatter",
+                                                                "x": df_performance[
+                                                                    "x"
+                                                                ],
+                                                                "y": df_performance[
+                                                                    "y1"
+                                                                ],
+                                                            },
+                                                            {
+                                                                "uid": "f7fed3",
+                                                                "line": {
+                                                                    "dash": "dash",
+                                                                    "color": "#2a3f5f",
+                                                                    "width": 3,
+                                                                },
+                                                                "mode": "lines",
+                                                                "name": "3 Month Libor (USD)",
+                                                                "type": "scatter",
+                                                                "x": df_performance[
+                                                                    "x"
+                                                                ],
+                                                                "y": df_performance[
+                                                                    "y2"
+                                                                ],
+                                                                "connectgaps": True,
+                                                            },
+                                                        ],
+                                                        "layout": {
+                                                            "xaxis": {
+                                                                "type": "date",
+                                                                "ticks": "outside",
+                                                                "title": "",
+                                                                "showline": True,
+                                                                "showgrid": True,
+                                                                "tickfont": {
+                                                                    "color": "rgb(68, 68, 68)"
+                                                                },
+                                                                "gridcolor": "#BDC1C470",
+                                                                "tickformat": "%b %Y",
+                                                            },
+                                                            "yaxis": {
+                                                                "type": "linear",
+                                                                "ticks": "outside",
+                                                                "range": [80, 135],
+                                                                "nticks": 11,
+                                                                "showline": True,
+                                                                "showgrid": True,
+                                                                "gridcolor": "#BDC1C470",
+                                                                "fixedrange": True,
+                                                            },
+                                                            "legend": {
+                                                                "x": 0.6,
+                                                                "y": 0,
+                                                                "bgcolor": "#ecf7fd70",
+                                                                "font": dict(size=7.5),
+                                                            },
+                                                            "margin": dict(
+                                                                b=40, l=35, r=0, t=10
+                                                            ),
+                                                            "height": 200,
+                                                            "hovermode": "closest",
+                                                            "showlegend": True,
+                                                        },
+                                                    }
                                                 ),
                                                 html.P(
                                                     "This is an actively managed fund that is not designed to track its reference benchmark. \
@@ -219,14 +290,13 @@ app.layout = html.Div(
                         ),
                     ],
                     className="subpage",
-                ),
+                )
             ],
             className="page",
         ),
         # Page 2
         html.Div(
             [
-                html.A(["Print PDF"], className="button no-print"),
                 # Subpage 2
                 html.Div(
                     children=[
@@ -272,22 +342,15 @@ app.layout = html.Div(
                                                     }
                                                 ],
                                                 "layout": {
-                                                    "width": 300,
-                                                    "font": "8px",
+                                                    "width": 380,
+                                                    "height": 220,
+                                                    "font": dict(size=9),
                                                     "xaxis": {
                                                         "type": "category",
-                                                        "range": [-0.5, 11.5],
-                                                        "autorange": True,
+                                                        "range": [-1, 12],
                                                     },
-                                                    "yaxis": {
-                                                        "type": "linear",
-                                                        "range": [0, 48.94736842105263],
-                                                        "autorange": True,
-                                                    },
-                                                    "height": 300,
-                                                    "margin": dict(
-                                                        t=0, r=0, b=160, l=0
-                                                    ),
+                                                    "yaxis": {"type": "linear"},
+                                                    "margin": dict(t=0, r=0, b=90, l=0),
                                                     "hovermode": "closest",
                                                     "bargroupgap": 0.2,
                                                 },
@@ -301,41 +364,16 @@ app.layout = html.Div(
                                                         "uid": "80eb70",
                                                         "name": "Col1",
                                                         "type": "bar",
-                                                        "x": [
-                                                            -50.8,
-                                                            1.8,
-                                                            1.8,
-                                                            2.2,
-                                                            2.3,
-                                                            3.2,
-                                                            4.2,
-                                                            5.7,
-                                                            6.6,
-                                                            8,
-                                                            8.9,
-                                                            106.1,
-                                                        ],
-                                                        "y": [
-                                                            "Other",
-                                                            "Russian Ruble",
-                                                            "Chinese Yuan",
-                                                            "Canadian Dollar",
-                                                            "Hungarian Forint",
-                                                            "Brazilian Real",
-                                                            "Mexican Peso",
-                                                            "Polish Zloty",
-                                                            "Czech Koruna",
-                                                            "Norwegian Krone",
-                                                            "Swedish Krona",
-                                                            "US Dollar",
-                                                        ],
+                                                        "x": df_currency_weights["x"],
+                                                        "y": df_currency_weights["y"],
                                                         "marker": {"color": "#119dff"},
                                                         "orientation": "h",
                                                     }
                                                 ],
                                                 "layout": {
                                                     "title": "",
-                                                    "width": 300,
+                                                    "width": 380,
+                                                    "font": dict(size=9),
                                                     "xaxis": {
                                                         "type": "linear",
                                                         "range": [
@@ -343,32 +381,23 @@ app.layout = html.Div(
                                                             164.54230264362104,
                                                         ],
                                                         "ticks": "outside",
-                                                        "title": "",
-                                                        "mirror": False,
                                                         "nticks": 6,
-                                                        "showgrid": False,
                                                         "showline": True,
                                                         "zeroline": False,
+                                                        "showgrid": False,
                                                         "autorange": True,
                                                         "ticksuffix": "%",
                                                     },
                                                     "yaxis": {
                                                         "type": "category",
                                                         "range": [-0.5, 11.5],
-                                                        "title": "",
                                                         "showgrid": True,
-                                                        "showline": False,
-                                                        "zeroline": False,
                                                         "autorange": True,
                                                     },
-                                                    "height": 300,
-                                                    "margin": {
-                                                        "b": 40,
-                                                        "l": 100,
-                                                        "r": 5,
-                                                        "t": 40,
-                                                        "pad": 0,
-                                                    },
+                                                    "height": 250,
+                                                    "margin": dict(
+                                                        b=40, l=100, r=5, t=40
+                                                    ),
                                                 },
                                             }
                                         ),
@@ -381,37 +410,9 @@ app.layout = html.Div(
                                                         "name": "GS Strategic<br>Absolute<br>Return<br>Bond II<br>Portfolio",
                                                         "type": "bar",
                                                         "xsrc": "jackp:17802:62c223",
-                                                        "x": [
-                                                            "0",
-                                                            "100",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                        ],
+                                                        "x": df_credit_allocation["x1"],
                                                         "ysrc": "jackp:17802:d66b98",
-                                                        "y": [
-                                                            "Derivatives",
-                                                            "Cash",
-                                                            "NR",
-                                                            "D",
-                                                            "C",
-                                                            "CC",
-                                                            "CCC",
-                                                            "B",
-                                                            "BB",
-                                                            "BBB",
-                                                            "A",
-                                                            "AA",
-                                                            "AAA",
-                                                        ],
+                                                        "y": df_credit_allocation["y"],
                                                         "marker": {"color": "#c2ebff"},
                                                         "visible": True,
                                                         "orientation": "h",
@@ -421,80 +422,40 @@ app.layout = html.Div(
                                                         "name": "3 Month<br>USD Libor",
                                                         "type": "bar",
                                                         "xsrc": "jackp:17802:4a6d89",
-                                                        "x": [
-                                                            "0",
-                                                            "12.6",
-                                                            "0.6",
-                                                            "0.1",
-                                                            "0.2",
-                                                            "1.1",
-                                                            "2.3",
-                                                            "1.6",
-                                                            "2.1",
-                                                            "1.9",
-                                                            "31.8",
-                                                            "3.7",
-                                                            "42.1",
-                                                        ],
+                                                        "x": df_credit_allocation["x2"],
                                                         "ysrc": "jackp:17802:d66b98",
-                                                        "y": [
-                                                            "Derivatives",
-                                                            "Cash",
-                                                            "NR",
-                                                            "D",
-                                                            "C",
-                                                            "CC",
-                                                            "CCC",
-                                                            "B",
-                                                            "BB",
-                                                            "BBB",
-                                                            "A",
-                                                            "AA",
-                                                            "AAA",
-                                                        ],
+                                                        "y": df_credit_allocation["y"],
                                                         "marker": {"color": "#119dff"},
                                                         "orientation": "h",
                                                     },
                                                 ],
                                                 "layout": {
                                                     "title": "",
-                                                    "width": 301,
+                                                    "width": 380,
+                                                    "font": dict(size=9),
                                                     "xaxis": {
                                                         "type": "linear",
                                                         "range": [0, 100],
                                                         "ticks": "outside",
-                                                        "title": "",
                                                         "nticks": 11,
-                                                        "showgrid": False,
                                                         "showline": True,
-                                                        "autorange": False,
+                                                        "showgrid": False,
                                                         "ticksuffix": "%",
                                                     },
                                                     "yaxis": {
                                                         "type": "category",
-                                                        "range": [
-                                                            -0.5,
-                                                            12.592783505154639,
-                                                        ],
-                                                        "title": "",
                                                         "showgrid": True,
                                                         "autorange": True,
-                                                        "ticksuffix": "",
                                                     },
-                                                    "height": 300,
+                                                    "height": 195,
                                                     "legend": {
-                                                        "x": 0.14793708706277642,
-                                                        "y": 0.6998496240601503,
-                                                        "bgcolor": "rgba(255, 255, 255, 0)",
-                                                        "bordercolor": "rgba(68, 68, 68, 0)",
+                                                        "x": 0.6,
+                                                        "y": 0.75,
+                                                        "bgcolor": "#ecf7fd70",
                                                     },
-                                                    "margin": {
-                                                        "b": 40,
-                                                        "l": 60,
-                                                        "r": 0,
-                                                        "t": 10,
-                                                        "pad": 0,
-                                                    },
+                                                    "margin": dict(
+                                                        b=40, l=60, r=0, t=10, pad=0
+                                                    ),
                                                 },
                                             }
                                         ),
@@ -504,7 +465,7 @@ app.layout = html.Div(
                         ),
                     ],
                     className="subpage",
-                ),
+                )
             ],
             className="page",
         ),
