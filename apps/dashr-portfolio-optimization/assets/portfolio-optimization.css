@@ -1,6 +1,7 @@
 .container.scalable {
   width: 100%;
   max-width: none;
+  padding: 0px;
 }
 
 ._dash-undo-redo {
@@ -149,5 +150,15 @@ body {
   #frontier-plot{
     width: 90vw;
   }
-
+  .banner {
+    height: auto;
+    flex-direction: column;
+    align-items: initial;
+  }
+  .banner Img {
+    margin: 2rem 0;
+    height: auto;
+    width: 30%;
+  }
 }
+
