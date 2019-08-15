@@ -191,8 +191,8 @@ generateFrontierPlot <- function(portfolioData){
       paper_bgcolor = "#F8F8F8",
       hovermode = "colsest",
       legend = list(
-        x = 0,
-        y = 1
+        x = 0.5,
+        y = 0.3
       )
     )
   p
