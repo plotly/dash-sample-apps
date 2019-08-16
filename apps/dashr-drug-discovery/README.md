@@ -29,7 +29,7 @@ Open a browser at http://127.0.0.1:8050
 
 ## Screenshots
 
-![drug_discovery.png](drug_discovery.png)
+![drug_discovery.png](screenshots/drug_discovery.png)
 
 ## Resources
 
