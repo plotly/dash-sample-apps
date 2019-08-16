@@ -43,8 +43,8 @@ tickersymbols = list('MSFT', 'AAPL', 'AMZN', 'FB', 'GOOG',
 # betas = read_xls('data/PerformanceGraphExport.xls')
 # 
 # mortality = read.csv('NCHS_-_Drug_Poisoning_Mortality_by_State__United_States.csv')
-# USAMortalityData<-hmd.mx(country="USA", username="kevin_phan@hotmail.ca",
-#                          password="Toronto", label="U.S.A.")
+# USAMortalityData<-hmd.mx(country="USA", username="YOUR USERNAME",
+#                          password="YOUR PASSWORD", label="U.S.A.")
 # 
 # premiums = read_excel('data/premiums.xlsx',sheet = 1)
 
