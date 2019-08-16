@@ -15,11 +15,13 @@ library(StMoMo)
 library(quantmod)
 library(ragtop)
 library(RColorBrewer)
+
 data("Smarket")
 
 source('risk.R')
 source('mortality.R')
 source('market.R')
+source('functions.R')
 
 setwd('/Users/kevinphan/desktop/actuarial')
 
