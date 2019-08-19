@@ -58,7 +58,7 @@ p, a{
 }
 .header-left{
     display: inline-block;
-    width: 70%;
+    width: 75%;
     border-right: 1px solid #becdd6;
 }
 .header-left h1{
@@ -72,7 +72,7 @@ p, a{
 }
 .header-right{
     display: inline-block;
-    width: 27%;
+    width: 22%;
     vertical-align: top;
     margin-left: 3%;
 }

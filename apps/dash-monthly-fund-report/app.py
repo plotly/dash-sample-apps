@@ -78,7 +78,7 @@ def header():
                     html.Div(
                         className="header-left",
                         children=[
-                            html.H1("Dash Monthly Fund Report"),
+                            html.H1("Dash Financial Absolute Return Bond II Portfolio"),
                             html.H2("A sub-fund of Dash Monthly Fund, SICAV"),
                         ],
                     ),
