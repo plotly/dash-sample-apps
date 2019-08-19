@@ -107,7 +107,7 @@ jobs:
       - run:
           name: Push to production
           command: |
-              git push git@github.com:plotly/dash-sample-apps master:production
+              git push --force git@github.com:plotly/dash-sample-apps master:production
 
 workflows:
   version: 2
