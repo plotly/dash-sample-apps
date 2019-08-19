@@ -33,8 +33,13 @@ States = list('AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 
 
 tickersymbols = list('MSFT', 'AAPL', 'AMZN', 'FB', 'GOOG',
                      'JPM', 'XOM', 'V', 'BAC', 'INTC', '
-                       PG', 'CSCO', 'DIS', 'HD', 'VZ', 'CVX', 'MA')
+                     CSCO', 'DIS', 'HD', 'VZ', 'CVX', 'MA')
 
+blues = list('#00688B', '#009ACD', '#0099CC', '#00B2EE', 
+             '#00BFFF', '#BFEFFF', '#33A1C9', '#507786', 
+             '#87CEEB','#38B0DE', '#0BB5FF', '#6996AD', 
+             '#236B8E', '#325C74', '#517693', '#4682B4', 
+             '#525C65', '#62B1F6', '#0D4F8B') 
 
 # SP = read.csv('data/sp.csv')
 # dowjones = read.csv('data/^DJI.csv')
@@ -133,7 +138,7 @@ app$callback(
         text = row,
         mode = 'lines+markers',
         name = row,
-        marker = list(color = colors[[j]])
+        marker = list(color = blues[[j]])
       )
       j = j + 1
     }

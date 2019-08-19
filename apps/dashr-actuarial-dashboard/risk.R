@@ -6,6 +6,7 @@ layout = app$layout(
         figure = betagraph()
       )
     )),
+  htmlH3('Generalized Logistic Regression on SP500'),
   htmlDiv(list(
     htmlLabel('Volume '),
     dccInput(id='input-1'),

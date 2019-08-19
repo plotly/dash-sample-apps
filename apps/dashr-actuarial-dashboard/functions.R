@@ -38,7 +38,13 @@ plot_ly(
               mode = 'lines',
               name = 'Total') %>%
   layout(
-    title = 'Lee-Carter Mortality Projections'
+    title = 'Lee-Carter Mortality Projections',
+    xaxis=list(
+      title= 'Time'
+    ),
+    yaxis=list(
+      title='Delta'
+    )
   )
 }
 
@@ -120,7 +126,7 @@ betagraph = function(){
         title= 'Time'
       ),
       yaxis=list(
-        title='Delta'
+        title='Log Rate'
       )
     )
 }

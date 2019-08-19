@@ -8,34 +8,34 @@ mortalitylayout = app$layout(
         style=list("height"= "90%", "width"= "98%"),
         config=list(displayModeBar=FALSE)
       ),
-      dccRadioItems(
-        id = 'genderpicker',
-        options=list(
-          list("label" = "Male", "value" = "male"),
-          list("label" = "Female", "value" = "female")
-        ),
-        value = "female",
-        labelStyle = list("display" = "inline-block")
+      htmlH3('lee-Carter Projection Time'),
+      htmlDiv(dccInput(
+        id = 'projections',
+        placeholder = "Enter Projection Period...",
+        type = "number",
+        value = 5
       )
-      )
-    )
-  ,
-  htmlH4('Projection Horizon'),
-  dccInput(
-    id = 'projections',
-    placeholder = "Enter Projection Period...",
-    type = "number",
-    value = 5
-  ),
-  htmlDiv(list(
-    dccLoading(id = 'LCC', 
-               children = htmlDiv(list(dccGraph(
-                 id = 'LC'))), type="default"
+      ))
     ),
+  htmlDiv(list(
     dccLoading(id = 'testt', children = htmlDiv(list(dccGraph(
       id = 'LeeCarter',
-      figure = leeCarter(20)
-    ))))
+      figure = leeCarter(20),
+      style = list('width' = '800px', 'height' = '600px')
+    )))),
+    dccRadioItems(
+      id = 'genderpicker',
+      options=list(
+        list("label" = "Male", "value" = "male"),
+        list("label" = "Female", "value" = "female")
+      ),
+      value = "female"
+    ),
+    dccLoading(id = 'LCC', 
+               children = htmlDiv(list(dccGraph(
+                 id = 'LC',
+                 style = list('width' = '800px', 'height' = '600px')))), type="default"
+    )
   ),
   style = list('display' = 'flex'))
   )

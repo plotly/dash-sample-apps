@@ -39,7 +39,16 @@ marketlayout = app$layout(
                 marker=list(
                   color= '#119DFF'
                 )
-              ))))
+              )),
+            'layout' = list(
+              'title' = 'North American GDP 1947-2019',
+              xaxis=list(
+                title= 'Date'
+              ),
+              yaxis=list(
+                title='GDP'
+              )
+            )))
       ),
       style = list(display = "flex")
       )
