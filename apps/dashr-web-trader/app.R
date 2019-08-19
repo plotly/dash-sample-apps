@@ -86,7 +86,6 @@ app$layout(
               height = "33%",
               backgroundColor = "#262a30",
               color = "white",
-              #fontSize = 12,
               padding = "1rem 1rem 0 1rem",
               marginTop = "0.5rem"
             )
@@ -146,7 +145,6 @@ app$layout(
   )
 )
 
-# Generate ask_bid_rows for each:
 app$callback(
   output("EURUSDrow", "children"),
   list(
@@ -159,6 +157,7 @@ app$callback(
     replaceRow(EURUSD, index, bid, ask)
   }
 )
+
 app$callback(
   output("GBPUSDrow", "children"),
   list(
@@ -171,6 +170,7 @@ app$callback(
     replaceRow(GBPUSD, index, bid, ask)
   }
 )
+
 app$callback(
   output("USDCHFrow", "children"),
   list(
@@ -183,6 +183,7 @@ app$callback(
     replaceRow(USDCHF, index, bid, ask)
   }
 )
+
 app$callback(
   output("USDJPYrow", "children"),
   list(
@@ -195,7 +196,6 @@ app$callback(
   }
 )
 
-# generate_chart_button_callback
 app$callback(
   output("charts_clicked", "children"),
   list(
@@ -243,7 +243,6 @@ app$callback(
   }
 )
 
-# generate_show_hide_graph_div_callback
 app$callback(
   output("EURUSDgraph_div", "style"),
   list(input("charts_clicked", "children")),
@@ -270,6 +269,7 @@ app$callback(
   return(s)
   }
 )
+
 app$callback(
   output("USDCHFgraph_div", "style"),
   list(input("charts_clicked", "children")),
@@ -296,6 +296,7 @@ app$callback(
     return(s)
   }
 )
+
 app$callback(
   output("USDJPYgraph_div", "style"),
   list(input("charts_clicked", "children")),
@@ -324,6 +325,7 @@ app$callback(
     return(s)
   }
 )
+
 app$callback(
   output("GBPUSDgraph_div", "style"),
   list(input("charts_clicked", "children")),
@@ -351,7 +353,6 @@ app$callback(
   }
 )
 
-# generate_size_graph_div
 app$callback(
   output("EURUSDgraph_div", "className"),
   list(input("charts_clicked", "children")),
@@ -373,6 +374,7 @@ app$callback(
     return(width)
   }
 )
+
 app$callback(
   output("USDCHFgraph_div", "className"),
   list(input("charts_clicked", "children")),
@@ -392,6 +394,7 @@ app$callback(
     return(width)
   }
 )
+
 app$callback(
   output("USDJPYgraph_div", "className"),
   list(input("charts_clicked", "children")),
@@ -413,6 +416,7 @@ app$callback(
     return(width)
   }
 )
+
 app$callback(
   output("GBPUSDgraph_div", "className"),
   list(input("charts_clicked", "children")),
@@ -435,7 +439,6 @@ app$callback(
   }
 )
 
-### generate_figure_callback
 app$callback(
   output("EURUSDchart", "figure"),
   list(
@@ -467,6 +470,7 @@ app$callback(
     return(list(data = list(), layout = old_fig$layout))
   }
 )
+
 app$callback(
   output("USDCHFchart", "figure"),
   list(
@@ -498,6 +502,7 @@ app$callback(
     return(list(data = list(), layout = old_fig$layout))
   }
 )
+
 app$callback(
   output("USDJPYchart", "figure"),
   list(
@@ -529,6 +534,7 @@ app$callback(
     return(list(data = list(), layout = old_fig$layout))
   }
 )
+
 app$callback(
   output("GBPUSDchart", "figure"),
   list(
@@ -561,7 +567,6 @@ app$callback(
   }
 )
 
-# generate_close_graph_callback
 app$callback(
   output("EURUSDButton_chart", "n_clicks"),
   list(
@@ -578,6 +583,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("USDCHFButton_chart", "n_clicks"),
   list(
@@ -594,6 +600,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("USDJPYButton_chart", "n_clicks"),
   list(
@@ -610,6 +617,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("GBPUSDButton_chart", "n_clicks"),
   list(
@@ -627,8 +635,6 @@ app$callback(
   }
 )
 
-# generate_active_menu_tab_callback
-# updates hidden div that stores the last clicked menu tab
 app$callback(
   output("EURUSDmenu_tab", "children"),
   list(
@@ -639,6 +645,7 @@ app$callback(
     ifelse(n_style >= n_studies, "Style", "Studies")
   }
 )
+
 app$callback(
   output("USDCHFmenu_tab", "children"),
   list(
@@ -649,6 +656,7 @@ app$callback(
     ifelse(n_style >= n_studies, "Style", "Studies")
   }
 )
+
 app$callback(
   output("USDJPYmenu_tab", "children"),
   list(
@@ -659,6 +667,7 @@ app$callback(
     ifelse(n_style >= n_studies, "Style", "Studies")
   }
 )
+
 app$callback(
   output("GBPUSDmenu_tab", "children"),
   list(
@@ -670,7 +679,6 @@ app$callback(
   }
 )
 
-# Generate Update Style Header Callback
 app$callback(
   output("EURUSDstyle_header", "style"),
   list(
@@ -686,6 +694,7 @@ app$callback(
     return(old_style)
   }
 )
+
 app$callback(
   output("USDCHFstyle_header", "style"),
   list(
@@ -701,6 +710,7 @@ app$callback(
     return(old_style)
   }
 )
+
 app$callback(
   output("USDJPYstyle_header", "style"),
   list(
@@ -716,6 +726,7 @@ app$callback(
     return(old_style)
   }
 )
+
 app$callback(
   output("GBPUSDstyle_header", "style"),
   list(
@@ -732,7 +743,6 @@ app$callback(
   }
 )
 
-# generate_update_studies_header_callback
 app$callback(
   output("EURUSDstudies_header", "style"),
   list(
@@ -748,6 +758,7 @@ app$callback(
     return(old_studies)
   }
 )
+
 app$callback(
   output("USDCHFstudies_header", "style"),
   list(
@@ -763,6 +774,7 @@ app$callback(
     return(old_studies)
   }
 )
+
 app$callback(
   output("USDJPYstudies_header", "style"),
   list(
@@ -778,6 +790,7 @@ app$callback(
     return(old_studies)
   }
 )
+
 app$callback(
   output("GBPUSDstudies_header", "style"),
   list(
@@ -794,7 +807,6 @@ app$callback(
   }
 )
 
-#generate_studies_content_tab_callback
 app$callback(
   output("EURUSDstudies_tab", "style"),
   list(input("EURUSDmenu_tab", "children")),
@@ -806,6 +818,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("USDCHFstudies_tab", "style"),
   list(input("USDCHFmenu_tab", "children")),
@@ -817,6 +830,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("USDJPYstudies_tab", "style"),
   list(input("USDJPYmenu_tab", "children")),
@@ -828,6 +842,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("GBPUSDstudies_tab", "style"),
   list(input("GBPUSDmenu_tab", "children")),
@@ -840,7 +855,6 @@ app$callback(
   }
 )
 
-# generate_style_content_tab_callback
 app$callback(
   output("EURUSDstyle_tab", "style"),
   list(input("EURUSDmenu_tab", "children")),
@@ -852,6 +866,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("USDCHFstyle_tab", "style"),
   list(input("USDCHFmenu_tab", "children")),
@@ -863,6 +878,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("USDJPYstyle_tab", "style"),
   list(input("USDJPYmenu_tab", "children")),
@@ -874,6 +890,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("GBPUSDstyle_tab", "style"),
   list(input("GBPUSDmenu_tab", "children")),
@@ -886,7 +903,6 @@ app$callback(
   }
 )
 
-# generate_open_close_menu_callback
 app$callback(
   output("EURUSDmenu", "className"),
   list(
@@ -904,6 +920,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("USDCHFmenu", "className"),
   list(
@@ -921,6 +938,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("USDJPYmenu", "className"),
   list(
@@ -938,6 +956,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("GBPUSDmenu", "className"),
   list(
@@ -956,7 +975,6 @@ app$callback(
   }
 )
 
-# generate_modal_open_callback
 app$callback(
   output("EURUSDmodal", "style"),
   list(input("EURUSDBuy", "n_clicks")),
@@ -968,6 +986,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("USDCHFmodal", "style"),
   list(input("USDCHFBuy", "n_clicks")),
@@ -979,6 +998,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("USDJPYmodal", "style"),
   list(input("USDJPYBuy", "n_clicks")),
@@ -990,6 +1010,7 @@ app$callback(
     }
   }
 )
+
 app$callback(
   output("GBPUSDmodal", "style"),
   list(input("GBPUSDBuy", "n_clicks")),
@@ -1002,7 +1023,6 @@ app$callback(
   }
 )
 
-# generate_clean_sl_callback
 app$callback(
   output("EURUSDSL", "value"),
   list(input("EURUSDBuy", "n_clicks")),
@@ -1010,6 +1030,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("USDCHFSL", "value"),
   list(input("USDCHFBuy", "n_clicks")),
@@ -1017,6 +1038,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("USDJPYSL", "value"),
   list(input("USDJPYBuy", "n_clicks")),
@@ -1024,6 +1046,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("GBPUSDSL", "value"),
   list(input("GBPUSDBuy", "n_clicks")),
@@ -1032,7 +1055,6 @@ app$callback(
   }
 )
 
-# generate_clean_tp_callback
 app$callback(
   output("EURUSDTP", "value"),
   list(input("EURUSDBuy", "n_clicks")),
@@ -1040,6 +1062,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("USDCHFTP", "value"),
   list(input("USDCHFBuy", "n_clicks")),
@@ -1047,6 +1070,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("USDJPYTP", "value"),
   list(input("USDJPYBuy", "n_clicks")),
@@ -1054,6 +1078,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("GBPUSDTP", "value"),
   list(input("GBPUSDBuy", "n_clicks")),
@@ -1062,7 +1087,6 @@ app$callback(
   }
 )
 
-# generate_modal_close_callback
 app$callback(
   output("EURUSDBuy", "n_clicks"),
   list(input("EURUSDcloseModal", "n_clicks"),
@@ -1071,6 +1095,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("USDCHFBuy", "n_clicks"),
   list(input("USDCHFcloseModal", "n_clicks"),
@@ -1087,6 +1112,7 @@ app$callback(
     return(0)
   }
 )
+
 app$callback(
   output("GBPUSDBuy", "n_clicks"),
   list(input("GBPUSDcloseModal", "n_clicks"),
@@ -1096,7 +1122,6 @@ app$callback(
   }
 )
 
-# generate_modal_figure_callback
 app$callback(
   output("EURUSDmodal_graph", "figure"),
   list(
@@ -1111,6 +1136,7 @@ app$callback(
     return(list(data = list(), layout = old_fig$layout))
   }
 )
+
 app$callback(
   output("USDCHFmodal_graph", "figure"),
   list(
@@ -1125,6 +1151,7 @@ app$callback(
     return(list(data = list(), layout = old_fig$layout))
   }
 )
+
 app$callback(
   output("USDJPYmodal_graph", "figure"),
   list(
@@ -1139,6 +1166,7 @@ app$callback(
     return(list(data = list(), layout = old_fig$layout))
   }
 )
+
 app$callback(
   output("GBPUSDmodal_graph", "figure"),
   list(
@@ -1154,7 +1182,6 @@ app$callback(
   }
 )
 
-# generate_order_button_callback
 app$callback(
   output("EURUSDorders", "children"),
   list(
@@ -1198,6 +1225,7 @@ app$callback(
     return(toJSON(list()))
   }
 )
+
 app$callback(
   output("USDCHForders", "children"),
   list(
@@ -1241,6 +1269,7 @@ app$callback(
     return(toJSON(list()))
   }
 )
+
 app$callback(
   output("USDJPYorders", "children"),
   list(
@@ -1284,6 +1313,7 @@ app$callback(
     return(toJSON(list()))
   }
 )
+
 app$callback(
   output("GBPUSDorders", "children"),
   list(
@@ -1328,7 +1358,6 @@ app$callback(
   }
 )
 
-# generate_update_orders_div_callback
 app$callback(
   output("orders", "children"),
   list(
@@ -1381,7 +1410,6 @@ app$callback(
   }
 )
 
-# update_orders_table
 app$callback(
   output("orders_table", "children"),
   list(
@@ -1401,7 +1429,6 @@ app$callback(
   }
 )
 
-# update link based on open / close dropdown
 app$callback(
   output("bottom_tab", "pathname"),
   list(input("open_close_dropdown", "value")),
@@ -1410,7 +1437,6 @@ app$callback(
   }
 )
 
-# update open / close dropdown values to reflect # of orders
 app$callback(
   output("open_close_dropdown", "options"),
   list(input("orders", "children")),
@@ -1435,7 +1461,6 @@ app$callback(
   }
 )
 
-# show_hide_close_orders
 app$callback(
   output("close_orders_div", "style"),
   list(input("bottom_tab", "pathname")),
@@ -1455,7 +1480,6 @@ app$callback(
   }
 )
 
-# update_close_dropdown
 app$callback(
   output("closable_orders", "options"),
   list(input("orders", "children")),
@@ -1476,7 +1500,6 @@ app$callback(
   }
 )
 
-# update_top_bar
 app$callback(
   output("top_bar", "children"),
   list(input("orders", "children")),
@@ -1529,7 +1552,6 @@ app$callback(
   }
 )
 
-# Callback for live clock
 app$callback(
   output("live_clock", "children"),
   list(input("interval", "n_intervals")),
