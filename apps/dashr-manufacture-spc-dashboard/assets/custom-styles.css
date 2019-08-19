@@ -1,0 +1,728 @@
+/* Table of contents
+––––––––––––––––––––––––––––––––––––––––––––––––––
+- Containers
+- Banner
+- Tabs
+- Tab 1 Settings
+- Tab 2 Status
+- Tab 2 Graphs & Stats
+*/
+
+body {
+  background-color: #1E2130;
+  color: whitesmoke;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  height: 100%;
+  width: 100%;
+  max-width: 100% !important;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+h6 {
+  margin: 0;
+  color: #ABBACC;
+  font-size: 15px;
+  line-height: 1;
+}
+
+h5 {
+  margin: 0;
+  font-family: 'Open Sans Semi Bold', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}
+
+@media only screen and (max-width: 950px) {
+  body {
+    font-size: 13px;
+  }
+  h6 {
+    font-size: 14px;
+  }
+  h5 {
+    font-size: 15px;
+  }
+}
+
+/* Containers
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#big-app-container {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 6rem;
+}
+
+#app-container {
+  max-width: 100%;
+  width: 100%;
+  height: calc(100vh - 8rem - 6px);
+  background: #171A29;
+}
+
+#app-container * {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+#app-content {
+  max-width: 100%;
+  width: 100%;
+  height: calc(100% - 4rem - 6px); /* TODO: toggle to make app fit screen height */
+  padding: 0;
+  background: inherit;
+}
+
+.section-banner {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #4B5460;
+}
+
+@media only screen and (max-width: 950px) {
+  #big-app-container {
+    padding: 0 1rem;
+  }
+  #app-container {
+    height: auto;
+  }
+  #app-content {
+    border-bottom: #1E2130 solid 6px !important;
+  }
+}
+
+/* Banner
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.banner {
+  height: fit-content;
+  width: 100%;
+  padding: 2rem 10rem;
+  border-bottom: 1px solid #4B5460;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#banner-logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+#banner-logo Img {
+  height: 38px; /* same as button height */
+  margin: 0 1rem;
+}
+
+#banner-logo button {
+  margin-right: 1rem;
+  line-height: 3rem;
+  color: #ABBACC;
+  background-color: #1E2130 !important;
+  border-color: #4B5460;
+}
+
+#banner-logo button:hover {
+  color: #92E0D3;
+  border-color: whitesmoke;
+}
+
+.modal {
+  display: none; /* hidden by default */
+  position: fixed; /* stay in place */
+  z-index: 1005; /* sit on top */
+  left: 0;
+  top: 0;
+  width: 100vw; /* full width */
+  height: 100vh; /* full height */
+  overflow: auto; /* enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* black w/ opacity */
+}
+
+.markdown-container {
+  width: 60vw;
+  margin: 10% auto;
+  padding: 1rem 2rem;
+  background-color: #1E2130;
+}
+
+.close-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 38px;
+}
+
+.close-container .button {
+  float: right;
+  height: 100%;
+  color: #ABBACC;
+  font-weight: normal;
+  border: none;
+}
+
+.close-container .button:hover {
+  color: #92E0D3;
+}
+
+@media only screen and (max-width: 950px) {
+  .banner {
+    flex-direction: column-reverse;
+    padding: 1rem 0.5rem;
+  }
+  #banner-text {
+    margin: 0.5rem 0;
+    text-align: center;
+  }
+  #banner-text h5 {
+    margin-bottom: 0.5rem;
+  }
+  #banner-logo button {
+    display: none;
+  }
+  #banner-logo Img {
+    height: 3rem;
+    margin: 1rem;
+  }
+}
+
+/* Tabs
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#app-tabs {
+  height: fit-content;
+  background-color: #1E2130;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+#app-tabs .tab {
+  height: 18px;
+  border: 0;
+  border-bottom: #1E2130 solid 6px !important;
+  background-color: #171A29;
+  color: inherit;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#specs-tab.tab {
+  margin-right: 3px;
+}
+
+#control-chart-tab.tab {
+  margin-left: 3px;
+}
+
+#app-tabs .tab--selected {
+  border-bottom: #92E0D3 solid 6px !important;
+}
+
+@media screen and (max-width: 800px) {
+  /* Remove margins when tabs in column format */
+  #app-tabs .tab {
+    margin: 0;
+  }
+}
+
+/* Tab 1 Settings
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#specs-container {
+  padding: 5rem;
+}
+
+#settings-menu {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-evenly;
+}
+
+#metric-select-menu {
+  flex: 1 1 0;
+}
+
+#value-setter-menu {
+  margin-left: 5rem;
+  flex: 1 1 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+#settings-menu .row {
+  margin-top: 2rem;
+}
+
+#settings-menu .row:nth-child(1) {
+  margin-top: 0;
+  padding-bottom: 1rem;
+}
+
+#metric-select-menu .row:nth-child(2) {
+  margin-top: 0;
+}
+
+#value-setter-panel .row:nth-child(1) {
+  border-bottom: 1px solid #4B5460;
+}
+
+#value-setter-buttons {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#value-setter-buttons button {
+  margin-left: 20px;
+  color: #ABBACC;
+  background-color: #1E2130 !important;
+  border-color: #4B5460;
+}
+
+#value-setter-buttons button:hover {
+  color: #92E0D3;
+  border-color: whitesmoke;
+}
+
+.Select-control {
+  border: 1px solid #4B5460 !important;
+}
+
+.Select.is-focused:not(.is-open) > .Select-control {
+  border: 1px solid #92E0D3 !important;
+}
+
+.Select-control div {
+  background-color: #1E2130;
+}
+
+.Select-control .Select-value .Select-value-label {
+  color: whitesmoke !important;
+}
+
+.Select-clear-zone {
+  color: #ABBACC !important;
+}
+
+.Select-arrow {
+  border-color: #ABBACC transparent transparent !important;
+}
+
+.Select-menu-outer {
+  border: 1px solid #4B5460 !important;
+}
+
+.Select-menu-outer div {
+  padding-left: 2px;
+  background-color: #1E2130 !important;
+}
+
+.Select-menu-outer div:hover {
+  background-color: #171A29 !important;
+  cursor: pointer;
+}
+
+.react-numeric-input, .react-numeric-input input {
+  width: 100% !important;
+  height: 100%;
+}
+
+.react-numeric-input input {
+  background-color: #1E2130 !important;
+  border-color: #4B5460 !important;
+  color: whitesmoke !important;
+}
+
+.react-numeric-input b:nth-child(2) i {
+  border-color: transparent transparent #ABBACC !important;
+}
+
+.react-numeric-input b:nth-child(3) i {
+  border-color: #ABBACC transparent transparent !important;
+}
+
+#value-setter-view-output {
+  margin: -0.5rem 0 0 2rem;
+  align-self: flex-end;
+  width: 80%;
+}
+
+@media only screen and (max-width: 600px) {
+  /* Stretch output table */
+  #value-setter-view-output {
+    width: 100%;
+  }
+}
+
+/* Tab 2 Status
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#status-container {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#quick-stats {
+  max-width: 25%;
+  padding: 0;
+  background-color: #171A29;
+  border-right: 6px solid #1E2130;
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#quick-stats.row {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#quick-stats .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+#quick-stats .card:nth-child(1) {
+  margin-top: 8rem;
+  margin-bottom: 4rem;
+}
+
+#quick-stats .card:nth-child(2) {
+  margin-top: 4rem;
+}
+
+#quick-stats .card:nth-child(3) {
+  height: 4rem !important;
+  margin-bottom: 8rem;
+}
+
+#quick-stats h6 {
+  margin-bottom: 2rem;
+  /* TODO: add the following if left text align desired:
+  margin-left: 2rem;
+  align-self: flex-start; */
+}
+
+#quick-stats button {
+  height: 40px;
+  line-height: 40px;
+  color: #ABBACC;
+  background-color: #1E2130 !important;
+  border: 1px solid #4B5460;
+  border-radius: 4px;
+}
+
+#quick-stats button:hover {
+  color: #92E0D3;
+  border-color: whitesmoke;
+}
+
+#operator-led > div > div {
+  padding: 1rem;
+  border-color: #4B5460;
+}
+
+#operator-led > div > div svg:nth-child(1) {
+  margin-left: -2rem;
+}
+
+#operator-led > div > div svg:nth-child(1) path {
+  stroke: transparent;
+}
+
+#progress-gauge > div, #progress-gauge > div > div, #progress-gauge > div > div > div {
+  width: 100%;
+  text-align: center;
+}
+
+#progress-gauge svg {
+  width: 80%;
+  height: auto;
+  margin: 0;
+}
+
+#progress-gauge > div > div > div > div {
+  color: white !important;
+}
+
+#progress-gauge .track {
+  stroke: #F4D44D !important;
+  stroke-width: 10;
+}
+
+#progress-gauge .track.progress {
+  stroke: #FFF3C5 !important;
+}
+
+#progress-gauge .scale, #progress-gauge .needle, #progress-gauge .needle-knob {
+  display: none !important;
+}
+
+@media only screen and (max-width: 950px) {
+  #settings-menu {
+    margin-top: 3rem;
+    flex-direction: column;
+  }
+  #settings-menu > div {
+    width: 100%;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    flex-basis: auto;
+    margin: 1rem 0;
+  }
+  #value-setter-panel .row:nth-child(1) {
+    display: none;
+  }
+}
+
+/* Tab 2 Graphs & Stats
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#graphs-container {
+  max-width: calc(75% - 6px);
+  height: calc(100% - 5rem);
+  background-color: #171A29;
+  flex: 3 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#top-section-container {
+  max-width: 100%;
+  height: calc(50% - 6px); /* TODO: toggle to make app fit screen height */
+  display: flex;
+  flex-direction: row;
+}
+
+#metric-summary-session {
+  max-height: 100%;
+  flex: 1 1 auto;
+}
+
+#metric-div {
+  height: calc(100% - 4.5rem);
+  padding: 1rem 1.5rem;
+}
+
+#metric-div .row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center; /* vertical center row items*/
+}
+
+#metric-header-3 {
+  height: auto !important;
+}
+
+#metric-rows {
+  overflow-y: scroll;
+  width: 100%;
+  height: calc(100% - 4rem);
+  font-size: 12px;
+}
+
+#metric-rows .row:hover {
+  background-color: #1E2130;
+}
+
+#metric-rows button {
+  padding: 0;
+  color: #ABBACC;
+  font-weight: normal;
+  border: none;
+}
+
+#metric-rows button:hover, #metric-rows button:focus {
+  color: whitesmoke;
+}
+
+#metric-rows .graduated-bar {
+  margin: 15% 0;
+}
+
+#metric-rows .graduated-bar > div > div {
+  width: 100%;
+  background-color: #1E2130 !important;
+}
+
+#metric-rows .graduated-bar > div > div > div {
+  margin: 0 !important;
+}
+
+#metric-rows .row:hover .graduated-bar > div > div {
+  background-color: #171A29 !important;
+}
+
+#metric-rows .indicator > div > div {
+  width: 12px;
+  height: 12px;
+}
+
+#ooc-piechart-outer {
+  height: 100%;
+  margin: 0;
+  border-left: 6px solid #1E2130;
+  flex: 1 1 auto;
+}
+
+#piechart {
+  height: calc(100% - 4.5rem);
+}
+
+#control-chart-container {
+  max-width: 100%;
+  height: calc(50% - 6px); /* TODO: toggle to make app fit screen height */
+  position: relative;
+  z-index: 4;
+  border-top: 6px solid #1E2130;
+}
+
+#control-chart-live {
+  height: 100%;
+}
+
+@media only screen and (max-width: 950px) {
+  #status-container, #top-section-container {
+    flex-direction: column;
+    height: auto;
+  }
+  #quick-stats {
+    max-width: 100%;
+  }
+  #graphs-container {
+    flex: 1;
+    max-width: 100%;
+    width: 100%;
+  }
+  #top-section-container > div {
+    width: 100%;
+    height: auto;
+  }
+  #ooc-piechart-outer {
+    height: 40rem !important;
+  }
+  #control-chart-container {
+    height: 40rem !important;
+    padding-bottom: 6rem;
+  }
+  /* Adjust borders */
+  #quick-stats {
+    border-right: none;
+    border-bottom: 6px solid #1E2130;
+  }
+  #ooc-piechart-outer {
+    border-left: none;
+    border-top: 6px solid #1E2130;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  /* Display table rows as blocks */
+  #metric-div {
+    padding: 1rem;
+  }
+  #metric-div .row:nth-child(1) {
+    display: none;
+  }
+  #metric-rows .row:nth-child(1) {
+    border: 0;
+    display: flex;
+  }
+  #metric-rows {
+    height: fit-content;
+  }
+  #metric-rows .row {
+    height: fit-content !important;
+    border-top: 1px solid #1E2130;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  #metric-rows .column, #metric-rows .columns {
+    width: 100% !important;
+    float: none;
+    margin: 0.25rem 0 !important;
+    padding-left: 50%;
+    position: relative;
+  }
+  #metric-rows .column:before, #metric-rows .columns:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    left: 5px;
+    width: 45%;
+    padding-right: 1rem;
+    white-space: nowrap;
+  }
+  /* Attach header vertically to table */
+  #metric-rows .row > div {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+  /* Add table header column */
+  #metric-rows .row > div:nth-of-type(1):before {
+    content: "Parameter";
+  }
+  #metric-rows .row > div:nth-of-type(2):before {
+    content: "Count";
+  }
+  #metric-rows .row > div:nth-of-type(3):before {
+    content: "   ";
+  }
+  #metric-rows .row > div:nth-of-type(4):before {
+    content: "OOC %";
+  }
+  #metric-rows .row > div:nth-of-type(5):before {
+    content: "OOC Graph";
+  }
+  #metric-rows .row > div:nth-of-type(6):before {
+    content: "Pass / Fail";
+  }
+  /* Adjust graduated bar margins */
+  #metric-rows .graduated-bar {
+    margin: 0 1rem;
+  }
+  /* Hide sparkline */
+  #metric-rows .row > div:nth-of-type(3) {
+    display: none;
+  }
+  #metric-rows .row > div:nth-of-type(6) > div {
+    margin-top: 6.5px !important;
+  }
+}
