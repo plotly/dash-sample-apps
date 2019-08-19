@@ -14,7 +14,6 @@ library(readxl)
 library(StMoMo)
 library(quantmod)
 library(ragtop)
-library(RColorBrewer)
 
 data("Smarket")
 
@@ -23,7 +22,7 @@ source('mortality.R')
 source('market.R')
 source('functions.R')
 
-setwd('/Users/kevinphan/desktop/actuarial')
+setwd('/Users/kevinphan/desktop/dash-sample-apps/apps/dashr-actuarial-dashboard')
 
 app = Dash$new()
 
