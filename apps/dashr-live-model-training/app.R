@@ -22,13 +22,13 @@ demodf <- c("cifar","mnist","fashion")
 simmodels <- c("softmax","cnn")
 
 namess <- c("step", "train accuracy", "val accuracy", "train cross entropy", "val cross entropy")
-data_dict <- list("softmax" = list("cifar" = fread('/data/cifar_softmax_run_log.csv',col.names=namess),
-                                   "mnist" = fread('/data/mnist_softmax_run_log.csv',col.names=namess),
-                                   "fashion" = fread('/data/fashion_softmax_run_log.csv',col.names=namess)),
+data_dict <- list("softmax" = list("cifar" = data.table::fread('data/cifar_softmax_run_log.csv',col.names=namess),
+                                   "mnist" = data.table::fread('data/mnist_softmax_run_log.csv',col.names=namess),
+                                   "fashion" = data.table::fread('data/fashion_softmax_run_log.csv',col.names=namess)),
                   
-                  "cnn" = list("cifar" = fread('/data/cifar_cnn_run_log.csv',col.names=namess),
-                               "mnist" = fread('/data/mnist_cnn_run_log.csv',col.names=namess),
-                               "fashion" = fread('/data/fashion_cnn_run_log.csv',col.names=namess))
+                  "cnn" = list("cifar" = data.table::fread('data/cifar_cnn_run_log.csv',col.names=namess),
+                               "mnist" = data.table::fread('data/mnist_cnn_run_log.csv',col.names=namess),
+                               "fashion" = data.table::fread('data/fashion_cnn_run_log.csv',col.names=namess))
 )
 
 app <- Dash$new(name="dashr-live-model-training")
@@ -36,72 +36,73 @@ app <- Dash$new(name="dashr-live-model-training")
 demo_mode <- TRUE
 
 # Function to plot the 2 subgraphs at the bottom
-div_graph <- function(name){
-  return (htmlDiv(
-    className="row",
-    children = list(
-      htmlDiv(
-        className="two columns",
-        style = list("padding-bottom" = "5%"),
-        children = list(
-          htmlDiv(list(
-            htmlP(
-              className="graph-checkbox-smoothing",
-              children = list("Smoothing:"),
-              style= list("font-weight"="bold", "margin-bottom"="0px")
-            ),
-            dccChecklist(
-              options = list(
-                list(label = "Training", value = "train"),
-                list(label = "Validation", value = "val")
+div_graph <- function(name) {
+  return (
+    htmlDiv(
+      className="row",
+      children = list(
+        htmlDiv(
+          className="two columns",
+          style = list("padding-bottom" = "5%"),
+          children = list(
+            htmlDiv(list(
+              htmlP(
+                className="graph-checkbox-smoothing",
+                children = list("Smoothing:"),
+                style= list("font-weight"="bold", "margin-bottom"="0px")
               ),
-              value = list(),
-              id = paste0("checklist-smoothing-options-", name),
-              className = "checklist-smoothing"
-            )
-          ),
-          style = list("margin-top" = "10px")
-          ),
-          
-          htmlDiv(list(
-            dccSlider(
-              min = 0,
-              max = 1,
-              step = 0.05,
-              marks = as.list(setNames(c(paste((0:5)/5)), ((0:5)/5))),
-              value = 0.6,
-              updatemode = "drag",
-              id = paste0("slider-smoothing-", name)
-            )
-          ), 
-          style = list("margin-bottom" = "40px"),
-          className="slider-smoothing"
-          ),
-          
-          htmlDiv(list(
-            htmlP(
-              "Plot Display mode:",
-              style=list("font-weight"="bold",
-                         "margin-bottom"="0px")
+              dccChecklist(
+                options = list(
+                  list(label = "Training", value = "train"),
+                  list(label = "Validation", value = "val")
+                ),
+                value = list(),
+                id = paste0("checklist-smoothing-options-", name),
+                className = "checklist-smoothing"
+              )
             ),
-            dccRadioItems(
-              options= list(
-                list(label = "Overlapping", value = "overlap"),
-                list(label = "Seperate (Vertical)", value = "seperate_vertical"),
-                list(label = "Seperate (Horizontal)", value = "seperate_horizontal")
-              ),
-              value = "overlap",
-              id = paste0("radio-display-mode-",name),
-              className="plot-display-radio-items"
+            style = list("margin-top" = "10px")
             ),
             
-            htmlDiv(id= paste0("div-current-", name, "-value"))
-          ))
-        )
-      ),
-      htmlDiv(id = paste0("div-",name,"-graph"), className="ten columns")
-    )
-  ))
+            htmlDiv(list(
+              dccSlider(
+                min = 0,
+                max = 1,
+                step = 0.05,
+                marks = as.list(setNames(c(paste((0:5)/5)), ((0:5)/5))),
+                value = 0.6,
+                updatemode = "drag",
+                id = paste0("slider-smoothing-", name)
+              )
+            ), 
+            style = list("margin-bottom" = "40px"),
+            className="slider-smoothing"
+            ),
+            
+            htmlDiv(list(
+              htmlP(
+                "Plot Display mode:",
+                style=list("font-weight"="bold",
+                           "margin-bottom"="0px")
+              ),
+              dccRadioItems(
+                options= list(
+                  list(label = "Overlapping", value = "overlap"),
+                  list(label = "Seperate (Vertical)", value = "seperate_vertical"),
+                  list(label = "Seperate (Horizontal)", value = "seperate_horizontal")
+                ),
+                value = "overlap",
+                id = paste0("radio-display-mode-",name),
+                className="plot-display-radio-items"
+              ),
+              
+              htmlDiv(id= paste0("div-current-", name, "-value"))
+            ))
+          )
+        ),
+        htmlDiv(id = paste0("div-",name,"-graph"), className="ten columns")
+      )
+    ))
 } #end of div_graph
 
 app$layout(
@@ -193,7 +194,7 @@ app$layout(
                             list(label="Fashion MNIST", value="fashion")
                           ),
                           placeholder = "Select a demo dataset",
-                          value = '',
+                          value = "cifar",
                           searchable = FALSE
                         ),
                         className="six columns dropdown-box",
@@ -207,7 +208,7 @@ app$layout(
                             list(label="Simple Conv Net", value = "cnn")
                           ),
                           placeholder = "Select Model to Simulate",
-                          value = '',
+                          value = 'softmax',
                           searchable = FALSE,
                         ),
                         className="six columns dropdown-box"
@@ -251,7 +252,7 @@ app$layout(
           dccInterval(id="interval-log-update", n_intervals=0),
           
           # Hidden Div Storing JSON-serialized dataframe of run log
-          dccStore(id="run-log-storage",storage_type='memory')
+          dccStore(id="run-log-storage", storage_type='memory')
         )
       ),
       htmlDiv(
@@ -265,7 +266,8 @@ app$layout(
         children = list(div_graph("cross-entropy"))
       )
     )
-  )) #end layout
+  )
+) #end layout
 
 demo_callbacks(app, demo_mode)
 
@@ -281,56 +283,57 @@ update_graph <- function(graph_id,
                          yaxis_title){
   
   smooth <- function(scalars, weight=0.6){
+    
     last <- scalars[[1]]
-    smoothed <- list()
-    for(point in scalars){
-      smoothed_val <- last * weight + (1 - weight) * point
-      smoothed <- append(smoothed,smoothed_val)
-      last <- smoothed_val
-    }
-    return(as.double(smoothed))
+    smoothed <- lapply(scalars,
+                       function(scalar) {
+                         smoothed_val <- last * weight + (1 - weight) * scalar
+                         last <<- smoothed_val
+                         smoothed_val
+                       }) %>% as.double()
+    return(smoothed)
   }
   
-  if(!is.null(run_log_json)){
+  if(!is.null(unlist(run_log_json))) {
     
-    run_log_df <- fromJSON(run_log_json)
+    run_log_df <- jsonlite::fromJSON(run_log_json)
     step <- run_log_df$step
     y_train <- run_log_df[[y_train_index]]
     y_val <- run_log_df[[y_val_index]]
-    
-    
-    y_train <- smooth(y_train, weight=slider_smoothing)
-    y_val <- smooth(y_val, weight=slider_smoothing)
-    
+
     #Apply Smoothing if needed
-    if (isTRUE(checklist_smoothing_options == "train")){
-      y_train <- smooth(y_train, weight=slider_smoothing)
-    }
-    if (isTRUE(checklist_smoothing_options == "val")){
-      y_val <- smooth(y_val, weight=slider_smoothing)
+    checklist_smoothing_options <- unlist(checklist_smoothing_options)
+    if(!is.null(checklist_smoothing_options)) {
+      if ("train" %in% checklist_smoothing_options) {
+        y_train <- smooth(y_train, weight=slider_smoothing)
+      }
+      if ("val" %in% checklist_smoothing_options) {
+        y_val <- smooth(y_val, weight=slider_smoothing)
+      }
     }
     
-    if(display_mode == "overlap"){
-      fig <- plot_ly(run_log_df,type='scatter',
+    if(display_mode == "overlap") {
+      fig <- plot_ly(run_log_df,
+                     type='scatter',
                      x = ~step,
                      y = y_train,
                      mode='lines',
                      name='Training',
-                     line=list(color="rgb(54, 218, 170)"))
-      
-      fig <- add_trace(fig, run_log_df,
-                       x = ~step,
-                       y = y_val,
-                       mode='lines',
-                       name='Validation',
-                       line=list(color="rgb(246, 236, 145)")) %>% layout(title=graph_title,
-                                                                         margin=list(
-                                                                           'l'=50,
-                                                                           'r'=50,
-                                                                           'b'=50,
-                                                                           't'=50
-                                                                         ),
-                                                                         yaxis=list(title=yaxis_title))
+                     line=list(color = grDevices::rgb(54, 218, 170, maxColorValue = 255))) %>%
+        add_trace(., run_log_df,
+                  x = ~step,
+                  y = y_val,
+                  mode='lines',
+                  name='Validation',
+                  line=list(color= grDevices::rgb(246, 236, 145, maxColorValue = 255))) %>% 
+        layout(title=graph_title,
+               margin=list(
+                 'l'=50,
+                 'r'=50,
+                 'b'=50,
+                 't'=50
+               ),
+               yaxis=list(title=yaxis_title))
     } else if (display_mode == "seperate_vertical"){
       p1 <- plot_ly(run_log_df,type='scatter',
                     x = ~step,
@@ -346,18 +349,17 @@ update_graph <- function(graph_id,
                     name='Validation',
                     line=list(color="rgb(246, 236, 145)"))
       
-      fig <- subplot(p1, p2, nrows=2)%>% layout(title=graph_title,
-                                                margin=list(
-                                                  'l'=50,
-                                                  'r'=50,
-                                                  'b'=50,
-                                                  't'=50),
-                                                yaxis=list(title=yaxis_title),
-                                                yaxis2=list(title=yaxis_title)
-      )
-      
-    }
-    else if (display_mode == "seperate_horizontal"){
+      fig <- subplot(p1, p2, nrows=2) %>% 
+        layout(title=graph_title,
+               margin=list(
+                 'l'=50,
+                 'r'=50,
+                 'b'=50,
+                 't'=50),
+               yaxis=list(title=yaxis_title),
+               yaxis2=list(title=yaxis_title)
+        )
+    } else if (display_mode == "seperate_horizontal"){
       
       p1 <- plot_ly(run_log_df,type='scatter',
                     x = ~step,
@@ -373,18 +375,19 @@ update_graph <- function(graph_id,
                     name='Validation',
                     line=list(color="rgb(246, 236, 145)"))
       
-      fig <- subplot(p1, p2, nrows=1)%>% layout(title=graph_title,
-                                                margin=list(
-                                                  'l'=50,
-                                                  'r'=50,
-                                                  'b'=50,
-                                                  't'=50),
-                                                yaxis=list(title=yaxis_title),
-                                                yaxis2=list(title=yaxis_title)
-                                                
-      )
-    }
-  }
+      fig <- subplot(p1, p2, nrows=1) %>% 
+        layout(title=graph_title,
+               margin=list(
+                 'l'=50,
+                 'r'=50,
+                 'b'=50,
+                 't'=50),
+               yaxis=list(title=yaxis_title),
+               yaxis2=list(title=yaxis_title)
+               
+        )
+    } else fig <- list() # In case, fullfill logic 'if'
+  } else fig <- list() # No input data
   return(dccGraph(id=graph_id,figure=fig))
 }
 
@@ -430,8 +433,8 @@ app$callback(
   list(input("run-log-storage","data")),
   
   update_div_step_display <- function(run_log_json){
-    if(!is.null(run_log_json)){
-      run_log_df <- fromJSON(run_log_json)
+    if(!is.null(unlist(run_log_json))) {
+      run_log_df <- jsonlite::fromJSON(run_log_json)
       return(htmlH6(paste0("Steps:",run_log_df$step[length(run_log_df$step)]),
                     style= list("margin-top" = "3px",
                                 "float" = "right")
@@ -450,7 +453,6 @@ app$callback(
        input("slider-smoothing-accuracy", "value")),
   
   update_accuracy_graph <- function(run_log_json, display_mode, checklist_smoothing_options, slider_smoothing){
-    
     graph <- update_graph(
       "accuracy-graph",
       "Prediction Accuracy",
@@ -472,7 +474,6 @@ app$callback(
     }
     
     return(graph)
-    
   }
 )
 
@@ -507,15 +508,16 @@ app$callback(
   list(input("run-log-storage","data")),
   
   update_div_current_accuracy_value <- function(run_log_json){
-    if(!is.null(run_log_json)){
-      run_log_df <- fromJSON(run_log_json)
-      return(list(
-        htmlP("Current Accuracy:",style=list("font-weight"="bold",
-                                             "margin-top"="15px",
-                                             "margin-bottom"="0px")),
-        htmlDiv(paste0("Training:",sprintf('%.4f',run_log_df[["train accuracy"]][length(run_log_df[["train accuracy"]])]))),
-        htmlDiv(paste0("Validation:",sprintf('%.4f',run_log_df[["val accuracy"]][length(run_log_df[["val accuracy"]])])))
-      )
+    if(!is.null(unlist(run_log_json))) {
+      run_log_df <- jsonlite::fromJSON(run_log_json)
+      return(
+        list(
+          htmlP("Current Accuracy:",style=list("font-weight"="bold",
+                                               "margin-top"="15px",
+                                               "margin-bottom"="0px")),
+          htmlDiv(paste0("Training:",sprintf('%.4f',run_log_df[["train accuracy"]][length(run_log_df[["train accuracy"]])]))),
+          htmlDiv(paste0("Validation:",sprintf('%.4f',run_log_df[["val accuracy"]][length(run_log_df[["val accuracy"]])])))
+        )
       )
     }
   }
@@ -527,8 +529,8 @@ app$callback(
   list(input("run-log-storage","data")),
   
   update_div_current_cross_entropy_value <- function(run_log_json){
-    if(!is.null(run_log_json)){
-      run_log_df <- fromJSON(run_log_json)
+    if(!is.null(unlist(run_log_json))) {
+      run_log_df <- jsonlite::fromJSON(run_log_json)
       return(list(
         htmlP("Current Loss:",style=list("font-weight"="bold",
                                          "margin-top"="15px",
@@ -544,5 +546,5 @@ app$callback(
 if (!appName == ""){
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
-  app$run_server(debug = TRUE)
+  app$run_server()
 }
