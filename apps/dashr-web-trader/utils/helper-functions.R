@@ -77,6 +77,7 @@ updateNews <- function(){
   apiURL <- "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=da8e2e705b914f9f86ed2e9692e66012" 
   r <- GET(apiURL)
   jsonData <- content(r, "parsed")$articles
+  
   # include tryCatch for when the api breaks
   out <- tryCatch({
     d <- data.frame(do.call("rbind", jsonData))
@@ -114,7 +115,7 @@ getHeader <- function(t = Sys.time()){
   )
 }
 
-# color of Bid & Ask rates (depending on previous bids and asks)
+# Color of Bid & Ask rates (depending on previous bids and asks)
 getColor <- function(a, b){
   ifelse(
     a == b,
@@ -136,7 +137,7 @@ getAskBid <- function(currency_pair, index, modal = FALSE){
   }
 }
 
-# returns dataset row with nearest datetime to current time
+# Returns dataset row with nearest datetime to current time
 firstAskBid <- function(pair){
   t <- as.POSIXct(
     paste("2016-01-05", strftime(Sys.time(), format = "%H:%M:%OS3")),
@@ -147,7 +148,7 @@ firstAskBid <- function(pair){
   list(dfRow, intIndex)
 }
 
-# creates a Bid & Ask row for a currency pair + buttons
+# Creates a Bid & Ask row for a currency pair + buttons
 getRow <- function(data){
   currentRow <- data[[1]]
   index <- data[[2]]
@@ -270,7 +271,7 @@ getFirstPairs <- function(){
   )
 }
 
-# return one cell of top bar
+# Return one cell of top bar
 getTopBarCell <- function(up, down, color = "white"){
   htmlDiv(
     list(
@@ -298,7 +299,7 @@ getTopBarCell <- function(up, down, color = "white"){
   )
 }
 
-# return top bar with updated values
+# Return top bar with updated values
 getTopBar <- function(balance=50000.00,
                       equity=50000,
                       margin=0,
@@ -336,7 +337,7 @@ getOHLCData <- function(currency_pair,
 }
 
 ## Traces For Studies
-# moving average
+# Moving average
 movingAverageTrace <- function(df, fig){
   df <- df[, c("closeRA") := lapply(.SD, rollmean, k = 5, fill = NA),
              .SDcols = "d.Close"]
@@ -353,7 +354,7 @@ movingAverageTrace <- function(df, fig){
     )
 }
 
-# exponential moving average (copied from python app)
+# Exponential moving average (copied from python app)
 eMovingAverageTrace <- function(df, fig){
   df <- df[, c("closeERA") := lapply(.SD, rollmean, k = 20, fill = NA),
              .SDcols = "d.Close"]
@@ -369,7 +370,7 @@ eMovingAverageTrace <- function(df, fig){
     )
 }
 
-# bollinger Bands
+# Bollinger Bands
 bollingerBands <- function(df, fig, window_size = 10, num_of_std = 5){
   df <- df[, c("RollingMean") := lapply(
                   .SD, rollmean, k =
@@ -471,7 +472,7 @@ stocTrace <- function(df){
   )
 }
 
-# momentum Trace
+# Momentum Trace
 momTrace <- function(df, n = 5){
   df[, c("M") := d.Close - shift(d.Close, 5)]
   plot_ly(
@@ -647,7 +648,6 @@ getFig <- function(currency_pair, ask, bid,
     "momTrace"
   )
   selectedSubplotStudies <- list()
-  #selectedFirstRowStudies <- list()
   type_trace_fun <- match.fun(type_trace)
   fig <- type_trace_fun(d)
   totalRows <- 1
@@ -1127,7 +1127,8 @@ ordersRows <- function(list_order, st){
           )
         )
       )
-    } else {
+    } 
+    else {
       rows <- lapply(
         seq(1, nrow(list_order)),
         function(i){
