@@ -3,13 +3,13 @@ library(dashHtmlComponents)
 library(data.table)
 library(jsonlite)
 
-demo_callbacks <- function(app, demo_mode){
+demo_callbacks <- function(app, demo_mode) {
   if(demo_mode){
     
     demodf <- c("cifar","mnist","fashion")
     simmodels <- c("softmax","cnn")
     
-    setwd("C:/Users/MatthiasL/Desktop/DATA/Plotly/RApps/dash-live-model-training-r")
+    # setwd("C:/Users/MatthiasL/Desktop/DATA/Plotly/RApps/dash-live-model-training-r")
     
     namess <- c("step", "train accuracy", "val accuracy", "train cross entropy", "val cross entropy")
     data_dict <- list(
