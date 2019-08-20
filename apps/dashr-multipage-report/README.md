@@ -1,7 +1,7 @@
 # dashr-multipage-report
 # Multi Page Report
 
-This is a dash for R version of the multipage report app written in python
+This is a dash for R version of the [multipage report app](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-multipage-report) written in python
 
 ## Screenshots
 ![assets/multipage-demo.png](assets/multipage-demo.png)
