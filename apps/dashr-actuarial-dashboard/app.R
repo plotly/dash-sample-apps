@@ -40,6 +40,11 @@ blues = list('#00688B', '#009ACD', '#0099CC', '#00B2EE',
              '#236B8E', '#325C74', '#517693', '#4682B4', 
              '#525C65', '#62B1F6', '#0D4F8B') 
 
+colors <- list(
+  background = '#111111',
+  text = '#7FDBFF'
+)
+
 # SP = read.csv('data/sp.csv')
 # dowjones = read.csv('data/^DJI.csv')
 # nasdaq = read.csv('data/^IXIC.csv')
@@ -58,13 +63,13 @@ indexcolor = list(
   "^DJI" = list('red'))
 
 tab_style = list(
-  'borderBottom'= '1px solid #d6d6d6',
+  'borderBottom'= '1px solid #5F9EA0',
   'padding'= '6px',
   'fontWeight'= 'bold'
 )
 
 tab_selected_style = list(
-  'backgroundColor'= '#119DFF',
+  'backgroundColor'= '#5F9EA0',
   'color'= 'white',
   'padding'= '6px'
 )
@@ -75,7 +80,8 @@ app$layout(htmlDiv(list(
     src="/assets/logo.png",
     height = '70px'
   ),
-  htmlH1('ACTUARIAL RISK DASHBOARD'),
+  htmlH1('ACTUARIAL RISK DASHBOARD',
+         className = 'header_title'),
   dccTabs(id='Market/Economic Data', value='Market/Economic Data', children=list(
     dccTab(label='Market/Economic Data', value='Market/Economic Data', style=tab_style, selected_style=tab_selected_style),
     dccTab(label='Mortality', value='Mortality', style=tab_style, selected_style=tab_selected_style),
@@ -124,7 +130,9 @@ app$callback(
       ),
       yaxis=list(
         title='Logarithmic Returns'
-      )
+      ),
+      plot_bgcolor = '#F0F8FF',
+      paper_bgcolor = '#F0F8FF'
     )
     #browser()
     aggregation = list()
@@ -231,7 +239,9 @@ app$callback(
                      showgrid = FALSE,
                      showline = FALSE,
                      ticks = 'outside',
-                     zeroline = FALSE)),
+                     zeroline = FALSE),
+        plot_bgcolor = '#F0F8FF' ,
+        paper_bgcolor = '#F0F8FF' ),
       
       hovermode = 'closest',
       gridcolor = 'rgb(255,255,255)'

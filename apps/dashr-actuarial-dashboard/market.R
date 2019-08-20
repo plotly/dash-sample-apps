@@ -12,7 +12,8 @@ marketlayout = app$layout(
         value="data/SP"
       ),
       dccLoading(id = 'hiii',children = htmlDiv(list(dccGraph(
-        id = 'stockgraph'
+        id = 'stockgraph',
+        className = 'container'
       )))),
       htmlBr(),
       dccDatePickerRange(
@@ -26,7 +27,8 @@ marketlayout = app$layout(
       htmlDiv(list(
         dashDataTable(
           id='memory-table',
-          columns= lapply(colnames(SP), function(x){list('name' = x, 'id' = x)})
+          columns = lapply(colnames(SP), function(x){list('name' = x, 'id' = x)}),
+          style = list('float' = "left")
         ),
         dccGraph(
           figure=list(
@@ -47,10 +49,13 @@ marketlayout = app$layout(
               ),
               yaxis=list(
                 title='GDP'
-              )
-            )))
-      ),
-      style = list(display = "flex")
+              ),
+              plot_bgcolor = '#F0F8FF' ,
+              paper_bgcolor = '#F0F8FF'
+            )),
+          className = 'container'),
+        style = list('float' = "right")
+      )
       )
     )
   )

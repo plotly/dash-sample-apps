@@ -1,5 +1,18 @@
 /* New style sheet for the refreshed demo app */
 
+body {
+  background: 	#FFEBCD !important;
+  font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
+  line-height: 1.6;
+  font-weight: 600;
+  font-family: lol;
+}
+
+@font-face {
+  font-family: lol;
+  src: url("/assets/OpenSans-Light.ttf");
+}
+
 .header {
   padding: 15px 35px;
 }
@@ -13,10 +26,10 @@
 }
 
 .header_title {
-  font-family: "Times New Roman";
-  color: #6c7182;
-  text-align: right;
-  margin: 0 !important;
+  font-family: lol;
+  color: CadetBlue   !important;
+  text-align: left;
+  margin: 10px !important;
 }
 
 .logo {
@@ -26,125 +39,17 @@
 }
 
 .background {
-  background-color: #f2f3f4;
+  background-color: 'black' !important;
   padding: 0px 0px;
 }
 
-.rc-slider-track {
-  position: absolute;
-  left: 0;
-  height: 4px;
-  border-radius: 6px;
-  background-color: #3266c1 !important;
-}
-.rc-slider-dot-active {
-  border-color: #3266c1 !important;
-}
-
-.rc-slider-handle {
-  position: absolute;
-  margin-left: -7px;
-  margin-top: -5px;
-  width: 14px;
-  height: 14px;
-  cursor: pointer;
-  border-radius: 50%;
-  border: solid 2px #3266c1 !important;
-  background-color: #fff;
-}
-.rc-slider-step {
-  position: absolute;
-  width: 100%;
-  height: 4px;
-  background: transparent;
-  border-color: #3266c1 !important;
-}
-
-.Select-control {
-  background-color: #f2f3f4;
-  border-radius: 4px;
-  display: table;
-  border-spacing: 0;
-  border-collapse: separate;
-  height: 36px;
-  overflow: hidden;
-}
-
-.js-plotly-plot .plotly .modebar-group {
-  background-color: #f2f3f4 !important;
-}
-
-.card-style {
-  padding: 20px;
-  margin: 5px;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-}
-
-body {
-  font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
-  line-height: 1.6;
-  font-weight: 400;
-  font-family: "Arimo", "Helvetica Light", "Helvetica Neue", Helvetica,
-    "Helvetica 55 Roman";
-  color: #6c7182;
-}
-
-#learn-more-button > div > div:nth-child(2) > div > p:nth-child(11) > img {
-  width: 40%;
-}
-#graph-3d-plot-tsne > div > div > svg:nth-child(1) {
-  background-color: #f2f3f4 !important;
-}
-
-#graph-3d-plot-tsne > div > div > svg:nth-child(1) > g.bglayer > rect {
-  fill: #f2f3f4 !important;
-}
-
-#graph-bar-nearest-neighbors-word > div > div > svg:nth-child(1) {
-  background-color: #f2f3f4 !important;
-}
-
-#graph-bar-nearest-neighbors-word
-  > div
-  > div
-  > svg:nth-child(1)
-  > g.bglayer
-  > rect {
-  fill: #f2f3f4 !important;
-}
-
-#graph-3d-plot-tsne > div > div > svg:nth-child(1) > g.bglayer > rect {
-  fill: #f2f3f4;
-  fill-opacity: 1;
-  stroke-width: 0;
-}
-
-#react-select-2--value-item {
-  color: #6c7182;
-}
-
-#graph-3d-plot-tsne
-  > div
-  > div
-  > svg:nth-child(3)
-  > g.infolayer
-  > g.legend
-  > rect.bg {
-  stroke: #6c7182 !important;
-  fill: #f2f3f4 !important;
-}
-
-#learn-more-button #button {
-  text-transform: none;
-  font-size: 14px;
-  font-weight: 400;
-  border-radius: 0px;
-  letter-spacing: 0;
-  padding: 0px 15px;
-}
+.container {
+  border-radius: 5px;
+  background-color: #F0F8FF;
+  margin: 10px;
+  padding: 15px;
+  position: relative;
+  }
 
 /* ---Different Screen Sizes--- */
 
@@ -185,23 +90,6 @@ body {
   .header_img {
     float: left;
     margin: 0;
-  }
-
-  #learn-more-button {
-    text-align: center;
-    padding-right: 0 !important;
-  }
-
-  #learn-more-button > div > div:nth-child(1) {
-    padding-right: 7%;
-  }
-
-  #learn-more-button > div > div:nth-child(2) {
-    padding-right: 15%;
-  }
-
-  #learn-more-button > div > div:nth-child(3) {
-    padding-right: 15%;
   }
 }
 @media only screen and (max-width: 550px) {

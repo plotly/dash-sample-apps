@@ -6,7 +6,8 @@ mortalitylayout = app$layout(
         id="map",
         figure = choropleth_map(),
         style=list("height"= "90%", "width"= "98%"),
-        config=list(displayModeBar=FALSE)
+        config=list(displayModeBar=FALSE),
+        className = 'container'
       ),
       htmlH3('lee-Carter Projection Time'),
       htmlDiv(dccInput(
@@ -21,7 +22,8 @@ mortalitylayout = app$layout(
     dccLoading(id = 'testt', children = htmlDiv(list(dccGraph(
       id = 'LeeCarter',
       figure = leeCarter(20),
-      style = list('width' = '800px', 'height' = '600px')
+      #style = list('width' = '800px', 'height' = '600px'),
+      className = 'container'
     )))),
     dccRadioItems(
       id = 'genderpicker',
@@ -34,7 +36,8 @@ mortalitylayout = app$layout(
     dccLoading(id = 'LCC', 
                children = htmlDiv(list(dccGraph(
                  id = 'LC',
-                 style = list('width' = '800px', 'height' = '600px')))), type="default"
+                 #style = list('width' = '800px', 'height' = '600px'),
+                 className = 'container'))), type="default"
     )
   ),
   style = list('display' = 'flex'))

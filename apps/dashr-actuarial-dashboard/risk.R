@@ -3,7 +3,8 @@ layout = app$layout(
     list(
       htmlH1('Market Beta Visualization'),
       dccGraph(
-        figure = betagraph()
+        figure = betagraph(),
+        className = 'container'
       )
     )),
   htmlH3('Generalized Logistic Regression on SP500'),
@@ -20,6 +21,7 @@ layout = app$layout(
   )),
   htmlBr(),
   htmlDiv(list(
+    htmlHr(),
     dccDropdown(
       id = 'stockpicker',
       options=lapply(tickersymbols, function(symbol){list(label = symbol, value = symbol)}),
@@ -33,7 +35,8 @@ layout = app$layout(
                  children = htmlDiv(list(dccGraph(id = 'Arima',
                  style = list('float' = 'left',
                             'width' = '1000px',
-                            'height' = '600px'))
+                            'height' = '600px'),
+                 className = 'container')
                ))),
       htmlDiv(list(
         htmlH3('Black-Scholes Price Model',
@@ -83,11 +86,12 @@ layout = app$layout(
         htmlButton("Predict", id="bsbutton"),
         htmlBr(),
         dccLoading(id= 'hi3', children = htmlDiv(id='BSOutput'))
-      ), style = list("border" = "2px black solid",
-                      'background-color' = '#E5E5E5',
+      ), style = list("border" = "2px #F0F8FF solid",
+                      'background-color' = '#F0F8FF',
                       'width' = '30vw',
                       'float' = 'right',
-                      'padding' = '30px'))
+                      'padding' = '30px'),
+      className = 'container')
       
       ), style = list('display' = 'flex'))
   )

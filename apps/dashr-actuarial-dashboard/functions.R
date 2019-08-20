@@ -20,7 +20,7 @@ plot_ly(
   name = 'Male',
   fill = 'tozeroy',
   fillcolor = 'rgba(168, 216, 234, 0.5)',
-  line = list(color = unlist(colors[[9]]), width = 0.5)
+  line = list(color = unlist(blues[[9]]), width = 0.5)
   
 ) %>%
   add_trace(  x = seq(min(USAMortalityData$year),max(USAMortalityData$year)+Years),
@@ -44,7 +44,9 @@ plot_ly(
     ),
     yaxis=list(
       title='Delta'
-    )
+    ),
+    plot_bgcolor = '#F0F8FF',
+    paper_bgcolor = '#F0F8FF' 
   )
 }
 
@@ -69,7 +71,8 @@ choropleth_map <- function(){
     colorbar(title = "USD") %>%
     layout(
       title = 'Aggregate Crude Death Rate Per State',
-      geo = g
+      geo = g,
+      bgcolor = '#F0F8FF'
     )
   #return(p)
 }
@@ -83,7 +86,9 @@ deathrategraph = function(gender){
     ),
     yaxis=list(
       title='Logarithmic Death Rates'
-    )
+    ),
+    plot_bgcolor = '#F0F8FF',
+    paper_bgcolor = '#F0F8FF'
   )
   
   df = as.data.frame(USAMortalityData[["rate"]][[gender]])
@@ -121,13 +126,16 @@ betagraph = function(){
     mode = 'lines',
     name = 'Male') %>%
     layout(
-      title = 'Changes in Stock Market Beta Values',
+      margin=list(t=50),
+      title = 'Changes in Market Beta Values',
       xaxis=list(
         title= 'Time'
       ),
       yaxis=list(
-        title='Log Rate'
-      )
+        title='Delta'
+      ),
+      plot_bgcolor = '#F0F8FF',
+      paper_bgcolor = '#F0F8FF' 
     )
 }
 
