@@ -42,7 +42,7 @@ ridesDf <- ridesDf %>%
          fasttime::fastPOSIXct(dateTime[1])
       )
   ) %>% 
-  as_tibble()
+  dplyr::as_tibble()
 
 locationCoordinates <- stats::setNames(
   list(
@@ -162,10 +162,10 @@ hourDropdown <- dccDropdown(id = "hour-dropdown",
 
 datePicker <- dccDatePickerSingle(
   id = "date-picker",
-  date = make_date(year = 2014L, month = 4L, day = 1L),
+  date = lubridate::make_date(year = 2014L, month = 4L, day = 1L),
   display_format = "MMMM D, YYYY",
-  min_date_allowed = make_date(year = 2014L, month = 4L, day = 1L),
-  max_date_allowed = make_date(year = 2014L, month = 9L, day = 30L),
+  min_date_allowed = lubridate::make_date(year = 2014L, month = 4L, day = 1L),
+  max_date_allowed = lubridate::make_date(year = 2014L, month = 9L, day = 30L),
   className = "date-picker", style = list(display = "block"))
 
 sourceObj <- dccMarkdown(
@@ -220,8 +220,8 @@ filterDay <- function(date) {
   dayNext <- as.POSIXct(datePaste) + 86400
   #Created today and tomorrows posix object for filtering
   
-  dfDay <- ridesDf[ridesDf$Date.Time >= dayCurrent &
-                     ridesDf$Date.Time < dayNext, ] %>% 
+  dfDay <- ridesDf %>%
+    dplyr::filter(Date.Time >= dayCurrent & Date.Time < dayNext) %>% 
     dplyr::arrange(`Date.Time`)
   # Filter out data
   
@@ -230,7 +230,7 @@ filterDay <- function(date) {
 
 # Returns hour list for callbacks
 entireDayConverter <- function(hour) {
-
+  
   hourVec <- unlist(hour)
   
   if ("entire_day" %in% hourVec) {
@@ -244,13 +244,12 @@ entireDayConverter <- function(hour) {
 dfToMap <- function(date, hour) {
   
   hourVec <- entireDayConverter(hour)
-  
   if (length(hourVec) >= 24) {
     return(filterDay(date))
     # Avoid loop if entire day selected for faster filtering
   } else {
     
-    dfEmpty <- ridesDf[0, ]
+    dfEmpty <- data.table::data.table()
     
     for (h in hourVec) {
       
@@ -261,8 +260,8 @@ dfToMap <- function(date, hour) {
       hourEnd <- hourStart + 3600
       # Define df slicing interval
       
-      dfEmpty <- ridesDf[ridesDf$Date.Time >= hourStart &
-                             ridesDf$Date.Time < hourEnd, ] %>% 
+      dfEmpty <- ridesDf %>% 
+        dplyr::filter(Date.Time >= hourStart & Date.Time < hourEnd) %>% 
         rbind(dfEmpty, .)
       # Append hours to get df to plot
     }
@@ -302,56 +301,55 @@ app$callback(output = list(id = "map-graph", property = "figure"),
                  zoom <- 12
                }
                return (
-                 plot_mapbox(
+                 plotly::plot_mapbox(
                    dfToMap(date, hour), lat = ~Lat, lon = ~Lon, split = ~rideHour,
                    mode = "markers", hoverinfo = "lat+lon+text",
                    marker = list(color = ~rideHour, cmin = 0, cmax = 23,
-                                 colorscale = colorScale, size = 4)
-                 ) %>% 
-                   layout(title = "Uber Rides in NYC",
-                          autosize = TRUE,
-                          margin = list(l = 0, r = 0, t = 0, b = 0),
-                          showlegend = TRUE,
-                          legend = list(orientation = "v",
-                                        bgcolor = "#1e1e1e", yanchor = "top"),
-                          font = list(color = "white"),
-                          plot_bgcolor = "#1e1e1e", paper_bgcolor = "#1e1e1e",
-                          mapbox = list(zoom = zoom,
-                                        accesstoken = mapboxToken,
-                                        # The plot DOES NOT render without providing token!
-                                        style = "dark",
-                                        center = list(lat = latInitial,
-                                                      lon = lonInitial),
-                                        bearing = bearing),
-                          updatemenus = list(
-                            list(
-                              buttons = list(
-                                list(
-                                  args = list(list(
-                                    "mapbox.zoom" = 12,
-                                    "mapbox.center.lon" = "-73.991251",
-                                    "mapbox.center.lat" = "40.7272",
-                                    "mapbox.bearing" = 0,
-                                    "mapbox.style" = "dark"
-                                  )),
-                                  label = "Reset Zoom",
-                                  method = "relayout"
-                                )
-                              ),
-                              direction = "left",
-                              pad = list("r" = 0, "t" = 0, "b" = 0, "l" = 0),
-                              showactive = FALSE,
-                              type = "buttons",
-                              x = 0.45,
-                              xanchor = "left",
-                              yanchor = "bottom",
-                              bgcolor = "#323130",
-                              borderwidth = 1,
-                              bordercolor = "#6d6d6d",
-                              font = list(color = "#FFFFFF"),
-                              y = 0.02
-                            )
-                          )
+                                 colorscale = colorScale, size = 4)) %>% 
+                   plotly::layout(title = "Uber Rides in NYC",
+                                  autosize = TRUE,
+                                  margin = list(l = 0, r = 0, t = 0, b = 0),
+                                  showlegend = TRUE,
+                                  legend = list(orientation = "v",
+                                                bgcolor = "#1e1e1e", yanchor = "top"),
+                                  font = list(color = "white"),
+                                  plot_bgcolor = "#1e1e1e", paper_bgcolor = "#1e1e1e",
+                                  mapbox = list(zoom = zoom,
+                                                accesstoken = mapboxToken,
+                                                # The plot DOES NOT render without providing token!
+                                                style = "dark",
+                                                center = list(lat = latInitial,
+                                                              lon = lonInitial),
+                                                bearing = bearing),
+                                  updatemenus = list(
+                                    list(
+                                      buttons = list(
+                                        list(
+                                          args = list(list(
+                                            "mapbox.zoom" = 12,
+                                            "mapbox.center.lon" = "-73.991251",
+                                            "mapbox.center.lat" = "40.7272",
+                                            "mapbox.bearing" = 0,
+                                            "mapbox.style" = "dark"
+                                          )),
+                                          label = "Reset Zoom",
+                                          method = "relayout"
+                                        )
+                                      ),
+                                      direction = "left",
+                                      pad = list("r" = 0, "t" = 0, "b" = 0, "l" = 0),
+                                      showactive = FALSE,
+                                      type = "buttons",
+                                      x = 0.45,
+                                      xanchor = "left",
+                                      yanchor = "bottom",
+                                      bgcolor = "#323130",
+                                      borderwidth = 1,
+                                      bordercolor = "#6d6d6d",
+                                      font = list(color = "#FFFFFF"),
+                                      y = 0.02
+                                    )
+                                  )
                    )
                )
              }
@@ -378,14 +376,14 @@ app$callback(output = list(id = "histogram", property = "figure"),
                  colorMapOrj[numericHours + 1] <- "FFFFFF"
                }
                return (
-                 plot_ly(
+                 plotly::plot_ly(
                    x = dfAgg$Date_Hours,
                    y = dfAgg$Ride_Counts,
                    name = "histogram",
                    marker = list(
                      color = colorMapOrj),
                    type = "bar") %>% 
-                   layout(
+                   plotly::layout(
                      title = list(
                        text = paste("Hold click and create rectangle ",
                                     "to section data by time", sep = ""),
@@ -411,11 +409,11 @@ app$callback(output = list(id = "histogram", property = "figure"),
                                   fixedrange = TRUE,
                                   rangemode = "nonnegative",
                                   zeroline = FALSE)) %>%
-                   add_annotations(text = dfAgg$Ride_Counts,
-                                   showarrow = FALSE,
-                                   font = list(color = "white"),
-                                   xanchor = "center",
-                                   yanchor = "bottom")
+                   plotly::add_annotations(text = dfAgg$Ride_Counts,
+                                           showarrow = FALSE,
+                                           font = list(color = "white"),
+                                           xanchor = "center",
+                                           yanchor = "bottom")
                )
              }
 )
@@ -431,7 +429,7 @@ app$callback(output = list(id = "hour-dropdown", property = "value"),
                # Convert select list [points] to df
                
                if (nrow(dfSelectedHour) > 0) {
-                 dfClick <- dfSelectedHour[0, ]
+                 dfClick <- data.table::data.table()
                  # Reset dfClick when selectedData
                } else {
                  dfClick <- data.table::rbindlist(click$points)
@@ -464,7 +462,7 @@ app$callback(output = list(id = "total-rides", property = "children"),
                input(id = "hour-dropdown", property = "value")),
              
              function(date, h) {
-
+               
                dfDay <- filterDay(date) %>% 
                  dplyr::mutate(rideHourNum = as.numeric(as.POSIXlt(Date.Time)$hour)) 
                
@@ -472,7 +470,7 @@ app$callback(output = list(id = "total-rides", property = "children"),
                dfDayHours <- dfDay %>% 
                  dplyr::filter(rideHourNum %in% as.numeric(substr(entireDayConverter(h),
                                                                   start = 2, stop = 3)))
-
+               
                return (
                  htmlDiv(children = list(
                    htmlP(paste("Total Rides: ",
