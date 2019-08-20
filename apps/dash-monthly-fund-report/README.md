@@ -1,4 +1,4 @@
-# Dash Cytoscape Phylogeny
+# Dash Monthly Fund Report
 
 ## About this app
 
@@ -10,7 +10,7 @@ To run this app first clone repository and then open a terminal to the app folde
 
 ```
 git clone https://github.com/plotly/dash-sample-apps.git
-cd dash-sample-apps/apps/dash-cytoscape
+cd dash-sample-apps/apps/dash-monthly-fund-report
 ```
 
 Create and activate a new virtual environment (recommended) by running
@@ -40,7 +40,7 @@ Run the app:
 ```
 python app.py
 ```
-You can run the app on your browser at http://127.0.0.1:8050
+You can run the app on your browser at http://127.0.0.1:5000/
 
 
 ## Screenshots

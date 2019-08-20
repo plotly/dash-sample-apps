@@ -1,13 +1,5 @@
-    
-@font-face {
-    font-family: "Helvetica Neue";
-    src: url("HelveticaNeue.ttf") format('opentype');
-}
+@import url('https://fonts.googleapis.com/css?family=Crimson+Text|Roboto&display=swap');
 
-@font-face {
-    font-family: "Sabon Roman";
-    src: url("SabonRoman.ttf") format('opentype');
-}
 body {
     width: 100%;
     height: 100%;
@@ -23,11 +15,11 @@ body {
 }
 .columns{ margin-left: 0 !important; }
 h1, h2, h3, h4, h5, h6{
-    font-family: 'Sabon Roman', serif;
+    font-family: 'Crimson Text', serif;
     margin: 0;
 }
 p, a{
-    font-family: 'Helevtica Neue', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .page {
