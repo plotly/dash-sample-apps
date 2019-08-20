@@ -24,11 +24,11 @@ if (appName != "") {
 app <- Dash$new()
 
 # get lat long data and transform
-df_lat_lon <- fread("lat_lon_counties.csv")
+df_lat_lon <- fread("data/lat_lon_counties.csv")
 df_lat_lon$FIPS <- str_pad(df_lat_lon$FIPS, 5, pad = "0")
 
 # get age adjusted  data and transform
-df_full_data <- fread("age_adjusted_death_rate_no_quotes.csv")
+df_full_data <- fread("data/age_adjusted_death_rate_no_quotes.csv")
 df_full_data$`County Code` <-
   str_pad(df_full_data$`County Code`, 5, pad = "0")
 df_full_data$County <-
