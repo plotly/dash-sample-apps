@@ -57,5 +57,3 @@ newdata = data.frame(Lag1 = 0.381, Lag2 = -0.192, Lag3 = -2.624,
 
 predict(glm.fit, newdata, type = 'response')
 
-
-

@@ -1,4 +1,4 @@
-/* New style sheet for the refreshed demo app */
+/* Style sheet for Dash-R Actuarial Dashboard*/
 
 body {
   background: 	#FFEBCD !important;
@@ -27,7 +27,7 @@ body {
 
 .header_title {
   font-family: lol;
-  color: CadetBlue   !important;
+  color: SteelBlue   !important;
   text-align: left;
   margin: 10px !important;
 }

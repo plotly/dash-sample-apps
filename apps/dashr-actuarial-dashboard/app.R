@@ -21,6 +21,7 @@ source('risk.R')
 source('mortality.R')
 source('market.R')
 source('functions.R')
+source('logisticregression.R')
 
 setwd('/Users/kevinphan/desktop/dash-sample-apps/apps/dashr-actuarial-dashboard')
 
@@ -63,14 +64,14 @@ indexcolor = list(
   "^DJI" = list('red'))
 
 tab_style = list(
-  'borderBottom'= '1px solid #5F9EA0',
+  'borderBottom'= '1px solid #F0F8FF',
   'padding'= '6px',
   'fontWeight'= 'bold'
 )
 
 tab_selected_style = list(
-  'backgroundColor'= '#5F9EA0',
-  'color'= 'white',
+  'backgroundColor'= '#F0F8FF',
+  'color'= 'black',
   'padding'= '6px'
 )
 
