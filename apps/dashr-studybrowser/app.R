@@ -46,7 +46,7 @@ asterisks <- function(n){
   
 }
 
-default_study_data <- fread('assets/study.csv')
+default_study_data <- fread('data/study.csv')
 default_studyid <- "AS100"
 default_study_input <- default_study_data[study_id==default_studyid]
 default_test_articles <- (default_study_data[default_study_data$group_type=='test'] )$test_article %>% unique(.)
