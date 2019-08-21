@@ -1127,8 +1127,7 @@ ordersRows <- function(list_order, st){
           )
         )
       )
-    } 
-    else {
+    } else {
       rows <- lapply(
         seq(1, nrow(list_order)),
         function(i){
