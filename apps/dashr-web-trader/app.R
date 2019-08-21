@@ -12,10 +12,10 @@ appName <- Sys.getenv("DASH_APP_NAME")
 
 if (!appName == ""){
   pathPrefix <- sprintf("/%s/", appName)
-
+  
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-
+  
   setwd("/app/apps/dashr-web-trader")
 }
 
@@ -145,6 +145,7 @@ app$layout(
   )
 )
 
+# Generate ask_bid_rows for each:
 app$callback(
   output("EURUSDrow", "children"),
   list(
@@ -196,6 +197,7 @@ app$callback(
   }
 )
 
+# generate_chart_button_callback
 app$callback(
   output("charts_clicked", "children"),
   list(
@@ -243,6 +245,7 @@ app$callback(
   }
 )
 
+# generate_show_hide_graph_div_callback
 app$callback(
   output("EURUSDgraph_div", "style"),
   list(input("charts_clicked", "children")),
@@ -260,13 +263,13 @@ app$callback(
       ifelse(
         length(
           charts[!is.na(charts)]) == 4,
-          s["height"] <- "50%",
-          s["height"] <- "100%"
+        s["height"] <- "50%",
+        s["height"] <- "100%"
       )
     } else {
       s <- list(display = "none")
     }
-  return(s)
+    return(s)
   }
 )
 
@@ -353,6 +356,7 @@ app$callback(
   }
 )
 
+# generate_size_graph_div
 app$callback(
   output("EURUSDgraph_div", "className"),
   list(input("charts_clicked", "children")),
@@ -385,11 +389,11 @@ app$callback(
       return("")
     }
     width <- ifelse(len_list %% 2 == 0, "six columns",
-      ifelse(
-        len_list == 1,
-        "twelve columns",
-        "four columns"
-      )
+                    ifelse(
+                      len_list == 1,
+                      "twelve columns",
+                      "four columns"
+                    )
     )
     return(width)
   }
@@ -433,12 +437,13 @@ app$callback(
         len_list == 1,
         "twelve columns",
         "four columns"
-        )
+      )
     )
     return(width)
   }
 )
 
+# generate_figure_callback
 app$callback(
   output("EURUSDchart", "figure"),
   list(
@@ -567,6 +572,7 @@ app$callback(
   }
 )
 
+# generate_close_graph_callback
 app$callback(
   output("EURUSDButton_chart", "n_clicks"),
   list(
@@ -635,6 +641,8 @@ app$callback(
   }
 )
 
+# generate_active_menu_tab_callback
+# Updates hidden div that stores the last clicked menu tab
 app$callback(
   output("EURUSDmenu_tab", "children"),
   list(
@@ -679,6 +687,7 @@ app$callback(
   }
 )
 
+# Generate update style header callback
 app$callback(
   output("EURUSDstyle_header", "style"),
   list(
@@ -743,6 +752,7 @@ app$callback(
   }
 )
 
+# generate_update_studies_header_callback
 app$callback(
   output("EURUSDstudies_header", "style"),
   list(
@@ -807,6 +817,7 @@ app$callback(
   }
 )
 
+# generate_studies_content_tab_callback
 app$callback(
   output("EURUSDstudies_tab", "style"),
   list(input("EURUSDmenu_tab", "children")),
@@ -855,6 +866,7 @@ app$callback(
   }
 )
 
+# generate_style_content_tab_callback
 app$callback(
   output("EURUSDstyle_tab", "style"),
   list(input("EURUSDmenu_tab", "children")),
@@ -903,6 +915,7 @@ app$callback(
   }
 )
 
+# generate_open_close_menu_callback
 app$callback(
   output("EURUSDmenu", "className"),
   list(
@@ -975,6 +988,7 @@ app$callback(
   }
 )
 
+# generate_modal_open_callback
 app$callback(
   output("EURUSDmodal", "style"),
   list(input("EURUSDBuy", "n_clicks")),
@@ -1023,6 +1037,7 @@ app$callback(
   }
 )
 
+# generate_clean_sl_callback
 app$callback(
   output("EURUSDSL", "value"),
   list(input("EURUSDBuy", "n_clicks")),
@@ -1055,6 +1070,7 @@ app$callback(
   }
 )
 
+# generate_clean_tp_callback
 app$callback(
   output("EURUSDTP", "value"),
   list(input("EURUSDBuy", "n_clicks")),
@@ -1087,10 +1103,11 @@ app$callback(
   }
 )
 
+# generate_modal_close_callback
 app$callback(
   output("EURUSDBuy", "n_clicks"),
   list(input("EURUSDcloseModal", "n_clicks"),
-    input("EURUSDbutton_order", "n_clicks")),
+       input("EURUSDbutton_order", "n_clicks")),
   function(n, n2){
     return(0)
   }
@@ -1099,7 +1116,7 @@ app$callback(
 app$callback(
   output("USDCHFBuy", "n_clicks"),
   list(input("USDCHFcloseModal", "n_clicks"),
-    input("USDCHFbutton_order", "n_clicks")),
+       input("USDCHFbutton_order", "n_clicks")),
   function(n, n2){
     return(0)
   }
@@ -1107,7 +1124,7 @@ app$callback(
 app$callback(
   output("USDJPYBuy", "n_clicks"),
   list(input("USDJPYcloseModal", "n_clicks"),
-    input("USDJPYbutton_order", "n_clicks")),
+       input("USDJPYbutton_order", "n_clicks")),
   function(n, n2){
     return(0)
   }
@@ -1116,12 +1133,13 @@ app$callback(
 app$callback(
   output("GBPUSDBuy", "n_clicks"),
   list(input("GBPUSDcloseModal", "n_clicks"),
-    input("GBPUSDbutton_order", "n_clicks")),
+       input("GBPUSDbutton_order", "n_clicks")),
   function(n, n2){
     return(0)
   }
 )
 
+# generate_modal_figure_callback
 app$callback(
   output("EURUSDmodal_graph", "figure"),
   list(
@@ -1182,6 +1200,7 @@ app$callback(
   }
 )
 
+# generate_order_button_callback
 app$callback(
   output("EURUSDorders", "children"),
   list(
@@ -1358,6 +1377,7 @@ app$callback(
   }
 )
 
+# generate_update_orders_div_callback
 app$callback(
   output("orders", "children"),
   list(
@@ -1410,6 +1430,7 @@ app$callback(
   }
 )
 
+# update_orders_table
 app$callback(
   output("orders_table", "children"),
   list(
@@ -1429,6 +1450,7 @@ app$callback(
   }
 )
 
+# Update link based on open / close dropdown
 app$callback(
   output("bottom_tab", "pathname"),
   list(input("open_close_dropdown", "value")),
@@ -1437,6 +1459,7 @@ app$callback(
   }
 )
 
+# Update open / close dropdown values to reflect # of orders
 app$callback(
   output("open_close_dropdown", "options"),
   list(input("orders", "children")),
@@ -1461,6 +1484,7 @@ app$callback(
   }
 )
 
+# show_hide_close_orders
 app$callback(
   output("close_orders_div", "style"),
   list(input("bottom_tab", "pathname")),
@@ -1480,6 +1504,7 @@ app$callback(
   }
 )
 
+# update_close_dropdown
 app$callback(
   output("closable_orders", "options"),
   list(input("orders", "children")),
@@ -1500,6 +1525,7 @@ app$callback(
   }
 )
 
+# update_top_bar
 app$callback(
   output("top_bar", "children"),
   list(input("orders", "children")),
@@ -1552,6 +1578,7 @@ app$callback(
   }
 )
 
+# Callback for live clock
 app$callback(
   output("live_clock", "children"),
   list(input("interval", "n_intervals")),
