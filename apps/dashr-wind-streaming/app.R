@@ -1,4 +1,3 @@
-
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
@@ -10,6 +9,7 @@ library(plotly)
 library(VGAM)
 
 appName <- Sys.getenv("DASH_APP_NAME")
+
 if (appName != ""){
   pathPrefix <- sprintf("/%s/", appName)
   
@@ -240,7 +240,7 @@ app$callback(
   function(interval){
     total_time <- get_current_time()
     df <- get_wind_data_by_id(total_time)
-    val <- tail(df$Speed, n=1)
+    val <- tail(df$Speed, n = 1)
     direction <- list(0, (df$Direction[1] - 20), (df$Direction[1] + 20), 0)
     
     fig <- plot_ly(
@@ -294,19 +294,18 @@ app$callback(
 
 app$callback(
   output = list(id = "wind-histogram", property = "figure"),
-  params = list(
-    input(id = "wind-speed-update", property = "n_intervals"),
-    state(id = "wind-speed", property = "figure"),
-    state(id = "bin-slider", property = "value"),
-    state(id = "bin-auto", property = "value")
-  ),
+  params = list(input(id = "wind-speed-update", property = "n_intervals"),
+                state(id = "wind-speed", property = "figure"),
+                state(id = "bin-slider", property = "value"),
+                state(id = "bin-auto", property = "value")),
   
   # Generate the histogram figure
   function(interval, wind_speed_figure, slider_value, auto_state) {
+    
     wind_val <- unlist(wind_speed_figure[['data']][[1]][['y']])
+    
     if(is.null(wind_val)){
       # This empty ploty object is used to elliminate an error during initialization 
-      
       return(
         fig <- plot_ly(
           type = "scatter",
@@ -315,15 +314,15 @@ app$callback(
         ) %>% 
           layout(
             plot_bgcolor = app_color[["graph_bg"]],
-            paper_bgcolor=app_color[["graph_bg"]]
+            paper_bgcolo = app_color[["graph_bg"]]
           ))
-    }else{
+    } else{
       if("Auto" %in% auto_state){
         bin_val <- hist(
           wind_val,
           breaks = round(max(unlist(wind_val)))
         )
-      }else{
+      } else{
         bin_val <- hist(wind_val, breaks = slider_value)
       }
       avg_val <- mean(wind_val, na.rm = TRUE) 
@@ -370,7 +369,7 @@ app$callback(
           name = "Rayleigh Fit",
           marker = list(opacity = 0),
           visible = TRUE
-        )  %>%
+        ) %>%
         layout(
           plot_bgcolor = app_color[["graph_bg"]],
           paper_bgcolor = app_color[["graph_bg"]],
@@ -438,18 +437,24 @@ app$callback(
 # Manage and test for bin auto for histogram
 app$callback(
   output = list(id = "bin-auto", property = "values"),
-  params = list(
-    input(id = "bin-slider", property = "value"),
-    state(id = "wind-speed", property = "figure")
-  ),
+  params = list(input(id = "bin-slider", property = "value"),
+                state(id = "wind-speed", property = "figure")),
   function(slider_value, wind_speed_figure){
+    
     if(!length(wind_speed_figure[['data']][[1]][['y']])){
+      
       return(list(""))
+      
     }
+    
     if(!is.null(wind_speed_figure) && (length(wind_speed_figure[['data']][[1]][['y']]) > 5)){
+      
       return(list(""))
-    }else{
+      
+    } else{
+      
       return(list("Auto"))
+      
     }
   }
 )
@@ -457,15 +462,18 @@ app$callback(
 # Manage bin size for histogram
 app$callback(
   output = list(id = "bin-size", property = "children"),
-  params = list(
-    input(id = "bin-auto", property = "values"),
-    state(id = "bin-slider", property = "value")
-  ),
+  params = list(input(id = "bin-auto", property = "values"),
+                state(id = "bin-slider", property = "value")),
   function(autoValue, slider_value){
+    
     if("Auto" %in% autoValue){
+      
       return("# of Bins: Auto")
-    }else{
+      
+    } else{
+      
       return(paste0("# of Bins = ", as.character(as.integer(slider_value))))
+      
     }
   }
 )
