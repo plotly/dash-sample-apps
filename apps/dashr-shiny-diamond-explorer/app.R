@@ -21,7 +21,7 @@ data(diamonds, package = 'ggplot2')
 nms <- names(diamonds)
 max = nrow(diamonds)
 
-#rendering dropdown lists
+#another method for rendering dropdown choices
 lapply(nms, function(x) {
   list(label = x, value = x)
 })
