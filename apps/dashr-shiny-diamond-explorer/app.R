@@ -138,6 +138,18 @@ app$layout(
 )
 ################ CALLBACKS #####################
 
+app$callback(
+  output = list(id = 'facetgrid', property = 'figure'),
+  params = list(
+    input(id = 'sample-slider', property = 'value'),
+    input(id = 'height-slider', property = 'value'),
+    input(id = 'x-dropdown', property = 'value'),
+    input(id = 'y-dropdown', property = 'value'),
+    input(id = 'color-dropdown', property = 'value'),
+    input(id = 'facet-row-dropdown', property = 'value'),
+    input(id = 'facet-column-dropdown', property = 'value')
+  )
+)
 
 ########CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL
 
