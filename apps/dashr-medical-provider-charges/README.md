@@ -2,6 +2,8 @@
 
 ## About this app
 
+This is dash for R version of the [medical provider charges](https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-medical-provider-charges) app written in python.
+
 This app creates a dashboard to visualize medical provider charges/costs from US hospitals and clinics.
 
 Data are downloaded from open data platform by [Centers for Medicare & Medicaid Services](https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Inpatient2016.html).  
