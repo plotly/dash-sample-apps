@@ -19,6 +19,11 @@ git clone https://github.com/plotly/dash-sample-apps
 cd dash-sample-apps/apps/dashr-medical-provider-charges
 ```
 
+Run init.R to install dependencies. From the terminal, run:
+```
+Rscript init.R
+```
+
 Run the app. From the terminal, run:
 ```
 Rscript app.R
