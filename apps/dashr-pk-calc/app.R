@@ -1,13 +1,3 @@
-appName <- Sys.getenv("DASH_APP_NAME")
-if (appName != ""){
-  pathPrefix <- sprintf("/%s/", appName)
-
-  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-
-  setwd(sprintf("/app/apps/%s", appName))
-}
-
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
@@ -15,25 +5,27 @@ library(dashTable)
 library(dplyr)
 source("utils/utils.R")
 
-#################################### LOAD DATA & CREATE GLOBAL OBJECTS #############################
+# INITIATE APP -------------------------------------------------------------------------------------
 
-pkData <- read.csv("./data/pkdata.csv", stringsAsFactors = FALSE)
-# Read df
-
-####################################################################################################
-
-#################################### APP START #####################################################
+appName <- Sys.getenv("DASH_APP_NAME")
+if (appName != ""){
+  pathPrefix <- sprintf("/%s/", appName)
+  Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
+             DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
+  setwd(sprintf("/app/apps/%s", appName))
+}
 
 app <- Dash$new()
-# Initiate application
 
-####################################################################################################
+# LOAD DATA & CREATE GLOBAL VARIABLES --------------------------------------------------------------
 
-#################################### CREATE LAYOUT VARIABLES #######################################
+pkData <- read.csv("./data/pkdata.csv", stringsAsFactors = FALSE)
 
+# CREATE LAYOUT VARIABLES --------------------------------------------------------------------------
+
+# Default values for cols & rows
 nSubjects <- length(unique(pkData$subject_index))
 nTimes <- length(unique(pkData$time))
-# Default values for cols & rows
 
 dashBioLogo <- htmlImg(src = "./assets/dashbio_logo_transparent.png")
 
@@ -100,9 +92,7 @@ resultsTable <- dashDataTable(
   style_cell_conditional = styleConditional
 )
 
-####################################################################################################
-
-#################################### CREATE LAYOUT #################################################
+# CREATE LAYOUT ------------------------------------------------------------------------------------
 
 app$layout(htmlDiv(
   className = "",
@@ -163,15 +153,12 @@ app$layout(htmlDiv(
             )
           )
         )
-        )
+      )
     )
   )
-)
-)
+))
 
-####################################################################################################
-
-#################################### CALLBACKS START ###############################################
+# CREATE CALLBACKS ---------------------------------------------------------------------------------
 
 app$callback(output = list(id = "data-table", property = "columns"),
              params = list(
@@ -195,40 +182,38 @@ app$callback(output = list(id = "data-table", property = "data"),
    changeRow <- rows - length(records)
 
    if (changeRow > 0) {
+     # Iterate through new rows
      for (i in (length(records) + 1):(length(records) + changeRow)){
-     #iterate through new rows
-
-       records[[i]] <- records[[i - 1]]
        # Copy previous row content to new
-       records[[i]][1:length(records[[i]])] <- ""
+       records[[i]] <- records[[i - 1]]
        # Replace with empty string
+       records[[i]][1:length(records[[i]])] <- ""
      }
-
    } else if (changeRow < 0) {
      records <- records[1:rows]
    }
 
-   recordDf <- rbindlist(records) %>% select(time, everything())
    # Create df from records time first place
+   recordDf <- rbindlist(records) %>% select(time, everything())
 
    changeCol <- subjects - (ncol(recordDf) - 1)
 
    if (changeCol > 0) {
-
      numLengths <- as.numeric(names(recordDf)[2:length(recordDf)])
-     nameAppend <- numLengths[length(numLengths)] + 1
      # Get name for new column
-     recordDf <- cbind(recordDf, "")
+     nameAppend <- numLengths[length(numLengths)] + 1
      # Create new column
-     names(recordDf)[ncol(recordDf)] <- nameAppend
+     recordDf <- cbind(recordDf, "")
      # Set the name
+     names(recordDf)[ncol(recordDf)] <- nameAppend
    } else if (changeCol < 0) {
-     recordDf <- select(recordDf, 1:(subjects + 1))
      # Remove columns
+     recordDf <- select(recordDf, 1:(subjects + 1))
    }
 
-   records <- df_to_list(recordDf)
    # Convert df back to list
+   records <- df_to_list(recordDf)
+
    return(records)
   }
 )
@@ -259,21 +244,22 @@ app$callback(output = list(id = "results-graph", property = "figure"),
              ),
   function(records){
 
-    df <- rbindlist(records)
     # Convert records to df
+    df <- rbindlist(records)
 
-    df <- as.data.frame(sapply(df, function(x) as.numeric(as.character(x))))
     # Convert anything non-numeric to NA
+    df <- as.data.frame(sapply(df, function(x) as.numeric(as.character(x))))
 
-    df <- df[, colSums(is.na(df)) < nrow(df)]
     # Remove column if all NA
+    df <- df[, colSums(is.na(df)) < nrow(df)]
 
+    # Reformat df to easily feed into list
     dfMelt <- melt(df, id.vars = "time")
     names(dfMelt) <- c("x", "name", "y")
     dfMelt <- dfMelt[, c("x", "y", "name")]
     dfMelt <- mutate(dfMelt, mode = "lines+markers")
-    # Reformat df to easily feed into list
 
+    # Fill the figData list
     figData <- lapply(
       1:length(unique(dfMelt$name)),
       function(i){
@@ -286,7 +272,6 @@ app$callback(output = list(id = "results-graph", property = "figure"),
         )
       }
     )
-    # Filled the figData list
 
     figure <- list(
       data = figData,
@@ -312,9 +297,12 @@ app$callback(output = list(id = "results-graph", property = "figure"),
         plot_bgcolor = "rgb(245, 247, 249)"
       )
     )
-  return(figure)
+
+    return(figure)
   }
 )
+
+# RUN SERVER ---------------------------------------------------------------------------------------
 
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv("PORT", 8050))
