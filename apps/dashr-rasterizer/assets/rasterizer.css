@@ -1,0 +1,163 @@
+.container.scalable {
+  width: 100%;
+  max-width: none;
+  padding: 0px;
+}
+
+._dash-undo-redo {
+  display: none;
+}
+
+body {
+  background-color: #F8F8F8;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+}
+
+.banner {
+  background-color: #000000;
+  color: white;
+  height: 10rem;
+  margin-bottom: 1rem;
+  padding: 0rem 5rem 0rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.banner h1 {
+  margin-bottom: 0rem;
+}
+
+.banner h6 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.banner Img {
+  position: relative;
+  height: 5rem;
+  width: auto;
+}
+
+#frontier-plot-outer {
+  height: 50vh;
+}
+
+#frontier-plot{
+  height:50vh;
+}
+
+#left-div{
+  width: 30vw;
+}
+
+#plot-outer {
+  padding-top: 2rem;
+  height: 40vh;
+  width: 30vw;
+}
+
+#plot {
+  height: 40vh;
+  width: 30vw;
+}
+
+#history-plot-outer {
+  height: 30vh;
+}
+
+#history-plot {
+  height: 30vh;
+}
+
+#app-body{
+  display: flex;
+  justify-content: space-around;
+}
+
+#controls-div{
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  height: calc(50vh - 11rem);
+  max-height: calc(100vh - 20rem);
+  border: 1px solid gray;
+  border-radius: 5px;
+  margin-left: 2rem;
+  padding: 0 0 2rem;
+  overflow-y: scroll;
+}
+
+#resample-button {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.control{
+  padding: 1em 2em 2em 2em;
+}
+
+.control-submit-store{
+  padding: 1em 2em 2em 2em;
+  display: flex;
+  justify-content:space-between;
+}
+
+#rasterizer{
+  width: 60vw;
+  height: 75vh;
+  display: flex;
+}
+
+@media only screen and (max-width: 750px), (min-width: 768px) and (max-width: 1024px) {
+  #app-body {
+    flex-direction: column;
+  }
+  #left-div{
+    width: 90vw;
+    margin: 0 auto;
+  }
+  #plots-div {
+    width: 90vw;
+    margin: 0 auto;
+    height: 80%;
+  }
+  #controls-div {
+    width: 90vw;
+    margin: 0 auto;
+  }
+  #race_outer {
+    width: 90vw;
+  }
+  #plot{
+    width: 90vw;
+  }
+  #history-plot-outer {
+    width: 90vw;
+  }
+  #history-plot{
+    width: 90vw;
+  }
+  #frontier-plot-outer {
+    width: 90vw;
+  }
+  #frontier-plot{
+    width: 90vw;
+  }
+  .banner {
+    height: auto;
+    flex-direction: column;
+    align-items: initial;
+  }
+  .banner Img {
+    margin: 2rem 0;
+    height: auto;
+    width: 30%;
+  }
+}
