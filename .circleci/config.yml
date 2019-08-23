@@ -99,15 +99,18 @@ jobs:
               fi
               git config --global user.email '<>' # Leave email blank
               git config --global user.name "Circle MonoRepo Automatic Deployer"
-              echo $PLOTLY_GA_CODE > ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js
-              git add ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js && git commit -m "Deployed commit: $CIRCLE_SHA1"
-              git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
-              git push $APP master --force || echo "Deploy failed because there is no such app on Dash Gallery: $APP. Please use the web interface to create an app with this name. Continuing deployments..."
+              if [ -d ~/dash-sample-apps/apps/"$APP"/ ]
+              then
+                echo $PLOTLY_GA_CODE > ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js
+                git add ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js && git commit -m "Deployed commit: $CIRCLE_SHA1"
+                git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
+                git push $APP master --force || echo "Deploy failed because there is no such app on Dash Gallery: $APP. Please use the web interface to create an app with this name. Continuing deployments..."
+              fi
             done
       - run:
           name: Push to production
           command: |
-              git push git@github.com:plotly/dash-sample-apps master:production
+              git push --force git@github.com:plotly/dash-sample-apps master:production
 
 workflows:
   version: 2
