@@ -38,6 +38,7 @@ Try out the [demo app here](https://dash-gallery.plotly.host/dash-daq-satellite-
 - Path toggle: Show and hide the expected satellite path.
 - Time toggle: Display data from the past hour or the past minute.
 
+
 ### Running the app locally
 
 First create a virtual environment with conda or venv inside a temp folder, then activate it.
