@@ -8,10 +8,12 @@ library(lubridate)
 library(salesforcer)
 source('SFManager.R')
 source('functions.R')
+
 accounts = get_accounts()
 contacts = get_contacts()
 users = get_users()
 cases = get_cases()
+
 source('cases.R')
 source('leads.R')
 source('opportunties.R')
@@ -81,6 +83,4 @@ if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
   app$run_server()}
-
-
 
