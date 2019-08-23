@@ -578,8 +578,8 @@ def update_data(interval, data):
                 data[h_data_key]["temperature"][0]
             )
             new_data[h_data_key]["temperature"] = new_data[h_data_key]["temperature"][
-                                                  1:61
-                                                  ]
+                1:61
+            ]
             new_data[h_data_key]["speed"].append(data[h_data_key]["speed"][0])
             new_data[h_data_key]["speed"] = new_data[h_data_key]["speed"][1:61]
             new_data[h_data_key]["latitude"].append(
@@ -628,21 +628,21 @@ def update_data(interval, data):
     ],
 )
 def update_graph(
-        interval,
-        satellite_type,
-        minute_mode,
-        elevation_n_clicks,
-        temperature_n_clicks,
-        speed_n_clicks,
-        latitude_n_clicks,
-        longitude_n_clicks,
-        fuel_n_clicks,
-        battery_n_clicks,
-        data,
-        data_config,
-        old_figure,
-        old_data,
-        old_title,
+    interval,
+    satellite_type,
+    minute_mode,
+    elevation_n_clicks,
+    temperature_n_clicks,
+    speed_n_clicks,
+    latitude_n_clicks,
+    longitude_n_clicks,
+    fuel_n_clicks,
+    battery_n_clicks,
+    data,
+    data_config,
+    old_figure,
+    old_data,
+    old_title,
 ):
     new_data_config = data_config
     info_type = data_config["info_type"]
@@ -847,6 +847,7 @@ def update_satellite_description(val):
 
 
 # Callbacks Map
+
 
 @app.callback(
     Output("world-map", "figure"),
