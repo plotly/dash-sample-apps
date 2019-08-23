@@ -9,11 +9,11 @@ Note that the data consists of 3 variables, "easting" (longitude), "northing" (l
 
 The graph in this map represents USA census. It is constructed only by points, no lines, no polygons.
 
-#### Zoom in and out
+#### Zoom
 
 ![assets/molecule3d.gif](assets/zoom.gif)
 
-#### Selection
+#### Region Selection
 
 ![assets/molecule3d.gif](assets/selection.gif)
 
