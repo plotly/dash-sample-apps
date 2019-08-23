@@ -1,7 +1,6 @@
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-library(dashDaq)
 library(reticulate)
 library(data.table)
 library(rasterizer)
@@ -54,8 +53,6 @@ data <- lapply(0:35,
 data <- data.table::rbindlist(data)
 end_time <- Sys.time()
 paste0("Time to load data: ", end_time - start_time)
-# setwd("C://Users//Zehao//Documents//GitHub//dash-sample-apps//apps//dashr-rasterizer")
-# data <- read_parquet(paste0("data/part.", 0, ".parquet"))
 
 ################################################### race #############################################
 race_all_region <- data[, .N, by = race]
