@@ -18,15 +18,11 @@ if (appName != "") {
 ################################################### helper function #############################################
 pandas <- reticulate::import("pandas")
 read_parquet <- function(path, columns = NULL) {
-  
-  path <- path.expand(path)
-  path <- normalizePath(path)
-  
-  if (!is.null(columns)) columns = as.list(columns)
-  
-  xdf <- pandas$read_parquet(path, columns = columns)
-  
-  data.table::as.data.table(xdf, stringsAsFactors = FALSE)
+  if (!is.null(columns)) columns <- as.list(columns)
+  path.expand(path) %>% 
+    normalizePath() %>%
+    pandas$read_parquet(., columns = columns) %>%
+    data.table::as.data.table(., stringsAsFactors = FALSE)
 }
 easting_northing <- function(x) {
   
