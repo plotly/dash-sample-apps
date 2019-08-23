@@ -51,6 +51,15 @@ body {
   position: relative;
   }
 
+.widget {
+  border-radius: 5px;
+  background-color: #F0F8FF;
+  margin: 10px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px #F0F8FF;
+}
+
 /* ---Different Screen Sizes--- */
 
 @media only screen and (max-width: 768px) {

@@ -60,7 +60,8 @@ choropleth_map <- function(){
     scope = 'usa',
     projection = list(type = 'albers usa'),
     showlakes = TRUE,
-    lakecolor = 'white'
+    showoceans = TRUE,
+    lakecolor = 'black'
   )
   
   p <- plot_geo(df, locationmode = 'USA-states') %>%
@@ -72,7 +73,9 @@ choropleth_map <- function(){
     layout(
       title = 'Aggregate Crude Death Rate Per State',
       geo = g,
-      bgcolor = '#F0F8FF'
+      plot_bgcolor='#F0F8FF' ,
+      paper_bgcolor='#F0F8FF',
+      colorscale = 'Blue'
     )
   #return(p)
 }

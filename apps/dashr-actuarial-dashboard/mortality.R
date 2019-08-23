@@ -2,13 +2,16 @@ mortalitylayout = app$layout(
   htmlDiv(
     list(
       htmlHr(),
-      dccGraph(
-        id="map",
-        figure = choropleth_map(),
-        style=list("height"= "90%", "width"= "98%"),
-        config=list(displayModeBar=FALSE),
-        className = 'container'
-      ),
+      htmlDiv(list(
+        dccGraph(
+          id="map",
+          figure = choropleth_map(),
+          style=list("height"= "90%", "width"= "98%"),
+          config=list(displayModeBar=FALSE)
+          ,
+          className = 'container'
+        )
+      )),
       htmlH3('lee-Carter Projection Time'),
       htmlDiv(dccInput(
         id = 'projections',
