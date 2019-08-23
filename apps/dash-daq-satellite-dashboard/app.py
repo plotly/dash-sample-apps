@@ -23,9 +23,7 @@ server = app.server
 MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
 MAPBOX_STYLE = "mapbox://styles/plotlymapbox/cjyivwt3i014a1dpejm5r7dwr"
 
-##############################################################################################################
 # Dash_DAQ elements
-##############################################################################################################
 
 utc = html.Div(
     id="control-panel-utc",
@@ -236,9 +234,7 @@ minute_toggle = daq.ToggleSwitch(
     style={"color": "#black"},
 )
 
-##############################################################################################################
 # Side panel
-##############################################################################################################
 
 satellite_dropdown = dcc.Dropdown(
     id="satellite-dropdown-component",
@@ -270,9 +266,7 @@ side_panel_layout = html.Div(
 )
 
 
-##############################################################################################################
 # Satellite location tracker
-##############################################################################################################
 
 # Helper to straighten lines on the map
 def flatten_path(xy1, xy2):
@@ -370,9 +364,7 @@ histogram = html.Div(
     ],
 )
 
-###############################################################################################################
 # Control panel + map
-##############################################################################################################
 main_panel_layout = html.Div(
     id="panel-upper-lower",
     children=[
@@ -426,21 +418,10 @@ main_panel_layout = html.Div(
     ],
 )
 
-##############################################################################################################
 # Data generation
-##############################################################################################################
 
 # Pandas
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
-
-df_non_gps_h = pd.read_csv(
-    os.path.join(APP_PATH, os.path.join("data", "non_gps_data_h.csv"))
-)
-df_non_gps_m = pd.read_csv(
-    os.path.join(APP_PATH, os.path.join("data", "non_gps_data_m.csv"))
-)
-df_gps_m = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "gps_data_m.csv")))
-df_gps_h = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "gps_data_h.csv")))
 
 # Satellite H45-K1 data
 df_non_gps_h_0 = pd.read_csv(
@@ -470,9 +451,7 @@ df_gps_h_1 = pd.read_csv(
     os.path.join(APP_PATH, os.path.join("data", "gps_data_h_1.csv"))
 )
 
-##############################################################################################################
 # Root
-##############################################################################################################
 root_layout = html.Div(
     id="root",
     children=[
@@ -480,32 +459,6 @@ root_layout = html.Div(
         dcc.Store(
             id="store-data",
             data={
-                "hour_data": {
-                    "elevation": [df_non_gps_h["elevation"][i] for i in range(60)],
-                    "temperature": [df_non_gps_h["temperature"][i] for i in range(60)],
-                    "speed": [df_non_gps_h["speed"][i] for i in range(60)],
-                    "latitude": [
-                        "{0:09.4f}".format(df_gps_h["lat"][i]) for i in range(60)
-                    ],
-                    "longitude": [
-                        "{0:09.4f}".format(df_gps_h["lon"][i]) for i in range(60)
-                    ],
-                    "fuel": [df_non_gps_h["fuel"][i] for i in range(60)],
-                    "battery": [df_non_gps_h["battery"][i] for i in range(60)],
-                },
-                "minute_data": {
-                    "elevation": [df_non_gps_m["elevation"][i] for i in range(60)],
-                    "temperature": [df_non_gps_m["temperature"][i] for i in range(60)],
-                    "speed": [df_non_gps_m["speed"][i] for i in range(60)],
-                    "latitude": [
-                        "{0:09.4f}".format(df_gps_m["lat"][i]) for i in range(60)
-                    ],
-                    "longitude": [
-                        "{0:09.4f}".format(df_gps_m["lon"][i]) for i in range(60)
-                    ],
-                    "fuel": [df_non_gps_m["fuel"][i] for i in range(60)],
-                    "battery": [df_non_gps_m["battery"][i] for i in range(60)],
-                },
                 "hour_data_0": {
                     "elevation": [df_non_gps_h_0["elevation"][i] for i in range(60)],
                     "temperature": [
@@ -569,7 +522,7 @@ root_layout = html.Div(
             },
         ),
         # For the case no components were clicked, we need to know what type of graph to preserve
-        dcc.Store(id="store-data-config", data={"info_type": "", "satellite_type": ""}),
+        dcc.Store(id="store-data-config", data={"info_type": "", "satellite_type": 0}),
         side_panel_layout,
         main_panel_layout,
     ],
@@ -578,9 +531,7 @@ root_layout = html.Div(
 app.layout = root_layout
 
 
-##############################################################################################################
 # Callbacks Data
-##############################################################################################################
 
 # Add new data every second/minute
 @app.callback(
@@ -629,8 +580,8 @@ def update_data(interval, data):
                 data[h_data_key]["temperature"][0]
             )
             new_data[h_data_key]["temperature"] = new_data[h_data_key]["temperature"][
-                1:61
-            ]
+                                                  1:61
+                                                  ]
             new_data[h_data_key]["speed"].append(data[h_data_key]["speed"][0])
             new_data[h_data_key]["speed"] = new_data[h_data_key]["speed"][1:61]
             new_data[h_data_key]["latitude"].append(
@@ -649,9 +600,7 @@ def update_data(interval, data):
     return new_data
 
 
-##############################################################################################################
 # Callbacks Histogram
-##############################################################################################################
 
 # Update the graph
 @app.callback(
@@ -681,21 +630,21 @@ def update_data(interval, data):
     ],
 )
 def update_graph(
-    interval,
-    satellite_type,
-    minute_mode,
-    elevation_n_clicks,
-    temperature_n_clicks,
-    speed_n_clicks,
-    latitude_n_clicks,
-    longitude_n_clicks,
-    fuel_n_clicks,
-    battery_n_clicks,
-    data,
-    data_config,
-    old_figure,
-    old_data,
-    old_title,
+        interval,
+        satellite_type,
+        minute_mode,
+        elevation_n_clicks,
+        temperature_n_clicks,
+        speed_n_clicks,
+        latitude_n_clicks,
+        longitude_n_clicks,
+        fuel_n_clicks,
+        battery_n_clicks,
+        data,
+        data_config,
+        old_figure,
+        old_data,
+        old_title,
 ):
     new_data_config = data_config
     info_type = data_config["info_type"]
@@ -851,9 +800,7 @@ def update_graph(
     return [figure, new_data_config, new_title]
 
 
-##############################################################################################################
 # Callbacks Dropdown
-##############################################################################################################
 
 
 @app.callback(
@@ -901,10 +848,7 @@ def update_satellite_description(val):
     return text
 
 
-##############################################################################################################
 # Callbacks Map
-##############################################################################################################
-
 
 @app.callback(
     Output("world-map", "figure"),
@@ -937,7 +881,11 @@ def update_word_map(clicks, toggle, satellite_type, old_figure, data, data_confi
         figure["data"][0]["lat"] = [df_gps_m["lat"][i] for i in range(3600)]
         figure["data"][0]["lon"] = [df_gps_m["lon"][i] for i in range(3600)]
 
-    if clicks % 2 == 0:
+    if not string_buffer:
+        figure["data"][1]["lat"] = [1.0]
+        figure["data"][1]["lon"] = [1.0]
+
+    elif clicks % 2 == 0:
         figure["data"][1]["lat"] = [
             float(data["minute_data" + string_buffer]["latitude"][-1])
         ]
@@ -952,9 +900,7 @@ def update_word_map(clicks, toggle, satellite_type, old_figure, data, data_confi
     return figure
 
 
-##############################################################################################################
 # Callbacks Components
-##############################################################################################################
 
 
 @app.callback(
@@ -989,7 +935,6 @@ def update_non_gps_component(clicks, satellite_type, data_config, data):
 
     new_data = []
     components_list = ["elevation", "temperature", "speed", "fuel", "battery"]
-
     # Update each graph value
     for component in components_list:
         new_data.append(data["minute_data" + string_buffer][component][-1])

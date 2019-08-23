@@ -3,10 +3,6 @@ from random import randint
 #######################################################################################################################
 # Setup
 #######################################################################################################################
-# Default data
-file_h = open("non_gps_data_h.csv", "w")
-file_m = open("non_gps_data_m.csv", "w")
-
 # Satellite H45-K1 data
 file_h_0 = open("non_gps_data_h_0.csv", "w")
 file_m_0 = open("non_gps_data_m_0.csv", "w")
@@ -16,9 +12,6 @@ file_h_1 = open("non_gps_data_h_1.csv", "w")
 file_m_1 = open("non_gps_data_m_1.csv", "w")
 
 # Initialize the first column
-file_h.write("elevation,temperature,speed,fuel,battery\n")
-file_m.write("elevation,temperature,speed,fuel,battery\n")
-
 file_h_0.write("elevation,temperature,speed,fuel,battery\n")
 file_m_0.write("elevation,temperature,speed,fuel,battery\n")
 
@@ -42,18 +35,6 @@ def add_data(data, file):
 ######################################################################################################################
 # Data Generation
 #######################################################################################################################
-
-# Data updated by the minute (default data)
-for i in range(60):
-    for j in range(4):
-        file_h.write(str(0) + ",")
-    file_h.write(str(0) + "\n")
-
-# Data updated by the second (default data)
-for i in range(60):
-    for j in range(4):
-        file_m.write(str(0) + ",")
-    file_m.write(str(0) + "\n")
 
 # Data updated by the minute (H45-K1 data)
 for i in range(60):
