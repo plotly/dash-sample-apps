@@ -17,4 +17,4 @@ Run `app.R`
 
 The app will load into your default browser window. If it does not, navigate to 127.0.0.1:8050.
 
-Learn more about Plotly and Dash [here](https://plot.ly/dash) .
+Learn more about Plotly and Dash [here](https://plot.ly/dash).
