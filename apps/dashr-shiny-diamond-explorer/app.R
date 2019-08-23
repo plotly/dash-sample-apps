@@ -26,10 +26,11 @@ lapply(nms, function(x) {
   list(label = x, value = x)
 })
 
+
 ######### CREATE GLOBAL OBJECTS ####
 
 DropDownMenuOptions <- list(
-  list(label = 'None', value = 'None'),
+  list(label = 'None', value = '.'),
   list(label = 'carat', value = 'carat'),
   list(label = 'cut', value = 'cut'),
   list(label = 'color', value = 'color'),
@@ -109,7 +110,7 @@ FacetRowDropDown <- dccDropdown(
 FacetColumnDropDown <- dccDropdown(
   id = 'facet-column-dropdown',
   options = DropDownMenuOptions,
-  value = 'None',
+  value = '.',
   clearable = FALSE
 )
 ###### APP START #######
@@ -163,25 +164,25 @@ function(sampleSize, plotHeight, x, y, color, facet_row,facet_col) {
 
   #Adding Reactive data info, dataset is built in diamonds data
                
-  dataset <- reactive({
-                 diamonds[sample(nrow(diamonds), sampleSize), ]
-               })
-               
+  dataset <- diamonds[sample(nrow(diamonds),sampleSize),]
+
 #FacetGrid ggplot2 object
-               
-p <- ggplot(dataset(), aes_string(x = x, y = y, color = color)) + geom_point()
-               
+
+           
+p <- ggplot(dataset, aes_string(x = x, y = y, color = color)) + geom_point()
+
 # Add it if least one facet column/row is specified
-               
+
 facets <- paste(facet_row, '~', facet_col)
 
-if (facets != '. ~ .') p <- p + facet_grid(facets)
-      ggplotly(p) %>%
+
+if (facets != '. ~ .') { p <- p + facet_grid(facets)
+       p1 <- ggplotly(p) %>%
           layout(height = plotHeight,
                 autosize = TRUE)
 }
-
-return(p)
+return(p1)
+}
 
 )
 
