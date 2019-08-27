@@ -30,6 +30,10 @@ compute_bins <- function(x, n) {
     size = (max(x) - min(x)) / n)
 }
 
+
+x <- cars$speed
+y <- cars$dist
+
 #marker objects 
 m <- list(color = toRGB("black"))
 m2 <- list(color = toRGN("black", 0.2))
@@ -95,15 +99,25 @@ ySlider <- dccSlider(
   value = 20
 )
 
-speedCountGraph -> dccGraph(
-  
+xhistogram -> dccGraph(
+  id = 'x-histogram',
 )
 
 scatterGraph -> dccGraph(
+  id = 'scatter-graph',
+  figure = list(
+    data = mtcars,
+    layout = list(
+      xaxis = list ('title' = 'speed'),
+      yaxis = list('title' = 'dist'),
+      hovermode = 
+    )
+  )
   
 )
 
-yCountGraph -> dccGraph(
+yhistogram -> dccGraph(
+  id = 'y-histogram',
   
 )
 #################################### CREATE LAYOUT###################################################
@@ -123,10 +137,16 @@ app$layout(htmlDiv(
 
 #################################### CALLBACKS START ###############################################
 
-# app$callback(
-#   output = list(id = "histogram", property = "figure"),
-#   params = list(input(id = , property = ))
-# )
+app$callback(
+  output = list(id = 'x-histogram', property = 'figure'),
+  params = list(
+        input(id = 'x-slider', property = 'value'))
+  
+)
+app$callback(
+    output = list(id = 'y-histogram', property = 'figure'),
+    input = list( id = 'y-slider', property = 'value')
+    )
 
 ####################################################################################################
 
