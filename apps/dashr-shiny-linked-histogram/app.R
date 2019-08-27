@@ -32,6 +32,7 @@ compute_bins <- function(x, n) {
 
 
 x <- cars$speed
+
 y <- cars$dist
 
 #marker objects 
@@ -99,25 +100,32 @@ ySlider <- dccSlider(
   value = 20
 )
 
-xhistogram -> dccGraph(
+xHistogram -> dccGraph(
   id = 'x-histogram',
+  figure = list(
+    data = cars,
+    type = 'bar',
+  )
 )
 
 scatterGraph -> dccGraph(
   id = 'scatter-graph',
   figure = list(
-    data = mtcars,
+    data = cars,
     layout = list(
       xaxis = list ('title' = 'speed'),
       yaxis = list('title' = 'dist'),
-      hovermode = 
     )
   )
   
 )
 
-yhistogram -> dccGraph(
+yHistogram -> dccGraph(
   id = 'y-histogram',
+  figure = list(
+    data = cars,
+    type = 'bar',
+  )
   
 )
 #################################### CREATE LAYOUT###################################################
@@ -126,12 +134,15 @@ app$layout(htmlDiv(
   list(
     plotlyLogo,
     pageTitle,
+    xHistogram,
     firstP,
     htmlBr(),
     htmlDiv(list(xSlider), style=list('marginBottom'= 50, className = 'five columns')),
     secondP,
     htmlBr(),
-    htmlDiv(list(ySlider), style=list('marginBottom'= 50, className = 'seven columns'))
+    htmlDiv(list(ySlider), style=list('marginBottom'= 50, className = 'seven columns')),
+    scatterGraph,
+    yHistogram,
   )
 ))
 
@@ -140,13 +151,49 @@ app$layout(htmlDiv(
 app$callback(
   output = list(id = 'x-histogram', property = 'figure'),
   params = list(
-        input(id = 'x-slider', property = 'value'))
-  
-)
+        input(id = 'x-slider', property = 'value')),
+
+function(xbins) {
+xbins <- compute_bins(x)
+p <- plot_ly(x = x, type = "histogram", autobinx = F,
+             xbins = xbins, marker = m2)
+
+# obtain plotlyjs selection
+
+s <- event_data("plotly_selected")
+
+# if points are selected, subset the data, and highlight
+if (length(s) > 0) {
+  p <- add_trace(p, x = s$x, type = "histogram", autobinx = F,
+                 xbins = xbins, marker = m)
+}
+p %>%
+  config(displayModeBar = F, showLink = F) %>%
+  layout(showlegend = F, barmode = "overlay", yaxis = list(title = "count"),
+         xaxis = list(title = "", showticklabels = F))
+})
+
 app$callback(
     output = list(id = 'y-histogram', property = 'figure'),
-    input = list( id = 'y-slider', property = 'value')
-    )
+    input = list(id = 'y-slider', property = 'value'),
+
+function(ybins)  {
+
+ybins <- compute_bins(y, input$ybins)
+p <- plot_ly(y = y, type = "histogram", autobiny = F,
+             ybins = ybins, marker = m2)
+s <- event_data("plotly_selected")
+if (length(s$y) > 0) {
+  p <- add_trace(p, y = y, type = "histogram", autobiny = F,
+                 ybins = ybins, marker = m)
+}
+p %>%
+  config(displayModeBar = F, showLink = F) %>%
+  layout(showlegend = F, barmode = "overlay", xaxis = list(title = "count"),
+         yaxis = list(title = "", showticklabels = F))
+})
+
+ 
 
 ####################################################################################################
 
