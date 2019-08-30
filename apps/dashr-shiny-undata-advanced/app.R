@@ -21,7 +21,7 @@ app$layout(
   htmlA(list(
     htmlImg(id = "banner-image", src = "assets/image.png")
   ), className = "logo",
-  href = "https://dashr-docs.herokuapp.com/"),
+  href = "https://dashr.plot.ly/"),
   htmlDiv(list(htmlH1('Ideal Points Estimation'))),
   htmlDiv(list(htmlH4('Country Name(s) of Interest'))),
   htmlDiv(list(
