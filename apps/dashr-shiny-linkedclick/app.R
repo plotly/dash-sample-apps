@@ -40,7 +40,7 @@ app$layout(
                  yaxis = list(title = ""))
       ),
       htmlBr(),
-      htmlDiv(list(dccGraph(id = 'scatterplot')))
+      htmlDiv(list(dccGraph(id = 'scatterplot')), id = "scatterplot-container")
     ),
     className = "eight columns"),
     htmlDiv(list(htmlDiv(id = "clickoutput")),
@@ -85,6 +85,23 @@ app$callback(
     return(p)
   }
 )
+
+app$callback(
+  output(id = "scatterplot-container", property = "style"),
+  params = list(input(id = "heatmapplot", property = "clickData")),
+  function(click_data) {
+    if (length(click_data[[1]][[1]])) {
+      style = list("display" = "inline")
+    }
+    else {
+      style = list("display" = "none")
+    }
+    return(style)
+  }  
+)
+
+
+
 
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
