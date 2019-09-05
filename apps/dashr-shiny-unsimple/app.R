@@ -8,6 +8,7 @@ if (appName != "") {
   setwd(sprintf("/app/apps/%s", appName))
 }
 
+
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
@@ -19,10 +20,12 @@ ideal <- read.csv("Data/UN_IdealPoints.csv", stringsAsFactors = F)
 app <- Dash$new()
 
 app$layout(
-  htmlA(list(
-    htmlImg(id = "banner-image", src = "assets/image.png")
-  ), className = "logo",
-  href = "https://dashr.plot.ly/"),
+  htmlA(
+    list(
+      htmlImg(id = "banner-image", src = "assets/image.png")
+    ),
+    className = "logo",
+    href = "https://dashr.plot.ly/"),
   htmlDiv(list(htmlH1('Ideal Points'))),
   htmlDiv(list(
     htmlDiv(
@@ -30,9 +33,8 @@ app$layout(
         dccDropdown(
           id = 'country-dropdown',
           className = 'app-controls-block-dropdown',
-          options = lapply(as.character(unique(ideal$Name)), function(x) {
-            list(label = x, value = x)
-          }),
+          options = lapply(as.character(unique(ideal$Name)),
+                           function(x) { list(label = x, value = x)}),
           value = "United States of America",
           multi = TRUE,
           clearable = TRUE,
@@ -46,10 +48,13 @@ app$layout(
       style = list('marginBottom' = 50),
       className = "four columns"
     ),
-    htmlDiv(list(dccGraph(id = 'lineplot')),
-            className = 'eight columns')
-  ), className = "row")
+    htmlDiv(
+      list(dccGraph(id = 'lineplot')),
+      className = 'eight columns')
+  ),
+  className = "row")
 )
+
 
 app$callback(
   output = list(id = "lineplot", property = "figure"),
@@ -57,7 +62,6 @@ app$callback(
 
   function(selected_country) {
     filtered_df <- ideal %>% filter(Name %in% selected_country)
-    print(selected_country)
 
     p <- plot_ly(
       filtered_df,
@@ -65,8 +69,10 @@ app$callback(
       y = ~Ideal.point,
       color = ~Name,
       hovertemplate = paste('Year: %{x}',
-                            '<br>Ideal.point: %{y}',
-                            '<br>Name:', filtered_df$Name),
+                            '
+Ideal.point: %{y}',
+                            '
+Name:', filtered_df$Name),
       type = "scatter",
       mode = 'lines'
     ) %>%
@@ -77,6 +83,7 @@ app$callback(
     return(p)
   }
 )
+
 
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
