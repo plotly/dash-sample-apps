@@ -5,8 +5,9 @@ Dash abstracts away all of the technologies and protocols required to build an i
 
 Try out the [demo app here](https://dash-gallery.plotly.host/dash-datashader/).
 
-![screenshot](assets/datashader.png)
+![screenshot](assets/datashader.png "Screenshot")
 
+=======
 
 ## Requirements
 We suggest you to create a separate virtual environment running Python 3 for this app, and install all of the required dependencies there. Run in Terminal/Command Prompt:
@@ -44,4 +45,4 @@ Open http://127.0.0.1:8050/ in your browser.
 
 Drag a section of the top graph in order to display the zoomed in graph on the bottom.
 
-To learn more check out our [documentation](https://dash.plot.ly).
+
