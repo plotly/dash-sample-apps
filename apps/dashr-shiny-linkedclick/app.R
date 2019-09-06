@@ -43,7 +43,7 @@ app$layout(
       htmlDiv(list(dccGraph(id = 'scatterplot')), id = "scatterplot-container")
     ),
     className = "eight columns"),
-    htmlDiv(list(htmlDiv(id = "clickoutput")),
+    htmlDiv(list(htmlDiv(id = "clickoutput", className = "shiny-container")),
             className = 'four columns')
   ), className = "row")
 )
@@ -97,10 +97,8 @@ app$callback(
       style = list("display" = "none")
     }
     return(style)
-  }  
+  }
 )
-
-
 
 
 if (appName != "") {
