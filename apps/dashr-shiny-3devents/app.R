@@ -31,9 +31,9 @@ app$layout(
       ),
       clear_on_unhover = TRUE
     ),
-    htmlDiv(id = "hoverdataOutput"),
+    htmlDiv(id = "hoverdataOutput", className = "shiny-container"),
     htmlBr(),
-    htmlDiv(id = "clickdataOutput")
+    htmlDiv(id = "clickdataOutput", className = "shiny-container")
   ))
 )
 
