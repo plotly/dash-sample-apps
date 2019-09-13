@@ -119,7 +119,7 @@ body ::-webkit-scrollbar-thumb {
     box-shadow: none !important;
 }
 #circos-body tr, #circos-body th , #circos-body td{
-    background-color: #1F2132 !important;
+    background-color: #1F2132;
     border-color: #222830 !important;
     padding: 5px;
     height: 40px;

@@ -32,11 +32,7 @@ library(plotly)
 
 app <- Dash$new()
 
-df <- read.csv(
-  file = "https://raw.githubusercontent.com/plotly/datasets/master/solar.csv",
-  stringsAsFactors = FALSE,
-  check.names = FALSE
-)
+# Functions and Data Loading
 
 
 FASTA_DATA <- readBStringSet(filepath = "data/alignment_viewer_p53_clustalo.FASTA")
@@ -174,6 +170,10 @@ options <- htmlDiv(
               
               dccStore(
                 id = 'fasta-file'
+              ),
+              
+              dccStore(
+                id = 'dataframe-store'
               )
             ))
           ))
@@ -187,6 +187,11 @@ options <- htmlDiv(
               htmlP('Search for an organism or gene from the Nucleotide database,
                     to retrieve the top 10 related dataset Accession IDs and their descriptions.
                     Example search: "Basiliscus basiliscus[Organism]"
+                    
+                    ', style = list("margin" = 10)),
+              htmlBr(),
+              htmlP('Select the cell containing the Accession ID to automatically populate
+              it within the dataset search box."
                     
                     ', style = list("margin" = 10)),
               dccInput(
@@ -261,7 +266,7 @@ app$layout(htmlDiv(list(
 )))
 
 
-# Callbacks
+# Callbacks for Sequence Viewer Output
 
 app$callback(
   output(id = 'genbank-sequence', property = 'data'),
@@ -296,7 +301,7 @@ app$callback(
   }
 )
 
-
+# Callback for Alignment-Viewer Output
 
 app$callback(
   output(id = 'alignment-container', property = 'children'),
@@ -319,7 +324,7 @@ app$callback(
       write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
       fasta_file <- toupper(read_file("C:/Users/hamma/Documents/Gene Expression/data/random_fasta.FASTA"))
       return(
-        dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 600, width = 950)
+        dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 600, width = 900)
       )
     }
     
@@ -329,13 +334,15 @@ app$callback(
           id = 'alignment-chart',
           data = read_file("data/alignment_viewer_p53_clustalo.FASTA"),
           height = 600,
-          width = 950
+          width = 900,
+          opacity = 0.5,
         )
       )
     }
   }
 )
 
+#Callbacks for database search output.
 
 app$callback(
   output(id = "search-output", property = "children"),
@@ -352,17 +359,117 @@ app$callback(
       
       search_seqs <- entrez_fetch(db = "nuccore", id = search$ids, rettype = "fasta")
       
+      red <- unlist(str_extract_all(search_seqs, ">.*\\n"))
+      
+      titles_vector <- c()
+      
+      for (i in red) {
+        title <- str_extract_all(i, ">.*?[:blank:]")
+        title <- substring(title, 2)
+        titles_vector <- c(titles_vector, title)
+      }
+      
       sequence_titles <- as.list(unlist(str_extract_all(search_seqs, ">.*\\n")))
       
       sequence_dataframe <- do.call(rbind.data.frame, sequence_titles)
       
       names(sequence_dataframe)[1] <- "Dataset Accession ID and Description"
       
-      return(generate_table(sequence_dataframe))
+      sequence_dataframe$Accession_ID <- titles_vector
+      
+      sequence_dataframe <- sequence_dataframe[, c(2,1)]
+      
+      results_table <- dashDataTable(
+        id = "table",
+        style_data = list(
+          whiteSpace = "normal"
+        ),
+        css = list(
+          list(
+            selector = '.dash-cell div.dash-cell-value',
+            rule = 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+          )
+        ),
+        columns = lapply(colnames(sequence_dataframe),
+                         function(colName){
+                           list("name" = colName,
+                                "id" = colName)
+                         }),
+        data = df_to_list(sequence_dataframe),
+        
+        active_cell <- list('row' = 0, 'column' = 0, 'column_id' = 'Accession_ID')
+      )
+      
+      return(results_table)
     }
   }
 )
 
+
+app$callback(
+  output(id = "dataframe-store", property = "data"),
+  params = list(
+    input(id = "search-button", property = "n_clicks"),
+    state(id = "search-input", property = "value")
+  ),
+  
+  update_search_results <- function(n_clicks, search_term) {
+    if (n_clicks > 0) {
+      search_term <- gsub('"', "", search_term)
+      
+      search <- entrez_search(db = "nuccore", term = search_term, retmax=10)
+      
+      search_seqs <- entrez_fetch(db = "nuccore", id = search$ids, rettype = "fasta")
+      
+      red <- unlist(str_extract_all(search_seqs, ">.*\\n"))
+      
+      titles_vector <- c()
+      
+      for (i in red) {
+        title <- str_extract_all(i, ">.*?[:blank:]")
+        title <- substring(title, 2)
+        titles_vector <- c(titles_vector, title)
+      }
+      
+      sequence_titles <- as.list(unlist(str_extract_all(search_seqs, ">.*\\n")))
+      
+      sequence_dataframe <- do.call(rbind.data.frame, sequence_titles)
+      
+      names(sequence_dataframe)[1] <- "Dataset Accession ID and Description"
+      
+      sequence_dataframe$Accession_ID <- titles_vector
+      
+      sequence_dataframe <- sequence_dataframe[, c(2,1)]
+      
+      return(sequence_dataframe)
+    }
+  }
+)
+
+# We copy the above callback, make a second one just like it to store the dataframe. Then, we make a third callback (it's actually below), use the stored dataframe and selected cell to store title?
+# Then add input into the alignment-viewer callback using that store to optionally call it. 
+
+app$callback(
+  output(id = "genbank-input", property = "value"),
+  params = list(
+    input(id = "table", property = "active_cell"),
+    input(id = 'dataframe-store', property = 'data')
+  ),
+  
+  update_cell <- function(cell, df) {
+    df  <-  as.data.frame(matrix(unlist(df), nrow=length(unlist(df[1]))), stringsAsFactors = FALSE)
+    accession_id <- df[1, cell$row + 1]
+    accession_id <- gsub('"', "", accession_id)
+    accession_id <- gsub(" ", "", accession_id)
+    return(accession_id)
+  }
+)
+
+
+
+
+
+#Callbacks for Nucleotide Pie Chart
 
 app$callback(
   output(id = "sequence-pie-chart", property = "figure"),
@@ -408,6 +515,7 @@ app$callback(
   }
 )
 
+#Callbacks for CpG Chart, Options, and Sequence Selection
 
 app$callback(
   output(id = "cpg-options", property = "options"),
@@ -531,6 +639,7 @@ app$callback(
 #     }
 #   }
 # )
+
 
 
 
