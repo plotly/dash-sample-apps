@@ -37,6 +37,7 @@ app <- Dash$new()
 
 FASTA_DATA <- readBStringSet(filepath = "data/alignment_viewer_p53_clustalo.FASTA")
 
+blank_dataframe <- data.frame(matrix(ncol=0,nrow=0))
 
 generate_table <- function(df, nrows=20)
   
@@ -74,6 +75,7 @@ second_row <- htmlDiv(children =list(
   htmlDiv(dccGraph(
     id = 'sequence-pie-chart'
   )),
+  htmlBr(),
   htmlDiv(list(
     dccGraph(id = "gc_graph")
   ),style = list("flex" = "-moz-max-content")
@@ -204,17 +206,18 @@ options <- htmlDiv(
               htmlButton(
                 id = 'search-button', n_clicks = 0, children = 'Search for Datasets'
               ),
-              htmlDiv(id = "search-output", children = dashDataTable(
+              htmlDiv(id = "search-output"),
+              dashDataTable(
                 id = "table",
-                columns = lapply(colnames(df), 
+                columns = lapply(colnames(blank_dataframe), 
                                  function(colName){
                                    list(
                                      id = colName,
                                      name = colName
                                    )
                                  }),
-                data = df_to_list(df)
-              ))
+                data = df_to_list(blank_dataframe)
+              )
             ))
           ))
         )
@@ -242,7 +245,7 @@ header <- htmlDiv(
       ),
       href = "/Portal"
     ),
-    htmlH2("NCBI Explorer"),
+    htmlH2("NCBI Nucleotide DB Explorer"),
     htmlA(
       id = "gh-link",
       children = list("View on GitHub"),
@@ -293,13 +296,21 @@ app$callback(
 app$callback(
   output(id = 'sequence-viewer', property = 'sequence'),
   params = list(
-    input(id = 'genbank-sequence', property = 'data')
+    input(id = 'genbank-sequence', property = 'data'),
+    input(id ='cpg-options', property = 'value')
   ),
   
-  update_sequence <- function(data) {
-    return(data[["sequence"]])
+  update_sequence <- function(data, value) {
+    if (value != 0) {
+      dna_data <- readDNAStringSet("data/random_fasta.FASTA", "fasta")
+      return(as.character(dna_data[[value]]))
+    }
+    else{
+      return(data[["sequence"]])
+    }
   }
 )
+
 
 # Callback for Alignment-Viewer Output
 
@@ -307,10 +318,14 @@ app$callback(
   output(id = 'alignment-container', property = 'children'),
   params = list(
     input(id = 'submit-button-2', property = 'n_clicks'),
+    input(id = 'dataframe-store', property = "data"),
+    input(id = "table", property = "active_cell"),
     state(id = 'genbank-input', property = 'value')
   ),
   
-  update_fasta <- function(n_clicks, accession_id) {
+  update_fasta <- function(n_clicks, search_data, cell, accession_id) {
+    print(cell)
+    
     accession_id <- gsub("\\s", "", accession_id)
     
     accession_id <- gsub('"', "", accession_id)
@@ -328,6 +343,21 @@ app$callback(
       )
     }
     
+    else if (!is.null(search_data[[1]]) && !is.null(cell[[1]])) {
+      search_data  <-  as.data.frame(matrix(unlist(search_data), nrow=length(unlist(search_data[1]))), stringsAsFactors = FALSE)
+      accession_id <- search_data[1, cell$row + 1]
+      accession_id <- gsub('"', "", accession_id)
+      accession_id <- gsub(" ", "", accession_id)
+      
+      bio_file <- read.GenBank(access.nb = accession_id)
+      write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
+      fasta_file <- toupper(read_file("C:/Users/hamma/Documents/Gene Expression/data/random_fasta.FASTA"))
+      return(
+        dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 600, width = 900)
+      )
+    }
+    
+    
     else if (n_clicks < 1) {
       return(
         dashbioAlignmentChart(
@@ -335,12 +365,13 @@ app$callback(
           data = read_file("data/alignment_viewer_p53_clustalo.FASTA"),
           height = 600,
           width = 900,
-          opacity = 0.5,
+          opacity = 0.5
         )
       )
     }
   }
 )
+
 
 #Callbacks for database search output.
 
@@ -395,9 +426,10 @@ app$callback(
                            list("name" = colName,
                                 "id" = colName)
                          }),
-        data = df_to_list(sequence_dataframe),
-        
-        active_cell <- list('row' = 0, 'column' = 0, 'column_id' = 'Accession_ID')
+        data = df_to_list(sequence_dataframe)
+        # ,
+        # 
+        # active_cell <- list('row' = 0, 'column' = 0, 'column_id' = 'Accession_ID')
       )
       
       return(results_table)
@@ -449,21 +481,21 @@ app$callback(
 # We copy the above callback, make a second one just like it to store the dataframe. Then, we make a third callback (it's actually below), use the stored dataframe and selected cell to store title?
 # Then add input into the alignment-viewer callback using that store to optionally call it. 
 
-app$callback(
-  output(id = "genbank-input", property = "value"),
-  params = list(
-    input(id = "table", property = "active_cell"),
-    input(id = 'dataframe-store', property = 'data')
-  ),
-  
-  update_cell <- function(cell, df) {
-    df  <-  as.data.frame(matrix(unlist(df), nrow=length(unlist(df[1]))), stringsAsFactors = FALSE)
-    accession_id <- df[1, cell$row + 1]
-    accession_id <- gsub('"', "", accession_id)
-    accession_id <- gsub(" ", "", accession_id)
-    return(accession_id)
-  }
-)
+# app$callback(
+#   output(id = "genbank-input", property = "value"),
+#   params = list(
+#     input(id = "table", property = "active_cell"),
+#     input(id = 'dataframe-store', property = 'data')
+#   ),
+#   
+#   update_cell <- function(cell, df) {
+#     df  <-  as.data.frame(matrix(unlist(df), nrow=length(unlist(df[1]))), stringsAsFactors = FALSE)
+#     accession_id <- df[1, cell$row + 1]
+#     accession_id <- gsub('"', "", accession_id)
+#     accession_id <- gsub(" ", "", accession_id)
+#     return(accession_id)
+#   }
+# )
 
 
 
@@ -533,7 +565,7 @@ app$callback(
       })
     }
     else {
-      list_options <- list(list(label = "Default", value = 1))
+      list_options <- list(list(label = "Default", value = 0))
     }
     return(list_options)
   }
@@ -620,27 +652,10 @@ app$callback(
   ),
   update_selection <- function(hoverdata) {
     point <- hoverdata$points[[1]]$pointNumber
-    selection_fixed <- list(point, as.numeric(point+20), "green")
-    str(selection_fixed)
+    selection_fixed <- list(as.numeric(point-30), as.numeric(point+30), "green")
     return(selection_fixed)
   }
 )
-
-# app$callback(
-#   output(id = 'genbank-sequence', property = "data"),
-#   params = list(
-#     input(id ='submit-button-2', property = 'n_clicks'),
-#     state(id ='cpg-options', property = 'value')
-#   ),
-#   update_sequence_2 <- function(n_clicks, option) {
-#     if (n_clicks > 0) {
-#       dna_data = readDNAStringSet("data/random_fasta.FASTA", "fasta")
-#       return(as.character(dna_data[[option]]))
-#     }
-#   }
-# )
-
-
 
 
 if (appName != "") {
