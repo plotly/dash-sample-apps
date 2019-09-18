@@ -117,9 +117,11 @@ first_row <- htmlDiv(list(
                     ", style = list("padding" = "5px")),
           htmlP("Generate and analyze the alignment, sequence composition, and CpG island
           distribution of the datasets, or export the data as a FASTA file for downstream analysis.
+                    ", style = list("padding" = "5px")),
+          htmlP("The NCBI Nucleotide Database Explorer incorporates data retrieved from NCBI. 
+          Please consult the NCBI Website and Data Usage Policies and Disclaimers for further information.
                     ", style = list("padding" = "5px"))
-          
-        )
+          )
       )
     ),
     
