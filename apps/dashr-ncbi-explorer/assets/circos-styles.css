@@ -1,10 +1,9 @@
 body {
-    background-color: #1F2132 !important;
-    color: #E2EFFA !important;
+    background-color: #FFFFFF !important;
 }
 
 body ::-webkit-scrollbar {
-    background-color: #1F2132 !important;
+    background-color: #FFFFFF !important;
 }
 body ::-webkit-scrollbar-thumb {
     background-color: #7cd3f7 !important;
@@ -33,7 +32,6 @@ body ::-webkit-scrollbar-thumb {
 }
 #circos-control-tabs .tab {
     background-color: #262B3D !important;
-    color: #E2EFFA !important;
     padding: 15px;
     border-color: #557 !important;
 }
@@ -50,14 +48,14 @@ body ::-webkit-scrollbar-thumb {
 }
 
 #circos-body .rc-slider-rail {
-    background-color: #1F2132;
+    background-color: #FFFFFF;
 }
 #circos-body .rc-slider-track {
     background-color: #7CD3F7;
 }
 #circos-body .rc-slider-handle {
     border-color: #7CD3F7;
-    background-color: #1F2132;
+    background-color: #FFFFFF;
 }
 #circos-body .rc-slider {
     margin-right: 2px;
@@ -119,7 +117,7 @@ body ::-webkit-scrollbar-thumb {
     box-shadow: none !important;
 }
 #circos-body tr, #circos-body th , #circos-body td{
-    background-color: #1F2132;
+    background-color: #FFFFFF;
     border-color: #222830 !important;
     padding: 5px;
     height: 40px;
@@ -177,4 +175,16 @@ body ::-webkit-scrollbar-thumb {
 
 #alignment-container {
     margin: 20px;
+}
+
+
+.control-upload {
+    border-color: #34AD99 !important;
+    display: block;
+    border: dotted 1px #119DFF;           /* Change in individual app stylesheet */
+    border-radius: 5px;
+    padding: 20px;
+    font-size: 9pt;
+    text-align: center;
+    margin: 13px;
 }

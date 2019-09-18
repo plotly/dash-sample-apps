@@ -17,7 +17,6 @@ if (appName != ""){
   
 }
 
-
 library(dash)
 library(dashBio)
 library(dashCoreComponents)
@@ -33,7 +32,6 @@ library(plotly)
 app <- Dash$new()
 
 # Functions and Data Loading
-
 
 FASTA_DATA <- readBStringSet(filepath = "data/alignment_viewer_p53_clustalo.FASTA")
 
@@ -62,172 +60,9 @@ generate_table <- function(df, nrows=20)
   )
 }
 
-# Layout Elements
+# App Layout Elements
 
-
-second_row <- htmlDiv(children =list(
-  htmlDiv(dashbioSequenceViewer(
-    id = 'sequence-viewer',
-    sequence = as.character(FASTA_DATA$`sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1`),
-    selection = list(10,20, "green"),
-    charsPerLine = 90
-  )),
-  htmlDiv(dccGraph(
-    id = 'sequence-pie-chart'
-  )),
-  htmlBr(),
-  htmlDiv(list(
-    dccGraph(id = "gc_graph")
-  ),style = list("flex" = "-moz-max-content")
-  ),
-  dccRadioItems(
-    id = "cpg-options",
-    options = list(list(label = "Default", value = 1)),
-    value = 1,
-    style = list("margin" = "10px")
-  )
-), style = list("display" = "flex", "width" = "98%", "margin" = "2%", "flex-wrap" = "wrap"))
-
-
-options <- htmlDiv(
-  id = 'circos-body',
-  className = 'app-body',
-  children = list(
-    dccLoading(className = 'dashbio-loading', type = "dot", children = htmlDiv(
-      id = 'alignment-container',
-      children = list()
-    )),
-    
-    htmlDiv(id = 'circos-control-tabs', className = 'control-tabs', children = list(
-      dccTabs(id = 'circos-tabs', value = 'what-is', children = list(
-        dccTab(
-          label = 'About',
-          value = 'what-is',
-          children = htmlDiv(
-            id = 'control-tab', children = list(
-              htmlH4(className = 'what-is', children = "What is NCBI Explorer?"),
-              
-              htmlP("The GenBank sequence database is an open access, annotated 
-                    collection of all publicly available nucleotide sequences and
-                    their protein translations. This database is produced and 
-                    maintained by the National Center for Biotechnology Information
-                    as part of the International Nucleotide Sequence Database Collaboration."),
-              htmlBr(),
-              htmlP("This app will allow you to explore, analyze and compare datasets using
-                    the GenBank Accession ID or by searching up organisms or gene's of interest
-                    using keyword entries in the 'Database Search'. You can analyze the alignment, sequence
-                    composition, and CpG island distribution of any of the datasets. 
-                    ")
-            )
-          )
-        ),
-        
-        dccTab(
-          label = 'Explorer Controls',
-          value = 'data',
-          children = htmlDiv(className = 'control-tab', children = list(
-            htmlDiv(className = 'app-controls-block', children = list(
-              htmlDiv(className = 'app-controls-name', children = "GenBank Access:"),
-              htmlP("Enter a single GenBank accession ID or multiple ID's seperated by commas
-                    and select the button to generate an alignment or the sequence of the dataset.
-                    Enter additional datasets to add additional sequences to the alignment."),
-              htmlP('Example: Single Dataset - NR_108049', style = list("margin" = 10)),
-              htmlP(' Multiple Datasets - "JF806202", "HM161150", "FJ356743", "JF80620", 
-                    "JQ073190", "GU457971", "FJ356741", "JF806"', style = list("margin" = 10)),
-              dccInput(
-                id = 'genbank-input',
-                placeholder = "Enter a GenBank Accession Number...",
-                type = "text",
-                value = "",
-                style = list("margin" = "10px")
-              ),
-              htmlButton(
-                id = 'submit-button', n_clicks = 0, children = 'Generate Sequence'
-              ),
-              htmlButton(
-                id = 'submit-button-2', n_clicks = 0, children = 'Generate Alignment'
-              ),
-              
-              htmlA(
-                htmlButton(
-                  "Download FASTA data",
-                  className="control-download"
-                ),
-                href="data/random_fasta.fasta",
-                download="random_fasta.fasta"
-              ),
-              
-              htmlDiv(id='alignment-file-upload-container', children=list(
-                dccUpload(
-                  id='alignment-file-upload',
-                  className='control-upload',
-                  children=htmlDiv(list(
-                    "Drag and drop FASTA files or select files."
-                  ))
-                )
-              )),
-              
-              dccStore(
-                id = 'genbank-sequence'),
-              
-              dccStore(
-                id = 'fasta-file'
-              ),
-              
-              dccStore(
-                id = 'dataframe-store'
-              )
-            ))
-          ))
-        ),
-        
-        dccTab(
-          label = 'Database Search',
-          children = htmlDiv(className = 'control-tab', children = list(
-            htmlDiv(className = 'app-controls-block', children = list(
-              htmlH3("Dataset Search:"),
-              htmlP('Search for an organism or gene from the Nucleotide database,
-                    to retrieve the top 10 related dataset Accession IDs and their descriptions.
-                    Example search: "Basiliscus basiliscus[Organism]"
-                    
-                    ', style = list("margin" = 10)),
-              htmlBr(),
-              htmlP('Select the cell containing the Accession ID to automatically populate
-              it within the dataset search box."
-                    
-                    ', style = list("margin" = 10)),
-              dccInput(
-                id = 'search-input',
-                placeholder = "Search for a species or genes...",
-                type = "text",
-                value = "",
-                style = list("margin" = "10px")
-              ),
-              htmlButton(
-                id = 'search-button', n_clicks = 0, children = 'Search for Datasets'
-              ),
-              htmlDiv(id = "search-output"),
-              dashDataTable(
-                id = "table",
-                columns = lapply(colnames(blank_dataframe), 
-                                 function(colName){
-                                   list(
-                                     id = colName,
-                                     name = colName
-                                   )
-                                 }),
-                data = df_to_list(blank_dataframe)
-              )
-            ))
-          ))
-        )
-      ))
-    )),
-    second_row
-  )
-)
-
-
+#Header
 
 header <- htmlDiv(
   id = "app-page-header",
@@ -259,15 +94,167 @@ header <- htmlDiv(
 )
 
 
+#First Row 
 
-# App Layout
+first_row <- htmlDiv(list(
+  htmlDiv(dccTabs(id = 'circos-tabs', value = 'what-is', children = list(
+    dccTab(
+      label = 'About',
+      value = 'what-is',
+      children = htmlDiv(
+        id = 'control-tab', children = list(
+          htmlH4(className = 'what-is', children = "What is NCBI Explorer?"),
+          
+          htmlP("The NCBI Nucleotide sequence database is an open access, annotated 
+                    collection of all publicly available nucleotide sequences and
+                    their protein translations. This database is produced and 
+                    maintained by the National Center for Biotechnology Information.
+                    ", style = list("padding" = "5px")),
+          htmlP("This app will allow you to explore, analyze and compare datasets on the
+          Nucleotide database. Load datasets using the GenBank Accession ID's directly in
+          the 'Explorer Controls' tab, or find the top datasets corresponding to a species or gene of interest
+          in the 'Database Search'.
+                    ", style = list("padding" = "5px")),
+          htmlP("Generate and analyze the alignment, sequence composition, and CpG island
+          distribution of the datasets, or export the data as a FASTA file for downstream analysis.
+                    ", style = list("padding" = "5px"))
+          
+        )
+      )
+    ),
+    
+    dccTab(
+      label = 'Explorer Controls',
+      value = 'data',
+      children = htmlDiv(className = 'control-tab', children = list(
+        htmlDiv(className = 'app-controls-block', children = list(
+          htmlP("Enter a single GenBank accession ID or multiple ID's seperated by commas
+                    and select the button to generate an alignment or the sequence of the dataset.
+                    Enter  addtional datasets to add these sequences to the alignment.", style = list("margin" = 10)),
+          htmlP('Example: Single Dataset - NR_108049', style = list("margin" = 10)),
+          htmlP(' Multiple Datasets - "JF806202", "HM161150", "FJ356743", "JF80620", 
+                    "JQ073190", "GU457971", "FJ356741", "JF806"', style = list("margin" = 10)),
+          dccInput(
+            id = 'genbank-input',
+            placeholder = "Enter an Accession ID...",
+            type = "text",
+            value = "",
+            style = list("margin" = 10)
+          ),
+          htmlButton(
+            id = 'submit-button', n_clicks = 0, children = 'Generate Sequence'
+          ),
+          htmlButton(
+            id = 'submit-button-2', n_clicks = 0, children = 'Generate Alignment'
+          ),
+          htmlA(
+            htmlButton(
+              "Download FASTA data",
+              className="control-download"
+            ),
+            href="data/random_fasta.fasta",
+            download="random_fasta.fasta"
+          ),
+          
+          htmlDiv(id='alignment-file-upload-container', children=list(
+            dccUpload(
+              id='alignment-file-upload',
+              className='control-upload',
+              children=htmlDiv(list(
+                "Drag and drop FASTA files or select files."
+              ))
+            )
+          )),
+          
+          dccStore(
+            id = 'genbank-sequence'),
+          
+          dccStore(
+            id = 'fasta-file'
+          ),
+          
+          dccStore(
+            id = 'dataframe-store'
+          )
+        ))
+      ))
+    )
+  )), className = 'item-a'),
+  
+  htmlDiv(list(
+    htmlP("Multiple Sequence Alignment Chart", 
+          style = list("font-family" = "Open Sans", "font-size" = "22px", "color" = "#262B3D", "text-align" = "center")),
+    dccLoading(type = "dot", children = htmlDiv(
+      id = 'alignment-container',
+      children = list()
+    ))), className = 'item-b'),
+  
+  htmlDiv(children = list(
+    htmlH3("Search for a Dataset:", style = list("margin" = 10)),
+    htmlP("Use keywords to search the Nucleotide database for a gene or organism of interest.
+                    This will retrieve the top 10 related datasets' Accession IDs along with their descriptions.
+                    ", style = list("margin" = 10)),
+    htmlP('Example searches: "Basiliscus basiliscus[Organism]" or "BRCA1[Gene]
+                    ', style = list("margin" = 10)),
+    htmlP('Select the table cell containing your desired Accession ID to add this dataset
+    to the alignment and generate a new figure Then, filter through datasets to analyze the CpG patterns
+    and nucleotide compositions for your sequence of interest.
+                    ', style = list("margin" = 10)),
+    dccInput(
+      id = 'search-input',
+      placeholder = "Enter a species or gene...",
+      type = "text",
+      value = "",
+      style = list("margin" = "10px")
+    ),
+    htmlButton(
+      id = 'search-button', n_clicks = 0, children = 'Search for Datasets'
+    ),
+    htmlDiv(id = "search-output"),
+    dashDataTable(
+      id = "table",
+      columns = lapply(colnames(blank_dataframe), 
+                       function(colName){
+                         list(
+                           id = colName,
+                           name = colName
+                         )
+                       }),
+      data = df_to_list(blank_dataframe)
+    )
+  ),className = 'item-c'),
+  
+  htmlDiv(children = list(
+    htmlP("Sequence Viewer", style = list("font-family" = "Open Sans", "font-size" = "22px", "color" = "#262B3D", "text-align" = "center")),
+    dashbioSequenceViewer(
+      id = 'sequence-viewer',
+      sequence = as.character(FASTA_DATA$`sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1`),
+      selection = list(10,20, "green"),
+      charsPerLine = 90
+    )), className = 'item-d'),
+  
+  htmlDiv(list(
+    dccGraph(id = "gc_graph")
+  ), className = 'item-e'),
+  
+  htmlDiv(dccGraph(
+    id = 'sequence-pie-chart'
+  ), className = 'item-f'),
+  
+  htmlDiv(children = list(
+    htmlP("Selected Dataset", style = list("font-family" = "Open Sans", "font-size" = "14px", "color" = "#262B3D", "text-align" = "center")),
+    dccRadioItems(
+      id = "cpg-options",
+      options = list(list(label = "Default", value = 1)),
+      value = 1)),className = 'item-g')
+  
+), className = "container")
 
-app$layout(htmlDiv(list(
+
+app$layout(
   header,
-  htmlBr(),
-  options
-)))
-
+  first_row
+)
 
 # Callbacks for Sequence Viewer Output
 
@@ -339,7 +326,7 @@ app$callback(
       write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
       fasta_file <- toupper(read_file("C:/Users/hamma/Documents/Gene Expression/data/random_fasta.FASTA"))
       return(
-        dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 600, width = 900)
+        dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 850)
       )
     }
     
@@ -353,7 +340,7 @@ app$callback(
       write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
       fasta_file <- toupper(read_file("C:/Users/hamma/Documents/Gene Expression/data/random_fasta.FASTA"))
       return(
-        dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 600, width = 900)
+        dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 850)
       )
     }
     
@@ -363,8 +350,8 @@ app$callback(
         dashbioAlignmentChart(
           id = 'alignment-chart',
           data = read_file("data/alignment_viewer_p53_clustalo.FASTA"),
-          height = 600,
-          width = 900,
+          height = 750,
+          width = 850,
           opacity = 0.5
         )
       )
@@ -412,6 +399,7 @@ app$callback(
       
       results_table <- dashDataTable(
         id = "table",
+        style_table = list('overflowX' = 'scroll', 'overflowY' = 'scroll', 'maxHeight' = '100'),
         style_data = list(
           whiteSpace = "normal"
         ),
@@ -467,7 +455,7 @@ app$callback(
       
       sequence_dataframe <- do.call(rbind.data.frame, sequence_titles)
       
-      names(sequence_dataframe)[1] <- "Dataset Accession ID and Description"
+      names(sequence_dataframe)[1] <- "Dataset Accession ID and Description"S
       
       sequence_dataframe$Accession_ID <- titles_vector
       
@@ -513,15 +501,14 @@ app$callback(
     if (n_clicks > 0) {
       sequence_string <- as.character(sequence)
       chart_sequence <- strsplit(sequence_string, split = "")
-      p <- plot_ly(as.data.frame(table(chart_sequence)), labels = ~chart_sequence, values = ~Freq, type = 'pie', hole = 0.6,
-                   width = 600, height = 375) %>%
-        layout(paper_bgcolor="#262B3D", title = "Nucleotide or Amino Acid Composition", margin = 20,
+      p <- plot_ly(as.data.frame(table(chart_sequence)), labels = ~chart_sequence, values = ~Freq, type = 'pie', hole = 0.6) %>%
+        layout(paper_bgcolor="#FFFFFF", title = "Nucleotide Base Composition", margin = 10,
                titlefont = list(
-                 family = "Agency FB",
-                 size = 35,
-                 color = '#ffffff'),
+                 family = "Open Sans",
+                 size = 22,
+                 color = '#262B3D'),
                font = list(
-                 color = '#ffffff'
+                 color = '#262B3D'
                )
         )
       
@@ -529,16 +516,15 @@ app$callback(
     }
     else {
       
-      p <- (plot_ly(as.data.frame(table(strsplit(as.character(FASTA_DATA$`sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1`)
-                                                 , split = ""))), labels = ~Var1, values = ~Freq, type = 'pie', hole = 0.6,
-                    width = 600, height = 375) %>%
-              layout(paper_bgcolor="#262B3D", title = "Nucleotide or Amino Acid Composition", margin = 20,
+      p <- (plot_ly(as.data.frame(table(strsplit(as.character(FASTA_DATA$`sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1`) 
+                                                 , split = ""))), labels = ~Var1, values = ~Freq, type = 'pie', hole = 0.6) %>%
+              layout(paper_bgcolor="#ffffff", title = "Nucleotide Base Composition", margin = 10,
                      titlefont = list(
-                       family = "Agency FB",
-                       size = 35,
-                       color = '#ffffff'),
+                       family = "Open Sans",
+                       size = 22,
+                       color = '#262B3D'),
                      font = list(
-                       color = '#ffffff'
+                       color = '#262B3D'
                      )
               )
       )
@@ -588,14 +574,14 @@ app$callback(
       g$index = as.numeric(rownames(g))
       m <- g[which.max(g$gc), ]
       
-      p <- plot_ly(as.data.frame(g), x=~index, y=~gc, type = "scatter", mode = "line", line = list(color="#ffffff")) %>%
-        layout(paper_bgcolor="#262B3D", plot_bgcolor="#262B3D", title = "CpG Island Distribution", margin = 20,
+      p <- plot_ly(as.data.frame(g), x=~index, y=~gc, type = "scatter", mode = "line", line = list(color="#262B3D")) %>%
+        layout(paper_bgcolor="#ffffff", plot_bgcolor="#ffffff", title = "CpG Island Distribution", margin = 20,
                titlefont = list(
-                 family = "Agency FB",
-                 size = 35,
-                 color = '#ffffff'),
+                 family = "Open Sans",
+                 size = 22,
+                 color = '#262B3D'),
                font = list(
-                 color = '#ffffff'
+                 color = 'rgb(50,50,50)'
                ),
                annotations = list(
                  x = m$index,
@@ -607,7 +593,9 @@ app$callback(
                  arrowhead = 7,
                  ax = 20,
                  ay = -40
-               )
+               ),
+               xaxis = list(title = "Sequence Index"),
+               yaxis = list(title = "GC Content over 100 BP windows")
         )
     }
     
@@ -619,14 +607,14 @@ app$callback(
       g$index = as.numeric(rownames(g))
       m <- g[which.max(g$gc), ]
       
-      p <- plot_ly(as.data.frame(g), x=~index, y=~gc, type = "scatter", mode = "line", line = list(color="#ffffff")) %>%
-        layout(paper_bgcolor="#262B3D", plot_bgcolor="#262B3D", title = "CpG Island Distribution", margin = 20,
+      p <- plot_ly(as.data.frame(g), x=~index, y=~gc, type = "scatter", mode = "line", line = list(color="#262B3D")) %>%
+        layout(paper_bgcolor="#ffffff", plot_bgcolor="#ffffff", title = "CpG Island Distribution", margin = 20,
                titlefont = list(
-                 family = "Agency FB",
-                 size = 35,
-                 color = '#ffffff'),
+                 family = "Open Sans",
+                 size = 22,
+                 color = '#262B3D'),
                font = list(
-                 color = '#ffffff'
+                 color = 'rgb(50,50,50)'
                ),
                annotations = list(
                  x = m$index,
@@ -638,7 +626,9 @@ app$callback(
                  arrowhead = 7,
                  ax = 20,
                  ay = -40
-               )
+               ),
+               xaxis = list(title = "Sequence Index"),
+               yaxis = list(title = "GC Content over 100 BP windows")
         )
     }
     return(p)
@@ -652,7 +642,7 @@ app$callback(
   ),
   update_selection <- function(hoverdata) {
     point <- hoverdata$points[[1]]$pointNumber
-    selection_fixed <- list(as.numeric(point-30), as.numeric(point+30), "green")
+    selection_fixed <- list(as.numeric(point-30), as.numeric(point+30), "#262B3D")
     return(selection_fixed)
   }
 )
@@ -664,7 +654,6 @@ if (appName != "") {
   
 } else {
   
-  app$run_server(showcase = TRUE)
+  app$run_server(showcase = TRUE, debug = FALSE)
   
 }
-

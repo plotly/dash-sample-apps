@@ -20,13 +20,13 @@
 
 #app-page-header {
     width: 100%;
-    height: 60px !important;
+    height: 65px !important;
     position: inherit;
     top: 0px;
 }
 
 #app-page-header > a > img {
-    height: 70px;
+    height: 36px;
     float: left;
     padding: 10px;
     padding-bottom: 0px;
@@ -38,17 +38,12 @@
 }
 
 #app-page-header h2 {
-    font-size: 22pt;
-    font-family: 'Times';
+    font-size: 23pt;
     font-weight: 200 !important;
     letter-spacing: 1px;
     position: absolute;
     top: -5px;
     display: inline-block;
-}
-
-#dashbio-logo > img{
-    height: 40px !important;
 }
 
 #app-page-header > img {
