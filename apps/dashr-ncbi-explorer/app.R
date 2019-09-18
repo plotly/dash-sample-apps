@@ -498,7 +498,7 @@ app$callback(
       chart_sequence <- strsplit(sequence_string, split = "")
       p <- plot_ly(as.data.frame(table(chart_sequence)), labels = ~chart_sequence, values = ~Freq, type = 'pie', hole = 0.6) %>%
         layout(paper_bgcolor="#FFFFFF", title = "Nucleotide Base Composition", margin = 10,
-               titlefont = list(
+               title = list(
                  family = "Open Sans",
                  size = 22,
                  color = '#262B3D'),
@@ -514,7 +514,7 @@ app$callback(
       p <- (plot_ly(as.data.frame(table(strsplit(as.character(FASTA_DATA$`sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1`) 
                                                  , split = ""))), labels = ~Var1, values = ~Freq, type = 'pie', hole = 0.6) %>%
               layout(paper_bgcolor="#ffffff", title = "Nucleotide Base Composition", margin = 10,
-                     titlefont = list(
+                     title = list(
                        family = "Open Sans",
                        size = 22,
                        color = '#262B3D'),
@@ -571,7 +571,7 @@ app$callback(
       
       p <- plot_ly(as.data.frame(g), x=~index, y=~gc, type = "scatter", mode = "line", line = list(color="#262B3D")) %>%
         layout(paper_bgcolor="#ffffff", plot_bgcolor="#ffffff", title = "CpG Island Distribution", margin = 20,
-               titlefont = list(
+               title = list(
                  family = "Open Sans",
                  size = 22,
                  color = '#262B3D'),
@@ -604,7 +604,7 @@ app$callback(
       
       p <- plot_ly(as.data.frame(g), x=~index, y=~gc, type = "scatter", mode = "line", line = list(color="#262B3D")) %>%
         layout(paper_bgcolor="#ffffff", plot_bgcolor="#ffffff", title = "CpG Island Distribution", margin = 20,
-               titlefont = list(
+               title = list(
                  family = "Open Sans",
                  size = 22,
                  color = '#262B3D'),
@@ -643,12 +643,19 @@ app$callback(
 )
 
 
-if (appName != "") {
-  
-  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
-  
-} else {
-  
-  app$run_server(showcase = TRUE, debug = FALSE)
-  
-}
+# if (appName != "") {
+#   
+#   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+#   
+# } else {
+#   
+#   app$run_server(showcase = TRUE, debug = FALSE)
+#   
+# }
+
+app$run_server(host = "127.0.0.1", 
+               port=8050, 
+               dev_tools_hot_reload = TRUE,
+               dev_tools_silence_routes_logging = TRUE,
+               #debug = TRUE,
+               viewer = TRUE)
