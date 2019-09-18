@@ -288,7 +288,7 @@ app$callback(
   ),
   
   update_sequence <- function(data, value) {
-    if (value != 0) {
+    if (value != 1) {
       dna_data <- readDNAStringSet("data/random_fasta.FASTA", "fasta")
       return(as.character(dna_data[[value]]))
     }
