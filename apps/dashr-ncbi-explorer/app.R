@@ -186,7 +186,8 @@ first_row <- htmlDiv(list(
           style = list("font-family" = "Open Sans", "font-size" = "22px", "color" = "#262B3D", "text-align" = "center")),
     dccLoading(type = "dot", children = htmlDiv(
       id = 'alignment-container',
-      children = list()
+      children = list(),
+      style = list("padding-right" = "20%", "padding-left" = "22%")
     ))), className = 'item-b'),
   
   htmlDiv(children = list(
