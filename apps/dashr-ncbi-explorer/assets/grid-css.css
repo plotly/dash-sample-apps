@@ -35,12 +35,12 @@ body {
   grid-column-end: 7;
   grid-row-start: 1;
   grid-row-end: 2;
-  justify-self: center;
   padding: 0px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   margin: 15px;
   border-radius: 7px;
+  width: -moz-available;
 }
 
 .item-c {
