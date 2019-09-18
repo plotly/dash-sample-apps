@@ -311,6 +311,7 @@ app$callback(
   ),
   
   update_fasta <- function(n_clicks, search_data, cell, accession_id) {
+
     accession_id <- gsub("\\s", "", accession_id)
     
     accession_id <- gsub('"', "", accession_id)
@@ -351,3 +352,302 @@ app$callback(
     return(alignment_chart)
   }
 )
+
+
+#Callbacks for database search output.
+
+app$callback(
+  output(id = "search-output", property = "children"),
+  params = list(
+    input(id = "search-button", property = "n_clicks"),
+    state(id = "search-input", property = "value")
+  ),
+  
+  update_search_results <- function(n_clicks, search_term) {
+    if (n_clicks > 0) {
+      search_term <- gsub('"', "", search_term)
+      
+      search <- entrez_search(db = "nuccore", term = search_term, retmax=10)
+      
+      search_seqs <- entrez_fetch(db = "nuccore", id = search$ids, rettype = "fasta")
+      
+      red <- unlist(str_extract_all(search_seqs, ">.*\\n"))
+      
+      titles_vector <- c()
+      
+      for (i in red) {
+        title <- str_extract_all(i, ">.*?[:blank:]")
+        title <- substring(title, 2)
+        titles_vector <- c(titles_vector, title)
+      }
+      
+      sequence_titles <- as.list(unlist(str_extract_all(search_seqs, ">.*\\n")))
+      
+      sequence_dataframe <- do.call(rbind.data.frame, sequence_titles)
+      
+      names(sequence_dataframe)[1] <- "Dataset Accession ID and Description"
+      
+      sequence_dataframe$Accession_ID <- titles_vector
+      
+      sequence_dataframe <- sequence_dataframe[, c(2,1)]
+      
+      results_table <- dashDataTable(
+        id = "table",
+        style_table = list('overflowX' = 'scroll', 'overflowY' = 'scroll', 'maxHeight' = '100'),
+        style_data = list(
+          whiteSpace = "normal"
+        ),
+        css = list(
+          list(
+            selector = '.dash-cell div.dash-cell-value',
+            rule = 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+          )
+        ),
+        columns = lapply(colnames(sequence_dataframe),
+                         function(colName){
+                           list("name" = colName,
+                                "id" = colName)
+                         }),
+        data = df_to_list(sequence_dataframe)
+        # ,
+        # 
+        # active_cell <- list('row' = 0, 'column' = 0, 'column_id' = 'Accession_ID')
+      )
+      
+      return(results_table)
+    }
+  }
+)
+
+
+app$callback(
+  output(id = "dataframe-store", property = "data"),
+  params = list(
+    input(id = "search-button", property = "n_clicks"),
+    state(id = "search-input", property = "value")
+  ),
+  
+  update_search_results <- function(n_clicks, search_term) {
+    if (n_clicks > 0) {
+      search_term <- gsub('"', "", search_term)
+      
+      search <- entrez_search(db = "nuccore", term = search_term, retmax=10)
+      
+      search_seqs <- entrez_fetch(db = "nuccore", id = search$ids, rettype = "fasta")
+      
+      red <- unlist(str_extract_all(search_seqs, ">.*\\n"))
+      
+      titles_vector <- c()
+      
+      for (i in red) {
+        title <- str_extract_all(i, ">.*?[:blank:]")
+        title <- substring(title, 2)
+        titles_vector <- c(titles_vector, title)
+      }
+      
+      sequence_titles <- as.list(unlist(str_extract_all(search_seqs, ">.*\\n")))
+      
+      sequence_dataframe <- do.call(rbind.data.frame, sequence_titles)
+      
+      names(sequence_dataframe)[1] <- "Dataset Accession ID and Description"
+      
+      sequence_dataframe$Accession_ID <- titles_vector
+      
+      sequence_dataframe <- sequence_dataframe[, c(2,1)]
+      
+      return(sequence_dataframe)
+    }
+  }
+)
+
+# We copy the above callback, make a second one just like it to store the dataframe. Then, we make a third callback (it's actually below), use the stored dataframe and selected cell to store title?
+# Then add input into the alignment-viewer callback using that store to optionally call it. 
+
+# app$callback(
+#   output(id = "genbank-input", property = "value"),
+#   params = list(
+#     input(id = "table", property = "active_cell"),
+#     input(id = 'dataframe-store', property = 'data')
+#   ),
+#   
+#   update_cell <- function(cell, df) {
+#     df  <-  as.data.frame(matrix(unlist(df), nrow=length(unlist(df[1]))), stringsAsFactors = FALSE)
+#     accession_id <- df[1, cell$row + 1]
+#     accession_id <- gsub('"', "", accession_id)
+#     accession_id <- gsub(" ", "", accession_id)
+#     return(accession_id)
+#   }
+# )
+
+
+
+
+
+#Callbacks for Nucleotide Pie Chart
+
+app$callback(
+  output(id = "sequence-pie-chart", property = "figure"),
+  params = list(
+    input(id = 'submit-button', property = 'n_clicks'),
+    state(id = "sequence-viewer", property = "sequence")),
+  
+  update_pie_chart <- function(n_clicks, sequence) {
+    if (n_clicks > 0) {
+      sequence_string <- as.character(sequence)
+      chart_sequence <- strsplit(sequence_string, split = "")
+      p <- plot_ly(as.data.frame(table(chart_sequence)), labels = ~chart_sequence, values = ~Freq, type = 'pie', hole = 0.6) %>%
+        layout(paper_bgcolor="#FFFFFF", title = "Nucleotide Base Composition", margin = 10,
+               titlefont = list(
+                 family = "Open Sans",
+                 size = 22,
+                 color = '#262B3D'),
+               font = list(
+                 color = '#262B3D'
+               )
+        )
+      
+      
+    }
+    else {
+      
+      p <- (plot_ly(as.data.frame(table(strsplit(as.character(FASTA_DATA$`sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1`) 
+                                                 , split = ""))), labels = ~Var1, values = ~Freq, type = 'pie', hole = 0.6) %>%
+              layout(paper_bgcolor="#ffffff", title = "Nucleotide Base Composition", margin = 10,
+                     titlefont = list(
+                       family = "Open Sans",
+                       size = 22,
+                       color = '#262B3D'),
+                     font = list(
+                       color = '#262B3D'
+                     )
+              )
+      )
+    }
+    return(p)
+  }
+)
+
+#Callbacks for CpG Chart, Options, and Sequence Selection
+
+app$callback(
+  output(id = "cpg-options", property = "options"),
+  params = list(
+    input(id = "submit-button-2", property = "n_clicks")
+  ),
+  
+  select_trace <- function(n_clicks) {
+    if (n_clicks > 0) {
+      dna_data = readDNAStringSet("data/random_fasta.FASTA", "fasta")
+      trace_names <- unique(names(dna_data))
+      
+      list_options <- lapply(trace_names, function(x) {
+        list(label = x, value = match(x, trace_names))
+      })
+    }
+    else {
+      list_options <- list(list(label = "Default", value = 0))
+    }
+    return(list_options)
+  }
+)
+
+
+
+app$callback(
+  output(id = "gc_graph", property = "figure"),
+  params = list(
+    input(id ='submit-button-2', property = 'n_clicks'),
+    input(id ='cpg-options', property = 'value')
+  ),
+  update_gc <- function(n_clicks, option) {
+    if (n_clicks > 0) {
+      dna_data = readDNAStringSet("data/random_fasta.FASTA", "fasta")
+      window = 100
+      gc = rowSums(letterFrequencyInSlidingView(dna_data[[option]], window, c("G", "C")))/window
+      g = as.data.frame(gc)
+      g$index = as.numeric(rownames(g))
+      m <- g[which.max(g$gc), ]
+      
+      p <- plot_ly(as.data.frame(g), x=~index, y=~gc, type = "scatter", mode = "line", line = list(color="#262B3D")) %>%
+        layout(paper_bgcolor="#ffffff", plot_bgcolor="#ffffff", title = "CpG Island Distribution", margin = 20,
+               titlefont = list(
+                 family = "Open Sans",
+                 size = 22,
+                 color = '#262B3D'),
+               font = list(
+                 color = 'rgb(50,50,50)'
+               ),
+               annotations = list(
+                 x = m$index,
+                 y = m$gc,
+                 text = "Select a peak to highlight the sequence above.",
+                 xref = "x",
+                 yref = "y",
+                 showarrow = TRUE,
+                 arrowhead = 7,
+                 ax = 20,
+                 ay = -40
+               ),
+               xaxis = list(title = "Sequence Index"),
+               yaxis = list(title = "GC Content over 100 BP windows")
+        )
+    }
+    
+    else {
+      dna_data = readDNAStringSet("data/dnastring.FASTA", "fasta")
+      window = 100
+      gc = rowSums(letterFrequencyInSlidingView(dna_data[[option]], window, c("G", "C")))/window
+      g = as.data.frame(gc)
+      g$index = as.numeric(rownames(g))
+      m <- g[which.max(g$gc), ]
+      
+      p <- plot_ly(as.data.frame(g), x=~index, y=~gc, type = "scatter", mode = "line", line = list(color="#262B3D")) %>%
+        layout(paper_bgcolor="#ffffff", plot_bgcolor="#ffffff", title = "CpG Island Distribution", margin = 20,
+               titlefont = list(
+                 family = "Open Sans",
+                 size = 22,
+                 color = '#262B3D'),
+               font = list(
+                 color = 'rgb(50,50,50)'
+               ),
+               annotations = list(
+                 x = m$index,
+                 y = m$gc,
+                 text = "Select a peak to highlight the sequence above.",
+                 xref = "x",
+                 yref = "y",
+                 showarrow = TRUE,
+                 arrowhead = 7,
+                 ax = 20,
+                 ay = -40
+               ),
+               xaxis = list(title = "Sequence Index"),
+               yaxis = list(title = "GC Content over 100 BP windows")
+        )
+    }
+    return(p)
+  }
+)
+
+app$callback(
+  output(id = "sequence-viewer", property = "selection"),
+  params = list(
+    input(id = "gc_graph", property = "clickData")
+  ),
+  update_selection <- function(hoverdata) {
+    point <- hoverdata$points[[1]]$pointNumber
+    selection_fixed <- list(as.numeric(point-30), as.numeric(point+30), "#262B3D")
+    return(selection_fixed)
+  }
+)
+
+
+if (appName != "") {
+  
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
+  
+} else {
+  
+  app$run_server(showcase = TRUE, debug = FALSE)
+  
+}
