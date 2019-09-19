@@ -14,7 +14,8 @@ library(dashCoreComponents)
 library(dashHtmlComponents)
 library(mlbench) # to load BreastCancer data
 library(dplyr)
-library(jsonlite) # to convert selectedData to df
+library(jsonlite) # to convert eventData to df
+
 
 # Load & Prep Data ------------------------------
 
@@ -25,16 +26,14 @@ data(BreastCancer)
 BreastCancer <- na.omit(BreastCancer)
 
 # Remeve ID
-BreastCancer <- BreastCancer[,-1]
+BreastCancer <- BreastCancer[, -1]
 
 # Store features and actual class in seprate variables
 featureList <- colnames(BreastCancer)[-10]
 class <- BreastCancer$Class
 
 # Convert to numeric
-BreastCancer[, 1:9] <- apply(BreastCancer[,-10], 2, as.numeric)
-
-####################################################################################################
+BreastCancer[, 1:9] <- apply(BreastCancer[, -10], 2, as.numeric)
 
 
 # App Start ------------------------------
@@ -43,14 +42,12 @@ BreastCancer[, 1:9] <- apply(BreastCancer[,-10], 2, as.numeric)
 app <- Dash$new(name = "dashr-shiny-coupledclickevents")
 
 
-####################################################################################################
-
-
 # Create Layout Variables ------------------------------
 
 plotlyLogo <-
-  htmlA(list(htmlImg(id = 'banner-image', src = 'assets/image.png')), className = 'logo',
-        href = 'https://dashr.plot.ly')
+  htmlA(list(htmlImg(id = "banner-image", src = "assets/image.png")),
+        className = "logo",
+        href = "https://dashr.plot.ly")
 
 
 featureOptions <- lapply(
@@ -63,7 +60,6 @@ firstFeatureDropdown <- dccDropdown(
   id = "first-feature",
   options = featureOptions,
   value = names(BreastCancer)[1]
-  #className = "six columns"
 )
 
 featureOptions <- lapply(
@@ -76,7 +72,6 @@ secondFeatureDropdown <- dccDropdown(
   id = "second-feature",
   options = featureOptions,
   value = names(BreastCancer)[5]
-  #className = "six columns"
 )
 
 
@@ -85,22 +80,25 @@ secondFeatureDropdown <- dccDropdown(
 app$layout(
   htmlDiv(list(
     plotlyLogo,
-    htmlH2("Coupled events in plotly charts using Shiny"),
+    htmlH2("Coupled events in plotly charts using Dash"),
     htmlDiv(list(
-      htmlH4("This Shiny app showcases coupled events using Plotly's ",
+      htmlH4("This Dash app showcases coupled events using Dash's ",
              style = list("display" = "inline")),
-      htmlCode("event_data()", style = list("display" = "inline")),
-      htmlH6(" function.", style = list("display" = "inline"))
+      htmlCode(list("selectedData", " & ", "clickData"),
+               style = list("display" = "inline")),
+      htmlH6(" properties.", style = list("display" = "inline"))
     )),
     htmlBr(),
     htmlDiv(list(
       htmlDiv(list(
-        htmlDiv("1. The first chart showcases", style = list("display" = "inline")),
-        htmlCode(" plotly_selected")
+        htmlDiv("1. The first chart showcases",
+                style = list("display" = "inline")),
+        htmlCode(" selectedData")
       )),
       htmlDiv(list(
-        htmlDiv("2. The third chart showcases", style = list("display" = "inline")),
-        htmlCode(" plotly_click")
+        htmlDiv("2. The third chart showcases",
+                style = list("display" = "inline")),
+        htmlCode(" clickData")
       ), style = list("display" = "inline"))
     )),
     htmlHr(),
@@ -149,9 +147,6 @@ app$layout(
         )
       )
     )
-
-
-
   ))
 )
 
@@ -170,14 +165,14 @@ app$callback(output = list(
   function(feature1, feature2) {
 
     # Create a convenience data.frame which can be used for charting
-    plot.df <- data.frame(BreastCancer[, feature1],
+    plotdf <- data.frame(BreastCancer[, feature1],
                        BreastCancer[, feature2],
                        Class = BreastCancer$Class)
 
     # Add column names
-    colnames(plot.df) <- c("x", "y", "Class")
+    colnames(plotdf) <- c("x", "y", "Class")
 
-    contour1 <- plot_ly(plot.df, x = ~x, y = ~y,
+    contour1 <- plot_ly(plotdf, x = ~x, y = ~y,
                         mode = "markers",
                         type = "scatter",
                         color = ~Class,
@@ -189,7 +184,7 @@ app$callback(output = list(
                        dragmode =  "select",
                        plot_bgcolor = "6A446F")
 
-    contour2 <- plot.df %>%
+    contour2 <- plotdf %>%
       group_by(x, y, Class) %>%
       summarize(Count = n()) %>%
       filter(Class == "malignant") %>%
@@ -207,25 +202,27 @@ app$callback(output = list(
 
 app$callback(output = list(
   output(id = "plot3", property = "style"),
-  output(id = "plot3", property = "figure")
+  output(id = "plot3", property = "figure"),
+  output(id = "plot4", property = "style"),
+  output(id = "plot4", property = "figure")
   ),
 params = list(
   input(id = "plot1", property = "selectedData"),
+  input(id = "plot3", property = "clickData"),
   state(id = "first-feature", property = "value"),
   state(id = "second-feature", property = "value")
-
   ),
 
-  function(selection, feature1, feature2) {
+  function(selection, click, feature1, feature2) {
 
     # Ensure that selection is not empty
     if ( !is.null(selection[[1]]) ) {
       # Create a convenience data.frame which can be used for charting
-      plot.df <- data.frame(BreastCancer[, feature1],
+      plotdf <- data.frame(BreastCancer[, feature1],
                             BreastCancer[, feature2],
                             Class = BreastCancer$Class)
       # Add column names
-      colnames(plot.df) <- c("x", "y", "Class")
+      colnames(plotdf) <- c("x", "y", "Class")
 
       selectionList <- fromJSON(toJSON(selection))
       # In case of `undefined columns selected` error can be ignored
@@ -233,28 +230,96 @@ params = list(
       selectedDf <- as.data.frame(apply(selectedDf, 2, as.integer))
 
       # Get number of malignant and benign cases from selection
-      malig.class <- subset(plot.df, Class == "malignant")[subset(selectedDf, curveNumber == 0)$pointNumber + 1,]
-      benign.class <- subset(plot.df, Class == "benign")[subset(selectedDf, curveNumber == 1)$pointNumber + 1,]
+      maligClass <- subset(plotdf, Class == "malignant")[subset(selectedDf, curveNumber == 0)$pointNumber + 1, ]
+      benignClass <- subset(plotdf, Class == "benign")[subset(selectedDf, curveNumber == 1)$pointNumber + 1, ]
       # Combine
-      plot.subset <- rbind(malig.class, benign.class)
+      plotSubset <- rbind(maligClass, benignClass)
       # Summarize
-      plot.summ <- plot.subset %>%
+      plotsumm <- as.data.frame(
+        plotSubset %>%
         group_by(x, y, Class) %>%
         summarize(Count = n())
+      )
 
-      barplot <- plot_ly(plot.summ, x = ~Class, y = ~Count, type = "bar", source = "select", color = ~Class) %>%
+      barplot <- plot_ly(plotsumm,
+                         x = ~Class,
+                         y = ~Count,
+                         type = "bar",
+                         source = "select",
+                         color = ~Class) %>%
         layout(title = "No. of Malignant and Benign cases <br> in Selection",
                plot_bgcolor = "6A446F",
                yaxis = list(domain = c(0, 0.9)))
+
+      # If click is not null
+      if ( !is.null(click[[1]]) ) {
+
+        boxplotstyle <- list("display" = "inline")
+        clickList <- fromJSON(toJSON(click))
+        clickDf <- clickList[["points"]]
+
+        # If Malignant
+        if (clickDf$x[[1]] == "malignant") {
+
+          tab <- subset(plotsumm, Class == "malignant")
+
+          p1 <- plot_ly(tab,
+                        x = ~x,
+                        y = ~Count,
+                        type = "box",
+                        showlegend = F) %>%
+            layout(yaxis = list(title = "Count"),
+                   xaxis = list(title = feature1))
+
+          p2 <- plot_ly(tab,
+                        x = ~y,
+                        y = ~Count,
+                        type = "box",
+                        showlegend = F) %>%
+            layout(title = "Box plot for Malignant cases",
+                   yaxis = list(title = "Count"),
+                   xaxis = list(title = feature2))
+
+          boxplot <- subplot(p1, p2)
+        } else {
+          tab <- subset(plotsumm, Class == "benign")
+
+          p1 <- plot_ly(tab,
+                        x = ~x,
+                        y = ~Count,
+                        type = "box",
+                        showlegend = F) %>%
+            layout(yaxis = list(title = "Count"),
+                   xaxis = list(title = feature1))
+
+          p2 <- plot_ly(tab,
+                        x = ~y,
+                        y = ~Count,
+                        type = "box",
+                        showlegend = F) %>%
+            layout(title = "Box plot for Benign cases",
+                   yaxis = list(title = "Count"),
+                   xaxis = list(title = feature2))
+
+          boxplot <- subplot(p1, p2)
+        }
+
+      # Click is null
+      } else {
+        boxplotstyle <- list("display" = "none")
+        boxplot <- plotly_empty()
+
+      }
+
       return(list(
         list("display" = "inline"),
-        barplot
+        barplot,
+        boxplotstyle,
+        boxplot
       ))
     }
 })
 
-
-####################################################################################################
 
 if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
