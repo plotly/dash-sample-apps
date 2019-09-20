@@ -4,7 +4,7 @@ if (appName != "") {
   pathPrefix <- sprintf("/%s/", appName)
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  setwd(sprintf("/app/apps/%s", appName))
+  setwd(sprintf("/app", appName))
 }
 
 library(dash)
@@ -178,8 +178,8 @@ first_row <- htmlDiv(list(
               "Download FASTA data",
               className="control-download"
             ),
-            href="data/random_fasta.fasta",
-            download="random_fasta.fasta"
+            href="data/random_fasta.FASTA",
+            download="random_fasta.FASTA"
           ),
           
           htmlDiv(id='alignment-file-upload-container', children=list(
