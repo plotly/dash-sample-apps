@@ -189,7 +189,7 @@ first_row <- htmlDiv(list(
     dccLoading(type = "dot", children = htmlDiv(
       id = 'alignment-container',
       children = list(),
-      style = list("padding-right" = "20%", "padding-left" = "22%")
+      style = list("overflow-x" = "scroll", "display" = "flex", "justify-content" = "center")
     ))), className = 'item-b'),
   
   htmlDiv(children = list(
@@ -233,7 +233,7 @@ first_row <- htmlDiv(list(
       id = 'sequence-viewer',
       sequence = as.character(FASTA_DATA$`sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1`),
       selection = list(10,20, "green"),
-      charsPerLine = 90
+      charsPerLine = 40
     )), className = 'item-d'),
   
   htmlDiv(list(
@@ -327,7 +327,7 @@ app$callback(
       bio_file <- read.GenBank(access.nb = accession_id)
       write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
       fasta_file <- toupper(read_file("data/random_fasta.FASTA"))
-      alignment_chart <- dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 850)
+      alignment_chart <- dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 950)
     }
     
     else if (!is.null(search_data[[1]]) && !is.null(cell[[1]])) {
@@ -339,7 +339,7 @@ app$callback(
       bio_file <- read.GenBank(access.nb = accession_id)
       write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
       fasta_file <- toupper(read_file("data/random_fasta.FASTA"))
-      alignment_chart <- dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 850)
+      alignment_chart <- dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 950)
     }
     
     
@@ -348,7 +348,7 @@ app$callback(
         id = 'alignment-chart',
         data = read_file("data/alignment_viewer_p53_clustalo.FASTA"),
         height = 750,
-        width = 850,
+        width = 950,
         opacity = 0.5
       )
     }

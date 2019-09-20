@@ -173,10 +173,6 @@ body ::-webkit-scrollbar-thumb {
     color: #7CD3F7 !important;
 }
 
-#alignment-container {
-    margin: 20px;
-}
-
 
 .control-upload {
     border-color: #34AD99 !important;
