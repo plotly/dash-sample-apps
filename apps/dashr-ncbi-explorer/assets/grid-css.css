@@ -11,14 +11,14 @@ body {
   width: 100%;
   height: 100%;
   grid-template-columns: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
-  grid-template-rows: auto auto;
+  grid-template-rows: auto auto auto;
 }
 
 .item-a {
   grid-column-start: 1;
-  grid-column-end: 3;
-  grid-row-start: 1;
-  grid-row-end: 2;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 3;
   padding: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -31,10 +31,10 @@ body {
 }
 
 .item-b {
-  grid-column-start: 3;
-  grid-column-end: 9;
-  grid-row-start: 1;
-  grid-row-end: 2;
+  grid-column-start: 4;
+  grid-column-end: 11;
+  grid-row-start: 2;
+  grid-row-end: 3;
   padding: 0px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -44,7 +44,7 @@ body {
 }
 
 .item-c {
-  grid-column-start: 9;
+  grid-column-start: 1;
   grid-column-end: 11;
   grid-row-start: 1;
   grid-row-end: 2;
@@ -62,8 +62,8 @@ body {
 .item-d {
   grid-column-start: 1;
   grid-column-end: 3;
-  grid-row-start: 2;
-  grid-row-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 4;
   padding: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -78,9 +78,9 @@ body {
 
 .item-e {
   grid-column-start: 3;
-  grid-column-end: 6;
-  grid-row-start: 2;
-  grid-row-end: 3;
+  grid-column-end: 7;
+  grid-row-start: 3;
+  grid-row-end: 4;
   padding: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -93,10 +93,10 @@ body {
 }
 
 .item-f {
-  grid-column-start: 6;
-  grid-column-end: 9;
-  grid-row-start: 2;
-  grid-row-end: 3;
+  grid-column-start: 7;
+  grid-column-end: 10;
+  grid-row-start: 3;
+  grid-row-end: 4;
   padding: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -109,10 +109,10 @@ body {
 }
 
 .item-g {
-  grid-column-start: 9;
+  grid-column-start: 10;
   grid-column-end: 11;
-  grid-row-start: 2;
-  grid-row-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 4;
   padding: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);

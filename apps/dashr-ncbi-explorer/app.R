@@ -86,6 +86,41 @@ header <- htmlDiv(
 #First Row 
 
 first_row <- htmlDiv(list(
+  htmlDiv(children = list(
+    htmlH3("Search for a Dataset:", style = list("margin" = 10)),
+    htmlP("Use keywords to search the Nucleotide database for a gene or organism of interest.
+                    This will retrieve the top 10 related datasets' Accession IDs along with their descriptions.
+                    ", style = list("margin" = 10)),
+    htmlP('Example searches: "Basiliscus basiliscus[Organism]" or "BRCA1[Gene]
+                    ', style = list("margin" = 10)),
+    htmlP('Select the table cell containing your desired Accession ID to add this dataset
+    to the alignment and generate a new figure Then, filter through datasets to analyze the CpG patterns
+    and nucleotide compositions for your sequence of interest.
+                    ', style = list("margin" = 10)),
+    dccInput(
+      id = 'search-input',
+      placeholder = "Enter a species or gene...",
+      type = "text",
+      value = "",
+      style = list("margin" = "10px")
+    ),
+    htmlButton(
+      id = 'search-button', n_clicks = 0, children = 'Search for Datasets'
+    ),
+    htmlDiv(id = "search-output"),
+    dashDataTable(
+      id = "table",
+      columns = lapply(colnames(blank_dataframe), 
+                       function(colName){
+                         list(
+                           id = colName,
+                           name = colName
+                         )
+                       }),
+      data = df_to_list(blank_dataframe)
+    )
+  ),className = 'item-c'),
+  
   htmlDiv(dccTabs(id = 'circos-tabs', value = 'what-is', children = list(
     dccTab(
       label = 'About',
@@ -180,41 +215,6 @@ first_row <- htmlDiv(list(
       children = list(),
       style = list("overflow-x" = "scroll", "display" = "flex", "justify-content" = "center")
     ))), className = 'item-b'),
-  
-  htmlDiv(children = list(
-    htmlH3("Search for a Dataset:", style = list("margin" = 10)),
-    htmlP("Use keywords to search the Nucleotide database for a gene or organism of interest.
-                    This will retrieve the top 10 related datasets' Accession IDs along with their descriptions.
-                    ", style = list("margin" = 10)),
-    htmlP('Example searches: "Basiliscus basiliscus[Organism]" or "BRCA1[Gene]
-                    ', style = list("margin" = 10)),
-    htmlP('Select the table cell containing your desired Accession ID to add this dataset
-    to the alignment and generate a new figure Then, filter through datasets to analyze the CpG patterns
-    and nucleotide compositions for your sequence of interest.
-                    ', style = list("margin" = 10)),
-    dccInput(
-      id = 'search-input',
-      placeholder = "Enter a species or gene...",
-      type = "text",
-      value = "",
-      style = list("margin" = "10px")
-    ),
-    htmlButton(
-      id = 'search-button', n_clicks = 0, children = 'Search for Datasets'
-    ),
-    htmlDiv(id = "search-output"),
-    dashDataTable(
-      id = "table",
-      columns = lapply(colnames(blank_dataframe), 
-                       function(colName){
-                         list(
-                           id = colName,
-                           name = colName
-                         )
-                       }),
-      data = df_to_list(blank_dataframe)
-    )
-  ),className = 'item-c'),
   
   htmlDiv(children = list(
     htmlP("Sequence Viewer", style = list("font-family" = "Open Sans", "font-size" = "22px", "color" = "#262B3D", "text-align" = "center")),
@@ -313,7 +313,7 @@ app$callback(
       bio_file <- read.GenBank(access.nb = accession_id)
       write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
       fasta_file <- toupper(read_file("data/random_fasta.FASTA"))
-      alignment_chart <- dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 950)
+      alignment_chart <- dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 1150)
     }
     
     else if (!is.null(search_data[[1]]) && !is.null(cell[[1]])) {
@@ -325,7 +325,7 @@ app$callback(
       bio_file <- read.GenBank(access.nb = accession_id)
       write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
       fasta_file <- toupper(read_file("data/random_fasta.FASTA"))
-      alignment_chart <- dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 950)
+      alignment_chart <- dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 1150)
     }
     
     
@@ -334,7 +334,7 @@ app$callback(
         id = 'alignment-chart',
         data = read_file("data/alignment_viewer_p53_clustalo.FASTA"),
         height = 750,
-        width = 950,
+        width = 1150,
         opacity = 0.5
       )
     }
