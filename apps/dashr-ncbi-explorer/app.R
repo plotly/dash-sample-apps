@@ -1,20 +1,10 @@
 appName <- Sys.getenv("DASH_APP_NAME")
 
-
-if (appName != ""){
-  
+if (appName != "") {
   pathPrefix <- sprintf("/%s/", appName)
-  
-  
-  
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
-             
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  
-  
-  
   setwd(sprintf("/app/apps/%s", appName))
-  
 }
 
 library(dash)
@@ -93,7 +83,6 @@ header <- htmlDiv(
   )
 )
 
-
 #First Row 
 
 first_row <- htmlDiv(list(
@@ -103,7 +92,7 @@ first_row <- htmlDiv(list(
       value = 'what-is',
       children = htmlDiv(
         id = 'control-tab', children = list(
-          htmlH4(className = 'what-is', children = "What is NCBI Explorer?"),
+          htmlH4(className = 'what-is', children = "What is NCBI Nucleotide DB Explorer?"),
           
           htmlP("The NCBI Nucleotide sequence database is an open access, annotated 
                     collection of all publicly available nucleotide sequences and
@@ -130,12 +119,12 @@ first_row <- htmlDiv(list(
       value = 'data',
       children = htmlDiv(className = 'control-tab', children = list(
         htmlDiv(className = 'app-controls-block', children = list(
-          htmlP("Enter a single GenBank accession ID or multiple ID's seperated by commas
+          htmlP("Enter a single GenBank accession ID or multiple ID's separated by commas
                     and select the button to generate an alignment or the sequence of the dataset.
                     Enter  addtional datasets to add these sequences to the alignment.", style = list("margin" = 10)),
           htmlP('Example: Single Dataset - NR_108049', style = list("margin" = 10)),
-          htmlP(' Multiple Datasets - "JF806202", "HM161150", "FJ356743", "JF80620", 
-                    "JQ073190", "GU457971", "FJ356741", "JF806"', style = list("margin" = 10)),
+          htmlP(' Multiple Datasets - JF806202, HM161150, FJ356743, JF80620, 
+                    JQ073190, GU457971, FJ356741, JF806', style = list("margin" = 10)),
           dccInput(
             id = 'genbank-input',
             placeholder = "Enter an Accession ID...",
@@ -253,7 +242,6 @@ first_row <- htmlDiv(list(
   
 ), className = "container")
 
-
 app$layout(
   header,
   first_row
@@ -282,7 +270,6 @@ app$callback(
   }
 )
 
-
 app$callback(
   output(id = 'sequence-viewer', property = 'sequence'),
   params = list(
@@ -300,7 +287,6 @@ app$callback(
     }
   }
 )
-
 
 # Callback for Alignment-Viewer Output
 
@@ -355,7 +341,6 @@ app$callback(
     return(alignment_chart)
   }
 )
-
 
 #Callbacks for database search output.
 
@@ -422,7 +407,6 @@ app$callback(
   }
 )
 
-
 app$callback(
   output(id = "dataframe-store", property = "data"),
   params = list(
@@ -463,29 +447,6 @@ app$callback(
   }
 )
 
-# We copy the above callback, make a second one just like it to store the dataframe. Then, we make a third callback (it's actually below), use the stored dataframe and selected cell to store title?
-# Then add input into the alignment-viewer callback using that store to optionally call it. 
-
-# app$callback(
-#   output(id = "genbank-input", property = "value"),
-#   params = list(
-#     input(id = "table", property = "active_cell"),
-#     input(id = 'dataframe-store', property = 'data')
-#   ),
-#   
-#   update_cell <- function(cell, df) {
-#     df  <-  as.data.frame(matrix(unlist(df), nrow=length(unlist(df[1]))), stringsAsFactors = FALSE)
-#     accession_id <- df[1, cell$row + 1]
-#     accession_id <- gsub('"', "", accession_id)
-#     accession_id <- gsub(" ", "", accession_id)
-#     return(accession_id)
-#   }
-# )
-
-
-
-
-
 #Callbacks for Nucleotide Pie Chart
 
 app$callback(
@@ -500,7 +461,7 @@ app$callback(
       chart_sequence <- strsplit(sequence_string, split = "")
       p <- plot_ly(as.data.frame(table(chart_sequence)), labels = ~chart_sequence, values = ~Freq, type = 'pie', hole = 0.6) %>%
         layout(paper_bgcolor="#FFFFFF", title = "Nucleotide Base Composition", margin = 10,
-               titlefont = list(
+               title = list(
                  family = "Open Sans",
                  size = 22,
                  color = '#262B3D'),
@@ -516,7 +477,7 @@ app$callback(
       p <- (plot_ly(as.data.frame(table(strsplit(as.character(FASTA_DATA$`sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1`) 
                                                  , split = ""))), labels = ~Var1, values = ~Freq, type = 'pie', hole = 0.6) %>%
               layout(paper_bgcolor="#ffffff", title = "Nucleotide Base Composition", margin = 10,
-                     titlefont = list(
+                     title = list(
                        family = "Open Sans",
                        size = 22,
                        color = '#262B3D'),
@@ -554,8 +515,6 @@ app$callback(
   }
 )
 
-
-
 app$callback(
   output(id = "gc_graph", property = "figure"),
   params = list(
@@ -573,7 +532,7 @@ app$callback(
       
       p <- plot_ly(as.data.frame(g), x=~index, y=~gc, type = "scatter", mode = "line", line = list(color="#262B3D")) %>%
         layout(paper_bgcolor="#ffffff", plot_bgcolor="#ffffff", title = "CpG Island Distribution", margin = 20,
-               titlefont = list(
+               title = list(
                  family = "Open Sans",
                  size = 22,
                  color = '#262B3D'),
@@ -606,7 +565,7 @@ app$callback(
       
       p <- plot_ly(as.data.frame(g), x=~index, y=~gc, type = "scatter", mode = "line", line = list(color="#262B3D")) %>%
         layout(paper_bgcolor="#ffffff", plot_bgcolor="#ffffff", title = "CpG Island Distribution", margin = 20,
-               titlefont = list(
+               title = list(
                  family = "Open Sans",
                  size = 22,
                  color = '#262B3D'),
@@ -646,11 +605,11 @@ app$callback(
 
 
 if (appName != "") {
-  
+
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
-  
+
 } else {
-  
+
   app$run_server(showcase = TRUE, debug = FALSE)
-  
+
 }
