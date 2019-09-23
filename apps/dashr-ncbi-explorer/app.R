@@ -74,7 +74,7 @@ header <- htmlDiv(
     htmlA(
       id = "gh-link",
       children = list("View on GitHub"),
-      href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-clustergram",
+      href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-ncbi-explorer",
       style = list(color = "white", border = "solid 1px white")
     ),
     htmlImg(
