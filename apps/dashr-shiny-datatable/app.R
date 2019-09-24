@@ -13,7 +13,6 @@ library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(dashTable)
-library(DT)
 library(jsonlite)
 library(dplyr)
 
@@ -67,13 +66,13 @@ carsScatter <- plot_ly(data = m,
                        name = 'Unfiltered') %>%
                layout(showlegend = T)
 
-downlaodData <- htmlA(
+downloadData <- htmlA(
   children = htmlButton(
     "Download Filtered Data",
     id = "download-data"
   ),
-  href = "./data/mtcars-filtered.csv",
-  download = "mtcars-filtered"
+  href = "data/mtcars-filtered.csv",
+  download = "data/mtcars-filtered.csv"
 )
 
 
@@ -86,8 +85,8 @@ app$layout(
     dccGraph(id = "cars-scatter", figure = carsScatter),
     carsDashDT,
     htmlBr(),
-    htmlDiv(downlaodData, style = list("textAlign" = "center")),
-    htmlDiv(id = "hidden-div", style = list("display" = "none"))
+    htmlDiv(downloadData, style = list("textAlign" = "center")),
+    dccStore(id = "download-store")
   ))
 )
 
@@ -97,7 +96,6 @@ app$layout(
 # Highlight dashTable rows
 app$callback(output = list(
   output(id = "cars-table", property = "style_data_conditional")
-
 ),
 params = list(
   #  `derived_virtual_selected_rows`
@@ -139,9 +137,9 @@ params = list(
     if (length(selectedScatter$points) > 0) {
 
       # List is not null
-      if (!is.null(selectedScatter$points[[1]]) ) {
+      if (!is.null(selectedScatter$points[[1]])) {
 
-        selectedvector <- unlist(fromJSON(toJSON(selectedScatter))$points$pointIndex) + 1
+        selectedvector <- unlist(fromJSON(toJSON(selectedScatter))$points$pointIndex)
         unlistrows <- unlist(rows)
 
         # Prioritize highlighting table selections
@@ -173,11 +171,11 @@ params = list(
 # Mark Selected points
 app$callback(output = list(
   output(id = "cars-scatter", property = "figure")
-  ),
+),
 params = list(
   input(id = "cars-scatter", property = "selectedData"),
   input(id = "cars-table", property = "selected_rows")
-  ),
+),
 
   function(selectedScatter, rows) {
 
@@ -188,9 +186,7 @@ params = list(
       if (!is.null(rows[[1]])) {
         rowvector <- unlist(rows) + 1
         m <- mutate(m, groupSelected = ifelse(
-          row_number() %in% rowvector,
-          "2",
-          "1"))
+          row_number() %in% rowvector, "2", "1"))
 
         pp <- plot_ly(data = m,
                       x = m$mpg,
@@ -209,20 +205,18 @@ params = list(
 
     # 2 - Handle figure selections
     # Selection not empty list
-    if (length(selectedScatter) > 0 ) {
+    if (length(selectedScatter$points) > 0 ) {
       # List is not null
-      if (!is.null(selectedScatter[[1]]) ) {
+      if (!is.null(selectedScatter$points[[1]])) {
 
         selectedvector <- unlist(fromJSON(toJSON(selectedScatter))$points$pointIndex) + 1
+
         # Append rows if they exist
         if (exists("rowvector")) {
           selectedvector <- unique(c(rowvector, selectedvector))
         }
-
         m <- mutate(m, groupSelected = ifelse(
-          row_number() %in% selectedvector,
-          "2",
-          "1"))
+          row_number() %in% selectedvector, "2", "1"))
 
         pp <- plot_ly(data = m,
                       x = m$mpg,
@@ -239,54 +233,42 @@ params = list(
         }
       }
     } else {
-      pp <- carsScatter
+      if (!exists("pp")) {
+        pp <- carsScatter
+      }
     }
     return(list(pp))
 })
 
 
-app$callback(output = list(
-  output(id = "hidden-div", property = "children")
-  ),
+# Write filtered data to csv
+app$callback(
+  output(id = "download-store", property = "children"),
 params = list(
   input(id = "download-data", property = "n_clicks"),
   state(id = "cars-table", property = "selected_rows"),
-  state(id = "cars-table", property = "page_current"),
   state(id = "cars-scatter", property = "selectedData")
   ),
 
-  function(nclicks, rows, currentpage, selectedScatter) {
+  function(nclicks, rows, selectedScatter) {
+
+    rowvector <- vector()
+    scattervector <- vector()
 
     if (length(rows) > 0) {
-      rowvector <- unlist(rows) + 1
+      if (!is.null(rows[[1]]) ) {
+        rowvector <- unlist(rows) + 1
+      }
     }
 
-    if (length(selectedScatter) > 0) {
-      scattervector <- unlist(selectedScatter) + 1
+    if (length(selectedScatter$points) > 0) {
+      if (!is.null(selectedScatter$points[[1]])) {
+        scattervector <- unlist(fromJSON(toJSON(selectedScatter))$points$pointIndex) + 1
+      }
     }
-    if (exists("rowvector")) {
-      print(rowvector)
-    }
+    combinedvector <- unique(c(rowvector, scattervector))
 
-    if (exists("scattervectro")) {
-      print(scattervector)
-    }
-
-    print("OUT")
-    print(rows)
-    print("---")
-    print(selectedScatter)
-
-    write.csv(m, "data/mtcars-filtered.csv")
-    return(list(
-      htmlP("hold")
-    ))
-
-  })
-
-
-
-
-
+    write.csv(m[combinedvector, ], "data/mtcars-filtered.csv")
+})
 
 app$run_server()
