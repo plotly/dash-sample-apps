@@ -1,9 +1,0 @@
-{
-    "path" : "~/Documents/GitHub/plot.ly/dash-sample-apps/apps/dashr-shiny-movies",
-    "sortOrder" : [
-        {
-            "ascending" : true,
-            "columnIndex" : 2
-        }
-    ]
-}
