@@ -15,33 +15,17 @@ library(dashCoreComponents)
 library(dashHtmlComponents)
 library(plotly)
 
-################# LOAD DATA, FUNCTIONS, & CREATE GLOBAL OBJECTS ########
+# Load & Prep Data ------------------------------
 
 data(diamonds, package = 'ggplot2')
-nms <- names(diamonds)
-max = nrow(diamonds)
 
-#another method for rendering dropdown choices
-lapply(nms, function(x) {
+nms <- names(diamonds)
+
+# Create Layout Variables ------------------------------
+
+DropDownMenuOptions <- lapply(nms, function(x) {
   list(label = x, value = x)
 })
-
-
-######### CREATE GLOBAL OBJECTS ####
-
-DropDownMenuOptions <- list(
-  list(label = 'None', value = '.'),
-  list(label = 'carat', value = 'carat'),
-  list(label = 'cut', value = 'cut'),
-  list(label = 'color', value = 'color'),
-  list(label = 'clarity', value = 'clarity'),
-  list(label = 'depth', value = 'depth'),
-  list(label = 'table', value = 'table'),
-  list(label = 'price', value = 'price'),
-  list(label = 'x', value = 'x'),
-  list(label = 'y', value = 'y'),
-  list(label = 'z', value = 'z')
-)
 
 SampleSlider <- dccSlider(
   id = 'sample-slider',
@@ -57,6 +41,7 @@ SampleSlider <- dccSlider(
   ),
   value = 1000
 )
+
 heightSlider <- dccSlider(
   id = 'height-slider',
   min = 100,
@@ -76,50 +61,63 @@ heightSlider <- dccSlider(
   ),
   value = 1000
 )
-##### CREATE LAYOUT VARIABLES #######
 
 pageTitle <- htmlH2('Diamonds Explorer')
-plotlyLogo <-
-  htmlA(list(htmlImg(id = 'banner-image', src = 'assets/image.png')), className = 'logo',
-        href = 'https://dashr.plot.ly')
+
+plotlyLogo <- htmlA(
+  list(htmlImg(id = 'banner-image', src = 'assets/image.png')),
+  className = 'logo',
+  href = 'https://dashr.plot.ly')
+
 xDropDown <- dccDropdown(
   id = 'x-dropdown',
   options = DropDownMenuOptions,
   value = 'carat',
   clearable = FALSE
 )
+
 yDropDown <- dccDropdown(
   id = 'y-dropdown',
   options = DropDownMenuOptions,
   value = 'price',
   clearable = FALSE
 )
-ColorDropDown <- dccDropdown(
+
+colorDropDown <- dccDropdown(
   id = 'color-dropdown',
   options = DropDownMenuOptions,
   value = 'clarity',
   clearable = FALSE
 )
 
-FacetRowDropDown <- dccDropdown(
+facetRowDropDown <- dccDropdown(
   id = 'facet-row-dropdown',
   options = DropDownMenuOptions,
   value = 'clarity',
   clearable = FALSE
 )
-FacetColumnDropDown <- dccDropdown(
+
+facetColumnDropDown <- dccDropdown(
   id = 'facet-column-dropdown',
   options = DropDownMenuOptions,
   value = '.',
   clearable = FALSE
 )
-###### APP START #######
+
+
+# App Start ------------------------------
+
+# Initiate application
 app = Dash$new()
 
-########### CREATE LAYOUT ##############
+
+# Create Layout ------------------------------
+
 app$layout(
-  htmlDiv(list(plotlyLogo,
-               pageTitle), className = 'twelve columns'),
+  htmlDiv(list(
+    plotlyLogo,
+    pageTitle
+    )),
   htmlDiv(
     list(
       htmlB('Sample Size'),
@@ -131,13 +129,13 @@ app$layout(
       yDropDown,
       htmlBr(),
       htmlB('Color'),
-      ColorDropDown,
+      colorDropDown,
       htmlBr(),
       htmlB('FacetRow'),
-      FacetRowDropDown,
+      facetRowDropDown,
       htmlBr(),
       htmlB('FacetColumn'),
-      FacetColumnDropDown,
+      facetColumnDropDown,
       htmlBr(),
       htmlB('Height of plot (in pixels)'),
       heightSlider
@@ -147,7 +145,9 @@ app$layout(
   htmlDiv(list(dccGraph(id = 'facetgrid')),
           className = 'eight columns')
 )
-################ CALLBACKS #####################
+
+
+# Callbacks Start ------------------------------
 
 app$callback(output = list(id = 'facetgrid', property = 'figure'),
              params = list(
@@ -160,38 +160,30 @@ app$callback(output = list(id = 'facetgrid', property = 'figure'),
                input(id = 'facet-column-dropdown', property = 'value')
              ),
              
-function(sampleSize, plotHeight, x, y, color, facet_row,facet_col) {
+  function(sampleSize, plotHeight, x, y, color, facet_row,facet_col) {
 
-  #Adding Reactive data info, dataset is built in diamonds data
-               
-  dataset <- diamonds[sample(nrow(diamonds),sampleSize),]
+    #Adding Reactive data info, dataset is built in diamonds data
+    dataset <- diamonds[sample(nrow(diamonds), sampleSize),]
 
-#FacetGrid ggplot2 object
+    #FacetGrid ggplot2 object
+    p <- ggplot(dataset, aes_string(x = x, y = y, color = color)) + geom_point()
 
-           
-p <- ggplot(dataset, aes_string(x = x, y = y, color = color)) + geom_point()
-
-# Add it if least one facet column/row is specified
-
-facets <- paste(facet_row, '~', facet_col)
+    # Add it if least one facet column/row is specified
+    facets <- paste(facet_row, '~', facet_col)
 
 
-if (facets != '. ~ .') { p <- p + facet_grid(facets)
-       p1 <- ggplotly(p) %>%
-          layout(height = plotHeight,
-                autosize = TRUE)
-}
-return(p1)
-}
-
-)
-
-
-########CONDITIONAL STATEMENT FOR APP RUNNING ON CLOUD SERVER & LOCAL
+    if (facets != '. ~ .') { p <- p + facet_grid(facets)
+      p1 <- ggplotly(p) %>%
+      layout(height = plotHeight,
+             autosize = TRUE)
+    }
+    
+    return(p1)
+})
 
 if (appName != '') {
   
-  app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
+  app$run_server(host = '0.0.0.0', port = Sys.getenv("PORT", 8050))
   
 } else {
   
