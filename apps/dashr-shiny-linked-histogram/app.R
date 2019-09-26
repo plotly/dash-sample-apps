@@ -13,6 +13,7 @@ library(plotly)
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
+library(jsonlite)
 
 
 # Load data ---------------------------
