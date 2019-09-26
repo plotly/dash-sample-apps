@@ -26,13 +26,12 @@ ridesRaw_3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rid
   data.table::fread(stringsAsFactors = FALSE)
 ridesDf <- list(ridesRaw_1, ridesRaw_2, ridesRaw_3) %>%
   data.table::rbindlist()
+test1 <- plot_ly(ridesDf, x = ~Lat, y = ~Lon, colorscale = 'Viridis', reversescale = FALSE) %>%
+  add_rasterizer()
 
-
-vals <- unique(scales::rescale(c(as.matrix(ridesDf))))
-o <- order(vals, decreasing = FALSE)
-cols <- scales::col_numeric("Blues", domain = NULL)(vals)
-colz <- setNames(data.frame(vals[o], cols[o]), NULL)
-
+test<- layout(test1, font = list(color = 'rgb(226, 239, 250)'),
+              paper_bgcolor='rgb(38, 43, 61)',
+              plot_bgcolor='rgb(38, 43, 61)')
 
 
 ################################################### App Layout ##################################################
@@ -68,14 +67,14 @@ header <- htmlDiv(
 
 options <- htmlDiv(children =htmlDiv(list(
   htmlH2("Chart Options"),
-  htmlBr(),
   htmlH4("Colorscale"),
   dccDropdown(
     id = "colorscale",
     value = "Viridis",
     options = list(
       list('label' = 'Viridis', 'value' = 'Viridis'),
-      list('label' = 'Plasma', 'value' = 'Plasma')
+      list('label' = 'Plasma', 'value' = 'Plasma'),
+      list('label' = 'Blues', 'value' = 'Blues')
     )
   ),
   htmlBr(),
@@ -106,6 +105,15 @@ app$callback(
     input(id = 'colorscale', property = 'value')
   ),
   update_graph <- function(data, colorscale) {
+    
+    if(colorscale == 'Blues' || colorscale == 'Plasma') {
+      fix_scale = TRUE
+    }
+    
+    else {
+      fix_scale = FALSE
+    }
+    
     x_min <- data[[1]][[1]]
     x_max <- data[[1]][[2]]
     y_min <- data[[2]][[1]]
@@ -118,8 +126,12 @@ app$callback(
     filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > y_min & filtered_df_lat$Lon < y_max,]
     print(str(filtered_df_lon))
     return(
-      plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = colorscale) %>%
+      plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = colorscale, reversescale = fix_scale) %>%
         add_rasterizer()
+      %>%
+        layout(font = list(color = 'rgb(226, 239, 250)'),
+               paper_bgcolor='rgb(38, 43, 61)',
+               plot_bgcolor='rgb(38, 43, 61)')
     )
   }
 )
