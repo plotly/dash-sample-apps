@@ -20,6 +20,9 @@ app$layout(
     htmlImg(id = "banner-image", src = "assets/image.png")
   ), className = "logo",
   href = "https://dashr.plot.ly/"),
+  htmlBr(),
+  htmlBr(),
+  htmlBr(),
   htmlDiv(list(
     dccGraph(
       id = 'mapplot',
