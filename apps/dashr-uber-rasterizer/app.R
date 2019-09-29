@@ -65,6 +65,10 @@ header <- htmlDiv(
 )
 
 
+palette <- colorRampPalette(c("darkblue", "blue", "lightblue1",
+                              "green","yellow", "red", "darkred"))
+
+
 options <- htmlDiv(children =htmlDiv(list(
   htmlH2("Chart Options"),
   htmlH4("Colorscale"),
@@ -74,12 +78,13 @@ options <- htmlDiv(children =htmlDiv(list(
     options = list(
       list('label' = 'Viridis', 'value' = 'Viridis'),
       list('label' = 'Plasma', 'value' = 'Plasma'),
-      list('label' = 'Blues', 'value' = 'Blues')
+      list('label' = 'Blues', 'value' = 'Blues'),
+      list('label' = 'Magma', 'value' = 'Magma'),
+      list('label' = 'Greys', 'value' = 'Greys')
     )
   ),
   htmlBr(),
   htmlH4("Scaling"),
-  htmlBr(),
   dccDropdown(
     id = 'scaling',
     value = 100
@@ -92,8 +97,6 @@ app$layout(
     options,
     htmlDiv(children = dccGraph(id = 'rasterizer-output',
                                 figure = test, style = list("height" = "88vh")), className = 'item-b'),
-    htmlDiv(id = 'test-output'),
-    htmlDiv(id = 'test-output2'),
     dccStore(id = 'store')
   ), className = 'container'))
 
@@ -136,26 +139,6 @@ app$callback(
   }
 )
 
-app$callback(
-  output(id = 'test-output2', property = 'children'),
-  params = list(
-    input(id = 'rasterizer-output', property = 'relayoutData')
-  ),
-  print_data <- function(random_data) {
-    
-  }
-)
-
-app$callback(
-  output(id = 'test-output', property = 'children'),
-  params = list(
-    input(id = 'store', property = 'data')
-  ),
-  print_data <- function(random_data) {
-    # print(str(random_data))
-    # print(random_data[[1]][[1]])
-  }
-)
 
 app$callback(
   output(id = 'store', property = 'data'),
