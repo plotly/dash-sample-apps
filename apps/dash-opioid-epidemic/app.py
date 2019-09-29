@@ -39,8 +39,17 @@ df_full_data["County Code"] = df_full_data["County Code"].apply(
 df_full_data["County"] = (
     df_full_data["Unnamed: 0"] + ", " + df_full_data.County.map(str)
 )
+df_full_data = df_full_data.rename(
+    columns={"County Code": 'FIPS '})
 
-YEARS = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
+df_hover = df_full_data.merge(df_lat_lon, on='FIPS ', how='right')
+df_hover["e_hover"] = df_hover["Hover"]+"<br>" + \
+    "Age Adjusted death rate: "+df_hover["Age Adjusted Rate"].fillna(
+        '')  # this allows the user to hover over a county and see the rate
+dirpath = os.getcwd()
+
+YEARS = [2003, 2004, 2005, 2006, 2007, 2008,
+         2009, 2010, 2011, 2012, 2013, 2014, 2015]
 
 BINS = [
     "0-2",
@@ -225,18 +234,17 @@ app.layout = html.Div(
 )
 def display_map(year, figure):
     cm = dict(zip(BINS, DEFAULT_COLORSCALE))
-
+    df_hover_year = df_hover[df_hover["Year"] == year]
     data = [
         dict(
             lat=df_lat_lon["Latitude "],
             lon=df_lat_lon["Longitude"],
-            text=df_lat_lon["Hover"],
+            text=df_hover_year["e_hover"],
             type="scattermapbox",
             hoverinfo="text",
             marker=dict(size=5, color="white", opacity=0),
         )
     ]
-
     annotations = [
         dict(
             showarrow=False,
@@ -301,7 +309,6 @@ def display_map(year, figure):
             fill=dict(outlinecolor="#afafaf"),
         )
         layout["mapbox"]["layers"].append(geo_layer)
-
     fig = dict(data=data, layout=layout)
     return fig
 
@@ -335,11 +342,11 @@ def display_selected_data(selectedData, chart_dropdown, year):
             ),
         )
     pts = selectedData["points"]
-    fips = [str(pt["text"].split("<br>")[-1]) for pt in pts]
+    fips = [str(pt["text"].split("<br>")[2]) for pt in pts]
     for i in range(len(fips)):
         if len(fips[i]) == 4:
             fips[i] = "0" + fips[i]
-    dff = df_full_data[df_full_data["County Code"].isin(fips)]
+    dff = df_full_data[df_full_data["FIPS "].isin(fips)]
     dff = dff.sort_values("Year")
 
     regex_pat = re.compile(r"Unreliable", flags=re.IGNORECASE)
@@ -353,7 +360,8 @@ def display_selected_data(selectedData, chart_dropdown, year):
             title = "Absolute deaths per county, <b>{0}</b>".format(year)
         elif "show_death_rate_single_year" == chart_dropdown:
             dff = dff[dff.Year == year]
-            title = "Age-adjusted death rate per county, <b>{0}</b>".format(year)
+            title = "Age-adjusted death rate per county, <b>{0}</b>".format(
+                year)
             AGGREGATE_BY = "Age Adjusted Rate"
 
         dff[AGGREGATE_BY] = pd.to_numeric(dff[AGGREGATE_BY], errors="coerce")
