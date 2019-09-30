@@ -70,8 +70,8 @@ palette <- colorRampPalette(c("darkblue", "blue", "lightblue1",
 
 
 options <- htmlDiv(children =htmlDiv(list(
-  htmlH2("Chart Options"),
-  htmlH4("Colorscale"),
+  htmlH2("Chart Options", style = list("font-size" = "23pt", "font-weight" = "200", "letter-spacing" = "1px")),
+  htmlH4("Colorscale", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   dccDropdown(
     id = "colorscale",
     value = "Viridis",
@@ -84,7 +84,7 @@ options <- htmlDiv(children =htmlDiv(list(
     )
   ),
   htmlBr(),
-  htmlH4("Scaling"),
+  htmlH4("Point Scaling", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   dccDropdown(
     id = 'scaling',
     value = 100

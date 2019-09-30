@@ -2,11 +2,7 @@ html{
   background-color: rgb(66, 75, 107);
 }
 
-
 body {
-    font-size: 1.5em;
-    line-height: 1.6;
-    font-weight: 400;
     font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: rgb(66, 75, 107);
 }
