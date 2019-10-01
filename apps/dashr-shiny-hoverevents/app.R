@@ -19,7 +19,7 @@ library(dplyr)
 # Load & Prep Data ------------------------------
 
 # Read data
-stockdata <- read.csv("https://cdn.rawgit.com/plotly/datasets/master/stockdata.csv")
+stockdata <- read.csv("assets/stockdata.csv")
 
 # Create dates
 stockdata$Date <- as.Date(stockdata$Date)
@@ -98,7 +98,7 @@ app$layout(
              style = list("display" = "inline")),
       htmlCode(list("hoverData"),
                style = list("display" = "inline")),
-      htmlH6(" property.", style = list("display" = "inline"))
+      htmlH4(" property.", style = list("display" = "inline"))
     )),
     htmlHr(),
     htmlDiv(list(
