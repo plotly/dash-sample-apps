@@ -166,19 +166,18 @@ app$callback(output = list(id = 'facetgrid', property = 'figure'),
     dataset <- diamonds[sample(nrow(diamonds), sampleSize),]
 
     #FacetGrid ggplot2 object
-    p <- ggplot(dataset, aes_string(x = x, y = y, color = color)) + geom_point()
+    initial_plot <- ggplot(dataset, aes_string(x = x, y = y, color = color)) + geom_point()
 
     # Add it if least one facet column/row is specified
     facets <- paste(facet_row, '~', facet_col)
 
 
-    if (facets != '. ~ .') { p <- p + facet_grid(facets)
-      p1 <- ggplotly(p) %>%
-      layout(height = plotHeight,
-             autosize = TRUE)
+    if (facets != '. ~ .') { initial_plot <- initial_plot + facet_grid(facets)
+      final_plot <- ggplotly(initial_plot, height = plotHeight) %>%
+      layout(autosize = TRUE)
     }
     
-    return(p1)
+    return(final_plot)
 })
 
 if (appName != '') {
