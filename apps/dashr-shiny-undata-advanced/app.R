@@ -77,7 +77,7 @@ app$callback(
     filtered_df <- ideal %>% filter(Name %in% selected_country)
 
     ggideal_point <- ggplot(filtered_df) +
-      geom_line(aes(x = Year, y = Ideal.point, by = Name, color = Name)) +
+      geom_line(aes(x = Year, y = Ideal.point, color = Name)) +
       labs(x = "Year", y = "Ideology", title = "Ideal Points for Countries") +
       scale_colour_hue("", l = 70, c = 150) + ggthemes::theme_few() +
       theme(legend.direction = "horizontal", legend.position = "bottom")
