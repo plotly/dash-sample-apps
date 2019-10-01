@@ -111,7 +111,7 @@ app$layout(htmlDiv(
     htmlBr(),
     htmlDiv(
       className = "row",
-      style = list("width" = "650px"),
+      style = list("width" = "100%"),
       list(
         htmlDiv(xHistogram,
                 className = "eight columns" ),
@@ -121,7 +121,7 @@ app$layout(htmlDiv(
     ),
     htmlDiv(
       className = "row",
-      style = list("width" = "650px"),
+      style = list("width" = "100%"),
       list(
         htmlDiv(scatterGraph,
                 className = "seven columns"),
