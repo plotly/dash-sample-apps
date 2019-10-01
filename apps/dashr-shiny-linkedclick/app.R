@@ -19,11 +19,11 @@ nms <- names(mtcars)
 
 app <- Dash$new()
 
-app$layout(
-  htmlA(list(
+app$layout(htmlDiv(list(
+  htmlDiv(htmlA(list(
     htmlImg(id = "banner-image", src = "assets/image.png")
   ), className = "logo",
-  href = "https://dashr.plot.ly/"),
+  href = "https://dashr.plot.ly/"), className = 'row'),
   htmlDiv(list(
     htmlDiv(list(
       dccGraph(
@@ -38,15 +38,16 @@ app$layout(
         ) %>%
           layout(xaxis = list(title = ""),
                  yaxis = list(title = ""))
-      ),
-      htmlBr(),
-      htmlDiv(list(dccGraph(id = 'scatterplot')), id = "scatterplot-container")
-    ),
-    className = "eight columns"),
-    htmlDiv(list(htmlDiv(id = "clickoutput", className = "shiny-container")),
-            className = 'four columns')
-  ), className = "row")
-)
+      )
+    ), className = 'six columns'),
+    
+    htmlBr(),
+    htmlDiv(list(dccGraph(id = 'scatterplot')), id = "scatterplot-container", 
+            className = 'six columns')
+  ), className = 'row'),
+  htmlDiv(list(htmlDiv(id = "clickoutput", className = "shiny-container")),
+          className = 'four columns')
+)))
 
 app$callback(
   output = list(id = "clickoutput", property = "children"),
@@ -91,7 +92,7 @@ app$callback(
   params = list(input(id = "heatmapplot", property = "clickData")),
   function(click_data) {
     if (length(click_data[[1]][[1]])) {
-      style = list("display" = "inline")
+      style = list("display" = "block")
     }
     else {
       style = list("display" = "none")
