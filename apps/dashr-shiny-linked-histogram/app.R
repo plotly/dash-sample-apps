@@ -87,7 +87,7 @@ xHistogram <- dccGraph(
 )
 
 yHistogram <- dccGraph(
-  id = 'y-histogram',
+  id = 'y-plot',
   p <- plot_ly(y = cars$dist, type = "histogram", autobiny = F,
                ybins = compute_bins(cars$dist, length(unique(cars$dist))), marker = m2) %>%
          layout("xaxis" = list("title" = "count")),
@@ -109,6 +109,7 @@ app$layout(htmlDiv(
     plotlyLogo,
     pageTitle,
     htmlBr(),
+    htmlP("Select points on the scatterplot to highlight their distributions on the histograms."),
     htmlDiv(
       className = "row",
       style = list("width" = "100%"),
@@ -136,7 +137,7 @@ app$layout(htmlDiv(
 
 
 # Callbacks Start ---------------------------
-
+# 
 # the 'x' histogram
 app$callback(
   output = list(id = 'x-histogram', property = 'figure'),
@@ -161,7 +162,7 @@ app$callback(
 
 # the 'y' histogram
 app$callback(
-  output = list(id = 'y-histogram', property = 'figure'),
+  output = list(id = 'y-plot', property = 'figure'),
   params = list(input(id = 'y-slider', property = 'value'),
                 input(id = 'scatter-graph', property = 'selectedData')),
 
