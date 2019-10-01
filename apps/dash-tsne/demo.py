@@ -116,7 +116,7 @@ def create_layout(app):
                     html.Div(
                         [
                             html.Img(
-                                src=app.get_asset_url("dash-logo-stripe.png"),
+                                src=app.get_asset_url("dash-logo.png"),
                                 className="logo",
                                 id="plotly-image",
                             )
@@ -181,7 +181,7 @@ def create_layout(app):
                                         value="mnist_3000",
                                     ),
                                     NamedSlider(
-                                        name="Number of Iterations",
+                                        name="Number Of Iterations",
                                         short="iterations",
                                         min=250,
                                         max=1000,

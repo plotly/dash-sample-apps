@@ -1,5 +1,5 @@
 # Core
-dash==0.42.0
+dash==1.0.0
 gunicorn==19.9.0
 numpy==1.16.3
 pandas==0.24.2
