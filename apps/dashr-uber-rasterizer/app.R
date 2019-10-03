@@ -89,7 +89,7 @@ options <- htmlDiv(children =htmlDiv(list(
       list('label' = 'Blues', 'value' = 'blue'),
       list('label' = 'Magma', 'value' = 'fire')
     )
-  ), style = list("color" = "black")),
+  ), style = list("color" = "white")),
   htmlH4("Background", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   htmlDiv(dccDropdown(
     id = "background",
@@ -99,7 +99,7 @@ options <- htmlDiv(children =htmlDiv(list(
       list('label' = 'Grey', 'value' = 'grey'),
       list('label' = 'White', 'value' = 'white')
     )
-  ), style = list("color" = "black")),
+  ), style = list("color" = "white")),
   htmlBr(),
   htmlH4("Point Scaling", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   dccDropdown(
