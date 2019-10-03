@@ -105,6 +105,15 @@ options <- htmlDiv(children =htmlDiv(list(
   dccDropdown(
     id = 'scaling',
     value = 100
+  ),
+  htmlH4("Reduction method", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
+  dccDropdown(
+    id = "reduc",
+    options = list(list(label = "sum", value = "sum"),
+                   list(label = "any", value = "any"),
+                   list(label = "mean", value = "mean")),
+
+    value = 'sum'
   )
 )), className = 'item-a')
 
@@ -123,10 +132,10 @@ app$callback(
   params = list(
     input(id = 'store', property = 'data'),
     input(id = 'cmap', property = 'value'),
-    input(id = 'background', property = 'value')
+    input(id = 'background', property = 'value'),
+    input(id = 'reduc', property = 'value')
   ),
-  update_graph <- function(data, cmap, background) {
-
+  update_graph <- function(data, cmap, background, reduc) {
 
     color <- if(cmap == "blue") {
       c("lightblue", "darkblue")
@@ -163,7 +172,7 @@ app$callback(
 
     return(
       plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = colorscale) %>%
-        add_rasterizer()
+        add_rasterizer(reduction_func = reduc)
       %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
                paper_bgcolor='rgb(38, 43, 61)',
