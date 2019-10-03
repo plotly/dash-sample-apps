@@ -59,7 +59,7 @@ def lda_analysis(docs, stop_words):
     dictionary.filter_extremes(no_below=10, no_above=0.95, keep_n=100000)
     bow_corpus = [dictionary.doc2bow(doc) for doc in processed_docs]
 
-    lda_model = gensim.models.LdaMModel(bow_corpus, num_topics=5, id2word=dictionary)
+    lda_model = gensim.models.LdaMulticore(bow_corpus, num_topics=5, id2word=dictionary, passes=10)
 
     df_topic_sents_keywords = format_topics_sentences(ldamodel=lda_model, corpus=bow_corpus, texts=docs)
 
