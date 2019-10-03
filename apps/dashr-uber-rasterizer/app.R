@@ -26,10 +26,22 @@ ridesRaw_3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rid
   data.table::fread(stringsAsFactors = FALSE)
 ridesDf <- list(ridesRaw_1, ridesRaw_2, ridesRaw_3) %>%
   data.table::rbindlist()
-test1 <- plot_ly(ridesDf, x = ~Lat, y = ~Lon, colorscale = 'Viridis', reversescale = FALSE) %>%
+
+default_colorscale <- lapply(0:256,
+                             function(i) {
+                               if(i == 0) {
+                                 return(list(0, 'black'))
+                               } else {
+                                 return(list(i/256, viridis(256)[i]))
+                               }
+                             }
+)
+
+
+initial_plot <- plot_ly(ridesDf, x = ~Lat, y = ~Lon, colorscale = default_colorscale) %>%
   add_rasterizer()
 
-test<- layout(test1, font = list(color = 'rgb(226, 239, 250)'),
+default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
               paper_bgcolor='rgb(38, 43, 61)',
               plot_bgcolor='rgb(38, 43, 61)')
 
@@ -65,24 +77,28 @@ header <- htmlDiv(
 )
 
 
-palette <- colorRampPalette(c("darkblue", "blue", "lightblue1",
-                              "green","yellow", "red", "darkred"))
-
-
 options <- htmlDiv(children =htmlDiv(list(
   htmlH2("Chart Options", style = list("font-size" = "23pt", "font-weight" = "200", "letter-spacing" = "1px")),
   htmlH4("Colorscale", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
-  dccDropdown(
-    id = "colorscale",
-    value = "Viridis",
+  htmlDiv(dccDropdown(
+    id = "cmap",
+    value = "viridis",
     options = list(
-      list('label' = 'Viridis', 'value' = 'Viridis'),
-      list('label' = 'Plasma', 'value' = 'Plasma'),
-      list('label' = 'Blues', 'value' = 'Blues'),
-      list('label' = 'Magma', 'value' = 'Magma'),
-      list('label' = 'Greys', 'value' = 'Greys')
+      list('label' = 'Viridis', 'value' = 'viridis'),
+      list('label' = 'Blues', 'value' = 'blue'),
+      list('label' = 'Magma', 'value' = 'fire')
     )
-  ),
+  ), style = list("color" = "black")),
+  htmlH4("Background", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
+  htmlDiv(dccDropdown(
+    id = "background",
+    value = "black",
+    options = list(
+      list('label' = 'Black', 'value' = 'black'),
+      list('label' = 'Grey', 'value' = 'grey'),
+      list('label' = 'White', 'value' = 'white')
+    )
+  ), style = list("color" = "black")),
   htmlBr(),
   htmlH4("Point Scaling", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   dccDropdown(
@@ -96,7 +112,7 @@ app$layout(
   htmlDiv(list(
     options,
     htmlDiv(children = dccGraph(id = 'rasterizer-output',
-                                figure = test, style = list("height" = "88vh")), className = 'item-b'),
+                                figure = default_plot, style = list("height" = "88vh")), className = 'item-b'),
     dccStore(id = 'store')
   ), className = 'container'))
 
@@ -105,31 +121,47 @@ app$callback(
   output(id = 'rasterizer-output', property = 'figure'),
   params = list(
     input(id = 'store', property = 'data'),
-    input(id = 'colorscale', property = 'value')
+    input(id = 'cmap', property = 'value'),
+    input(id = 'background', property = 'value')
   ),
-  update_graph <- function(data, colorscale) {
+  update_graph <- function(data, cmap, background) {
+
     
-    if(colorscale == 'Blues' || colorscale == 'Plasma') {
-      fix_scale = TRUE
+    color <- if(cmap == "blue") {
+      c("lightblue", "darkblue")
+    } else if(cmap =="viridis") {
+      color <- viridis(256)
+    } else {
+      eval(parse(text = cmap))
+    }
+
+    if(background != "black") {
+      color <- rev(color)
     }
     
-    else {
-      fix_scale = FALSE
-    }
+    len_col <- length(color)
     
+    colorscale <- lapply(0:len_col,
+                         function(i) {
+                           if(i == 0) {
+                             return(list(0, background))
+                           } else {
+                             return(list(i/len_col, color[i]))
+                           }
+                         }
+    )
+
     x_min <- data[[1]][[1]]
     x_max <- data[[1]][[2]]
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
     
-    print(c(x_min, x_max, y_min, y_max))
-    
+
     filtered_df_lat <- ridesDf[(ridesDf$Lat > x_min & ridesDf$Lat < x_max),]
-    print(str(filtered_df_lat))
     filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > y_min & filtered_df_lat$Lon < y_max,]
-    print(str(filtered_df_lon))
+    
     return(
-      plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = colorscale, reversescale = fix_scale) %>%
+      plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = colorscale) %>%
         add_rasterizer()
       %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
