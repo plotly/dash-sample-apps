@@ -10,7 +10,6 @@ import pandas as pd
 import numpy as np
 
 #Now we can load and use spacy to analyse our complaint
-# NEED TO RUN "python -m spacy download en" in the terminal first
 nlp = spacy.load('en_core_web_sm')
 
 
@@ -66,8 +65,10 @@ def lda_analysis(docs, stop_words):
 
     df_dominant_topic = df_topic_sents_keywords.reset_index()
     df_dominant_topic.columns = ['Document_No', 'Dominant_Topic', 'Topic_Perc_Contrib', 'Keywords', 'Text']
-
-    return(lda_model, df_dominant_topic)
+    
+    topic_num, tsne_lda = tsne_analysis(lda_model, bow_corpus)
+    
+    return(tsne_lda, lda_model, topic_num,  df_dominant_topic)
 
 
 def tsne_analysis(ldamodel, corpus):

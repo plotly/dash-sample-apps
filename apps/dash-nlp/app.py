@@ -2,6 +2,7 @@
 import flask
 import dash
 import dash_table
+import matplotlib.colors as mcolors
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
@@ -101,10 +102,37 @@ def add_stopwords(selected_bank):
     for word in selected_bank_words: STOPWORDS.add(word)
     return STOPWORDS
 
-def lda_visualisations(df):
-    complaints_text  = list(df["Consumer complaint narrative"].dropna().values)
-    lda_model, df_dominant_topic = lda_analysis(complaints_text, list(STOPWORDS))
-    return df_dominant_topic
+def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
+    topic_top3words = [(i, topic) for i, topics in lda_model.show_topics(formatted=False) 
+                                 for j, (topic, wt) in enumerate(topics) if j < 3]
+
+    df_top3words_stacked = pd.DataFrame(topic_top3words, columns=['topic_id', 'words'])
+    df_top3words = df_top3words_stacked.groupby('topic_id').agg(', \n'.join)
+    df_top3words.reset_index(level=0,inplace=True)
+  
+    tsne_df = pd.DataFrame({'tsne_x': tsne_lda[:,0], 'tsne_y':  tsne_lda[:,1], 'topic_num': topic_num, 'doc_num': df_dominant_topic["Document_No"]})
+    mycolors = np.array([color for name, color in mcolors.TABLEAU_COLORS.items()])
+
+    # Plot and embed in ipython notebook!
+    # for each topic create separate trace
+    traces=[]
+    for topic_id in df_top3words['topic_id']:
+        #print('Topic: {} \nWords: {}'.format(idx, topic))
+        tsne_df_f = tsne_df[tsne_df.topic_num==topic_id]
+        cluster_name = ', '.join(df_top3words[df_top3words['topic_id']==topic_id]['words'].to_list())
+        trace = go.Scatter(name = cluster_name, x=tsne_df_f['tsne_x'], y=tsne_df_f['tsne_y'], mode = 'markers', hovertext= tsne_df_f['doc_num'],
+                marker=dict(
+                    size=6,
+                    color = mycolors[tsne_df_f['topic_num']], #set color equal to a variable
+                    colorscale='Viridis',
+                    showscale=False
+            )
+        )
+        traces.append(trace)
+
+    layout = go.Layout({'title': 'Topic analysis using LDA'})
+
+    return {'data': traces,'layout': layout}
 
 def plotly_wordcloud(df):
     complaints_text  = list(df["Consumer complaint narrative"].dropna().values)
@@ -179,7 +207,7 @@ left_column = [ html.H3(children='Select bank & dataset size'),
                           value=10),
                html.Label('Select a bank, using either the dropdown or the plot below.', 
                           style={'marginTop': 50}),
-               dcc.Dropdown(id="bank-drop", style={'marginBottom': 50}),
+               dcc.Dropdown(id='bank-drop', clearable=False, style={'marginBottom': 50}),
                html.Label("Select time frame"),
                html.Div(dcc.RangeSlider(id='time-window-slider'), style={'marginBottom': 50})
               ]
@@ -200,6 +228,7 @@ app.layout = html.Div(className='container', children=[
                     html.Div(className='five columns', children=left_column, style={'border': '1px solid', 'background': '#f9fafe',  'padding': '20px'}),
                     html.Div(className='seven columns offset-by-one-half.column', children=right_column),
                     html.Div(className='twelve columns', children=dcc.Graph(id='bank-wordcloud')),
+                    html.Div(className='twelve columns', children=dcc.Graph(id='tsne-lda')),
                     html.Div(className='twelve columns', children=dash_table.DataTable(
                                                                     id='lda-table',
                                                                     style_cell_conditional=[
@@ -217,7 +246,6 @@ app.layout = html.Div(className='container', children=[
                                                                         'whiteSpace': 'normal',
                                                                         'height': 'auto'
                                                                     },
-                                                                    editable=True,
                                                                     filter_action="native",
                                                                     page_action='native',
                                                                     page_current= 0,
@@ -272,27 +300,29 @@ def update_output(value):
     # print(value)
     return 'You have selected time frame: "{}"'.format(value)
 
-"""
-@app.callback([Output('lda-table', 'data'), Output('lda-table', 'columns')],
+@app.callback([Output('lda-table', 'data'),
+Output('lda-table', 'columns'),
+Output('tsne-lda', 'figure')],
 [Input("bank-sample", "clickData"),
 Input('bank-drop', 'value'),
 Input('time-window-slider', 'value'),
 Input('n-selection-slider', 'value')])
-def update_lda_table(value_click, value_drop, time_values, n_selection):
+def update_lda_table(bank_click, value_drop, time_values, n_selection):
     if value_drop:
         selected_bank = value_drop
-    elif value_click: 
-        selected_bank = value_click['points'][0]['x']
+        print(selected_bank)
+    elif bank_click: 
+        selected_bank = bank_click['points'][0]['x']
     else:
-        return [[],[]]
+        return [[],[], {}]
 
     print("redrawing lda table...")
     n = float(n_selection/100)
     print("got time window:", str(time_values))
     print("got n_selection:", str(n_selection), str(n))
-    # df = global_df
+
+
     # sample the dataset according to the slider
-    
     local_df = sample_data(global_df, n)
     if time_values is not None:
         local_df['Date received'] =  pd.to_datetime(local_df['Date received'], format='%m/%d/%Y')
@@ -301,12 +331,15 @@ def update_lda_table(value_click, value_drop, time_values, n_selection):
     
     add_stopwords(selected_bank)
 
-    df = lda_visualisations(local_df)
+    complaints_text  = list(local_df["Consumer complaint narrative"].dropna().values)
+    tsne_lda, lda_model, topic_num,  df_dominant_topic = lda_analysis(complaints_text, list(STOPWORDS))
     
-    columns = [{'name': i, 'id': i} for i in df.columns]
-    data = df.to_dict('records')
-    return data, columns
-"""
+    lda_scatter_figure = populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic)
+    
+    columns = [{'name': i, 'id': i} for i in df_dominant_topic.columns]
+    data = df_dominant_topic.to_dict('records')
+    
+    return (data, columns, lda_scatter_figure)
 
 @app.callback(
 [Output('debug-1', 'children'),
@@ -326,9 +359,8 @@ def update_wordcloud(value_click, value_drop, time_values, n_selection):
     n = float(n_selection/100)
     print("got time window:", str(time_values))
     print("got n_selection:", str(n_selection), str(n))
-    # df = global_df
+
     # sample the dataset according to the slider
-    
     local_df = sample_data(global_df, n)
     if time_values is not None:
         local_df['Date received'] =  pd.to_datetime(local_df['Date received'], format='%m/%d/%Y')
@@ -347,6 +379,8 @@ def update_bank_click(value):
     if value is not None:
         selected_bank = value['points'][0]['x']
         return(selected_bank)
+    else:
+        return('CITIBANK, N.A.')
 
 def update_debug(input_value, source):
     if input_value is not None:
