@@ -235,6 +235,7 @@
 
 #app-page-content .rc-slider-handle {
     border: solid 2px #119DFF;            /* Change in individual app stylesheet */
+    
 
 @media (max-width: 800px) {
 

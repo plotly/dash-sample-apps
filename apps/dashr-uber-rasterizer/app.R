@@ -1,10 +1,10 @@
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != "") {
   pathPrefix <- sprintf("/%s/", appName)
-  
+
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  
+
   setwd(sprintf("/app/apps/%s", appName))
 }
 
@@ -15,6 +15,7 @@ library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
 library(rasterizer)
+library(viridis)
 
 app <- Dash$new()
 
@@ -32,7 +33,7 @@ default_colorscale <- lapply(0:256,
                                if(i == 0) {
                                  return(list(0, 'black'))
                                } else {
-                                 return(list(i/256, viridis(256)[i]))
+                                 return(list(i/256, viridis::viridis(256)[i]))
                                }
                              }
 )
@@ -42,8 +43,8 @@ initial_plot <- plot_ly(ridesDf, x = ~Lat, y = ~Lon, colorscale = default_colors
   add_rasterizer()
 
 default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
-              paper_bgcolor='rgb(38, 43, 61)',
-              plot_bgcolor='rgb(38, 43, 61)')
+                       paper_bgcolor='rgb(38, 43, 61)',
+                       plot_bgcolor='rgb(38, 43, 61)')
 
 
 ################################################### App Layout ##################################################
@@ -126,7 +127,7 @@ app$callback(
   ),
   update_graph <- function(data, cmap, background) {
 
-    
+
     color <- if(cmap == "blue") {
       c("lightblue", "darkblue")
     } else if(cmap =="viridis") {
@@ -138,9 +139,9 @@ app$callback(
     if(background != "black") {
       color <- rev(color)
     }
-    
+
     len_col <- length(color)
-    
+
     colorscale <- lapply(0:len_col,
                          function(i) {
                            if(i == 0) {
@@ -155,11 +156,11 @@ app$callback(
     x_max <- data[[1]][[2]]
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
-    
+
 
     filtered_df_lat <- ridesDf[(ridesDf$Lat > x_min & ridesDf$Lat < x_max),]
     filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > y_min & filtered_df_lat$Lon < y_max,]
-    
+
     return(
       plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = colorscale) %>%
         add_rasterizer()
@@ -181,20 +182,20 @@ app$callback(
     if (length(relayout) == 4) {
       x_range <- c(relayout$`xaxis.range[0]`, relayout$`xaxis.range[1]`)
       y_range <- c(relayout$`yaxis.range[0]`, relayout$`yaxis.range[1]`)
-      
-    } 
-    
+
+    }
+
     else {
       x_range <- c(min(ridesDf$Lat), max(ridesDf$Lat))
       y_range <- c(min(ridesDf$Lon), max(ridesDf$Lon))
     }
-    
+
     return(list(x_range, y_range))
   }
 )
 
 if(appName != "") {
-  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
   app$run_server(showcase = TRUE)
 }
