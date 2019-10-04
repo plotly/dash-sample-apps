@@ -20,12 +20,12 @@ library(viridis)
 
 app <- Dash$new()
 
-ridesRaw_1 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv" %>%
-  data.table::fread(stringsAsFactors = FALSE)
-ridesRaw_2 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv" %>%
-  data.table::fread(stringsAsFactors = FALSE)
-ridesRaw_3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv"  %>%
-  data.table::fread(stringsAsFactors = FALSE)
+# ridesRaw_1 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv" %>%
+#   data.table::fread(stringsAsFactors = FALSE)
+# ridesRaw_2 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv" %>%
+#   data.table::fread(stringsAsFactors = FALSE)
+# ridesRaw_3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv"  %>%
+#   data.table::fread(stringsAsFactors = FALSE)
 ridesDf <- list(ridesRaw_1, ridesRaw_2, ridesRaw_3) %>%
   data.table::rbindlist()
 
@@ -172,7 +172,7 @@ app$callback(
     
     
     filtered_df_lat <- ridesDf[ridesDf$Lat > x_min & ridesDf$Lat < x_max,]
-    filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > -y_min & filtered_df_lat$Lon < y_max,]
+    filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > y_min & filtered_df_lat$Lon < y_max,]
     
     return(
       plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = colorscale) %>%
