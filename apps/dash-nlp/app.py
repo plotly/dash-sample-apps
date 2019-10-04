@@ -99,7 +99,12 @@ def add_stopwords(selected_bank):
     STOPWORDS.add('xx')
     STOPWORDS.add('xxxx')
     selected_bank_words = re.findall(r"[\w']+", selected_bank)
-    for word in selected_bank_words: STOPWORDS.add(word)
+    for word in selected_bank_words: 
+        #STOPWORDS.add(word)
+        STOPWORDS.add(word.lower())
+
+    print("ADD STOPWORDS")
+    print(selected_bank_words)
     return STOPWORDS
 
 def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
@@ -227,9 +232,11 @@ app.layout = html.Div(className='container', children=[
                 html.Div(className='', children=[
                     html.Div(className='five columns', children=left_column, style={'border': '1px solid', 'background': '#f9fafe',  'padding': '20px'}),
                     html.Div(className='seven columns offset-by-one-half.column', children=right_column),
-                    html.Div(className='twelve columns', children=dcc.Graph(id='bank-wordcloud')),
-                    html.Div(className='twelve columns', children=dcc.Graph(id='tsne-lda')),
-                    html.Div(className='twelve columns', children=dash_table.DataTable(
+                    html.Div(className='twelve columns', children=dcc.Loading(id="loading-wordcloud", children=[dcc.Graph(id='bank-wordcloud')], type="default")),
+                    html.Div(className='twelve columns', 
+                        children=dcc.Loading(id="loading-lda", children=[dcc.Graph(id='tsne-lda')], type="default")),
+                    html.Div(className='twelve columns', 
+                        children=dcc.Loading(id="loading-table", children=[dash_table.DataTable(
                                                                     id='lda-table',
                                                                     style_cell_conditional=[
                                                                         {
@@ -251,7 +258,7 @@ app.layout = html.Div(className='container', children=[
                                                                     page_current= 0,
                                                                     page_size= 5,
                                                                     columns=[],
-                                                                    data=[]))
+                                                                    data=[])], type="default"))
                     ])
                 ]
             )
@@ -373,6 +380,23 @@ def update_wordcloud(value_click, value_drop, time_values, n_selection):
     print("redrawing bank-wordcloud...done")
     return([update_debug(selected_bank, 'graph'), wordcloud])
 
+
+@app.callback([Output('lda-table', 'filter_query'), Output('lda-table', 'style_data_conditional')], [Input("tsne-lda", "clickData")])
+def filter_table_on_scatter_click(tsne_click):
+    if tsne_click is not None:
+        selected_complaint = tsne_click['points'][0]['hovertext']
+        filter_query = '{Document_No} eq ' + str(selected_complaint)
+        print(filter_query)
+        styled_data = [
+                        {
+                        'if': {'filter_query': filter_query},
+                        "backgroundColor": "#3D9970",
+                        'color': 'white'
+                        }
+                    ]
+        return(filter_query, styled_data)
+    else:
+        return ['', []]
 
 @app.callback(Output('bank-drop', 'value'), [Input("bank-sample", "clickData")])
 def update_bank_click(value):
