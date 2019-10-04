@@ -26,7 +26,6 @@
 }
 
 #app-page-header > a > img {
-    height: 36px;
     float: left;
     padding: 10px;
     padding-bottom: 0px;
@@ -47,7 +46,7 @@
 }
 
 #app-page-header > img {
-    height: 36px;
+    height: 40px;
     float:right;
     margin-top: 12px;
     margin-right: 10px;
@@ -55,7 +54,7 @@
 }
 #gh-link {
     text-decoration: none;
-    font-size: 10pt;
+    font-size: 15pt;
     font-family: sans-serif;
     color: white;
     border: solid 1px white;
@@ -64,6 +63,7 @@
     padding-top: 5px;
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom: 5px;
     font-weight: 100;
     position: relative;
     top: 15px;
@@ -75,6 +75,7 @@
 #gh-link:hover {
     color: #DFE8F3 !important;
     border-color: #DFE8F3 !important;
+    background-color: rgb(66, 75, 107);
 }
 
 /* Scrollbar */

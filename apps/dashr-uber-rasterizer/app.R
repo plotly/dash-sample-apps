@@ -17,6 +17,7 @@ library(data.table)
 library(rasterizer)
 library(viridis)
 
+
 app <- Dash$new()
 
 ridesRaw_1 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv" %>%
@@ -28,6 +29,7 @@ ridesRaw_3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rid
 ridesDf <- list(ridesRaw_1, ridesRaw_2, ridesRaw_3) %>%
   data.table::rbindlist()
 
+
 default_colorscale <- lapply(0:256,
                              function(i) {
                                if(i == 0) {
@@ -38,8 +40,10 @@ default_colorscale <- lapply(0:256,
                              }
 )
 
+filtered_df_lat <- ridesDf %>% filter(Lat > 39.6569 & Lat < 42.1166)
+filtered_df_lon <- filtered_df_lat %>% filter(Lon > -74.929 & Lon < -72.066)
 
-initial_plot <- plot_ly(ridesDf, x = ~Lat, y = ~Lon, colorscale = default_colorscale) %>%
+initial_plot <- plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = default_colorscale) %>%
   add_rasterizer()
 
 default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
@@ -165,11 +169,11 @@ app$callback(
     x_max <- data[[1]][[2]]
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
-
-
-    filtered_df_lat <- ridesDf[(ridesDf$Lat > x_min & ridesDf$Lat < x_max),]
-    filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > y_min & filtered_df_lat$Lon < y_max,]
-
+    
+    
+    filtered_df_lat <- ridesDf[ridesDf$Lat > x_min & ridesDf$Lat < x_max,]
+    filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > -y_min & filtered_df_lat$Lon < y_max,]
+    
     return(
       plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = colorscale) %>%
         add_rasterizer(reduction_func = reduc)
@@ -208,3 +212,4 @@ if(appName != "") {
 } else {
   app$run_server(showcase = TRUE)
 }
+
