@@ -43,8 +43,9 @@ default_colorscale <- lapply(0:256,
 filtered_df_lat <- ridesDf %>% filter(Lat > 39.6569 & Lat < 42.1166)
 filtered_df_lon <- filtered_df_lat %>% filter(Lon > -74.929 & Lon < -72.066)
 
-initial_plot <- plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat, colorscale = default_colorscale) %>%
-  add_rasterizer()
+initial_plot <- plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
+                        colorscale = default_colorscale,
+                        colorbar = list(title = "No. of Rides")) %>% add_rasterizer()
 
 default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
                        paper_bgcolor='rgb(38, 43, 61)',
@@ -177,7 +178,9 @@ app$callback(
     filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > x_min & filtered_df_lat$Lon < x_max,]
 
     return(
-      plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat, colorscale = colorscale) %>%
+      plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
+              colorscale = colorscale,
+              colorbar = list(title = "No. of Rides")) %>%
         add_rasterizer(reduction_func = reduc)
       %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
