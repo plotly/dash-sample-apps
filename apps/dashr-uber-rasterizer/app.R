@@ -43,15 +43,17 @@ default_colorscale <- lapply(0:256,
 filtered_df_lat <- ridesDf %>% filter(Lat > 39.6569 & Lat < 42.1166)
 filtered_df_lon <- filtered_df_lat %>% filter(Lon > -74.929 & Lon < -72.066)
 
-initial_plot <- plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = default_colorscale) %>%
+initial_plot <- plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat, colorscale = default_colorscale) %>%
   add_rasterizer()
 
 default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
                        paper_bgcolor='rgb(38, 43, 61)',
-                       plot_bgcolor='rgb(38, 43, 61)')
+                       plot_bgcolor='rgb(38, 43, 61)',
+                       xaxis = list(title = "Longitude"),
+                       yaxis = list(title = "Latitude"))
 
 
-################################################### App Layout ##################################################
+################################################### App Layout #####################################
 header <- htmlDiv(
   id = "app-page-header",
   style = list(
@@ -169,18 +171,20 @@ app$callback(
     x_max <- data[[1]][[2]]
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
-    
-    
-    filtered_df_lat <- ridesDf[ridesDf$Lat > x_min & ridesDf$Lat < x_max,]
-    filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > y_min & filtered_df_lat$Lon < y_max,]
-    
+
+
+    filtered_df_lat <- ridesDf[(ridesDf$Lat > y_min & ridesDf$Lat < y_max),]
+    filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > x_min & filtered_df_lat$Lon < x_max,]
+
     return(
-      plot_ly(filtered_df_lon, x = ~Lat, y = ~Lon, colorscale = colorscale) %>%
+      plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat, colorscale = colorscale) %>%
         add_rasterizer(reduction_func = reduc)
       %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
                paper_bgcolor='rgb(38, 43, 61)',
-               plot_bgcolor='rgb(38, 43, 61)')
+               plot_bgcolor='rgb(38, 43, 61)',
+               xaxis = list(title = "Longitude"),
+               yaxis = list(title = "Latitude"))
     )
   }
 )
@@ -199,8 +203,8 @@ app$callback(
     }
 
     else {
-      x_range <- c(min(ridesDf$Lat), max(ridesDf$Lat))
-      y_range <- c(min(ridesDf$Lon), max(ridesDf$Lon))
+      x_range <- c(min(ridesDf$Lon), max(ridesDf$Lon))
+      y_range <- c(min(ridesDf$Lat), max(ridesDf$Lat))
     }
 
     return(list(x_range, y_range))
