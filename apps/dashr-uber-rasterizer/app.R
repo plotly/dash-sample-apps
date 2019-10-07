@@ -89,7 +89,7 @@ options <- htmlDiv(children =htmlDiv(list(
   htmlH4("What is Dash Uber Rasterizer?", style = list("font-size" = "24pt", "font-weight" = "200", "letter-spacing" = "1px")),
   dccMarkdown("This Dash app demonstrates large data visualization package _rasterly_.
               The dataset consists of over 4.5 million observations, representing Uber rides taken in New York City in 2014.
-              With rasterly, extremely large datasets can be visualized in mere moments with color gradients and
+              With rasterly, extremely large datasets such as this can be visualized in mere moments with color gradients and
               layers to represent data relationships.
               ", style = list("padding" =  "5px")),
   dccMarkdown("Explore the 'rasterly' package [here](https://github.com/plotly/rasterly) for further information.
@@ -117,7 +117,11 @@ options <- htmlDiv(children =htmlDiv(list(
   htmlH4("Point Scaling", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   dccDropdown(
     id = 'scaling',
-    value = 100
+    value = 'log',
+    options = list(
+      list(label = 'Log', value = 'log'),
+      list(label = 'Origin', value = 'origin')
+    )
   ),
   htmlH4("Reduction method", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   dccDropdown(
@@ -199,9 +203,10 @@ app$callback(
     input(id = 'store', property = 'data'),
     input(id = 'cmap', property = 'value'),
     input(id = 'background', property = 'value'),
-    input(id = 'reduc', property = 'value')
+    input(id = 'reduc', property = 'value'),
+    input(id = 'scaling', property = 'value')
   ),
-  update_graph <- function(data, cmap, background, reduc) {
+  update_graph <- function(data, cmap, background, reduc, scale) {
     
     color <- if(cmap == "blue") {
       c("lightblue", "darkblue")
@@ -240,7 +245,7 @@ app$callback(
       plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
               colorscale = colorscale,
               colorbar = list(title = "No. of Rides")) %>%
-        add_rasterizer(reduction_func = reduc)
+        add_rasterizer(reduction_func = reduc, scaling = scale)
       %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
                paper_bgcolor='rgb(38, 43, 61)',

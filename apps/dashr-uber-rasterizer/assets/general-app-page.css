@@ -80,7 +80,7 @@ margin-block-end: 0.6em;
 
 #reset-button {
  	position:relative;
- 	left:30%;
+ 	left:36%;
     text-decoration: none;
     font-size: 12pt;
     font-family: sans-serif;
@@ -88,7 +88,6 @@ margin-block-end: 0.6em;
     background-color: rgb(38, 43, 61);
     border: solid 1px #d8d8d8;
     border-radius: 2px;
-    padding: 2px;
     padding-top: 5px;
     padding-left: 15px;
     padding-right: 15px;
