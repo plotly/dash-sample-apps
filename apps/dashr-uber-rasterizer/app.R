@@ -40,8 +40,8 @@ default_colorscale <- lapply(0:256,
                              }
 )
 
-filtered_df_lat <- ridesDf %>% filter(Lat > 39.6569 & Lat < 42.1166)
-filtered_df_lon <- filtered_df_lat %>% filter(Lon > -74.929 & Lon < -72.066)
+filtered_df_lat <- ridesDf %>% filter(Lat > 39.9 & Lat < 42.1166)
+filtered_df_lon <- filtered_df_lat %>% filter(Lon > -74.929 & Lon < -72.5)
 
 initial_plot <- plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
                         colorscale = default_colorscale,
@@ -121,6 +121,12 @@ options <- htmlDiv(children =htmlDiv(list(
                    list(label = "mean", value = "mean")),
 
     value = 'sum'
+  ),
+  htmlBr(),
+  htmlButton(
+    id = 'reset-button',
+    n_clicks = 0,
+    children = 'Reset Graph'
   )
 )), className = 'item-a')
 
@@ -134,6 +140,53 @@ app$layout(
   ), className = 'container'))
 
 ################################################### App Callbacks ###############################################
+
+# Callback to reset the reset button.
+
+app$callback(
+  output(id = 'reset-button', property = 'n_clicks'),
+  params = list(
+    input(id = 'rasterizer-output', property = 'relayoutData')
+  ),
+  reset_clicks <- function(relayout) {
+    if (is.null(relayout[1]) == FALSE) {
+      return(0)
+    }
+  } 
+)
+
+# Callback to subset and return data ranges based on the zoom of the plot.
+
+app$callback(
+  output(id = 'store', property = 'data'),
+  params = list(
+    input(id ='rasterizer-output', property = 'relayoutData'),
+    input(id ='reset-button', property = 'n_clicks')
+  ),
+  update_stored_data <- function(relayout, n_clicks) {
+    if (n_clicks > 0) {
+      x_range <- c(min(ridesDf$Lon), -72.5)
+      y_range <- c(39.9, max(ridesDf$Lat))
+      return(list(x_range, y_range))
+    }
+    else {
+      if (length(relayout) == 4) {
+        x_range <- c(relayout$`xaxis.range[0]`, relayout$`xaxis.range[1]`)
+        y_range <- c(relayout$`yaxis.range[0]`, relayout$`yaxis.range[1]`)
+  
+      }
+  
+      else {
+        x_range <- c(min(ridesDf$Lon), -72.5)
+        y_range <- c(39.9, max(ridesDf$Lat))
+      }
+    }
+    return(list(x_range, y_range))
+  }
+)
+
+# Callback to generate rasterization plot.
+
 app$callback(
   output(id = 'rasterizer-output', property = 'figure'),
   params = list(
@@ -143,7 +196,7 @@ app$callback(
     input(id = 'reduc', property = 'value')
   ),
   update_graph <- function(data, cmap, background, reduc) {
-
+    
     color <- if(cmap == "blue") {
       c("lightblue", "darkblue")
     } else if(cmap =="viridis") {
@@ -151,13 +204,13 @@ app$callback(
     } else {
       eval(parse(text = cmap))
     }
-
+    
     if(background != "black") {
       color <- rev(color)
     }
-
+    
     len_col <- length(color)
-
+    
     colorscale <- lapply(0:len_col,
                          function(i) {
                            if(i == 0) {
@@ -167,16 +220,16 @@ app$callback(
                            }
                          }
     )
-
+    
     x_min <- data[[1]][[1]]
     x_max <- data[[1]][[2]]
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
-
-
+    
+    
     filtered_df_lat <- ridesDf[(ridesDf$Lat > y_min & ridesDf$Lat < y_max),]
     filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > x_min & filtered_df_lat$Lon < x_max,]
-
+    
     return(
       plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
               colorscale = colorscale,
@@ -193,30 +246,8 @@ app$callback(
 )
 
 
-app$callback(
-  output(id = 'store', property = 'data'),
-  params = list(
-    input('rasterizer-output', property = 'relayoutData')
-  ),
-  update_stored_data <- function(relayout) {
-    if (length(relayout) == 4) {
-      x_range <- c(relayout$`xaxis.range[0]`, relayout$`xaxis.range[1]`)
-      y_range <- c(relayout$`yaxis.range[0]`, relayout$`yaxis.range[1]`)
-
-    }
-
-    else {
-      x_range <- c(min(ridesDf$Lon), max(ridesDf$Lon))
-      y_range <- c(min(ridesDf$Lat), max(ridesDf$Lat))
-    }
-
-    return(list(x_range, y_range))
-  }
-)
-
 if(appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
-  app$run_server(showcase = FALSE)
+  app$run_server(showcase = TRUE)
 }
-
