@@ -3,6 +3,7 @@ import flask
 import dash
 import dash_table
 import matplotlib.colors as mcolors
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
@@ -16,6 +17,7 @@ from ldacomplaints import lda_analysis
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 filename = "customer_complaints_narrative_sample.csv"
+PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
 
 """
 #  Helpful functions
@@ -201,67 +203,87 @@ def plotly_wordcloud(df):
 
 global_df = load_data(filename, 1) 
 
-left_column = [ html.H3(children='Select bank & dataset size'),
-                html.Label('Select percentage of dataset (higher is more accurate but also slower)',
-                        style={'marginTop': 30}),
-               dcc.Slider(id="n-selection-slider",
+navbar = dbc.Navbar(
+    children=[
+            html.A(
+            # Use row and col to control vertical alignment of logo / brand
+            dbc.Row(
+                [
+                    dbc.Col(html.Img(src=PLOTLY_LOGO, height="30px")),
+                    dbc.Col(dbc.NavbarBrand("Bank Customer Complaints", className="ml-2")),
+                ],
+                align="center",
+                no_gutters=True,
+            ),
+            href="https://plot.ly",
+        ),
+    ],
+    color="dark",
+    dark=True,
+    sticky="top",
+)
+
+left_column = dbc.Jumbotron([ html.H4(children='Select bank & dataset size', className='display-5'),
+              html.Hr(className="my-2"),
+              html.Label('Select percentage of dataset (higher is more accurate but also slower)', className="lead"),
+              dcc.Slider(id="n-selection-slider",
                           min=1,
                           max=100,
                           step=1,
                           marks=make_n_marks(),
                           value=10),
-               html.Label('Select a bank, using either the dropdown or the plot below.', 
-                          style={'marginTop': 50}),
+               html.Label('Select a bank', 
+                          style={'marginTop': 50}, className="lead"),
                dcc.Dropdown(id='bank-drop', clearable=False, style={'marginBottom': 50}),
-               html.Label("Select time frame"),
+               html.Label("Select time frame", className="lead"),
                html.Div(dcc.RangeSlider(id='time-window-slider'), style={'marginBottom': 50})
-              ]
+              ])
 
-right_column = [html.Label('RIGHT COLUMN TOP', style={'display': 'none'}),
-                html.Div(id='output-container-range-slider', style={'display': 'none'}),
-                html.Div(id='debug-1', style={'display': 'none'}),
-                html.Div(dcc.Graph(id='bank-sample')),
-                html.Div(id='debug-2', style={'display': 'none'}),
-                html.Div(id='debug-3', style={'display': 'none'})
-               ]
+lda_plot = dcc.Loading(id="loading-lda-plot", children=[dcc.Graph(id='tsne-lda')], type="default")
+lda_table = dcc.Loading(id="loading-lda-table", children=[dash_table.DataTable(
+                                                            id='lda-table',
+                                                            style_cell_conditional=[
+                                                                {
+                                                                    'if': {'column_id': 'Text'},
+                                                                    'textAlign': 'left',
+                                                                    'height': 'auto',
+                                                                    'width': '50%'
+                                                                }
+                                                            ],
+                                                            style_cell={'padding': '5px',
+                                                                        'overflow': 'hidden',
+                                                                        'textOverflow': 'ellipsis',
+                                                                        'maxWidth': 0},
+                                                            style_header={
+                                                                'backgroundColor': 'white',
+                                                                'fontWeight': 'bold'
+                                                            },
+                                                            style_data={
+                                                                'whiteSpace': 'normal',
+                                                                'height': 'auto'
+                                                            },
+                                                            filter_action="native",
+                                                            page_action='native',
+                                                            page_current= 0,
+                                                            page_size= 5,
+                                                            columns=[],
+                                                            data=[])], type="default")
+            
+
+wordcloud_plot = [dcc.Loading(id="loading-wordcloud", children=[dcc.Graph(id='bank-wordcloud')], type="default")]
+top_banks_plot = [dcc.Loading(id="loading-banks-hist", children=[dcc.Graph(id='bank-sample')], type="default")]
+
+body = dbc.Container([ 
+        dbc.Row([dbc.Col(left_column, md=5, align="center", style={'marginTop': 30}),  
+                 dbc.Col(top_banks_plot),]),
+        dbc.Row([dbc.Col(wordcloud_plot)]),
+        dbc.Row([dbc.Col([lda_plot, lda_table])]),
+        ], className="mt-12",)
+
 
 server = flask.Flask(__name__)
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets, server=server)
-app.layout = html.Div(className='container', children=[
-                html.H1(children='Banks customers complaints'),
-                html.Div(className='', children=[
-                    html.Div(className='five columns', children=left_column, style={'border': '1px solid', 'background': '#f9fafe',  'padding': '20px'}),
-                    html.Div(className='seven columns offset-by-one-half.column', children=right_column),
-                    html.Div(className='twelve columns', children=dcc.Loading(id="loading-wordcloud", children=[dcc.Graph(id='bank-wordcloud')], type="default")),
-                    html.Div(className='twelve columns', 
-                        children=dcc.Loading(id="loading-lda", children=[dcc.Graph(id='tsne-lda')], type="default")),
-                    html.Div(className='twelve columns', 
-                        children=dcc.Loading(id="loading-table", children=[dash_table.DataTable(
-                                                                    id='lda-table',
-                                                                    style_cell_conditional=[
-                                                                        {
-                                                                            'if': {'column_id': 'Text'},
-                                                                            'textAlign': 'left',
-                                                                        }
-                                                                    ],
-                                                                    style_cell={'padding': '5px'},
-                                                                    style_header={
-                                                                        'backgroundColor': 'white',
-                                                                         'fontWeight': 'bold'
-                                                                    },
-                                                                    style_data={
-                                                                        'whiteSpace': 'normal',
-                                                                        'height': 'auto'
-                                                                    },
-                                                                    filter_action="native",
-                                                                    page_action='native',
-                                                                    page_current= 0,
-                                                                    page_size= 5,
-                                                                    columns=[],
-                                                                    data=[])], type="default"))
-                    ])
-                ]
-            )
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], server=server)
+app.layout = html.Div(children=[navbar, body])
 
 """
 #  Callbacks
@@ -302,10 +324,6 @@ def set_n(n_value, time_values):
     print("redrawing bank-sample...done")
     return {'data': [{'x': values_sample, 'y': counts_sample, 'type': 'bar', 'name': ''}],'layout': {'title': 'Top 20 offenders'}}
 
-@app.callback(Output('output-container-range-slider', 'children'), [Input('time-window-slider', 'value')])
-def update_output(value):
-    # print(value)
-    return 'You have selected time frame: "{}"'.format(value)
 
 @app.callback([Output('lda-table', 'data'),
 Output('lda-table', 'columns'),
@@ -348,9 +366,7 @@ def update_lda_table(bank_click, value_drop, time_values, n_selection):
     
     return (data, columns, lda_scatter_figure)
 
-@app.callback(
-[Output('debug-1', 'children'),
-Output('bank-wordcloud', 'figure')],
+@app.callback(Output('bank-wordcloud', 'figure'),
 [Input("bank-sample", "clickData"),
 Input('bank-drop', 'value'),
 Input('time-window-slider', 'value'),
@@ -378,7 +394,7 @@ def update_wordcloud(value_click, value_drop, time_values, n_selection):
     wordcloud = plotly_wordcloud(local_df)
     
     print("redrawing bank-wordcloud...done")
-    return([update_debug(selected_bank, 'graph'), wordcloud])
+    return(wordcloud)
 
 
 @app.callback([Output('lda-table', 'filter_query'), Output('lda-table', 'style_data_conditional')], [Input("tsne-lda", "clickData")])
@@ -397,6 +413,7 @@ def filter_table_on_scatter_click(tsne_click):
         return(filter_query, styled_data)
     else:
         return ['', []]
+
 
 @app.callback(Output('bank-drop', 'value'), [Input("bank-sample", "clickData")])
 def update_bank_click(value):
