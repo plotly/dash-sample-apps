@@ -86,7 +86,8 @@ header <- htmlDiv(
 
 
 options <- htmlDiv(children =htmlDiv(list(
-  htmlH2("Chart Options", style = list("font-size" = "23pt", "font-weight" = "200", "letter-spacing" = "1px")),
+  dccMarkdown("This Dash app demonstrates large data visualization package _rasterly_.
+              The dataset is consisted of over 4.5 million observations, representing Uber rides taken in NYC in 2014."),
   htmlH4("Colorscale", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   htmlDiv(dccDropdown(
     id = "cmap",
@@ -107,7 +108,6 @@ options <- htmlDiv(children =htmlDiv(list(
       list('label' = 'White', 'value' = 'white')
     )
   ), style = list("color" = "white")),
-  htmlBr(),
   htmlH4("Point Scaling", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   dccDropdown(
     id = 'scaling',
@@ -217,6 +217,6 @@ app$callback(
 if(appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
-  app$run_server(showcase = TRUE)
+  app$run_server(showcase = FALSE)
 }
 

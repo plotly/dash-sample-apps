@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400');
 
+h4 {
+margin-block-start: 0.65em;
+margin-block-end: 0.65em;
+}
+
 .dashbio-loading {
     display: inline-block;
 }
