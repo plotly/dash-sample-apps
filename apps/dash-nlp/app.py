@@ -245,7 +245,7 @@ def plotly_wordcloud(df):
                 "automargin": True,
                 "range": [-100, 450],
             },
-            "margin": dict(t=20, b=20, l=10, r=10, pad=4)
+            "margin": dict(t=20, b=20, l=10, r=10, pad=4),
         }
     )
 
@@ -266,10 +266,7 @@ def plotly_wordcloud(df):
                 "orientation": "h",
             }
         ],
-        "layout": {
-            "height": "550",
-            "margin": dict(t=20, b=20, l=100, r=20, pad=4)
-        },
+        "layout": {"height": "550", "margin": dict(t=20, b=20, l=100, r=20, pad=4)},
     }
 
     return wordcloud_figure_data, frequency_figure_data
@@ -303,78 +300,114 @@ navbar = dbc.Navbar(
     sticky="top",
 )
 
-left_column = dbc.Jumbotron([ html.H4(children='Select bank & dataset size', className='display-5'),
-              html.Hr(className="my-2"),
-              html.Label('Select percentage of dataset (higher is more accurate but also slower)', className="lead"),
-              dcc.Slider(id="n-selection-slider",
-                          min=1,
-                          max=100,
-                          step=1,
-                          marks=make_n_marks(),
-                          value=10),
-               html.Label('Select a bank', 
-                          style={'marginTop': 50}, className="lead"),
-               dcc.Dropdown(id='bank-drop', clearable=False, style={'marginBottom': 50}),
-               html.Label("Select time frame", className="lead"),
-               html.Div(dcc.RangeSlider(id='time-window-slider'), style={'marginBottom': 50})
-              ])
+left_column = dbc.Jumbotron(
+    [
+        html.H4(children="Select bank & dataset size", className="display-5"),
+        html.Hr(className="my-2"),
+        html.Label(
+            "Select percentage of dataset (higher is more accurate but also slower)",
+            className="lead",
+        ),
+        dcc.Slider(
+            id="n-selection-slider",
+            min=1,
+            max=100,
+            step=1,
+            marks=make_n_marks(),
+            value=10,
+        ),
+        html.Label("Select a bank", style={"marginTop": 50}, className="lead"),
+        dcc.Dropdown(id="bank-drop", clearable=False, style={"marginBottom": 50}),
+        html.Label("Select time frame", className="lead"),
+        html.Div(dcc.RangeSlider(id="time-window-slider"), style={"marginBottom": 50}),
+    ]
+)
 
-lda_plot = dcc.Loading(id="loading-lda-plot", children=[dcc.Graph(id='tsne-lda')], type="default")
-lda_table = dcc.Loading(id="loading-lda-table", children=[dash_table.DataTable(
-                                                            id='lda-table',
-                                                            style_cell_conditional=[
-                                                                {
-                                                                    'if': {'column_id': 'Text'},
-                                                                    'textAlign': 'left',
-                                                                    'height': 'auto',
-                                                                    'width': '50%'
-                                                                }
-                                                            ],
-                                                            style_cell={'padding': '5px',
-                                                                        'overflow': 'hidden',
-                                                                        'textOverflow': 'ellipsis',
-                                                                        'maxWidth': 0},
-                                                            style_header={
-                                                                'backgroundColor': 'white',
-                                                                'fontWeight': 'bold'
-                                                            },
-                                                            style_data={
-                                                                'whiteSpace': 'normal',
-                                                                'height': 'auto'
-                                                            },
-                                                            filter_action="native",
-                                                            page_action='native',
-                                                            page_current= 0,
-                                                            page_size= 5,
-                                                            columns=[],
-                                                            data=[])], type="default")
-            
+lda_plot = dcc.Loading(
+    id="loading-lda-plot", children=[dcc.Graph(id="tsne-lda")], type="default"
+)
+lda_table = dcc.Loading(
+    id="loading-lda-table",
+    children=[
+        dash_table.DataTable(
+            id="lda-table",
+            style_cell_conditional=[
+                {
+                    "if": {"column_id": "Text"},
+                    "textAlign": "left",
+                    "height": "auto",
+                    "width": "50%",
+                }
+            ],
+            style_cell={
+                "padding": "5px",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis",
+                "maxWidth": 0,
+            },
+            style_header={"backgroundColor": "white", "fontWeight": "bold"},
+            style_data={"whiteSpace": "normal", "height": "auto"},
+            filter_action="native",
+            page_action="native",
+            page_current=0,
+            page_size=5,
+            columns=[],
+            data=[],
+        )
+    ],
+    type="default",
+)
+
 
 wordcloud_plots = [
     dbc.CardHeader(html.H5("Most popular words in complaints")),
-    dbc.CardBody([
-        dbc.Row([
-            dbc.Col(
-                dcc.Loading(id="loading-frequencies", children=[dcc.Graph(id='frequency_figure')], type="default"),
-            ),
-            dbc.Col(
-                dcc.Loading(id="loading-wordcloud", children=[dcc.Graph(id='bank-wordcloud')], type="default"),
-                md=8
+    dbc.CardBody(
+        [
+            dbc.Row(
+                [
+                    dbc.Col(
+                        dcc.Loading(
+                            id="loading-frequencies",
+                            children=[dcc.Graph(id="frequency_figure")],
+                            type="default",
+                        )
+                    ),
+                    dbc.Col(
+                        dcc.Loading(
+                            id="loading-wordcloud",
+                            children=[dcc.Graph(id="bank-wordcloud")],
+                            type="default",
+                        ),
+                        md=8,
+                    ),
+                ]
             )
-        ])
-    ]),
+        ]
+    ),
 ]
 
 top_banks_plot = [
-     dbc.CardHeader(html.H5("Top 20 offenders")),
-     dbc.CardBody([dcc.Loading(id="loading-banks-hist", children=[dcc.Graph(id='bank-sample')], type="default")]),
-    ]
+    dbc.CardHeader(html.H5("Top 20 offenders")),
+    dbc.CardBody(
+        [
+            dcc.Loading(
+                id="loading-banks-hist",
+                children=[dcc.Graph(id="bank-sample")],
+                type="default",
+            )
+        ]
+    ),
+]
 
-body = dbc.Container([ 
-        dbc.Row([dbc.Col(left_column, md=5, align="center"),  
-                 dbc.Col(
-                    dbc.Card(top_banks_plot, color="light")
-                ),], style={'marginTop': 30}),
+body = dbc.Container(
+    [
+        dbc.Row(
+            [
+                dbc.Col(left_column, md=5, align="center"),
+                dbc.Col(dbc.Card(top_banks_plot, color="light")),
+            ],
+            style={"marginTop": 30},
+        ),
         dbc.Card(wordcloud_plots, color="light"),
         dbc.Row([dbc.Col([lda_plot, lda_table])]),
     ],
@@ -439,13 +472,23 @@ def set_n(n_value, time_values):
     values_sample, counts_sample = calculate_sample(local_df, sample_size, time_values)
     print("redrawing bank-sample...done")
 
-    data = [{'x': values_sample, 'y': counts_sample, 'text': values_sample, 'textposition': 'auto', 'type': 'bar', 'name': ''}]
-    layout = {'autosize': False,
-              'margin': dict(t=10, b=10, l=30, r=0, pad=4),
-              'xaxis': {'showticklabels': False},
-              }
+    data = [
+        {
+            "x": values_sample,
+            "y": counts_sample,
+            "text": values_sample,
+            "textposition": "auto",
+            "type": "bar",
+            "name": "",
+        }
+    ]
+    layout = {
+        "autosize": False,
+        "margin": dict(t=10, b=10, l=30, r=0, pad=4),
+        "xaxis": {"showticklabels": False},
+    }
 
-    return {'data': data, 'layout': layout}
+    return {"data": data, "layout": layout}
 
 
 @app.callback(
@@ -590,5 +633,5 @@ def update_debug(input_value, source):
         return "picked value %s from %s" % (input_value, source)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run_server(debug=True)
