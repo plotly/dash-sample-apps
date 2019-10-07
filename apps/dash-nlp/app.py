@@ -195,7 +195,16 @@ def plotly_wordcloud(df):
                         'margin': dict(t=100, b=100, l=100, r=100, pad=4),
                         'title': 'Most frequent words in a complaint'})
     
-    return {'data': [trace],'layout': layout}
+    wordcloud_figure_data = {'data': [trace],'layout': layout}
+    
+    word_list_top = word_list[:25]
+    word_list_top.reverse()
+    freq_list_top = freq_list[:25]
+    freq_list_top.reverse()
+
+    frequency_figure_data = {'data': [{'y': word_list_top, 'x': freq_list_top, 'type': 'bar', 'name': '', 'orientation': 'h'}],'layout': {'title': 'Top 25 most frequent words', 'height': '550'}}
+
+    return wordcloud_figure_data, frequency_figure_data
 
 """
 #  Page layout and contents
@@ -231,7 +240,7 @@ left_column = dbc.Jumbotron([ html.H4(children='Select bank & dataset size', cla
                           max=100,
                           step=1,
                           marks=make_n_marks(),
-                          value=10),
+                          value=5),
                html.Label('Select a bank', 
                           style={'marginTop': 50}, className="lead"),
                dcc.Dropdown(id='bank-drop', clearable=False, style={'marginBottom': 50}),
@@ -272,11 +281,13 @@ lda_table = dcc.Loading(id="loading-lda-table", children=[dash_table.DataTable(
 
 wordcloud_plot = [dcc.Loading(id="loading-wordcloud", children=[dcc.Graph(id='bank-wordcloud')], type="default")]
 top_banks_plot = [dcc.Loading(id="loading-banks-hist", children=[dcc.Graph(id='bank-sample')], type="default")]
+frequency_word_plot = [dcc.Loading(id="loading-frequency", children=[dcc.Graph(id='frequency_figure')], type="default")]
 
 body = dbc.Container([ 
         dbc.Row([dbc.Col(left_column, md=5, align="center", style={'marginTop': 30}),  
                  dbc.Col(top_banks_plot),]),
         dbc.Row([dbc.Col(wordcloud_plot)]),
+        dbc.Row([dbc.Col(frequency_word_plot)]),
         dbc.Row([dbc.Col([lda_plot, lda_table])]),
         ], className="mt-12",)
 
@@ -357,6 +368,8 @@ def update_lda_table(bank_click, value_drop, time_values, n_selection):
     add_stopwords(selected_bank)
 
     complaints_text  = list(local_df["Consumer complaint narrative"].dropna().values)
+    if len(complaints_text) <= 10: # we cannot do LDA on less than 11 complaints
+        return [[],[], {}]
     tsne_lda, lda_model, topic_num,  df_dominant_topic = lda_analysis(complaints_text, list(STOPWORDS))
     
     lda_scatter_figure = populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic)
@@ -366,7 +379,8 @@ def update_lda_table(bank_click, value_drop, time_values, n_selection):
     
     return (data, columns, lda_scatter_figure)
 
-@app.callback(Output('bank-wordcloud', 'figure'),
+@app.callback([Output('bank-wordcloud', 'figure'),
+Output('frequency_figure', 'figure')],
 [Input("bank-sample", "clickData"),
 Input('bank-drop', 'value'),
 Input('time-window-slider', 'value'),
@@ -377,7 +391,7 @@ def update_wordcloud(value_click, value_drop, time_values, n_selection):
     elif value_click: 
         selected_bank = value_click['points'][0]['x']
     else:
-        return ["",{}]
+        return {}, {}
     print("redrawing bank-wordcloud...")
     n = float(n_selection/100)
     print("got time window:", str(time_values))
@@ -391,10 +405,10 @@ def update_wordcloud(value_click, value_drop, time_values, n_selection):
     local_df = local_df[local_df["Company"]==selected_bank]
     
     add_stopwords(selected_bank)
-    wordcloud = plotly_wordcloud(local_df)
+    wordcloud, frequency_figure = plotly_wordcloud(local_df)
     
     print("redrawing bank-wordcloud...done")
-    return(wordcloud)
+    return(wordcloud, frequency_figure)
 
 
 @app.callback([Output('lda-table', 'filter_query'), Output('lda-table', 'style_data_conditional')], [Input("tsne-lda", "clickData")])
@@ -429,4 +443,4 @@ def update_debug(input_value, source):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)
