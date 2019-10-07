@@ -23,7 +23,6 @@ dash-table==4.2.0
 decorator==4.4.0
 defusedxml==0.6.0
 docutils==0.15.2
-en-core-web-sm==2.1.0
 entrypoints==0.3
 Flask==1.1.1
 Flask-Compress==1.4.0
