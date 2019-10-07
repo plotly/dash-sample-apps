@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400');
 
 h4 {
-margin-block-start: 0.65em;
-margin-block-end: 0.65em;
+margin-block-start: 0.6em;
+margin-block-end: 0.6em;
 }
 
 .dashbio-loading {
@@ -77,6 +77,25 @@ margin-block-end: 0.65em;
     margin-left: 0px;
     transition-duration: 400ms;
 }
+
+#reset-button {
+ 	position:relative;
+ 	left:30%;
+    text-decoration: none;
+    font-size: 12pt;
+    font-family: sans-serif;
+    color: #d8d8d8;
+    background-color: rgb(38, 43, 61);
+    border: solid 1px #d8d8d8;
+    border-radius: 2px;
+    padding: 2px;
+    padding-top: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 5px;
+    font-weight: 100;
+}
+
 #gh-link:hover {
     color: #DFE8F3 !important;
     border-color: #DFE8F3 !important;
