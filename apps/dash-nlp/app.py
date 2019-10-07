@@ -2,6 +2,7 @@
 import flask
 import dash
 import dash_table
+import pathlib
 import matplotlib.colors as mcolors
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
@@ -14,6 +15,8 @@ import numpy as np
 from wordcloud import WordCloud, STOPWORDS
 import re
 from ldacomplaints import lda_analysis
+
+DATA_PATH = pathlib.Path(__file__).parent.resolve()
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 filename = "customer_complaints_narrative_sample.csv"
@@ -276,7 +279,7 @@ def plotly_wordcloud(df):
 #  Page layout and contents
 """
 
-global_df = load_data(filename, 1)
+global_df = load_data(DATA_PATH.joinpath(filename), 1)
 
 navbar = dbc.Navbar(
     children=[
