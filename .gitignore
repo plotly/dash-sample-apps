@@ -6,3 +6,4 @@ venv/
 .DS_Store
 .Rproj.user
 apps/dashr-ncbi-explorer/restructuredApp.R
+apps/dashr-uber-rasterizer/.Rhistory
