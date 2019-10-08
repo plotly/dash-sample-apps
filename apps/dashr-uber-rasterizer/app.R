@@ -16,6 +16,7 @@ library(dashHtmlComponents)
 library(data.table)
 library(rasterizer)
 library(viridis)
+library(rasterly)
 
 
 app <- Dash$new()
@@ -45,7 +46,7 @@ filtered_df_lon <- filtered_df_lat %>% filter(Lon > -74.929 & Lon < -72.5)
 
 initial_plot <- plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
                         colorscale = default_colorscale,
-                        colorbar = list(title = "No. of Rides")) %>% add_rasterizer()
+                        colorbar = list(title = "No. of Rides")) %>% add_rasterly()
 
 default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
                        paper_bgcolor='rgb(38, 43, 61)',
@@ -245,7 +246,7 @@ app$callback(
       plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
               colorscale = colorscale,
               colorbar = list(title = "No. of Rides")) %>%
-        add_rasterizer(reduction_func = reduc, scaling = scale)
+        add_rasterly(reduction_func = reduc, scaling = scale)
       %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
                paper_bgcolor='rgb(38, 43, 61)',
