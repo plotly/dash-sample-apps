@@ -20,12 +20,12 @@ library(viridis)
 
 app <- Dash$new()
 
-# ridesRaw_1 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv" %>%
-#   data.table::fread(stringsAsFactors = FALSE)
-# ridesRaw_2 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv" %>%
-#   data.table::fread(stringsAsFactors = FALSE)
-# ridesRaw_3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv"  %>%
-#   data.table::fread(stringsAsFactors = FALSE)
+ridesRaw_1 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv" %>%
+  data.table::fread(stringsAsFactors = FALSE)
+ridesRaw_2 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv" %>%
+  data.table::fread(stringsAsFactors = FALSE)
+ridesRaw_3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv"  %>%
+  data.table::fread(stringsAsFactors = FALSE)
 ridesDf <- list(ridesRaw_1, ridesRaw_2, ridesRaw_3) %>%
   data.table::rbindlist()
 
