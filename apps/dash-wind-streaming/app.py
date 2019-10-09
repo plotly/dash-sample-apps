@@ -42,7 +42,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Img(
-                            src=app.get_asset_url("dash-logo.png"),
+                            src=app.get_asset_url("dash-new-logo.png"),
                             className="app__menu__img",
                         )
                     ],

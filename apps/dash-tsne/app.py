@@ -15,6 +15,6 @@ server = app.server
 app.layout = create_layout(app)
 demo_callbacks(app)
 
-# Running the server
+# Running server
 if __name__ == "__main__":
     app.run_server(debug=True)
