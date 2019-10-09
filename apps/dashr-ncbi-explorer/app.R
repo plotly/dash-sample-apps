@@ -1,11 +1,13 @@
 appName <- Sys.getenv("DASH_APP_NAME")
-
 if (appName != "") {
   pathPrefix <- sprintf("/%s/", appName)
+  
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  setwd(sprintf("/app", appName))
 }
+
+# set working directory
+setwd("/app")
 
 library(dash)
 library(dashBio)
@@ -610,12 +612,8 @@ app$callback(
 )
 
 
-if (appName != "") {
-
+if(appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
-
 } else {
-
-  app$run_server(showcase = TRUE, debug = FALSE)
-
+  app$run_server(showcase = TRUE)
 }
