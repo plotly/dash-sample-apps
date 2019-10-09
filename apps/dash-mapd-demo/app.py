@@ -43,7 +43,7 @@ def db_connect():
         )
 
         if table not in connection.get_tables():
-            print("Table {} not found in this database, please load sample data.")
+            print("Table {} not found in this database, please load sample data.".format(table))
 
         return connection
 
@@ -274,6 +274,8 @@ def generate_count_chart(state, dd_select, start, end):
         f"SELECT flight_dayofweek, COUNT(*) AS total_count FROM {table} WHERE {state_query}{dd_select}_timestamp BETWEEN '{start_f}' AND '{end_f}' "
         f"group by flight_dayofweek"
     )
+    print(count_query)
+    # SELECT flight_dayofweek, COUNT(*) AS total_count FROM flights_2008_7M WHERE dest_state = 'KS' AND None_timestamp BETWEEN '2008-01-01 00:00:00' AND '2008-01-16 00:00:00' group by flight_dayofweek
 
     try:
         df_count = pd.read_sql(count_query, db_connect())
@@ -566,6 +568,8 @@ wk_map = {"Mon": 1, "Tues": 2, "Wed": 3, "Thu": 4, "Fri": 5, "Sat": 6, "Sun": 7}
 )
 def update_choro(dd_select, start, end):
     # Update choropleth when dropdown or date-picker change
+    if dd_select is None:
+        dd_select = "dep"
     return generate_dest_choro(dd_select, start, end)
 
 
@@ -590,6 +594,9 @@ def update_sel_for_table(
     """
     :return: Data for generating flight info datatable.
     """
+    if dd_select is None:
+        dd_select = "dep"
+
     start_f = f"{start} 00:00:00"
     end_f = f"{end} 00:00:00"
 
@@ -680,6 +687,8 @@ def update_sel_for_table(
     ],
 )
 def update_hm(choro_click, choro_figure, dd_select, end, start):
+    if dd_select is None:
+        dd_select = "dep"
     if choro_click is not None:
         state = []
         for point in choro_click["points"]:
@@ -701,6 +710,8 @@ def update_hm(choro_click, choro_figure, dd_select, end, start):
 )
 def update_time_series(choro_click, choro_figure, dd_select, end, start):
     # Update time-series chart based on state select
+    if dd_select is None:
+        dd_select = "dep"
     if choro_click is not None:
         state = []
         for point in choro_click["points"]:
@@ -722,7 +733,8 @@ def update_time_series(choro_click, choro_figure, dd_select, end, start):
 )
 def update_state_click(choro_click, choro_fig, dd_select, end, start):
     # Update count graph/city graph based on state select
-
+    if dd_select is None:
+        dd_select = "dep"
     if choro_click is not None:
         state = []
         for point in choro_click["points"]:
@@ -741,4 +753,4 @@ def update_state_click(choro_click, choro_fig, dd_select, end, start):
 
 # Run the server
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, dev_tools_hot_reload=False)
