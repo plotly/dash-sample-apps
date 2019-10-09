@@ -5,34 +5,9 @@
 r <- getOption("repos")
 r["CRAN"] <- "http://cloud.r-project.org"
 options(repos=r)
+install.packages("viridis")
 
 # ======================================================================
 # packages go here
-install.packages("remotes")
-
-# installs Rcpp, rlang, BH
-install.packages("later")
-install.packages("jsonlite")
-
-install.packages("listenv")
-
-install.packages("magrittr")
-
-install.packages("manhattanly")
-
-install.packages("RCurl")
-install.packages("readr")
-
-
-# fiery and friends
-install.packages("https://cloud.r-project.org/src/contrib/routr_0.3.0.tar.gz", type="source", repos=NULL)
-install.packages("https://cloud.r-project.org/src/contrib/fiery_1.1.1.tar.gz", type="source", repos=NULL)
-
 remotes::install_github("plotly/dashR", dependencies=TRUE)
-remotes::install_github("plotly/dash-html-components")
-remotes::install_github("plotly/dash-core-components")
-remotes::install_github("plotly/dash-bio", dependencies=TRUE)
-remotes::install_github("https://github.com/plotly/rasterizer", ref = "dev")
-
-install.packages("plotly")
-install.packages("plyr")
+remotes::install_github("plotly/rasterly", upgrade=TRUE)

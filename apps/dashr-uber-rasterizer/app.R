@@ -4,20 +4,17 @@ if (appName != "") {
 
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-
-  setwd(sprintf("/app/apps/%s", appName))
 }
 
+setwd("/app")
 
 library(plotly)
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(data.table)
-library(rasterizer)
 library(viridis)
 library(rasterly)
-
 
 app <- Dash$new()
 
@@ -36,7 +33,7 @@ default_colorscale <- lapply(0:256,
                                if(i == 0) {
                                  return(list(0, 'black'))
                                } else {
-                                 return(list(i/256, viridis::viridis(256)[i]))
+                                 return(list(i/256, rasterly::fire[i]))
                                }
                              }
 )
@@ -46,13 +43,17 @@ filtered_df_lon <- filtered_df_lat %>% filter(Lon > -74.929 & Lon < -72.5)
 
 initial_plot <- plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
                         colorscale = default_colorscale,
-                        colorbar = list(title = "No. of Rides")) %>% add_rasterly()
+                        colorbar = list(title = "Log(No. of Rides)")) %>% add_rasterly()
 
 default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
                        paper_bgcolor='rgb(38, 43, 61)',
                        plot_bgcolor='rgb(38, 43, 61)',
-                       xaxis = list(title = "Longitude"),
-                       yaxis = list(title = "Latitude"))
+                       xaxis = list(title = "Longitude",
+                                    constrain = "domain",
+                                    scaleanchor = "y",
+                                    scaleratio = cos(40.8*pi/180)),
+                       yaxis = list(title = "Latitude",
+                                    constrain = "domain"))
 
 
 ################################################### App Layout #####################################
@@ -65,9 +66,9 @@ header <- htmlDiv(
   ),
   children = list(
     htmlA(
-      id = "dashbio-logo",
+      id = "dash-logo",
       children = list(
-        htmlImg(src='assets/plotly-dash-bio-logo.png', height = '36', width = '180',
+        htmlImg(src='assets/plotly-dash-logo.png', height = '36', width = '180',
                 style = list('top' = '10', 'margin' = '10px'))
       ),
       href = "/Portal"
@@ -76,7 +77,7 @@ header <- htmlDiv(
     htmlA(
       id = "gh-link",
       children = list("View on GitHub"),
-      href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-clustergram",
+      href = "https://github.com/plotly/dash-sample-apps/tree/master/apps/dashr-uber-rasterizer",
       style = list(color = "white", border = "solid 1px white")
     ),
     htmlImg(
@@ -87,18 +88,19 @@ header <- htmlDiv(
 
 
 options <- htmlDiv(children =htmlDiv(list(
-  htmlH4("What is Dash Uber Rasterizer?", style = list("font-size" = "24pt", "font-weight" = "200", "letter-spacing" = "1px")),
-  dccMarkdown("This Dash app demonstrates large data visualization package _rasterly_.
+  htmlH4("What is Uber NYC Rasterizer?", style = list("font-size" = "24pt", "font-weight" = "200", "letter-spacing" = "1px")),
+  dccMarkdown("This Dash app is a simple demonstration of the rasterizing capabilities of the _rasterly_ package.
               The dataset consists of over 4.5 million observations, representing Uber rides taken in New York City in 2014.
-              With rasterly, extremely large datasets such as this can be visualized in mere moments with color gradients and
-              layers to represent data relationships.
+              In CSV format, the source data are over 165 MB in size. _rasterly_ is capable of processing datasets an order 
+              of magnitude larger in similarly brisk fashion. The raster data required to produce the aggregation layers and color
+              gradients displayed here are computed efficiently enough to maintain the interactive feel of the application.
               ", style = list("padding" =  "5px")),
-  dccMarkdown("Explore the 'rasterly' package [here](https://github.com/plotly/rasterly) for further information.
+  dccMarkdown("Visit the _rasterly_ package repository [here](https://github.com/plotly/rasterly) to learn more.
                     ", style = list("padding" = "5px")),
   htmlH4("Colorscale", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   htmlDiv(dccDropdown(
     id = "cmap",
-    value = "viridis",
+    value = "fire",
     options = list(
       list('label' = 'Viridis', 'value' = 'viridis'),
       list('label' = 'Blues', 'value' = 'blue'),
@@ -245,14 +247,18 @@ app$callback(
     return(
       plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
               colorscale = colorscale,
-              colorbar = list(title = "No. of Rides")) %>%
+              colorbar = list(title = "Log(No. of Rides)")) %>%
         add_rasterly(reduction_func = reduc, scaling = scale)
       %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
                paper_bgcolor='rgb(38, 43, 61)',
                plot_bgcolor='rgb(38, 43, 61)',
-               xaxis = list(title = "Longitude"),
-               yaxis = list(title = "Latitude"))
+               xaxis = list(title = "Longitude",
+                            constrain = "domain",
+                            scaleanchor = "y",
+                            scaleratio = cos(mean(filtered_df_lon$Lat)*pi/180)),                            
+               yaxis = list(title = "Latitude",
+                            constrain = "domain"))
     )
   }
 )
