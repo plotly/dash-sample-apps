@@ -91,7 +91,7 @@ first_row <- htmlDiv(list(
     htmlP("Use keywords to search the Nucleotide database for a gene or organism of interest.
                     This will retrieve the top 10 related datasets' Accession IDs along with their descriptions.
                     ", style = list("margin" = 10)),
-    htmlP('Example searches: "Basiliscus basiliscus[Organism]" or "BRCA1[Gene]
+    htmlP('Example searches: "Basiliscus basiliscus[Organism]" or "BRCA1[Gene]"
                     ', style = list("margin" = 10)),
     htmlP('Select the table cell containing your desired Accession ID to add this dataset
     to the alignment and generate a new figure Then, filter through datasets to analyze the CpG patterns
@@ -453,7 +453,7 @@ app$callback(
   output(id = "sequence-pie-chart", property = "figure"),
   params = list(
     input(id = 'submit-button', property = 'n_clicks'),
-    state(id = "sequence-viewer", property = "sequence")),
+    input(id = "sequence-viewer", property = "sequence")),
   
   update_pie_chart <- function(n_clicks, sequence) {
     if (n_clicks > 0) {
@@ -496,11 +496,12 @@ app$callback(
 app$callback(
   output(id = "cpg-options", property = "options"),
   params = list(
-    input(id = "submit-button-2", property = "n_clicks")
+    input(id = "submit-button-2", property = "n_clicks"),
+    input(id = 'search-button', property = 'n_clicks')
   ),
   
-  select_trace <- function(n_clicks) {
-    if (n_clicks > 0) {
+  select_trace <- function(n_clicks, search_clicks) {
+    if (n_clicks > 0 | search_clicks > 0) {
       dna_data = readDNAStringSet("data/random_fasta.FASTA", "fasta")
       trace_names <- unique(names(dna_data))
       
