@@ -90,7 +90,7 @@ options <- htmlDiv(children =htmlDiv(list(
   htmlH4("What is Uber NYC Rasterizer?", style = list("font-size" = "24pt", "font-weight" = "200", "letter-spacing" = "1px")),
   dccMarkdown("This Dash app is a simple demonstration of the rasterizing capabilities of the _rasterly_ package.
               The dataset consists of over 4.5 million observations, representing Uber rides taken in New York City in 2014.
-              In CSV format, the source data are over 165 MB in size. _rasterly_ is capable of processing datasets an order 
+              In CSV format, the source data are over 165 MB in size. _rasterly_ is capable of processing datasets an order
               of magnitude larger in similarly brisk fashion. The raster data required to produce the aggregation layers and color
               gradients displayed here are computed efficiently enough to maintain the interactive feel of the application.
               ", style = list("padding" =  "5px")),
@@ -99,8 +99,9 @@ options <- htmlDiv(children =htmlDiv(list(
   htmlH4("Colorscale", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
   htmlDiv(dccDropdown(
     id = "cmap",
-    value = "fire",
+    value = "plasma",
     options = list(
+      list('label' = 'Plasma', 'value' = 'plasma'),
       list('label' = 'Viridis', 'value' = 'viridis'),
       list('label' = 'Blues', 'value' = 'blue'),
       list('label' = 'Magma', 'value' = 'fire')
@@ -164,7 +165,7 @@ app$callback(
     if (is.null(relayout[1]) == FALSE) {
       return(0)
     }
-  } 
+  }
 )
 
 # Callback to subset and return data ranges based on the zoom of the plot.
@@ -185,9 +186,9 @@ app$callback(
       if (length(relayout) == 4) {
         x_range <- c(relayout$`xaxis.range[0]`, relayout$`xaxis.range[1]`)
         y_range <- c(relayout$`yaxis.range[0]`, relayout$`yaxis.range[1]`)
-  
+
       }
-  
+
       else {
         x_range <- c(min(ridesDf$Lon), -72.5)
         y_range <- c(39.9, max(ridesDf$Lat))
@@ -209,21 +210,23 @@ app$callback(
     input(id = 'scaling', property = 'value')
   ),
   update_graph <- function(data, cmap, background, reduc, scale) {
-    
+
     color <- if(cmap == "blue") {
       c("lightblue", "darkblue")
     } else if(cmap =="viridis") {
       color <- viridis(256)
+    } else if (cmap =="plasma"){
+      color <- plasma(256)
     } else {
       eval(parse(text = cmap))
     }
-    
+
     if(background != "black") {
       color <- rev(color)
     }
-    
+
     len_col <- length(color)
-    
+
     colorscale <- lapply(0:len_col,
                          function(i) {
                            if(i == 0) {
@@ -233,20 +236,22 @@ app$callback(
                            }
                          }
     )
-    
+
     x_min <- data[[1]][[1]]
     x_max <- data[[1]][[2]]
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
-    
-    
+
+
     filtered_df_lat <- ridesDf[(ridesDf$Lat > y_min & ridesDf$Lat < y_max),]
     filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > x_min & filtered_df_lat$Lon < x_max,]
-    
+
+    colorbar_title <- ifelse(scale == "log", "Log(No. of Rides)", "No. of Rides")
+
     return(
       plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
               colorscale = colorscale,
-              colorbar = list(title = "Log(No. of Rides)")) %>%
+              colorbar = list(title = colorbar_title)) %>%
         add_rasterly(reduction_func = reduc, scaling = scale)
       %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
@@ -255,7 +260,7 @@ app$callback(
                xaxis = list(title = "Longitude",
                             constrain = "domain",
                             scaleanchor = "y",
-                            scaleratio = cos(mean(filtered_df_lon$Lat)*pi/180)),                            
+                            scaleratio = cos(mean(filtered_df_lon$Lat)*pi/180)),
                yaxis = list(title = "Latitude",
                             constrain = "domain"))
     )
