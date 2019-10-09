@@ -158,8 +158,8 @@ first_row <- htmlDiv(list(
                     and select the button to generate an alignment or the sequence of the dataset.
                     Enter  addtional datasets to add these sequences to the alignment.", style = list("margin" = 10)),
           htmlP('Example: Single Dataset - NR_108049', style = list("margin" = 10)),
-          htmlP(' Multiple Datasets - JF806202, HM161150, FJ356743, JF80620, 
-                    JQ073190, GU457971, FJ356741, JF806', style = list("margin" = 10)),
+          htmlP(' Multiple Datasets - HM161150, FJ356743, 
+                    JQ073190, GU457971, FJ356741', style = list("margin" = 10)),
           dccInput(
             id = 'genbank-input',
             placeholder = "Enter an Accession ID...",
