@@ -249,6 +249,7 @@ def plotly_wordcloud(df):
                 "range": [-100, 450],
             },
             "margin": dict(t=20, b=20, l=10, r=10, pad=4),
+            "hovermode": "closest",
         }
     )
 
@@ -317,7 +318,7 @@ left_column = dbc.Jumbotron(
             max=100,
             step=1,
             marks=make_n_marks(),
-            value=10,
+            value=5,
         ),
         html.Label("Select a bank", style={"marginTop": 50}, className="lead"),
         dcc.Dropdown(id="bank-drop", clearable=False, style={"marginBottom": 50}),
@@ -329,39 +330,65 @@ left_column = dbc.Jumbotron(
 lda_plot = dcc.Loading(
     id="loading-lda-plot", children=[dcc.Graph(id="tsne-lda")], type="default"
 )
-lda_table = dcc.Loading(
-    id="loading-lda-table",
+lda_table = html.Div(
+    id="lda-table-block",
     children=[
-        dash_table.DataTable(
-            id="lda-table",
-            style_cell_conditional=[
-                {
-                    "if": {"column_id": "Text"},
-                    "textAlign": "left",
-                    "height": "auto",
-                    "width": "50%",
-                }
+        dcc.Loading(
+            id="loading-lda-table",
+            children=[
+                dash_table.DataTable(
+                    id="lda-table",
+                    style_cell_conditional=[
+                        {
+                            "if": {"column_id": "Text"},
+                            "textAlign": "left",
+                            "whiteSpace": "normal",
+                            "height": "auto",
+                            "min-width": "50%",
+                        }
+                    ],
+                    style_data_conditional=[
+                        {
+                            "if": {"row_index": "odd"},
+                            "backgroundColor": "rgb(243, 246, 251)",
+                        }
+                    ],
+                    style_cell={
+                        "padding": "16px",
+                        "whiteSpace": "normal",
+                        "height": "auto",
+                        "max-width": "0",
+                    },
+                    style_header={"backgroundColor": "white", "fontWeight": "bold"},
+                    style_data={"whiteSpace": "normal", "height": "auto"},
+                    filter_action="native",
+                    page_action="native",
+                    page_current=0,
+                    page_size=5,
+                    columns=[],
+                    data=[],
+                )
             ],
-            style_cell={
-                "padding": "5px",
-                "overflow": "hidden",
-                "textOverflow": "ellipsis",
-                "maxWidth": 0,
-            },
-            style_header={"backgroundColor": "white", "fontWeight": "bold"},
-            style_data={"whiteSpace": "normal", "height": "auto"},
-            filter_action="native",
-            page_action="native",
-            page_current=0,
-            page_size=5,
-            columns=[],
-            data=[],
+            type="default",
         )
     ],
-    type="default",
+    style={"display": "none"},
 )
 
-
+lda_plots = [
+    dbc.CardHeader(html.H5("Topic modelling using LDA")),
+    dbc.CardBody(
+        [
+            lda_plot,
+            html.Hr(),
+            html.P(
+                "Click on a complaint point in the scatter to explore the results",
+                className="mb-0",
+            ),
+            lda_table,
+        ]
+    ),
+]
 wordcloud_plots = [
     dbc.CardHeader(html.H5("Most popular words in complaints")),
     dbc.CardBody(
@@ -390,7 +417,7 @@ wordcloud_plots = [
 ]
 
 top_banks_plot = [
-    dbc.CardHeader(html.H5("Top 20 offenders")),
+    dbc.CardHeader(html.H5("Top 10 offenders")),
     dbc.CardBody(
         [
             dcc.Loading(
@@ -406,13 +433,13 @@ body = dbc.Container(
     [
         dbc.Row(
             [
-                dbc.Col(left_column, md=5, align="center"),
-                dbc.Col(dbc.Card(top_banks_plot, color="light")),
+                dbc.Col(left_column, md=4, align="center"),
+                dbc.Col(dbc.Card(top_banks_plot), md=8),
             ],
             style={"marginTop": 30},
         ),
-        dbc.Card(wordcloud_plots, color="light"),
-        dbc.Row([dbc.Col([lda_plot, lda_table])]),
+        dbc.Card(wordcloud_plots),
+        dbc.Row([dbc.Col([dbc.Card(lda_plots)])], style={"marginTop": 50}),
     ],
     className="mt-12",
 )
@@ -470,7 +497,7 @@ def set_n(n_value, time_values):
     # print("n set to: ", n)
     # print("time_values: ", time_values)
     # print("bank-sample: TODO USE THE TIME VALUES TO LIMIT THE DATASET")
-    sample_size = 20
+    sample_size = 10
     local_df = sample_data(global_df, n)
     values_sample, counts_sample = calculate_sample(local_df, sample_size, time_values)
     print("redrawing bank-sample...done")
@@ -599,27 +626,28 @@ def update_wordcloud(value_click, value_drop, time_values, n_selection):
 
 
 @app.callback(
-    [
-        Output("lda-table", "filter_query"),
-        Output("lda-table", "style_data_conditional"),
-    ],
+    [Output("lda-table", "filter_query"), Output("lda-table-block", "style")],
     [Input("tsne-lda", "clickData")],
+    [State("lda-table", "filter_query")],
 )
-def filter_table_on_scatter_click(tsne_click):
+def filter_table_on_scatter_click(tsne_click, current_filter):
     if tsne_click is not None:
         selected_complaint = tsne_click["points"][0]["hovertext"]
-        filter_query = "{Document_No} eq " + str(selected_complaint)
-        print(filter_query)
-        styled_data = [
-            {
-                "if": {"filter_query": filter_query},
-                "backgroundColor": "#3D9970",
-                "color": "white",
-            }
-        ]
-        return (filter_query, styled_data)
+        if current_filter != "":
+            filter_query = (
+                "({Document_No} eq "
+                + str(selected_complaint)
+                + ") || ("
+                + current_filter
+                + ")"
+            )
+        else:
+            filter_query = "{Document_No} eq " + str(selected_complaint)
+        # ({avf} < 12000) && ({avf} >= 10000)
+        print(current_filter)
+        return (filter_query, {"display": "block"})
     else:
-        return ["", []]
+        return ["", {"display": "none"}]
 
 
 @app.callback(Output("bank-drop", "value"), [Input("bank-sample", "clickData")])
@@ -628,7 +656,7 @@ def update_bank_click(value):
         selected_bank = value["points"][0]["x"]
         return selected_bank
     else:
-        return "CITIBANK, N.A."
+        return "EQUIFAX, INC."
 
 
 def update_debug(input_value, source):
