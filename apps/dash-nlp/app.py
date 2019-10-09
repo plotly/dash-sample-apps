@@ -308,11 +308,8 @@ left_column = dbc.Jumbotron(
     [
         html.H4(children="Select bank & dataset size", className="display-5"),
         html.Hr(className="my-2"),
-        html.Label(
-            "Select percentage of dataset",
-            className="lead",
-        ),
-        html.P("(Lower is faster. Higher is more accurate)", style={"fontSize":10}),
+        html.Label("Select percentage of dataset", className="lead"),
+        html.P("(Lower is faster. Higher is more accurate)", style={"fontSize": 10}),
         dcc.Slider(
             id="n-selection-slider",
             min=1,
@@ -322,7 +319,10 @@ left_column = dbc.Jumbotron(
             value=5,
         ),
         html.Label("Select a bank", style={"marginTop": 50}, className="lead"),
-        html.P("(You can use the dropdown or click the barchart on the right)", style={"fontSize":10}),
+        html.P(
+            "(You can use the dropdown or click the barchart on the right)",
+            style={"fontSize": 10},
+        ),
         dcc.Dropdown(id="bank-drop", clearable=False, style={"marginBottom": 50}),
         html.Label("Select time frame", className="lead"),
         html.Div(dcc.RangeSlider(id="time-window-slider"), style={"marginBottom": 50}),
@@ -381,12 +381,12 @@ lda_plots = [
     dbc.CardHeader(html.H5("Topic modelling using LDA")),
     dbc.CardBody(
         [
-            lda_plot,
-            html.Hr(),
             html.P(
-                "Click on a complaint point in the scatter to explore the results",
+                "Click on a complaint point in the scatter to explore that specific complaint",
                 className="mb-0",
             ),
+            lda_plot,
+            html.Hr(),
             lda_table,
         ]
     ),
