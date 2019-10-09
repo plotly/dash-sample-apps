@@ -461,7 +461,7 @@ app$callback(
     input(id = "sequence-viewer", property = "sequence")),
   
   update_pie_chart <- function(n_clicks, sequence) {
-    if (n_clicks > 0) {
+    if (n_clicks > 0 | !is.null(sequence[[1]])) {
       sequence_string <- as.character(sequence)
       chart_sequence <- strsplit(sequence_string, split = "")
       p <- plot_ly(as.data.frame(table(chart_sequence)), labels = ~chart_sequence, values = ~Freq, type = 'pie', hole = 0.6) %>%
@@ -478,7 +478,6 @@ app$callback(
       
     }
     else {
-      
       p <- (plot_ly(as.data.frame(table(strsplit(as.character(FASTA_DATA$`sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1`) 
                                                  , split = ""))), labels = ~Var1, values = ~Freq, type = 'pie', hole = 0.6) %>%
               layout(paper_bgcolor="#ffffff", title = "Nucleotide Base Composition", margin = 10,
@@ -597,17 +596,6 @@ app$callback(
     return(p)
   }
 )
-
-# 
-# app$callback(
-#   output(id = 'reset-button', property = 'n_clicks'),
-#   params = list(
-#     input(id = 'cpg-options', property = 'options')
-#   ),
-#   reset_clicks <- function(options) {
-#     print(options)
-#   } 
-# )
 
 app$callback(
   output(id = "sequence-viewer", property = "selection"),
