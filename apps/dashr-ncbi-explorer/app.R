@@ -238,7 +238,12 @@ first_row <- htmlDiv(list(
     dccRadioItems(
       id = "cpg-options",
       options = list(list(label = "Default", value = 1)),
-      value = 1)),className = 'item-g')
+      value = 1),
+    htmlButton(
+      id = 'reset-button', n_clicks = 0, children = 'Refresh'
+      )
+    )
+    ,className = 'item-g')
   
 ), className = "container")
 
@@ -497,11 +502,12 @@ app$callback(
   output(id = "cpg-options", property = "options"),
   params = list(
     input(id = "submit-button-2", property = "n_clicks"),
-    input(id = 'search-button', property = 'n_clicks')
+    input(id = 'search-button', property = 'n_clicks'),
+    input(id = 'reset-button', property = 'n_clicks')
   ),
   
-  select_trace <- function(n_clicks, search_clicks) {
-    if (n_clicks > 0 | search_clicks > 0) {
+  select_trace <- function(n_clicks, search_clicks, reset_clicks) {
+    if (n_clicks > 0 | search_clicks > 0 | reset_clicks > 0) {
       dna_data = readDNAStringSet("data/random_fasta.FASTA", "fasta")
       trace_names <- unique(names(dna_data))
       
@@ -591,6 +597,17 @@ app$callback(
     return(p)
   }
 )
+
+# 
+# app$callback(
+#   output(id = 'reset-button', property = 'n_clicks'),
+#   params = list(
+#     input(id = 'cpg-options', property = 'options')
+#   ),
+#   reset_clicks <- function(options) {
+#     print(options)
+#   } 
+# )
 
 app$callback(
   output(id = "sequence-viewer", property = "selection"),
