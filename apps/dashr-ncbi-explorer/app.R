@@ -242,7 +242,8 @@ first_row <- htmlDiv(list(
       options = list(list(label = "Default", value = 1)),
       value = 1),
     htmlButton(
-      id = 'reset-button', n_clicks = 0, children = 'Refresh'
+      id = 'reset-button', n_clicks = 0, children = 'Refresh',
+      style = list("width" = "100%", "padding" = "0px", "margin" = "0px", "margin-top" = "15px")
       )
     )
     ,className = 'item-g')
