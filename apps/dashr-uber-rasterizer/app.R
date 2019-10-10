@@ -17,32 +17,30 @@ library(rasterly)
 
 app <- Dash$new()
 
-ridesRaw_1 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv" %>%
-  data.table::fread(stringsAsFactors = FALSE)
-ridesRaw_2 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv" %>%
-  data.table::fread(stringsAsFactors = FALSE)
-ridesRaw_3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv"  %>%
-  data.table::fread(stringsAsFactors = FALSE)
-ridesDf <- list(ridesRaw_1, ridesRaw_2, ridesRaw_3) %>%
-  data.table::rbindlist()
-
+ridesRaw_1 <- data.table::fread("https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv", stringsAsFactors = FALSE)
+ridesRaw_2 <- data.table::fread("https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv", stringsAsFactors = FALSE)
+ridesRaw_3 <- data.table::fread("https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv", stringsAsFactors = FALSE)
+ridesDf <-  data.table::rbindlist(list(ridesRaw_1, ridesRaw_2, ridesRaw_3))
+ 
+# subsetting on a matrix would likely be faster
+ridesDf <- as.matrix(ridesDf[,-1])
 
 default_colorscale <- lapply(0:256,
                              function(i) {
                                if(i == 0) {
                                  return(list(0, 'black'))
                                } else {
-                                 return(list(i/256, rasterly::fire[i]))
+                                 return(list(i/256, viridis::plasma(256)[i]))
                                }
                              }
 )
 
-filtered_df_lat <- ridesDf %>% filter(Lat > 39.9 & Lat < 42.1166)
-filtered_df_lon <- filtered_df_lat %>% filter(Lon > -74.929 & Lon < -72.5)
+filtered_df_lat <- ridesDf[ridesDf[,"Lat"] > 39.9 & ridesDf[,"Lat"] < 42.1166, ]
+filtered_df_lon <- ridesDf[ridesDf[,"Lon"] > -74.929 & ridesDf[,"Lon"] < -72.5, ]
 
-initial_plot <- plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
-                        colorscale = default_colorscale,
-                        colorbar = list(title = "Log(No. of Rides)")) %>% add_rasterly()
+initial_plot <- add_rasterly(plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y = ~Lat,
+                                     colorscale = default_colorscale,
+                                     colorbar = list(title = "Log(No. of Rides)")))
 
 default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
                        paper_bgcolor='rgb(38, 43, 61)',
@@ -178,20 +176,21 @@ app$callback(
   ),
   update_stored_data <- function(relayout, n_clicks) {
     if (n_clicks > 0) {
-      x_range <- c(min(ridesDf$Lon), -72.5)
-      y_range <- c(39.9, max(ridesDf$Lat))
+      # x_range <- c(min(ridesDf$Lon), -72.5)
+      x_range <- c(min(ridesDf[,"Lon"], na.rm=T), -72.5)
+      # y_range <- c(39.9, max(ridesDf$Lat))
+      y_range <- c(39.9, max(ridesDf[,"Lat"], na.rm=T))
       return(list(x_range, y_range))
     }
     else {
       if (length(relayout) == 4) {
         x_range <- c(relayout$`xaxis.range[0]`, relayout$`xaxis.range[1]`)
         y_range <- c(relayout$`yaxis.range[0]`, relayout$`yaxis.range[1]`)
-
       }
 
       else {
-        x_range <- c(min(ridesDf$Lon), -72.5)
-        y_range <- c(39.9, max(ridesDf$Lat))
+        x_range <- c(min(ridesDf[,"Lon"], na.rm=T), -72.5)
+        y_range <- c(39.9, max(ridesDf[,"Lat"], na.rm=T))
       }
     }
     return(list(x_range, y_range))
@@ -242,25 +241,24 @@ app$callback(
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
 
-
-    filtered_df_lat <- ridesDf[(ridesDf$Lat > y_min & ridesDf$Lat < y_max),]
-    filtered_df_lon <- filtered_df_lat[filtered_df_lat$Lon > x_min & filtered_df_lat$Lon < x_max,]
-
+    filtered_df_lat <- ridesDf[ridesDf[, "Lat"] > y_min & ridesDf[, "Lat"] < y_max, ]    
+    filtered_df_lon <- filtered_df_lat[filtered_df_lat[,"Lon"] > x_min & filtered_df_lat[,"Lon"] < x_max, ]
+        
     colorbar_title <- ifelse(scale == "log", "Log(No. of Rides)", "No. of Rides")
 
+    # plot_ly requires a data.frame
     return(
-      plot_ly(filtered_df_lon, x = ~Lon, y = ~Lat,
+      plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y = ~Lat,
               colorscale = colorscale,
               colorbar = list(title = colorbar_title)) %>%
-        add_rasterly(reduction_func = reduc, scaling = scale)
-      %>%
+        add_rasterly(reduction_func = reduc, scaling = scale) %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
                paper_bgcolor='rgb(38, 43, 61)',
                plot_bgcolor='rgb(38, 43, 61)',
                xaxis = list(title = "Longitude",
                             constrain = "domain",
                             scaleanchor = "y",
-                            scaleratio = cos(mean(filtered_df_lon$Lat)*pi/180)),
+                            scaleratio = cos(40.8*pi/180)),
                yaxis = list(title = "Latitude",
                             constrain = "domain"))
     )
