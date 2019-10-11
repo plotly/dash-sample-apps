@@ -43,13 +43,7 @@ initial_plot <- add_rasterly(plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y
                                      colorbar = list(title = "Log(No. of Rides)")))
 
 default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
-                               margin = list(
-                                 l = 5,
-                                 r = 5,
-                                 t = 10,
-                                 b = 5,
-                                 pad = 5
-                               ),
+                               autosize = TRUE,
                                paper_bgcolor='rgb(38, 43, 61)',
                                plot_bgcolor='rgb(38, 43, 61)',
                                xaxis = list(title = "Longitude",
@@ -168,7 +162,7 @@ app$layout(
   htmlDiv(list(
     options,
     htmlDiv(children = dccGraph(id = 'rasterizer-output',
-                                figure = default_plot, style = list("height" = "88vh")), className = 'item-b'),
+                                figure = default_plot, style = list("height" = "100vh")), className = 'item-b'),
     dccStore(id = 'store')
   ), className = 'container'))
 
@@ -273,13 +267,7 @@ app$callback(
               colorbar = list(title = colorbar_title)) %>%
         add_rasterly(reduction_func = reduc, scaling = scale) %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
-               margin = list(
-                 l = 5,
-                 r = 5,
-                 t = 10,
-                 b = 5,
-                 pad = 5
-               ),
+               autosize = TRUE,
                paper_bgcolor='rgb(38, 43, 61)',
                plot_bgcolor='rgb(38, 43, 61)',
                xaxis = list(title = "Longitude",
@@ -296,5 +284,10 @@ app$callback(
 if(appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
-  app$run_server(showcase = FALSE)
+  app$run_server(host = "127.0.0.1", 
+                 port=8050, 
+                 dev_tools_hot_reload=TRUE,
+                 dev_tools_hot_reload_interval = 1,
+                 dev_tools_silence_routes_logging = TRUE,
+                 viewer = TRUE)
 }

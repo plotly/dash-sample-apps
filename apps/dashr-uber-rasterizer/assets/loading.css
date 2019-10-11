@@ -34,6 +34,7 @@
     background-image: url(https://user-images.githubusercontent.com/30986043/66600148-d8f14380-eb72-11e9-9023-d21becb52239.gif);
     background-position: 55% 10%;
     background-repeat: no-repeat;
+    background-size: 50px 50px;
   }
 
   @keyframes fadein {
