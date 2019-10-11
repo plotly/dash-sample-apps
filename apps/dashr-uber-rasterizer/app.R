@@ -43,14 +43,21 @@ initial_plot <- add_rasterly(plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y
                                      colorbar = list(title = "Log(No. of Rides)")))
 
 default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
-                       paper_bgcolor='rgb(38, 43, 61)',
-                       plot_bgcolor='rgb(38, 43, 61)',
-                       xaxis = list(title = "Longitude",
-                                    constrain = "domain",
-                                    scaleanchor = "y",
-                                    scaleratio = cos(40.8*pi/180)),
-                       yaxis = list(title = "Latitude",
-                                    constrain = "domain"))
+                               margin = list(
+                                 l = 5,
+                                 r = 5,
+                                 t = 10,
+                                 b = 5,
+                                 pad = 5
+                               ),
+                               paper_bgcolor='rgb(38, 43, 61)',
+                               plot_bgcolor='rgb(38, 43, 61)',
+                               xaxis = list(title = "Longitude",
+                                            constrain = "domain",
+                                            scaleanchor = "y",
+                                            scaleratio = cos(40.8*pi/180)),
+                               yaxis = list(title = "Latitude",
+                                            constrain = "domain"))
 
 
 ################################################### App Layout #####################################
@@ -133,6 +140,21 @@ options <- htmlDiv(children =htmlDiv(list(
 
     value = 'sum'
   ),
+  htmlH4("Pixel Size", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
+  dccSlider(
+    id = 'point-size',
+    min = 1,
+    max = 10,
+    step = 1,
+    value = 1,
+    marks <- as.list(
+      setNames(
+        as.character(seq(1:10)),
+        as.character(seq(1:10))
+      )
+    )
+  ),
+  htmlBr(),
   htmlBr(),
   htmlButton(
     id = 'reset-button',
@@ -176,9 +198,7 @@ app$callback(
   ),
   update_stored_data <- function(relayout, n_clicks) {
     if (n_clicks > 0) {
-      # x_range <- c(min(ridesDf$Lon), -72.5)
       x_range <- c(min(ridesDf[,"Lon"], na.rm=T), -72.5)
-      # y_range <- c(39.9, max(ridesDf$Lat))
       y_range <- c(39.9, max(ridesDf[,"Lat"], na.rm=T))
       return(list(x_range, y_range))
     }
@@ -206,9 +226,10 @@ app$callback(
     input(id = 'cmap', property = 'value'),
     input(id = 'background', property = 'value'),
     input(id = 'reduc', property = 'value'),
-    input(id = 'scaling', property = 'value')
+    input(id = 'scaling', property = 'value'),
+    input(id = 'point-size', property = 'value')
   ),
-  update_graph <- function(data, cmap, background, reduc, scale) {
+  update_graph <- function(data, cmap, background, reduc, scale, point_size) {
 
     color <- if(cmap == "blue") {
       c("lightblue", "darkblue")
@@ -240,12 +261,11 @@ app$callback(
     x_max <- data[[1]][[2]]
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
-
+    
     filtered_df_lat <- ridesDf[ridesDf[, "Lat"] > y_min & ridesDf[, "Lat"] < y_max, ]    
     filtered_df_lon <- filtered_df_lat[filtered_df_lat[,"Lon"] > x_min & filtered_df_lat[,"Lon"] < x_max, ]
         
     colorbar_title <- ifelse(scale == "log", "Log(No. of Rides)", "No. of Rides")
-
     # plot_ly requires a data.frame
     return(
       plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y = ~Lat,
@@ -253,6 +273,13 @@ app$callback(
               colorbar = list(title = colorbar_title)) %>%
         add_rasterly(reduction_func = reduc, scaling = scale) %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
+               margin = list(
+                 l = 5,
+                 r = 5,
+                 t = 10,
+                 b = 5,
+                 pad = 5
+               ),
                paper_bgcolor='rgb(38, 43, 61)',
                plot_bgcolor='rgb(38, 43, 61)',
                xaxis = list(title = "Longitude",
