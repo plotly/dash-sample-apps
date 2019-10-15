@@ -43,14 +43,16 @@ initial_plot <- add_rasterly(plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y
                                      colorbar = list(title = "Log(No. of Rides)")))
 
 default_plot <- layout(initial_plot, font = list(color = 'rgb(226, 239, 250)'),
-                               autosize = TRUE,
+                               margin = list(l = 1, r = 1, b = 1, t = 15, pad = 0, autoexpand = TRUE),
                                paper_bgcolor='rgb(38, 43, 61)',
                                plot_bgcolor='rgb(38, 43, 61)',
                                xaxis = list(title = "Longitude",
                                             constrain = "domain",
+                                            automargin = TRUE,
                                             scaleanchor = "y",
                                             scaleratio = cos(40.8*pi/180)),
                                yaxis = list(title = "Latitude",
+                                            automargin = TRUE,
                                             constrain = "domain"))
 
 
@@ -162,7 +164,7 @@ app$layout(
   htmlDiv(list(
     options,
     htmlDiv(children = dccGraph(id = 'rasterizer-output',
-                                figure = default_plot, style = list("height" = "100vh")), className = 'item-b'),
+                                figure = default_plot, style = list("height" = "88vh")), className = 'item-b'),
     dccStore(id = 'store')
   ), className = 'container'))
 
@@ -267,7 +269,7 @@ app$callback(
               colorbar = list(title = colorbar_title)) %>%
         add_rasterly(reduction_func = reduc, scaling = scale) %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
-               autosize = TRUE,
+               margin = list(l = 1, r = 1, b = 1, t = 15, pad = 0, autoexpand = TRUE),
                paper_bgcolor='rgb(38, 43, 61)',
                plot_bgcolor='rgb(38, 43, 61)',
                xaxis = list(title = "Longitude",
