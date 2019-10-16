@@ -37,15 +37,7 @@ def format_topics_sentences(ldamodel, corpus, texts):
 
 
 def lda_analysis(docs, stop_words):
-    # stop_words = stopwords.words('english')
-
     # TODO: fix a custom stop words file
-    # stop_words.append('XXXX')
-    # stop_words.append('XX')
-    # stop_words.append('xx')
-    ##stop_words.append('xxxx')
-    # stop_words.append('wells')
-    # stop_words.append('fargo')
     def cleanup_text(doc):
         doc = nlp(doc, disable=["parser", "ner"])
         tokens = [tok.lemma_.lower().strip() for tok in doc if tok.lemma_ != "-PRON-"]
@@ -57,7 +49,7 @@ def lda_analysis(docs, stop_words):
     punctuations = string.punctuation
 
     processed_docs = list(map(cleanup_text, docs))
-    print(len(processed_docs))
+    print("len(processed_docs)", len(processed_docs))
 
     dictionary = gensim.corpora.Dictionary(processed_docs)
     dictionary.filter_extremes(no_below=10, no_above=0.95, keep_n=100000)
