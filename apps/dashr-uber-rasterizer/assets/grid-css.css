@@ -65,3 +65,57 @@ body {
   color: #d8d8d8;
   font-weight: 400;
 }
+
+#circos-control-tabs {
+    margin-right: 0px;
+    background-color: #262B3D !important;
+    font-size: 12pt;
+}
+
+.circos-tab {
+    overflow-y: auto;
+    padding-right: 15px;
+}
+.circos-controls {
+    width: 100%;
+    overflow: auto;
+}
+#circos-control-tabs .tab {
+    background-color: #262B3D !important;
+    color: #E2EFFA !important;
+    padding: 15px;
+    border-color: #557 !important;
+}
+
+#circos-control-tabs .tab--selected {
+    border-top: solid 2px #7CD3F7 !important;
+    color: #7CD3F7 !important;
+}
+
+
+#circos-tabs-orig {
+    display: none;
+}
+
+#circos-tabs-orig-parent {
+    display: none;
+}
+#circos-control-tabs .Select-value-icon {
+    background-color: #232323;
+}
+
+#circos-control-tabs .Select-control, #circos-control-tabs .Select-menu-outer {
+    border: solid 1px #545454;
+    background-color: #262b3d !important;
+    width: 140px !important;
+}
+#circos-control-tabs span.Select-value-label {
+    color: #E2EFFA !important;
+}
+#circos-control-tabs .Select-input {
+    padding: 0px;
+}
+
+.tab.jsx-3468109796 {
+    background-color: rgb(38, 43, 61);
+}

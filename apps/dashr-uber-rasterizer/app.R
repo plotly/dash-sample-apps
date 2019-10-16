@@ -87,77 +87,100 @@ header <- htmlDiv(
 )
 
 
-options <- htmlDiv(children =htmlDiv(list(
-  htmlH4("What is Uber NYC Rasterizer?", style = list("font-size" = "24pt", "font-weight" = "200", "letter-spacing" = "1px")),
-  dccMarkdown("This Dash app is a simple demonstration of the rasterizing capabilities of the _rasterly_ package.
+tabs <- htmlDiv(dccTabs(id = 'circos-control-tabs', value = 'what-is', children = list(
+  dccTab(
+    label = 'About',
+    value = 'what-is',
+    children = htmlDiv(
+      id = 'control-tab', children = list(
+        htmlH4("What is Uber NYC Rasterizer?", style = list("font-size" = "24pt", "font-weight" = "200", "letter-spacing" = "1px")),
+        dccMarkdown("This Dash app is a simple demonstration of the rasterizing capabilities of the _rasterly_ package.
               The dataset consists of over 4.5 million observations, representing Uber rides taken in New York City in 2014.
               In CSV format, the source data are over 165 MB in size. _rasterly_ is capable of processing datasets an order
               of magnitude larger in similarly brisk fashion. The raster data required to produce the aggregation layers and color
               gradients displayed here are computed efficiently enough to maintain the interactive feel of the application.
               ", style = list("padding" =  "5px")),
-  dccMarkdown("Visit the _rasterly_ package repository [here](https://github.com/plotly/rasterly) to learn more.
-                    ", style = list("padding" = "5px")),
-  htmlH4("Colorscale", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
-  htmlDiv(dccDropdown(
-    id = "cmap",
-    value = "plasma",
-    options = list(
-      list('label' = 'Plasma', 'value' = 'plasma'),
-      list('label' = 'Viridis', 'value' = 'viridis'),
-      list('label' = 'Blues', 'value' = 'blue'),
-      list('label' = 'Magma', 'value' = 'fire')
-    )
-  ), style = list("color" = "white")),
-  htmlH4("Background", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
-  htmlDiv(dccDropdown(
-    id = "background",
-    value = "black",
-    options = list(
-      list('label' = 'Black', 'value' = 'black'),
-      list('label' = 'Grey', 'value' = 'grey'),
-      list('label' = 'White', 'value' = 'white')
-    )
-  ), style = list("color" = "white")),
-  htmlH4("Point Scaling", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
-  dccDropdown(
-    id = 'scaling',
-    value = 'log',
-    options = list(
-      list(label = 'Log', value = 'log'),
-      list(label = 'Origin', value = 'origin')
-    )
-  ),
-  htmlH4("Reduction method", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
-  dccDropdown(
-    id = "reduc",
-    options = list(list(label = "sum", value = "sum"),
-                   list(label = "any", value = "any"),
-                   list(label = "mean", value = "mean")),
-
-    value = 'sum'
-  ),
-  htmlH4("Pixel Size", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
-  dccSlider(
-    id = 'point-size',
-    min = 1,
-    max = 10,
-    step = 1,
-    value = 1,
-    marks <- as.list(
-      setNames(
-        as.character(seq(1:10)),
-        as.character(seq(1:10))
+        dccMarkdown("Visit the _rasterly_ package repository [here](https://github.com/plotly/rasterly) to learn more.
+                    ", style = list("padding" = "5px"))
       )
     )
   ),
-  htmlBr(),
-  htmlBr(),
-  htmlButton(
-    id = 'reset-button',
-    n_clicks = 0,
-    children = 'Reset Graph'
+  
+  dccTab(
+    label = 'Options',
+    value = 'data',
+    children = htmlDiv(className = 'circos-tab', children = list(
+      htmlDiv(className = 'app-controls-block', children= list(
+        htmlH4("Colorscale", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
+        htmlDiv(dccDropdown(
+          id = "cmap",
+          value = "plasma",
+          options = list(
+            list('label' = 'Plasma', 'value' = 'plasma'),
+            list('label' = 'Viridis', 'value' = 'viridis'),
+            list('label' = 'Blues', 'value' = 'blue'),
+            list('label' = 'Magma', 'value' = 'fire')
+          )
+        ), style = list("color" = "white")),
+        htmlH4("Background", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
+        htmlDiv(dccDropdown(
+          id = "background",
+          value = "black",
+          options = list(
+            list('label' = 'Black', 'value' = 'black'),
+            list('label' = 'Grey', 'value' = 'grey'),
+            list('label' = 'White', 'value' = 'white')
+          )
+        ), style = list("color" = "white")),
+        htmlH4("Point Scaling", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
+        dccDropdown(
+          id = 'scaling',
+          value = 'log',
+          options = list(
+            list(label = 'Log', value = 'log'),
+            list(label = 'Origin', value = 'origin')
+          )
+        ),
+        htmlH4("Reduction method", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
+        dccDropdown(
+          id = "reduc",
+          options = list(list(label = "sum", value = "sum"),
+                         list(label = "any", value = "any"),
+                         list(label = "mean", value = "mean")),
+          
+          value = 'sum'
+        ),
+        htmlH4("Pixel Size", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
+        dccSlider(
+          id = 'point-size',
+          min = 1,
+          max = 10,
+          step = 1,
+          value = 1,
+          marks <- as.list(
+            setNames(
+              as.character(seq(1:10)),
+              as.character(seq(1:10))
+            )
+          )
+        ),
+        htmlBr(),
+        htmlBr(),
+        htmlButton(
+          id = 'reset-button',
+          n_clicks = 0,
+          children = 'Reset Graph'
+        )
+      ))
+    ))
   )
-)), className = 'item-a')
+)))
+
+
+options <- htmlDiv(list(
+  tabs
+), className = 'item-a')
+
 
 app$layout(
   header,
