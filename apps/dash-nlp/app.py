@@ -357,7 +357,7 @@ left_column = dbc.Jumbotron(
         html.H4(children="Select bank & dataset size", className="display-5"),
         html.Hr(className="my-2"),
         html.Label("Select percentage of dataset", className="lead"),
-        html.P("(Lower is faster. Higher is more accurate)", style={"fontSize": 10}),
+        html.P("(Lower is faster. Higher is more precise)", style={"fontSize": 10}),
         dcc.Slider(
             id="n-selection-slider",
             min=1,
