@@ -453,11 +453,9 @@ def make_main_figure(
         )
         traces.append(trace)
 
+    # relayoutData is None by default, and {'autosize': True} without relayout action
     if main_graph_layout is not None and selector is not None and "locked" in selector:
-        if (
-            "mapbox.center" in main_graph_layout.keys()
-        ):  # relayoutData is None by default, and {'autosize': True} without relayout action
-
+        if "mapbox.center" in main_graph_layout.keys():
             lon = float(main_graph_layout["mapbox.center"]["lon"])
             lat = float(main_graph_layout["mapbox.center"]["lat"])
             zoom = float(main_graph_layout["mapbox.zoom"])
