@@ -9,7 +9,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 from dash.dependencies import Output, Input, State
-from datetime import datetime
+from datetime import datetime, timedelta
+from dateutil.relativedelta import *
 import pandas as pd
 import numpy as np
 from wordcloud import WordCloud, STOPWORDS
@@ -119,8 +120,8 @@ def calculate_bank_sample_data(dataframe, sample_size, time_values):
         % (sample_size, time_values)
     )
     if time_values is not None:
-        min_date = datetime.strptime(str(time_values[0]), "%Y")
-        max_date = datetime.strptime(str(time_values[1]) + "/12/31", "%Y/%m/%d")
+        min_date = time_values[0]
+        max_date = time_values[1]
         dataframe = dataframe[
             (dataframe["Date received"] >= min_date)
             & (dataframe["Date received"] <= max_date)
@@ -132,23 +133,64 @@ def calculate_bank_sample_data(dataframe, sample_size, time_values):
 
     return values_sample, counts_sample
 
+def make_local_df(selected_bank, time_values, n_selection):
+    print("redrawing bank-wordcloud...")
+    n = float(n_selection / 100)
+    print("got time window:", str(time_values))
+    print("got n_selection:", str(n_selection), str(n))
+    # sample the dataset according to the slider
+    local_df = sample_data(global_df, n)
+    if time_values is not None:
+        time_values = time_slider_to_date(time_values)
+        local_df = local_df[
+            (local_df["Date received"] >= time_values[0])
+            & (
+                local_df["Date received"]
+                <= time_values[1]
+            )
+        ]
+    if selected_bank:
+        local_df = local_df[local_df["Company"] == selected_bank]
+        add_stopwords(selected_bank)
+    return local_df
 
 def make_marks_time_slider(mini, maxi):
     """
     A helper function to generate a dictionary
     that should look something like:
-    {2015: '2015', 2016: '2016', 2017: '2017'} and so on.
+    {1420066800: '2015', 1427839200: 'Q2', 1435701600: 'Q3', 1443650400: 'Q4', 1451602800: '2016', 1459461600: 'Q2', 1467324000: 'Q3', 1475272800: 'Q4', 1483225200: '2017', 1490997600: 'Q2', 1498860000: 'Q3', 1506808800: 'Q4'}
     """
-    mini = int(mini)
-    maxi = int(maxi)
+    step = relativedelta(months=+1)
+    start = datetime(year=mini.year, month=1, day=1)
+    end = datetime(year=maxi.year, month=maxi.month, day=30)
     ret = {}
-    i = 0
-    while mini + i <= maxi:
-        ret[mini + i] = str(mini + i)
-        i += 1
-    print(ret)
+  
+    current = start
+    while current <= end:
+        current_str = int(current.timestamp())
+        if current.month == 1:
+            ret[current_str] = {'label': str(current.year), 'style': {'font-weight': 'bold'}}
+        elif current.month == 4:
+            ret[current_str] = {'label': "Q2", 'style': {'font-weight': 'lighter', "font-size":7}}
+        elif current.month == 7:
+            ret[current_str] = {'label': "Q3", 'style': {'font-weight': 'lighter', "font-size":7}}
+        elif current.month == 10:
+            ret[current_str] = {'label': "Q4", 'style': {'font-weight': 'lighter', "font-size":7}}
+        else:
+            pass
+        current += step
+    # print(ret)
     return ret
 
+
+def time_slider_to_date(time_values):
+    min_date = datetime.fromtimestamp(time_values[0]).strftime('%c')
+    max_date = datetime.fromtimestamp(time_values[1]).strftime('%c')
+    print("Converted time_values: ")
+    print("\tmin_date: ", time_values[0], "to: ", min_date)
+    print("\tmax_date", time_values[1], "to: ", max_date)
+    return [min_date, max_date]
+   
 
 def make_options_bank_drop(values):
     """
@@ -159,11 +201,6 @@ def make_options_bank_drop(values):
         ret.append({"label": value, "value": value})
     return ret
 
-
-def time_values_to_datetime(time_values):
-    min_date = datetime.strptime(str(time_values[0]), "%Y")
-    max_date = datetime.strptime(str(time_values[1]) + "/12/31", "%Y/%m/%d")
-    return [min_date, max_date]
 
 
 def add_stopwords(selected_bank):
@@ -236,7 +273,6 @@ def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
 
 def plotly_wordcloud(df):
     complaints_text = list(df["Consumer complaint narrative"].dropna().values)
-
     ## join all documents in corpus
     text = " ".join(list(complaints_text))
 
@@ -327,6 +363,12 @@ def plotly_wordcloud(df):
 
 """
 #  Page layout and contents
+
+In an effort to clean up the code a bit, we decided to break it apart into
+sections. For instance: left_column is the input controls you see in that gray
+box on the top left. The body variable is the overall structure which most other
+sections go into. This just makes it ever so slightly easier to find the right 
+spot to add to or change without having to count too many brackets.
 """
 
 
@@ -357,7 +399,7 @@ left_column = dbc.Jumbotron(
         html.H4(children="Select bank & dataset size", className="display-5"),
         html.Hr(className="my-2"),
         html.Label("Select percentage of dataset", className="lead"),
-        html.P("(Lower is faster. Higher is more precise)", style={"fontSize": 10}),
+        html.P("(Lower is faster. Higher is more precise)", style={"fontSize": 10, "font-weight":"lighter"}),
         dcc.Slider(
             id="n-selection-slider",
             min=1,
@@ -381,13 +423,17 @@ left_column = dbc.Jumbotron(
         html.Label("Select a bank", style={"marginTop": 50}, className="lead"),
         html.P(
             "(You can use the dropdown or click the barchart on the right)",
-            style={"fontSize": 10},
+            style={"fontSize": 10, "font-weight":"lighter"},
         ),
         dcc.Dropdown(
             id="bank-drop", clearable=False, style={"marginBottom": 50, "font-size": 12}
         ),
         html.Label("Select time frame", className="lead"),
-        html.Div(dcc.RangeSlider(id="time-window-slider"), style={"marginBottom": 50}),
+        html.Div(dcc.RangeSlider(id="time-window-slider",), style={"marginBottom": 50}),
+        html.P(
+            "(You can define the time frame down to month granularity)",
+            style={"fontSize": 10, "font-weight":"lighter"},
+        ),
     ]
 )
 
@@ -467,11 +513,35 @@ wordcloud_plots = [
                         )
                     ),
                     dbc.Col(
-                        dcc.Loading(
-                            id="loading-wordcloud",
-                            children=[dcc.Graph(id="bank-wordcloud")],
-                            type="default",
-                        ),
+                        [
+                            dcc.Tabs(
+                                id="tabs",
+                                children=[
+                                    dcc.Tab(
+                                        label="Treemap",
+                                        children=[
+                                            html.Div(
+                                                [
+                                                    html.Img(src="assets/treemap.png", height="360px")
+                                                ]
+                                            )
+                                        ],
+                                    ),
+                                    dcc.Tab(
+                                        label="Wordcloud",
+                                        children=[
+                                            dcc.Loading(
+                                                id="loading-wordcloud",
+                                                children=[
+                                                    dcc.Graph(id="bank-wordcloud")
+                                                ],
+                                                type="default",
+                                            )
+                                        ],
+                                    ),
+                                ],
+                            )
+                        ],
                         md=8,
                     ),
                 ]
@@ -531,13 +601,18 @@ app.layout = html.Div(children=[navbar, body])
 def populate_time_slider(value):
     min_date = global_df["Date received"].min()
     max_date = global_df["Date received"].max()
-    # {2015: '2015', 2016: '2016', 2017: '2017'} 2012 2 1 [2012, 2017]
+
+    marks = make_marks_time_slider(min_date, max_date)
+    min_epoch = list(marks.keys())[0]
+    max_epoch = list(marks.keys())[-1]
+
     return (
-        make_marks_time_slider(min_date.year, max_date.year),
-        min_date.year,
-        max_date.year,
-        1,
-        [min_date.year, max_date.year],
+        marks,
+        min_epoch,
+        max_epoch,
+        #None,
+        (max_epoch-min_epoch)/(len(list(marks.keys()))*3),
+        [min_epoch, max_epoch],
     )
 
 
@@ -547,7 +622,7 @@ def populate_time_slider(value):
 )
 def populate_bank_dropdown(time_values, n_value):
     print("bank-drop: TODO USE THE TIME VALUES AND N-SLIDER TO LIMIT THE DATASET")
-    print("time_values", time_values)
+    # converted_times = time_slider_to_date(time_values)
     bank_names, counts = get_complaint_count_by_company(global_df)
     return make_options_bank_drop(bank_names)
 
@@ -558,11 +633,16 @@ def populate_bank_dropdown(time_values, n_value):
 )
 def update_bank_sample_plot(n_value, time_values):
     print("redrawing bank-sample...")
+    print("\tn is:", n_value)
+    print("\ttime_values is:", time_values)
+    if time_values is None:
+        return {}
     n = float(n_value / 100)
     bank_sample_count = 10
     local_df = sample_data(global_df, n)
+    min_date, max_date = time_slider_to_date(time_values)
     values_sample, counts_sample = calculate_bank_sample_data(
-        local_df, bank_sample_count, time_values
+        local_df, bank_sample_count, [min_date, max_date]
     )
     data = [
         {
@@ -590,40 +670,14 @@ def update_bank_sample_plot(n_value, time_values):
         Output("tsne-lda", "figure"),
     ],
     [
-        Input("bank-sample", "clickData"),
+        #Input("bank-sample", "clickData"),
         Input("bank-drop", "value"),
         Input("time-window-slider", "value"),
         Input("n-selection-slider", "value"),
     ],
 )
-def update_lda_table(bank_click, value_drop, time_values, n_selection):
-    if value_drop:
-        selected_bank = value_drop
-        print("selected_bank", selected_bank)
-    elif bank_click:
-        selected_bank = bank_click["points"][0]["x"]
-    else:
-        return [[], [], {}]
-
-    print("redrawing lda table...")
-    n = float(n_selection / 100)
-    print("got time window:", str(time_values))
-    print("got n_selection:", str(n_selection), str(n))
-
-    # sample the dataset according to the slider
-    local_df = sample_data(global_df, n)
-    if time_values is not None:
-        local_df = local_df[
-            (local_df["Date received"] >= datetime.strptime(str(time_values[0]), "%Y"))
-            & (
-                local_df["Date received"]
-                <= datetime.strptime(str(time_values[1]) + "/12/31", "%Y/%m/%d")
-            )
-        ]
-    local_df = local_df[local_df["Company"] == selected_bank]
-
-    add_stopwords(selected_bank)
-
+def update_lda_table(value_drop, time_values, n_selection):
+    local_df = make_local_df(value_drop, time_values, n_selection)
     complaints_text = list(local_df["Consumer complaint narrative"].dropna().values)
     if len(complaints_text) <= 10:  # we cannot do LDA on less than 11 complaints
         return [[], [], {}]
@@ -640,46 +694,20 @@ def update_lda_table(bank_click, value_drop, time_values, n_selection):
 
     return (data, columns, lda_scatter_figure)
 
-
 @app.callback(
     [Output("bank-wordcloud", "figure"), Output("frequency_figure", "figure")],
     [
-        Input("bank-sample", "clickData"),
+        #Input("bank-sample", "clickData"),
         Input("bank-drop", "value"),
         Input("time-window-slider", "value"),
         Input("n-selection-slider", "value"),
     ],
 )
-def update_wordcloud_plot(value_click, value_drop, time_values, n_selection):
-    if value_drop:
-        selected_bank = value_drop
-    elif value_click:
-        selected_bank = value_click["points"][0]["x"]
-    else:
-        return {}, {}
-    print("redrawing bank-wordcloud...")
-    n = float(n_selection / 100)
-    print("got time window:", str(time_values))
-    print("got n_selection:", str(n_selection), str(n))
-
-    # sample the dataset according to the slider
-    local_df = sample_data(global_df, n)
-    if time_values is not None:
-        local_df = local_df[
-            (local_df["Date received"] >= datetime.strptime(str(time_values[0]), "%Y"))
-            & (
-                local_df["Date received"]
-                <= datetime.strptime(str(time_values[1]) + "/12/31", "%Y/%m/%d")
-            )
-        ]
-    local_df = local_df[local_df["Company"] == selected_bank]
-
-    add_stopwords(selected_bank)
+def update_wordcloud_plot(value_drop, time_values, n_selection):
+    local_df = make_local_df(value_drop, time_values, n_selection)
     wordcloud, frequency_figure = plotly_wordcloud(local_df)
-
     print("redrawing bank-wordcloud...done")
     return (wordcloud, frequency_figure)
-
 
 @app.callback(
     [Output("lda-table", "filter_query"), Output("lda-table-block", "style")],
