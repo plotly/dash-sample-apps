@@ -133,6 +133,7 @@ def calculate_bank_sample_data(dataframe, sample_size, time_values):
 
     return values_sample, counts_sample
 
+
 def make_local_df(selected_bank, time_values, n_selection):
     print("redrawing bank-wordcloud...")
     n = float(n_selection / 100)
@@ -144,15 +145,13 @@ def make_local_df(selected_bank, time_values, n_selection):
         time_values = time_slider_to_date(time_values)
         local_df = local_df[
             (local_df["Date received"] >= time_values[0])
-            & (
-                local_df["Date received"]
-                <= time_values[1]
-            )
+            & (local_df["Date received"] <= time_values[1])
         ]
     if selected_bank:
         local_df = local_df[local_df["Company"] == selected_bank]
         add_stopwords(selected_bank)
     return local_df
+
 
 def make_marks_time_slider(mini, maxi):
     """
@@ -164,18 +163,30 @@ def make_marks_time_slider(mini, maxi):
     start = datetime(year=mini.year, month=1, day=1)
     end = datetime(year=maxi.year, month=maxi.month, day=30)
     ret = {}
-  
+
     current = start
     while current <= end:
         current_str = int(current.timestamp())
         if current.month == 1:
-            ret[current_str] = {'label': str(current.year), 'style': {'font-weight': 'bold'}}
+            ret[current_str] = {
+                "label": str(current.year),
+                "style": {"font-weight": "bold"},
+            }
         elif current.month == 4:
-            ret[current_str] = {'label': "Q2", 'style': {'font-weight': 'lighter', "font-size":7}}
+            ret[current_str] = {
+                "label": "Q2",
+                "style": {"font-weight": "lighter", "font-size": 7},
+            }
         elif current.month == 7:
-            ret[current_str] = {'label': "Q3", 'style': {'font-weight': 'lighter', "font-size":7}}
+            ret[current_str] = {
+                "label": "Q3",
+                "style": {"font-weight": "lighter", "font-size": 7},
+            }
         elif current.month == 10:
-            ret[current_str] = {'label': "Q4", 'style': {'font-weight': 'lighter', "font-size":7}}
+            ret[current_str] = {
+                "label": "Q4",
+                "style": {"font-weight": "lighter", "font-size": 7},
+            }
         else:
             pass
         current += step
@@ -184,13 +195,13 @@ def make_marks_time_slider(mini, maxi):
 
 
 def time_slider_to_date(time_values):
-    min_date = datetime.fromtimestamp(time_values[0]).strftime('%c')
-    max_date = datetime.fromtimestamp(time_values[1]).strftime('%c')
+    min_date = datetime.fromtimestamp(time_values[0]).strftime("%c")
+    max_date = datetime.fromtimestamp(time_values[1]).strftime("%c")
     print("Converted time_values: ")
     print("\tmin_date: ", time_values[0], "to: ", min_date)
     print("\tmax_date", time_values[1], "to: ", max_date)
     return [min_date, max_date]
-   
+
 
 def make_options_bank_drop(values):
     """
@@ -200,7 +211,6 @@ def make_options_bank_drop(values):
     for value in values:
         ret.append({"label": value, "value": value})
     return ret
-
 
 
 def add_stopwords(selected_bank):
@@ -339,7 +349,6 @@ def plotly_wordcloud(df):
     )
 
     wordcloud_figure_data = {"data": [trace], "layout": layout}
-
     word_list_top = word_list[:25]
     word_list_top.reverse()
     freq_list_top = freq_list[:25]
@@ -357,8 +366,14 @@ def plotly_wordcloud(df):
         ],
         "layout": {"height": "550", "margin": dict(t=20, b=20, l=100, r=20, pad=4)},
     }
-
-    return wordcloud_figure_data, frequency_figure_data
+    treemap_trace = go.Treemap(
+        labels=word_list_top,
+        parents=[""] * len(word_list_top),
+        values=list(map(lambda x: x * 10, freq_list_top)),
+    )
+    treemap_layout = go.Layout({"margin": dict(t=10, b=10, l=5, r=5, pad=4)})
+    treemap_figure = {"data": [treemap_trace], "layout": treemap_layout}
+    return wordcloud_figure_data, frequency_figure_data, treemap_figure
 
 
 """
@@ -399,7 +414,10 @@ left_column = dbc.Jumbotron(
         html.H4(children="Select bank & dataset size", className="display-5"),
         html.Hr(className="my-2"),
         html.Label("Select percentage of dataset", className="lead"),
-        html.P("(Lower is faster. Higher is more precise)", style={"fontSize": 10, "font-weight":"lighter"}),
+        html.P(
+            "(Lower is faster. Higher is more precise)",
+            style={"fontSize": 10, "font-weight": "lighter"},
+        ),
         dcc.Slider(
             id="n-selection-slider",
             min=1,
@@ -423,16 +441,16 @@ left_column = dbc.Jumbotron(
         html.Label("Select a bank", style={"marginTop": 50}, className="lead"),
         html.P(
             "(You can use the dropdown or click the barchart on the right)",
-            style={"fontSize": 10, "font-weight":"lighter"},
+            style={"fontSize": 10, "font-weight": "lighter"},
         ),
         dcc.Dropdown(
             id="bank-drop", clearable=False, style={"marginBottom": 50, "font-size": 12}
         ),
         html.Label("Select time frame", className="lead"),
-        html.Div(dcc.RangeSlider(id="time-window-slider",), style={"marginBottom": 50}),
+        html.Div(dcc.RangeSlider(id="time-window-slider"), style={"marginBottom": 50}),
         html.P(
             "(You can define the time frame down to month granularity)",
-            style={"fontSize": 10, "font-weight":"lighter"},
+            style={"fontSize": 10, "font-weight": "lighter"},
         ),
     ]
 )
@@ -520,10 +538,10 @@ wordcloud_plots = [
                                     dcc.Tab(
                                         label="Treemap",
                                         children=[
-                                            html.Div(
-                                                [
-                                                    html.Img(src="assets/treemap.png", height="360px")
-                                                ]
+                                            dcc.Loading(
+                                                id="loading-treemap",
+                                                children=[dcc.Graph(id="bank-treemap")],
+                                                type="default",
                                             )
                                         ],
                                     ),
@@ -610,8 +628,7 @@ def populate_time_slider(value):
         marks,
         min_epoch,
         max_epoch,
-        #None,
-        (max_epoch-min_epoch)/(len(list(marks.keys()))*3),
+        (max_epoch - min_epoch) / (len(list(marks.keys())) * 3),
         [min_epoch, max_epoch],
     )
 
@@ -622,7 +639,6 @@ def populate_time_slider(value):
 )
 def populate_bank_dropdown(time_values, n_value):
     print("bank-drop: TODO USE THE TIME VALUES AND N-SLIDER TO LIMIT THE DATASET")
-    # converted_times = time_slider_to_date(time_values)
     bank_names, counts = get_complaint_count_by_company(global_df)
     return make_options_bank_drop(bank_names)
 
@@ -670,7 +686,6 @@ def update_bank_sample_plot(n_value, time_values):
         Output("tsne-lda", "figure"),
     ],
     [
-        #Input("bank-sample", "clickData"),
         Input("bank-drop", "value"),
         Input("time-window-slider", "value"),
         Input("n-selection-slider", "value"),
@@ -694,10 +709,14 @@ def update_lda_table(value_drop, time_values, n_selection):
 
     return (data, columns, lda_scatter_figure)
 
+
 @app.callback(
-    [Output("bank-wordcloud", "figure"), Output("frequency_figure", "figure")],
     [
-        #Input("bank-sample", "clickData"),
+        Output("bank-wordcloud", "figure"),
+        Output("frequency_figure", "figure"),
+        Output("bank-treemap", "figure"),
+    ],
+    [
         Input("bank-drop", "value"),
         Input("time-window-slider", "value"),
         Input("n-selection-slider", "value"),
@@ -705,9 +724,10 @@ def update_lda_table(value_drop, time_values, n_selection):
 )
 def update_wordcloud_plot(value_drop, time_values, n_selection):
     local_df = make_local_df(value_drop, time_values, n_selection)
-    wordcloud, frequency_figure = plotly_wordcloud(local_df)
+    wordcloud, frequency_figure, treemap = plotly_wordcloud(local_df)
     print("redrawing bank-wordcloud...done")
-    return (wordcloud, frequency_figure)
+    return (wordcloud, frequency_figure, treemap)
+
 
 @app.callback(
     [Output("lda-table", "filter_query"), Output("lda-table-block", "style")],
