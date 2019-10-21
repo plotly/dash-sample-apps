@@ -21,7 +21,6 @@ from wordcloud import WordCloud, STOPWORDS
 from ldacomplaints import lda_analysis
 
 
-
 DATA_PATH = pathlib.Path(__file__).parent.resolve()
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 FILENAME = "data/customer_complaints_narrative_sample.csv"
@@ -99,6 +98,7 @@ dig deeper into.
 """
 #  Somewhat helpful functions
 """
+
 
 def sample_data(dataframe, float_percent):
     """
