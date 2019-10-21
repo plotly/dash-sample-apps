@@ -671,7 +671,7 @@ def update_bank_sample_plot(n_value, time_values):
     ]
     layout = {
         "autosize": False,
-        "margin": dict(t=10, b=10, l=30, r=0, pad=4),
+        "margin": dict(t=10, b=10, l=40, r=0, pad=4),
         "xaxis": {"showticklabels": False},
     }
     print("redrawing bank-sample...done")
