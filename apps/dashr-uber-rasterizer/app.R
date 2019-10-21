@@ -38,7 +38,7 @@ default_colorscale <- lapply(0:256,
 filtered_df_lat <- ridesDf[ridesDf[,"Lat"] > 39.9 & ridesDf[,"Lat"] < 42.1166, ]
 filtered_df_lon <- ridesDf[ridesDf[,"Lon"] > -74.929 & ridesDf[,"Lon"] < -72.5, ]
 
-initial_plot <- add_rasterly(plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y = ~Lat,
+initial_plot <- add_rasterly_heatmap(plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y = ~Lat,
                                      colorscale = default_colorscale,
                                      colorbar = list(title = "Log(No. of Rides)")))
 
@@ -153,10 +153,10 @@ tabs <- htmlDiv(dccTabs(id = 'circos-control-tabs', value = 'what-is', children 
         htmlH4("Pixel Size", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
         dccSlider(
           id = 'point-size',
-          min = 1,
+          min = 0,
           max = 10,
           step = 1,
-          value = 1,
+          value = 0,
           marks <- as.list(
             setNames(
               as.character(seq(1:10)),
@@ -249,7 +249,6 @@ app$callback(
     input(id = 'point-size', property = 'value')
   ),
   update_graph <- function(data, cmap, background, reduc, scale, point_size) {
-
     color <- if(cmap == "blue") {
       c("lightblue", "darkblue")
     } else if(cmap =="viridis") {
@@ -290,7 +289,7 @@ app$callback(
       plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y = ~Lat,
               colorscale = colorscale,
               colorbar = list(title = colorbar_title)) %>%
-        add_rasterly(reduction_func = reduc, scaling = scale) %>%
+        add_rasterly_heatmap(reduction_func = reduc, scaling = scale, size = b <- if(point_size == 0) NULL else {point_size}) %>%
         layout(font = list(color = 'rgb(226, 239, 250)'),
                margin = list(l = 1, r = 1, b = 1, t = 15, pad = 0, autoexpand = TRUE),
                paper_bgcolor='rgb(38, 43, 61)',
