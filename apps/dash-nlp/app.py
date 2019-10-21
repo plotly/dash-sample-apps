@@ -21,7 +21,6 @@ DATA_PATH = pathlib.Path(__file__).parent.resolve()
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 filename = "data/customer_complaints_narrative_sample.csv"
 PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
-PLACEHOLDER_TREE = DATA_PATH.joinpath("assets/treemap.png")
 global_df = pd.read_csv(DATA_PATH.joinpath(filename), header=0)
 """
 We are casting the whole column to datetime to make life easier in the rest of the code.
