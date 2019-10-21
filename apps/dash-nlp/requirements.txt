@@ -25,7 +25,6 @@ dash-table==4.4.1
 decorator==4.4.0
 defusedxml==0.6.0
 docutils==0.15.2
-en-core-web-sm==2.1.0
 entrypoints==0.3
 Flask==1.1.1
 Flask-Compress==1.4.0
@@ -122,3 +121,4 @@ widgetsnbextension==3.5.1
 wordcloud==1.5.0
 wrapt==1.11.2
 zipp==0.6.0
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm==2.1.0
