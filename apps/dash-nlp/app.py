@@ -1,39 +1,44 @@
 # -*- coding: utf-8 -*-
+"""
+Module doc string
+"""
+import pathlib
+import re
+from datetime import datetime
 import flask
 import dash
 import dash_table
-import pathlib
 import matplotlib.colors as mcolors
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
-from dash.dependencies import Output, Input, State
-from datetime import datetime, timedelta
-from dateutil.relativedelta import *
 import pandas as pd
 import numpy as np
+from dash.dependencies import Output, Input, State
+from dateutil import relativedelta
 from wordcloud import WordCloud, STOPWORDS
-import re
 from ldacomplaints import lda_analysis
 
+
+
 DATA_PATH = pathlib.Path(__file__).parent.resolve()
-external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
-filename = "data/customer_complaints_narrative_sample.csv"
+EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
+FILENAME = "data/customer_complaints_narrative_sample.csv"
 PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
-global_df = pd.read_csv(DATA_PATH.joinpath(filename), header=0)
+GLOBAL_DF = pd.read_csv(DATA_PATH.joinpath(FILENAME), header=0)
 """
 We are casting the whole column to datetime to make life easier in the rest of the code.
 It isn't a terribly expensive operation so for the sake of tidyness we went this way.
 """
-global_df["Date received"] = pd.to_datetime(
-    global_df["Date received"], format="%m/%d/%Y"
+GLOBAL_DF["Date received"] = pd.to_datetime(
+    GLOBAL_DF["Date received"], format="%m/%d/%Y"
 )
 
 """
 In order to make the graphs more useful we decided to prevent some words from being included
 """
-additional_stopwords = [
+ADDITIONAL_STOPWORDS = [
     "XXXX",
     "XX",
     "xx",
@@ -44,7 +49,7 @@ additional_stopwords = [
     "Citi",
     "account",
 ]
-for stopword in additional_stopwords:
+for stopword in ADDITIONAL_STOPWORDS:
     STOPWORDS.add(stopword)
 
 """
@@ -91,11 +96,9 @@ such as this can aid an analyst in finding potentially interesting things to
 dig deeper into.
 """
 
-
 """
 #  Somewhat helpful functions
 """
-
 
 def sample_data(dataframe, float_percent):
     """
@@ -107,13 +110,15 @@ def sample_data(dataframe, float_percent):
 
 
 def get_complaint_count_by_company(dataframe):
-    companyCounts = dataframe["Company"].value_counts()
-    values = companyCounts.keys().tolist()
-    counts = companyCounts.tolist()
+    """ TODO """
+    company_counts = dataframe["Company"].value_counts()
+    values = company_counts.keys().tolist()
+    counts = company_counts.tolist()
     return values, counts
 
 
 def calculate_bank_sample_data(dataframe, sample_size, time_values):
+    """ TODO """
     print(
         "making bank_sample_data with sample_size count: %s and time_values: %s"
         % (sample_size, time_values)
@@ -125,21 +130,22 @@ def calculate_bank_sample_data(dataframe, sample_size, time_values):
             (dataframe["Date received"] >= min_date)
             & (dataframe["Date received"] <= max_date)
         ]
-    companyCounts = dataframe["Company"].value_counts()
-    companyCounts_sample = companyCounts[:sample_size]
-    values_sample = companyCounts_sample.keys().tolist()
-    counts_sample = companyCounts_sample.tolist()
+    company_counts = dataframe["Company"].value_counts()
+    company_counts_sample = company_counts[:sample_size]
+    values_sample = company_counts_sample.keys().tolist()
+    counts_sample = company_counts_sample.tolist()
 
     return values_sample, counts_sample
 
 
 def make_local_df(selected_bank, time_values, n_selection):
+    """ TODO """
     print("redrawing bank-wordcloud...")
     n = float(n_selection / 100)
     print("got time window:", str(time_values))
     print("got n_selection:", str(n_selection), str(n))
     # sample the dataset according to the slider
-    local_df = sample_data(global_df, n)
+    local_df = sample_data(GLOBAL_DF, n)
     if time_values is not None:
         time_values = time_slider_to_date(time_values)
         local_df = local_df[
@@ -154,11 +160,12 @@ def make_local_df(selected_bank, time_values, n_selection):
 
 def make_marks_time_slider(mini, maxi):
     """
-    A helper function to generate a dictionary
-    that should look something like:
-    {1420066800: '2015', 1427839200: 'Q2', 1435701600: 'Q3', 1443650400: 'Q4', 1451602800: '2016', 1459461600: 'Q2', 1467324000: 'Q3', 1475272800: 'Q4', 1483225200: '2017', 1490997600: 'Q2', 1498860000: 'Q3', 1506808800: 'Q4'}
+    A helper function to generate a dictionary that should look something like:
+    {1420066800: '2015', 1427839200: 'Q2', 1435701600: 'Q3', 1443650400: 'Q4',
+    1451602800: '2016', 1459461600: 'Q2', 1467324000: 'Q3', 1475272800: 'Q4',
+     1483225200: '2017', 1490997600: 'Q2', 1498860000: 'Q3', 1506808800: 'Q4'}
     """
-    step = relativedelta(months=+1)
+    step = relativedelta.relativedelta(months=+1)
     start = datetime(year=mini.year, month=1, day=1)
     end = datetime(year=maxi.year, month=maxi.month, day=30)
     ret = {}
@@ -194,6 +201,7 @@ def make_marks_time_slider(mini, maxi):
 
 
 def time_slider_to_date(time_values):
+    """ TODO """
     min_date = datetime.fromtimestamp(time_values[0]).strftime("%c")
     max_date = datetime.fromtimestamp(time_values[1]).strftime("%c")
     print("Converted time_values: ")
@@ -230,6 +238,7 @@ def add_stopwords(selected_bank):
 
 
 def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
+    """Calculates LDA and returns figure data you can jam into a dcc.Graph()"""
     topic_top3words = [
         (i, topic)
         for i, topics in lda_model.show_topics(formatted=False)
@@ -281,6 +290,8 @@ def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
 
 
 def plotly_wordcloud(df):
+    """A wonderful function that returns figure data for three equally
+    wonderful plots: wordcloud, frequency histogram and treemap"""
     complaints_text = list(df["Consumer complaint narrative"].dropna().values)
     ## join all documents in corpus
     text = " ".join(list(complaints_text))
@@ -379,14 +390,13 @@ def plotly_wordcloud(df):
 #  Page layout and contents
 
 In an effort to clean up the code a bit, we decided to break it apart into
-sections. For instance: left_column is the input controls you see in that gray
+sections. For instance: LEFT_COLUMN is the input controls you see in that gray
 box on the top left. The body variable is the overall structure which most other
 sections go into. This just makes it ever so slightly easier to find the right 
 spot to add to or change without having to count too many brackets.
 """
 
-
-navbar = dbc.Navbar(
+NAVBAR = dbc.Navbar(
     children=[
         html.A(
             # Use row and col to control vertical alignment of logo / brand
@@ -408,7 +418,7 @@ navbar = dbc.Navbar(
     sticky="top",
 )
 
-left_column = dbc.Jumbotron(
+LEFT_COLUMN = dbc.Jumbotron(
     [
         html.H4(children="Select bank & dataset size", className="display-5"),
         html.Hr(className="my-2"),
@@ -454,10 +464,10 @@ left_column = dbc.Jumbotron(
     ]
 )
 
-lda_plot = dcc.Loading(
+LDA_PLOT = dcc.Loading(
     id="loading-lda-plot", children=[dcc.Graph(id="tsne-lda")], type="default"
 )
-lda_table = html.Div(
+LDA_TABLE = html.Div(
     id="lda-table-block",
     children=[
         dcc.Loading(
@@ -502,7 +512,7 @@ lda_table = html.Div(
     style={"display": "none"},
 )
 
-lda_plots = [
+LDA_PLOTS = [
     dbc.CardHeader(html.H5("Topic modelling using LDA")),
     dbc.CardBody(
         [
@@ -510,13 +520,13 @@ lda_plots = [
                 "Click on a complaint point in the scatter to explore that specific complaint",
                 className="mb-0",
             ),
-            lda_plot,
+            LDA_PLOT,
             html.Hr(),
-            lda_table,
+            LDA_TABLE,
         ]
     ),
 ]
-wordcloud_plots = [
+WORDCLOUD_PLOTS = [
     dbc.CardHeader(html.H5("Most frequently used words in complaints")),
     dbc.CardBody(
         [
@@ -567,7 +577,7 @@ wordcloud_plots = [
     ),
 ]
 
-top_banks_plot = [
+TOP_BANKS_PLOT = [
     dbc.CardHeader(html.H5("Top 10 banks by number of complaints")),
     dbc.CardBody(
         [
@@ -580,32 +590,32 @@ top_banks_plot = [
     ),
 ]
 
-body = dbc.Container(
+BODY = dbc.Container(
     [
         dbc.Row(
             [
-                dbc.Col(left_column, md=4, align="center"),
-                dbc.Col(dbc.Card(top_banks_plot), md=8),
+                dbc.Col(LEFT_COLUMN, md=4, align="center"),
+                dbc.Col(dbc.Card(TOP_BANKS_PLOT), md=8),
             ],
             style={"marginTop": 30},
         ),
-        dbc.Card(wordcloud_plots),
-        dbc.Row([dbc.Col([dbc.Card(lda_plots)])], style={"marginTop": 50}),
+        dbc.Card(WORDCLOUD_PLOTS),
+        dbc.Row([dbc.Col([dbc.Card(LDA_PLOTS)])], style={"marginTop": 50}),
     ],
     className="mt-12",
 )
 
 
-server = flask.Flask(__name__)
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], server=server)
-app.layout = html.Div(children=[navbar, body])
+SERVER = flask.Flask(__name__)
+APP = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], server=SERVER)
+APP.layout = html.Div(children=[NAVBAR, BODY])
 
 """
 #  Callbacks
 """
 
 
-@app.callback(
+@APP.callback(
     [
         Output("time-window-slider", "marks"),
         Output("time-window-slider", "min"),
@@ -616,8 +626,14 @@ app.layout = html.Div(children=[navbar, body])
     [Input("n-selection-slider", "value")],
 )
 def populate_time_slider(value):
-    min_date = global_df["Date received"].min()
-    max_date = global_df["Date received"].max()
+    """
+    Depending on our dataset, we need to populate the time-slider
+    with different ranges. This function does that and returns the
+    needed data to the time-window-slider.
+    """
+    value += 0
+    min_date = GLOBAL_DF["Date received"].min()
+    max_date = GLOBAL_DF["Date received"].max()
 
     marks = make_marks_time_slider(min_date, max_date)
     min_epoch = list(marks.keys())[0]
@@ -632,21 +648,23 @@ def populate_time_slider(value):
     )
 
 
-@app.callback(
+@APP.callback(
     Output("bank-drop", "options"),
     [Input("time-window-slider", "value"), Input("n-selection-slider", "value")],
 )
 def populate_bank_dropdown(time_values, n_value):
+    """ TODO """
     print("bank-drop: TODO USE THE TIME VALUES AND N-SLIDER TO LIMIT THE DATASET")
-    bank_names, counts = get_complaint_count_by_company(global_df)
+    bank_names, counts = get_complaint_count_by_company(GLOBAL_DF)
     return make_options_bank_drop(bank_names)
 
 
-@app.callback(
+@APP.callback(
     Output("bank-sample", "figure"),
     [Input("n-selection-slider", "value"), Input("time-window-slider", "value")],
 )
 def update_bank_sample_plot(n_value, time_values):
+    """ TODO """
     print("redrawing bank-sample...")
     print("\tn is:", n_value)
     print("\ttime_values is:", time_values)
@@ -654,7 +672,7 @@ def update_bank_sample_plot(n_value, time_values):
         return {}
     n = float(n_value / 100)
     bank_sample_count = 10
-    local_df = sample_data(global_df, n)
+    local_df = sample_data(GLOBAL_DF, n)
     min_date, max_date = time_slider_to_date(time_values)
     values_sample, counts_sample = calculate_bank_sample_data(
         local_df, bank_sample_count, [min_date, max_date]
@@ -678,7 +696,7 @@ def update_bank_sample_plot(n_value, time_values):
     return {"data": data, "layout": layout}
 
 
-@app.callback(
+@APP.callback(
     [
         Output("lda-table", "data"),
         Output("lda-table", "columns"),
@@ -691,6 +709,7 @@ def update_bank_sample_plot(n_value, time_values):
     ],
 )
 def update_lda_table(value_drop, time_values, n_selection):
+    """ TODO """
     local_df = make_local_df(value_drop, time_values, n_selection)
     complaints_text = list(local_df["Consumer complaint narrative"].dropna().values)
     if len(complaints_text) <= 10:  # we cannot do LDA on less than 11 complaints
@@ -709,7 +728,7 @@ def update_lda_table(value_drop, time_values, n_selection):
     return (data, columns, lda_scatter_figure)
 
 
-@app.callback(
+@APP.callback(
     [
         Output("bank-wordcloud", "figure"),
         Output("frequency_figure", "figure"),
@@ -722,18 +741,20 @@ def update_lda_table(value_drop, time_values, n_selection):
     ],
 )
 def update_wordcloud_plot(value_drop, time_values, n_selection):
+    """ TODO """
     local_df = make_local_df(value_drop, time_values, n_selection)
     wordcloud, frequency_figure, treemap = plotly_wordcloud(local_df)
     print("redrawing bank-wordcloud...done")
     return (wordcloud, frequency_figure, treemap)
 
 
-@app.callback(
+@APP.callback(
     [Output("lda-table", "filter_query"), Output("lda-table-block", "style")],
     [Input("tsne-lda", "clickData")],
     [State("lda-table", "filter_query")],
 )
 def filter_table_on_scatter_click(tsne_click, current_filter):
+    """ TODO """
     if tsne_click is not None:
         selected_complaint = tsne_click["points"][0]["hovertext"]
         if current_filter != "":
@@ -749,18 +770,17 @@ def filter_table_on_scatter_click(tsne_click, current_filter):
         # ({avf} < 12000) && ({avf} >= 10000)
         print("current_filter", current_filter)
         return (filter_query, {"display": "block"})
-    else:
-        return ["", {"display": "none"}]
+    return ["", {"display": "none"}]
 
 
-@app.callback(Output("bank-drop", "value"), [Input("bank-sample", "clickData")])
+@APP.callback(Output("bank-drop", "value"), [Input("bank-sample", "clickData")])
 def update_bank_drop_on_click(value):
+    """ TODO """
     if value is not None:
         selected_bank = value["points"][0]["x"]
         return selected_bank
-    else:
-        return "EQUIFAX, INC."
+    return "EQUIFAX, INC."
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    APP.run_server(debug=True)
