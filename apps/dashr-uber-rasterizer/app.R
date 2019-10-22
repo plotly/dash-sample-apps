@@ -141,7 +141,7 @@ tabs <- htmlDiv(dccTabs(id = 'circos-control-tabs', value = 'what-is', children 
             list(label = 'Origin', value = 'origin')
           )
         ),
-        htmlH4("Reduction method", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
+        htmlH4("Reduction Method", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
         dccDropdown(
           id = "reduc",
           options = list(list(label = "sum", value = "sum"),
