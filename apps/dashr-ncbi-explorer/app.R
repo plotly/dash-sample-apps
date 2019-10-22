@@ -157,8 +157,9 @@ first_row <- htmlDiv(list(
       children = htmlDiv(className = 'control-tab', children = list(
         htmlDiv(className = 'app-controls-block', children = list(
           htmlP("Enter a single GenBank accession ID or multiple ID's separated by commas
-                    and select the button to generate an alignment or the sequence of the dataset.
-                    Enter  addtional datasets to add these sequences to the alignment.", style = list("margin" = 10)),
+                    and select the button to generate an alignment and the sequence of the dataset.
+                    Generating the alignment will also create a FASTA file which you can download.
+                    Enter  additional datasets to add these sequences to the alignment. Clear your FASTA file with the button below.", style = list("margin" = 10)),
           htmlP('Example: Single Dataset - NR_108049', style = list("margin" = 10)),
           htmlP(' Multiple Datasets - HM161150, FJ356743, 
                     JQ073190, GU457971, FJ356741', style = list("margin" = 10)),
@@ -174,6 +175,9 @@ first_row <- htmlDiv(list(
           ),
           htmlButton(
             id = 'submit-button-2', n_clicks = 0, children = 'Generate Alignment'
+          ),
+          htmlButton(
+            id = 'reset-file', n_clicks = 0, children = 'Clear FASTA File'
           ),
           htmlA(
             htmlButton(
@@ -626,6 +630,19 @@ app$callback(
     point <- hoverdata$points[[1]]$pointNumber
     selection_fixed <- list(as.numeric(point-30), as.numeric(point+30), "#262B3D")
     return(selection_fixed)
+  }
+)
+
+app$callback(
+  output(id = 'fasta-file', property = 'data'),
+  params = list(
+    input(id = 'reset-file', property = "n_clicks")
+  ),
+  reset_fasta <- function(n_clicks) {
+    if (n_clicks > 0) {
+      write.dna(" ", file ="data/random_fasta.FASTA", format = "fasta", append = FALSE, nbcol = 6, colsep = "", colw = 10)
+      print("FASTA CLEARED")
+    }
   }
 )
 
