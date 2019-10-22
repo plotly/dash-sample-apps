@@ -319,8 +319,6 @@ app$callback(
     
     ctx = app$callback_context()
     
-    print(ctx)
-    
     if (ctx$triggered$prop_id == "submit-button-2.n_clicks") {
       bio_file <- read.GenBank(access.nb = accession_id)
       write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
