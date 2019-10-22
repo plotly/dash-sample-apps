@@ -317,7 +317,11 @@ app$callback(
     
     accession_id <- unlist(accession_id)
     
-    if (n_clicks > 0) {
+    ctx = app$callback_context()
+    
+    print(ctx)
+    
+    if (ctx$triggered$prop_id == "submit-button-2.n_clicks") {
       bio_file <- read.GenBank(access.nb = accession_id)
       write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
       fasta_file <- toupper(read_file("data/random_fasta.FASTA"))
@@ -599,6 +603,21 @@ app$callback(
     return(p)
   }
 )
+
+
+app$callback(
+  output(id = 'genbank-input', property = "value"),
+  params = list(
+    input(id = 'submit-button-2', property = "n_clicks")
+  ),
+  
+  update_string <- function(n_clicks) {
+    if(n_clicks > 0) {
+      return("")
+    }
+  }
+)
+
 
 app$callback(
   output(id = "sequence-viewer", property = "selection"),
