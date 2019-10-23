@@ -656,7 +656,7 @@ def populate_bank_dropdown(time_values, n_value):
     time_values.append(1)
     n_value += 1
     bank_names, counts = get_complaint_count_by_company(GLOBAL_DF)
-    counts += 1
+    counts.append(1)
     return make_options_bank_drop(bank_names)
 
 
