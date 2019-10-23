@@ -205,8 +205,8 @@ def time_slider_to_date(time_values):
     min_date = datetime.fromtimestamp(time_values[0]).strftime("%c")
     max_date = datetime.fromtimestamp(time_values[1]).strftime("%c")
     print("Converted time_values: ")
-    print("\tmin_date: ", time_values[0], "to: ", min_date)
-    print("\tmax_date", time_values[1], "to: ", max_date)
+    print("\tmin_date:", time_values[0], "to: ", min_date)
+    print("\tmax_date:", time_values[1], "to: ", max_date)
     return [min_date, max_date]
 
 
@@ -739,18 +739,21 @@ def precompute_all_lda():
     min_epoch = list(marks.keys())[0]
     max_epoch = list(marks.keys())[-1]
     bank_names, counts = get_complaint_count_by_company(GLOBAL_DF)
-    counts += 1
+    counts.append(1) # NOOP
     results = {}
     time_values = [min_epoch, max_epoch]
     n_selection = 100
     file = open("precomupted", "w")
     file.close()
     for bank in bank_names:
-        file = open("precomupted", "a")
-        print("crunching LDA for: ", bank)
-        results[bank] = update_lda_table(bank, time_values, n_selection)
-        file.write(str(results))
-        file.close()
+        try:
+            file = open("precomupted", "a")
+            print("crunching LDA for: ", bank)
+            results[bank] = update_lda_table(bank, time_values, n_selection)
+            file.write(str(results[bank]))
+            file.close()
+        except:
+            print("SOMETHING WENT HORRIBLY WRONG WITH BANK: ", bank)
     print(results)
 
 
