@@ -653,7 +653,7 @@ def populate_time_slider(value):
 def populate_bank_dropdown(time_values, n_value):
     """ TODO """
     print("bank-drop: TODO USE THE TIME VALUES AND N-SLIDER TO LIMIT THE DATASET")
-    time_values += 1
+    time_values.append(1)
     n_value += 1
     bank_names, counts = get_complaint_count_by_company(GLOBAL_DF)
     counts += 1
