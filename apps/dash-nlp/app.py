@@ -141,11 +141,11 @@ def calculate_bank_sample_data(dataframe, sample_size, time_values):
 def make_local_df(selected_bank, time_values, n_selection):
     """ TODO """
     print("redrawing bank-wordcloud...")
-    n = float(n_selection / 100)
+    n_float = float(n_selection / 100)
     print("got time window:", str(time_values))
-    print("got n_selection:", str(n_selection), str(n))
+    print("got n_selection:", str(n_selection), str(n_float))
     # sample the dataset according to the slider
-    local_df = sample_data(GLOBAL_DF, n)
+    local_df = sample_data(GLOBAL_DF, n_float)
     if time_values is not None:
         time_values = time_slider_to_date(time_values)
         local_df = local_df[
@@ -289,15 +289,15 @@ def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
     return {"data": traces, "layout": layout}
 
 
-def plotly_wordcloud(df):
+def plotly_wordcloud(data_frame):
     """A wonderful function that returns figure data for three equally
     wonderful plots: wordcloud, frequency histogram and treemap"""
-    complaints_text = list(df["Consumer complaint narrative"].dropna().values)
+    complaints_text = list(data_frame["Consumer complaint narrative"].dropna().values)
     ## join all documents in corpus
     text = " ".join(list(complaints_text))
 
-    wc = WordCloud(stopwords=set(STOPWORDS), max_words=100, max_font_size=90)
-    wc.generate(text)
+    word_cloud = WordCloud(stopwords=set(STOPWORDS), max_words=100, max_font_size=90)
+    word_cloud.generate(text)
 
     word_list = []
     freq_list = []
@@ -306,7 +306,7 @@ def plotly_wordcloud(df):
     orientation_list = []
     color_list = []
 
-    for (word, freq), fontsize, position, orientation, color in wc.layout_:
+    for (word, freq), fontsize, position, orientation, color in word_cloud.layout_:
         word_list.append(word)
         freq_list.append(freq)
         fontsize_list.append(fontsize)
@@ -315,11 +315,11 @@ def plotly_wordcloud(df):
         color_list.append(color)
 
     # get the positions
-    x = []
-    y = []
+    x_arr = []
+    y_arr = []
     for i in position_list:
-        x.append(i[0])
-        y.append(i[1])
+        x_arr.append(i[0])
+        y_arr.append(i[1])
 
     # get the relative occurence frequencies
     new_freq_list = []
@@ -327,8 +327,8 @@ def plotly_wordcloud(df):
         new_freq_list.append(i * 80)
 
     trace = go.Scatter(
-        x=x,
-        y=y,
+        x=x_arr,
+        y=y_arr,
         textfont=dict(size=new_freq_list, color=color_list),
         hoverinfo="text",
         textposition="top center",
@@ -377,9 +377,7 @@ def plotly_wordcloud(df):
         "layout": {"height": "550", "margin": dict(t=20, b=20, l=100, r=20, pad=4)},
     }
     treemap_trace = go.Treemap(
-        labels=word_list_top,
-        parents=[""] * len(word_list_top),
-        values=freq_list_top,
+        labels=word_list_top, parents=[""] * len(word_list_top), values=freq_list_top
     )
     treemap_layout = go.Layout({"margin": dict(t=10, b=10, l=5, r=5, pad=4)})
     treemap_figure = {"data": [treemap_trace], "layout": treemap_layout}
@@ -655,7 +653,10 @@ def populate_time_slider(value):
 def populate_bank_dropdown(time_values, n_value):
     """ TODO """
     print("bank-drop: TODO USE THE TIME VALUES AND N-SLIDER TO LIMIT THE DATASET")
+    time_values += 1
+    n_value += 1
     bank_names, counts = get_complaint_count_by_company(GLOBAL_DF)
+    counts += 1
     return make_options_bank_drop(bank_names)
 
 
@@ -670,9 +671,9 @@ def update_bank_sample_plot(n_value, time_values):
     print("\ttime_values is:", time_values)
     if time_values is None:
         return {}
-    n = float(n_value / 100)
+    n_float = float(n_value / 100)
     bank_sample_count = 10
-    local_df = sample_data(GLOBAL_DF, n)
+    local_df = sample_data(GLOBAL_DF, n_float)
     min_date, max_date = time_slider_to_date(time_values)
     values_sample, counts_sample = calculate_bank_sample_data(
         local_df, bank_sample_count, [min_date, max_date]
@@ -727,13 +728,17 @@ def update_lda_table(value_drop, time_values, n_selection):
 
     return (data, columns, lda_scatter_figure)
 
+
 def precompute_all_lda():
+    """ QD function for precomputing all necessary LDA results
+     to allow much faster load times when the app runs. """
     min_date = GLOBAL_DF["Date received"].min()
     max_date = GLOBAL_DF["Date received"].max()
     marks = make_marks_time_slider(min_date, max_date)
     min_epoch = list(marks.keys())[0]
     max_epoch = list(marks.keys())[-1]
     bank_names, counts = get_complaint_count_by_company(GLOBAL_DF)
+    counts += 1
     results = {}
     time_values = [min_epoch, max_epoch]
     n_selection = 100
@@ -803,5 +808,5 @@ def update_bank_drop_on_click(value):
 
 
 if __name__ == "__main__":
-    #precompute_all_lda()
+    # precompute_all_lda()
     APP.run_server(debug=True)
