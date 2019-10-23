@@ -379,7 +379,7 @@ def plotly_wordcloud(df):
     treemap_trace = go.Treemap(
         labels=word_list_top,
         parents=[""] * len(word_list_top),
-        values=list(map(lambda x: x * 10, freq_list_top)),
+        values=freq_list_top,
     )
     treemap_layout = go.Layout({"margin": dict(t=10, b=10, l=5, r=5, pad=4)})
     treemap_figure = {"data": [treemap_trace], "layout": treemap_layout}
@@ -727,6 +727,26 @@ def update_lda_table(value_drop, time_values, n_selection):
 
     return (data, columns, lda_scatter_figure)
 
+def precompute_all_lda():
+    min_date = GLOBAL_DF["Date received"].min()
+    max_date = GLOBAL_DF["Date received"].max()
+    marks = make_marks_time_slider(min_date, max_date)
+    min_epoch = list(marks.keys())[0]
+    max_epoch = list(marks.keys())[-1]
+    bank_names, counts = get_complaint_count_by_company(GLOBAL_DF)
+    results = {}
+    time_values = [min_epoch, max_epoch]
+    n_selection = 100
+    file = open("precomupted", "w")
+    file.close()
+    for bank in bank_names:
+        file = open("precomupted", "a")
+        print("crunching LDA for: ", bank)
+        results[bank] = update_lda_table(bank, time_values, n_selection)
+        file.write(str(results))
+        file.close()
+    print(results)
+
 
 @APP.callback(
     [
@@ -783,4 +803,5 @@ def update_bank_drop_on_click(value):
 
 
 if __name__ == "__main__":
+    #precompute_all_lda()
     APP.run_server(debug=True)
