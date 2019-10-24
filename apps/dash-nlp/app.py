@@ -739,12 +739,14 @@ def precompute_all_lda():
     min_epoch = list(marks.keys())[0]
     max_epoch = list(marks.keys())[-1]
     bank_names, counts = get_complaint_count_by_company(GLOBAL_DF)
-    counts.append(1) # NOOP
+    counts.append(1)  # NOOP
     results = {}
     time_values = [min_epoch, max_epoch]
     n_selection = 100
     file = open("precomupted", "w")
     file.close()
+    failed_banks = []
+    counter = 0
     for bank in bank_names:
         try:
             file = open("precomupted", "a")
@@ -752,9 +754,15 @@ def precompute_all_lda():
             results[bank] = update_lda_table(bank, time_values, n_selection)
             file.write(str(results[bank]))
             file.close()
+            counter += 1
         except:
             print("SOMETHING WENT HORRIBLY WRONG WITH BANK: ", bank)
-    print(results)
+            failed_banks.append(bank)
+    print("DONE")
+    print("did %d banks" % counter)
+    print("failed %d:" % len(failed_banks))
+    for fail in failed_banks:
+        print(fail)
 
 
 @APP.callback(
