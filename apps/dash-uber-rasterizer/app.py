@@ -6,9 +6,10 @@ import numpy as np
 
 from dash.dependencies import Input, Output
 from plotly import graph_objs as go
-from datetime import datetime as dt
 
-import datashader
+import datashader as ds
+from datashader import transfer_functions as tf
+from couleurs import colorscales
 
 # Initialize data frame
 # df1 = pd.read_csv(
@@ -24,11 +25,59 @@ import datashader
 #     dtype=object,
 # )
 
-df1 = pd.read_csv("/Users/Caner/Desktop/tmp/dashr-uber-rasterizer/data/df1.csv", dtype=object)
-df2 = pd.read_csv("/Users/Caner/Desktop/tmp/dashr-uber-rasterizer/data/df2.csv", dtype=object)
-df3 = pd.read_csv("/Users/Caner/Desktop/tmp/dashr-uber-rasterizer/data/df3.csv", dtype=object)
+df1 = pd.read_csv("/Users/Caner/Desktop/tmp/dashr-uber-rasterizer/data/df1.csv")
+df2 = pd.read_csv("/Users/Caner/Desktop/tmp/dashr-uber-rasterizer/data/df2.csv")
+df3 = pd.read_csv("/Users/Caner/Desktop/tmp/dashr-uber-rasterizer/data/df3.csv")
 
-df = pd.concat([df1, df2, df3], axis=0)
+rides_df = pd.concat([df1, df2, df3], axis=0)
+
+x_range = (-74.929, -72.5)
+y_range = (39.9, 42.1166)
+
+# Helper Function 1 for generating initial plot
+def gen_ds_image():
+    cvs = ds.Canvas(x_range=x_range, y_range=y_range)
+    agg_heatmap = cvs.points(rides_df, "Lon", "Lat")
+
+    img = tf.shade(agg_heatmap)
+    #img = tf.dynspread(img, threshold=0.95, max_px=5, shape='circle')
+
+    return img #img.to_pil()
+
+# Helper Function 2 for generating initial plot
+def tf_to_plotly():
+    rides_img = gen_ds_image()
+    arr_rides = np.array(rides_img)
+    z_rides = arr_rides.tolist()
+
+    dims = len(z_rides[0]), len(z_rides)
+
+    data = [dict(
+        z=z_rides,
+        x=np.linspace(x_range[0], x_range[1], dims[0]),
+        y=np.linspace(y_range[0], y_range[1], dims[1]),
+        colorscale=colorscales["plasma"],
+        colorbar={"title": "Log(No. of Rides)"},
+        # showscale=False,
+        # reversescale = True,
+        type='heatmap')]
+
+    layout = dict(
+        font={"color": "rgb(226, 239, 250)"},
+        paper_bgcolor="rgb(38, 43, 61)",
+        plot_bgcolor="rgb(38, 43, 61)",
+        xaxis={"title": "Longitude",
+               "constrain": "domain",
+               "scaleanchor": "y",
+               "scaleratio": np.cos(40.8 * np.pi / 180)},
+        yaxis={"title": "Latitude",
+               "constrain": "domain"},
+               #"fixedrange": True # Expands to xaxis},
+        margin=dict(t=0, b=0) # Expands yaxis
+    )
+
+    fig = dict(data=data, layout=layout)
+    return fig
 
 
 # App Start ------------------------------
@@ -39,449 +88,175 @@ app = dash.Dash(
 )
 server = app.server
 
+
 # Create Layout Variables ------------------------------
+
+header = html.Div(
+    id="app-page-header",
+    style={"width": "100%",
+           "background": "#262B3D",
+           "color": "#E2EFFA"},
+    children=[
+        html.A(
+            id="dash-logo",
+            children=[
+                html.Img(src="assets/plotly-dash-logo.png",
+                         height="36",
+                         width="180",
+                         style={"top": "10", "margin": "10px"})
+            ],
+            href="/Portal"
+        ),
+        html.H2("Uber NYC Rasterizer"),
+        html.A(
+            id="gh-link",
+            children=["View on GitHub"],
+            href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-uber-rasterizer",
+            style={"color": "white", "border": "solid 1px white"}
+        ),
+        html.Img(src="assets/GitHub-Mark-Light-64px.png")
+    ]
+)
+
+tabs = html.Div(
+    dcc.Tabs(id="circos-control-tabs", value="what-is", children=[
+        dcc.Tab(
+            label="About",
+            value="what-is",
+            children=html.Div(
+                id="control-tab", children=[
+                    html.H4("What is Uber NYC Rasterizer?",
+                            style={"font-size": "24pt",
+                                   "font-weight": "200",
+                                   "letter-spacing": "1px"}),
+                    dcc.Markdown(
+                        '''
+                    This Dash app is a simple demonstration of the rasterizing capabilities of the _rasterly_ package.
+                    The dataset consists of over 4.5 million observations, representing Uber rides taken in New York City in 2014.
+                    In CSV format, the source data are over 165 MB in size. _rasterly_ is capable of processing datasets an order
+                    of magnitude larger in similarly brisk fashion. The raster data required to produce the aggregation layers and color
+                    gradients displayed here are computed efficiently enough to maintain the interactive feel of the application.
+                        ''',
+                        style={"padding": "5px"}),
+                    dcc.Markdown(
+                        "Visit the _rasterly_ package repository [here](https://github.com/plotly/rasterly) to learn more.",
+                        style={"padding": "5px"}),
+            ])
+        ),
+        dcc.Tab(
+            label="Options",
+            value="data",
+            children=html.Div(
+                className="circos-tab",
+                children=[
+                    html.Div(className="app-controls-block", children=[
+                        html.H4("Colorscale",
+                                style={"font-size": "18pt",
+                                       "font-weight": "200",
+                                       "letter-spacing": "1px"}),
+                        html.Div(dcc.Dropdown(
+                            id="cmap",
+                            value="plasma",
+                            options=[
+                                {"label": "Plasma", "value": "plasma"},
+                                {"label": "Viridis", "value": "viridis"},
+                                {"label": "Blues", "value": "blue"},
+                                {"label": "Magma", "value": "fire"}
+                            ]
+                        ), style = {"color": "white"}),
+                        html.H4("Background",
+                                style={"font-size": "18pt", "font-weight": "200", "letter-spacing": "1px"}),
+                        html.Div(dcc.Dropdown(
+                            id="background",
+                            value="black",
+                            options=[
+                                {"label": "Black", "value": "black"},
+                                {"label": "Grey", "value": "grey"},
+                                {"label": "White", "value": "white"}
+                            ]
+                        ), style={"color": "white"}),
+                        html.H4("Point Scaling", style={"font-size": "18pt", "font-weight": "200", "letter-spacing": "1px"}),
+                        dcc.Dropdown(
+                            id="scaling",
+                            value="log",
+                            options=[
+                                {"label": "Log", "value": "log"},
+                                {"label": "Origin", "value": "origin"}
+                            ]
+                        ),
+                        html.H4("Reduction method", style={"font-size": "18pt", "font-weight": "200", "letter-spacing": "1px"}),
+                        dcc.Dropdown(
+                            id="reduc",
+                            value="sum",
+                            options=[
+                                {"label": "sum", "value": "sum"},
+                                {"label": "any", "value": "any"},
+                                {"label": "mean", "value": "mean"}
+                            ]
+                        ),
+                        html.H4("Pixel Size",
+                                style={"font-size": "18pt", "font-weight": "200", "letter-spacing": "1px"}),
+                        dcc.Slider(
+                            id="point-size",
+                            min=0,
+                            max=10,
+                            step=1,
+                            value=0,
+                            marks={str(i):str(i) for i in range(1,11)}
+                        ),
+                        html.Br(),
+                        html.Br(),
+                        html.Button(
+                            id="reset-button",
+                            n_clicks=0,
+                            children="Reset Graph"
+                        )
+                    ])
+
+                ]
+
+            )
+        )
+
+    ])
+)
+
+options = html.Div([tabs], className="item-a")
 
 
 # Create Layout ------------------------------
 
 app.layout = html.Div(
     children=[
-        html.Div(
-            className="row",
-            children=[
-                # Column for user controls
-                html.Div(
-                    className="four columns div-user-controls",
-                    children=[
-                        html.Img(
-                            className="logo", src=app.get_asset_url("dash-logo-new.png")
-                        ),
-                        html.H2("DASH - UBER DATA APP"),
-                        html.P(
-                            """Select different days using the date picker or by selecting 
-                            different time frames on the histogram."""
-                        ),
-                        html.Div(
-                            className="div-for-dropdown",
-                            children=[
-                                dcc.DatePickerSingle(
-                                    id="date-picker",
-                                    min_date_allowed=dt(2014, 4, 1),
-                                    max_date_allowed=dt(2014, 9, 30),
-                                    initial_visible_month=dt(2014, 4, 1),
-                                    date=dt(2014, 4, 1).date(),
-                                    display_format="MMMM D, YYYY",
-                                    style={"border": "0px solid black"},
-                                )
-                            ],
-                        ),
-                        # Change to side-by-side for mobile layout
-                        html.Div(
-                            className="row",
-                            children=[
-                                html.Div(
-                                    className="div-for-dropdown",
-                                    children=[
-                                        # Dropdown for locations on map
-                                        dcc.Dropdown(
-                                            id="location-dropdown",
-                                            options=[
-                                                {"label": i, "value": i}
-                                                for i in list_of_locations
-                                            ],
-                                            placeholder="Select a location",
-                                        )
-                                    ],
-                                ),
-                                html.Div(
-                                    className="div-for-dropdown",
-                                    children=[
-                                        # Dropdown to select times
-                                        dcc.Dropdown(
-                                            id="bar-selector",
-                                            options=[
-                                                {
-                                                    "label": str(n) + ":00",
-                                                    "value": str(n),
-                                                }
-                                                for n in range(24)
-                                            ],
-                                            multi=True,
-                                            placeholder="Select certain hours",
-                                        )
-                                    ],
-                                ),
-                            ],
-                        ),
-                        html.P(id="total-rides"),
-                        html.P(id="total-rides-selection"),
-                        html.P(id="date-value"),
-                        dcc.Markdown(
-                            children=[
-                                "Source: [FiveThirtyEight](https://github.com/fivethirtyeight/uber-tlc-foil-response/tree/master/uber-trip-data)"
-                            ]
-                        ),
-                    ],
-                ),
-                # Column for app graphs and plots
-                html.Div(
-                    className="eight columns div-for-charts bg-grey",
-                    children=[
-                        dcc.Graph(id="map-graph"),
-                        html.Div(
-                            className="text-padding",
-                            children=[
-                                "Select any of the bars on the histogram to section data by time."
-                            ],
-                        ),
-                        dcc.Graph(id="histogram"),
-                    ],
-                ),
-            ],
-        )
+        header,
+        html.Div([
+            options,
+            html.Div(
+                children=dcc.Graph(
+                    id="rasterizer-output",
+                    figure=tf_to_plotly(),
+                    style={"height": "88vh"},
+                    className="item-b")
+            ),
+            dcc.Store(id="store")
+        ], className="container")
     ]
 )
-
-# Gets the amount of days in the specified month
-# Index represents month (0 is April, 1 is May, ... etc.)
-daysInMonth = [30, 31, 30, 31, 31, 30]
-
-# Get index for the specified month in the dataframe
-monthIndex = pd.Index(["Apr", "May", "June", "July", "Aug", "Sept"])
-
-# Get the amount of rides per hour based on the time selected
-# This also higlights the color of the histogram bars based on
-# if the hours are selected
-def get_selection(month, day, selection):
-    xVal = []
-    yVal = []
-    xSelected = []
-    colorVal = [
-        "#F4EC15",
-        "#DAF017",
-        "#BBEC19",
-        "#9DE81B",
-        "#80E41D",
-        "#66E01F",
-        "#4CDC20",
-        "#34D822",
-        "#24D249",
-        "#25D042",
-        "#26CC58",
-        "#28C86D",
-        "#29C481",
-        "#2AC093",
-        "#2BBCA4",
-        "#2BB5B8",
-        "#2C99B4",
-        "#2D7EB0",
-        "#2D65AC",
-        "#2E4EA4",
-        "#2E38A4",
-        "#3B2FA0",
-        "#4E2F9C",
-        "#603099",
-    ]
-
-    # Put selected times into a list of numbers xSelected
-    xSelected.extend([int(x) for x in selection])
-
-    for i in range(24):
-        # If bar is selected then color it white
-        if i in xSelected and len(xSelected) < 24:
-            colorVal[i] = "#FFFFFF"
-        xVal.append(i)
-        # Get the number of rides at a particular time
-        yVal.append(len(totalList[month][day][totalList[month][day].index.hour == i]))
-    return [np.array(xVal), np.array(yVal), np.array(colorVal)]
-
 
 # Callbacks Start ------------------------------
 
-@app.callback(
-    Output("bar-selector", "value"),
-    [Input("histogram", "selectedData"), Input("histogram", "clickData")],
-)
-def update_bar_selector(value, clickData):
-    holder = []
-    if clickData:
-        holder.append(str(int(clickData["points"][0]["x"])))
-    if value:
-        for x in value["points"]:
-            holder.append(str(int(x["x"])))
-    return list(set(holder))
-
-
-# Clear Selected Data if Click Data is used
-@app.callback(Output("histogram", "selectedData"), [Input("histogram", "clickData")])
-def update_selected_data(clickData):
-    if clickData:
-        return {"points": []}
-
-
-# Update the total number of rides Tag
-@app.callback(Output("total-rides", "children"), [Input("date-picker", "date")])
-def update_total_rides(datePicked):
-    date_picked = dt.strptime(datePicked, "%Y-%m-%d")
-    return "Total Number of rides: {:,d}".format(
-        len(totalList[date_picked.month - 4][date_picked.day - 1])
-    )
-
-
-# Update the total number of rides in selected times
-@app.callback(
-    [Output("total-rides-selection", "children"), Output("date-value", "children")],
-    [Input("date-picker", "date"), Input("bar-selector", "value")],
-)
-def update_total_rides_selection(datePicked, selection):
-    firstOutput = ""
-
-    if selection is not None or len(selection) is not 0:
-        date_picked = dt.strptime(datePicked, "%Y-%m-%d")
-        totalInSelection = 0
-        for x in selection:
-            totalInSelection += len(
-                totalList[date_picked.month - 4][date_picked.day - 1][
-                    totalList[date_picked.month - 4][date_picked.day - 1].index.hour
-                    == int(x)
-                ]
-            )
-        firstOutput = "Total rides in selection: {:,d}".format(totalInSelection)
-
-    if (
-        datePicked is None
-        or selection is None
-        or len(selection) is 24
-        or len(selection) is 0
-    ):
-        return firstOutput, (datePicked, " - showing hour(s): All")
-
-    holder = sorted([int(x) for x in selection])
-
-    if holder == list(range(min(holder), max(holder) + 1)):
-        return (
-            firstOutput,
-            (
-                datePicked,
-                " - showing hour(s): ",
-                holder[0],
-                "-",
-                holder[len(holder) - 1],
-            ),
-        )
-
-    holder_to_string = ", ".join(str(x) for x in holder)
-    return firstOutput, (datePicked, " - showing hour(s): ", holder_to_string)
-
-
-# Update Histogram Figure based on Month, Day and Times Chosen
-@app.callback(
-    Output("histogram", "figure"),
-    [Input("date-picker", "date"), Input("bar-selector", "value")],
-)
-def update_histogram(datePicked, selection):
-    date_picked = dt.strptime(datePicked, "%Y-%m-%d")
-    monthPicked = date_picked.month - 4
-    dayPicked = date_picked.day - 1
-
-    [xVal, yVal, colorVal] = get_selection(monthPicked, dayPicked, selection)
-
-    layout = go.Layout(
-        bargap=0.01,
-        bargroupgap=0,
-        barmode="group",
-        margin=go.layout.Margin(l=10, r=0, t=0, b=50),
-        showlegend=False,
-        plot_bgcolor="#323130",
-        paper_bgcolor="#323130",
-        dragmode="select",
-        font=dict(color="white"),
-        xaxis=dict(
-            range=[-0.5, 23.5],
-            showgrid=False,
-            nticks=25,
-            fixedrange=True,
-            ticksuffix=":00",
-        ),
-        yaxis=dict(
-            range=[0, max(yVal) + max(yVal) / 4],
-            showticklabels=False,
-            showgrid=False,
-            fixedrange=True,
-            rangemode="nonnegative",
-            zeroline=False,
-        ),
-        annotations=[
-            dict(
-                x=xi,
-                y=yi,
-                text=str(yi),
-                xanchor="center",
-                yanchor="bottom",
-                showarrow=False,
-                font=dict(color="white"),
-            )
-            for xi, yi in zip(xVal, yVal)
-        ],
-    )
-
-    return go.Figure(
-        data=[
-            go.Bar(x=xVal, y=yVal, marker=dict(color=colorVal), hoverinfo="x"),
-            go.Scatter(
-                opacity=0,
-                x=xVal,
-                y=yVal / 2,
-                hoverinfo="none",
-                mode="markers",
-                marker=dict(color="rgb(66, 134, 244, 0)", symbol="square", size=40),
-                visible=True,
-            ),
-        ],
-        layout=layout,
-    )
-
-
-# Get the Coordinates of the chosen months, dates and times
-def getLatLonColor(selectedData, month, day):
-    listCoords = totalList[month][day]
-
-    # No times selected, output all times for chosen month and date
-    if selectedData is None or len(selectedData) is 0:
-        return listCoords
-    listStr = "listCoords["
-    for time in selectedData:
-        if selectedData.index(time) is not len(selectedData) - 1:
-            listStr += "(totalList[month][day].index.hour==" + str(int(time)) + ") | "
-        else:
-            listStr += "(totalList[month][day].index.hour==" + str(int(time)) + ")]"
-    return eval(listStr)
-
-
-# Update Map Graph based on date-picker, selected data on histogram and location dropdown
-@app.callback(
-    Output("map-graph", "figure"),
-    [
-        Input("date-picker", "date"),
-        Input("bar-selector", "value"),
-        Input("location-dropdown", "value"),
-    ],
-)
-def update_graph(datePicked, selectedData, selectedLocation):
-    zoom = 12.0
-    latInitial = 40.7272
-    lonInitial = -73.991251
-    bearing = 0
-
-    if selectedLocation:
-        zoom = 15.0
-        latInitial = list_of_locations[selectedLocation]["lat"]
-        lonInitial = list_of_locations[selectedLocation]["lon"]
-
-    date_picked = dt.strptime(datePicked, "%Y-%m-%d")
-    monthPicked = date_picked.month - 4
-    dayPicked = date_picked.day - 1
-    listCoords = getLatLonColor(selectedData, monthPicked, dayPicked)
-
-    return go.Figure(
-        data=[
-            # Data for all rides based on date and time
-            Scattermapbox(
-                lat=listCoords["Lat"],
-                lon=listCoords["Lon"],
-                mode="markers",
-                hoverinfo="lat+lon+text",
-                text=listCoords.index.hour,
-                marker=dict(
-                    showscale=True,
-                    color=np.append(np.insert(listCoords.index.hour, 0, 0), 23),
-                    opacity=0.5,
-                    size=5,
-                    colorscale=[
-                        [0, "#F4EC15"],
-                        [0.04167, "#DAF017"],
-                        [0.0833, "#BBEC19"],
-                        [0.125, "#9DE81B"],
-                        [0.1667, "#80E41D"],
-                        [0.2083, "#66E01F"],
-                        [0.25, "#4CDC20"],
-                        [0.292, "#34D822"],
-                        [0.333, "#24D249"],
-                        [0.375, "#25D042"],
-                        [0.4167, "#26CC58"],
-                        [0.4583, "#28C86D"],
-                        [0.50, "#29C481"],
-                        [0.54167, "#2AC093"],
-                        [0.5833, "#2BBCA4"],
-                        [1.0, "#613099"],
-                    ],
-                    colorbar=dict(
-                        title="Time of<br>Day",
-                        x=0.93,
-                        xpad=0,
-                        nticks=24,
-                        tickfont=dict(color="#d8d8d8"),
-                        titlefont=dict(color="#d8d8d8"),
-                        thicknessmode="pixels",
-                    ),
-                ),
-            ),
-            # Plot of important locations on the map
-            Scattermapbox(
-                lat=[list_of_locations[i]["lat"] for i in list_of_locations],
-                lon=[list_of_locations[i]["lon"] for i in list_of_locations],
-                mode="markers",
-                hoverinfo="text",
-                text=[i for i in list_of_locations],
-                marker=dict(size=8, color="#ffa0a0"),
-            ),
-        ],
-        layout=Layout(
-            autosize=True,
-            margin=go.layout.Margin(l=0, r=35, t=0, b=0),
-            showlegend=False,
-            mapbox=dict(
-                accesstoken=mapbox_access_token,
-                center=dict(lat=latInitial, lon=lonInitial),  # 40.7272  # -73.991251
-                style="dark",
-                bearing=bearing,
-                zoom=zoom,
-            ),
-            updatemenus=[
-                dict(
-                    buttons=(
-                        [
-                            dict(
-                                args=[
-                                    {
-                                        "mapbox.zoom": 12,
-                                        "mapbox.center.lon": "-73.991251",
-                                        "mapbox.center.lat": "40.7272",
-                                        "mapbox.bearing": 0,
-                                        "mapbox.style": "dark",
-                                    }
-                                ],
-                                label="Reset Zoom",
-                                method="relayout",
-                            )
-                        ]
-                    ),
-                    direction="left",
-                    pad={"r": 0, "t": 0, "b": 0, "l": 0},
-                    showactive=False,
-                    type="buttons",
-                    x=0.45,
-                    y=0.02,
-                    xanchor="left",
-                    yanchor="bottom",
-                    bgcolor="#323130",
-                    borderwidth=1,
-                    bordercolor="#6d6d6d",
-                    font=dict(color="#FFFFFF"),
-                )
-            ],
-        ),
-    )
+# @app.callback(
+#     Output("bar-selector", "value"),
+#     [Input("histogram", "selectedData"), Input("histogram", "clickData")],
+# )
+# def update_bar_selector(value, clickData):
+#     holder = []
+#     if clickData:
+#         holder.append(str(int(clickData["points"][0]["x"])))
+#     if value:
+#         for x in value["points"]:
+#             holder.append(str(int(x["x"])))
+#     return list(set(holder))
 
 
 if __name__ == "__main__":
