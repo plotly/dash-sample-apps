@@ -9,6 +9,7 @@ EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 FILENAME = "data/customer_complaints_narrative_sample.csv"
 GLOBAL_DF = pd.read_csv(DATA_PATH.joinpath(FILENAME), header=0)
 
+
 def add_stopwords(selected_bank):
     """
     In order to make a more useful NLP-data based graphs, it helps to remove
@@ -26,7 +27,6 @@ def add_stopwords(selected_bank):
     return STOPWORDS
 
 
-
 def precompute_all_lda():
     """ QD function for precomputing all necessary LDA results
      to allow much faster load times when the app runs. """
@@ -38,7 +38,7 @@ def precompute_all_lda():
     results = {}
 
     for bank in bank_names:
-        #try:
+        # try:
         file = open("precomupted", "a")
         print("crunching LDA for: ", bank)
         add_stopwords(bank)
@@ -47,7 +47,6 @@ def precompute_all_lda():
             bank_df, list(STOPWORDS)
         )
 
-
         topic_top3words = [
             (i, topic)
             for i, topics in lda_model.show_topics(formatted=False)
@@ -55,7 +54,9 @@ def precompute_all_lda():
             if j < 3
         ]
 
-        df_top3words_stacked = pd.DataFrame(topic_top3words, columns=["topic_id", "words"])
+        df_top3words_stacked = pd.DataFrame(
+            topic_top3words, columns=["topic_id", "words"]
+        )
         df_top3words = df_top3words_stacked.groupby("topic_id").agg(", \n".join)
         df_top3words.reset_index(level=0, inplace=True)
 
@@ -70,12 +71,17 @@ def precompute_all_lda():
             }
         )
 
-        results_bank = {str(bank): {"tsne_df":tsne_df.to_json(), "df_dominant_topic":df_dominant_topic.to_json()}}
-        #results[bank] = {"tsne_df":tsne_df.to_json()}
+        results_bank = {
+            str(bank): {
+                "tsne_df": tsne_df.to_json(),
+                "df_dominant_topic": df_dominant_topic.to_json(),
+            }
+        }
+        # results[bank] = {"tsne_df":tsne_df.to_json()}
         file.write(str(results_bank))
         file.close()
         counter += 1
-        #except:
+        # except:
         #    print("SOMETHING WENT HORRIBLY WRONG WITH BANK: ", bank)
         #    failed_banks.append(bank)
     print("DONE")
@@ -84,6 +90,6 @@ def precompute_all_lda():
     for fail in failed_banks:
         print(fail)
 
+
 if __name__ == "__main__":
-   precompute_all_lda()
-   
+    precompute_all_lda()
