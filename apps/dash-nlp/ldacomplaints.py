@@ -46,10 +46,10 @@ def lda_analysis(df, stop_words):
             tok for tok in tokens if tok not in stop_words and tok not in punctuations
         ]
         return tokens
-    
+
     # Clean up and take only rows where we have text
-    df = df[pd.notnull(df['Consumer complaint narrative'])]
-    docs = list(df["Consumer complaint narrative"].values)    
+    df = df[pd.notnull(df["Consumer complaint narrative"])]
+    docs = list(df["Consumer complaint narrative"].values)
 
     punctuations = string.punctuation
 
@@ -65,7 +65,10 @@ def lda_analysis(df, stop_words):
     )
 
     df_topic_sents_keywords = format_topics_sentences(
-        ldamodel=lda_model, corpus=bow_corpus, texts=docs, dates=list(df["Date received"].values)
+        ldamodel=lda_model,
+        corpus=bow_corpus,
+        texts=docs,
+        dates=list(df["Date received"].values),
     )
     print(len(df_topic_sents_keywords))
     print(df_topic_sents_keywords.head())
@@ -76,7 +79,7 @@ def lda_analysis(df, stop_words):
         "Topic_Perc_Contrib",
         "Keywords",
         "Text",
-        "Date"
+        "Date",
     ]
 
     topic_num, tsne_lda = tsne_analysis(lda_model, bow_corpus)
