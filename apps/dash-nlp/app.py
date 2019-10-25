@@ -26,6 +26,7 @@ EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 FILENAME = "data/customer_complaints_narrative_sample.csv"
 PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
 GLOBAL_DF = pd.read_csv(DATA_PATH.joinpath(FILENAME), header=0)
+
 """
 We are casting the whole column to datetime to make life easier in the rest of the code.
 It isn't a terribly expensive operation so for the sake of tidyness we went this way.
@@ -154,7 +155,6 @@ def make_local_df(selected_bank, time_values, n_selection):
         ]
     if selected_bank:
         local_df = local_df[local_df["Company"] == selected_bank]
-        add_stopwords(selected_bank)
     return local_df
 
 
@@ -218,23 +218,6 @@ def make_options_bank_drop(values):
     for value in values:
         ret.append({"label": value, "value": value})
     return ret
-
-
-def add_stopwords(selected_bank):
-    """
-    In order to make a more useful NLP-data based graphs, it helps to remove
-    common useless words. In this case XXXX usually represents a redacted name
-    We also exlude more standard words defined in STOPWORDS which is provided by
-    the Wordcloud dash component.
-    """
-    selected_bank_words = re.findall(r"[\w']+", selected_bank)
-    for word in selected_bank_words:
-        STOPWORDS.add(word.lower())
-
-    print("Added %s stopwords:" % selected_bank)
-    for word in selected_bank_words:
-        print("\t", word)
-    return STOPWORDS
 
 
 def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
@@ -716,6 +699,8 @@ def update_lda_table(value_drop, time_values, n_selection):
     complaints_text = list(local_df["Consumer complaint narrative"].dropna().values)
     if len(complaints_text) <= 10:  # we cannot do LDA on less than 11 complaints
         return [[], [], {}]
+    
+    # HERE WE WILL READ FROM FILE INSTEAD AND FILTER ON DATE
     tsne_lda, lda_model, topic_num, df_dominant_topic = lda_analysis(
         complaints_text, list(STOPWORDS)
     )
@@ -728,41 +713,6 @@ def update_lda_table(value_drop, time_values, n_selection):
     data = df_dominant_topic.to_dict("records")
 
     return (data, columns, lda_scatter_figure)
-
-
-def precompute_all_lda():
-    """ QD function for precomputing all necessary LDA results
-     to allow much faster load times when the app runs. """
-    min_date = GLOBAL_DF["Date received"].min()
-    max_date = GLOBAL_DF["Date received"].max()
-    marks = make_marks_time_slider(min_date, max_date)
-    min_epoch = list(marks.keys())[0]
-    max_epoch = list(marks.keys())[-1]
-    bank_names, counts = get_complaint_count_by_company(GLOBAL_DF)
-    counts.append(1)  # NOOP
-    results = {}
-    time_values = [min_epoch, max_epoch]
-    n_selection = 100
-    file = open("precomupted", "w")
-    file.close()
-    failed_banks = []
-    counter = 0
-    for bank in bank_names:
-        try:
-            file = open("precomupted", "a")
-            print("crunching LDA for: ", bank)
-            results[bank] = update_lda_table(bank, time_values, n_selection)
-            file.write(str(results[bank]))
-            file.close()
-            counter += 1
-        except:
-            print("SOMETHING WENT HORRIBLY WRONG WITH BANK: ", bank)
-            failed_banks.append(bank)
-    print("DONE")
-    print("did %d banks" % counter)
-    print("failed %d:" % len(failed_banks))
-    for fail in failed_banks:
-        print(fail)
 
 
 @APP.callback(
@@ -820,5 +770,4 @@ def update_bank_drop_on_click(value):
 
 
 if __name__ == "__main__":
-    # precompute_all_lda()
     APP.run_server(debug=True)

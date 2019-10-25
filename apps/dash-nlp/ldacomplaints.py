@@ -11,7 +11,7 @@ import numpy as np
 nlp = spacy.load("en_core_web_sm")
 
 
-def format_topics_sentences(ldamodel, corpus, texts):
+def format_topics_sentences(ldamodel, corpus, texts, dates):
     sent_topics_df = pd.DataFrame()
 
     # Get main topic in each document
@@ -32,11 +32,12 @@ def format_topics_sentences(ldamodel, corpus, texts):
 
     # Add original text to the end of the output
     contents = pd.Series(texts)
-    sent_topics_df = pd.concat([sent_topics_df, contents], axis=1)
+
+    sent_topics_df = pd.concat([sent_topics_df, contents, pd.Series(dates)], axis=1)
     return sent_topics_df
 
 
-def lda_analysis(docs, stop_words):
+def lda_analysis(df, stop_words):
     # TODO: fix a custom stop words file
     def cleanup_text(doc):
         doc = nlp(doc, disable=["parser", "ner"])
@@ -45,6 +46,10 @@ def lda_analysis(docs, stop_words):
             tok for tok in tokens if tok not in stop_words and tok not in punctuations
         ]
         return tokens
+    
+    # Clean up and take only rows where we have text
+    df = df[pd.notnull(df['Consumer complaint narrative'])]
+    docs = list(df["Consumer complaint narrative"].values)    
 
     punctuations = string.punctuation
 
@@ -60,9 +65,10 @@ def lda_analysis(docs, stop_words):
     )
 
     df_topic_sents_keywords = format_topics_sentences(
-        ldamodel=lda_model, corpus=bow_corpus, texts=docs
+        ldamodel=lda_model, corpus=bow_corpus, texts=docs, dates=list(df["Date received"].values)
     )
-
+    print(len(df_topic_sents_keywords))
+    print(df_topic_sents_keywords.head())
     df_dominant_topic = df_topic_sents_keywords.reset_index()
     df_dominant_topic.columns = [
         "Document_No",
@@ -70,6 +76,7 @@ def lda_analysis(docs, stop_words):
         "Topic_Perc_Contrib",
         "Keywords",
         "Text",
+        "Date"
     ]
 
     topic_num, tsne_lda = tsne_analysis(lda_model, bow_corpus)
