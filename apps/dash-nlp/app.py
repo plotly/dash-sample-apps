@@ -53,7 +53,7 @@ for stopword in ADDITIONAL_STOPWORDS:
     STOPWORDS.add(stopword)
 
 """
-Produly written for Plotly by Vildly in 2019. info@vild.ly
+Proudly written for Plotly by Vildly in 2019. info@vild.ly
 
 
 The aim with this dashboard is to demonstrate how Plotly's Dash framework
@@ -63,7 +63,7 @@ consumer complaints from US banks ranging from 2013 to 2017.
 Users can select to run the dashboard with the whole dataset (which can be slow to run)
 or a smaller subset which then is evenly and consistently sampled accordingly.
 
-Once a datasample has been selected the user can select a bank to look into by
+Once a data sample has been selected the user can select a bank to look into by
 using the dropdown or by clicking one of the bars on the right with the top 10
 banks listed by number of filed complaints. Naturally bigger banks tend to end
 up in this top 10 since we do not adjust for number of customers.
@@ -81,17 +81,17 @@ of the selected complaint (each dot is a specific complaint).
 It is worth mentioning that there is also a time frame selection slider which
 allows the user to look at specific time windows if there is desire to do so.
 
-To illustrate the usefullness of this dashboard we suggest looking at how the
+To illustrate the usefulness of this dashboard we suggest looking at how the
 wordcloud and scatter plot changes from Equifax if 2017 is included in the plots
 or not.
 
 Another potentially interesting find is that Capital One has a common word
 other banks seem to lack, "Macy". It would appear that Capital One at some point
-teamed up with popular retailer Macy's to offer their services. This campaing
+teamed up with popular retailer Macy's to offer their services. This company
 might have been hugely popular and thus explaining it's high frequency of occurance
 in complaints, or perhaps there are other reasons explaining the data.
 
-Rergardless of what caused these two mentioned outliers, it shows how a tool
+Regardless of what caused these two mentioned outliers, it shows how a tool
 such as this can aid an analyst in finding potentially interesting things to
 dig deeper into.
 """
