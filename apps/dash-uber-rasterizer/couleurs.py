@@ -13,20 +13,15 @@ DATA_PATH = PATH.joinpath("data").resolve()
 plasma = pd.read_csv(DATA_PATH.joinpath("plasma.csv"))
 viridis = pd.read_csv(DATA_PATH.joinpath("viridis.csv"))
 fire = pd.read_csv(DATA_PATH.joinpath("fire.csv"))
+blues = pd.DataFrame({"x": ["lightblue", "darkblue"]})
+
+colorscales = {"plasma": plasma,
+               "viridis": viridis,
+               "fire": fire,
+               "blue": blues}
 
 def format_colorscale(df):
     values = np.linspace(0, 1, len(df))
     colorscale = [[values[i], df["x"][i]] for i in range(len(df))]
     return(colorscale)
-
-plasma_cs = format_colorscale(plasma)
-viridis_cs = format_colorscale(viridis)
-fire_cs = format_colorscale(fire)
-blues_cs = [[0, "lightblue"], [1, "darkblue"]]
-
-colorscales = {"plasma": plasma_cs,
-               "viridis": viridis_cs,
-               "fire": fire_cs,
-               "blue": blues_cs}
-
 
