@@ -1,11 +1,12 @@
-appName <- Sys.getenv("DASH_APP_NAME")
+appName <- "dashr-uber-rasterizer"
 if (appName != "") {
   pathPrefix <- sprintf("/%s/", appName)
 
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  setwd(sprintf("/app/apps/%s", appName))
 }
+
+setwd("app")
 
 library(plotly)
 library(dash)
@@ -21,7 +22,7 @@ ridesRaw_1 <- data.table::fread("https://raw.githubusercontent.com/plotly/datase
 ridesRaw_2 <- data.table::fread("https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv", stringsAsFactors = FALSE)
 ridesRaw_3 <- data.table::fread("https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv", stringsAsFactors = FALSE)
 ridesDf <-  data.table::rbindlist(list(ridesRaw_1, ridesRaw_2, ridesRaw_3))
- 
+
 # subsetting on a matrix would likely be faster
 ridesDf <- as.matrix(ridesDf[,-1])
 
@@ -105,7 +106,7 @@ tabs <- htmlDiv(dccTabs(id = 'circos-control-tabs', value = 'what-is', children 
       )
     )
   ),
-  
+
   dccTab(
     label = 'Options',
     value = 'data',
@@ -147,7 +148,7 @@ tabs <- htmlDiv(dccTabs(id = 'circos-control-tabs', value = 'what-is', children 
           options = list(list(label = "sum", value = "sum"),
                          list(label = "any", value = "any"),
                          list(label = "mean", value = "mean")),
-          
+
           value = 'sum'
         ),
         htmlH4("Pixel Size", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
@@ -279,10 +280,10 @@ app$callback(
     x_max <- data[[1]][[2]]
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
-    
-    filtered_df_lat <- ridesDf[ridesDf[, "Lat"] > y_min & ridesDf[, "Lat"] < y_max, ]    
+
+    filtered_df_lat <- ridesDf[ridesDf[, "Lat"] > y_min & ridesDf[, "Lat"] < y_max, ]
     filtered_df_lon <- filtered_df_lat[filtered_df_lat[,"Lon"] > x_min & filtered_df_lat[,"Lon"] < x_max, ]
-        
+
     colorbar_title <- ifelse(scale == "log", "Log(No. of Rides)", "No. of Rides")
     # plot_ly requires a data.frame
     return(
@@ -308,8 +309,8 @@ app$callback(
 if(appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
-  app$run_server(host = "127.0.0.1", 
-                 port=8050, 
+  app$run_server(host = "127.0.0.1",
+                 port=8050,
                  dev_tools_hot_reload=TRUE,
                  dev_tools_hot_reload_interval = 1,
                  dev_tools_silence_routes_logging = TRUE,
