@@ -1,4 +1,4 @@
-# DashR Uber Rasterizer App
+# DashR Uber Rasterizer
 
 ## About this App:
 
