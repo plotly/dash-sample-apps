@@ -18,7 +18,7 @@ The app will load into your default browser window. If it does not, navigate to 
 
 ## Screenshots
 
-![ncbiexplorer.png](assets/ncbiexplorer.png)
+![ncbiexplorer.png](assets/rasterizer_screen.png)
 
 ## More
 
