@@ -33,18 +33,18 @@ def precomputer_one_lda(bank):
     print("crunching LDA for: ", bank, "...")
     add_stopwords(bank)
     bank_df = GLOBAL_DF[GLOBAL_DF["Company"] == bank]
-    #try:
+    # try:
     tsne_lda, lda_model, topic_num, df_dominant_topic = lda_analysis(
         bank_df, list(STOPWORDS)
     )
-    #except:
+    # except:
     #    print("SOMETHING WENT HORRIBLY WRONG WITH", bank)
     #    print(bank_df)
     #    #res = input("what happened?")
     #    return {}
     if tsne_lda is None:
         print("crunching LDA for: ", bank, ". DONE (SAD)")
-        return {bank:"NOT ENOUGH DOCS/DICTS TO RUN LDA"}
+        return {bank: "NOT ENOUGH DOCS/DICTS TO RUN LDA"}
     topic_top3words = [
         (i, topic)
         for i, topics in lda_model.show_topics(formatted=False)
@@ -92,8 +92,8 @@ def precompute_all_lda():
     print("Starting the run at:", start_time)
     pool = multiprocessing.Pool(processes=nbr_workers)
     results = pool.map(precomputer_one_lda, bank_names)
-    #actually_do_stuff = True
-    #for bank in bank_names:
+    # actually_do_stuff = True
+    # for bank in bank_names:
     #    if bank == "Elderlife Financial Services, LLC":
     #        actually_do_stuff = True
     #    if actually_do_stuff:
@@ -117,6 +117,7 @@ def precompute_all_lda():
     for fail in failed_banks:
         print(fail)
 
+
 if __name__ == "__main__":
-    #precomputer_one_lda("The CMI Group, Inc.")
+    # precomputer_one_lda("The CMI Group, Inc.")
     precompute_all_lda()
