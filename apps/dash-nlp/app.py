@@ -705,6 +705,7 @@ def update_lda_table(value_drop, time_values, n_selection):
     if len(complaints_text) <= 10:  # we cannot do LDA on less than 11 complaints
         return [[], [], {}]
 
+    # Added comment to trigger CircleCI again
     # HERE WE WILL READ FROM FILE INSTEAD AND FILTER ON DATE
     tsne_lda, lda_model, topic_num, df_dominant_topic = lda_analysis(
         local_df, list(STOPWORDS)
