@@ -733,7 +733,7 @@ def update_lda_table(value_drop, time_values, n_selection):
     ],
 )
 def update_wordcloud_plot(value_drop, time_values, n_selection):
-    """ TODO """
+    """ TODO and trigger circleCI"""
     local_df = make_local_df(value_drop, time_values, n_selection)
     wordcloud, frequency_figure, treemap = plotly_wordcloud(local_df)
     print("redrawing bank-wordcloud...done")
