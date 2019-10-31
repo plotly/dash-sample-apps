@@ -113,7 +113,6 @@ def precompute_all_lda():
     save_time = time.time()
     print("It took: %s" % save_time - end_time)
 
-
     print("DONE")
     print("did %d banks" % counter)
     print("failed %d:" % len(failed_banks))
