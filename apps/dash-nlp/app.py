@@ -428,7 +428,7 @@ LEFT_COLUMN = dbc.Jumbotron(
                 90: "",
                 100: "100%",
             },
-            value=5,
+            value=20,
         ),
         html.Label("Select a bank", style={"marginTop": 50}, className="lead"),
         html.P(
