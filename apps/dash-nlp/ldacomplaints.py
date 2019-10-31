@@ -48,7 +48,6 @@ def lda_analysis(df, stop_words):
         return tokens
 
     # Clean up and take only rows where we have text
-    print(df.head())
     df = df[pd.notnull(df["Consumer complaint narrative"])]
     docs = list(df["Consumer complaint narrative"].values)
 

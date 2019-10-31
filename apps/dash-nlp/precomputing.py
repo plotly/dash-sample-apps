@@ -78,14 +78,16 @@ def precomputer_one_lda(bank):
 
 
 def precompute_all_lda():
+    """ QD function for precomputing all necessary LDA results
+     to allow much faster load times when the app runs. """
     print("precomupting LDA for all banks...")
     start_time = time.time()
+
     file = open("precomupted", "w")
     file.close()
     failed_banks = []
     counter = 0
     bank_names = GLOBAL_DF["Company"].value_counts().keys().tolist()
-
     results = {}
     nbr_workers = 4
     print("Making a worker pool with: %d workers" % nbr_workers)
@@ -111,6 +113,7 @@ def precompute_all_lda():
     save_time = time.time()
     print("It took: %s" % save_time - end_time)
 
+
     print("DONE")
     print("did %d banks" % counter)
     print("failed %d:" % len(failed_banks))
@@ -119,5 +122,4 @@ def precompute_all_lda():
 
 
 if __name__ == "__main__":
-    # precomputer_one_lda("The CMI Group, Inc.")
     precompute_all_lda()
