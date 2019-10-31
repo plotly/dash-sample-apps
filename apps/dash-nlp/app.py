@@ -698,7 +698,6 @@ def update_bank_sample_plot(n_value, time_values):
 def update_lda_table(value_drop, time_values, n_selection):
     """ TODO """
     local_df = make_local_df(value_drop, time_values, n_selection)
-
     # TODO this should be removed but we'll keep it for now for
     # compatability reasons
     complaints_text = list(local_df["Consumer complaint narrative"].dropna().values)
