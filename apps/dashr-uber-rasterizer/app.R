@@ -315,6 +315,3 @@ if(appName != "") {
                  dev_tools_silence_routes_logging = TRUE,
                  viewer = TRUE)
 }
-
-
-g
