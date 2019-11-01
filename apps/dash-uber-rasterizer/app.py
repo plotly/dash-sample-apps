@@ -9,6 +9,7 @@ from plotly import graph_objs as go
 
 import datashader as ds
 from datashader import transfer_functions as tf
+from datashader import reductions
 from datashader.utils import lnglat_to_meters
 from couleurs import colorscales, format_colorscale
 
@@ -48,22 +49,29 @@ def tf_to_plotly(
         y_range=default_y_range,
         cs = default_colorscale,
         cb = default_colorbar,
-        bg = default_plot_bg):
+        bg = default_plot_bg,
+        scale = "log"):
+
+
 
     cvs = ds.Canvas(x_range=x_range, y_range=y_range)
-    agg_heatmap = cvs.points(df, "Lon", "Lat")
+    agg_heatmap = cvs.points(df, "Lon", "Lat")#, agg=reductions.sum("z"))
     img = tf.shade(agg_heatmap)
     arr_rides = np.array(img)
     z_rides = arr_rides.tolist()
 
     dims = len(z_rides[0]), len(z_rides)
 
+    if scale == "log":
+        z_rides = np.log(z_rides)
+
     data = [dict(
-        z=np.log(z_rides),
+        z=z_rides,
         x=np.linspace(x_range[0], x_range[1], dims[0]),
         y=np.linspace(y_range[0], y_range[1], dims[1]),
         colorscale=cs,
         colorbar=cb,
+        marker=dict(size=20),
         # showscale=False,
         # reversescale = True,
         type='heatmap')]
@@ -328,7 +336,8 @@ def update_graph(stored_ranges, cmap, background, reduc, scale, point_size):
         y_range=(y_min, y_max),
         cs=color,
         cb=colorbar_title,
-        bg=background)
+        bg=background,
+        scale=scale)
 
 
 
