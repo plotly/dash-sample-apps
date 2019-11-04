@@ -37,11 +37,6 @@ def precomputer_one_lda(bank):
     tsne_lda, lda_model, topic_num, df_dominant_topic = lda_analysis(
         bank_df, list(STOPWORDS)
     )
-    # except:
-    #    print("SOMETHING WENT HORRIBLY WRONG WITH", bank)
-    #    print(bank_df)
-    #    #res = input("what happened?")
-    #    return {}
     if tsne_lda is None:
         print("crunching LDA for: ", bank, ". DONE (SAD)")
         return {bank: "NOT ENOUGH DOCS/DICTS TO RUN LDA"}
@@ -94,12 +89,6 @@ def precompute_all_lda():
     print("Starting the run at:", start_time)
     pool = multiprocessing.Pool(processes=nbr_workers)
     results = pool.map(precomputer_one_lda, bank_names)
-    # actually_do_stuff = True
-    # for bank in bank_names:
-    #    if bank == "Elderlife Financial Services, LLC":
-    #        actually_do_stuff = True
-    #    if actually_do_stuff:
-    #    results[bank] = precomputer_one_lda(bank)
     end_time = time.time()
 
     print("It took: %s" % end_time - start_time)
