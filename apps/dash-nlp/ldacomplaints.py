@@ -56,16 +56,15 @@ def lda_analysis(df, stop_words):
     processed_docs = list(map(cleanup_text, docs))
     print("len(processed_docs)", len(processed_docs))
     if len(processed_docs) < 11:
-        print("NOT ENOUGH DOCS TO RUN LDA")
+        print("INSUFFICIENT DOCS TO RUN LINEAR DISCRIMINANT ANALYSIS")
         return (None, None, None, None)
 
     dictionary = gensim.corpora.Dictionary(processed_docs)
-    # dictionary.filter_extremes(no_below=10, no_above=0.95, keep_n=100000)
     bow_corpus = [dictionary.doc2bow(doc) for doc in processed_docs]
     print("len(bow_corpus)", len(bow_corpus))
     print("dictionary", len(list(dictionary.keys())))
     if len(list(dictionary.keys())) < 1:
-        print("NOT ENOUGH DICTS TO RUN LDA")
+        print("INSUFFICIENT DICTS TO RUN LINEAR DISCRIMINANT ANALYSIS")
         return (None, None, None, None)
 
     lda_model = gensim.models.LdaModel(
@@ -116,7 +115,7 @@ def tsne_analysis(ldamodel, corpus):
         )
         tsne_lda = tsne_model.fit_transform(df_topics)
     except:
-        print("TSNE_ANALYSIS WENT HORRIBLY WRONG")
+        print("TSNE_ANALYSIS WENT WRONG, PLEASE RE-CHECK YOUR BANK DATASET")
         return (topic_nums, None)
 
     return (topic_nums, tsne_lda)

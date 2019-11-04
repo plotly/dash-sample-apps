@@ -704,7 +704,6 @@ def update_lda_table(value_drop, time_values, n_selection):
     if len(complaints_text) <= 10:  # we cannot do LDA on less than 11 complaints
         return [[], [], {}]
 
-    # Added comment to trigger CircleCI again
     # HERE WE WILL READ FROM FILE INSTEAD AND FILTER ON DATE
     tsne_lda, lda_model, topic_num, df_dominant_topic = lda_analysis(
         local_df, list(STOPWORDS)
@@ -733,7 +732,7 @@ def update_lda_table(value_drop, time_values, n_selection):
     ],
 )
 def update_wordcloud_plot(value_drop, time_values, n_selection):
-    """ TODO and trigger circleCI"""
+    """ TODO"""
     local_df = make_local_df(value_drop, time_values, n_selection)
     wordcloud, frequency_figure, treemap = plotly_wordcloud(local_df)
     print("redrawing bank-wordcloud...done")
