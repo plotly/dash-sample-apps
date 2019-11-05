@@ -13,6 +13,8 @@ import datetime
 from datetime import datetime as dt
 import os
 
+wk_map = {"1": "Mon", "2":"Tues", "3":"Wed", "4":"Thu", "5": "Fri", "6":"Sat", "7": "Sun"}
+
 app = dash.Dash(
     __name__,
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
@@ -169,6 +171,8 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
             con = db_connect()
             hm_df = pd.read_sql(hm_query, con).dropna()
             hm_df = hm_df.set_index("flight_dayofweek")
+            print(hm_df)
+
             hm.append(hm_df)
         except Exception as e:
             print("Error querying for heatmap: ", e)
@@ -178,6 +182,12 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
                 con.close()
 
     hm_df = pd.concat(hm, axis=1)
+    hm_df = hm_df.fillna(0).reset_index()
+    print(hm_df)
+
+    y = []
+    for dayofweek in hm_df['flight_dayofweek']:
+        y.append(wk_map[str(dayofweek)])
 
     zmin, zmax = np.min(hm_df.to_numpy()), np.max(hm_df.to_numpy())
 
@@ -185,7 +195,7 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
         type="heatmap",
         z=hm_df.to_numpy(),
         x=list("{}:00".format(i) for i in range(24)),
-        y=["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        y=y,
         colorscale=[[0, "#71cde4"], [1, "#ecae50"]],
         reversescale=True,
         showscale=True,
@@ -599,9 +609,6 @@ app.layout = html.Div(
     ],
 )
 
-wk_map = {"Mon": 1, "Tues": 2, "Wed": 3, "Thu": 4, "Fri": 5, "Sat": 6, "Sun": 7}
-
-
 @app.callback(
     Output("choropleth", "figure"),
     [
@@ -617,114 +624,114 @@ def update_choro(dd_select, start, end):
     return generate_dest_choro(dd_select, start, end)
 
 
-@app.callback(
-    Output("flights-table", "data"),
-    [
-        Input("flights_time_series", "relayoutData"),
-        Input("count_by_day_graph", "clickData"),
-        Input("value_by_city_graph", "selectedData"),
-        Input("choropleth", "figure"),
-    ],
-    [
-        State("dropdown-select", "value"),
-        State("date-picker-range", "start_date"),
-        State("date-picker-range", "end_date"),
-        State("choropleth", "clickData"),
-    ],
-)
-def update_sel_for_table(
-    ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
-):
-    """
-    :return: Data for generating flight info datatable.
-    """
-    if dd_select is None:
-        dd_select = "dep"
-
-    start_f = f"{start} 00:00:00"
-    end_f = f"{end} 00:00:00"
-
-    ctx = dash.callback_context
-    inputs = ctx.inputs
-    states = ctx.states
-    prop_id = ctx.triggered[0]["prop_id"].split(".")[0]
-
-    state_query = ""
-    if choro_click is not None:
-        state = choro_click["points"][0]["location"]
-        state_query = f" origin_state = '{state}'"
-
-    try:
-        if prop_id == "choropleth":
-
-            return query_helper(state_query, dd_select, start_f, end_f, "")
-
-        elif prop_id == "flights_time_series":
-            if "xaxis.range[0]" not in ts_select:
-                raise PreventUpdate
-
-            range_min, range_max = (
-                inputs["flights_time_series.relayoutData"]["xaxis.range[0]"],
-                inputs["flights_time_series.relayoutData"]["xaxis.range[1]"],
-            )
-
-            return query_helper(
-                state_query, dd_select, range_min[:-5], range_max[:-5], ""
-            )
-
-        elif prop_id == "count_by_day_graph":
-            wk_day = wk_map[inputs["count_by_day_graph.clickData"]["points"][0]["y"]]
-            wk_day_query = f"AND flight_dayofweek = {wk_day}"
-            return query_helper(state_query, dd_select, start_f, end_f, wk_day_query)
-
-        elif prop_id == "value_by_city_graph":
-            wk_days = []
-            cities = []
-            for selected_point in city_select["points"]:
-                city = selected_point["customdata"]
-                wk_day = selected_point["y"]
-                if city not in cities:
-                    cities.append(city)
-                if wk_day not in wk_days:
-                    wk_days.append(wk_day)
-
-            frames = []
-            q_template = (
-                "SELECT uniquecarrier AS carrier, flightnum, dep_timestamp, arr_timestamp, origin_city, dest_city "
-                "FROM {} WHERE {}_timestamp BETWEEN '{}' AND '{}' AND flight_dayofweek = {} AND {} = '{}' limit 25"
-            )
-
-            city_col = "dest_city"
-            if dd_select == "dep":
-                city_col = "origin_city"
-
-            new_con = None
-
-            for wk_day in wk_days:
-                for city in cities:
-                    q = q_template.format(
-                        table, dd_select, start_f, end_f, wk_map[wk_day], city_col, city
-                    )
-                    try:
-                        new_con = db_connect()
-                        dff = pd.read_sql(q, new_con).dropna()
-                        dff["flightnum"] = dff["carrier"] + dff["flightnum"].map(str)
-                        dff.drop(["carrier"], axis=1)
-                        frames.append(dff)
-                    except Exception as e:
-                        print("Error querying for updating datatable {}".format(e))
-                        raise PreventUpdate
-                    finally:
-                        if new_con:
-                            new_con.close()
-            if len(frames) == 0:
-                raise PreventUpdate
-            return pd.concat(frames).to_dict("rows")
-        else:  # should not reach
-            return []
-    except Exception as e:
-        print("table data error")
-        return [] #todo: fallback
+# @app.callback(
+#     Output("flights-table", "data"),
+#     [
+#         Input("flights_time_series", "relayoutData"),
+#         Input("count_by_day_graph", "clickData"),
+#         Input("value_by_city_graph", "selectedData"),
+#         Input("choropleth", "figure"),
+#     ],
+#     [
+#         State("dropdown-select", "value"),
+#         State("date-picker-range", "start_date"),
+#         State("date-picker-range", "end_date"),
+#         State("choropleth", "clickData"),
+#     ],
+# )
+# def update_sel_for_table(
+#     ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
+# ):
+#     """
+#     :return: Data for generating flight info datatable.
+#     """
+#     if dd_select is None:
+#         dd_select = "dep"
+#
+#     start_f = f"{start} 00:00:00"
+#     end_f = f"{end} 00:00:00"
+#
+#     ctx = dash.callback_context
+#     inputs = ctx.inputs
+#     states = ctx.states
+#     prop_id = ctx.triggered[0]["prop_id"].split(".")[0]
+#
+#     state_query = ""
+#     if choro_click is not None:
+#         state = choro_click["points"][0]["location"]
+#         state_query = f" origin_state = '{state}'"
+#
+#     try:
+#         if prop_id == "choropleth":
+#
+#             return query_helper(state_query, dd_select, start_f, end_f, "")
+#
+#         elif prop_id == "flights_time_series":
+#             if "xaxis.range[0]" not in ts_select:
+#                 raise PreventUpdate
+#
+#             range_min, range_max = (
+#                 inputs["flights_time_series.relayoutData"]["xaxis.range[0]"],
+#                 inputs["flights_time_series.relayoutData"]["xaxis.range[1]"],
+#             )
+#
+#             return query_helper(
+#                 state_query, dd_select, range_min[:-5], range_max[:-5], ""
+#             )
+#
+#         elif prop_id == "count_by_day_graph":
+#             wk_day = wk_map[inputs["count_by_day_graph.clickData"]["points"][0]["y"]]
+#             wk_day_query = f"AND flight_dayofweek = {wk_day}"
+#             return query_helper(state_query, dd_select, start_f, end_f, wk_day_query)
+#
+#         elif prop_id == "value_by_city_graph":
+#             wk_days = []
+#             cities = []
+#             for selected_point in city_select["points"]:
+#                 city = selected_point["customdata"]
+#                 wk_day = selected_point["y"]
+#                 if city not in cities:
+#                     cities.append(city)
+#                 if wk_day not in wk_days:
+#                     wk_days.append(wk_day)
+#
+#             frames = []
+#             q_template = (
+#                 "SELECT uniquecarrier AS carrier, flightnum, dep_timestamp, arr_timestamp, origin_city, dest_city "
+#                 "FROM {} WHERE {}_timestamp BETWEEN '{}' AND '{}' AND flight_dayofweek = {} AND {} = '{}' limit 25"
+#             )
+#
+#             city_col = "dest_city"
+#             if dd_select == "dep":
+#                 city_col = "origin_city"
+#
+#             new_con = None
+#
+#             for wk_day in wk_days:
+#                 for city in cities:
+#                     q = q_template.format(
+#                         table, dd_select, start_f, end_f, wk_map[wk_day], city_col, city
+#                     )
+#                     try:
+#                         new_con = db_connect()
+#                         dff = pd.read_sql(q, new_con).dropna()
+#                         dff["flightnum"] = dff["carrier"] + dff["flightnum"].map(str)
+#                         dff.drop(["carrier"], axis=1)
+#                         frames.append(dff)
+#                     except Exception as e:
+#                         print("Error querying for updating datatable {}".format(e))
+#                         raise PreventUpdate
+#                     finally:
+#                         if new_con:
+#                             new_con.close()
+#             if len(frames) == 0:
+#                 raise PreventUpdate
+#             return pd.concat(frames).to_dict("rows")
+#         else:  # should not reach
+#             return []
+#     except Exception as e:
+#         print("table data error")
+#         return [] #todo: fallback
 
 
 @app.callback(
