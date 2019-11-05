@@ -306,11 +306,11 @@ app$callback(
     # plot_ly requires a data.frame
     
     if (x_difference < 0.2904274 || y_difference < 0.2109278) {
-      return(plot_mapbox(as.data.frame(filtered_df_lon)[sample(nrow(filtered_df_lon), 10000, replace = TRUE),], lon = ~Lon, lat = ~Lat) %>%
+      return(plot_mapbox(as.data.frame(ridesDf)[sample(nrow(as.data.frame(ridesDf)), 10000, replace = TRUE),], lon = ~Lon, lat = ~Lat) %>%
                layout(mapbox = list(zoom = 12,
                                     accesstoken = mapboxToken,
-                                    center = list(lat = ~median(Lat),
-                                                  lon = ~median(Lon)),
+                                    center = list(lat = mean(as.data.frame(filtered_df_lon)$Lat),
+                                                  lon = mean(as.data.frame(filtered_df_lon)$Lon)),
                                     style = "dark"
                ),
                font = list(color = 'rgb(226, 239, 250)'),
