@@ -55,10 +55,17 @@ def lda_analysis(df, stop_words):
 
     processed_docs = list(map(cleanup_text, docs))
     print("len(processed_docs)", len(processed_docs))
+    if len(processed_docs) < 11:
+        print("INSUFFICIENT DOCS TO RUN LINEAR DISCRIMINANT ANALYSIS")
+        return (None, None, None, None)
 
     dictionary = gensim.corpora.Dictionary(processed_docs)
-    dictionary.filter_extremes(no_below=10, no_above=0.95, keep_n=100000)
     bow_corpus = [dictionary.doc2bow(doc) for doc in processed_docs]
+    print("len(bow_corpus)", len(bow_corpus))
+    print("dictionary", len(list(dictionary.keys())))
+    if len(list(dictionary.keys())) < 1:
+        print("INSUFFICIENT DICTS TO RUN LINEAR DISCRIMINANT ANALYSIS")
+        return (None, None, None, None)
 
     lda_model = gensim.models.LdaModel(
         bow_corpus, num_topics=5, id2word=dictionary, passes=10
@@ -70,8 +77,8 @@ def lda_analysis(df, stop_words):
         texts=docs,
         dates=list(df["Date received"].values),
     )
-    print(len(df_topic_sents_keywords))
-    print(df_topic_sents_keywords.head())
+    print("len(df_topic_sents_keywords)", len(df_topic_sents_keywords))
+    print("df_topic_sents_keywords.head()", df_topic_sents_keywords.head())
     df_dominant_topic = df_topic_sents_keywords.reset_index()
     df_dominant_topic.columns = [
         "Document_No",
@@ -102,7 +109,13 @@ def tsne_analysis(ldamodel, corpus):
     topic_nums = np.argmax(df_topics, axis=1)
 
     # tSNE Dimension Reduction
-    tsne_model = TSNE(n_components=2, verbose=1, random_state=0, angle=0.99, init="pca")
-    tsne_lda = tsne_model.fit_transform(df_topics)
+    try:
+        tsne_model = TSNE(
+            n_components=2, verbose=1, random_state=0, angle=0.99, init="pca"
+        )
+        tsne_lda = tsne_model.fit_transform(df_topics)
+    except:
+        print("TSNE_ANALYSIS WENT WRONG, PLEASE RE-CHECK YOUR BANK DATASET")
+        return (topic_nums, None)
 
     return (topic_nums, tsne_lda)
