@@ -32,16 +32,20 @@ if "DB_HOST" in os.environ:
 else:
     host = "localhost"
 
-table = "flights_2008_10K"
+table = "flights_2008_10k"
+
+# todo: read cached fallback dataset into memory
+df_cb = pd.read_csv("local_10k.csv")
 
 
 # Connect to omnisci server
 def db_connect():
+    '''Return a valid connection. '''
     try:
         connection = pymapd.connect(
             user=user, password=password, host=host, dbname=db_name
         )
-
+        # Check whether table is inside
         if table not in connection.get_tables():
             print("Table {} not found in this database, please load sample data.".format(table))
 
@@ -51,8 +55,20 @@ def db_connect():
         print("Error connecting to OmniSci database: {}".format(e))
 
 
-con = db_connect()
-print(con.get_tables())
+# First-time-connection upon deployment. if fails, raise attention in app log
+INIT_SELECT_QUERY = f"SELECT flight_dayofweek, depdelay, arrdelay, dest_state, origin_state, dep_timestamp, arr_timestamp, deptime, airtime, " \
+    f"carrier_name, uniquecarrier, flightnum, origin_city, dest_city FROM {table} LIMIT 50"  # 14 columns
+
+init_con = None
+try:
+    init_con = db_connect()
+    init_df = pd.read_sql(INIT_SELECT_QUERY, init_con).dropna()
+    print(init_df.head(5))
+except Exception as e:
+    print("Initial test query fails, check your Omnisci database and re-deploy this app")
+finally:
+    if init_con is not None:
+        init_con.close()
 
 
 def generate_dest_choro(dd_select, start, end):
@@ -72,11 +88,17 @@ def generate_dest_choro(dd_select, start, end):
 
     choro_query = f"SELECT AVG(depdelay) AS avg_delay, {state_col} AS state FROM {table} WHERE dep_timestamp BETWEEN '{start_f}' AND '{end_f}' GROUP BY {state_col}"
 
+    new_con = None
     try:
-        dest_df = pd.read_sql(choro_query, db_connect())
+        new_con = db_connect()
+        dest_df = pd.read_sql(choro_query, new_con).dropna()
     except Exception as e:
+        # todo: db fallback
         print("Error querying for choropleth: ", e)
         return {}
+    finally:
+        if new_con:
+            new_con.close()
 
     zmin, zmax = np.min(dest_df["avg_delay"]), np.max(dest_df["avg_delay"])
 
@@ -132,8 +154,6 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
     start_f = f"{start} 00:00:00"
     end_f = f"{end} 00:00:00"
 
-    con = db_connect()
-
     if select:
         state_query = f"origin_state = '{state}' AND "
 
@@ -143,12 +163,19 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
             f"AND {dd_select}_timestamp BETWEEN '{start_f}' AND '{end_f}' group by flight_dayofweek"
         )
 
+        con = None
+
         try:
-            hm_df = pd.read_sql(hm_query, con)
+            con = db_connect()
+            hm_df = pd.read_sql(hm_query, con).dropna()
             hm_df = hm_df.set_index("flight_dayofweek")
             hm.append(hm_df)
         except Exception as e:
-            raise e
+            print("Error querying for heatmap: ", e)
+            return {}
+        finally:
+            if con is not None:
+                con.close()
 
     hm_df = pd.concat(hm, axis=1)
 
@@ -215,11 +242,16 @@ def generate_time_series_chart(state, start, end, dd_select):
 
     ts_query_x = f"SELECT {dd_select}_timestamp AS ts_timestamp, {dd_select}time, {state_col} FROM {table} WHERE {state_query}{dd_select}_timestamp BETWEEN {start_f} AND {end_f}"
 
+    new_con = None
     try:
-        df_ts = pd.read_sql(ts_query_x, db_connect())
+        new_con = db_connect()
+        df_ts = pd.read_sql(ts_query_x, new_con).dropna()
     except Exception as e:
         print("Error querying for time-series", e)
-        return {}
+        return {}  # todo: fallback
+    finally:
+        if new_con:
+            new_con.close()
 
     start_time = datetime.datetime(2008, 1, 1)
 
@@ -274,14 +306,19 @@ def generate_count_chart(state, dd_select, start, end):
         f"SELECT flight_dayofweek, COUNT(*) AS total_count FROM {table} WHERE {state_query}{dd_select}_timestamp BETWEEN '{start_f}' AND '{end_f}' "
         f"group by flight_dayofweek"
     )
-    print(count_query)
-    # SELECT flight_dayofweek, COUNT(*) AS total_count FROM flights_2008_7M WHERE dest_state = 'KS' AND None_timestamp BETWEEN '2008-01-01 00:00:00' AND '2008-01-16 00:00:00' group by flight_dayofweek
+    # print(count_query)
 
+    new_con = None
     try:
-        df_count = pd.read_sql(count_query, db_connect())
+        new_con = db_connect()
+        df_count = pd.read_sql(count_query, new_con).dropna()
     except Exception as e:
+        # todo: fallback
         print("Error querying for count_chart : ", e)
         return {}
+    finally:
+        if new_con:
+            new_con.close()
 
     data = [
         go.Bar(
@@ -334,7 +371,7 @@ def generate_city_graph(state_select, dd_select, start, end):
     state_col = "origin_state" if dd_select == "arr" else "dest_state"
     city_col = "origin_city" if dd_select == "arr" else "dest_city"
 
-    con = db_connect()
+    new_con = None
 
     for i, day in enumerate(days):
         count_query = (
@@ -343,10 +380,14 @@ def generate_city_graph(state_select, dd_select, start, end):
         )
 
         try:
-            df_city_count = pd.read_sql(count_query, con).set_index("city")
+            new_con = db_connect()
+            df_city_count = pd.read_sql(count_query, new_con).dropna().set_index("city")
         except Exception as e:
             print("Error reading count queries", e)
             return {}
+        finally:
+            if new_con:
+                new_con.close()
 
         count_df.append(df_city_count)
 
@@ -384,7 +425,6 @@ def generate_city_graph(state_select, dd_select, start, end):
 
 
 def query_helper(state_query, dd_select, start, end, weekday_query):
-    con = db_connect()
     add_and = ""
     if state_query:
         add_and = "AND"
@@ -392,15 +432,19 @@ def query_helper(state_query, dd_select, start, end, weekday_query):
         f"SELECT uniquecarrier AS carrier, flightnum, dep_timestamp, arr_timestamp, origin_city, dest_city "
         f"FROM {table} WHERE {state_query} {add_and} {dd_select}_timestamp BETWEEN '{start}' AND '{end}' {weekday_query} limit 100"
     )
-
+    new_con = None
     try:
-        dff = pd.read_sql(query, con)
+        new_con = db_connect()
+        dff = pd.read_sql(query, new_con).dropna()
         dff["flightnum"] = dff["carrier"] + dff["flightnum"].map(str)
         dff.drop(["carrier"], axis=1)
         return dff.to_dict("rows")
     except Exception as e:
-        print(f"Error querying {query}", e)
+        print(f"Error querying {query} for making table", e)  #todo: fallback
         raise PreventUpdate
+    finally:
+        if new_con:
+            new_con.close()
 
 
 app.layout = html.Div(
@@ -440,11 +484,11 @@ app.layout = html.Div(
                                 dcc.DatePickerRange(
                                     id="date-picker-range",
                                     min_date_allowed=dt(2008, 1, 1),
-                                    max_date_allowed=dt(2008, 12, 31),
+                                    max_date_allowed=dt(2008, 1, 7),  # set maximum limit according to local casting
                                     initial_visible_month=dt(2008, 1, 1),
                                     display_format="MMM Do, YY",
                                     start_date=dt(2008, 1, 1),
-                                    end_date=dt(2008, 1, 8),
+                                    end_date=dt(2008, 1, 7),
                                 ),
                             ],
                             id="date-picker-outer",
@@ -654,7 +698,7 @@ def update_sel_for_table(
             if dd_select == "dep":
                 city_col = "origin_city"
 
-            con = db_connect()
+            new_con = None
 
             for wk_day in wk_days:
                 for city in cities:
@@ -662,19 +706,25 @@ def update_sel_for_table(
                         table, dd_select, start_f, end_f, wk_map[wk_day], city_col, city
                     )
                     try:
-                        dff = pd.read_sql(q, con)
+                        new_con = db_connect()
+                        dff = pd.read_sql(q, new_con).dropna()
                         dff["flightnum"] = dff["carrier"] + dff["flightnum"].map(str)
                         dff.drop(["carrier"], axis=1)
                         frames.append(dff)
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        print("Error querying for updating datatable {}".format(e))
+                        raise PreventUpdate
+                    finally:
+                        if new_con:
+                            new_con.close()
             if len(frames) == 0:
                 raise PreventUpdate
             return pd.concat(frames).to_dict("rows")
         else:  # should not reach
-            return query_helper(state_query, dd_select, start_f, end_f, "")
+            return []
     except Exception as e:
-        raise e
+        print("table data error")
+        return [] #todo: fallback
 
 
 @app.callback(
@@ -753,4 +803,4 @@ def update_state_click(choro_click, choro_fig, dd_select, end, start):
 
 # Run the server
 if __name__ == "__main__":
-    app.run_server(debug=True, dev_tools_hot_reload=False)
+    app.run_server(debug=True, port=8050, dev_tools_hot_reload=False, use_reloader=False)
