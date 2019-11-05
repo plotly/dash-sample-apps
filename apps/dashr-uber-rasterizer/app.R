@@ -7,6 +7,13 @@ if (appName != "") {
   setwd(sprintf("/app/apps/%s", appName))
 }
 
+# Mapbox token for plotly | this one is for plot_mapbox figure
+mapboxToken <- ("pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g")
+
+# Setting mapbox token for R environment 
+Sys.setenv("MAPBOX_TOKEN" = mapboxToken)
+
+
 library(plotly)
 library(dash)
 library(dashCoreComponents)
@@ -219,20 +226,27 @@ app$callback(
     if (n_clicks > 0) {
       x_range <- c(min(ridesDf[,"Lon"], na.rm=T), -72.5)
       y_range <- c(39.9, max(ridesDf[,"Lat"], na.rm=T))
-      return(list(x_range, y_range))
+      differences = c(10,10)
+      return(list(x_range, y_range, differences))
     }
     else {
       if (length(relayout) == 4) {
         x_range <- c(relayout$`xaxis.range[0]`, relayout$`xaxis.range[1]`)
         y_range <- c(relayout$`yaxis.range[0]`, relayout$`yaxis.range[1]`)
+        
+        x_difference <- relayout$`xaxis.range[1]` - relayout$`xaxis.range[0]`
+        y_difference <- relayout$`yaxis.range[1]` - relayout$`yaxis.range[0]`
+        
+        differences = c(x_difference, y_difference)
       }
       
       else {
         x_range <- c(min(ridesDf[,"Lon"], na.rm=T), -72.5)
         y_range <- c(39.9, max(ridesDf[,"Lat"], na.rm=T))
+        differences = c(10,10)
       }
     }
-    return(list(x_range, y_range))
+    return(list(x_range, y_range, differences))
   }
 )
 
@@ -280,27 +294,52 @@ app$callback(
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
     
+    
+    x_difference = data[[3]][[1]]
+    y_difference = data[[3]][[2]]
+
+    
     filtered_df_lat <- ridesDf[ridesDf[, "Lat"] > y_min & ridesDf[, "Lat"] < y_max, ]    
     filtered_df_lon <- filtered_df_lat[filtered_df_lat[,"Lon"] > x_min & filtered_df_lat[,"Lon"] < x_max, ]
     
     colorbar_title <- ifelse(scale == "log", "Log(No. of Rides)", "No. of Rides")
     # plot_ly requires a data.frame
-    return(
-      plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y = ~Lat,
-              colorscale = colorscale,
-              colorbar = list(title = colorbar_title)) %>%
-        add_rasterly_heatmap(reduction_func = reduc, scaling = scale, size = b <- if(point_size == 0) NULL else {point_size}) %>%
-        layout(font = list(color = 'rgb(226, 239, 250)'),
-               margin = list(l = 1, r = 1, b = 1, t = 15, pad = 0, autoexpand = TRUE),
+    
+    if (x_difference < 0.2904274 || y_difference < 0.2109278) {
+      return(plot_mapbox(as.data.frame(filtered_df_lon)[sample(nrow(filtered_df_lon), 10000, replace = TRUE),], lon = ~Lon, lat = ~Lat) %>%
+               layout(mapbox = list(zoom = 12,
+                                    accesstoken = mapboxToken,
+                                    center = list(lat = ~median(Lat),
+                                                  lon = ~median(Lon)),
+                                    style = "dark"
+               ),
+               font = list(color = 'rgb(226, 239, 250)'),
+               margin = list(l = 5, r = 5, b = 5, t = 15, pad = 0, autoexpand = TRUE),
                paper_bgcolor='rgb(38, 43, 61)',
-               plot_bgcolor='rgb(38, 43, 61)',
-               xaxis = list(title = "Longitude",
-                            constrain = "domain",
-                            scaleanchor = "y",
-                            scaleratio = cos(40.8*pi/180)),
-               yaxis = list(title = "Latitude",
-                            constrain = "domain"))
-    )
+               xaxis = list(title = "Longitude"),
+               yaxis = list(title = "Latitude")
+               )
+      )
+    }
+    else{
+      return(
+        plot_ly(as.data.frame(filtered_df_lon), x = ~Lon, y = ~Lat,
+                colorscale = colorscale,
+                colorbar = list(title = colorbar_title)) %>%
+          add_rasterly_heatmap(reduction_func = reduc, scaling = scale, size = b <- if(point_size == 0) NULL else {point_size}) %>%
+          layout(font = list(color = 'rgb(226, 239, 250)'),
+                 margin = list(l = 1, r = 1, b = 1, t = 15, pad = 0, autoexpand = TRUE),
+                 paper_bgcolor='rgb(38, 43, 61)',
+                 plot_bgcolor='rgb(38, 43, 61)',
+                 xaxis = list(title = "Longitude",
+                              constrain = "domain",
+                              scaleanchor = "y",
+                              scaleratio = cos(40.8*pi/180)),
+                 yaxis = list(title = "Latitude",
+                              constrain = "domain"))
+      )
+    }
+    
   }
 )
 
@@ -310,8 +349,5 @@ if(appName != "") {
 } else {
   app$run_server(host = "127.0.0.1", 
                  port=8050, 
-                 dev_tools_hot_reload=TRUE,
-                 dev_tools_hot_reload_interval = 1,
-                 dev_tools_silence_routes_logging = TRUE,
-                 viewer = TRUE)
+                 debug = FALSE)
 }

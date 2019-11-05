@@ -9,5 +9,5 @@ install.packages("viridis")
 
 # ======================================================================
 # packages go here
-remotes::install_github("plotly/dashR", dependencies=TRUE)
+remotes::install_github("plotly/dashR", upgrade=TRUE)
 remotes::install_github("plotly/rasterly", upgrade=TRUE)
