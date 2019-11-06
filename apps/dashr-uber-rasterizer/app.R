@@ -4,8 +4,10 @@ if (appName != "") {
   
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-  setwd(sprintf("/app/apps/%s", appName))
+  setwd("app")
 }
+
+
 
 # Mapbox token for plotly | this one is for plot_mapbox figure
 mapboxToken <- ("pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g")
@@ -107,6 +109,9 @@ tabs <- htmlDiv(dccTabs(id = 'circos-control-tabs', value = 'what-is', children 
               of magnitude larger in similarly brisk fashion. The raster data required to produce the aggregation layers and color
               gradients displayed here are computed efficiently enough to maintain the interactive feel of the application.
               ", style = list("padding" =  "5px")),
+        dccMarkdown("The image will eventually transition to a Mapbox map view if you zoom in far enough; to return to the rasterized
+              view, just click the Reset Graph button, which is accessible by clicking the Options tab.
+                    ", style = list("padding" = "5px")),
         dccMarkdown("Visit the _rasterly_ package repository [here](https://github.com/plotly/rasterly) to learn more.
                     ", style = list("padding" = "5px"))
       )
