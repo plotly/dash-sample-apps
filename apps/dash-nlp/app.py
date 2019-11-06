@@ -112,8 +112,10 @@ def sample_data(dataframe, float_percent):
 
 
 def get_complaint_count_by_company(dataframe):
-    """ TODO """
+    """ Helper function to get complaint counts for unique banks """
     company_counts = dataframe["Company"].value_counts()
+    # we filter out all banks with less than 11 complaints for now
+    company_counts = company_counts[company_counts > 10]
     values = company_counts.keys().tolist()
     counts = company_counts.tolist()
     return values, counts
@@ -245,11 +247,9 @@ def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
     )
     mycolors = np.array([color for name, color in mcolors.TABLEAU_COLORS.items()])
 
-    # Plot and embed in ipython notebook!
-    # for each topic create separate trace
+    # for each topic we create a separate trace
     traces = []
     for topic_id in df_top3words["topic_id"]:
-        # print('Topic: {} \nWords: {}'.format(idx, topic))
         tsne_df_f = tsne_df[tsne_df.topic_num == topic_id]
         cluster_name = ", ".join(
             df_top3words[df_top3words["topic_id"] == topic_id]["words"].to_list()
@@ -278,6 +278,10 @@ def plotly_wordcloud(data_frame):
     """A wonderful function that returns figure data for three equally
     wonderful plots: wordcloud, frequency histogram and treemap"""
     complaints_text = list(data_frame["Consumer complaint narrative"].dropna().values)
+
+    if len(complaints_text) < 1:
+        return {}, {}, {}
+
     ## join all documents in corpus
     text = " ".join(list(complaints_text))
 
@@ -497,6 +501,12 @@ LDA_TABLE = html.Div(
 
 LDA_PLOTS = [
     dbc.CardHeader(html.H5("Topic modelling using LDA")),
+    dbc.Alert(
+        "Not enough data to render LDA plots, please adjust the filters",
+        id="no-data-alert-lda",
+        color="warning",
+        style={"display": "none"},
+    ),
     dbc.CardBody(
         [
             html.P(
@@ -511,6 +521,12 @@ LDA_PLOTS = [
 ]
 WORDCLOUD_PLOTS = [
     dbc.CardHeader(html.H5("Most frequently used words in complaints")),
+    dbc.Alert(
+        "Not enough data to render these plots, please adjust the filters",
+        id="no-data-alert",
+        color="warning",
+        style={"display": "none"},
+    ),
     dbc.CardBody(
         [
             dbc.Row(
@@ -566,7 +582,15 @@ TOP_BANKS_PLOT = [
         [
             dcc.Loading(
                 id="loading-banks-hist",
-                children=[dcc.Graph(id="bank-sample")],
+                children=[
+                    dbc.Alert(
+                        "Not enough data to render this plot, please adjust the filters",
+                        id="no-data-alert-bank",
+                        color="warning",
+                        style={"display": "none"},
+                    ),
+                    dcc.Graph(id="bank-sample"),
+                ],
                 type="default",
             )
         ]
@@ -647,7 +671,7 @@ def populate_bank_dropdown(time_values, n_value):
 
 
 @APP.callback(
-    Output("bank-sample", "figure"),
+    [Output("bank-sample", "figure"), Output("no-data-alert-bank", "style")],
     [Input("n-selection-slider", "value"), Input("time-window-slider", "value")],
 )
 def update_bank_sample_plot(n_value, time_values):
@@ -656,7 +680,7 @@ def update_bank_sample_plot(n_value, time_values):
     print("\tn is:", n_value)
     print("\ttime_values is:", time_values)
     if time_values is None:
-        return {}
+        return [{}, {"display": "block"}]
     n_float = float(n_value / 100)
     bank_sample_count = 10
     local_df = sample_data(GLOBAL_DF, n_float)
@@ -680,7 +704,7 @@ def update_bank_sample_plot(n_value, time_values):
         "xaxis": {"showticklabels": False},
     }
     print("redrawing bank-sample...done")
-    return {"data": data, "layout": layout}
+    return [{"data": data, "layout": layout}, {"display": "none"}]
 
 
 @APP.callback(
@@ -688,6 +712,7 @@ def update_bank_sample_plot(n_value, time_values):
         Output("lda-table", "data"),
         Output("lda-table", "columns"),
         Output("tsne-lda", "figure"),
+        Output("no-data-alert-lda", "style"),
     ],
     [
         Input("bank-drop", "value"),
@@ -696,15 +721,14 @@ def update_bank_sample_plot(n_value, time_values):
     ],
 )
 def update_lda_table(value_drop, time_values, n_selection):
-    """ TODO """
+    """ Update LDA table with new data """
     local_df = make_local_df(value_drop, time_values, n_selection)
-    # TODO this should be removed but we'll keep it for now for
+    # TODO this should be removed once precompiting is done but we'll keep it for now for
     # compatability reasons
     complaints_text = list(local_df["Consumer complaint narrative"].dropna().values)
     if len(complaints_text) <= 10:  # we cannot do LDA on less than 11 complaints
-        return [[], [], {}]
+        return [[], [], {}, {"display": "block"}]
 
-    # HERE WE WILL READ FROM FILE INSTEAD AND FILTER ON DATE
     tsne_lda, lda_model, topic_num, df_dominant_topic = lda_analysis(
         local_df, list(STOPWORDS)
     )
@@ -716,7 +740,7 @@ def update_lda_table(value_drop, time_values, n_selection):
     columns = [{"name": i, "id": i} for i in df_dominant_topic.columns]
     data = df_dominant_topic.to_dict("records")
 
-    return (data, columns, lda_scatter_figure)
+    return (data, columns, lda_scatter_figure, {"display": "none"})
 
 
 @APP.callback(
@@ -724,6 +748,7 @@ def update_lda_table(value_drop, time_values, n_selection):
         Output("bank-wordcloud", "figure"),
         Output("frequency_figure", "figure"),
         Output("bank-treemap", "figure"),
+        Output("no-data-alert", "style"),
     ],
     [
         Input("bank-drop", "value"),
@@ -732,11 +757,14 @@ def update_lda_table(value_drop, time_values, n_selection):
     ],
 )
 def update_wordcloud_plot(value_drop, time_values, n_selection):
-    """ TODO"""
+    """ Callback to rerender wordcloud plot """
     local_df = make_local_df(value_drop, time_values, n_selection)
     wordcloud, frequency_figure, treemap = plotly_wordcloud(local_df)
+    alert_style = {"display": "none"}
+    if (wordcloud == {}) or (frequency_figure == {}) or (treemap == {}):
+        alert_style = {"display": "block"}
     print("redrawing bank-wordcloud...done")
-    return (wordcloud, frequency_figure, treemap)
+    return (wordcloud, frequency_figure, treemap, alert_style)
 
 
 @APP.callback(
@@ -758,7 +786,6 @@ def filter_table_on_scatter_click(tsne_click, current_filter):
             )
         else:
             filter_query = "{Document_No} eq " + str(selected_complaint)
-        # ({avf} < 12000) && ({avf} >= 10000)
         print("current_filter", current_filter)
         return (filter_query, {"display": "block"})
     return ["", {"display": "none"}]
