@@ -112,8 +112,10 @@ def sample_data(dataframe, float_percent):
 
 
 def get_complaint_count_by_company(dataframe):
-    """ TODO """
+    """ Helper function to get complaint counts for unique banks """
     company_counts = dataframe["Company"].value_counts()
+    # we filter out all banks with less than 11 complaints for now
+    company_counts = company_counts[company_counts > 10]
     values = company_counts.keys().tolist()
     counts = company_counts.tolist()
     return values, counts
@@ -245,11 +247,9 @@ def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
     )
     mycolors = np.array([color for name, color in mcolors.TABLEAU_COLORS.items()])
 
-    # Plot and embed in ipython notebook!
-    # for each topic create separate trace
+    # for each topic we create a separate trace
     traces = []
     for topic_id in df_top3words["topic_id"]:
-        # print('Topic: {} \nWords: {}'.format(idx, topic))
         tsne_df_f = tsne_df[tsne_df.topic_num == topic_id]
         cluster_name = ", ".join(
             df_top3words[df_top3words["topic_id"] == topic_id]["words"].to_list()
@@ -278,6 +278,10 @@ def plotly_wordcloud(data_frame):
     """A wonderful function that returns figure data for three equally
     wonderful plots: wordcloud, frequency histogram and treemap"""
     complaints_text = list(data_frame["Consumer complaint narrative"].dropna().values)
+
+    if len(complaints_text) < 1:
+        return {}, {}, {}
+
     ## join all documents in corpus
     text = " ".join(list(complaints_text))
 
@@ -696,15 +700,14 @@ def update_bank_sample_plot(n_value, time_values):
     ],
 )
 def update_lda_table(value_drop, time_values, n_selection):
-    """ TODO """
+    """ Update LDA table with new data """
     local_df = make_local_df(value_drop, time_values, n_selection)
-    # TODO this should be removed but we'll keep it for now for
+    # TODO this should be removed once precompiting is done but we'll keep it for now for
     # compatability reasons
     complaints_text = list(local_df["Consumer complaint narrative"].dropna().values)
     if len(complaints_text) <= 10:  # we cannot do LDA on less than 11 complaints
         return [[], [], {}]
 
-    # HERE WE WILL READ FROM FILE INSTEAD AND FILTER ON DATE
     tsne_lda, lda_model, topic_num, df_dominant_topic = lda_analysis(
         local_df, list(STOPWORDS)
     )
@@ -732,7 +735,7 @@ def update_lda_table(value_drop, time_values, n_selection):
     ],
 )
 def update_wordcloud_plot(value_drop, time_values, n_selection):
-    """ TODO"""
+    """ Callback to rerender wordcloud plot """
     local_df = make_local_df(value_drop, time_values, n_selection)
     wordcloud, frequency_figure, treemap = plotly_wordcloud(local_df)
     print("redrawing bank-wordcloud...done")
@@ -758,7 +761,6 @@ def filter_table_on_scatter_click(tsne_click, current_filter):
             )
         else:
             filter_query = "{Document_No} eq " + str(selected_complaint)
-        # ({avf} < 12000) && ({avf} >= 10000)
         print("current_filter", current_filter)
         return (filter_query, {"display": "block"})
     return ["", {"display": "none"}]
