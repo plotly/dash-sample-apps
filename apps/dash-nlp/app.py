@@ -15,6 +15,7 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import pandas as pd
 import numpy as np
+from precomputing import add_stopwords
 from dash.dependencies import Output, Input, State
 from dateutil import relativedelta
 from wordcloud import WordCloud, STOPWORDS
@@ -155,6 +156,7 @@ def make_local_df(selected_bank, time_values, n_selection):
         ]
     if selected_bank:
         local_df = local_df[local_df["Company"] == selected_bank]
+        add_stopwords(selected_bank)
     return local_df
 
 
@@ -426,7 +428,7 @@ LEFT_COLUMN = dbc.Jumbotron(
                 90: "",
                 100: "100%",
             },
-            value=5,
+            value=20,
         ),
         html.Label("Select a bank", style={"marginTop": 50}, className="lead"),
         html.P(
@@ -696,13 +698,15 @@ def update_bank_sample_plot(n_value, time_values):
 def update_lda_table(value_drop, time_values, n_selection):
     """ TODO """
     local_df = make_local_df(value_drop, time_values, n_selection)
+    # TODO this should be removed but we'll keep it for now for
+    # compatability reasons
     complaints_text = list(local_df["Consumer complaint narrative"].dropna().values)
     if len(complaints_text) <= 10:  # we cannot do LDA on less than 11 complaints
         return [[], [], {}]
 
     # HERE WE WILL READ FROM FILE INSTEAD AND FILTER ON DATE
     tsne_lda, lda_model, topic_num, df_dominant_topic = lda_analysis(
-        complaints_text, list(STOPWORDS)
+        local_df, list(STOPWORDS)
     )
 
     lda_scatter_figure = populate_lda_scatter(
@@ -728,7 +732,7 @@ def update_lda_table(value_drop, time_values, n_selection):
     ],
 )
 def update_wordcloud_plot(value_drop, time_values, n_selection):
-    """ TODO """
+    """ TODO"""
     local_df = make_local_df(value_drop, time_values, n_selection)
     wordcloud, frequency_figure, treemap = plotly_wordcloud(local_df)
     print("redrawing bank-wordcloud...done")
