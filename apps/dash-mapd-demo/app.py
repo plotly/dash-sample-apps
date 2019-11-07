@@ -13,7 +13,15 @@ import datetime
 from datetime import datetime as dt
 import os
 
-wk_map = {"1": "Mon", "2": "Tues", "3": "Wed", "4": "Thu", "5": "Fri", "6": "Sat", "7": "Sun"}
+wk_map = {
+    "1": "Mon",
+    "2": "Tues",
+    "3": "Wed",
+    "4": "Thu",
+    "5": "Fri",
+    "6": "Sat",
+    "7": "Sun",
+}
 wk_map_rev_map = {"Mon": 1, "Tues": 2, "Wed": 3, "Thu": 4, "Fri": 5, "Sat": 6, "Sun": 7}
 
 app = dash.Dash(
@@ -35,6 +43,7 @@ if "DB_HOST" in os.environ:
 else:
     host = "localhost"
 
+
 table = "flights_2008_10k"
 
 # todo: read cached fallback dataset into memory
@@ -43,14 +52,18 @@ df_cb = pd.read_csv("local_10k.csv")
 
 # Connect to omnisci server
 def db_connect():
-    '''Return a valid connection. '''
+    """Return a valid connection. """
     try:
         connection = pymapd.connect(
             user=user, password=password, host=host, dbname=db_name
         )
         # Check whether table is inside
         if table not in connection.get_tables():
-            print("Table {} not found in this database, please load sample data.".format(table))
+            print(
+                "Table {} not found in this database, please load sample data.".format(
+                    table
+                )
+            )
 
         return connection
 
@@ -59,8 +72,10 @@ def db_connect():
 
 
 # First-time-connection upon deployment. if fails, raise attention in app log
-INIT_SELECT_QUERY = f"SELECT flight_dayofweek, depdelay, arrdelay, dest_state, origin_state, dep_timestamp, arr_timestamp, deptime, airtime, " \
-    f"carrier_name, uniquecarrier, flightnum, origin_city, dest_city FROM {table} LIMIT 50"  # 14 columns
+INIT_SELECT_QUERY = (
+    f"SELECT flight_dayofweek, depdelay, arrdelay, dest_state, origin_state, dep_timestamp, arr_timestamp, deptime, airtime, "
+    f"carrier_name, uniquecarrier, flightnum, origin_city, dest_city FROM {table} LIMIT 50"
+)  # 14 columns
 
 init_con = None
 try:
@@ -68,7 +83,9 @@ try:
     init_df = pd.read_sql(INIT_SELECT_QUERY, init_con).dropna()
     print(init_df.head(5))
 except Exception as e:
-    print("Initial test query fails, check your Omnisci database and re-deploy this app")
+    print(
+        "Initial test query fails, check your Omnisci database and re-deploy this app"
+    )
 finally:
     if init_con is not None:
         init_con.close()
@@ -185,7 +202,7 @@ def generate_flights_hm(state, dd_select, start, end, select=False):
     hm_df = hm_df.fillna(0).reset_index()
 
     y = []
-    for dayofweek in hm_df['flight_dayofweek']:
+    for dayofweek in hm_df["flight_dayofweek"]:
         if str(dayofweek) in wk_map:
             y.append(wk_map[str(dayofweek)])
 
@@ -499,7 +516,9 @@ app.layout = html.Div(
                                 dcc.DatePickerRange(
                                     id="date-picker-range",
                                     min_date_allowed=dt(2008, 1, 1),
-                                    max_date_allowed=dt(2008, 1, 7),  # set maximum limit according to local casting
+                                    max_date_allowed=dt(
+                                        2008, 1, 7
+                                    ),  # set maximum limit according to local casting
                                     initial_visible_month=dt(2008, 1, 1),
                                     minimum_nights=1,
                                     display_format="MMM Do, YY",
@@ -649,7 +668,7 @@ def update_choro(dd_select, start, end):
     ],
 )
 def update_sel_for_table(
-        ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
+    ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
 ):
     """
     :return: Data for generating flight info datatable.
@@ -692,7 +711,9 @@ def update_sel_for_table(
 
         elif prop_id == "count_by_day_graph":
 
-            wk_day = wk_map_rev_map[inputs["count_by_day_graph.clickData"]["points"][0]["y"]]
+            wk_day = wk_map_rev_map[
+                inputs["count_by_day_graph.clickData"]["points"][0]["y"]
+            ]
             wk_day_query = f"AND flight_dayofweek = {wk_day}"
             print("table triggered by count_by_day barchart")
             return query_helper(state_query, dd_select, start_f, end_f, wk_day_query)
@@ -725,7 +746,13 @@ def update_sel_for_table(
             for wk_day in wk_days:
                 for city in cities:
                     q = q_template.format(
-                        table, dd_select, start_f, end_f, wk_map_rev_map[wk_day], city_col, city
+                        table,
+                        dd_select,
+                        start_f,
+                        end_f,
+                        wk_map_rev_map[wk_day],
+                        city_col,
+                        city,
                     )
                     try:
                         new_con = db_connect()
@@ -832,4 +859,6 @@ def update_state_click(choro_click, choro_fig, dd_select, end, start):
 
 # Run the server
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8050, dev_tools_hot_reload=False, use_reloader=False)
+    app.run_server(
+        debug=True, port=8050, dev_tools_hot_reload=False, use_reloader=False
+    )
