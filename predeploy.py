@@ -13,6 +13,9 @@ app_path = os.path.join("apps", APPNAME_TO_DIRECTORY.get(app_name, app_name))
 
 app_file_name = ''
 
+# get the name of the file used to run the app;
+# this is not always 'app.py'
+
 with open(os.path.join(app_path, 'Procfile'), 'r') as f:
     contents = f.read().split(' ')
     for item in contents:
@@ -23,6 +26,10 @@ full_app_path = os.path.join(app_path, app_file_name + '.py')
 
 lines = []
 
+# find the line with the conditional used to run
+# the app server; anything after the `app.run_server`
+# call will not get executed because the app is running
+
 with open(full_app_path, 'r') as f:
     lines = f.readlines()
     name_main_index = 0
@@ -30,6 +37,10 @@ with open(full_app_path, 'r') as f:
         if '__name__ == "__main__"' in line:
             name_main_index = lines.index(line)
             break
+
+    # insert the index_string declaration just above
+    # the run_server conditional
+
     lines.insert(name_main_index, '''app.index_string = \'\'\'
 <!DOCTYPE html>
 <html>
@@ -51,6 +62,10 @@ with open(full_app_path, 'r') as f:
     </body>
 </html>
 \'\'\'\n\n''')
+
+# if something has gone wrong, don't overwrite
+# the file; otherwise, write the new lines into it
+# (which include the tags)
 
 if len(lines) > 0:
     with open(full_app_path, 'w') as f:
