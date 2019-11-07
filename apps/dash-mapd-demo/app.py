@@ -13,7 +13,7 @@ import datetime
 from datetime import datetime as dt
 import os
 
-wk_map = {"1": "Mon", "2":"Tues", "3":"Wed", "4":"Thu", "5": "Fri", "6":"Sat", "7": "Sun"}
+wk_map = {"1": "Mon", "2": "Tues", "3": "Wed", "4": "Thu", "5": "Fri", "6": "Sat", "7": "Sun"}
 wk_map_rev_map = {"Mon": 1, "Tues": 2, "Wed": 3, "Thu": 4, "Fri": 5, "Sat": 6, "Sun": 7}
 
 app = dash.Dash(
@@ -402,7 +402,7 @@ def generate_city_graph(state_select, dd_select, start, end):
             df_city_count = pd.read_sql(count_query, new_con).dropna().set_index("city")
         except Exception as e:
             print("Error reading count queries", e)
-            return {}
+            return {}  # todo: fallback?
         finally:
             if new_con:
                 new_con.close()
@@ -458,7 +458,7 @@ def query_helper(state_query, dd_select, start, end, weekday_query):
         dff.drop(["carrier"], axis=1)
         return dff.to_dict("rows")
     except Exception as e:
-        print(f"Error querying {query} for making table", e)  #todo: fallback
+        print(f"Error querying {query} for making table", e)  # todo: fallback
         raise PreventUpdate
     finally:
         if new_con:
@@ -504,6 +504,7 @@ app.layout = html.Div(
                                     min_date_allowed=dt(2008, 1, 1),
                                     max_date_allowed=dt(2008, 1, 7),  # set maximum limit according to local casting
                                     initial_visible_month=dt(2008, 1, 1),
+                                    minimum_nights=1,
                                     display_format="MMM Do, YY",
                                     start_date=dt(2008, 1, 1),
                                     end_date=dt(2008, 1, 7),
@@ -617,6 +618,7 @@ app.layout = html.Div(
     ],
 )
 
+
 @app.callback(
     Output("choropleth", "figure"),
     [
@@ -650,7 +652,7 @@ def update_choro(dd_select, start, end):
     ],
 )
 def update_sel_for_table(
-    ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
+        ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
 ):
     """
     :return: Data for generating flight info datatable.
@@ -693,13 +695,13 @@ def update_sel_for_table(
 
         elif prop_id == "count_by_day_graph":
 
-            wk_day = wk_map_rev_map[inputs["count_by_day_graph.clickData"]["points"][0]["y"]] #this is not correct
+            wk_day = wk_map_rev_map[inputs["count_by_day_graph.clickData"]["points"][0]["y"]]
             wk_day_query = f"AND flight_dayofweek = {wk_day}"
             print("table triggered by count_by_day barchart")
             return query_helper(state_query, dd_select, start_f, end_f, wk_day_query)
 
         elif prop_id == "value_by_city_graph":
-            print("table triggered by city scatterplot")
+            print("table triggered by city scatterplot")  # todo: fix this.
             wk_days = []
             cities = []
             for selected_point in city_select["points"]:
@@ -746,7 +748,7 @@ def update_sel_for_table(
             print("table triggered by none of above ids")
             raise PreventUpdate
     except Exception as e:
-        raise PreventUpdate #todo: fallback
+        raise PreventUpdate  # todo: fallback
 
 
 @app.callback(
