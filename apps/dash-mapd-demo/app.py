@@ -330,9 +330,6 @@ def generate_count_chart(state, dd_select, start, end):
         if new_con:
             new_con.close()
 
-    # determine y axis value
-    print("df_count: ", df_count)
-
     y = []
     for dayofweek in df_count["flight_dayofweek"]:
         if str(dayofweek) in wk_map:
@@ -410,7 +407,7 @@ def generate_city_graph(state_select, dd_select, start, end):
         count_df.append(df_city_count)
 
     count_df = pd.concat(count_df, axis=1, sort=True)
-
+    print("count_df for by cities: ", count_df)
     data = []
     for city in count_df.index:
         customdata = list(city for _ in range(7))
@@ -711,7 +708,8 @@ def update_sel_for_table(
                     cities.append(city)
                 if wk_day not in wk_days:
                     wk_days.append(wk_day)
-
+            print(cities, wk_days)
+            # Only update table by querying selected city.
             frames = []
             q_template = (
                 "SELECT uniquecarrier AS carrier, flightnum, dep_timestamp, arr_timestamp, origin_city, dest_city "
@@ -727,7 +725,7 @@ def update_sel_for_table(
             for wk_day in wk_days:
                 for city in cities:
                     q = q_template.format(
-                        table, dd_select, start_f, end_f, wk_map[wk_day], city_col, city
+                        table, dd_select, start_f, end_f, wk_map_rev_map[wk_day], city_col, city
                     )
                     try:
                         new_con = db_connect()
@@ -737,7 +735,7 @@ def update_sel_for_table(
                         frames.append(dff)
                     except Exception as e:
                         print("Error querying for updating datatable {}".format(e))
-                        raise PreventUpdate
+                        return []
                     finally:
                         if new_con:
                             new_con.close()
