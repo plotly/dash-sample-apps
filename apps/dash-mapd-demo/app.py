@@ -32,7 +32,7 @@ if "DB_HOST" in os.environ:
 else:
     host = "localhost"
 
-table = "flights_2008_7M"
+table = "flights_2008_10K"
 
 
 # Connect to omnisci server
