@@ -525,7 +525,7 @@ app.layout = html.Div(
                             ],
                             id="date-picker-outer",
                             className="selector",
-                        )
+                        ),
                     ],
                 ),
                 html.Div(
@@ -665,7 +665,7 @@ def update_choro(dd_select, start, end):
     ],
 )
 def update_sel_for_table(
-        ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
+    ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
 ):
     """
     :return: Data for generating flight info datatable.
