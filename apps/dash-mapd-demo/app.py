@@ -43,11 +43,7 @@ if "DB_HOST" in os.environ:
 else:
     host = "localhost"
 
-
 table = "flights_2008_10k"
-
-# todo: read cached fallback dataset into memory
-df_cb = pd.read_csv("local_10k.csv")
 
 
 # Connect to omnisci server
@@ -113,7 +109,6 @@ def generate_dest_choro(dd_select, start, end):
         new_con = db_connect()
         dest_df = pd.read_sql(choro_query, new_con).dropna()
     except Exception as e:
-        # todo: db fallback
         print("Error querying for choropleth: ", e)
         return {}
     finally:
@@ -275,7 +270,7 @@ def generate_time_series_chart(state, start, end, dd_select):
         df_ts = pd.read_sql(ts_query_x, new_con).dropna()
     except Exception as e:
         print("Error querying for time-series", e)
-        return {}  # todo: fallback
+        return {}
     finally:
         if new_con:
             new_con.close()
@@ -340,7 +335,6 @@ def generate_count_chart(state, dd_select, start, end):
         new_con = db_connect()
         df_count = pd.read_sql(count_query, new_con).dropna()
     except Exception as e:
-        # todo: fallback
         print("Error querying for count_chart : ", e)
         return {}
     finally:
@@ -416,7 +410,7 @@ def generate_city_graph(state_select, dd_select, start, end):
             df_city_count = pd.read_sql(count_query, new_con).dropna().set_index("city")
         except Exception as e:
             print("Error reading count queries", e)
-            return {}  # todo: fallback?
+            return {}
         finally:
             if new_con:
                 new_con.close()
@@ -472,7 +466,7 @@ def query_helper(state_query, dd_select, start, end, weekday_query):
         dff.drop(["carrier"], axis=1)
         return dff.to_dict("rows")
     except Exception as e:
-        print(f"Error querying {query} for making table", e)  # todo: fallback
+        print(f"Error querying {query} for making table", e)
         raise PreventUpdate
     finally:
         if new_con:
@@ -719,7 +713,7 @@ def update_sel_for_table(
             return query_helper(state_query, dd_select, start_f, end_f, wk_day_query)
 
         elif prop_id == "value_by_city_graph":
-            print("table triggered by city scatterplot")  # todo: fix this.
+            print("table triggered by city scatterplot")
             wk_days = []
             cities = []
             for selected_point in city_select["points"]:
@@ -773,7 +767,7 @@ def update_sel_for_table(
             print("table triggered by none of above ids")
             raise PreventUpdate
     except Exception as e:
-        raise PreventUpdate  # todo: fallback
+        raise PreventUpdate
 
 
 @app.callback(
