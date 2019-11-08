@@ -2,7 +2,6 @@
 
 ## About this app
 
-
 This demo allows users to compare and explore different drug properties by selecting on the dropdown menu.
 
 
