@@ -12,6 +12,7 @@ import pymapd
 import datetime
 from datetime import datetime as dt
 import os
+import time
 
 wk_map = {
     "1": "Mon",
@@ -51,7 +52,7 @@ def db_connect():
     """Return a valid connection. """
     try:
         connection = pymapd.connect(
-            user=user, password=password, host=host, dbname=db_name
+            user=user, password=password, host="localhost", dbname=db_name
         )
         # Check whether table is inside
         if table not in connection.get_tables():
@@ -60,11 +61,15 @@ def db_connect():
                     table
                 )
             )
-
-        return connection
-
     except Exception as e:
-        print("Error connecting to OmniSci database: {}".format(e))
+        print("Error connecting to OmniSci database: {}, retry".format(e))
+        time.sleep(1)
+        # Make retry connection
+        connection = pymapd.connect(
+            user=user, password=password, host="localhost", dbname=db_name
+        )
+
+    return connection
 
 
 # First-time-connection upon deployment. if fails, raise attention in app log
@@ -328,7 +333,6 @@ def generate_count_chart(state, dd_select, start, end):
         f"SELECT flight_dayofweek, COUNT(*) AS total_count FROM {table} WHERE {state_query}{dd_select}_timestamp BETWEEN '{start_f}' AND '{end_f}' "
         f"group by flight_dayofweek"
     )
-    # print(count_query)
 
     new_con = None
     try:
@@ -418,7 +422,6 @@ def generate_city_graph(state_select, dd_select, start, end):
         count_df.append(df_city_count)
 
     count_df = pd.concat(count_df, axis=1, sort=True)
-    print("count_df for by cities: ", count_df)
     data = []
     for city in count_df.index:
         customdata = list(city for _ in range(7))
@@ -522,7 +525,7 @@ app.layout = html.Div(
                             ],
                             id="date-picker-outer",
                             className="selector",
-                        ),
+                        )
                     ],
                 ),
                 html.Div(
@@ -662,7 +665,7 @@ def update_choro(dd_select, start, end):
     ],
 )
 def update_sel_for_table(
-    ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
+        ts_select, count_click, city_select, choro_fig, dd_select, start, end, choro_click
 ):
     """
     :return: Data for generating flight info datatable.
@@ -723,7 +726,6 @@ def update_sel_for_table(
                     cities.append(city)
                 if wk_day not in wk_days:
                     wk_days.append(wk_day)
-            print(cities, wk_days)
             # Only update table by querying selected city.
             frames = []
             q_template = (
