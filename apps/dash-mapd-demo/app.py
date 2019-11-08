@@ -52,7 +52,7 @@ def db_connect():
     """Return a valid connection. """
     try:
         connection = pymapd.connect(
-            user=user, password=password, host="localhost", dbname=db_name
+            user=user, password=password, host=host, dbname=db_name
         )
         # Check whether table is inside
         if table not in connection.get_tables():
