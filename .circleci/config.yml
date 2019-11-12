@@ -62,7 +62,7 @@ jobs:
                   echo "Deploy failed because there is no assets/ folder. Exiting..."
                   exit 1
                 fi
-                git add ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js && git commit -m "Deployed commit: $CIRCLE_SHA1"
+                git commit -m "Deployed commit: $CIRCLE_SHA1"
                 git push playground $CIRCLE_BRANCH:master --force
                 exit 0
               else
@@ -100,7 +100,7 @@ jobs:
               git config --global user.name "Circle MonoRepo Automatic Deployer"
               if [ -d ~/dash-sample-apps/apps/"$APP"/ ]
               then
-                git add ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js && git commit -m "Deployed commit: $CIRCLE_SHA1"
+                git commit -m "Deployed commit: $CIRCLE_SHA1"
                 git remote add $APP https://dash-playground.plotly.host/GIT/$APP
                 git push $APP master --force || echo "Deploy failed because there is no such app on Dash Gallery: $APP. Please use the web interface to create an app with this name. Continuing deployments..."
               fi
