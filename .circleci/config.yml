@@ -89,7 +89,7 @@ jobs:
       - run:
           name: Deploy
           command: |
-            APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }' | sort -u)
+            APPS_MODIFIED=$(ls apps | grep dash- | sort -u)
             for APP in $APPS_MODIFIED
             do
               if [[ $APP =~ "dashr" ]]
