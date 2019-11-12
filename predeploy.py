@@ -44,8 +44,10 @@ app_file_name = ""
 with open(os.path.join(app_path, "Procfile"), "r") as f:
     contents = f.read().split(" ")
     for item in contents:
-        if "server" in item:
+        if "server" or "SERVER" in item:
             app_file_name = item.split(":")[0]
+        else:
+            print("'server' or 'SERVER' not found in Procfile")
 
 full_app_path = os.path.join(app_path, app_file_name + ".py")
 
