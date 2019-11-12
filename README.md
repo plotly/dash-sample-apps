@@ -153,13 +153,17 @@ Tips
 
 ```Python
 import pathlib
+import pandas as pd
 
-# get relative assets folder
-html.Img(src=app.get_asset_url('logo'))                   
+# get relative assets
+html.Img(src=app.get_asset_url('logo.png'))       # /assets/logo.png
 
-# get relative data folder
-DATA_PATH = pathlib.Path(__file__, "/data")      # /data
-with open(DATA_PATH.joinpath("data.csv")) as f:  # /data/data.csv
+# get relative data
+
+DATA_PATH = pathlib.Path(__file__).parent.joinpath("data")  # /data
+df = pd.read_csv(DATA_PATH.joinpath("sample-data.csv"))    # /data/sample-data.csv
+
+with open(DATA_PATH.joinpath("sample-data.csv")) as f:  # /data/sample-data.csv
     some_string = f.read()
 ```
 

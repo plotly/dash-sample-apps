@@ -20,7 +20,7 @@ app.scripts.config.serve_locally = True
 
 server = app.server
 
-DATA_PATH = pathlib.Path(__file__)
+DATA_PATH = pathlib.Path(__file__).parent.resolve()
 
 
 def parse_args():

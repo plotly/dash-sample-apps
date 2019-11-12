@@ -1,0 +1,4 @@
+dash>=1.2.0
+dash-daq>=0.1.7
+pandas>=0.24.2
+gunicorn>=19.9.0
