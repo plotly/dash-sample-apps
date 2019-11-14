@@ -62,8 +62,7 @@ jobs:
                   echo "Deploy failed because there is no assets/ folder. Exiting..."
                   exit 1
                 fi
-                echo $PLOTLY_GA_CODE > ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js
-                git add ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js && git commit -m "Deployed commit: $CIRCLE_SHA1"
+                git commit -m "Deployed commit: $CIRCLE_SHA1"
                 git push playground $CIRCLE_BRANCH:master --force
                 exit 0
               else
@@ -80,17 +79,17 @@ jobs:
       - checkout
       - run:
           name: Add plotly remote
-          command: git remote add gallery https://dash-gallery.plotly.host/GIT/$CIRCLE_BRANCH
+          command: git remote add gallery https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
       - run:
           name: Create helper-script
-          command: printf '#!/bin/bash\necho username=$GALLERY_DEPLOY_USERNAME\necho password=$GALLERY_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
+          command: printf '#!/bin/bash\necho username=$PLAYGROUND_DEPLOY_USERNAME\necho password=$PLAYGROUND_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
       - run:
           name: Set up git config
           command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
       - run:
           name: Deploy
           command: |
-            APPS_MODIFIED=$(git diff origin/production origin/master --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} }' | sort -u)
+            APPS_MODIFIED=$(ls apps | grep dash- | sort -u)
             for APP in $APPS_MODIFIED
             do
               if [[ $APP =~ "dashr" ]]
@@ -101,9 +100,8 @@ jobs:
               git config --global user.name "Circle MonoRepo Automatic Deployer"
               if [ -d ~/dash-sample-apps/apps/"$APP"/ ]
               then
-                echo $PLOTLY_GA_CODE > ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js
-                git add ~/dash-sample-apps/apps/"$APP"/assets/plotly_ga.js && git commit -m "Deployed commit: $CIRCLE_SHA1"
-                git remote add $APP https://dash-gallery.plotly.host/GIT/$APP
+                git commit -m "Deployed commit: $CIRCLE_SHA1"
+                git remote add $APP https://dash-playground.plotly.host/GIT/$APP
                 git push $APP master --force || echo "Deploy failed because there is no such app on Dash Gallery: $APP. Please use the web interface to create an app with this name. Continuing deployments..."
               fi
             done
