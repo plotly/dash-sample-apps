@@ -589,16 +589,16 @@ BODY = dbc.Container(
 )
 
 
-SERVER = flask.Flask(__name__)
-APP = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], server=SERVER)
-APP.layout = html.Div(children=[NAVBAR, BODY])
+server = flask.Flask(__name__)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], server=server)
+app.layout = html.Div(children=[NAVBAR, BODY])
 
 """
 #  Callbacks
 """
 
 
-@APP.callback(
+@app.callback(
     [
         Output("time-window-slider", "marks"),
         Output("time-window-slider", "min"),
@@ -631,7 +631,7 @@ def populate_time_slider(value):
     )
 
 
-@APP.callback(
+@app.callback(
     Output("bank-drop", "options"),
     [Input("time-window-slider", "value"), Input("n-selection-slider", "value")],
 )
@@ -646,7 +646,7 @@ def populate_bank_dropdown(time_values, n_value):
     return make_options_bank_drop(bank_names)
 
 
-@APP.callback(
+@app.callback(
     Output("bank-sample", "figure"),
     [Input("n-selection-slider", "value"), Input("time-window-slider", "value")],
 )
@@ -683,7 +683,7 @@ def update_bank_sample_plot(n_value, time_values):
     return {"data": data, "layout": layout}
 
 
-@APP.callback(
+@app.callback(
     [
         Output("lda-table", "data"),
         Output("lda-table", "columns"),
@@ -719,7 +719,7 @@ def update_lda_table(value_drop, time_values, n_selection):
     return (data, columns, lda_scatter_figure)
 
 
-@APP.callback(
+@app.callback(
     [
         Output("bank-wordcloud", "figure"),
         Output("frequency_figure", "figure"),
@@ -739,7 +739,7 @@ def update_wordcloud_plot(value_drop, time_values, n_selection):
     return (wordcloud, frequency_figure, treemap)
 
 
-@APP.callback(
+@app.callback(
     [Output("lda-table", "filter_query"), Output("lda-table-block", "style")],
     [Input("tsne-lda", "clickData")],
     [State("lda-table", "filter_query")],
@@ -764,7 +764,7 @@ def filter_table_on_scatter_click(tsne_click, current_filter):
     return ["", {"display": "none"}]
 
 
-@APP.callback(Output("bank-drop", "value"), [Input("bank-sample", "clickData")])
+@app.callback(Output("bank-drop", "value"), [Input("bank-sample", "clickData")])
 def update_bank_drop_on_click(value):
     """ TODO """
     if value is not None:
@@ -774,4 +774,4 @@ def update_bank_drop_on_click(value):
 
 
 if __name__ == "__main__":
-    APP.run_server(debug=True)
+    app.run_server(debug=True)
