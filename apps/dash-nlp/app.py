@@ -700,12 +700,11 @@ def update_bank_sample_plot(n_value, time_values):
     ],
     [
         Input("bank-drop", "value"),
-        Input("time-window-slider", "value"),
-        Input("n-selection-slider", "value"),
+        Input("time-window-slider", "value")
     ],
 )
 
-def update_lda_table(selected_bank, time_values, n_selection):
+def update_lda_table(selected_bank, time_values):
     """ Update LDA table and scatter plot based on precomputed data """
     
     if selected_bank in PRECOMPUTED_LDA:
@@ -713,10 +712,9 @@ def update_lda_table(selected_bank, time_values, n_selection):
         tsne_df = pd.read_json(PRECOMPUTED_LDA[selected_bank]["tsne_df"])
         df_top3words  = pd.read_json(PRECOMPUTED_LDA[selected_bank]["df_top3words"])
     else:
-        return [[], [], {}]
+        return [[], [], {}, {}]
 
     lda_scatter_figure = populate_lda_scatter(tsne_df, df_top3words, df_dominant_topic)
-
 
     columns = [{"name": i, "id": i} for i in df_dominant_topic.columns]
     data = df_dominant_topic.to_dict("records")
