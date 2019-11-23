@@ -27,6 +27,7 @@ ADDITIONAL_STOPWORDS = [
 for stopword in ADDITIONAL_STOPWORDS:
     STOPWORDS.add(stopword)
 
+
 def add_stopwords(selected_bank):
     """
     In order to make a more useful NLP-data based graphs, it helps to remove
@@ -52,7 +53,7 @@ def precompute_all_lda():
     counter = 0
     bank_names = GLOBAL_DF["Company"].value_counts().keys().tolist()
     results = {}
-    
+
     for bank in bank_names:
         try:
             print("crunching LDA for: ", bank)
@@ -75,8 +76,8 @@ def precompute_all_lda():
             df_top3words = df_top3words_stacked.groupby("topic_id").agg(", \n".join)
             df_top3words.reset_index(level=0, inplace=True)
 
-            #print(len(tsne_lda))
-            #print(len(df_dominant_topic))
+            # print(len(tsne_lda))
+            # print(len(df_dominant_topic))
             tsne_df = pd.DataFrame(
                 {
                     "tsne_x": tsne_lda[:, 0],
@@ -93,24 +94,24 @@ def precompute_all_lda():
                 if j < 3
             ]
 
-            df_top3words_stacked = pd.DataFrame(topic_top3words, columns=["topic_id", "words"])
+            df_top3words_stacked = pd.DataFrame(
+                topic_top3words, columns=["topic_id", "words"]
+            )
             df_top3words = df_top3words_stacked.groupby("topic_id").agg(", \n".join)
             df_top3words.reset_index(level=0, inplace=True)
 
-
             results[str(bank)] = {
-                    "df_top3words": df_top3words.to_json(),
-                    "tsne_df": tsne_df.to_json(),
-                    "df_dominant_topic": df_dominant_topic.to_json(),
-                }
-            
-        
+                "df_top3words": df_top3words.to_json(),
+                "tsne_df": tsne_df.to_json(),
+                "df_dominant_topic": df_dominant_topic.to_json(),
+            }
+
             counter += 1
         except:
             print("SOMETHING WENT HORRIBLY WRONG WITH BANK: ", bank)
             failed_banks.append(bank)
 
-    with open('data/precomputed.json', 'w+') as res_file:
+    with open("data/precomputed.json", "w+") as res_file:
         json.dump(results, res_file)
 
     print("DONE")

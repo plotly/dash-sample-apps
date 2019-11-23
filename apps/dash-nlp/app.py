@@ -28,8 +28,8 @@ EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 FILENAME = "data/customer_complaints_narrative_sample.csv"
 PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
 GLOBAL_DF = pd.read_csv(DATA_PATH.joinpath(FILENAME), header=0)
-with open('data/precomputed.json') as precomputed_file:
-        PRECOMPUTED_LDA = json.load(precomputed_file)
+with open("data/precomputed.json") as precomputed_file:
+    PRECOMPUTED_LDA = json.load(precomputed_file)
 
 """
 We are casting the whole column to datetime to make life easier in the rest of the code.
@@ -702,19 +702,17 @@ def update_bank_sample_plot(n_value, time_values):
         Output("tsne-lda", "figure"),
         Output("no-data-alert-lda", "style"),
     ],
-    [
-        Input("bank-drop", "value"),
-        Input("time-window-slider", "value")
-    ],
+    [Input("bank-drop", "value"), Input("time-window-slider", "value")],
 )
-
 def update_lda_table(selected_bank, time_values):
     """ Update LDA table and scatter plot based on precomputed data """
-    
+
     if selected_bank in PRECOMPUTED_LDA:
-        df_dominant_topic  = pd.read_json(PRECOMPUTED_LDA[selected_bank]["df_dominant_topic"])
+        df_dominant_topic = pd.read_json(
+            PRECOMPUTED_LDA[selected_bank]["df_dominant_topic"]
+        )
         tsne_df = pd.read_json(PRECOMPUTED_LDA[selected_bank]["tsne_df"])
-        df_top3words  = pd.read_json(PRECOMPUTED_LDA[selected_bank]["df_top3words"])
+        df_top3words = pd.read_json(PRECOMPUTED_LDA[selected_bank]["df_top3words"])
     else:
         return [[], [], {}, {}]
 
