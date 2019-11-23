@@ -497,6 +497,10 @@ LDA_PLOTS = [
                 "Click on a complaint point in the scatter to explore that specific complaint",
                 className="mb-0",
             ),
+            html.P(
+                "(not affected by sample size or time frame selections)",
+                style={"fontSize": 10, "font-weight": "lighter"},
+            ),
             LDA_PLOT,
             html.Hr(),
             LDA_TABLE,
