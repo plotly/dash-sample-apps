@@ -4,6 +4,7 @@ Module doc string
 """
 import pathlib
 import re
+import json
 from datetime import datetime
 import flask
 import dash
@@ -27,6 +28,8 @@ EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 FILENAME = "data/customer_complaints_narrative_sample.csv"
 PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
 GLOBAL_DF = pd.read_csv(DATA_PATH.joinpath(FILENAME), header=0)
+with open('data/precomputed.json') as precomputed_file:
+        PRECOMPUTED_LDA = json.load(precomputed_file)
 
 """
 We are casting the whole column to datetime to make life easier in the rest of the code.
@@ -224,27 +227,8 @@ def make_options_bank_drop(values):
     return ret
 
 
-def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
+def populate_lda_scatter(tsne_df, df_top3words, df_dominant_topic):
     """Calculates LDA and returns figure data you can jam into a dcc.Graph()"""
-    topic_top3words = [
-        (i, topic)
-        for i, topics in lda_model.show_topics(formatted=False)
-        for j, (topic, wt) in enumerate(topics)
-        if j < 3
-    ]
-
-    df_top3words_stacked = pd.DataFrame(topic_top3words, columns=["topic_id", "words"])
-    df_top3words = df_top3words_stacked.groupby("topic_id").agg(", \n".join)
-    df_top3words.reset_index(level=0, inplace=True)
-
-    tsne_df = pd.DataFrame(
-        {
-            "tsne_x": tsne_lda[:, 0],
-            "tsne_y": tsne_lda[:, 1],
-            "topic_num": topic_num,
-            "doc_num": df_dominant_topic["Document_No"],
-        }
-    )
     mycolors = np.array([color for name, color in mcolors.TABLEAU_COLORS.items()])
 
     # for each topic we create a separate trace
@@ -513,6 +497,10 @@ LDA_PLOTS = [
                 "Click on a complaint point in the scatter to explore that specific complaint",
                 className="mb-0",
             ),
+            html.P(
+                "(not affected by sample size or time frame selections)",
+                style={"fontSize": 10, "font-weight": "lighter"},
+            ),
             LDA_PLOT,
             html.Hr(),
             LDA_TABLE,
@@ -716,26 +704,21 @@ def update_bank_sample_plot(n_value, time_values):
     ],
     [
         Input("bank-drop", "value"),
-        Input("time-window-slider", "value"),
-        Input("n-selection-slider", "value"),
+        Input("time-window-slider", "value")
     ],
 )
-def update_lda_table(value_drop, time_values, n_selection):
-    """ Update LDA table with new data """
-    local_df = make_local_df(value_drop, time_values, n_selection)
-    # TODO this should be removed once precompiting is done but we'll keep it for now for
-    # compatability reasons
-    complaints_text = list(local_df["Consumer complaint narrative"].dropna().values)
-    if len(complaints_text) <= 10:  # we cannot do LDA on less than 11 complaints
-        return [[], [], {}, {"display": "block"}]
 
-    tsne_lda, lda_model, topic_num, df_dominant_topic = lda_analysis(
-        local_df, list(STOPWORDS)
-    )
+def update_lda_table(selected_bank, time_values):
+    """ Update LDA table and scatter plot based on precomputed data """
+    
+    if selected_bank in PRECOMPUTED_LDA:
+        df_dominant_topic  = pd.read_json(PRECOMPUTED_LDA[selected_bank]["df_dominant_topic"])
+        tsne_df = pd.read_json(PRECOMPUTED_LDA[selected_bank]["tsne_df"])
+        df_top3words  = pd.read_json(PRECOMPUTED_LDA[selected_bank]["df_top3words"])
+    else:
+        return [[], [], {}, {}]
 
-    lda_scatter_figure = populate_lda_scatter(
-        tsne_lda, lda_model, topic_num, df_dominant_topic
-    )
+    lda_scatter_figure = populate_lda_scatter(tsne_df, df_top3words, df_dominant_topic)
 
     columns = [{"name": i, "id": i} for i in df_dominant_topic.columns]
     data = df_dominant_topic.to_dict("records")
