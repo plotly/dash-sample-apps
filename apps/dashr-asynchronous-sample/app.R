@@ -70,7 +70,6 @@ header <- htmlDiv(
   )
 )
 
-
 app <- Dash$new()
 
 app$layout(htmlDiv(list(
@@ -543,8 +542,7 @@ app$callback(
   }
 )
 
-
-# Test Callbacks
+# Callbacks for worker output and 
 
 app$callback(
   output(id = 'worker-output', property = 'children'),
@@ -599,7 +597,6 @@ app$callback(
     }
   }
 )
-
 
 
 if(appName != "") {
