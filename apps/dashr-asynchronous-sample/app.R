@@ -70,6 +70,7 @@ header <- htmlDiv(
   )
 )
 
+
 app <- Dash$new()
 
 app$layout(htmlDiv(list(
@@ -223,8 +224,6 @@ task_1 <- function(n_clicks) {
       library(readr)
       library(rrq)
       
-      setwd("/home/hammadtheone/Documents/redis_test")
-      
       sample_data_frame <- data.frame(fread(file = "data/sample_RNA.csv",
                                             header = TRUE), row.names = 1)
       
@@ -302,8 +301,6 @@ task_2 <- function(n_clicks) {
       library(data.table)
       library(readr)
       library(rrq)
-      
-      setwd("/home/hammadtheone/Documents/redis_test")
       
       sample_data_frame <- data.frame(fread(file = "data/sample_RNA.csv",
                                             header = TRUE), row.names = 1)
@@ -542,7 +539,8 @@ app$callback(
   }
 )
 
-# Callbacks for worker output and 
+
+# Test Callbacks
 
 app$callback(
   output(id = 'worker-output', property = 'children'),
@@ -599,8 +597,11 @@ app$callback(
 )
 
 
+
+
 if(appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
   app$run_server(showcase = TRUE)
 }
+
