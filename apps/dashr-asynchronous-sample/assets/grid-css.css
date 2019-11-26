@@ -1,0 +1,110 @@
+html{
+  background-color: #0077A7;
+}
+
+body {
+    font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: black;
+}
+
+.container {
+  display: grid;
+  width: 100%;
+  height: 90vh;
+  grid-template-columns: 16.6% 16.6% 16.6% 16.6% 16.6% 16.6%;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+  background-color: #0077A7;
+}
+
+.item-a {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 4;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  margin: 13px;
+  border-radius: 7px;
+  background-color: white;
+  color: black;
+  overflow-y: scroll;
+}
+
+.item-a:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.item-b {
+  grid-column-start: 4;
+  grid-column-end: 7;
+  grid-row-start: 1;
+  grid-row-end: 6;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  margin: 13px;
+  border-radius: 7px;
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+}
+.item-b:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+#worker-output {
+  overflow-y: scroll;
+  height: 80%;
+  overflow-x: scroll;
+  width: 100%;
+  align-self: flex-end;
+}
+
+.item-c {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 4;
+  grid-row-end: 6;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  margin: 13px;
+  border-radius: 7px;
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+}
+.item-c:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+#worker-output {
+  height: 100%;
+  width: 100%;
+  border-color: #808080;
+  border-radius: 10px 10px 10px 10px;
+  border-style: solid;
+  background-color: #f5f5f5;
+}
+
+.buttons-container {
+
+}
+
+.hljs {
+    background: #f5f5f5;/* #FFFFFF; */
+}
+
+button {
+  margin:10px;
+  padding:10px;
+}
+
+@media screen and (max-width: 1150px) {
+  html {
+    font-size: 0.80rem;
+  }
+}
