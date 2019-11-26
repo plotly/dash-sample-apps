@@ -4,4 +4,4 @@ function updateScroll(){
 }
 
 
-setInterval(updateScroll,10000);
+setInterval(updateScroll,5000);

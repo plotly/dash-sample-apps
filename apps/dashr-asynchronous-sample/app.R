@@ -96,16 +96,24 @@ app$layout(htmlDiv(list(
         ), selected_style = list("borderTop" = "3px solid #0077A7", "borderBottom" = "3px solid #0077A7")),
         dccTab(label = "Controls", value = "tab-2", children=list(
           htmlDiv(list(
+            dccMarkdown("
+                  Queue up the tasks below by selecting the corresponding buttons. The tasks in this application are KNN clustering 
+                  using transcriptome or proteome data indexed with CITE-seq. You must have the Redis server configured with basic settings
+                  and running before proceeding.
+                  
+                  
+                  You can test that your Redis db is responding by typing `redis-cli PING` in your command line. 
+                  ", style = list("margin" = "10px")),
             htmlBr(),
             htmlButton(
               id = 'first-button',
               n_clicks = 0,
-              children = 'Start Task A'
+              children = 'RNA  Clustering'
             ),
             htmlButton(
               id = 'second-button',
               n_clicks = 0,
-              children = 'Start Task B'
+              children = 'Protein Clustering'
             ),
             htmlButton(
               id = 'worker-spawn',
@@ -115,6 +123,12 @@ app$layout(htmlDiv(list(
               id = 'generate-results',
               n_clicks = 0,
               children = "Generate Results"
+            ),
+            htmlButton(
+              id = 'clear-queue',
+              n_clicks = 0,
+              children = "Clear Redis Keys",
+              style = list('color' = '#8b0000')
             )
           ), className = 'buttons-container')
         ), selected_style = list("borderTop" = "3px solid #0077A7", "borderBottom" = "3px solid #0077A7"))
@@ -567,6 +581,22 @@ app$callback(
     return(list_options)
   }
 )
+
+
+# Callback to wipe the Redis keys, erasing the queue, all workers, and tasks.
+
+app$callback(
+  output(id = 'collection', property = 'data'),
+  params = list(
+    input(id = 'clear-queue', property = 'n_clicks')
+  ),
+  clear_queue <- function(n_clicks) {
+    if (n_clicks > 0) {
+      redux::hiredis()$FLUSHALL()
+    }
+  }
+)
+
 
 
 if(appName != "") {
