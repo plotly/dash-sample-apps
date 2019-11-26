@@ -369,7 +369,7 @@ task_2 <- function(n_clicks) {
 }
 )
 
-# Callbacks to update statuses of Tasks A and B and their indicator colors. 
+# Callbacks to update statuses of Tasks A and B
 
 app$callback(
   output(id = 'task-1-status', property = 'children'),
@@ -479,7 +479,7 @@ app$callback(
 app$callback(
   output(id = 'task-1-results', property = 'children'),
   params = list(
-    input(id = 'retrieve-results', property = 'n_clicks'),
+    input(id = 'generate-results', property = 'n_clicks'),
     input(id = 'task-1-store', property = 'data')
   ),
   output_results <- function(n_clicks, data) {
