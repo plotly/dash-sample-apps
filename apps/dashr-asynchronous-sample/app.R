@@ -19,6 +19,8 @@ library(data.table)
 library(readr)
 library(rrq)
 
+redux::hiredis()$FLUSHALL()
+
 # Load and subset sample data into usable format. Subsetting necessary or the server may crash.
 
 # sample_data_frame <- data.frame(fread(file = "data/sample_RNA.csv",
@@ -597,6 +599,7 @@ app$callback(
     }
   }
 )
+
 
 
 if(appName != "") {
