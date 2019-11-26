@@ -191,7 +191,8 @@ app$layout(htmlDiv(list(
     ),
     dccStore(id = 'task-1-store'),
     dccStore(id = 'task-2-store'),
-    dccStore(id = 'collection')
+    dccStore(id = 'collection'),
+    dccStore(id = 'collection-2')
   ), className = 'container')
 )))
 
@@ -586,7 +587,7 @@ app$callback(
 # Callback to wipe the Redis keys, erasing the queue, all workers, and tasks.
 
 app$callback(
-  output(id = 'collection', property = 'data'),
+  output(id = 'collection-2', property = 'data'),
   params = list(
     input(id = 'clear-queue', property = 'n_clicks')
   ),
@@ -596,7 +597,6 @@ app$callback(
     }
   }
 )
-
 
 
 if(appName != "") {
