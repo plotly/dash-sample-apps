@@ -498,7 +498,7 @@ LDA_PLOTS = [
                 className="mb-0",
             ),
             html.P(
-                "(not affected by sample size or time frame selections)",
+                "(not affected by sample size or time frame selection)",
                 style={"fontSize": 10, "font-weight": "lighter"},
             ),
             LDA_PLOT,
