@@ -581,7 +581,8 @@ TOP_BANKS_PLOT = [
                 ],
                 type="default",
             )
-        ]
+        ],
+        style={"marginTop": 0, "marginBottom": 0},
     ),
 ]
 
