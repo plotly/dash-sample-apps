@@ -54,7 +54,7 @@ def db_connect():
         connection = pymapd.connect(
             user=user, password=password, host=host, dbname=db_name
         )
-        # Check whether table is inside
+
         if table not in connection.get_tables():
             print(
                 "Table {} not found in this database, please load sample data.".format(
@@ -85,7 +85,7 @@ try:
     print(init_df.head(5))
 except Exception as e:
     print(
-        "Initial test query fails, check your Omnisci database and re-deploy this app"
+        "Initial test query failed, check your Omnisci database and re-deploy this app"
     )
 finally:
     if init_con is not None:
@@ -108,6 +108,9 @@ def generate_dest_choro(dd_select, start, end):
         state_col = "origin_state"
 
     choro_query = f"SELECT AVG(depdelay) AS avg_delay, {state_col} AS state FROM {table} WHERE dep_timestamp BETWEEN '{start_f}' AND '{end_f}' GROUP BY {state_col}"
+
+    # Create new connection in callback for querying from remote, this will prevent unexpected rollback exception
+    # caused by global db_connect()
 
     new_con = None
     try:
