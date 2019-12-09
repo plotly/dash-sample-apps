@@ -517,7 +517,7 @@ app.layout = html.Div(
                                         2008, 1, 7
                                     ),  # set maximum limit according to local casting
                                     initial_visible_month=dt(2008, 1, 1),
-                                    minimum_nights=1,
+                                    minimum_nights=3,
                                     display_format="MMM Do, YY",
                                     start_date=dt(2008, 1, 1),
                                     end_date=dt(2008, 1, 7),
