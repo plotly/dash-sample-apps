@@ -52,7 +52,7 @@ jobs:
                 continue
               fi
 
-              ./deploy "$APP"
+              ALLOW_DASHR=true CREATE_APP=true ./deploy "$APP"
               exit 0
             done
             echo "Deploy failed because of a branchname/appname mismatch. Exiting..."
@@ -87,7 +87,7 @@ jobs:
 
             for APP in $APPS_MODIFIED
             do
-              ALLOW_DASHR=false CREATE_APP=false ./deploy "$APP"
+              ./deploy "$APP"
             done
       - run:
           name: Push to production
