@@ -1,7 +1,2 @@
 # these apps are ignored for deployment
-dash-image-processing
-dash-mapd-demo
 dash-salesforce-crm
-dash-windstreaming
-dashr-alignment-viewer
-dashr-salesforce-crm
