@@ -46,12 +46,6 @@ jobs:
 
             for APP in $APPS_MODIFIED
             do
-              if [ "$APP" != "$CIRCLE_BRANCH" ]
-              then
-                echo "appname: $APP is not same as the branchname: $CIRCLE_BRANCH. Not deploying..."
-                continue
-              fi
-
               CREATE_APP=true ./deploy "$APP"
               exit 0
             done
@@ -89,10 +83,6 @@ jobs:
             do
               ./deploy "$APP"
             done
-      - run:
-          name: Push to production
-          command: |
-              git push --force git@github.com:plotly/dash-sample-apps master:production
 
 workflows:
   version: 2
@@ -105,7 +95,6 @@ workflows:
           filters:
             branches:
               ignore:
-              - production
               - master
       - deploy_to_gallery:
           requires:
