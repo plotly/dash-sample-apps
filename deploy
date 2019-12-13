@@ -34,6 +34,12 @@ log-exit() {
 }
 
 fn-check-env() {
+  declare APP="$1"
+
+  if grep -Fxq "$APP" "$SOURCE_DIR/.deployignore"; then
+    log-exit "App $APP is in the .deployignore file, skipping deploy"
+  fi
+
   if ! command -v "dds-client" >/dev/null; then
     log-fail "dds-client binary not found"
   fi
@@ -67,7 +73,7 @@ main() {
   local exit_code remote_sha
   trap "rm -rf '$tmp_shallow_clone' '$tmp_full_clone' >/dev/null" RETURN INT TERM EXIT
 
-  fn-check-env
+  fn-check-env "$APP"
 
   if [[ -z "$APP" ]]; then
     log-fail "No app name specified"
