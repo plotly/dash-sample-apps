@@ -109,7 +109,7 @@ main() {
     fi
   fi
 
-  if ! dds-client apps:list | grep -qE "^${APP}$"; then
+  if ! dds-client apps:exists --name "$APP" >/dev/null 2>&1; then
     log-info "exists: false"
     if [[ "$CREATE_APP" == "true" ]]; then
       log-warn "$APP not found, creating"
