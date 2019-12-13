@@ -150,6 +150,8 @@ main() {
   log-info "Copying updated app source"
   pushd "$app_dir" >/dev/null
   cp -Rfp * "$tmp_full_clone"
+  [[ -f .buildpacks ]] && cp -fp .buildpacks "$tmp_full_clone/.buildpacks"
+  [[ -f .gitignore ]] && cp -fp .gitignore "$tmp_full_clone/.gitignore"
   popd >/dev/null
 
   if [[ "$is_dashr" == false ]]; then
