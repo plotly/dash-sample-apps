@@ -79,6 +79,13 @@ main() {
 
   if [[ "$APP" =~ "dashr" ]]; then
     is_dashr=true
+    if [[ "$ALLOW_DASHR" != "true" ]]; then
+      log-exit "App $APP is a dashr app, skipping deploy"
+    fi
+  fi
+
+  if [[ ! -d "$app_dir/assets" ]]; then
+    log-fail "App $APP is missing the assets directory"
   fi
 
   log-header "Deploying $APP"

@@ -67,7 +67,7 @@ Contributing an app written with Dash for R is very similar to the steps outline
 3. The `Procfile` should contain 
 
 ```
-web: R -f /app/apps/"$DASH_APP_NAME"/app.R
+web: R -f /app/app.R
 ```
 
 4. Routing and request pathname prefixes should be set. One approach might be to include
@@ -86,12 +86,6 @@ at the head of your `app.R` file.
 
 ``
 app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
-``
-
-6. For convenience, it is probably easiest to set the working directory in `app.R` as well:
-
-``
-setwd(sprintf("/app/apps/%s", appName))
 ``
 
 ### Making changes to an existing app
@@ -117,7 +111,7 @@ branch. Once you have passed your code review, you can merge your PR.
 
 - **`Procfile`** gets run at root level for deployment
     - Make sure python working directory is at the app level
-    - Ex. `web: gunicorn --pythonpath apps/{DASH_APP_NAME} app:server`
+    - Ex. `web: gunicorn app:server`
 - **`requirements.txt`**
     - Install project dependecies in a virtual environment
 - **`runtime.txt`**
@@ -139,7 +133,7 @@ branch. Once you have passed your code review, you can merge your PR.
 
 #### Handle relative path
 
-Since deployment happens at the root level `/` and not at the app level (`/apps/{DASH_APP_NAME}`), we need to make sure our application is able to run at both levels for flexibility.
+Assets should never use a relative path, as this will fail when deployed to Dash Enterprise due to use of subdirectories for serving apps.
 
 Reading from assets and data folder
 ```Python
