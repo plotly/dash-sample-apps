@@ -1,4 +1,4 @@
-# Dash Sample Apps
+# Dash Sample Apps [![CircleCI](https://circleci.com/gh/plotly/dash-sample-apps.svg?style=svg)](https://circleci.com/gh/plotly/dash-sample-apps)
 
 This is a monorepo designed to host all of the apps that have been
 created for the Python Dash Gallery.
