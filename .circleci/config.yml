@@ -58,7 +58,7 @@ jobs:
 
             for APP in $APPS_MODIFIED
             do
-              CREATE_APP=true PATH="$HOME/bin:$PATH" ./deploy "$APP"
+              CREATE_APP=true DASH_ENTERPRISE_URL="$DASH_PLAYGROUND_ENTERPRISE_URL" DASH_ENTERPRISE_API_KEY="$DASH_PLAYGROUND_ENTERPRISE_API_KEY" PATH="$HOME/bin:$PATH" ./deploy "$APP"
             done
   deploy_to_gallery:
     docker:
@@ -102,7 +102,7 @@ jobs:
 
             for APP in $APPS_MODIFIED
             do
-               PATH="$HOME/bin:$PATH" ./deploy "$APP"
+              DASH_ENTERPRISE_URL="$DASH_PLAYGROUND_ENTERPRISE_URL" DASH_ENTERPRISE_API_KEY="$DASH_PLAYGROUND_ENTERPRISE_API_KEY" PATH="$HOME/bin:$PATH" ./deploy "$APP"
             done
 
 workflows:
