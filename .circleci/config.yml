@@ -30,7 +30,7 @@ jobs:
           command: printf '#!/bin/bash\necho username=$PLAYGROUND_DEPLOY_USERNAME\necho password=$PLAYGROUND_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
       - run:
           name: Set up git config
-          command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
+          command: git config --global credential.helper "/bin/bash /home/circleci/helper-script.sh"
       - run:
           name: Install curl
           command: |
@@ -74,7 +74,7 @@ jobs:
           command: printf '#!/bin/bash\necho username=$PLAYGROUND_DEPLOY_USERNAME\necho password=$PLAYGROUND_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
       - run:
           name: Set up git config
-          command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
+          command: git config --global credential.helper "/bin/bash /home/circleci/helper-script.sh"
       - run:
           name: Install curl
           command: |
