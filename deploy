@@ -123,7 +123,7 @@ main() {
     log-info "exists: true"
   fi
 
-  if ! git clone --depth 1 "$remote_url" "$tmp_shallow_clone" 2>/dev/null; then
+  if ! git clone --depth 1 "$remote_url" "$tmp_shallow_clone"; then
     log-fail "Unable to clone repository"
   fi
 
@@ -141,7 +141,7 @@ main() {
     git -C "$tmp_full_clone" remote add origin "$remote_url"
     force_push=true
   else
-    if ! git clone "$remote_url" "$tmp_full_clone" 2>/dev/null; then
+    if ! git clone "$remote_url" "$tmp_full_clone"; then
       log-fail "Unable to clone repository"
     fi
   fi
