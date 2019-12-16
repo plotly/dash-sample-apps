@@ -32,6 +32,17 @@ jobs:
           name: Set up git config
           command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
       - run:
+          name: Install curl
+          command: |
+            sudo apt update
+            sudo apt install -y -qq curl
+      - run:
+          name: Install dds-client
+          comamdn: |
+            curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.1.0/dds-client_0.1.0_linux_x86_64.tgz
+            tar xzf dds-client.tgz -C /usr/local/bin
+            chmod +x /usr/local/bin/dds-client
+      - run:
           name: Deploy
           command: |
             APPS_MODIFIED=$(git diff origin/master origin/$CIRCLE_BRANCH --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} } ' | sort -u)
@@ -41,36 +52,13 @@ jobs:
                   exit 0
             fi
 
+            git config --global user.email '<>' # Leave email blank
+            git config --global user.name "Circle MonoRepo Automatic Deployer"
+
             for APP in $APPS_MODIFIED
             do
-              if [ "$APP" == "$CIRCLE_BRANCH" ]
-              then
-                git config --global user.email '<>' # Leave email blank
-                git config --global user.name "Circle MonoRepo Automatic Deployer"
-                if [[ $APP =~ "dashr" ]]
-                then
-                  cp ~/dash-sample-apps/apps/"$APP"/Aptfile ~/dash-sample-apps/
-                  cp ~/dash-sample-apps/apps/"$APP"/Procfile ~/dash-sample-apps/
-                  cp ~/dash-sample-apps/apps/"$APP"/.buildpacks ~/dash-sample-apps/
-                  cp ~/dash-sample-apps/apps/"$APP"/init.R ~/dash-sample-apps/
-                  # app.json tries to call python predeploy, which is not needed for R apps:
-                  rm ~/dash-sample-apps/app.json
-                  git add . && git commit -a -m "Deployed commit: $CIRCLE_SHA1"
-                fi
-                if [ ! -d ~/dash-sample-apps/apps/"$APP"/assets/ ]
-                then
-                  echo "Deploy failed because there is no assets/ folder. Exiting..."
-                  exit 1
-                fi
-                git commit -m "Deployed commit: $CIRCLE_SHA1"
-                git push playground $CIRCLE_BRANCH:master --force
-                exit 0
-              else
-                echo "appname: $APP is not same as the branchname: $CIRCLE_BRANCH. Not deploying..."
-              fi
+              CREATE_APP=true ./deploy "$APP"
             done
-            echo "Deploy failed because of a branchname/appname mismatch. Exiting..."
-            exit 1
   deploy_to_gallery:
     docker:
       - image: circleci/python:3.6-stretch
@@ -87,28 +75,33 @@ jobs:
           name: Set up git config
           command: git config credential.helper "/bin/bash /home/circleci/helper-script.sh"
       - run:
+          name: Install curl
+          command: |
+            sudo apt update
+            sudo apt install -y -qq curl
+      - run:
+          name: Install dds-client
+          comamdn: |
+            curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.1.0/dds-client_0.1.0_linux_x86_64.tgz
+            tar xzf dds-client.tgz -C /usr/local/bin
+            chmod +x /usr/local/bin/dds-client
+      - run:
           name: Deploy
           command: |
             APPS_MODIFIED=$(ls apps | grep dash- | sort -u)
+            if [ -z "$APPS_MODIFIED" ]
+            then
+                  echo "No app change detected. Skipping the deploy.."
+                  exit 0
+            fi
+
+            git config --global user.email '<>' # Leave email blank
+            git config --global user.name "Circle MonoRepo Automatic Deployer"
+
             for APP in $APPS_MODIFIED
             do
-              if [[ $APP =~ "dashr" ]]
-              then
-                continue
-              fi
-              git config --global user.email '<>' # Leave email blank
-              git config --global user.name "Circle MonoRepo Automatic Deployer"
-              if [ -d ~/dash-sample-apps/apps/"$APP"/ ]
-              then
-                git commit -m "Deployed commit: $CIRCLE_SHA1"
-                git remote add $APP https://dash-playground.plotly.host/GIT/$APP
-                git push $APP master --force || echo "Deploy failed because there is no such app on Dash Gallery: $APP. Please use the web interface to create an app with this name. Continuing deployments..."
-              fi
+              ./deploy "$APP"
             done
-      - run:
-          name: Push to production
-          command: |
-              git push --force git@github.com:plotly/dash-sample-apps master:production
 
 workflows:
   version: 2
@@ -121,7 +114,6 @@ workflows:
           filters:
             branches:
               ignore:
-              - production
               - master
       - deploy_to_gallery:
           requires:
