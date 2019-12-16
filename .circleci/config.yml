@@ -38,7 +38,7 @@ jobs:
             sudo apt install -y -qq curl
       - run:
           name: Install dds-client
-          comamdn: |
+          command: |
             curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.1.0/dds-client_0.1.0_linux_x86_64.tgz
             tar xzf dds-client.tgz -C /usr/local/bin
             chmod +x /usr/local/bin/dds-client
@@ -81,7 +81,7 @@ jobs:
             sudo apt install -y -qq curl
       - run:
           name: Install dds-client
-          comamdn: |
+          command: |
             curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.1.0/dds-client_0.1.0_linux_x86_64.tgz
             tar xzf dds-client.tgz -C /usr/local/bin
             chmod +x /usr/local/bin/dds-client
