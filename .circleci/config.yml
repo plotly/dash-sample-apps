@@ -71,7 +71,7 @@ jobs:
           command: git remote add gallery https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
       - run:
           name: Create helper-script
-          command: printf '#!/bin/bash\necho username=$PLAYGROUND_DEPLOY_USERNAME\necho password=$PLAYGROUND_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
+          command: printf '#!/bin/bash\necho username=$GALLERY_DEPLOY_USERNAME\necho password=$GALLERY_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
       - run:
           name: Set up git config
           command: git config --global credential.helper "/bin/bash /home/circleci/helper-script.sh"
@@ -102,7 +102,7 @@ jobs:
 
             for APP in $APPS_MODIFIED
             do
-              DASH_ENTERPRISE_URL="$DASH_PLAYGROUND_ENTERPRISE_URL" DASH_ENTERPRISE_API_KEY="$DASH_PLAYGROUND_ENTERPRISE_API_KEY" PATH="$HOME/bin:$PATH" ./deploy "$APP"
+              DASH_ENTERPRISE_URL="$DASH_GALLERY_ENTERPRISE_URL" DASH_ENTERPRISE_API_KEY="$DASH_GALLERY_ENTERPRISE_API_KEY" PATH="$HOME/bin:$PATH" ./deploy "$APP"
             done
 
 workflows:
