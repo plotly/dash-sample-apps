@@ -40,8 +40,9 @@ jobs:
           name: Install dds-client
           command: |
             curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.1.0/dds-client_0.1.0_linux_x86_64.tgz
-            tar xzf dds-client.tgz -C /usr/local/bin
-            chmod +x /usr/local/bin/dds-client
+            mkdir $HOME/bin
+            tar xzf dds-client.tgz -C $HOME/bin
+            chmod +x $HOME/bin/dds-client
       - run:
           name: Deploy
           command: |
@@ -57,7 +58,7 @@ jobs:
 
             for APP in $APPS_MODIFIED
             do
-              CREATE_APP=true ./deploy "$APP"
+              CREATE_APP=true PATH="$HOME/bin:$PATH" ./deploy "$APP"
             done
   deploy_to_gallery:
     docker:
@@ -83,8 +84,9 @@ jobs:
           name: Install dds-client
           command: |
             curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.1.0/dds-client_0.1.0_linux_x86_64.tgz
-            tar xzf dds-client.tgz -C /usr/local/bin
-            chmod +x /usr/local/bin/dds-client
+            mkdir $HOME/bin
+            tar xzf dds-client.tgz -C $HOME/bin
+            chmod +x $HOME/bin/dds-client
       - run:
           name: Deploy
           command: |
@@ -100,7 +102,7 @@ jobs:
 
             for APP in $APPS_MODIFIED
             do
-              ./deploy "$APP"
+               PATH="$HOME/bin:$PATH" ./deploy "$APP"
             done
 
 workflows:
