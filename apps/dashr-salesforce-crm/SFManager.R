@@ -2,7 +2,6 @@
 
 library(devtools)
 library(salesforcer)
-setwd(sprintf("/app/apps/%s", appName))
 
 #we dont need to create the dict_to_df function because our outputs are already in df form. 
 

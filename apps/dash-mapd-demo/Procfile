@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath apps/dash-mapd-demo app:server
+web: gunicorn app:server
