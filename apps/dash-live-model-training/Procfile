@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath apps/dash-live-model-training app:server
+web: gunicorn app:server
