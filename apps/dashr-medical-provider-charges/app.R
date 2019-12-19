@@ -12,8 +12,6 @@ if (!appName == "") {
 
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-
-  setwd(sprintf("/app/apps/%s", appName))
 }
 
 # Plotly mapbox token
@@ -79,9 +77,6 @@ state_list <- names(state_map)
 dataList <- list()
 for (st in state_list){
   csv_path <- sprintf("data/processed/df_%s_lat_lon.csv", st)
-  if (basename(getwd()) != "dashr-medical-provider-charges"){
-    csv_path <- paste0("apps/dashr-medical-provider-charges", csv_path)
-  }
   dataList[[st]] <- fread(csv_path)
 }
 

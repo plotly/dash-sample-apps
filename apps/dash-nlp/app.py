@@ -4,6 +4,7 @@ Module doc string
 """
 import pathlib
 import re
+import json
 from datetime import datetime
 import flask
 import dash
@@ -25,8 +26,11 @@ from ldacomplaints import lda_analysis
 DATA_PATH = pathlib.Path(__file__).parent.resolve()
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 FILENAME = "data/customer_complaints_narrative_sample.csv"
+FILENAME_PRECOMPUTED = "data/precomputed.json"
 PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
 GLOBAL_DF = pd.read_csv(DATA_PATH.joinpath(FILENAME), header=0)
+with open(DATA_PATH.joinpath(FILENAME_PRECOMPUTED)) as precomputed_file:
+    PRECOMPUTED_LDA = json.load(precomputed_file)
 
 """
 We are casting the whole column to datetime to make life easier in the rest of the code.
@@ -112,8 +116,10 @@ def sample_data(dataframe, float_percent):
 
 
 def get_complaint_count_by_company(dataframe):
-    """ TODO """
+    """ Helper function to get complaint counts for unique banks """
     company_counts = dataframe["Company"].value_counts()
+    # we filter out all banks with less than 11 complaints for now
+    company_counts = company_counts[company_counts > 10]
     values = company_counts.keys().tolist()
     counts = company_counts.tolist()
     return values, counts
@@ -222,34 +228,13 @@ def make_options_bank_drop(values):
     return ret
 
 
-def populate_lda_scatter(tsne_lda, lda_model, topic_num, df_dominant_topic):
+def populate_lda_scatter(tsne_df, df_top3words, df_dominant_topic):
     """Calculates LDA and returns figure data you can jam into a dcc.Graph()"""
-    topic_top3words = [
-        (i, topic)
-        for i, topics in lda_model.show_topics(formatted=False)
-        for j, (topic, wt) in enumerate(topics)
-        if j < 3
-    ]
-
-    df_top3words_stacked = pd.DataFrame(topic_top3words, columns=["topic_id", "words"])
-    df_top3words = df_top3words_stacked.groupby("topic_id").agg(", \n".join)
-    df_top3words.reset_index(level=0, inplace=True)
-
-    tsne_df = pd.DataFrame(
-        {
-            "tsne_x": tsne_lda[:, 0],
-            "tsne_y": tsne_lda[:, 1],
-            "topic_num": topic_num,
-            "doc_num": df_dominant_topic["Document_No"],
-        }
-    )
     mycolors = np.array([color for name, color in mcolors.TABLEAU_COLORS.items()])
 
-    # Plot and embed in ipython notebook!
-    # for each topic create separate trace
+    # for each topic we create a separate trace
     traces = []
     for topic_id in df_top3words["topic_id"]:
-        # print('Topic: {} \nWords: {}'.format(idx, topic))
         tsne_df_f = tsne_df[tsne_df.topic_num == topic_id]
         cluster_name = ", ".join(
             df_top3words[df_top3words["topic_id"] == topic_id]["words"].to_list()
@@ -278,6 +263,10 @@ def plotly_wordcloud(data_frame):
     """A wonderful function that returns figure data for three equally
     wonderful plots: wordcloud, frequency histogram and treemap"""
     complaints_text = list(data_frame["Consumer complaint narrative"].dropna().values)
+
+    if len(complaints_text) < 1:
+        return {}, {}, {}
+
     ## join all documents in corpus
     text = " ".join(list(complaints_text))
 
@@ -497,11 +486,21 @@ LDA_TABLE = html.Div(
 
 LDA_PLOTS = [
     dbc.CardHeader(html.H5("Topic modelling using LDA")),
+    dbc.Alert(
+        "Not enough data to render LDA plots, please adjust the filters",
+        id="no-data-alert-lda",
+        color="warning",
+        style={"display": "none"},
+    ),
     dbc.CardBody(
         [
             html.P(
                 "Click on a complaint point in the scatter to explore that specific complaint",
                 className="mb-0",
+            ),
+            html.P(
+                "(not affected by sample size or time frame selection)",
+                style={"fontSize": 10, "font-weight": "lighter"},
             ),
             LDA_PLOT,
             html.Hr(),
@@ -511,6 +510,12 @@ LDA_PLOTS = [
 ]
 WORDCLOUD_PLOTS = [
     dbc.CardHeader(html.H5("Most frequently used words in complaints")),
+    dbc.Alert(
+        "Not enough data to render these plots, please adjust the filters",
+        id="no-data-alert",
+        color="warning",
+        style={"display": "none"},
+    ),
     dbc.CardBody(
         [
             dbc.Row(
@@ -566,10 +571,19 @@ TOP_BANKS_PLOT = [
         [
             dcc.Loading(
                 id="loading-banks-hist",
-                children=[dcc.Graph(id="bank-sample")],
+                children=[
+                    dbc.Alert(
+                        "Not enough data to render this plot, please adjust the filters",
+                        id="no-data-alert-bank",
+                        color="warning",
+                        style={"display": "none"},
+                    ),
+                    dcc.Graph(id="bank-sample"),
+                ],
                 type="default",
             )
-        ]
+        ],
+        style={"marginTop": 0, "marginBottom": 0},
     ),
 ]
 
@@ -589,16 +603,16 @@ BODY = dbc.Container(
 )
 
 
-SERVER = flask.Flask(__name__)
-APP = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], server=SERVER)
-APP.layout = html.Div(children=[NAVBAR, BODY])
+server = flask.Flask(__name__)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], server=server)
+app.layout = html.Div(children=[NAVBAR, BODY])
 
 """
 #  Callbacks
 """
 
 
-@APP.callback(
+@app.callback(
     [
         Output("time-window-slider", "marks"),
         Output("time-window-slider", "min"),
@@ -631,7 +645,7 @@ def populate_time_slider(value):
     )
 
 
-@APP.callback(
+@app.callback(
     Output("bank-drop", "options"),
     [Input("time-window-slider", "value"), Input("n-selection-slider", "value")],
 )
@@ -646,8 +660,8 @@ def populate_bank_dropdown(time_values, n_value):
     return make_options_bank_drop(bank_names)
 
 
-@APP.callback(
-    Output("bank-sample", "figure"),
+@app.callback(
+    [Output("bank-sample", "figure"), Output("no-data-alert-bank", "style")],
     [Input("n-selection-slider", "value"), Input("time-window-slider", "value")],
 )
 def update_bank_sample_plot(n_value, time_values):
@@ -656,7 +670,7 @@ def update_bank_sample_plot(n_value, time_values):
     print("\tn is:", n_value)
     print("\ttime_values is:", time_values)
     if time_values is None:
-        return {}
+        return [{}, {"display": "block"}]
     n_float = float(n_value / 100)
     bank_sample_count = 10
     local_df = sample_data(GLOBAL_DF, n_float)
@@ -680,50 +694,44 @@ def update_bank_sample_plot(n_value, time_values):
         "xaxis": {"showticklabels": False},
     }
     print("redrawing bank-sample...done")
-    return {"data": data, "layout": layout}
+    return [{"data": data, "layout": layout}, {"display": "none"}]
 
 
-@APP.callback(
+@app.callback(
     [
         Output("lda-table", "data"),
         Output("lda-table", "columns"),
         Output("tsne-lda", "figure"),
+        Output("no-data-alert-lda", "style"),
     ],
-    [
-        Input("bank-drop", "value"),
-        Input("time-window-slider", "value"),
-        Input("n-selection-slider", "value"),
-    ],
+    [Input("bank-drop", "value"), Input("time-window-slider", "value")],
 )
-def update_lda_table(value_drop, time_values, n_selection):
-    """ TODO """
-    local_df = make_local_df(value_drop, time_values, n_selection)
-    # TODO this should be removed but we'll keep it for now for
-    # compatability reasons
-    complaints_text = list(local_df["Consumer complaint narrative"].dropna().values)
-    if len(complaints_text) <= 10:  # we cannot do LDA on less than 11 complaints
-        return [[], [], {}]
+def update_lda_table(selected_bank, time_values):
+    """ Update LDA table and scatter plot based on precomputed data """
 
-    # HERE WE WILL READ FROM FILE INSTEAD AND FILTER ON DATE
-    tsne_lda, lda_model, topic_num, df_dominant_topic = lda_analysis(
-        local_df, list(STOPWORDS)
-    )
+    if selected_bank in PRECOMPUTED_LDA:
+        df_dominant_topic = pd.read_json(
+            PRECOMPUTED_LDA[selected_bank]["df_dominant_topic"]
+        )
+        tsne_df = pd.read_json(PRECOMPUTED_LDA[selected_bank]["tsne_df"])
+        df_top3words = pd.read_json(PRECOMPUTED_LDA[selected_bank]["df_top3words"])
+    else:
+        return [[], [], {}, {}]
 
-    lda_scatter_figure = populate_lda_scatter(
-        tsne_lda, lda_model, topic_num, df_dominant_topic
-    )
+    lda_scatter_figure = populate_lda_scatter(tsne_df, df_top3words, df_dominant_topic)
 
     columns = [{"name": i, "id": i} for i in df_dominant_topic.columns]
     data = df_dominant_topic.to_dict("records")
 
-    return (data, columns, lda_scatter_figure)
+    return (data, columns, lda_scatter_figure, {"display": "none"})
 
 
-@APP.callback(
+@app.callback(
     [
         Output("bank-wordcloud", "figure"),
         Output("frequency_figure", "figure"),
         Output("bank-treemap", "figure"),
+        Output("no-data-alert", "style"),
     ],
     [
         Input("bank-drop", "value"),
@@ -732,14 +740,17 @@ def update_lda_table(value_drop, time_values, n_selection):
     ],
 )
 def update_wordcloud_plot(value_drop, time_values, n_selection):
-    """ TODO"""
+    """ Callback to rerender wordcloud plot """
     local_df = make_local_df(value_drop, time_values, n_selection)
     wordcloud, frequency_figure, treemap = plotly_wordcloud(local_df)
+    alert_style = {"display": "none"}
+    if (wordcloud == {}) or (frequency_figure == {}) or (treemap == {}):
+        alert_style = {"display": "block"}
     print("redrawing bank-wordcloud...done")
-    return (wordcloud, frequency_figure, treemap)
+    return (wordcloud, frequency_figure, treemap, alert_style)
 
 
-@APP.callback(
+@app.callback(
     [Output("lda-table", "filter_query"), Output("lda-table-block", "style")],
     [Input("tsne-lda", "clickData")],
     [State("lda-table", "filter_query")],
@@ -758,13 +769,12 @@ def filter_table_on_scatter_click(tsne_click, current_filter):
             )
         else:
             filter_query = "{Document_No} eq " + str(selected_complaint)
-        # ({avf} < 12000) && ({avf} >= 10000)
         print("current_filter", current_filter)
         return (filter_query, {"display": "block"})
     return ["", {"display": "none"}]
 
 
-@APP.callback(Output("bank-drop", "value"), [Input("bank-sample", "clickData")])
+@app.callback(Output("bank-drop", "value"), [Input("bank-sample", "clickData")])
 def update_bank_drop_on_click(value):
     """ TODO """
     if value is not None:
@@ -774,4 +784,4 @@ def update_bank_drop_on_click(value):
 
 
 if __name__ == "__main__":
-    APP.run_server(debug=True)
+    app.run_server(debug=True)
