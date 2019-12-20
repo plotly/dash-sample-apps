@@ -2,11 +2,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import pandas as pd
 import plotly.graph_objs as go
-import numpy as np
-import random
-import pathlib
 
 from dash.dependencies import Input, Output
 from utils import *
@@ -288,15 +284,68 @@ app.layout = html.Div(
                 ),
                 dcc.Graph(id="phylogeny-graph", className="div-card", figure=fig),
                 dcc.Graph(id="map-graph", className="div-card", figure=fig_map_bubble),
-                dcc.Graph(
-                    id="histo-graph",
-                    className="div-card",
-                    # figure=fig_mumps,
-                ),
+                dcc.Graph(id="histo-graph", className="div-card"),
             ],
         ),
     ]
 )
+
+
+######################################### UPDATING FIGURES #########################################
+@app.callback(Output("output-container", "children"), [Input("d_virus-name", "value")])
+def _update_legend_gene(virus_name):
+    return 'You have selected "{}" virus'.format(virus_name)
+
+
+@app.callback(
+    Output("controls-container_mumps", "style"), [Input("d_virus-name", "value")]
+)
+def _update_mumps_option(virus_name):
+    if virus_name == "Mumps":
+        return {"display": "block"}
+    else:
+        return {"display": "none"}
+
+
+@app.callback(
+    Output("controls-container_dengue", "style"), [Input("d_virus-name", "value")]
+)
+def _update_dengue_option(virus_name):
+    if virus_name == "Dengue":
+        return {"display": "block"}
+    else:
+        return {"display": "none"}
+
+
+@app.callback(
+    Output("controls-container_lassa", "style"), [Input("d_virus-name", "value")]
+)
+def _update_lassa_option(virus_name):
+    if virus_name == "Lassa":
+        return {"display": "block"}
+    else:
+        return {"display": "none"}
+
+
+@app.callback(
+    Output("controls-container_avian", "style"), [Input("d_virus-name", "value")]
+)
+def _update_avian_option(virus_name):
+    if virus_name == "Avian":
+        return {"display": "block"}
+    else:
+        return {"display": "none"}
+
+
+@app.callback(
+    Output("controls-container_flu", "style"), [Input("d_virus-name", "value")]
+)
+def _update_flu_option(virus_name):
+    if virus_name == "Flu":
+        return {"display": "block"}
+    else:
+        return {"display": "none"}
+
 
 # Running the server
 if __name__ == "__main__":
