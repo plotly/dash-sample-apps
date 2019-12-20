@@ -209,7 +209,7 @@ def create_map_bubble_year(
             + str(min_date)
             + " and "
             + str(max_date),
-            margin=go.layout.Margin(l=0, r=0, b=0, t=35),
+            margin=dict(l=0, r=0, b=0, t=35),
             geo=dict(
                 showframe=False, showcoastlines=False, projection=dict(type="Mercator")
             ),
@@ -321,7 +321,7 @@ def create_curve_line(df, virus_name, min_date, max_date):
         xaxis=dict(title="Year"),
         yaxis=dict(title="Number of " + virus_name.title() + " virus"),
         legend=dict(overflowY="scroll"),
-        margin=go.layout.Margin(l=50, r=0, b=100, t=100),
+        margin=dict(l=50, r=0, b=100, t=100),
     )
 
     fig = dict(data=data, layout=layout)

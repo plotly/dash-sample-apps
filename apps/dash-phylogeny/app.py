@@ -89,10 +89,7 @@ app.layout = html.Div(
                 html.Div(
                     id="learn_more",
                     children=[
-                        html.Img(
-                            className="logo",
-                            src=app.get_asset_url("logo.png"),
-                        ),
+                        html.Img(className="logo", src=app.get_asset_url("logo.png")),
                         html.Button(className="btn", children=["Learn More"]),
                     ],
                 ),
@@ -115,7 +112,10 @@ app.layout = html.Div(
                                         dcc.Dropdown(
                                             id="d_virus-name",
                                             options=[
-                                                {"label": species[i], "value": species[i]}
+                                                {
+                                                    "label": species[i],
+                                                    "value": species[i],
+                                                }
                                                 for i in range(len(species))
                                             ],
                                             value="Measles",
@@ -138,7 +138,10 @@ app.layout = html.Div(
                                                                 dcc.Dropdown(
                                                                     id="d_mumps",
                                                                     options=[
-                                                                        {"label": i, "value": i}
+                                                                        {
+                                                                            "label": i,
+                                                                            "value": i,
+                                                                        }
                                                                         for i in [
                                                                             "global",
                                                                             "na",
@@ -155,7 +158,10 @@ app.layout = html.Div(
                                                                 dcc.Dropdown(
                                                                     id="d_dengue",
                                                                     options=[
-                                                                        {"label": i, "value": i}
+                                                                        {
+                                                                            "label": i,
+                                                                            "value": i,
+                                                                        }
                                                                         for i in [
                                                                             "all",
                                                                             "denv1",
@@ -175,8 +181,14 @@ app.layout = html.Div(
                                                                 dcc.Dropdown(
                                                                     id="d_lassa",
                                                                     options=[
-                                                                        {"label": i, "value": i}
-                                                                        for i in ["s", "l"]
+                                                                        {
+                                                                            "label": i,
+                                                                            "value": i,
+                                                                        }
+                                                                        for i in [
+                                                                            "s",
+                                                                            "l",
+                                                                        ]
                                                                     ],
                                                                     value="s",
                                                                 )
@@ -189,15 +201,23 @@ app.layout = html.Div(
                                                                 dcc.Dropdown(
                                                                     id="d_avian_opt1",
                                                                     options=[
-                                                                        {"label": i, "value": i}
-                                                                        for i in ["h7n9"]
+                                                                        {
+                                                                            "label": i,
+                                                                            "value": i,
+                                                                        }
+                                                                        for i in [
+                                                                            "h7n9"
+                                                                        ]
                                                                     ],
                                                                     value="h7n9",
                                                                 ),
                                                                 dcc.Dropdown(
                                                                     id="d_avian_opt2",
                                                                     options=[
-                                                                        {"label": i, "value": i}
+                                                                        {
+                                                                            "label": i,
+                                                                            "value": i,
+                                                                        }
                                                                         for i in [
                                                                             "ha",
                                                                             "mp",
@@ -220,7 +240,10 @@ app.layout = html.Div(
                                                                 dcc.Dropdown(
                                                                     id="d_flu_opt1",
                                                                     options=[
-                                                                        {"label": i, "value": i}
+                                                                        {
+                                                                            "label": i,
+                                                                            "value": i,
+                                                                        }
                                                                         for i in [
                                                                             "h3n2",
                                                                             "h1n1pdm",
@@ -233,15 +256,24 @@ app.layout = html.Div(
                                                                 dcc.Dropdown(
                                                                     id="d_flu_opt2",
                                                                     options=[
-                                                                        {"label": i, "value": i}
-                                                                        for i in ["ha", "na"]
+                                                                        {
+                                                                            "label": i,
+                                                                            "value": i,
+                                                                        }
+                                                                        for i in [
+                                                                            "ha",
+                                                                            "na",
+                                                                        ]
                                                                     ],
                                                                     value="ha",
                                                                 ),
                                                                 dcc.Dropdown(
                                                                     id="d_flu_opt3",
                                                                     options=[
-                                                                        {"label": i, "value": i}
+                                                                        {
+                                                                            "label": i,
+                                                                            "value": i,
+                                                                        }
                                                                         for i in [
                                                                             "2y",
                                                                             "3y",
@@ -260,9 +292,8 @@ app.layout = html.Div(
                                         )
                                     ],
                                 ),
-                            ]
+                            ],
                         ),
-                        
                         html.Div(
                             className="six columns",
                             children=[
@@ -283,28 +314,13 @@ app.layout = html.Div(
                                 ),
                             ],
                         ),
-                        
                     ],
                 ),
-                
                 dcc.Graph(
-                    id="curve-line-graph", 
-                    className="div-card",
-                    figure=fig_curve_line,
+                    id="curve-line-graph", className="div-card", figure=fig_curve_line
                 ),
-
-                dcc.Graph(
-                    id="phylogeny-graph",
-                    className="div-card",
-                    figure=fig,
-                ),
-
-                dcc.Graph(
-                    id="map-graph", 
-                    className="div-card",
-                    figure=fig_map_bubble,
-                ),
-
+                dcc.Graph(id="phylogeny-graph", className="div-card", figure=fig),
+                dcc.Graph(id="map-graph", className="div-card", figure=fig_map_bubble),
                 dcc.Graph(
                     id="histo-graph",
                     className="div-card",
@@ -750,7 +766,6 @@ def _update_histo(
             ),
         },
     }
-
 
 
 # Running the server
