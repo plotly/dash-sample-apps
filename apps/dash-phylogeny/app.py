@@ -361,7 +361,7 @@ def _update_flu_option(virus_name):
         Input("d_flu_opt3", "value"),
     ],
 )
-def _update_pĥylogentic_tree(
+def _update_phylogentic_tree(
     virus_name,
     mumps,
     dengue,
