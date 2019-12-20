@@ -359,9 +359,9 @@ def _update_flu_option(virus_name):
         Input("d_flu_opt1", "value"),
         Input("d_flu_opt2", "value"),
         Input("d_flu_opt3", "value"),
-    ],
+    ]
 )
-def _update_phylogentic_tree(
+def update_phylogeny_tree(
     virus_name,
     mumps,
     dengue,
@@ -372,78 +372,79 @@ def _update_phylogentic_tree(
     flu_opt2,
     flu_opt3,
 ):
-    virus_name = virus_name.lower()
-    ord_by_elt = "Country"
-    if virus_name == "ebola" or virus_name == "zika" or virus_name == "measles":
-        data_virus_info = {
-            "virus_name": virus_name,
-            "level1": "",
-            "level2": "",
-            "level3": "",
-        }
-        tree_file_filtred, metadata_file_filtred, metadata_file_stat_filtred = create_paths_file(
-            virus_name, level1="", level2="", level3=""
-        )
-    elif virus_name == "mumps":
-        data_virus_info = {
-            "virus_name": virus_name,
-            "level1": mumps,
-            "level2": "",
-            "level3": "",
-        }
-        tree_file_filtred, metadata_file_filtred, metadata_file_stat_filtred = create_paths_file(
-            virus_name, level1=mumps, level2="", level3=""
-        )
-    elif virus_name == "dengue":
-        data_virus_info = {
-            "virus_name": virus_name,
-            "level1": dengue,
-            "level2": "",
-            "level3": "",
-        }
-        tree_file_filtred, metadata_file_filtred, metadata_file_stat = create_paths_file(
-            virus_name, level1=dengue, level2="", level3=""
-        )
-    elif virus_name == "lassa":
-        data_virus_info = {
-            "virus_name": virus_name,
-            "level1": lassa,
-            "level2": "",
-            "level3": "",
-        }
-        tree_file_filtred, metadata_file_filtred, metadata_file_stat_filtred = create_paths_file(
-            virus_name, level1=lassa, level2="", level3=""
-        )
-    elif virus_name == "avian":
-        data_virus_info = {
-            "virus_name": virus_name,
-            "level1": avian_opt1,
-            "level2": avian_opt2,
-            "level3": "",
-        }
-        tree_file_filtred, metadata_file_filtred, metadata_file_stat_filtred = create_paths_file(
-            virus_name, level1=avian_opt1, level2=avian_opt2, level3=""
-        )
-    elif virus_name == "flu":
-        data_virus_info = {
-            "virus_name": virus_name,
-            "level1": flu_opt1,
-            "level2": flu_opt2,
-            "level3": flu_opt3,
-        }
-        tree_file_filtred, metadata_file_filtred, metadata_file_stat_filtred = create_paths_file(
-            virus_name, level1=flu_opt1, level2=flu_opt2, level3=flu_opt3
-        )
+    # virus_name = virus_name.lower()
+    # ord_by_elt = "Country"
+    # if virus_name == "ebola" or virus_name == "zika" or virus_name == "measles":
+    #     data_virus_info = {
+    #         "virus_name": virus_name,
+    #         "level1": "",
+    #         "level2": "",
+    #         "level3": "",
+    #     }
+    #     tree_file_filtred, metadata_file_filtred, metadata_file_stat_filtred = create_paths_file(
+    #         virus_name, level1="", level2="", level3=""
+    #     )
+    # elif virus_name == "mumps":
+    #     data_virus_info = {
+    #         "virus_name": virus_name,
+    #         "level1": mumps,
+    #         "level2": "",
+    #         "level3": "",
+    #     }
+    #     tree_file_filtred, metadata_file_filtred, metadata_file_stat_filtred = create_paths_file(
+    #         virus_name, level1=mumps, level2="", level3=""
+    #     )
+    # elif virus_name == "dengue":
+    #     data_virus_info = {
+    #         "virus_name": virus_name,
+    #         "level1": dengue,
+    #         "level2": "",
+    #         "level3": "",
+    #     }
+    #     tree_file_filtred, metadata_file_filtred, metadata_file_stat = create_paths_file(
+    #         virus_name, level1=dengue, level2="", level3=""
+    #     )
+    # elif virus_name == "lassa":
+    #     data_virus_info = {
+    #         "virus_name": virus_name,
+    #         "level1": lassa,
+    #         "level2": "",
+    #         "level3": "",
+    #     }
+    #     tree_file_filtred, metadata_file_filtred, metadata_file_stat_filtred = create_paths_file(
+    #         virus_name, level1=lassa, level2="", level3=""
+    #     )
+    # elif virus_name == "avian":
+    #     data_virus_info = {
+    #         "virus_name": virus_name,
+    #         "level1": avian_opt1,
+    #         "level2": avian_opt2,
+    #         "level3": "",
+    #     }
+    #     tree_file_filtred, metadata_file_filtred, metadata_file_stat_filtred = create_paths_file(
+    #         virus_name, level1=avian_opt1, level2=avian_opt2, level3=""
+    #     )
+    # elif virus_name == "flu":
+    #     data_virus_info = {
+    #         "virus_name": virus_name,
+    #         "level1": flu_opt1,
+    #         "level2": flu_opt2,
+    #         "level3": flu_opt3,
+    #     }
+    #     tree_file_filtred, metadata_file_filtred, metadata_file_stat_filtred = create_paths_file(
+    #         virus_name, level1=flu_opt1, level2=flu_opt2, level3=flu_opt3
+    #     )
 
-    if tree_file_filtred in tree_fig:
-        fig = tree_fig[tree_file_filtred]
-    else:
-        if ord_by_elt == "Country" or ord_by_elt == "Division" or ord_by_elt == "Date":
-            fig = create_tree(
-                virus_name, tree_file_filtred, metadata_file_filtred, ord_by_elt
-            )
+    # if tree_file_filtred in tree_fig:
+    #     fig = tree_fig[tree_file_filtred]
+    # else:
+    #     if ord_by_elt == "Country" or ord_by_elt == "Division" or ord_by_elt == "Date":
+    #         fig = create_tree(
+    #             virus_name, tree_file_filtred, metadata_file_filtred, ord_by_elt
+    #         )
+    #
+    #     tree_fig[tree_file_filtred] = fig
 
-        tree_fig[tree_file_filtred] = fig
     return fig
 
 
