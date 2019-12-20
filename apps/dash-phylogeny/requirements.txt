@@ -3,6 +3,3 @@ dash==0.39.0
 gunicorn==19.9.0
 numpy==1.17.4
 pandas==0.24.2
-dash-core-components==0.44.0
-dash-html-components==0.14.0
-dash-renderer==0.44.0
