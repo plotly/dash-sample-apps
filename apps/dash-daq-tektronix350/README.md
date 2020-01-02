@@ -40,7 +40,7 @@ pip install -r requirements.txt
 Run the app:
 
 ```
-python app.py
+python app_mock.py
 ```
 You can run the app on your browser at http://127.0.0.1:8050
 
