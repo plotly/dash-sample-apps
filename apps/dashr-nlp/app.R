@@ -9,12 +9,6 @@ source("datasource.R")
 source("word_cloud.R")
 
 
-option_indicator <- lapply(available_indicators,
-                           function(available_indicator) {
-                             list(label = available_indicator,
-                                  value = available_indicator)
-                           })
-
 
 dbcCard <- function(title, widget) {
   return(
@@ -145,7 +139,7 @@ LEFT_COLUMN <-
       ),
       dccDropdown(
         id = 'bank-selection',
-        options = option_indicator
+        options = list()
       ),
 
       htmlLabel("Select time frame", className = "lead"),
@@ -403,6 +397,29 @@ app$callback(
   }
 )
 
+app$callback(
+  output('bank-selection', 'options'),
+  params = list(
+    input('n-selection-slider', 'value')
+  ),
+  function(n_selected) {
+    sample <- get_sample_data(n_selected)
+    top10 <- top_N(sample, 10)
+
+    available_indicators <- unique(top10$company)
+
+    option_indicator <- lapply(available_indicators,
+                           function(available_indicator) {
+                             list(label = available_indicator,
+                                  value = available_indicator)
+                           })
+
+
+    return(
+      option_indicator
+    )
+  }
+)
 
 
 app$callback(

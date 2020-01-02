@@ -11,8 +11,6 @@ DATASOURCE$date <- as.Date(DATASOURCE$date, "%m/%d/%Y")
 # Convert datetime objects to pythonish timestamps (integer seconds)
 DATASOURCE$date = as.numeric(as.POSIXct(DATASOURCE$date))
 
-available_indicators <- unique(DATASOURCE$company)
-
 
 
 top_N <- function(df, N) {
