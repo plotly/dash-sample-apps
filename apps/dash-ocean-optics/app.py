@@ -119,127 +119,159 @@ controls.append(light_sources)
 
 
 page_layout = [
-    html.Div([
-
-        html.Div([
-            html.Img(src=app.get_asset_url("dash-daq-logo.png"), className="logo"),
-            html.Div([
-                html.Label("Int. Time (μs)"),
-                dcc.Input(
-                    id="integration-timetimes",
-                    type="number",
-                    max=spec.int_time_max(),
-                    min=spec.int_time_min(),
-                    size="150",
-                    value=spec.int_time_min(),
-                    className="control__dropdowns"
-                )  
-            ], className="control"),
-            html.Div([
-                html.Label("Number of Scans"),
-                dcc.Input(
-                    id="number-of-snansss",
-                    type="number",
-                    max="100",
-                    min="1",
-                    size="150",
-                    value="1",
-                    className="control__dropdowns"
-                )  
-            ], className="control"),
-            html.Div([
-                html.Div([
-                    daq.BooleanSwitch(
-                        label="Strobe",
-                        id="my-daq-booleanswitch",
-                        color="#565656",
-                        on=True
-                    )  
-                ]),
-                html.Div([
-                    html.Label("Strobe Pd. (μs)"),
-                    dcc.Input(
-                        id="number-of-snansssss",
-                        type="number",
-                        max="100",
-                        min="1",
-                        size="150",
-                        value="1",
-                        className="control__dropdowns"
-                    ) 
-                ]),     
-            ], className="strobe"),
-            html.Div([
-                html.Label("Light Source"),
-                dcc.Dropdown(
-                    id="light-source-inputt",
-                    options=spec.light_sources(),
-                    placeholder="Select light source",
-                    value="l2" if DEMO else "",
-                )
-            ], className="control"),
-            html.Div([
-                html.Div([
-                    html.Label("Light Intensity"),
-                    daq.Knob(
-                            id="light-intensity-knob",
-                            size=110,
-                            color="#565656",
-                            value=0,
-                        )
-                    ],
-                    id="light-intensity-knob-container",
-                ),
-            ], className="control"),
-                html.Div(
-                id="controls",
-                title="All of the spectrometer parameters that can be changed.",
-                children=[ctrl.create_ctrl_div(True) for ctrl in controls],
-            ),
-            html.Div([
-                html.Div([
-                    html.Label("Autoscale Plot"),
-                ]),
-                html.Div([
-                        daq.BooleanSwitch(
-                            id="my-daq-booleanswitchsss",
-                            color="#565656",
-                            on=True
-                        ),
-                        
-                    ],
-                ) 
-            ], className="control autoscale"),
-            html.Div([
-                html.Button("update", id="submit-buttossn")
-            ], className="control"),
+    html.Div(
+        [
             html.Div(
-                id="submit-status",
-                title="Contains information about the success or failure of your \
-                commands.",
-                children=[""],
-            ),
-        ], className="one-third column left__section"),
-
-        html.Div([
-            html.Div(
-                id="graph-container",
-                children=[
+                [
+                    html.Img(
+                        src=app.get_asset_url("dash-daq-logo.png"), className="logo"
+                    ),
                     html.Div(
-                        children=[
-                            html.Div(id="graph-title", children=["ocean optics"]),
-                            dcc.Graph(id="spec-readings", animate=True),
-                            dcc.Interval(
-                                id="spec-reading-interval",
-                                interval=1 * 1000,
-                                n_intervals=0,
+                        [
+                            html.Label("Int. Time (μs)"),
+                            dcc.Input(
+                                id="integration-timetimes",
+                                type="number",
+                                max=spec.int_time_max(),
+                                min=spec.int_time_min(),
+                                size="150",
+                                value=spec.int_time_min(),
+                                className="control__dropdowns",
                             ),
-                        ]
-                    )
+                        ],
+                        className="control",
+                    ),
+                    html.Div(
+                        [
+                            html.Label("Number of Scans"),
+                            dcc.Input(
+                                id="number-of-snansss",
+                                type="number",
+                                max="100",
+                                min="1",
+                                size="150",
+                                value="1",
+                                className="control__dropdowns",
+                            ),
+                        ],
+                        className="control",
+                    ),
+                    html.Div(
+                        [
+                            html.Div(
+                                [
+                                    daq.BooleanSwitch(
+                                        label="Strobe",
+                                        id="my-daq-booleanswitch",
+                                        color="#565656",
+                                        on=True,
+                                    )
+                                ]
+                            ),
+                            html.Div(
+                                [
+                                    html.Label("Strobe Pd. (μs)"),
+                                    dcc.Input(
+                                        id="number-of-snansssss",
+                                        type="number",
+                                        max="100",
+                                        min="1",
+                                        size="150",
+                                        value="1",
+                                        className="control__dropdowns",
+                                    ),
+                                ]
+                            ),
+                        ],
+                        className="strobe",
+                    ),
+                    html.Div(
+                        [
+                            html.Label("Light Source"),
+                            dcc.Dropdown(
+                                id="light-source-inputt",
+                                options=spec.light_sources(),
+                                placeholder="Select light source",
+                                value="l2" if DEMO else "",
+                            ),
+                        ],
+                        className="control",
+                    ),
+                    html.Div(
+                        [
+                            html.Div(
+                                [
+                                    html.Label("Light Intensity"),
+                                    daq.Knob(
+                                        id="light-intensity-knob",
+                                        size=110,
+                                        color="#565656",
+                                        value=0,
+                                    ),
+                                ],
+                                id="light-intensity-knob-container",
+                            ),
+                        ],
+                        className="control",
+                    ),
+                    html.Div(
+                        id="controls",
+                        title="All of the spectrometer parameters that can be changed.",
+                        children=[ctrl.create_ctrl_div(True) for ctrl in controls],
+                    ),
+                    html.Div(
+                        [
+                            html.Div([html.Label("Autoscale Plot"),]),
+                            html.Div(
+                                [
+                                    daq.BooleanSwitch(
+                                        id="my-daq-booleanswitchsss",
+                                        color="#565656",
+                                        on=True,
+                                    ),
+                                ],
+                            ),
+                        ],
+                        className="control autoscale",
+                    ),
+                    html.Div(
+                        [html.Button("update", id="submit-buttossn")],
+                        className="control",
+                    ),
+                    html.Div(
+                        id="submit-status",
+                        title="Contains information about the success or failure of your \
+                commands.",
+                        children=[""],
+                    ),
                 ],
+                className="one-third column left__section",
             ),
-        ], className="two-thirds column right__section"),
-    ]),
+            html.Div(
+                [
+                    html.Div(
+                        id="graph-container",
+                        children=[
+                            html.Div(
+                                children=[
+                                    html.Div(
+                                        id="graph-title", children=["ocean optics"]
+                                    ),
+                                    dcc.Graph(id="spec-readings", animate=True),
+                                    dcc.Interval(
+                                        id="spec-reading-interval",
+                                        interval=1 * 1000,
+                                        n_intervals=0,
+                                    ),
+                                ]
+                            )
+                        ],
+                    ),
+                ],
+                className="two-thirds column right__section",
+            ),
+        ]
+    ),
     html.Div(
         id="page",
         children=[
@@ -264,7 +296,6 @@ page_layout = [
             #     ],
             # ),
             # plot
-
             # power button
             html.Div(
                 id="power-button-container",
@@ -326,7 +357,6 @@ page_layout = [
                         ],
                     ),
                     # displays whether the parameters were successfully changed
-
                 ],
             ),
             # all controls
@@ -372,7 +402,7 @@ page_layout = [
                 ],
             ),
         ],
-    )
+    ),
 ]
 
 app.layout = html.Div(id="main", children=page_layout)
