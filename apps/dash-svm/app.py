@@ -11,8 +11,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import datasets
 from sklearn.svm import SVC
 
-drc = importlib.import_module("apps.dash-svm.utils.dash_reusable_components")
-figs = importlib.import_module("apps.dash-svm.utils.figures")
+import utils.dash_reusable_components as drc
+import utils.figures as figs
 
 app = dash.Dash(
     __name__,
