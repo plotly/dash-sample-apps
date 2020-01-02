@@ -204,8 +204,8 @@ get_tabs <- function(fig_treemap, fig_wordcloud) {
       className = "row",
       children = list(
         htmlDiv(
-          id = 'Treemap',
-          children = dbcCard("Treemap", fig_treemap),
+          id = 'wordfreq',
+          children = dbcCard("Word frequency", fig_treemap),
           className = "col-md-6"
         ),
         htmlDiv(
@@ -229,6 +229,9 @@ get_words_histogram <- function (sample_pct, company, after, before) {
 # TODO - move to a separate file
 words_histogram <- function(df) {
   # Returns a graph for words frequency
+
+  df <- df[1:25,]
+
   f <- dccGraph(figure = list(
     data = list(
       list(
