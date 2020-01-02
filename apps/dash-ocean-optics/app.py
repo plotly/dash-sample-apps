@@ -19,7 +19,7 @@ from dash.dependencies import Input, Output, State
 import DashOceanOpticsSpectrometer as doos
 from DashOceanOpticsSpectrometer import Control
 
-DEMO = False
+# DEMO = False
 
 # lock for modifying information about spectrometer
 spec_lock = Lock()
@@ -29,17 +29,16 @@ comm_lock = Lock()
 # initialize spec
 spec = doos.DashOceanOpticsSpectrometer(spec_lock, comm_lock)
 
-# demo or actual
-if ("DASH_PATH_ROUTING" in os.environ) or (
-    len(sys.argv) == 2 and sys.argv[1] == "demo"
-):
-    spec = doos.DemoSpectrometer(spec_lock, comm_lock)
-    DEMO = True
-else:
-    spec = doos.PhysicalSpectrometer(spec_lock, comm_lock)
+# # demo or actual
+# if ("DASH_PATH_ROUTING" in os.environ) or (
+#         len(sys.argv) == 2 and sys.argv[1] == "demo"
+# ):
+spec = doos.DemoSpectrometer(spec_lock, comm_lock)
+DEMO = True
+# else:
+#     spec = doos.PhysicalSpectrometer(spec_lock, comm_lock)
 
 spec.assign_spec()
-
 
 app = dash.Dash()
 server = app.server
@@ -62,6 +61,7 @@ int_time = Control(
     "NumericInput",
     {
         "id": "integration-time-input",
+        "className": "control__dropdowns",
         "max": spec.int_time_max(),
         "min": spec.int_time_min(),
         "size": 150,
@@ -117,7 +117,6 @@ light_sources = Control(
 )
 controls.append(light_sources)
 
-
 page_layout = [
     html.Div(
         [
@@ -125,21 +124,6 @@ page_layout = [
                 [
                     html.Img(
                         src=app.get_asset_url("dash-daq-logo.png"), className="logo"
-                    ),
-                    html.Div(
-                        [
-                            html.Label("Int. Time (μs)"),
-                            dcc.Input(
-                                id="integration-timetimes",
-                                type="number",
-                                max=spec.int_time_max(),
-                                min=spec.int_time_min(),
-                                size="150",
-                                value=spec.int_time_min(),
-                                className="control__dropdowns",
-                            ),
-                        ],
-                        className="control",
                     ),
                     html.Div(
                         [
@@ -221,7 +205,7 @@ page_layout = [
                     ),
                     html.Div(
                         [
-                            html.Div([html.Label("Autoscale Plot"),]),
+                            html.Div([html.Label("Autoscale Plot"), ]),
                             html.Div(
                                 [
                                     daq.BooleanSwitch(
@@ -260,7 +244,7 @@ page_layout = [
                                     dcc.Graph(id="spec-readings", animate=True),
                                     dcc.Interval(
                                         id="spec-reading-interval",
-                                        interval=1 * 1000,
+                                        interval=3 * 1000,  # change from 1 sec to 3 seconds
                                         n_intervals=0,
                                     ),
                                 ]
@@ -275,26 +259,6 @@ page_layout = [
     html.Div(
         id="page",
         children=[
-            # banner
-            # html.Div(
-            #     id="logo",
-            #     title="Dash DAQ by Plotly",
-            #     style={
-            #         "position": "absolute",
-            #         "left": "10px",
-            #         "top": "10px",
-            #         "zIndex": 100,
-            #     },
-            #     children=[
-            #         html.A(
-            #             html.Img(
-            #                 src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/excel/dash-daq/dash-daq-logo-by-plotly-stripe+copy.png",
-            #                 style={"height": "65px"},
-            #             ),
-            #             href="http://www.dashdaq.io",
-            #         )
-            #     ],
-            # ),
             # plot
             # power button
             html.Div(
@@ -480,10 +444,9 @@ def preserve_set_light_intensity(intensity, ls, pwr):
     Output("submit-status", "children"),
     [Input("submit-button", "n_clicks")],
     state=[State(ctrl.component_attr["id"], ctrl.val_string()) for ctrl in controls]
-    + [State("power-button", "on")],
+          + [State("power-button", "on")],
 )
 def update_spec_params(n_clicks, *args):
-
     # don't return anything if the device is off
     if not args[-1]:
         return [
@@ -539,7 +502,6 @@ def update_spec_params(n_clicks, *args):
     inputs=[Input("spec-reading-interval", "n_intervals")],
 )
 def update_plot(on, auto_range, _):
-
     traces = []
     wavelengths = []
     intensities = []
