@@ -57,7 +57,7 @@ controls = []
 # integration time, microseconds
 int_time = Control(
     "integration-time",
-    "int. time (μs)",
+    "Integration Time (μs)",
     "NumericInput",
     {
         "id": "integration-time-input",
@@ -73,18 +73,30 @@ controls.append(int_time)
 # scans to average over
 nscans_avg = Control(
     "nscans-to-average",
-    "number of scans",
+    "Number of Scans",
     "NumericInput",
-    {"id": "nscans-to-average-input", "max": 100, "min": 1, "size": 150, "value": 1},
+    {
+        "id": "nscans-to-average-input",
+        "className": "control__dropdowns",
+        "max": 100,
+        "min": 1,
+        "size": 150,
+        "value": 1,
+    },
 )
 controls.append(nscans_avg)
 
 # strobe
 strobe_enable = Control(
     "continuous-strobe-toggle",
-    "strobe",
+    "Strobe",
     "BooleanSwitch",
-    {"id": "continuous-strobe-toggle-input", "color": colors["accent"], "on": False},
+    {
+        "id": "continuous-strobe-toggle-input",
+        "className": "control__dropdowns",
+        "color": colors["accent"],
+        "on": False,
+    },
 )
 controls.append(strobe_enable)
 
@@ -95,6 +107,7 @@ strobe_period = Control(
     "NumericInput",
     {
         "id": "continuous-strobe-period-input",
+        "className": "control__dropdowns",
         "max": 100,
         "min": 1,
         "size": 150,
@@ -110,6 +123,7 @@ light_sources = Control(
     "Dropdown",
     {
         "id": "light-source-input",
+        "className": "light-source-dropdown",
         "options": spec.light_sources(),
         "placeholder": "select light source",
         "value": "l2" if DEMO else "",
@@ -126,66 +140,15 @@ page_layout = [
                         src=app.get_asset_url("dash-daq-logo.png"), className="logo"
                     ),
                     html.Div(
-                        [
-                            html.Label("Number of Scans"),
-                            dcc.Input(
-                                id="number-of-snansss",
-                                type="number",
-                                max="100",
-                                min="1",
-                                size="150",
-                                value="1",
-                                className="control__dropdowns",
-                            ),
-                        ],
-                        className="control",
+                        id="controls",
+                        title="All of the spectrometer parameters that can be changed.",
+                        children=[ctrl.create_ctrl_div(True) for ctrl in controls],
                     ),
+                    html.Div(html.Label("Light Intensity"), className="control"),
                     html.Div(
                         [
                             html.Div(
                                 [
-                                    daq.BooleanSwitch(
-                                        label="Strobe",
-                                        id="my-daq-booleanswitch",
-                                        color="#565656",
-                                        on=True,
-                                    )
-                                ]
-                            ),
-                            html.Div(
-                                [
-                                    html.Label("Strobe Pd. (μs)"),
-                                    dcc.Input(
-                                        id="number-of-snansssss",
-                                        type="number",
-                                        max="100",
-                                        min="1",
-                                        size="150",
-                                        value="1",
-                                        className="control__dropdowns",
-                                    ),
-                                ]
-                            ),
-                        ],
-                        className="strobe",
-                    ),
-                    html.Div(
-                        [
-                            html.Label("Light Source"),
-                            dcc.Dropdown(
-                                id="light-source-inputt",
-                                options=spec.light_sources(),
-                                placeholder="Select light source",
-                                value="l2" if DEMO else "",
-                            ),
-                        ],
-                        className="control",
-                    ),
-                    html.Div(
-                        [
-                            html.Div(
-                                [
-                                    html.Label("Light Intensity"),
                                     daq.Knob(
                                         id="light-intensity-knob",
                                         size=110,
@@ -199,27 +162,29 @@ page_layout = [
                         className="control",
                     ),
                     html.Div(
-                        id="controls",
-                        title="All of the spectrometer parameters that can be changed.",
-                        children=[ctrl.create_ctrl_div(True) for ctrl in controls],
-                    ),
-                    html.Div(
                         [
-                            html.Div([html.Label("Autoscale Plot"), ]),
+                            html.Div([html.Label("Autoscale Plot")]),
                             html.Div(
                                 [
                                     daq.BooleanSwitch(
-                                        id="my-daq-booleanswitchsss",
-                                        color="#565656",
-                                        on=True,
+                                        id="autoscale-switch", color="#565656", on=True,
                                     ),
                                 ],
+                                title="Controls whether the plot automatically resizes to fit the spectra.",
                             ),
                         ],
                         className="control autoscale",
                     ),
                     html.Div(
-                        [html.Button("update", id="submit-buttossn")],
+                        [
+                            html.Button(
+                                "update",
+                                id="submit-button",
+                                n_clicks=0,
+                                n_clicks_timestamp=0,
+                            )
+                        ],
+                        title="Click to send all of the control values to the spectrometer.",
                         className="control",
                     ),
                     html.Div(
@@ -238,13 +203,14 @@ page_layout = [
                         children=[
                             html.Div(
                                 children=[
-                                    html.Div(
-                                        id="graph-title", children=["ocean optics"]
+                                    html.H6(
+                                        id="graph-title", children=["Ocean Optics"]
                                     ),
                                     dcc.Graph(id="spec-readings", animate=True),
                                     dcc.Interval(
                                         id="spec-reading-interval",
-                                        interval=3 * 1000,  # change from 1 sec to 3 seconds
+                                        interval=3
+                                        * 1000,  # change from 1 sec to 3 seconds
                                         n_intervals=0,
                                     ),
                                 ]
@@ -274,61 +240,6 @@ page_layout = [
                     )
                 ],
             ),
-            # status box
-            html.Div(
-                id="status-box",
-                children=[
-                    # light intensity
-                    # html.Div(
-                    #     className="status-box-title", children=["light intensity"]
-                    # ),
-                    # html.Div(
-                    #     id="light-intensity-knob-container",
-                    #     title="Controls the intensity of the light source, if any.",
-                    #     children=[
-                    #         daq.Knob(
-                    #             id="light-intensity-knob",
-                    #             size=110,
-                    #             color=colors["accent"],
-                    #             value=0,
-                    #         )
-                    #     ],
-                    # ),
-                    # autoscale
-                    html.Div(className="status-box-title", children=["autoscale plot"]),
-                    html.Div(
-                        id="autoscale-switch-container",
-                        title="Controls whether the plot automatically resizes \
-                to fit the spectra.",
-                        children=[
-                            daq.BooleanSwitch(
-                                id="autoscale-switch", on=True, color=colors["accent"]
-                            )
-                        ],
-                    ),
-                    # submit button
-                    html.Div(
-                        id="submit-button-container",
-                        title="Sends all of the control values below the graph \
-                to the spectrometer.",
-                        children=[
-                            html.Button(
-                                "update",
-                                id="submit-button",
-                                n_clicks=0,
-                                n_clicks_timestamp=0,
-                            )
-                        ],
-                    ),
-                    # displays whether the parameters were successfully changed
-                ],
-            ),
-            # all controls
-            # html.Div(
-            #     id="controls",
-            #     title="All of the spectrometer parameters that can be changed.",
-            #     children=[ctrl.create_ctrl_div(True) for ctrl in controls],
-            # ),
             # about the app
             html.Div(
                 id="infobox",
@@ -407,7 +318,7 @@ def update_button_disable_enable(*args):
 # spec model
 @app.callback(Output("graph-title", "children"), [Input("power-button", "on")])
 def update_spec_model(_):
-    return "ocean optics %s" % spec.model()
+    return "Ocean Optics %s" % spec.model()
 
 
 # disable/enable controls
@@ -444,7 +355,7 @@ def preserve_set_light_intensity(intensity, ls, pwr):
     Output("submit-status", "children"),
     [Input("submit-button", "n_clicks")],
     state=[State(ctrl.component_attr["id"], ctrl.val_string()) for ctrl in controls]
-          + [State("power-button", "on")],
+    + [State("power-button", "on")],
 )
 def update_spec_params(n_clicks, *args):
     # don't return anything if the device is off
