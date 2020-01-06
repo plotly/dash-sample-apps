@@ -21,6 +21,8 @@ library(rentrez)
 library(dashTable)
 library(plotly)
 
+source("assets/helpers.R")
+
 app <- Dash$new()
 
 # Functions and Data Loading
@@ -29,28 +31,6 @@ FASTA_DATA <- readBStringSet(filepath = "data/alignment_viewer_p53_clustalo.FAST
 
 blank_dataframe <- data.frame(matrix(ncol=0,nrow=0))
 
-generate_table <- function(df, nrows=20)
-  
-  # function generates a dash table from a supplied data frame (df)
-  
-  #  and number of rows (nrows) to display
-{
-  
-  n <- min(nrows, nrow(df))
-  
-  rows <- lapply(seq(1, n), function(i) {
-    
-    htmlTr(children = lapply(as.character(df[i,]), htmlTd))
-    
-  })
-  
-  header <- htmlTr(children = lapply(names(df), htmlTh))
-  
-  htmlTable(
-    
-    children = c(list(header), rows)
-  )
-}
 
 # App Layout Elements
 
@@ -367,31 +347,7 @@ app$callback(
   
   update_search_results <- function(n_clicks, search_term) {
     if (n_clicks > 0) {
-      search_term <- gsub('"', "", search_term)
-      
-      search <- entrez_search(db = "nuccore", term = search_term, retmax=10)
-      
-      search_seqs <- entrez_fetch(db = "nuccore", id = search$ids, rettype = "fasta")
-      
-      red <- unlist(str_extract_all(search_seqs, ">.*\\n"))
-      
-      titles_vector <- c()
-      
-      for (i in red) {
-        title <- str_extract_all(i, ">.*?[:blank:]")
-        title <- substring(title, 2)
-        titles_vector <- c(titles_vector, title)
-      }
-      
-      sequence_titles <- as.list(unlist(str_extract_all(search_seqs, ">.*\\n")))
-      
-      sequence_dataframe <- do.call(rbind.data.frame, sequence_titles)
-      
-      names(sequence_dataframe)[1] <- "Dataset Accession ID and Description"
-      
-      sequence_dataframe$Accession_ID <- titles_vector
-      
-      sequence_dataframe <- sequence_dataframe[, c(2,1)]
+      sequence_dataframe <- results_dataframe(search_term)
       
       results_table <- dashDataTable(
         id = "table",
@@ -411,9 +367,6 @@ app$callback(
                                 "id" = colName)
                          }),
         data = df_to_list(sequence_dataframe)
-        # ,
-        # 
-        # active_cell <- list('row' = 0, 'column' = 0, 'column_id' = 'Accession_ID')
       )
       
       return(results_table)
@@ -430,31 +383,7 @@ app$callback(
   
   update_search_results <- function(n_clicks, search_term) {
     if (n_clicks > 0) {
-      search_term <- gsub('"', "", search_term)
-      
-      search <- entrez_search(db = "nuccore", term = search_term, retmax=10)
-      
-      search_seqs <- entrez_fetch(db = "nuccore", id = search$ids, rettype = "fasta")
-      
-      red <- unlist(str_extract_all(search_seqs, ">.*\\n"))
-      
-      titles_vector <- c()
-      
-      for (i in red) {
-        title <- str_extract_all(i, ">.*?[:blank:]")
-        title <- substring(title, 2)
-        titles_vector <- c(titles_vector, title)
-      }
-      
-      sequence_titles <- as.list(unlist(str_extract_all(search_seqs, ">.*\\n")))
-      
-      sequence_dataframe <- do.call(rbind.data.frame, sequence_titles)
-      
-      names(sequence_dataframe)[1] <- "Dataset Accession ID and Description"
-      
-      sequence_dataframe$Accession_ID <- titles_vector
-      
-      sequence_dataframe <- sequence_dataframe[, c(2,1)]
+      sequence_dataframe <- results_dataframe(search_term)
       
       return(sequence_dataframe)
     }
