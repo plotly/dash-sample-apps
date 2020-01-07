@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath apps/dash-brain-viewer app:server
+web: gunicorn app:server
