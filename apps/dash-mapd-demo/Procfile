@@ -1,1 +1,1 @@
-web: gunicorn --workers=6 --pythonpath apps/dash-mapd-demo app:server
+web: gunicorn app:server
