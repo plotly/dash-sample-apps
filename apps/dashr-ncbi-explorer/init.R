@@ -10,7 +10,7 @@ options(repos=r)
 
 # ======================================================================
 # packages go here
-remotes::install_github("plotly/dashR", dependencies=TRUE)
+remotes::install_github("plotly/dashR", dependencies=TRUE, upgrade=TRUE)
 remotes::install_github("plotly/rasterly", ref = "64f215b", upgrade=TRUE)
 
 install.packages("stringr")
