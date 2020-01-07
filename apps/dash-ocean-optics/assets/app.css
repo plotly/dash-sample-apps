@@ -20,7 +20,8 @@ body {
 .right__section {
     height: 100vh;
     background-color: #939393;
-   color: white;
+    color: white;
+    padding: 30px 70px 70px 70px;
 }
 
 .control {
@@ -123,3 +124,8 @@ input {
     border: 1px solid grey;
 }
 
+#power-button-container{
+  display:inline-block;
+  float:right;
+  margin-top: -20px 10px 10px 10px;
+}

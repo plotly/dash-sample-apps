@@ -131,6 +131,35 @@ light_sources = Control(
 )
 controls.append(light_sources)
 
+base_intro = """This app was created to act as an interface for an Ocean Optics \
+            spectrometer. Use controlling elements to control various \
+            properties of the instrument; the integration time, the number of \
+            scans to average over, the strobe and strobe period, and the \
+            light source.
+"""
+
+extend_intro = """This app was created to act as an interface for an Ocean Optics 
+spectrometer. Use controlling elements to control various 
+properties of the instrument; the integration time, the number of 
+scans to average over, the strobe and strobe period, and the
+light source.
+
+Clicking Update after putting in the desired settings will 
+result in them being sent to the device. A status message 
+will appear below the button indicating which commands, if any, 
+were unsuccessful; below the unsuccessful commands, a list of
+successful commands can be found.
+           
+The dial labelled light intensity will affect the current 
+selected light source, if any. The switch labelled autoscale 
+plot will change the axis limits of the plot to fit all of the 
+data. Please note that the animations and speed of the graph will 
+improve if this feature is turned off, and that it will not be 
+possible to zoom in on any portion of the plot if it is turned 
+on.
+"""
+
+
 page_layout = [
     html.Div(
         [
@@ -206,11 +235,28 @@ page_layout = [
                                     html.H6(
                                         id="graph-title", children=["Ocean Optics"]
                                     ),
+                                    html.Div(
+                                        id="power-button-container",
+                                        title="Turn the power on to begin viewing the data and controlling \
+        the spectrometer.",
+                                        children=[
+                                            daq.PowerButton(
+                                                id="power-button",
+                                                size=50,
+                                                color=colors["accent"],
+                                                on=True if DEMO else False,
+                                            )
+                                        ],
+                                    ),
+                                    dcc.Markdown(
+                                        dedent(base_intro),
+                                        id="graph-title-intro"
+                                    ),
+                                    html.Button("Learn More", id="learn-more-btn", n_clicks=0),
                                     dcc.Graph(id="spec-readings", animate=True),
                                     dcc.Interval(
                                         id="spec-reading-interval",
-                                        interval=3
-                                        * 1000,  # change from 1 sec to 3 seconds
+                                        interval=3 * 1000,  # change from 1 sec to 3 seconds
                                         n_intervals=0,
                                     ),
                                 ]
@@ -221,63 +267,7 @@ page_layout = [
                 className="two-thirds column right__section",
             ),
         ]
-    ),
-    html.Div(
-        id="page",
-        children=[
-            # plot
-            # power button
-            html.Div(
-                id="power-button-container",
-                title="Turn the power on to begin viewing the data and controlling \
-        the spectrometer.",
-                children=[
-                    daq.PowerButton(
-                        id="power-button",
-                        size=50,
-                        color=colors["accent"],
-                        on=True if DEMO else False,
-                    )
-                ],
-            ),
-            # about the app
-            html.Div(
-                id="infobox",
-                children=[
-                    html.Div("about this app", id="infobox-title"),
-                    dcc.Markdown(
-                        dedent(
-                            """
-            This app was created to act as an interface for an Ocean Optics \
-            spectrometer. The options above are used to control various \
-            properties of the instrument; the integration time, the number of \
-            scans to average over, the strobe and strobe period, and the \
-            light source.
-
-            Clicking \"Update\" after putting in the desired settings will \
-            result in them being sent to the device. A status message \
-            will appear below the button indicating which commands, if any, \
-            were unsuccessful; below the unsuccessful commands, a list of \
-            successful commands can be found.
-
-            (Note that the box containing the status information is \
-            scrollable.)
-
-
-            The dial labelled \"light intensity\" will affect the current \
-            selected light source, if any. The switch labelled \"autoscale \
-            plot\" will change the axis limits of the plot to fit all of the \
-            data. Please note that the animations and speed of the graph will \
-            improve if this feature is turned off, and that it will not be \
-            possible to zoom in on any portion of the plot if it is turned \
-            on.
-            """
-                        )
-                    ),
-                ],
-            ),
-        ],
-    ),
+    )
 ]
 
 app.layout = html.Div(id="main", children=page_layout)
@@ -286,6 +276,17 @@ app.layout = html.Div(id="main", children=page_layout)
 ############################
 # Callbacks
 ############################
+
+@app.callback(
+    [Output("graph-title-intro", "children"), Output("learn-more-btn", "children")],
+    [Input("learn-more-btn", "n_clicks")]
+)
+def display_info_box(btn_click):
+    if (btn_click % 2) == 1:
+        return dedent(extend_intro), "Close"
+    else:
+        return dedent(base_intro), "Learn More"
+
 
 # disable/enable the update button depending on whether options have changed
 @app.callback(
@@ -355,7 +356,7 @@ def preserve_set_light_intensity(intensity, ls, pwr):
     Output("submit-status", "children"),
     [Input("submit-button", "n_clicks")],
     state=[State(ctrl.component_attr["id"], ctrl.val_string()) for ctrl in controls]
-    + [State("power-button", "on")],
+          + [State("power-button", "on")],
 )
 def update_spec_params(n_clicks, *args):
     # don't return anything if the device is off
