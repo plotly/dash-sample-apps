@@ -19,7 +19,7 @@ from dash.dependencies import Input, Output, State
 import DashOceanOpticsSpectrometer as doos
 from DashOceanOpticsSpectrometer import Control
 
-# DEMO = False
+DEMO = False
 
 # lock for modifying information about spectrometer
 spec_lock = Lock()
@@ -29,10 +29,9 @@ comm_lock = Lock()
 # initialize spec
 spec = doos.DashOceanOpticsSpectrometer(spec_lock, comm_lock)
 
-DEMO = False
 # # demo or actual
 if ("DASH_PATH_ROUTING" in os.environ) or (
-        len(sys.argv) == 2 and sys.argv[1] == "demo"
+    len(sys.argv) == 2 and sys.argv[1] == "demo"
 ):
     spec = doos.DemoSpectrometer(spec_lock, comm_lock)
     DEMO = True
@@ -41,7 +40,7 @@ else:
 
 spec.assign_spec()
 
-app = dash.Dash()
+app = dash.Dash(__name__)
 server = app.server
 
 colors = {
@@ -249,18 +248,27 @@ page_layout = [
                                         ],
                                     ),
                                     dcc.Markdown(
-                                        dedent(base_intro),
-                                        id="graph-title-intro"
+                                        dedent(base_intro), id="graph-title-intro"
                                     ),
-                                    html.Button("Learn More", id="learn-more-btn", n_clicks=0),
-                                    dcc.Graph(id="spec-readings", animate=True, figure=dict(data=[], layout=dict(
-                                        height=600,
-                                        paper_bgcolor="rgba(0,0,0,0)",
-                                        plot_bgcolor="rgba(0,0,0,0)",
-                                    ))),
+                                    html.Button(
+                                        "Learn More", id="learn-more-btn", n_clicks=0
+                                    ),
+                                    dcc.Graph(
+                                        id="spec-readings",
+                                        animate=True,
+                                        figure=dict(
+                                            data=[],
+                                            layout=dict(
+                                                height=600,
+                                                paper_bgcolor="rgba(0,0,0,0)",
+                                                plot_bgcolor="rgba(0,0,0,0)",
+                                            ),
+                                        ),
+                                    ),
                                     dcc.Interval(
                                         id="spec-reading-interval",
-                                        interval=2 * 1000,  # change from 1 sec to 2 seconds
+                                        interval=2
+                                        * 1000,  # change from 1 sec to 2 seconds
                                         n_intervals=0,
                                     ),
                                 ]
@@ -281,9 +289,10 @@ app.layout = html.Div(id="main", children=page_layout)
 # Callbacks
 ############################
 
+
 @app.callback(
     [Output("graph-title-intro", "children"), Output("learn-more-btn", "children")],
-    [Input("learn-more-btn", "n_clicks")]
+    [Input("learn-more-btn", "n_clicks")],
 )
 def display_info_box(btn_click):
     if (btn_click % 2) == 1:
@@ -360,7 +369,7 @@ def preserve_set_light_intensity(intensity, ls, pwr):
     Output("submit-status", "children"),
     [Input("submit-button", "n_clicks")],
     state=[State(ctrl.component_attr["id"], ctrl.val_string()) for ctrl in controls]
-          + [State("power-button", "on")],
+    + [State("power-button", "on")],
 )
 def update_spec_params(n_clicks, *args):
     # don't return anything if the device is off
