@@ -29,14 +29,15 @@ comm_lock = Lock()
 # initialize spec
 spec = doos.DashOceanOpticsSpectrometer(spec_lock, comm_lock)
 
+DEMO = False
 # # demo or actual
-# if ("DASH_PATH_ROUTING" in os.environ) or (
-#         len(sys.argv) == 2 and sys.argv[1] == "demo"
-# ):
-spec = doos.DemoSpectrometer(spec_lock, comm_lock)
-DEMO = True
-# else:
-#     spec = doos.PhysicalSpectrometer(spec_lock, comm_lock)
+if ("DASH_PATH_ROUTING" in os.environ) or (
+        len(sys.argv) == 2 and sys.argv[1] == "demo"
+):
+    spec = doos.DemoSpectrometer(spec_lock, comm_lock)
+    DEMO = True
+else:
+    spec = doos.PhysicalSpectrometer(spec_lock, comm_lock)
 
 spec.assign_spec()
 
@@ -48,7 +49,7 @@ colors = {
     "primary": "#efefef",
     "secondary": "#efefef",
     "tertiary": "#dfdfdf",
-    "grid-colour": "#eeeeee",
+    "grid-colour": "#cccccc",
     "accent": "#2222ff",
 }
 
@@ -103,7 +104,7 @@ controls.append(strobe_enable)
 # strobe period
 strobe_period = Control(
     "continuous-strobe-period",
-    "strobe pd. (μs)",
+    "Strobe pd. (μs)",
     "NumericInput",
     {
         "id": "continuous-strobe-period-input",
@@ -119,7 +120,7 @@ controls.append(strobe_period)
 # light sources
 light_sources = Control(
     "light-source",
-    "light source",
+    "Light source",
     "Dropdown",
     {
         "id": "light-source-input",
@@ -144,21 +145,20 @@ properties of the instrument; the integration time, the number of
 scans to average over, the strobe and strobe period, and the
 light source.
 
-Clicking Update after putting in the desired settings will 
-result in them being sent to the device. A status message 
+Clicking "Update" after putting in the desired settings will 
+result in your parameter settings being sent to the device. A status message 
 will appear below the button indicating which commands, if any, 
 were unsuccessful; below the unsuccessful commands, a list of
 successful commands can be found.
            
-The dial labelled light intensity will affect the current 
+The dial labelled "Light intensity" will affect the current 
 selected light source, if any. The switch labelled autoscale 
 plot will change the axis limits of the plot to fit all of the 
 data. Please note that the animations and speed of the graph will 
-improve if this feature is turned off, and that it will not be 
+improve if this autoscale is turned off, and that it will not be 
 possible to zoom in on any portion of the plot if it is turned 
 on.
 """
-
 
 page_layout = [
     html.Div(
@@ -253,10 +253,14 @@ page_layout = [
                                         id="graph-title-intro"
                                     ),
                                     html.Button("Learn More", id="learn-more-btn", n_clicks=0),
-                                    dcc.Graph(id="spec-readings", animate=True),
+                                    dcc.Graph(id="spec-readings", animate=True, figure=dict(data=[], layout=dict(
+                                        height=600,
+                                        paper_bgcolor="rgba(0,0,0,0)",
+                                        plot_bgcolor="rgba(0,0,0,0)",
+                                    ))),
                                     dcc.Interval(
                                         id="spec-reading-interval",
-                                        interval=3 * 1000,  # change from 1 sec to 3 seconds
+                                        interval=2 * 1000,  # change from 1 sec to 2 seconds
                                         n_intervals=0,
                                     ),
                                 ]
@@ -459,7 +463,7 @@ def update_plot(on, auto_range, _):
     layout = go.Layout(
         height=600,
         font={"family": "Helvetica Neue, sans-serif", "size": 12},
-        margin={"t": 20},
+        margin=dict(l=40, r=40, t=40, b=40, pad=10),
         titlefont={
             "family": "Helvetica, sans-serif",
             "color": colors["primary"],
@@ -467,8 +471,8 @@ def update_plot(on, auto_range, _):
         },
         xaxis=x_axis,
         yaxis=y_axis,
-        paper_bgcolor=colors["background"],
-        plot_bgcolor=colors["background"],
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
     )
 
     return {"data": traces, "layout": layout}
