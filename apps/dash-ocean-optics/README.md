@@ -1,4 +1,4 @@
-# dash-ocean-optics
+# Dash Ocean Optics
 
 ## Introduction
 `dash-ocean-optics` is an app created to control and read data from [Ocean Optics](https://oceanoptics.com) spectrometers. Try the app out yourself at [dash-gallery](https://dash-gallery.plotly.host/dash-ocean-optics) and learn more about this app from our [blog entry](https://www.dashdaq.io/control-an-ocean-optics-spectrometer-in-python)!
