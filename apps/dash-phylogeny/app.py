@@ -464,6 +464,85 @@ def update_phylogeny_tree(
     return fig
 
 
+@app.callback(
+    Output("map-graph", "figure"),
+    [
+        Input("d_virus-name", "value"),
+        Input("d_mumps", "value"),
+        Input("d_dengue", "value"),
+        Input("d_lassa", "value"),
+        Input("d_avian_opt1", "value"),
+        Input("d_avian_opt2", "value"),
+        Input("d_flu_opt1", "value"),
+        Input("d_flu_opt2", "value"),
+        Input("d_flu_opt3", "value"),
+        Input("id-year", "value"),
+    ],
+)
+def _update_map(
+    virus_name,
+    mumps,
+    dengue,
+    lassa,
+    avian_opt1,
+    avian_opt2,
+    flu_opt1,
+    flu_opt2,
+    flu_opt3,
+    id_year,
+):
+    virus_name = virus_name.lower()
+    if virus_name == "ebola" or virus_name == "zika" or virus_name == "measles":
+        (
+            tree_file_filtred,
+            metadata_file_filtred,
+            metadata_file_stat_filtred,
+        ) = create_paths_file(virus_name, level1="", level2="", level3="")
+    elif virus_name == "mumps":
+        (
+            tree_file_filtred,
+            metadata_file_filtred,
+            metadata_file_stat_filtred,
+        ) = create_paths_file(virus_name, level1=mumps, level2="", level3="")
+    elif virus_name == "dengue":
+        (
+            tree_file_filtred,
+            metadata_file_filtred,
+            metadata_file_stat_filtred,
+        ) = create_paths_file(virus_name, level1=dengue, level2="", level3="")
+    elif virus_name == "lassa":
+        (
+            tree_file_filtred,
+            metadata_file_filtred,
+            metadata_file_stat_filtred,
+        ) = create_paths_file(virus_name, level1=lassa, level2="", level3="")
+    elif virus_name == "avian":
+        (
+            tree_file_filtred,
+            metadata_file_filtred,
+            metadata_file_stat_filtred,
+        ) = create_paths_file(
+            virus_name, level1=avian_opt1, level2=avian_opt2, level3=""
+        )
+    elif virus_name == "flu":
+        (
+            tree_file_filtred,
+            metadata_file_filtred,
+            metadata_file_stat_filtred,
+        ) = create_paths_file(
+            virus_name, level1=flu_opt1, level2=flu_opt2, level3=flu_opt3
+        )
+    df = pd.read_csv(metadata_file_stat_filtred)
+
+    min_date, max_date = id_year
+    # To select only the data between min_date and max_date
+    df = df[df["Year"] >= min_date]
+    df = df[df["Year"] <= max_date]
+    return create_map_bubble_year(
+        virus_name, metadata_file_stat_filtred, 2, min_date, max_date
+    )
+
+
 # Running the server
 if __name__ == "__main__":
     app.run_server(debug=True)
