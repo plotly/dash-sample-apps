@@ -298,13 +298,14 @@ def create_curve_line(df, virus_name, min_date, max_date):
             x=p_year[i],
             y=l_country,
             name=p_name[i],
-            line=dict(color=country_colors[i], width=1),
+            line=dict(color=country_colors[i % len(country_colors)], width=1),
         )
         i = i + 1
         data.append(trace)
 
     # Edit the layout
     layout = dict(
+        height=800,
         autosize=True,
         title="Evolution of "
         + virus_name.title()
@@ -592,6 +593,7 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
         nodes.append(node)
 
     layout = dict(
+        height=800,
         title=graph_title,
         dragmode="select",
         autosize=True,
