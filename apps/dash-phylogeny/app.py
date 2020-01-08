@@ -267,7 +267,7 @@ app.layout = html.Div(
                                             max=max_date,
                                             step=1,
                                             marks=marks_data,
-                                            value=min_max_date_value
+                                            value=min_max_date_value,
                                         )
                                     ],
                                 ),
@@ -358,15 +358,15 @@ def _update_flu_option(virus_name):
     ],
 )
 def update_phylogeny_tree(
-        virus_name,
-        mumps,
-        dengue,
-        lassa,
-        avian_opt1,
-        avian_opt2,
-        flu_opt1,
-        flu_opt2,
-        flu_opt3,
+    virus_name,
+    mumps,
+    dengue,
+    lassa,
+    avian_opt1,
+    avian_opt2,
+    flu_opt1,
+    flu_opt2,
+    flu_opt3,
 ):
     virus_name = virus_name.lower()
     ord_by_elt = "Country"
@@ -476,16 +476,16 @@ def update_phylogeny_tree(
     ],
 )
 def _update_map(
-        virus_name,
-        mumps,
-        dengue,
-        lassa,
-        avian_opt1,
-        avian_opt2,
-        flu_opt1,
-        flu_opt2,
-        flu_opt3,
-        id_year,
+    virus_name,
+    mumps,
+    dengue,
+    lassa,
+    avian_opt1,
+    avian_opt2,
+    flu_opt1,
+    flu_opt2,
+    flu_opt3,
+    id_year,
 ):
     virus_name = virus_name.lower()
     if virus_name == "ebola" or virus_name == "zika" or virus_name == "measles":
@@ -554,15 +554,15 @@ def _update_map(
     ],
 )
 def _update_slicer(
-        virus_name,
-        mumps,
-        dengue,
-        lassa,
-        avian_opt1,
-        avian_opt2,
-        flu_opt1,
-        flu_opt2,
-        flu_opt3,
+    virus_name,
+    mumps,
+    dengue,
+    lassa,
+    avian_opt1,
+    avian_opt2,
+    flu_opt1,
+    flu_opt2,
+    flu_opt3,
 ):
     virus_name = virus_name.lower()
     if virus_name == "ebola" or virus_name == "zika" or virus_name == "measles":
@@ -640,16 +640,16 @@ def _update_slicer(
     ],
 )
 def _update_curve(
-        virus_name,
-        mumps,
-        dengue,
-        lassa,
-        avian_opt1,
-        avian_opt2,
-        flu_opt1,
-        flu_opt2,
-        flu_opt3,
-        id_year,
+    virus_name,
+    mumps,
+    dengue,
+    lassa,
+    avian_opt1,
+    avian_opt2,
+    flu_opt1,
+    flu_opt2,
+    flu_opt3,
+    id_year,
 ):
     virus_name = virus_name.lower()
     if virus_name == "ebola" or virus_name == "zika" or virus_name == "measles":
@@ -718,16 +718,16 @@ def _update_curve(
     ],
 )
 def _update_histo(
-        virus_name,
-        mumps,
-        dengue,
-        lassa,
-        avian_opt1,
-        avian_opt2,
-        flu_opt1,
-        flu_opt2,
-        flu_opt3,
-        id_year,
+    virus_name,
+    mumps,
+    dengue,
+    lassa,
+    avian_opt1,
+    avian_opt2,
+    flu_opt1,
+    flu_opt2,
+    flu_opt3,
+    id_year,
 ):
     virus_name = virus_name.lower()
     if virus_name == "ebola" or virus_name == "zika" or virus_name == "measles":
@@ -792,7 +792,7 @@ def _update_histo(
                 "x": df_group_by_country["Country"],
                 "y": df_group_by_country["Value"],
                 "type": "bar",
-                "marker": dict(color="#8380ff")
+                "marker": dict(color="#8380ff"),
             }
         ],
         "layout": {
@@ -801,9 +801,7 @@ def _update_histo(
             "title": "<br>Distribution of {} <br>Between {} and {}".format(
                 virus_name.title(), min_date, max_date
             ),
-            "font": dict(
-                family="Open Sans"
-            ),
+            "font": dict(family="Open Sans"),
         },
     }
 
