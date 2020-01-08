@@ -3,7 +3,8 @@
 set -eo pipefail
 
 readonly SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-readonly APPS_DIR="${SOURCE_DIR}/apps"
+readonly APPS_DIR_RELATIVE="${APPS_DIR_RELATIVE:-/apps}"
+readonly APPS_DIR="${APPS_DIR:-${SOURCE_DIR}${APPS_DIR_RELATIVE}}"
 readonly DASH_ENTERPRISE_URL="${DASH_ENTERPRISE_URL:-https://dash-playground.plotly.host}"
 readonly CREATE_APP="${CREATE_APP:-false}"
 readonly ALLOW_DASHR="${ALLOW_DASHR:-false}"
