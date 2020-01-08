@@ -47,6 +47,23 @@
       right: 1.5%;
       height: 1.5%;
   }
+
+  /*Slider*/
+
+
+.rc-slider-track {
+  background-color: #8380ff;
+}
+
+.rc-slider-dot-active,
+.rc-slider-dot,
+.rc-slider-handle {
+  border-color: #8380ff;
+}
+
+.rc-slider-handle:hover {
+  border-color: #8380ff;
+}
   
   
   /* Grid
@@ -490,7 +507,7 @@ body, h1, h2, h3, h4, h5, h6, p {
     -ms-grid-column: 7;
     -ms-grid-column-span: 6;
     grid-column: 7 / span 6;
-    -ms-grrid-row: 3;
+    -ms-grid-row: 3;
     -ms-grid-row-span: 1;
     grid-row: 2 / span 1;
   }

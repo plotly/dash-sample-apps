@@ -44,14 +44,14 @@ def get_y_coordinates(tree, dist=1.3):
 
 
 def get_clade_lines(
-    orientation="horizontal",
-    y_curr=0,
-    x_start=0,
-    x_curr=0,
-    y_bot=0,
-    y_top=0,
-    line_color="rgb(25,25,25)",
-    line_width=0.5,
+        orientation="horizontal",
+        y_curr=0,
+        x_start=0,
+        x_curr=0,
+        y_bot=0,
+        y_top=0,
+        line_color="rgb(25,25,25)",
+        line_width=0.5,
 ):
     """define a shape of type 'line', for branch
     """
@@ -69,13 +69,13 @@ def get_clade_lines(
 
 
 def draw_clade(
-    clade,
-    x_start,
-    line_shapes,
-    line_color="rgb(15,15,15)",
-    line_width=1,
-    x_coords=0,
-    y_coords=0,
+        clade,
+        x_start,
+        line_shapes,
+        line_color="rgb(15,15,15)",
+        line_width=1,
+        x_coords=0,
+        y_coords=0,
 ):
     """Recursively draw the tree branches, down from the given clade"""
 
@@ -117,17 +117,17 @@ def draw_clade(
 
 def create_title(virus, nb_genome):
     graph_title = (
-        "Phylogeny of "
-        + virus.title()
-        + " Virus<br>"
-        + str(nb_genome)
-        + " genomes colored according to region and country"
+            "Phylogeny of "
+            + virus.title()
+            + " Virus<br>"
+            + str(nb_genome)
+            + " genomes colored according to region and country"
     )
     return graph_title
 
 
 def create_map_bubble_year(
-    virus_name, metadata_file_stat, map_choice, min_date, max_date
+        virus_name, metadata_file_stat, map_choice, min_date, max_date
 ):
     df = pd.read_csv(metadata_file_stat)
     # To select only the data between min_date and max_date
@@ -185,17 +185,15 @@ def create_map_bubble_year(
                 z=df["GDP (BILLIONS)"],
                 text=df["COUNTRY"],
                 colorscale=[
-                    [0, "rgb(5, 10, 172)"],
-                    [0.35, "rgb(40, 60, 190)"],
-                    [0.5, "rgb(70, 100, 245)"],
-                    [0.6, "rgb(90, 120, 245)"],
-                    [0.7, "rgb(106, 137, 247)"],
+                    [0, "5541c8"],
                     [1, "rgb(220, 220, 220)"],
                 ],
                 autocolorscale=False,
                 reversescale=True,
                 marker=dict(line=dict(color="rgb(180,180,180)", width=0.5)),
                 colorbar=dict(
+                    thickness=20,
+                    len=0.7,
                     autotick=False,
                     titleside="right",
                     title="Number of " + virus_name.title() + " Virus",
@@ -205,16 +203,19 @@ def create_map_bubble_year(
 
         layout = dict(
             title=virus_name.title()
-            + " Virus cases in West Africa <br>Between "
-            + str(min_date)
-            + " and "
-            + str(max_date),
+                  + " Virus cases in West Africa <br>Between "
+                  + str(min_date)
+                  + " and "
+                  + str(max_date),
             margin=dict(l=0, r=0, b=0, t=35),
             geo=dict(
                 showframe=False, showcoastlines=False, projection=dict(type="Mercator")
             ),
             autosize=True,
             legend={"orientation": "h"},
+            font=dict(
+                family="Open Sans"
+            ),
         )
 
         fig = dict(data=data, layout=layout)
@@ -241,7 +242,6 @@ country_colors = [
 
 
 def create_curve_line(df, virus_name, min_date, max_date):
-
     results_country_by_year = df.groupby(["Country", "Year"])["Value"].sum()
     # Translate pandas.core.series.series object in dataframe
     df_group_by_country = results_country_by_year.to_frame()
@@ -312,16 +312,19 @@ def create_curve_line(df, virus_name, min_date, max_date):
     layout = dict(
         autosize=True,
         title="Evolution of "
-        + virus_name.title()
-        + " virus <br>Between "
-        + str(min_date)
-        + " and "
-        + str(max_date)
-        + " by country.",
+              + virus_name.title()
+              + " virus <br>Between "
+              + str(min_date)
+              + " and "
+              + str(max_date)
+              + " by country.",
         xaxis=dict(title="Year"),
         yaxis=dict(title="Number of " + virus_name.title() + " virus"),
         legend=dict(overflowY="scroll"),
         margin=dict(l=50, r=0, b=100, t=100),
+        font=dict(
+            family="Open Sans"
+        ),
     )
 
     fig = dict(data=data, layout=layout)
@@ -536,17 +539,17 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
         new_title_journal = split_at_n_caracter(df.loc[k, "Journal"], 50)
 
         text[i] = (
-            text[i]
-            + "<br>Country: "
-            + "{:s}".format(df.loc[k, "Country"])
-            + "<br>Region: "
-            + "{:s}".format(df.loc[k, "Region"])
-            + "<br>Collection date: "
-            + "{:s}".format(df.loc[k, "Date"])
-            + "<br>Journal: "
-            + "{:s}".format(new_title_journal)
-            + "<br>Authors: "
-            + "{:s}".format(df.loc[k, "Authors"])
+                text[i]
+                + "<br>Country: "
+                + "{:s}".format(df.loc[k, "Country"])
+                + "<br>Region: "
+                + "{:s}".format(df.loc[k, "Region"])
+                + "<br>Collection date: "
+                + "{:s}".format(df.loc[k, "Date"])
+                + "<br>Journal: "
+                + "{:s}".format(new_title_journal)
+                + "<br>Authors: "
+                + "{:s}".format(df.loc[k, "Authors"])
         )
         country.append(df.loc[k, "Country"])
         region.append(df.loc[k, "Region"])
@@ -612,6 +615,9 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
         hovermode="closest",
         shapes=line_shapes,
         legend={"x": 0, "y": 1},
+        font=dict(
+            family="Open Sans"
+        ),
     )
 
     fig = dict(data=nodes, layout=layout)
@@ -619,7 +625,7 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
 
 
 def split_at_n_caracter(title, n):
-    sentences = "<br>".join([title[i : i + n] for i in range(0, len(title), n)])
+    sentences = "<br>".join([title[i: i + n] for i in range(0, len(title), n)])
     return sentences
 
 
@@ -638,77 +644,77 @@ def create_paths_file(virus_name, level1="", level2="", level3=""):
         dir = dir + "/" + level1 + "/"
         tree_file = dir + "nextstrain_" + virus_name + "_" + level1 + "_tree.new"
         metadata_file = (
-            dir + "nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
+                dir + "nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
         )
         stat_file = (
-            dir + "stat_year_nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
+                dir + "stat_year_nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
         )
         return tree_file, metadata_file, stat_file
     # dir/level1/level2
     elif not level3:
         dir = dir + "/" + level1 + "/" + level2 + "/"
         tree_file = (
-            dir + "nextstrain_" + virus_name + "_" + level1 + "_" + level2 + "_tree.new"
+                dir + "nextstrain_" + virus_name + "_" + level1 + "_" + level2 + "_tree.new"
         )
         metadata_file = (
-            dir
-            + "nextstrain_"
-            + virus_name
-            + "_"
-            + level1
-            + "_"
-            + level2
-            + "_metadata.csv"
+                dir
+                + "nextstrain_"
+                + virus_name
+                + "_"
+                + level1
+                + "_"
+                + level2
+                + "_metadata.csv"
         )
         stat_file = (
-            dir
-            + "stat_year_nextstrain_"
-            + virus_name
-            + "_"
-            + level1
-            + "_"
-            + level2
-            + "_metadata.csv"
+                dir
+                + "stat_year_nextstrain_"
+                + virus_name
+                + "_"
+                + level1
+                + "_"
+                + level2
+                + "_metadata.csv"
         )
         return tree_file, metadata_file, stat_file
     # dir/level1/level2/level3
     else:
         dir = dir + "/" + level1 + "/" + level2 + "/" + level3 + "/"
         tree_file = (
-            dir
-            + "nextstrain_"
-            + virus_name
-            + "_"
-            + level1
-            + "_"
-            + level2
-            + "_"
-            + level3
-            + "_tree.new"
+                dir
+                + "nextstrain_"
+                + virus_name
+                + "_"
+                + level1
+                + "_"
+                + level2
+                + "_"
+                + level3
+                + "_tree.new"
         )
         metadata_file = (
-            dir
-            + "nextstrain_"
-            + virus_name
-            + "_"
-            + level1
-            + "_"
-            + level2
-            + "_"
-            + level3
-            + "_metadata.csv"
+                dir
+                + "nextstrain_"
+                + virus_name
+                + "_"
+                + level1
+                + "_"
+                + level2
+                + "_"
+                + level3
+                + "_metadata.csv"
         )
         stat_file = (
-            dir
-            + "stat_year_nextstrain_"
-            + virus_name
-            + "_"
-            + level1
-            + "_"
-            + level2
-            + "_"
-            + level3
-            + "_metadata.csv"
+                dir
+                + "stat_year_nextstrain_"
+                + virus_name
+                + "_"
+                + level1
+                + "_"
+                + level2
+                + "_"
+                + level3
+                + "_metadata.csv"
         )
         return tree_file, metadata_file, stat_file
 
