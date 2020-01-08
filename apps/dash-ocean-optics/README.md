@@ -1,4 +1,5 @@
 # dash-ocean-optics
+
 ## Introduction
 `dash-ocean-optics` is an app created to control and read data from [Ocean Optics](https://oceanoptics.com) spectrometers. Try the app out yourself at [dash-gallery](https://dash-gallery.plotly.host/dash-ocean-optics) and learn more about this app from our [blog entry](https://www.dashdaq.io/control-an-ocean-optics-spectrometer-in-python)!
 
@@ -6,14 +7,19 @@
 Certain wavelengths of electromagnetic radiation correspond to frequencies that allow the electrons in certain atoms to transition to higher or lower energy levels; as these wavelengths are absorbed by the sample, the resulting spectrum can yield insight into the chemical composition of the sample. Read more about spectroscopy [here](https://en.wikipedia.org/wiki/Spectroscopy). 
 
 ### dash-daq
-[Dash DAQ](http://dash-daq.netlify.com/#about) is a data acquisition and control package built on top of Plotly's [Dash](https://plot.ly/products/dash/).
+[Dash DAQ](https://dash.plot.ly/dash-daq) is a data acquisition and control package built on top of Plotly's [Dash](https://plot.ly/dash/).
 
 ## Requirements
-It is advisable	to create a separate conda environment running Python 3 for the app and install all of the required packages there. To do so, run (any version of Python 3 will work):
+It is advisable	to create a separate conda/pip environment running Python 3 for the app and install all of the required packages there. To do so, run (any version of Python 3 will work):
 
 ```
-conda create -n	[your environment name] python=3.4
+conda create -n	[your environment name] python=3.6
 ```
+or 
+```
+virtualenv [your environment name]
+```
+
 ```
 source activate [your environment name]
 ```
@@ -65,15 +71,7 @@ The controls below the plot will allow you to change parameters of the spectrome
 
 Once they have been changed to the appropriate settings, the "update" button to the right of the plot should be pressed, and each of the settings will be sent to the spectrometer one-by-one. The window below the "update" button displays the commands that failed, with the associated error messages, and the commands that succeeded, with the new values.
 
-![changefail](screenshots/changefail.png)
-![changesuccess](screenshots/changesuccess.png)
-
-Note that the window below the update button is scrollable!
-
 ## Advanced
-
-### Configuring the colours
-The colours for all of the Dash and Dash-DAQ components are loaded from `colors.txt`. Note that if you want to change the appearance of other components on the page, you'll have to link a different CSS file in `app.py`.
 
 ### Adding your own controls
 In order to add a control yourself, you must:
@@ -82,4 +80,5 @@ In order to add a control yourself, you must:
 * Add the key-value pair `"[dash component id]", "[function object associated with control]"` to the dictionary `self._controlFunctions` in the `PhysicalSpectrometer` and `DemoSpectrometer` class definitions (if you don't want this control to have any effect in the demo mode, then set the value to `"empty_control_demo"`).
 
 ### Adding your own spectrometers
-Although this app was created for Ocean Optics spectrometers, it is possible to use it to interface with other types of spectrometers. The abstract base class `DashOceanOpticsSpectrometer` contains a set of methods and properties that are necessary for the spectrometer to properly interface with the app. Please note that you should be using the communication and spectrometer locks as necessary to avoid issues with two different callbacks trying to modify/read the same thing concurrently. 
+Although this app was created for Ocean Optics spectrometers, it is possible to use it to interface with other types of spectrometers. The abstract base class `DashOceanOpticsSpectrometer` contains a set of methods and properties that are necessary for the spectrometer to properly interface with the app. 
+Please note that you should be using the communication and spectrometer locks as necessary to avoid issues with two different callbacks trying to modify/read the same thing concurrently. 
