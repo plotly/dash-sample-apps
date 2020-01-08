@@ -797,7 +797,7 @@ def _update_histo(
         ],
         "layout": {
             "autosize": True,
-            "margin": dict(l=20, r=20, b=70, t=20),
+            "margin": dict(l=30, r=30, b=70, t=40),
             "title": "<br>Distribution of {} <br>Between {} and {}".format(
                 virus_name.title(), min_date, max_date
             ),
