@@ -597,14 +597,26 @@ def create_paths_file(virus_name, level1="", level2="", level3=""):
             directory + "nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
         )
         stat_file = (
-            directory + "stat_year_nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
+            directory
+            + "stat_year_nextstrain_"
+            + virus_name
+            + "_"
+            + level1
+            + "_metadata.csv"
         )
         return tree_file, metadata_file, stat_file
     # directory/level1/level2
     elif not level3:
         directory = directory + "/" + level1 + "/" + level2 + "/"
         tree_file = (
-            directory + "nextstrain_" + virus_name + "_" + level1 + "_" + level2 + "_tree.new"
+            directory
+            + "nextstrain_"
+            + virus_name
+            + "_"
+            + level1
+            + "_"
+            + level2
+            + "_tree.new"
         )
         metadata_file = (
             directory
