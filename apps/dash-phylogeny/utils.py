@@ -278,10 +278,10 @@ def create_curve_line(df, virus_name, min_date, max_date):
         + " and "
         + str(max_date)
         + " by country.",
-        xaxis=dict(title="Year"),
+        xaxis=dict(title="Year", tickformat="d"),
         yaxis=dict(title="Number of " + virus_name.title() + " virus"),
         legend=dict(overflowY="scroll"),
-        margin=dict(l=50, r=0, b=100, t=100),
+        margin=dict(l=50, r=20, b=100, t=100),
         font=dict(family="Open Sans"),
     )
 
