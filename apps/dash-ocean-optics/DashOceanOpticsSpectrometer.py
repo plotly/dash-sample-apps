@@ -208,8 +208,8 @@ class DemoSpectrometer(DashOceanOpticsSpectrometer):
     def assign_spec(self):
         self._specmodel = "USB2000+"
         self._lightSources = [
-            {"label": "Lamp 1 at 127.0.0.1", "value": "l1"},
-            {"label": "Lamp 2 at 127.0.0.1", "value": "l2"},
+            {"label": "Lamp 1 at 127.0.0.1", "value": "Lamp 1"},
+            {"label": "Lamp 2 at 127.0.0.1", "value": "Lamp 2"},
         ]
 
     def get_spectrum(self, int_time_demo_val=1000):
@@ -234,9 +234,9 @@ class DemoSpectrometer(DashOceanOpticsSpectrometer):
         return (failed, succeeded)
 
     def send_light_intensity(self, lightSource, intensity):
-        if lightSource == "l1":
+        if lightSource == "Lamp 1":
             return
-        elif lightSource == "l2":
+        elif lightSource == "Lamp 2":
             self._sample_data_add = intensity
         else:
             self._sample_data_add = 0

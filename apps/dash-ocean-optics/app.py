@@ -126,7 +126,7 @@ light_sources = Control(
         "className": "light-source-dropdown",
         "options": spec.light_sources(),
         "placeholder": "select light source",
-        "value": "l2" if DEMO else "",
+        "value": "Lamp 2" if DEMO else "",
     },
 )
 controls.append(light_sources)
