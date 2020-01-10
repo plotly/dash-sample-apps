@@ -6,7 +6,14 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 from dash.dependencies import Input, Output
-from utils import create_paths_file, min_max_date, slicer, create_tree, create_map_bubble_year, create_curve_line
+from utils import (
+    create_paths_file,
+    min_max_date,
+    slicer,
+    create_tree,
+    create_map_bubble_year,
+    create_curve_line,
+)
 
 app = dash.Dash(__name__)
 server = app.server

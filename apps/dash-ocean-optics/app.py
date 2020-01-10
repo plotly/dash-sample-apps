@@ -182,10 +182,10 @@ page_layout = [
                                         size=110,
                                         color="#565656",
                                         value=0,
-                                    ),
+                                    )
                                 ],
                                 id="light-intensity-knob-container",
-                            ),
+                            )
                         ],
                         className="control",
                     ),
@@ -195,8 +195,8 @@ page_layout = [
                             html.Div(
                                 [
                                     daq.BooleanSwitch(
-                                        id="autoscale-switch", color="#565656", on=True,
-                                    ),
+                                        id="autoscale-switch", color="#565656", on=True
+                                    )
                                 ],
                                 title="Controls whether the plot automatically resizes to fit the spectra.",
                             ),
@@ -274,7 +274,7 @@ page_layout = [
                                 ]
                             )
                         ],
-                    ),
+                    )
                 ],
                 className="two-thirds column right__section",
             ),
