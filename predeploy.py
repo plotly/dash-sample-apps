@@ -27,8 +27,6 @@ app_index_string = """app.index_string = \'\'\'
 </html>
 \'\'\'\n\n"""
 
-app_name = os.environ["DASH_APP_NAME"]
-
 app_file_name = ""
 
 # get the name of the file used to run the app;
