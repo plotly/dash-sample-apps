@@ -136,40 +136,6 @@ def create_map_bubble_year(
     # min_date, max_date = min_max_date(df)
     df.head()
 
-    cases = []
-    colors = [
-        "rgb(231,229,204)",
-        "rgb(255,255,204)",
-        "rgb(255,178,102)",
-        "rgb(255,153,51)",
-        "rgb(204,0,0)",
-        "rgb(189,215,231)",
-        "rgb(107,174,214)",
-        "rgb(33,113,181)",
-        "rgb(255,102,255)",
-        "rgb(189,15,255)",
-        "rgb(121,74,244)",
-        "rgb(133,13,181)",
-        "rgb(239,243,255)",
-        "rgb(189,215,231)",
-        "rgb(107,174,214)",
-        "rgb(33,113,181)",
-    ]
-    months = {
-        1: "Jan",
-        2: "Feb",
-        3: "Mar",
-        4: "Apr",
-        5: "May",
-        6: "Jun",
-        7: "Jul",
-        8: "Aug",
-        9: "Sept",
-        10: "Oct",
-        11: "Nov",
-        12: "Dec",
-    }
-
     if map_choice == 2:
         df_old = df
         df = pd.read_csv("data/2014_world_gdp_with_codes.csv")
@@ -184,7 +150,7 @@ def create_map_bubble_year(
                 locations=df["CODE"],
                 z=df["GDP (BILLIONS)"],
                 text=df["COUNTRY"],
-                colorscale=[[0, "5541c8"], [1, "rgb(220, 220, 220)"],],
+                colorscale=[[0, "5541c8"], [1, "rgb(220, 220, 220)"]],
                 autocolorscale=False,
                 reversescale=True,
                 marker=dict(line=dict(color="rgb(180,180,180)", width=0.5)),
@@ -289,8 +255,6 @@ def create_curve_line(df, virus_name, min_date, max_date):
     if i < int(max_date):
         marks_data.append(str(max_date))
 
-    year = marks_data
-
     i = 0
     data = []
     for l_country in p_data:
@@ -351,7 +315,6 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
 
     df = pd.read_csv(metadata_file)
 
-    df.columns
     nb_genome = len(df)
 
     graph_title = create_title(virus_name, nb_genome)
@@ -412,8 +375,6 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
         "Laos": "#1E90BF",
     }
 
-    pl_SAsia = [[0.0, "#1E90FF"], [0.5, "#1E90FF"], [0.5, "#0000EE"], [1.0, "#0000EE"]]
-
     Oceania_color = {
         "American Samoa": "rgb(209,95,238)",
         "Fiji": "rgb(238,130, 238)",
@@ -434,10 +395,6 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
         "Niue": "rgb(272, 52, 158)",
         "New Zealand": "rgb(242, 71, 133)",
     }
-
-    China_color = {"China": "rgb(255,185,15"}
-
-    JapanKorea_color = {"Japan": "#fcdd04"}
 
     SubsaharanAfrica_color = {
         "Guinea": "rgb(209,95,238)",
@@ -625,32 +582,32 @@ def split_at_n_caracter(title, n):
 # Check if Files and Directories exist
 # Directory paths never go past 4 levels
 def create_paths_file(virus_name, level1="", level2="", level3=""):
-    dir = "data/" + virus_name + "/"
-    # dir/
+    directory = "data/" + virus_name + "/"
+    # directory/
     if not level1 and not level2 and not level3:
-        tree_file = dir + "nextstrain_" + virus_name + "_tree.new"
-        metadata_file = dir + "nextstrain_" + virus_name + "_metadata.csv"
-        stat_file = dir + "stat_year_nextstrain_" + virus_name + "_metadata.csv"
+        tree_file = directory + "nextstrain_" + virus_name + "_tree.new"
+        metadata_file = directory + "nextstrain_" + virus_name + "_metadata.csv"
+        stat_file = directory + "stat_year_nextstrain_" + virus_name + "_metadata.csv"
         return tree_file, metadata_file, stat_file
-    # dir/level1
+    # directory/level1
     elif not level2 and not level3:
-        dir = dir + "/" + level1 + "/"
-        tree_file = dir + "nextstrain_" + virus_name + "_" + level1 + "_tree.new"
+        directory = directory + "/" + level1 + "/"
+        tree_file = directory + "nextstrain_" + virus_name + "_" + level1 + "_tree.new"
         metadata_file = (
-            dir + "nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
+            directory + "nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
         )
         stat_file = (
-            dir + "stat_year_nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
+            directory + "stat_year_nextstrain_" + virus_name + "_" + level1 + "_metadata.csv"
         )
         return tree_file, metadata_file, stat_file
-    # dir/level1/level2
+    # directory/level1/level2
     elif not level3:
-        dir = dir + "/" + level1 + "/" + level2 + "/"
+        directory = directory + "/" + level1 + "/" + level2 + "/"
         tree_file = (
-            dir + "nextstrain_" + virus_name + "_" + level1 + "_" + level2 + "_tree.new"
+            directory + "nextstrain_" + virus_name + "_" + level1 + "_" + level2 + "_tree.new"
         )
         metadata_file = (
-            dir
+            directory
             + "nextstrain_"
             + virus_name
             + "_"
@@ -660,7 +617,7 @@ def create_paths_file(virus_name, level1="", level2="", level3=""):
             + "_metadata.csv"
         )
         stat_file = (
-            dir
+            directory
             + "stat_year_nextstrain_"
             + virus_name
             + "_"
@@ -670,11 +627,11 @@ def create_paths_file(virus_name, level1="", level2="", level3=""):
             + "_metadata.csv"
         )
         return tree_file, metadata_file, stat_file
-    # dir/level1/level2/level3
+    # directory/level1/level2/level3
     else:
-        dir = dir + "/" + level1 + "/" + level2 + "/" + level3 + "/"
+        directory = directory + "/" + level1 + "/" + level2 + "/" + level3 + "/"
         tree_file = (
-            dir
+            directory
             + "nextstrain_"
             + virus_name
             + "_"
@@ -686,7 +643,7 @@ def create_paths_file(virus_name, level1="", level2="", level3=""):
             + "_tree.new"
         )
         metadata_file = (
-            dir
+            directory
             + "nextstrain_"
             + virus_name
             + "_"
@@ -698,7 +655,7 @@ def create_paths_file(virus_name, level1="", level2="", level3=""):
             + "_metadata.csv"
         )
         stat_file = (
-            dir
+            directory
             + "stat_year_nextstrain_"
             + virus_name
             + "_"
