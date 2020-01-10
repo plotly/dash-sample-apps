@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
+cat app.py
 cat utils.py
