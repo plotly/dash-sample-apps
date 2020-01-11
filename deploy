@@ -149,8 +149,11 @@ main() {
 
   log-header "Ensuring code is up to date"
   log-info "Copying updated app source"
-  pushd "$app_dir" >/dev/null
+  pushd "$tmp_full_clone" >/dev/null
   find -not -path "./.git/*" -not -name ".git" -delete 2> /dev/null
+  popd >/dev/null
+
+  pushd "$app_dir" >/dev/null
   cp -Rfp * "$tmp_full_clone"
   [[ -f .buildpacks ]] && cp -fp .buildpacks "$tmp_full_clone/.buildpacks"
   [[ -f .gitignore ]] && cp -fp .gitignore "$tmp_full_clone/.gitignore"
