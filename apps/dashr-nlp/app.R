@@ -247,7 +247,7 @@ words_histogram <- function(df) {
       )
     ),
     layout = list(
-      title = "Word frequency",
+      #title = "Word frequency",
       xaxis = list(
         title = "",
         showlegend = FALSE,
@@ -331,8 +331,8 @@ draw_wordcloud <- function(df) {
         text = df$word,
 
         marker = list(
-          color = 'rgb(158,202,225)',
-          size = df$size
+          color = 'rgb(255,255,255)',
+          size = rep(0, nrow(df))
         ),
 
         textfont = list(
@@ -342,7 +342,7 @@ draw_wordcloud <- function(df) {
     ),
 
       layout = list(
-        title = "Word cloud",
+        #title = "Word cloud",
         xaxis = list(
           title = "",
           showlegend = FALSE,
