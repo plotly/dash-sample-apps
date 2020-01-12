@@ -256,7 +256,10 @@ words_histogram <- function(df) {
         showticklabels = FALSE,
         showgrid = FALSE
       ),
-      yaxis = list(title = "")
+      yaxis = list(
+        title = "",
+        autorange = "reversed"
+      )
     )
   ))
 
