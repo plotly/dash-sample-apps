@@ -10,7 +10,7 @@ Certain wavelengths of electromagnetic radiation correspond to frequencies that 
 [Dash DAQ](https://dash.plot.ly/dash-daq) is a data acquisition and control package built on top of Plotly's [Dash](https://plot.ly/dash/).
 
 ## Requirements
-It is advisable	to create a separate conda/pip environment running Python 3 for the app and install all of the required packages there. To do so, run (any version of Python 3 will work):
+It is advisable	to create a separate conda/pip environment running Python 3 for the app and install all of the required packages there. To do so, run:
 
 ```
 conda create -n	[your environment name] python=3.6
