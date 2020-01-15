@@ -375,7 +375,7 @@ demo_callbacks(app, demo_mode)
     [Input("learn-more-button", "n_clicks")],
 )
 def learn_more(n_clicks):
-    if n_clicks == None:
+    if n_clicks is None:
         n_clicks = 0
     if (n_clicks % 2) == 1:
         n_clicks += 1
