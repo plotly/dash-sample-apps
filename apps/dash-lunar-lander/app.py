@@ -13,12 +13,17 @@ server = app.server
 
 app.layout = html.Div(
     [
-        html.Div(children=
-                 [html.Img(src=app.get_asset_url("dash-logo.png"), id='logo'),
-                  html.H4('Dash Lunar Lander'),
-                  html.A(id='github-link', children=['View source code on Github'],
-                         href='https://github.com/plotly/dash-sample-apps/blob/master/apps/dash-lunar-lander/app.py')],
-                 className='app-header'
+        html.Div(
+            children=[
+                html.Img(src=app.get_asset_url("dash-logo.png"), id="logo"),
+                html.H4("Dash Lunar Lander"),
+                html.A(
+                    id="github-link",
+                    children=["View source code on Github"],
+                    href="https://github.com/plotly/dash-sample-apps/blob/master/apps/dash-lunar-lander/app.py",
+                ),
+            ],
+            className="app-header",
         ),
         # Display the Trajectory
         dcc.Graph(id="indicator-graphic"),
