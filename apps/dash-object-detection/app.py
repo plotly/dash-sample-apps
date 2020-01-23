@@ -379,11 +379,25 @@ def update_output(dropdown_value):
                         children="Confidence Level of Object Presence",
                         className="plot-title",
                     ),
-                    dcc.Graph(id="heatmap-confidence", figure=dict(layout={"paper_bgcolor": "rgb(249,249,249)",
-                                                                           "plot_bgcolor": "rgb(249,249,249)"})),
+                    dcc.Graph(
+                        id="heatmap-confidence",
+                        figure=dict(
+                            layout={
+                                "paper_bgcolor": "rgb(249,249,249)",
+                                "plot_bgcolor": "rgb(249,249,249)",
+                            }
+                        ),
+                    ),
                     html.P(children="Object Count", className="plot-title"),
-                    dcc.Graph(id="pie-object-count", figure=dict(layout={"paper_bgcolor": "rgb(249,249,249)",
-                                                                           "plot_bgcolor": "rgb(249,249,249)"})),
+                    dcc.Graph(
+                        id="pie-object-count",
+                        figure=dict(
+                            layout={
+                                "paper_bgcolor": "rgb(249,249,249)",
+                                "plot_bgcolor": "rgb(249,249,249)",
+                            }
+                        ),
+                    ),
                 ]
             ),
         ]
