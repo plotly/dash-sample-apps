@@ -1,0 +1,17 @@
+.app-header {
+    height: 100px;
+    width: auto;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-header #logo {
+    height: 80px;
+}
+
+.app-header #github-link {
+    font-style: italic;
+    align-self: stretch;
+}
