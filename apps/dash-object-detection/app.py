@@ -113,6 +113,7 @@ def markdown_popup():
 # Main App
 app.layout = html.Div(
     children=[
+        dcc.Interval(id="interval-updating-graphs", interval=1000, n_intervals=0),
         html.Div(id="top-bar", className="row"),
         html.Div(
             className="container",
@@ -372,16 +373,31 @@ def update_click_output(button_click, close_click):
 def update_output(dropdown_value):
     if dropdown_value == "visual":
         return [
-            dcc.Interval(id="interval-visual-mode", interval=700, n_intervals=0),
             html.Div(
                 children=[
                     html.P(
                         children="Confidence Level of Object Presence",
                         className="plot-title",
                     ),
-                    dcc.Graph(id="heatmap-confidence"),
+                    dcc.Graph(
+                        id="heatmap-confidence",
+                        figure=dict(
+                            layout={
+                                "paper_bgcolor": "rgb(249,249,249)",
+                                "plot_bgcolor": "rgb(249,249,249)",
+                            }
+                        ),
+                    ),
                     html.P(children="Object Count", className="plot-title"),
-                    dcc.Graph(id="pie-object-count"),
+                    dcc.Graph(
+                        id="pie-object-count",
+                        figure=dict(
+                            layout={
+                                "paper_bgcolor": "rgb(249,249,249)",
+                                "plot_bgcolor": "rgb(249,249,249)",
+                            }
+                        ),
+                    ),
                 ]
             ),
         ]
@@ -395,7 +411,6 @@ def update_output(dropdown_value):
 def update_detection_mode(value):
     if value == "detection":
         return [
-            dcc.Interval(id="interval-detection-mode", interval=700, n_intervals=0),
             html.Div(
                 children=[
                     html.P(
@@ -412,7 +427,7 @@ def update_detection_mode(value):
 # Updating Figures
 @app.callback(
     Output("bar-score-graph", "figure"),
-    [Input("interval-detection-mode", "n_intervals")],
+    [Input("interval-updating-graphs", "n_intervals")],
     [
         State("video-display", "currentTime"),
         State("dropdown-footage-selection", "value"),
@@ -496,7 +511,7 @@ def update_score_bar(n, current_time, footage, threshold):
 
 @app.callback(
     Output("pie-object-count", "figure"),
-    [Input("interval-visual-mode", "n_intervals")],
+    [Input("interval-updating-graphs", "n_intervals")],
     [
         State("video-display", "currentTime"),
         State("dropdown-footage-selection", "value"),
@@ -562,7 +577,7 @@ def update_object_count_pie(n, current_time, footage, threshold):
 
 @app.callback(
     Output("heatmap-confidence", "figure"),
-    [Input("interval-visual-mode", "n_intervals")],
+    [Input("interval-updating-graphs", "n_intervals")],
     [
         State("video-display", "currentTime"),
         State("dropdown-footage-selection", "value"),
