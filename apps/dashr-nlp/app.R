@@ -139,7 +139,8 @@ LEFT_COLUMN <-
       ),
       dccDropdown(
         id = 'bank-selection',
-        options = list()
+        options = list(),
+        value = top_N(get_sample_data(10), 10)$company[1]
       ),
 
       htmlLabel("Select time frame", className = "lead"),
@@ -154,7 +155,8 @@ LEFT_COLUMN <-
             as.character(c("2015 Q1", "Q2", "Q3", "Q4", "2016 Q1", "Q2", "Q3", "Q4", "2017", "Q2", "Q3", "Q4")),
             as.character(c(1420066800, 1427839200, 1435701600, 1443650400, 1451602800, 1459461600, 1467324000, 1475272800, 1483225200, 1490997600, 1498860000, 1506808800))
           )
-        )
+        ),
+        value = list(1420066800, 1506808800)
       )
     )
   )
