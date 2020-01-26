@@ -7,7 +7,7 @@ library(dashTable)
 
 source("datasource.R")
 source("word_cloud.R")
-
+source("lda.R")
 
 
 dbcCard <- function(title, widget) {
@@ -177,6 +177,19 @@ SELECTION <- htmlDiv(
 
 TEST <- htmlDiv(children = list(htmlH1(id = 'test-id')))
 
+LDA_PLACEHOLDER <- htmlDiv(
+  className = 'row',
+  children = list(
+    htmlDiv(
+      className = "col-md-12",
+      children = list(
+        htmlDiv(
+              id = "lda"
+        )
+      )
+    )
+  )
+)
 
 #### TAB
 get_tabs <- function(fig_treemap, fig_wordcloud) {
@@ -381,7 +394,8 @@ app$layout(
     children = list(
       HEADER,
       SELECTION,
-      TEST
+      TEST,
+      LDA_PLACEHOLDER
     )
   )
 )
@@ -446,6 +460,71 @@ app$callback(
             draw_wordcloud(hist_data)
         )
     )
+  }
+)
+
+
+
+app$callback(
+  output('lda', 'children'),
+  params = list(
+    input('n-selection-slider', 'value'),
+    input('bank-selection', 'value'),
+    input('time-slider', 'value')
+  ),
+  function(sample_pct, company, selected_time) {
+    time <- selected_time
+    after <- as.integer(selected_time[1])
+    before <- as.integer(selected_time[2])
+
+    df <- filtered_data(sample_pct, company, after, before)
+    df <- df[1:25,]
+
+    lda_df <- build_lda_df(df)
+    
+    lda_scatter_figure <- dccGraph(figure = list(
+      data = list(
+        list(
+          y = lda_df$V1,
+          x = lda_df$V2,
+          type = 'scatter',
+          mode = 'markers',
+          #text = df$word,
+          
+          marker = list(
+            color = 'rgb(0,0,255)'
+            # size = rep(0, nrow(lda_df))
+          ),
+          
+          textfont = list(
+            size = df$size
+          )
+        )
+      ),
+      
+      layout = list(
+        #title = "Word cloud",
+        xaxis = list(
+          title = "",
+          showlegend = FALSE,
+          zeroline = FALSE,
+          showline = FALSE,
+          showticklabels = FALSE,
+          showgrid = FALSE
+        ),
+        yaxis = list(
+          title = "",
+          showlegend = FALSE,
+          zeroline = FALSE,
+          showline = FALSE,
+          showticklabels = FALSE,
+          showgrid = FALSE
+        )
+      )
+    )
+    )
+
+    return(lda_scatter_figure)
   }
 )
 
