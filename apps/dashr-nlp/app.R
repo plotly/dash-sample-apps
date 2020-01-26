@@ -39,11 +39,11 @@ top_10_widget <- function(top_10) {
         #name='SF',
         text = top_10$company,
 
-        marker = list(
-          color = 'rgb(158,202,225)',
-          line = list(color = 'rgb(8,48,107)',
-                      width = 3)
-        ),
+        #marker = list(
+        #  color = 'rgb(158,202,225)',
+        #  line = list(color = 'rgb(8,48,107)',
+        #              width = 3)
+        #),
         text = ~company,
         textposition = 'auto',
         insidetextfont = list(size = 30, color = 'white')
@@ -238,11 +238,11 @@ words_histogram <- function(df) {
         text = df$word,
         orientation= "h",
 
-        marker = list(
-          color = 'rgb(158,202,225)',
-          line = list(color = 'rgb(8,48,107)',
-                      width = 3)
-        ),
+        #marker = list(
+        #  color = 'rgb(158,202,225)',
+        #  line = list(color = 'rgb(8,48,107)',
+        #              width = 3)
+        #),
         text = ~company,
         textposition = 'auto',
         insidetextfont = list(size = 30, color = 'white')
