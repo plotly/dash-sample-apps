@@ -40,7 +40,7 @@ app.layout = html.Div(
                 ),
                 html.P(
                     "The lunar lander model does not allowed for free rotation, instead requiring the lander to "
-                    "gimbal it’s engine and thrust to impart a rotation, giving the mass optimal control case a "
+                    "gimbal its engine and thrust to impart a rotation, giving the mass optimal control case a "
                     "distinctive hooked shape. Switching the optimizer to time optimal control results in a much "
                     "smoother and more expected shape."
                 ),
@@ -55,7 +55,9 @@ app.layout = html.Div(
             max=15000,
             value=10000,
             step=10,
-            marks={5000: {"label": "Inital Mass"}},
+            marks={
+                5000: {"label": "Inital Mass", "style": {"transform": "none"}}
+            },
         ),
         dcc.Slider(
             id="c1Slider",
@@ -63,10 +65,15 @@ app.layout = html.Div(
             max=44000 * 1.1,
             value=44000,
             step=10,
-            marks={35000: {"label": "Max Thrust"}},
+            marks={35000: {"label": "Max Thrust", "style": {"transform": "none"}}},
         ),
         dcc.Slider(
-            id="isp", min=300, max=330, value=311, step=1, marks={300: {"label": "ISP"}}
+            id="isp",
+            min=300,
+            max=330,
+            value=311,
+            step=1,
+            marks={300: {"label": "ISP", "style": {"transform": "none"}}},
         ),
         dcc.Slider(
             id="c3Slider",
@@ -74,7 +81,9 @@ app.layout = html.Div(
             max=0.1,
             value=0.0698,
             step=0.0001,
-            marks={0.01: {"label": "Max Angular Velocity"}},
+            marks={
+                0.01: {"label": "Max Angular Velocity", "style": {"transform": "none"}}
+            },
         ),
         dcc.Slider(
             id="gSlider",
@@ -82,33 +91,25 @@ app.layout = html.Div(
             max=2,
             value=1.6229,
             step=0.0001,
-            marks={0.5: {"label": "Gravity"}},
-        ),
-        html.Div(
-            [
-                html.H5(
-                    "Parameters", style={"width": "25%", "display": "inline-block"}
-                ),
-                html.H5("Outputs", style={"width": "25%", "display": "inline-block"}),
-                html.H5("Adjust Inital Position", style={"display": "inline-block"}),
-            ]
+            marks={0.5: {"label": "Gravity", "style": {"transform": "none"}}},
         ),
         html.Div(
             [
                 # Display Current Spacecraft Parameters
                 html.Div(
                     [
+                        html.H5("Parameters"),
                         html.P("Inital Mass (kg):", id="m0Out"),
                         html.P("Max Thrust (N):", id="maThrustOut"),
                         html.P("ISP (s):", id="ispOut"),
                         html.P("C3 (rad/s):", id="c3Out"),
                         html.P("Gravity (N):", id="gravOut"),
                     ],
-                    style={"width": "24%", "display": "inline-block"},
                 ),
                 html.Div(
                     [
                         # Choose Between Different Cost Functions
+                        html.H5("Outputs"),
                         dcc.RadioItems(
                             options=[
                                 {"label": "Mass Optimal Control", "value": 1},
@@ -121,38 +122,40 @@ app.layout = html.Div(
                         html.P("Final  Mass (kg):", id="mfOut"),
                         html.P("TOF (s):", id="tof"),
                     ],
-                    style={"width": "24%", "display": "inline-block"},
-                ),
-                # DPad for Adjusting the Spacecrafts Initial Position
-                html.Div(
-                    [html.Button("Left", id="Left",),],
-                    style={
-                        "width": "15.84%",
-                        "height": "100%",
-                        "display": "inline-block",
-                    },
-                    className="direction-button",
-                ),
-                html.Div(
-                    [html.Button("Up", id="Up",), html.Button("Down", id="Down",),],
-                    style={"width": "15.84%", "display": "inline-block"},
-                    className="direction-button",
                 ),
                 html.Div(
                     [
-                        html.Button(
-                            "Right",
-                            id="Right",
-                            style={
-                                "width": "100%",
-                                "height": "100%",
-                                "vertical-align": "middle",
-                            },
+                        html.H5("Adjust Initial Position"),
+                        html.Div(
+                            [
+                                # DPad for Adjusting the Spacecrafts Initial Position
+                                html.Div(
+                                    [html.Button("Left", id="Left",),],
+                                    className="direction-button",
+                                ),
+                                html.Div(
+                                    [
+                                        html.Button("Up", id="Up",),
+                                        html.Button("Down", id="Down",),
+                                    ],
+                                    style={
+                                        "display": "flex",
+                                        "flex-direction": "column",
+                                    },
+                                    className="direction-button",
+                                ),
+                                html.Div(
+                                    [html.Button("Right", id="Right",),],
+                                    className="direction-button",
+                                ),
+                            ],
+                            id="button-grid",
                         ),
                     ],
-                    style={"width": "15.84%", "display": "inline-block"},
+                    id="adjust-init-pos",
                 ),
-            ]
+            ],
+            id="bottom-cards",
         ),
     ],
     className="entire-app",
