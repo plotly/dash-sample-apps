@@ -7,11 +7,21 @@
     align-items: center;
 }
 
-.app-header #logo {
+#logo {
     height: 80px;
 }
 
 .app-header #github-link {
     font-style: italic;
-    align-self: stretch;
+}
+
+.entire-app {
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 2em;
+}
+
+.direction-button #Left, #Up, #Down {
+    width: 100%;
+    height: 100%;
 }

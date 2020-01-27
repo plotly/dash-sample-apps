@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 app = dash.Dash(__name__)
 server = app.server
 
-app.layout = html.Div(
+app.layout = html.Div(children=
     [
         html.Div(
             children=[
@@ -24,6 +24,28 @@ app.layout = html.Div(
                 ),
             ],
             className="app-header",
+        ),
+
+        html.Div(
+            [
+                html.H3("Lunar Lander Trade Study App"),
+                html.P(
+                    "This app allows for exploring the trade space of a lunar lander. You can adjust different "
+                    "parameters on the lander, like max angular velocity and inital mass, using the sliders and a new "
+                    "optimal trajectory will be recomputed in near real time using Casadi."
+                ),
+                html.A(
+                    "The lunar lander model was based off of one in this paper,",
+                    href="https://arxiv.org/pdf/1610.08668.pdf",
+                    target="_blank",
+                ),
+                html.P(
+                    "The lunar lander model does not allowed for free rotation, instead requiring the lander to "
+                    "gimbal it’s engine and thrust to impart a rotation, giving the mass optimal control case a "
+                    "distinctive hooked shape. Switching the optimizer to time optimal control results in a much "
+                    "smoother and more expected shape."
+                ),
+            ]
         ),
         # Display the Trajectory
         dcc.Graph(id="indicator-graphic"),
@@ -106,7 +128,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Button(
-                            "Left", id="Left", style={"width": "100%", "height": "100%"}
+                            "Left", id="Left",
                         ),
                     ],
                     style={
@@ -114,17 +136,19 @@ app.layout = html.Div(
                         "height": "100%",
                         "display": "inline-block",
                     },
+                    className='direction-button'
                 ),
                 html.Div(
                     [
                         html.Button(
-                            "Up", id="Up", style={"width": "100%", "height": "100%"}
+                            "Up", id="Up",
                         ),
                         html.Button(
-                            "Down", id="Down", style={"width": "100%", "height": "100%"}
+                            "Down", id="Down",
                         ),
                     ],
                     style={"width": "15.84%", "display": "inline-block"},
+                    className='direction-button'
                 ),
                 html.Div(
                     [
@@ -142,23 +166,8 @@ app.layout = html.Div(
                 ),
             ]
         ),
-        html.Div(
-            [
-                html.H3("Lunar Lander Trade Study App"),
-                html.P(
-                    "This app allows for exploring the trade space of a lunar lander. You can adjust different parameters on the lander, like max angular velocity and inital mass, using the sliders and a new optimal trajectory will be recomputed in near real time using Casadi."
-                ),
-                html.A(
-                    "The lunar lander model was based off of one in this paper,",
-                    href="https://arxiv.org/pdf/1610.08668.pdf",
-                    target="_blank",
-                ),
-                html.P(
-                    "The lunar lander model does not allowed for free rotation, instead requiring the lander to gimbal it’s engine and thrust to impart a rotation, giving the mass optimal control case a distinctive hooked shape. Switching the optimizer to time optimal control results in a much smoother and more expected shape."
-                ),
-            ]
-        ),
-    ]
+    ],
+    className='entire-app'
 )
 
 
