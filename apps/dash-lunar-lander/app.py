@@ -55,9 +55,7 @@ app.layout = html.Div(
             max=15000,
             value=10000,
             step=10,
-            marks={
-                5000: {"label": "Inital Mass", "style": {"transform": "none"}}
-            },
+            marks={5000: {"label": "Inital Mass", "style": {"transform": "none"}}},
         ),
         dcc.Slider(
             id="c1Slider",
