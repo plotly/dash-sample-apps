@@ -21,7 +21,36 @@
     padding-bottom: 2em;
 }
 
-.direction-button #Left, #Up, #Down {
+.direction-button {
+    width: 150%;
+}
+
+#Left, #Right {
     width: 100%;
-    height: 100%;
+}
+
+.slider-labels {
+    transform: none;
+}
+
+#button-grid {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: left;
+    width: 100%;
+}
+
+#adjust-init-pos {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 40%;
+}
+
+#bottom-cards {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
 }
