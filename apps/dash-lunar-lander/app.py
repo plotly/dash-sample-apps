@@ -11,8 +11,8 @@ import plotly.graph_objects as go
 app = dash.Dash(__name__)
 server = app.server
 
-app.layout = html.Div(children=
-    [
+app.layout = html.Div(
+    children=[
         html.Div(
             children=[
                 html.Img(src=app.get_asset_url("dash-logo.png"), id="logo"),
@@ -25,7 +25,6 @@ app.layout = html.Div(children=
             ],
             className="app-header",
         ),
-
         html.Div(
             [
                 html.H3("Lunar Lander Trade Study App"),
@@ -126,29 +125,18 @@ app.layout = html.Div(children=
                 ),
                 # DPad for Adjusting the Spacecrafts Initial Position
                 html.Div(
-                    [
-                        html.Button(
-                            "Left", id="Left",
-                        ),
-                    ],
+                    [html.Button("Left", id="Left",),],
                     style={
                         "width": "15.84%",
                         "height": "100%",
                         "display": "inline-block",
                     },
-                    className='direction-button'
+                    className="direction-button",
                 ),
                 html.Div(
-                    [
-                        html.Button(
-                            "Up", id="Up",
-                        ),
-                        html.Button(
-                            "Down", id="Down",
-                        ),
-                    ],
+                    [html.Button("Up", id="Up",), html.Button("Down", id="Down",),],
                     style={"width": "15.84%", "display": "inline-block"},
-                    className='direction-button'
+                    className="direction-button",
                 ),
                 html.Div(
                     [
@@ -167,7 +155,7 @@ app.layout = html.Div(children=
             ]
         ),
     ],
-    className='entire-app'
+    className="entire-app",
 )
 
 
