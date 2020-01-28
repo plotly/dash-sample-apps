@@ -47,7 +47,11 @@ app.layout = html.Div(
             ]
         ),
         # Display the Trajectory
-        dcc.Graph(id="indicator-graphic"),
+        dcc.Loading(
+            [dcc.Graph(id="indicator-graphic")],
+            style={"height": "450px", "verticalAlign": "middle"},
+            type="dot",
+        ),
         # Adjust the Spacecraft Parameters
         dcc.Slider(
             id="m0Slider",
