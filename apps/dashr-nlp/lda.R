@@ -32,7 +32,7 @@ build_lda_topics <- function(dtm) {
 }
 
 tsne_topics <- function(topics) {
-  tsne <- Rtsne(topics)
+  tsne <- Rtsne(topics, theta = 0.99)
   tsne_df <- as.data.frame(tsne$Y)
   return(tsne_df)
 }
@@ -66,5 +66,5 @@ build_lda_df <- function(df) {
 
 #ggplot(tsne_df)+geom_point(aes(x=V1, y=V2, col=as.factor(topic)))
 
-
-
+#tops <- top_terms(tsne_df)
+#top_terms_by_topic <- aggregate(term~topic, tops, paste, collapse = ',')

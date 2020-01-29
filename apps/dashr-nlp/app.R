@@ -4,6 +4,8 @@ library(dash)
 library(dashHtmlComponents)
 library(dashCoreComponents)
 library(dashTable)
+library(rlist)
+library("RColorBrewer")
 
 source("datasource.R")
 source("word_cloud.R")
@@ -169,7 +171,7 @@ SELECTION <- htmlDiv(
       className = "col-md-7",
       dbcCard(
       "Top 10 banks by number of complaints",
-        htmlDiv(id = 'top_10_widget_container', style = list(width="100%"))
+        dccLoading(id = 'top_10_widget_container', style = list(width="100%"))
       )
     )
   )
@@ -183,8 +185,12 @@ LDA_PLACEHOLDER <- htmlDiv(
     htmlDiv(
       className = "col-md-12",
       children = list(
-        htmlDiv(
+        dccLoading(
+          children = list(
+            dccGraph(
               id = "lda"
+            )
+          )
         )
       )
     )
@@ -466,7 +472,7 @@ app$callback(
 
 
 app$callback(
-  output('lda', 'children'),
+  output('lda', 'figure'),
   params = list(
     input('n-selection-slider', 'value'),
     input('bank-selection', 'value'),
@@ -477,40 +483,47 @@ app$callback(
     after <- as.integer(selected_time[1])
     before <- as.integer(selected_time[2])
 
-    df <- filtered_data(sample_pct, company, after, before)
-    df <- df[1:25,]
+    df <- filtered_data(ceiling(sample_pct / 10), company, after, before)
+    # df <- df[1:25,]
 
     lda_df <- build_lda_df(df)
     
-    lda_scatter_figure <- dccGraph(figure = list(
-      data = list(
-        list(
-          y = lda_df$V1,
-          x = lda_df$V2,
-          type = 'scatter',
-          mode = 'markers',
-          #text = df$word,
-          
-          marker = list(
-            color = 'rgb(0,0,255)'
-            # size = rep(0, nrow(lda_df))
-          ),
-          
-          textfont = list(
-            size = df$size
-          )
+    num_topics <- max(tsne_df$topic)
+    tops <- top_terms(tsne_df)
+    top_terms_by_topic <- aggregate(term~topic, tops, paste, collapse = ',')
+    colors <- brewer.pal(n = num_topics, name = "RdBu")
+    
+    graphs <- list()
+    for (i in seq(1, num_topics)) {
+      df_i <- lda_df[lda_df$topic == i, ]
+      g <- list(
+        y = df_i$V1,
+        x = df_i$V2,
+        type = 'scatter',
+        mode = 'markers',
+        #text = df$word,
+        name = top_terms_by_topic[top_terms_by_topic$topic == i, ]$term,
+        marker = list(
+          color = colors[i]
+          # size = rep(0, nrow(lda_df))
         )
-      ),
+      )
+      
+      graphs <- list.append(graphs, g)
+    }
+    
+    lda_scatter_figure <- list(
+      data = graphs,
       
       layout = list(
-        #title = "Word cloud",
+        title = "LDA",
         xaxis = list(
           title = "",
           showlegend = FALSE,
           zeroline = FALSE,
           showline = FALSE,
           showticklabels = FALSE,
-          showgrid = FALSE
+          showgrid = TRUE
         ),
         yaxis = list(
           title = "",
@@ -518,11 +531,11 @@ app$callback(
           zeroline = FALSE,
           showline = FALSE,
           showticklabels = FALSE,
-          showgrid = FALSE
+          showgrid = TRUE
         )
       )
     )
-    )
+
 
     return(lda_scatter_figure)
   }
