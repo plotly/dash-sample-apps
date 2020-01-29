@@ -1,8 +1,0 @@
-# Core
-dash==1.0.0
-gunicorn==19.9.0
-numpy==1.16.3
-pandas==0.24.2
-scikit-learn==0.21.0
-scipy==1.2.1
-pillow==6.2.1

@@ -1,5 +1,0 @@
-gunicorn==19.9.0
-dash==1.0.0
-numpy==1.16.1
-scipy==1.2.1
-dash-daq==0.3.0

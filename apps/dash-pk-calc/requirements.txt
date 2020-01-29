@@ -1,6 +1,0 @@
-# Switch into a virtual environment
-# pip install -r requirements.txt
-dash==1.0.2
-numpy>=1.16.2
-pandas>=0.24.2
-gunicorn==19.9.0

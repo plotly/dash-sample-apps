@@ -1,3 +1,0 @@
-gunicorn==19.9.0
-dash==1.0.0
-pandas==0.24.2

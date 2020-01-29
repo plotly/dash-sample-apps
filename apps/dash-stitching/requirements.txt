@@ -1,7 +1,0 @@
-dash==1.0.0
-dash-canvas>=0.0.11
-dash-table==3.7.0
-gunicorn==19.9.0
-scikit-image
-pandas
-numpy

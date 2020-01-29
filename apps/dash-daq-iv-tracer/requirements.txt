@@ -1,6 +1,0 @@
-dash==1.0.0
-gunicorn==19.9.0
-numpy==1.16.1
-dash_daq==0.1.7
-pyserial==3.4
-pyvisa==1.9.1

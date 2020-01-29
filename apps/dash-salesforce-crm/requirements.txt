@@ -1,5 +1,0 @@
-certifi==2019.6.16
-simple_salesforce==0.74.2
-pandas==0.24.2
-dash==1.0.0
-gunicorn==19.9.0

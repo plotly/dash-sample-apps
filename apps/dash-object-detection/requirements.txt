@@ -1,9 +1,0 @@
-dash==1.0.0
-gunicorn==19.9.0
-pillow==6.2.0
-scipy==1.2.1
-numpy==1.16.1
-pandas==0.24.1
-Flask==1.0.1
-dash-player==0.0.1
-pathlib==1.0.1

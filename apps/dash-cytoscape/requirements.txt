@@ -1,5 +1,0 @@
-dash==1.0.0
-pandas==0.24.1
-gunicorn==19.9.0
-dash-cytoscape==0.0.5
-biopython==1.74.0

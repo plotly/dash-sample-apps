@@ -1,5 +1,0 @@
-dash==1.0.0
-gunicorn>=19.9.0
-pandas>=0.24.2
-pathlib==1.0.1
-lorem==0.1.1

@@ -1,4 +1,0 @@
-dash==1.8.0
-casadi==3.5.1
-numpy>=1.18.1
-gunicorn==20.0.4
