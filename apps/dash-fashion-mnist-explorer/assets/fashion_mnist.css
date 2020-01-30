@@ -1,0 +1,110 @@
+body {
+    font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#app-header{
+    height: 10vh;
+    line-height: 10vh;
+    width: 100vw;
+    font-size: 24px;
+    position: fixed;
+    z-index: 1000;
+    background-color: #6dcfcd;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: 0 0 0 10px;
+    box-shadow: 2px 0px 2px gray;
+}
+
+.logo {
+  vertical-align: middle;
+  display: inline-flex;
+  height: 60px;
+  margin-right: 2em;
+}
+
+#image-card-div {
+    display: flex; 
+    justify-content: space-around;
+}
+
+#app-body {
+    padding-top: 1vh;
+    height: 80vh;
+    display: flex;
+}
+
+#control-card {
+    display:flex;
+    flex-direction: column;
+    height: 100%;
+    width: 20vw;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    padding: 10px
+}
+
+.img-card {
+    width: 40%;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    height: max-content;
+    padding: 10px 0 10px 10px;
+}
+
+.image {
+    height: 25vh;
+    display: block;
+    margin: auto;
+}
+
+.control-upload {
+    padding: 10px;
+}
+
+.control-dropdown {
+    padding: 10px;
+}
+
+.control-label {
+    
+}
+
+.upload-component {
+   width: 100%;
+   height: 60px;
+   line-height: 60px;
+   border-width: 1px;
+   border-style: dashed;
+   border-radius: 5px;
+   text-align: center;
+   margin: 10px ;
+   margin-right: 10px;
+}
+
+#img-upload {
+    margin-right: 10px;
+}
+
+a {
+    color: blue;
+    text-decoration: underline;
+}
+
+.graph-title {
+    padding-left: 2rem;
+}
+
+#output-img-upload {
+    display: flex;
+    flex-direction: column;
+}
+
+#intro-text {
+    margin: 10vh 2rem 0 2rem;
+    /*margin-left: 50px;*/
+    font-weight: normal;
+    text-align: justify;
+    /*margin-top: 10vh;*/
+}
