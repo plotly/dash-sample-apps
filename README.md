@@ -104,8 +104,6 @@ branch. Once you have passed your code review, you can merge your PR.
     - Ex. `web: gunicorn app:server`
 - **`requirements.txt`**
     - Install project dependecies in a virtual environment
-- **`runtime.txt`**
-    - App python version
 
 #### Project boilerplate
 
@@ -117,7 +115,6 @@ branch. Once you have passed your code review, you can merge your PR.
     │   ├── app.py              # dash application entry point
     │   ├── Procfile            # used for heroku deployment (how to run app)
     │   ├── requirements.txt    # project dependecies
-    │   ├── runtime.txt         # used for heroku deployment (python version)
     │   └── ...                 
     └── ...
 
