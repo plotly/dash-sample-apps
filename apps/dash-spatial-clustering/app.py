@@ -36,7 +36,7 @@ geo_colors = [
     "#fccde5",
     "#d9d9d9",
     "#bc80bd",
-    "#ccebc5"
+    "#ccebc5",
 ]
 
 bar_coloway = [
@@ -106,11 +106,11 @@ def make_base_map():
         customdata=customdata,
         name="Listings",
         hovertemplate="<b>Host: %{customdata[0]}</b><br><br>"
-                      "<b>%{customdata[1]}</b><br>"
-                      "<b>Host Since: </b>%{customdata[2]}<br>"
-                      "<b>Price: </b>%{customdata[3]} / night<br>"
-                      "<b>Person to accommodate: </b>%{customdata[4]}<br>"
-                      "<b>Yearly Availability: </b>%{customdata[5]} days/year (%{customdata[6]} %)",
+        "<b>%{customdata[1]}</b><br>"
+        "<b>Host Since: </b>%{customdata[2]}<br>"
+        "<b>Price: </b>%{customdata[3]} / night<br>"
+        "<b>Person to accommodate: </b>%{customdata[4]}<br>"
+        "<b>Yearly Availability: </b>%{customdata[5]} days/year (%{customdata[6]} %)",
     )
 
     layout = dict(
@@ -133,7 +133,7 @@ def make_base_map():
                 "y0": 0,
                 "x1": 1,
                 "y1": 1,
-                "line": {"width": 1, "color": "#B0BEC5", },
+                "line": {"width": 1, "color": "#B0BEC5"},
             }
         ],
         margin=dict(l=10, t=10, b=10, r=10),
@@ -381,9 +381,7 @@ app.layout = html.Div(
                         ),
                         html.P("Property Types"),
                         html.Hr(),
-                        dcc.Graph(
-                            id="geodemo-chart",
-                        ),
+                        dcc.Graph(id="geodemo-chart"),
                         html.P("User satisfactions"),
                         html.Hr(),
                         dcc.Graph(id="user-satisfaction"),
