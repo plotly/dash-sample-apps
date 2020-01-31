@@ -434,6 +434,8 @@ def deselect_auto(slider_value, wind_speed_figure):
     """ Toggle the auto checkbox. """
 
     # prevent update if graph has no data
+    if "data" not in wind_speed_figure:
+        raise PreventUpdate
     if not len(wind_speed_figure["data"]):
         raise PreventUpdate
 
