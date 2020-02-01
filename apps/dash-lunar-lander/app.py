@@ -39,9 +39,9 @@ app.layout = html.Div(
                     target="_blank",
                 ),
                 html.P(
-                    "The lunar lander model does not allowed for free rotation, instead requiring the lander to "
-                    "gimbal its engine and thrust to impart a rotation, giving the mass optimal control case a "
-                    "distinctive hooked shape. Switching the optimizer to time optimal control results in a much "
+                    "This model does not allow for the lander to gimbal its engine, instead it must turn the entire "
+                    "spacecraft and then thrust to cancel out any horizontal velocity, giving the mass optimal control "
+                    "case a distinctive hooked shape. Switching the optimizer to time-optimal control results in a "
                     "smoother and more expected shape."
                 ),
             ]
