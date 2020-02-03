@@ -7,6 +7,11 @@ install.packages("remotes")
 install.packages("jsonlite")
 install.packages("listenv")
 install.packages("tm")
+install.packages("topicmodels")
+install.packages("tidytext")
+install.packages("Rtsne")
+install.packages("rlist")
+install.packages("RColorBrewer")
 
 # installs magrittr, promises, R6
 remotes::install_version("httpuv", version = "1.4.5.1", repos = "http://cloud.r-project.org", upgrade="never")
