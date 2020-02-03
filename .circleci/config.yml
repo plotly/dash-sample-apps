@@ -9,13 +9,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install black
+          name: install black and flake8
           command: |
-            sudo pip install black
+            sudo pip install black flake8
       - run:
           name: run black
           command: |
             black . --check
+      - run:
+          name: run flake8
+          command: |
+            flake8 --select=E711
   deploy_to_playground:
     docker:
       - image: circleci/python:3.6-stretch

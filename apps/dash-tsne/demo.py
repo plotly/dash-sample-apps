@@ -362,7 +362,7 @@ def demo_callbacks(app):
     )
     def learn_more(n_clicks):
         # If clicked odd times, the instructions will show; else (even times), only the header will show
-        if n_clicks == None:
+        if n_clicks is None:
             n_clicks = 0
         if (n_clicks % 2) == 1:
             n_clicks += 1
