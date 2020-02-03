@@ -86,8 +86,6 @@ data_dict = {}
 for state in state_list:
     p = os.getcwd().split(os.path.sep)
     csv_path = "data/processed/df_{}_lat_lon.csv".format(state)
-    if p[-1] != "dash-medical-provider-charges":
-        csv_path = "apps/dash-medical-provider-charges/" + csv_path
     state_data = pd.read_csv(csv_path)
     data_dict[state] = state_data
 

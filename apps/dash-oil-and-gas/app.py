@@ -162,6 +162,7 @@ app.layout = html.Div(
                             id="lock_selector",
                             options=[{"label": "Lock camera", "value": "locked"}],
                             className="dcc_control",
+                            value=[],
                         ),
                         html.P("Filter by well type:", className="control_label"),
                         dcc.RadioItems(
@@ -260,6 +261,8 @@ app.layout = html.Div(
 
 # Helper functions
 def human_format(num):
+    if num == 0:
+        return "0"
 
     magnitude = int(math.log(num, 1000))
     mantissa = str(int(num / (1000 ** magnitude)))
@@ -450,14 +453,15 @@ def make_main_figure(
         )
         traces.append(trace)
 
-    if main_graph_layout is not None and "locked" in selector:
-
-        lon = float(main_graph_layout["mapbox"]["center"]["lon"])
-        lat = float(main_graph_layout["mapbox"]["center"]["lat"])
-        zoom = float(main_graph_layout["mapbox"]["zoom"])
-        layout["mapbox"]["center"]["lon"] = lon
-        layout["mapbox"]["center"]["lat"] = lat
-        layout["mapbox"]["zoom"] = zoom
+    # relayoutData is None by default, and {'autosize': True} without relayout action
+    if main_graph_layout is not None and selector is not None and "locked" in selector:
+        if "mapbox.center" in main_graph_layout.keys():
+            lon = float(main_graph_layout["mapbox.center"]["lon"])
+            lat = float(main_graph_layout["mapbox.center"]["lat"])
+            zoom = float(main_graph_layout["mapbox.zoom"])
+            layout["mapbox"]["center"]["lon"] = lon
+            layout["mapbox"]["center"]["lat"] = lat
+            layout["mapbox"]["zoom"] = zoom
 
     figure = dict(data=traces, layout=layout)
     return figure

@@ -117,3 +117,7 @@ body {
         width: 50%;
     }
 }
+
+.CalendarMonth_table td {
+  padding: unset;  
+}

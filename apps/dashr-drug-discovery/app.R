@@ -9,13 +9,9 @@ if (appName != ""){
 
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-
-  setwd(sprintf("./app/apps/%s", appName))
 }
 
 app <- Dash$new()
-
-setwd(sprintf("./app/apps/%s", appName))
 
 df <- read.csv('./data/small_molecule_drugbank.csv', header = TRUE, sep = ",")
 

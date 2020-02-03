@@ -6,7 +6,6 @@ from copy import deepcopy
 import csv
 import sys
 import pathlib
-import importlib
 
 import boto3
 import dash
@@ -16,8 +15,8 @@ import requests
 from dash.dependencies import Input, Output, State
 from flask_caching import Cache
 
-drc = importlib.import_module("apps.dash-image-processing.dash_reusable_components")
-utils = importlib.import_module("apps.dash-image-processing.utils")
+import dash_reusable_components as drc
+import utils
 
 DEBUG = True
 LOCAL = False

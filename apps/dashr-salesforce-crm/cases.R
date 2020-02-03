@@ -1,3 +1,4 @@
+
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
@@ -680,5 +681,3 @@ app$callback(output = list(id = 'cases_df', property = 'children'),
              })
 
 #app$run_server()
-
-

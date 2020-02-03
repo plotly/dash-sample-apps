@@ -181,7 +181,7 @@ def create_layout(app):
                                         value="mnist_3000",
                                     ),
                                     NamedSlider(
-                                        name="Number of Iterations",
+                                        name="Number Of Iterations",
                                         short="iterations",
                                         min=250,
                                         max=1000,
