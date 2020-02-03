@@ -1,0 +1,197 @@
+#!/usr/bin/env bash
+[[ -n "$TRACE" ]] && set -x
+set -eo pipefail
+
+readonly SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+readonly APPS_DIR_RELATIVE="${APPS_DIR_RELATIVE:-/apps}"
+readonly APPS_DIR="${APPS_DIR:-${SOURCE_DIR}${APPS_DIR_RELATIVE}}"
+readonly DASH_ENTERPRISE_URL="${DASH_ENTERPRISE_URL:-https://dash-playground.plotly.host}"
+readonly CREATE_APP="${CREATE_APP:-false}"
+readonly ALLOW_DASHR="${ALLOW_DASHR:-false}"
+
+log-header() {
+  declare desc="Log header formatter";
+  echo "====> $*"
+}
+
+log-info() {
+  declare desc="Log info formatter";
+  echo "      $*"
+}
+
+log-warn() {
+  declare desc="Log warn formatter";
+  echo " ?    $*" 1>&2
+}
+
+log-fail() {
+  declare desc="Log fail formatter";
+  echo " !    $*" 1>&2
+  exit 1
+}
+
+log-exit() {
+  declare desc="Log exit formatter";
+  echo " !    $*" 1>&2
+  exit 0
+}
+
+fn-check-env() {
+  declare APP="$1"
+
+  if grep -Fxq "$APP" "$SOURCE_DIR/.deployignore"; then
+    log-exit "App $APP is in the .deployignore file, skipping deploy"
+  fi
+
+  if ! command -v "dds-client" >/dev/null; then
+    log-fail "dds-client binary not found"
+  fi
+
+  if [[ -z "$DASH_ENTERPRISE_API_KEY" ]]; then
+    log-fail "DASH_ENTERPRISE_API_KEY is not defined"
+  fi
+
+  if [[ -z "$DASH_ENTERPRISE_USERNAME" ]]; then
+    log-fail "DASH_ENTERPRISE_USERNAME is not defined"
+  fi
+
+  if [[ -z "$DASH_ENTERPRISE_URL" ]]; then
+    log-fail "DASH_ENTERPRISE_URL is not defined"
+  fi
+
+  if [[ -z "$CIRCLE_SHA1" ]]; then
+    log-fail "CIRCLE_SHA1 is not defined"
+  fi
+}
+
+main() {
+  declare APP="$1"
+  local app_dir="$APPS_DIR/$APP"
+  local remote_url="$DASH_ENTERPRISE_URL/GIT/$APP"
+  local is_dashr=false
+  local tmp_shallow_clone="$(mktemp -d -t apps-XXXXXXXXXX)"
+  local tmp_full_clone="$(mktemp -d -t apps-XXXXXXXXXX)"
+  local force_push=false
+  local push_code=false
+  local exit_code remote_sha
+  trap "rm -rf '$tmp_shallow_clone' '$tmp_full_clone' >/dev/null" RETURN INT TERM EXIT
+
+  fn-check-env "$APP"
+
+  if [[ -z "$APP" ]]; then
+    log-fail "No app name specified"
+  fi
+
+  if [[ ! -d "$app_dir" ]]; then
+    log-fail "Invalid app name: $APP"
+  fi
+
+  if [[ "$APP" =~ "dashr" ]]; then
+    is_dashr=true
+    if [[ "$ALLOW_DASHR" != "true" ]]; then
+      log-exit "App $APP is a dashr app, skipping deploy"
+    fi
+  fi
+
+  if [[ ! -d "$app_dir/assets" ]]; then
+    log-fail "App $APP is missing the assets directory"
+  fi
+
+  log-header "Deploying $APP"
+  log-info "dashr: ${is_dashr}"
+  if [[ "$is_dashr" == "false" ]]; then
+    local celery_version="$(cat "$app_dir/requirements.txt" | grep -E "^celery=")"
+    local redis_version="$(cat "$app_dir/requirements.txt" | grep -E "^redis=")"
+
+    log-info "dash python version: $(cat "$app_dir/requirements.txt" | grep -E "^dash=")"
+    [[ -n "$celery_version" ]] && log-info "celery python version: $(cat "$app_dir/requirements.txt" | grep -E "^celery=")"
+    [[ -n "$redis_version" ]] && log-info "redis python version: $(cat "$app_dir/requirements.txt" | grep -E "^redis=")"
+
+    if [[ -n "$celery_version" ]] || [[ -n "$redis_version" ]]; then
+      log-exit "Skipping service that requires a redis instance"
+    fi
+  fi
+
+  if ! dds-client apps:exists --name "$APP" >/dev/null 2>&1; then
+    log-info "exists: false"
+    if [[ "$CREATE_APP" == "true" ]]; then
+      log-warn "$APP not found, creating"
+      dds-client apps:create --name "$APP"
+    else
+      log-exit "Deploy failed because there is no such app on Dash Gallery: $APP. Please use the web interface to create an app with this name"
+    fi
+  else
+    log-info "exists: true"
+  fi
+
+  if ! git clone --depth 1 "$remote_url" "$tmp_shallow_clone" 2>/dev/null; then
+    log-fail "Unable to clone repository"
+  fi
+
+  remote_sha=$(git -C "$tmp_shallow_clone" log --pretty=format:"%h" 2>/dev/null || true)  
+  log-info "remote-sha: $remote_sha"
+  if [[ -z "$remote_sha" ]]; then
+    log-header "Initializing repository"
+    git -C "$tmp_full_clone" init -q
+    git -C "$tmp_full_clone" remote rm origin 2>/dev/null || true
+    git -C "$tmp_full_clone" remote add origin "$remote_url"
+  elif git show "$remote_sha" >/dev/null 2>&1; then
+    log-header "Existing repository uses old monorepo, recreating"
+    git -C "$tmp_full_clone" init -q
+    git -C "$tmp_full_clone" remote rm origin 2>/dev/null || true
+    git -C "$tmp_full_clone" remote add origin "$remote_url"
+    force_push=true
+  else
+    if ! git clone "$remote_url" "$tmp_full_clone" 2>/dev/null; then
+      log-fail "Unable to clone repository"
+    fi
+  fi
+
+  log-header "Ensuring code is up to date"
+  log-info "Copying updated app source"
+  pushd "$tmp_full_clone" >/dev/null
+  find -not -path "./.git/*" -not -name ".git" -delete 2> /dev/null
+  popd >/dev/null
+
+  pushd "$app_dir" >/dev/null
+  cp -Rfp * "$tmp_full_clone"
+  [[ -f .buildpacks ]] && cp -fp .buildpacks "$tmp_full_clone/.buildpacks"
+  [[ -f .gitignore ]] && cp -fp .gitignore "$tmp_full_clone/.gitignore"
+  popd >/dev/null
+
+  if [[ "$is_dashr" == false ]]; then
+    log-info "Python app detected, injecting common python-specific files"
+    cp -p "$SOURCE_DIR/app.json" "$tmp_full_clone/app.json"
+    cp -p "$SOURCE_DIR/predeploy.py" "$tmp_full_clone/predeploy.py"
+    test -f "$tmp_full_clone/runtime.txt" || cp -p "$SOURCE_DIR/runtime.txt" "$tmp_full_clone/runtime.txt"
+  fi
+
+  set +e
+  git -C "$tmp_full_clone" status | grep -Eo "working (directory|tree) clean" &> /dev/null
+  exit_code="$?"
+  set -e
+
+  if [[ "$exit_code" -ne 0 ]]; then
+    pushd "$tmp_full_clone" >/dev/null
+    push_code=true
+    git add .
+    git commit -qm "Deployed commit: $CIRCLE_SHA1"
+    popd >/dev/null
+  fi
+
+  if [[ "$push_code" != "true" ]]; then
+    log-header "🤜 App not updated, skipping deploy"
+    log-info "Check app out at $DASH_ENTERPRISE_URL/$APP/"
+    return 0
+  fi
+
+  if [[ "$force_push" == "true" ]]; then
+    log-header "Deploying via force push"
+    git -C "$tmp_full_clone" push --force origin master
+  else
+    log-header "Deploying"
+    git -C "$tmp_full_clone" push origin master
+  fi
+}
+
+main "$@"

@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css?family=Asap&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, h1, h2, h3, h4, h5, h6, p {
+  font-family: 'Asap', sans-serif;
+}
+
+body {
+  font-size: 1.5em;
+  line-height: 1.6;
+  font-weight: 400;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+}
+
+.light-main-page{
+  background-color: #F3F5F9;
+  color: #222;
+}
+
+.dark-main-page{
+  background-color: #051C3C;
+  color: #ffffff;
+}
+
+input[type="radio"] {
+  display: inline;
+  margin: 0px 5px;
+}
+
+.left-panel, .right-panel {
+  padding: 0rem 2rem;
+}
+
+.light-card{
+  background-color: #E9EEF6;
+  width: 90%;
+  margin: 32px auto;
+  padding: 24px;
+}
+
+.dark-card{
+  background-color: #00204E;
+  width: 90%;
+  margin: 32px auto;
+  padding: 24px;
+}
+
+.oscope-info {
+  margin: 15px;
+}
+
+#new-tab{
+  height: 20px;
+  width: 20px;
+  padding: 2px;
+  line-height: 1px;
+  color: inherit;
+}
+
+#power-title, #function-title, #graph-title{
+  font-weight: 400;
+  font-size: 2.1rem;
+  margin: 12px 0;
+}
+
+.power-controllers{
+  margin: 15px 0px;
+}
+
+.seven.right-panel > div:nth-child(2) > div > div {
+  text-transform: uppercase;
+  font-weight: 800;
+  color: initial;
+}
+
+._dash-undo-redo {
+  display: none
+}
+
+.graph-param {
+  text-align: center;
+  font-size: 16px;
+  padding: 0 5px;
+  line-height: 20px;
+  margin: 0 20%;
+}
+
+.oscillator-tabs {
+  height: 80%;
+  font-weight: bold;
+  overflow-x: auto;
+}
+
+#color-picker{
+  margin-top: 20px;
+  background-color: inherit;
+}
+
+#color-picker > div {
+  background-color: inherit !important;
+}
+
+.banner{
+  background-color: #00204E;
+}
+
+.banner h2{
+  color: white;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 22px;
+  margin-top: 29px;
+  font-weight: 400;
+}
+
+.logo{
+  position: relative;
+  height: 45px;
+  margin: 1.8rem;
+  float: left;
+}
+
+.div-power-buttons{
+  margin: 15px 0;
+}
+
+.banner-logo-and-title{
+  display: inline-block
+}
+
+.toggleDiv{
+  float: right;
+  display: inline-block;
+  margin: 24px;
+}
+
+
+#function-type{
+  display: flex;
+  width: 80%;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+  padding-top: 24px;
+}
+
+.knobs, .led-displays{
+  margin-left: 20%;
+  text-align: center;
+}
+
+.radio-items{
+  display: flex;
+  width: 80%;
+  align-items: center;
+  justify-content: space-between;
+  margin: 30px auto 0px auto;
+}
+
+.five.columns{
+  width: 40%;
+}
+
+.seven.columns{
+  width: 60%;
+}
+
+.columns{
+  margin: 0px;
+}
+
+
+
+@media only screen and (max-width: 768px){
+  .six.columns {
+    width: 48%;
+  }
+
+  .four.columns{
+    width: 30%;
+  }
+
+  .five.columns, .seven.columns{
+    width: 100%
+  }
+
+  .left-panel, .right-panel{
+    width: 100%;
+    padding: 0;
+  }
+
+  .right-panel, .seven.columns{
+    margin-left: 0px;
+  }
+
+  .Title{
+    padding-top: 16px;
+    padding-left: 32px;
+  }
+
+  .banner h2{
+    margin-top: 5px;
+    margin-left: 16px;
+  }
+
+  .left-panel-controls{
+    width: 60%;
+    display: inline-block;
+  }
+
+  .left-panel-color-picker{
+    width: 40%;
+    display: inline-block;
+    float: right;
+  }
+}
+
+@media only screen and (max-width: 550px){
+  .knobs, .led-displays{
+    display: flex;
+    width: 80%;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 18%;
+
+  }
+  .four.columns{
+    margin: 0;
+  }
+  .Title{
+    padding-left: 0;
+  }
+
+  .left-panel-controls{
+    width: 100%;
+    display: block;
+  }
+
+  .left-panel-color-picker{
+    width: 100%;
+    display: block;
+    float: none;
+  }
+  
+  .logo{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    float: none;
+  }
+
+  .banner h2{
+    text-align: center;
+    margin: 0 10px;
+  }
+
+  #toggleTheme{
+    width: fit-content;
+    margin: auto;
+  }
+
+  .toggleDiv{
+    margin: 12px auto;
+    width: 100%;
+  }
+
+
+
+}

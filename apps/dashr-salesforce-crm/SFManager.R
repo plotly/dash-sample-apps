@@ -2,7 +2,6 @@
 
 library(devtools)
 library(salesforcer)
-setwd(sprintf("/app/apps/%s", appName))
 
 #we dont need to create the dict_to_df function because our outputs are already in df form. 
 
@@ -73,7 +72,3 @@ add_cases <- function(account_id,origin,reason,subject,contact_id,case_type,
               ContactId = contact_id, Type = case_type, Status = status, 
               Description = description, Priority = priority)
   rforcecom.create(session, objectName, fields)}
-
-
-
-

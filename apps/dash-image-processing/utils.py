@@ -8,8 +8,6 @@ import dash_reusable_components as drc
 
 from PIL import Image, ImageFilter, ImageDraw, ImageEnhance
 
-# drc = importlib.import_module("apps.dash-iamge-processing.dash_reusable_components")
-
 #
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 

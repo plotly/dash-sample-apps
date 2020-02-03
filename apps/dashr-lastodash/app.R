@@ -19,7 +19,6 @@ if (appName != ""){
     DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
     DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix
   )
-  setwd(sprintf("/app/apps/%s", appName))
 }
 
 app <- Dash$new(name = 'DashR LAS Report')

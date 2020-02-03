@@ -8,10 +8,12 @@ library(lubridate)
 library(salesforcer)
 source('SFManager.R')
 source('functions.R')
+
 accounts = get_accounts()
 contacts = get_contacts()
 users = get_users()
 cases = get_cases()
+
 source('cases.R')
 source('leads.R')
 source('opportunties.R')
@@ -22,8 +24,6 @@ if (appName != ""){
 
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-
-  setwd(sprintf("/app/apps/%s", appName))
 }
 
 app = Dash$new()
@@ -81,6 +81,4 @@ if (appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
   app$run_server()}
-
-
 

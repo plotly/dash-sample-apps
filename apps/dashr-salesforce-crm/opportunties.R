@@ -670,10 +670,3 @@ app$callback(output = list(id ="top_lost_opportunities", property = "children"),
              })
 
 #app$run_server()
-
-
-
-
-
-
-

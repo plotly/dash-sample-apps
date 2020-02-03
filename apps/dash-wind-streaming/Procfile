@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath apps/dash-wind-streaming app:server
+web: gunicorn app:server

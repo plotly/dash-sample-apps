@@ -1,4 +1,3 @@
-import importlib
 import pathlib
 import os
 
@@ -11,7 +10,6 @@ import dash_html_components as html
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
 
-# constants = importlib.import_module("apps.dash-oil-gas-ternary.constants")
 import constants
 
 # app initialize

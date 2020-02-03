@@ -17,7 +17,7 @@
 */
 
 /* PLotly.js 
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
+–––––––––––––––––––––––––––––––––––––––––––––––– */
 /* plotly.js's modebar's z-index is 1001 by default
  * https://github.com/plotly/plotly.js/blob/7e4d8ab164258f6bd48be56589dacd9bdd7fded2/src/css/_modebar.scss#L5
  * In case a dropdown is above the graph, the dropdown's options
@@ -25,7 +25,7 @@
  * Increase the select option's z-index
  */
 
-/* This was actually not quite right -
+/* This was actually not quite right ----
    dropdowns were overlapping each other (edited October 26)
 
 .Select {

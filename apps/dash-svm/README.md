@@ -4,7 +4,7 @@ This is a learning tool and exploration app made using the Dash interactive Pyth
 
 Dash abstracts away all of the technologies and protocols required to build an interactive web-based application and is a simple and effective way to bind a user interface around your Python code. To learn more check out our [documentation](https://plot.ly/dash).
 
-Try out the [demo app here](https://dash-svm.plot.ly/).
+Try out the [demo app here](https://dash-gallery.plotly.host/dash-svm/).
 
 ![alt text](images/screenshot.png "Screenshot")
 
@@ -32,7 +32,7 @@ source venv/bin/activate
 
 Clone the git repo, then install the requirements with pip
 ```
-git clone https://github.com/plotly/dash-sample-apps/apps/dash-svm.git
+git clone https://github.com/plotly/dash-sample-apps
 cd dash-sample-apps/apps/dash-svm
 pip install -r requirements.txt
 ```
@@ -62,7 +62,7 @@ An SVM is a popular Machine Learning model used in many different fields. You ca
 
 * **Xing Han Lu** - *Initial Work* - [@xhlulu](https://github.com/xhlulu)
 * **Matthew Chan** - *Code Review* - [@matthewchan15](https://github.com/matthewchan15)
-* **Yunke Xiao** - *Redesign* - [@YunkXiao](https://github.com/YunkeXiao)
+* **Yunke Xiao** - *Redesign* - [@YunkeXiao](https://github.com/YunkeXiao)
 * **celinehuang** - *Code Review* - [@celinehuang](https://github.com/celinehuang)
 
 

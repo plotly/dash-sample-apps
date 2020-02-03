@@ -12,8 +12,9 @@ spec:
         name: omnisci-node
     spec:
       containers:
-      - image: gcr.io/plotly-hosting/omnisci_db
+      - image: gcr.io/plotly-hosting/omnisci_db:2
         name: omnisci-node
+        imagePullPolicy: Always
         ports:
         - containerPort: 6274
 
