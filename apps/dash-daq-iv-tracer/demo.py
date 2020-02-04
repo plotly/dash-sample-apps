@@ -482,7 +482,7 @@ def generate_modal():
     
                             **How to use the mock app**
     
-                            First choose if you want to source (apply) current or voltage, using the toggle switch under **Sourcing** label. 
+                            First choose if you want to source (apply) current or voltage, using the toggle switch under **Sourcing** label.
                             Then choose if you want to operate in a **single measurement mode** or in a **sweep mode**.
     
                             ***Single measurement mode***

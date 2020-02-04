@@ -12,7 +12,7 @@ import pandas as pd
 import sqlalchemy as db
 from dash.dependencies import Input, Output, State
 
-### SQL Engine
+# SQL Engine
 disk_engine = db.create_engine(
     "sqlite:///data_entry.db", connect_args={"check_same_thread": False}
 )
