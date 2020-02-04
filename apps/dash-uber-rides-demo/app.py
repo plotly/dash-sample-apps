@@ -72,7 +72,7 @@ app.layout = html.Div(
                         ),
                         html.H2("DASH - UBER DATA APP"),
                         html.P(
-                            """Select different days using the date picker or by selecting 
+                            """Select different days using the date picker or by selecting
                             different time frames on the histogram."""
                         ),
                         html.Div(
