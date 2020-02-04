@@ -575,7 +575,7 @@ def create_tree(virus_name, tree_file, metadata_file, ord_by):
 
 
 def split_at_n_caracter(title, n):
-    sentences = "<br>".join([title[i : i + n] for i in range(0, len(title), n)])
+    sentences = "<br>".join([title[i: i + n] for i in range(0, len(title), n)])
     return sentences
 
 
