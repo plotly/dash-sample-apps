@@ -437,13 +437,13 @@ def candlestick_trace(df):
 
 # For buy/sell modal
 def ask_modal_trace(currency_pair, index):
-    df = currency_pair_data[currency_pair].iloc[index - 10: index]  # returns ten rows
+    df = currency_pair_data[currency_pair].iloc[index - 10 : index]  # returns ten rows
     return go.Scatter(x=df.index, y=df["Ask"], mode="lines", showlegend=False)
 
 
 # For buy/sell modal
 def bid_modal_trace(currency_pair, index):
-    df = currency_pair_data[currency_pair].iloc[index - 10: index]  # returns ten rows
+    df = currency_pair_data[currency_pair].iloc[index - 10 : index]  # returns ten rows
     return go.Scatter(x=df.index, y=df["Bid"], mode="lines", showlegend=False)
 
 
@@ -1143,8 +1143,8 @@ def generate_update_orders_div_callback():
         close_id = args[-2]
         args = args[:-2]  # contains list of orders for each pair + asks + bids
         len_args = len(args)
-        current_bids = args[len_args // 3: 2 * len_args]
-        current_asks = args[2 * len_args // 3: len_args]
+        current_bids = args[len_args // 3 : 2 * len_args]
+        current_asks = args[2 * len_args // 3 : len_args]
         args = args[: len_args // 3]
         ids = []
 
