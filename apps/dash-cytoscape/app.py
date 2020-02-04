@@ -175,7 +175,7 @@ app.layout = html.Div(
                         html.P(
                             """
                             Dash Cytoscape is a graph visualization component for creating easily customizable,
-                            high-performance interactive, and web-based networks. 
+                            high-performance interactive, and web-based networks.
                             """
                         ),
                         html.A(
