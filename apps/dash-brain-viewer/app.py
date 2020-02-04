@@ -239,11 +239,11 @@ def add_annotation(x, y, z):
 
 
 def marker_in_points(points, marker):
-    """ 
+    """
     Checks if the marker is in the list of points.
     
     :params points: a list of dict that contains x, y, z
-    :params marker: a dict that contains x, y, z 
+    :params marker: a dict that contains x, y, z
     :returns: index of the matching marker in list
     """
 

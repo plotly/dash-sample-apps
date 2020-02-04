@@ -248,15 +248,15 @@ def generate_modal():
                                 """
                         ###### What is this mock app about?
 
-                        This is a dashboard for monitoring real-time process quality along manufacture production line. 
+                        This is a dashboard for monitoring real-time process quality along manufacture production line.
 
                         ###### What does this app shows
 
                         Click on buttons in `Parameter` column to visualize details of measurement trendlines on the bottom panel.
 
-                        The sparkline on top panel and control chart on bottom panel show Shewhart process monitor using mock data. 
-                        The trend is updated every other second to simulate real-time measurements. Data falling outside of six-sigma control limit are signals indicating 'Out of Control(OOC)', and will 
-                        trigger alerts instantly for a detailed checkup. 
+                        The sparkline on top panel and control chart on bottom panel show Shewhart process monitor using mock data.
+                        The trend is updated every other second to simulate real-time measurements. Data falling outside of six-sigma control limit are signals indicating 'Out of Control(OOC)', and will
+                        trigger alerts instantly for a detailed checkup.
                         
                         Operators may stop measurement by clicking on `Stop` button, and edit specification parameters by clicking specification tab.
 

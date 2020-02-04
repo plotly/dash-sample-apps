@@ -29,7 +29,7 @@ energyShare = pd.read_csv(DATA_PATH.joinpath("energyShare.csv"))
 adjustedSales = pd.read_csv(DATA_PATH.joinpath("adjustedSales.csv"))
 growthGdp = pd.read_csv(DATA_PATH.joinpath("growthGdp.csv"))
 
-## Colours
+# Colours
 color_1 = "#003399"
 color_2 = "#00ffff"
 color_3 = "#002277"
@@ -186,7 +186,7 @@ app.layout = html.Div(
             ],
             className="page",
         ),
-        ## Page 2
+        # Page 2
         html.Div(
             [
                 html.Div(
@@ -213,7 +213,7 @@ app.layout = html.Div(
             ],
             className="page",
         ),
-        ## Page 3
+        # Page 3
         html.Div(
             [
                 html.Div(
@@ -286,7 +286,7 @@ app.layout = html.Div(
             ],
             className="page",
         ),
-        ## Page 4
+        # Page 4
         html.Div(
             [
                 html.Div(
@@ -2078,7 +2078,7 @@ app.layout = html.Div(
                                                                         ],
                                                                         "showgrid": False,
                                                                         "showline": True,
-                                                                        #'tickangle': "auto",
+                                                                        # 'tickangle': "auto",
                                                                         "tickfont": {
                                                                             "size": 8
                                                                         },

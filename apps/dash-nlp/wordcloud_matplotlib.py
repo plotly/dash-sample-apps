@@ -29,7 +29,7 @@ def fig_to_uri(in_fig, close_all=True, **save_args):
 def create_wordcloud(df):
     complaints_text = list(df["Consumer complaint narrative"].dropna().values)
 
-    ## join all documents in corpus
+    # join all documents in corpus
     text = " ".join(list(complaints_text))
     print("Complaints received")
     print(len(complaints_text))

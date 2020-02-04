@@ -39,9 +39,9 @@ app.layout = html.Div(
                     target="_blank",
                 ),
                 html.P(
-                    "The lunar lander model does not allowed for free rotation, instead requiring the lander to "
-                    "gimbal its engine and thrust to impart a rotation, giving the mass optimal control case a "
-                    "distinctive hooked shape. Switching the optimizer to time optimal control results in a much "
+                    "This model does not allow for the lander to gimbal its engine, instead it must turn the entire "
+                    "spacecraft and then thrust to cancel out any horizontal velocity, giving the mass optimal control "
+                    "case a distinctive hooked shape. Switching the optimizer to time-optimal control results in a "
                     "smoother and more expected shape."
                 ),
             ]
@@ -397,10 +397,10 @@ def wrapperRWSC(IC, args, optimal):
     ig_flat = casadi.vertcat(*[casadi.reshape(e, -1, 1) for e in ig_list])
 
     # Generating Defect Vector
-    xLow = states[0 : (nodes - 1), :]
+    xLow = states[0: (nodes - 1), :]
     xHigh = states[1:nodes, :]
 
-    contLow = controls[0 : (nodes - 1), :]
+    contLow = controls[0: (nodes - 1), :]
     contHi = controls[1:nodes, :]
     contMid = (contLow + contHi) / 2
 
