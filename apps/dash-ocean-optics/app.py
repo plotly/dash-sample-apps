@@ -138,24 +138,24 @@ base_intro = """This app was created to act as an interface for an Ocean Optics 
             light source.
 """
 
-extend_intro = """This app was created to act as an interface for an Ocean Optics 
-spectrometer. Use controlling elements to control various 
-properties of the instrument; the integration time, the number of 
+extend_intro = """This app was created to act as an interface for an Ocean Optics
+spectrometer. Use controlling elements to control various
+properties of the instrument; the integration time, the number of
 scans to average over, the strobe and strobe period, and the
 light source.
 
-Clicking "Update" after putting in the desired settings will 
-result in your parameter settings being sent to the device. A status message 
-will appear below the button indicating which commands, if any, 
+Clicking "Update" after putting in the desired settings will
+result in your parameter settings being sent to the device. A status message
+will appear below the button indicating which commands, if any,
 were unsuccessful; below the unsuccessful commands, a list of
 successful commands can be found.
            
-The dial labelled "Light intensity" will affect the current 
-selected light source, if any. The switch labelled autoscale 
-plot will change the axis limits of the plot to fit all of the 
-data. Please note that the animations and speed of the graph will 
-improve if this autoscale is turned off, and that it will not be 
-possible to zoom in on any portion of the plot if it is turned 
+The dial labelled "Light intensity" will affect the current
+selected light source, if any. The switch labelled autoscale
+plot will change the axis limits of the plot to fit all of the
+data. Please note that the animations and speed of the graph will
+improve if this autoscale is turned off, and that it will not be
+possible to zoom in on any portion of the plot if it is turned
 on.
 """
 
