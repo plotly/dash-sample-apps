@@ -38,12 +38,6 @@ tsne_topics <- function(topics) {
 }
 
 
-
-#stoplist_funct(df$complaint)
-
-#tm_map(df$complaint[1])
-#df$complaint[1]
-
 top_terms <- function(topics) {
   ap_top_terms <- topics %>%
     group_by(topic) %>%
@@ -60,11 +54,3 @@ build_lda_df <- function(df) {
   return(cbind(ap_topics, tsne_df))
 }
 
-#df <- filtered_data(100, "Harris & Harris, Ltd.", 0, as.integer(Sys.time()))
-
-#tsne_df <- build_lda_df(df)
-
-#ggplot(tsne_df)+geom_point(aes(x=V1, y=V2, col=as.factor(topic)))
-
-#tops <- top_terms(tsne_df)
-#top_terms_by_topic <- aggregate(term~topic, tops, paste, collapse = ',')

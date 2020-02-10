@@ -296,10 +296,6 @@ words_treemap <- function(df) {
     f <- dccGraph(figure = list(
         data = list(
             list(
-                # labels=word_list_top, parents=[""] * len(word_list_top), values=freq_list_top
-                  #labels = df$word,
-                 # text = df$word,
-                # values = rep(25, nrow(df)), #df$freq * 100,
                 labels  = list("AAA", "BBB"),
                 parents = list("", ""),
                 type = 'treemap',
@@ -307,24 +303,9 @@ words_treemap <- function(df) {
                 textinfo = "label+value+percent parent+percent entry",
                 outsidetextfont = list(size= 20, color= "darkblue"),
                 marker = list(line= list(width= 2))
-                #,
-                #pathbar = list(visible= False}
 
               )
           )
-        #,
-          # layout = list(
-          #   title = "Word frequency",
-          #   xaxis = list(
-          #     title = "",
-          #     showlegend = FALSE,
-          #     zeroline = FALSE,
-          #     showline = FALSE,
-          #     showticklabels = FALSE,
-          #     showgrid = FALSE
-          #   ),
-          #   yaxis = list(title = "")
-          # )
         ))
 
       return(f)
