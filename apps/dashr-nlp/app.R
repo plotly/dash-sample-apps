@@ -487,9 +487,9 @@ app$callback(
     # df <- df[1:25,]
 
     lda_df <- build_lda_df(df)
-    
-    num_topics <- max(tsne_df$topic)
-    tops <- top_terms(tsne_df)
+
+    num_topics <- max(lda_df$topic)
+    tops <- top_terms(lda_df)
     top_terms_by_topic <- aggregate(term~topic, tops, paste, collapse = ',')
     colors <- brewer.pal(n = num_topics, name = "RdBu")
     
