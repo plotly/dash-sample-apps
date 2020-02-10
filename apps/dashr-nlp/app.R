@@ -472,7 +472,7 @@ app$callback(
     num_topics <- max(lda_df$topic)
     tops <- top_terms(lda_df)
     top_terms_by_topic <- aggregate(term~topic, tops, paste, collapse = ',')
-    colors <- brewer.pal(n = num_topics, name = "RdBu")
+    colors <- brewer.pal(n = num_topics, name = "Dark2")
     
     graphs <- list()
     for (i in seq(1, num_topics)) {
