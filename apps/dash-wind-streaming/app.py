@@ -5,7 +5,6 @@ import datetime as dt
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.graph_objs as go
 
 from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
@@ -61,8 +60,8 @@ app.layout = html.Div(
                         ),
                         dcc.Graph(
                             id="wind-speed",
-                            figure=go.Figure(
-                                layout=go.Layout(
+                            figure=dict(
+                                layout=dict(
                                     plot_bgcolor=app_color["graph_bg"],
                                     paper_bgcolor=app_color["graph_bg"],
                                 )
@@ -128,8 +127,8 @@ app.layout = html.Div(
                                 ),
                                 dcc.Graph(
                                     id="wind-histogram",
-                                    figure=go.Figure(
-                                        layout=go.Layout(
+                                    figure=dict(
+                                        layout=dict(
                                             plot_bgcolor=app_color["graph_bg"],
                                             paper_bgcolor=app_color["graph_bg"],
                                         )
@@ -150,8 +149,8 @@ app.layout = html.Div(
                                 ),
                                 dcc.Graph(
                                     id="wind-direction",
-                                    figure=go.Figure(
-                                        layout=go.Layout(
+                                    figure=dict(
+                                        layout=dict(
                                             plot_bgcolor=app_color["graph_bg"],
                                             paper_bgcolor=app_color["graph_bg"],
                                         )
@@ -192,7 +191,8 @@ def gen_wind_speed(interval):
     total_time = get_current_time()
     df = get_wind_data(total_time - 200, total_time)
 
-    trace = go.Scatter(
+    trace = dict(
+        type="scatter",
         y=df["Speed"],
         line={"color": "#42C4F7"},
         hoverinfo="skip",
@@ -206,7 +206,7 @@ def gen_wind_speed(interval):
         mode="lines",
     )
 
-    layout = go.Layout(
+    layout = dict(
         plot_bgcolor=app_color["graph_bg"],
         paper_bgcolor=app_color["graph_bg"],
         font={"color": "#fff"},
@@ -234,7 +234,7 @@ def gen_wind_speed(interval):
         },
     )
 
-    return go.Figure(data=[trace], layout=layout)
+    return dict(data=[trace], layout=layout)
 
 
 @app.callback(
@@ -259,7 +259,8 @@ def gen_wind_direction(interval):
     ]
 
     data = [
-        go.Scatterpolar(
+        dict(
+            type="scatterpolar",
             r=traces["r"],
             theta=direction,
             mode="lines",
@@ -270,7 +271,7 @@ def gen_wind_direction(interval):
         for traces in traces_scatterpolar
     ]
 
-    layout = go.Layout(
+    layout = dict(
         height=350,
         plot_bgcolor=app_color["graph_bg"],
         paper_bgcolor=app_color["graph_bg"],
@@ -284,7 +285,7 @@ def gen_wind_direction(interval):
         showlegend=False,
     )
 
-    return go.Figure(data=data, layout=layout)
+    return dict(data=data, layout=layout)
 
 
 @app.callback(
@@ -333,7 +334,8 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
     y_val_max = max(y_val[0])
     bin_val_max = max(bin_val[0])
 
-    trace = go.Bar(
+    trace = dict(
+        type="bar",
         x=bin_val[1],
         y=bin_val[0],
         marker={"color": app_color["graph_line"]},
@@ -347,7 +349,8 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
     ]
 
     scatter_data = [
-        go.Scatter(
+        dict(
+            type="scatter",
             x=[bin_val[int(len(bin_val) / 2)]],
             y=[0],
             mode="lines",
@@ -359,14 +362,15 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
         for traces in traces_scatter
     ]
 
-    trace3 = go.Scatter(
+    trace3 = dict(
+        type="scatter",
         mode="lines",
         line={"color": "#42C4F7"},
         y=y_val[0],
         x=bin_val[1][: len(bin_val[1])],
         name="Rayleigh Fit",
     )
-    layout = go.Layout(
+    layout = dict(
         height=350,
         plot_bgcolor=app_color["graph_bg"],
         paper_bgcolor=app_color["graph_bg"],
@@ -418,9 +422,7 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
             },
         ],
     )
-    return go.Figure(
-        data=[trace, scatter_data[0], scatter_data[1], trace3], layout=layout
-    )
+    return dict(data=[trace, scatter_data[0], scatter_data[1], trace3], layout=layout)
 
 
 @app.callback(
@@ -432,6 +434,8 @@ def deselect_auto(slider_value, wind_speed_figure):
     """ Toggle the auto checkbox. """
 
     # prevent update if graph has no data
+    if "data" not in wind_speed_figure:
+        raise PreventUpdate
     if not len(wind_speed_figure["data"]):
         raise PreventUpdate
 

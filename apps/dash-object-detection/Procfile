@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath apps/dash-object-detection app:server
+web: gunicorn app:server

@@ -1,0 +1,3 @@
+libcurl4-openssl-dev
+libxml2-dev
+libv8-3.14-dev

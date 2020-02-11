@@ -54,7 +54,7 @@ def tile_images(list_of_images, n_rows, n_cols):
         list_of_images += [white] * n_missing
     return np.vstack(
         [
-            np.hstack(list_of_images[i_row * n_cols : i_row * n_cols + n_cols])
+            np.hstack(list_of_images[i_row * n_cols: i_row * n_cols + n_cols])
             for i_row in range(n_rows)
         ]
     )
@@ -78,8 +78,8 @@ def demo_data():
     big_im = np.empty((n_rows * l_r, n_cols * l_c, 3), dtype=im.dtype)
     i = 0
     for j in range(n_cols):
-        sub_im = im[init_i : init_i + l_r, init_j : init_j + l_c]
-        big_im[i * l_r : (i + 1) * l_r, j * l_c : (j + 1) * l_c] = sub_im
+        sub_im = im[init_i: init_i + l_r, init_j: init_j + l_c]
+        big_im[i * l_r: (i + 1) * l_r, j * l_c: (j + 1) * l_c] = sub_im
         init_j += l_c - overlap_h[1]
         init_i += overlap_h[0]
     return big_im
@@ -109,8 +109,8 @@ def instructions():
         children=[
             """
     - Choose the number of rows and columns of the mosaic
-    - Upload images 
-    - Try automatic stitching by pressing the "Run stitching" button 
+    - Upload images
+    - Try automatic stitching by pressing the "Run stitching" button
     - If automatic stitching did not work, adjust the overlap parameter
     """
         ],
@@ -473,7 +473,7 @@ def upload_content(
     [Input("learn-more-button", "n_clicks")],
 )
 def learn_more(n_clicks):
-    if n_clicks == None:
+    if n_clicks is None:
         n_clicks = 0
     if (n_clicks % 2) == 1:
         n_clicks += 1

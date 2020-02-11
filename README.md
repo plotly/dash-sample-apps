@@ -1,4 +1,4 @@
-# Dash Sample Apps
+# Dash Sample Apps [![CircleCI](https://circleci.com/gh/plotly/dash-sample-apps.svg?style=svg)](https://circleci.com/gh/plotly/dash-sample-apps)
 
 This is a monorepo designed to host all of the apps that have been
 created for the Python Dash Gallery.
@@ -21,16 +21,6 @@ the deployment will eventually be hosted at
 https://dash-gallery.plotly.host/my-dash-app, "DDS app name" is
 `my-dash-app`._
 
-### Branches
-
-Each app has its own branch off of `master` that has the _exact same_
-name as the DDS app. This is an effective `master` branch _for that
-app only_. This is because we sync the apps in this repository with
-our staging deployment server, and the automatic deploys sync the app
-name with the github branch name. So, for automatic deploys to work,
-any changes for a particular app should be done on a branch that has
-the same name as the app.
-
 ### Adding a new app
 
 Create an app on Dash Playground. This will be the location of the
@@ -38,8 +28,8 @@ auto-deployment. To do this, log into the app manager on
 [dash-playground.plotly.host](https://dash-playground.plotly.host)
 and click "initialize app".
 
-Create a branch from `master` that has the _exact same_ name as the
-Dash app name. Switch to this branch, then navigate to the `apps/`
+Create a branch from `master` to work on your app, the name is not required
+to be anything specific. Switch to this branch, then navigate to the `apps/`
 directory and add a directory for your app.
 
 There are two options when you are naming the folder:
@@ -52,7 +42,7 @@ There are two options when you are naming the folder:
 
 Navigate to the directory you just created, and write a small README
 that only contains the name of the app. Stage the README and commit it
-to your app branch.
+to your branch.
 
 See [project boilerplate!](https://github.com/plotly/dash-sample-apps#project-boilerplate)
 
@@ -67,7 +57,7 @@ Contributing an app written with Dash for R is very similar to the steps outline
 3. The `Procfile` should contain 
 
 ```
-web: R -f /app/apps/"$DASH_APP_NAME"/app.R
+web: R -f /app/app.R
 ```
 
 4. Routing and request pathname prefixes should be set. One approach might be to include
@@ -88,19 +78,13 @@ at the head of your `app.R` file.
 app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 ``
 
-6. For convenience, it is probably easiest to set the working directory in `app.R` as well:
-
-``
-setwd(sprintf("/app/apps/%s", appName))
-``
-
 ### Making changes to an existing app
 
-Switch to the branch that has the same name as the DDS app (the "app
-branch"). Then, navigate to the directory that has the same name as
+Create a new branch - of any name - for your code changes.
+Then, navigate to the directory that has the same name as
 the DDS app.
 
-When you are finished, make a pull request from the app branch to the master
+When you are finished, make a pull request from your branch to the master
 branch. Once you have passed your code review, you can merge your PR.
 
 ## Dash app project structure
@@ -117,11 +101,9 @@ branch. Once you have passed your code review, you can merge your PR.
 
 - **`Procfile`** gets run at root level for deployment
     - Make sure python working directory is at the app level
-    - Ex. `web: gunicorn --pythonpath apps/{DASH_APP_NAME} app:server`
+    - Ex. `web: gunicorn app:server`
 - **`requirements.txt`**
     - Install project dependecies in a virtual environment
-- **`runtime.txt`**
-    - App python version
 
 #### Project boilerplate
 
@@ -133,13 +115,12 @@ branch. Once you have passed your code review, you can merge your PR.
     │   ├── app.py              # dash application entry point
     │   ├── Procfile            # used for heroku deployment (how to run app)
     │   ├── requirements.txt    # project dependecies
-    │   ├── runtime.txt         # used for heroku deployment (python version)
     │   └── ...                 
     └── ...
 
 #### Handle relative path
 
-Since deployment happens at the root level `/` and not at the app level (`/apps/{DASH_APP_NAME}`), we need to make sure our application is able to run at both levels for flexibility.
+Assets should never use a relative path, as this will fail when deployed to Dash Enterprise due to use of subdirectories for serving apps.
 
 Reading from assets and data folder
 ```Python
@@ -173,13 +154,13 @@ with open(DATA_PATH.joinpath("sample-data.csv")) as f:  # /data/sample-data.csv
 
 ```
 # branch off master
-git checkout -b "{DASH_APP_NAME}"
+git checkout -b "{YOUR_CUSTOM_BRANCH}"
 
 # create a new folder in apps/
 mkdir /apps/{DASH_APP_NAME}
 
-# push new app branch
-git push -u origin {DASH_APP_NAME}
+# push new branch
+git push -u origin {YOUR_CUSTOM_BRANCH}
 ```
 
 #### Before committing
@@ -195,7 +176,7 @@ pip install black
 
 #### App is ready to go!
 ```
-# once your app branch is ready, make a PR into master!
+# once your branch is ready, make a PR into master!
 
 PR has two checkers.
 1. make sure your code passed the black linter

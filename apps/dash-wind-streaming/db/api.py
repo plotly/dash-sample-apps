@@ -12,7 +12,7 @@ def get_wind_data(start, end):
 
     :params start: start row id
     :params end: end row id
-    :returns: pandas dataframe object 
+    :returns: pandas dataframe object
     """
 
     con = sqlite3.connect(str(DB_FILE))
@@ -26,7 +26,7 @@ def get_wind_data_by_id(id):
     Query a row from the Wind Table
 
     :params id: a row id
-    :returns: pandas dataframe object 
+    :returns: pandas dataframe object
     """
 
     con = sqlite3.connect(str(DB_FILE))

@@ -23,7 +23,6 @@ library(tictoc)
 # 
 # Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
 #            DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
-# setwd(sprintf("/app/apps/%s", appName))
 
 #Following the python notation
 IMAGE_DATASETS <- c("mnist_3000", "cifar_gray_3000", "fashion_3000")

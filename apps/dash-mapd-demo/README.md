@@ -6,7 +6,7 @@ This Dash app updates real-time visual analytics by constantly querying a remote
 
 ## About this dataset
 
-The public dataset used in this app, "flight_2008_7M", includes every single record of US airline flights known by the Bureau of Transportation Statistics in the year 2008. By default, it can be loaded from the `insert_sample_data` script during the Omnisci server installation. A [jupyter notebook](https://github.com/plotly/dash-mapD-demo/blob/dev/flights_data_clean.ipynb) has been included to showcase tabular structure and query results from this dataset.
+The public dataset used in this app, "flight_2008_10k", includes every single record of US airline flights known by the Bureau of Transportation Statistics from 2008-01-03 to 2008-01-07. By default, it can be loaded from the `insert_sample_data` script during the Omnisci server installation. A [jupyter notebook](https://github.com/plotly/dash-mapD-demo/blob/master/flights_data_clean.ipynb) has been included to showcase tabular structure and query results from this dataset.
 
 ## Requirements
 
@@ -15,7 +15,7 @@ The public dataset used in this app, "flight_2008_7M", includes every single rec
 
 ## How to run this app
 
-To run this app, you will need a self-hosted Omnisci SQL engine running on `localhost:6274` with the default logins. [follow this guide](https://github.com/plotly/dash-mapD-demo/blob/dev/docker/README.md) to install a test database locally by dockerfile.
+To run this app, you will need a self-hosted Omnisci SQL engine running on `localhost:6274` with the default logins. [follow this guide](https://github.com/plotly/dash-mapD-demo/blob/master/docker/README.md) to install a test database locally by dockerfile.
 
 We suggest you to create a virtual environment for running this app with Python 3. Clone this repository 
 and open your terminal/command prompt in the root folder.
