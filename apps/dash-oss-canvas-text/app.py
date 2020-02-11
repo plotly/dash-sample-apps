@@ -1,3 +1,6 @@
+import json
+from skimage import draw, morphology
+from scipy import ndimage
 from PIL import Image
 import base64
 from io import BytesIO
@@ -17,7 +20,11 @@ app = dash.Dash(__name__)
 server = app.server
 
 canvas_width = 600
-canvas_height = 200
+canvas_height = 150
+
+emtpy_array = np.ones((150, 600), dtype=np.bool) # Temp set canvas height with empty image
+empty_img = array_to_data_url(emtpy_array)
+
 
 app.layout = html.Div([
     # Banner
@@ -37,6 +44,7 @@ app.layout = html.Div([
                     html.Div(
                         DashCanvas(id='canvas',
                                    lineWidth=10,
+                                   image_content=empty_img,
                                    width=canvas_width,
                                    height=canvas_height,
                                    hide_buttons=["zoom", "pan", "line", "pencil", "rectangle", "select"],
@@ -58,13 +66,14 @@ app.layout = html.Div([
             ),
             # OCR output div
             html.Div([
-                dcc.Markdown(id='text-output', children='')
+                html.P("Output", className='section_title'),
+                html.H2(id='text-output', children='')
             ],
                 className="v-card-content"),
 
             html.Div("below tests IAMA model"),
 
-html.Div(
+            html.Div(
                 [
                     html.P("Handwriting annotation geometry", className='section_title'),
                     html.Img(id='my-image-iam',
@@ -75,10 +84,10 @@ html.Div(
             ),
             # OCR output div
             html.Div([
+                html.P("Output", className='section_title'),
                 dcc.Markdown(id='text-output-iam', children='')
             ],
                 className="v-card-content"),
-
 
         ],
         className='app__content'
@@ -99,17 +108,16 @@ def update_data(string):
         mask = (~mask.astype(bool)).astype(int)
         print(mask)
 
-        # image_string = array_to_data_url((255 * mask[:225]).astype(np.uint8))  # todo: include outputted image as well
         image_string = array_to_data_url((255 * mask).astype(np.uint8))  # todo: include outputted image as well
 
         # this is from canvas.utils.image_string_to_PILImage(image_string)
-        img = Image.open(BytesIO(base64.b64decode(image_string[22:])))  # try save img to see what it looks like?
+        img = Image.open(BytesIO(base64.b64decode(image_string[22:])))
 
-        img.save("geeks2.png")
-        print('img', img)
-        text = pytesseract.image_to_string(img, lang='eng', config='--psm 6')
+        text = pytesseract.image_to_string(img, lang='eng', config='--psm 7')
         print('text', text)
-        return (text, image_string)  # todo : handle condition which ocr cannot recognize: return message: "enpty, try again"
+        return (
+            text,
+            image_string)  # todo : handle condition which ocr cannot recognize: return message: "enpty, try again"
 
     else:
         raise PreventUpdate
@@ -138,7 +146,9 @@ def update_iam_output(string):
         print('img', img)
         text = pytesseract.image_to_string(img, lang='eng', config='--psm 6')
         print('text', text)
-        return (text, image_string)  # todo : handle condition which ocr cannot recognize: return message: "enpty, try again"
+        return (
+            text,
+            image_string)  # todo : handle condition which ocr cannot recognize: return message: "enpty, try again"
 
     else:
         raise PreventUpdate
