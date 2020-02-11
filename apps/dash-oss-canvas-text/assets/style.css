@@ -7,7 +7,6 @@
   display: flex;
   align-items: center;
   background-color: #eeeeee;
-  margin-bottom: 25px;
   height: 60px;
 }
 
@@ -38,7 +37,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin: 0em 0em 1em 0em;
+  margin: 0em 0em 0.5em 0em;
 }
 
 .canvas-outer button {
@@ -48,5 +47,10 @@ body {
   transition: all 0.2s ease;
   height: 37px !important;
   color: black !important;
+}
+
+#my-image {
+  border: 1px solid grey;
+  height: 150px;
 }
 

@@ -17,7 +17,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 canvas_width = 600
-canvas_height = 200
+canvas_height = 150
 
 app.layout = html.Div([
     # Banner
