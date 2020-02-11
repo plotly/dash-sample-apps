@@ -17,7 +17,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 canvas_width = 600
-canvas_height = 150
+canvas_height = 200
 
 app.layout = html.Div([
     # Banner
@@ -36,7 +36,7 @@ app.layout = html.Div([
                     html.P('Write inside the canvas with your pencil and press Sign', className='section_title'),
                     html.Div(
                         DashCanvas(id='canvas',
-                                   lineWidth=5,
+                                   lineWidth=10,
                                    width=canvas_width,
                                    height=canvas_height,
                                    hide_buttons=["zoom", "pan", "line", "pencil", "rectangle", "select"],
