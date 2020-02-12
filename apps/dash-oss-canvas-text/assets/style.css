@@ -11,7 +11,6 @@
 }
 
 .header__text {
-  font-family: Roboto;
   font-weight: 600;
   letter-spacing: 0.1em;
   margin-left: 20px;
@@ -79,11 +78,12 @@ div.app__content > div:nth-child(1) > div > div > button:nth-child(2), div.app__
   padding-right: 30px;
   padding-top: 2px;
   padding-bottom: 0px;
-  font-weight: 550;
+  font-weight: bold;
   text-align: center;
   line-height: 25px;
   letter-spacing: .1rem;
   font-family: system-ui;
+  height: 33px;
 
 }
 
@@ -110,5 +110,5 @@ div.app__content > div:nth-child(1) > div > div > button:nth-child(2), div.app__
 }
 
 #reset-markdown {
-  margin-top: -53px;
+  margin-top: -55px;
 }
