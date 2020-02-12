@@ -1,6 +1,3 @@
-import json
-from skimage import draw, morphology
-from scipy import ndimage
 from PIL import Image
 import base64
 from io import BytesIO
@@ -13,6 +10,8 @@ from dash_canvas import DashCanvas
 from dash_canvas.utils import array_to_data_url, parse_jsonstring
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
+
+from iam_model.main import main
 
 import pytesseract
 
@@ -108,34 +107,6 @@ def update_data(string):
         mask = (~mask.astype(bool)).astype(int)
         print(mask)
 
-        image_string = array_to_data_url((255 * mask).astype(np.uint8))  # todo: include outputted image as well
-
-        # this is from canvas.utils.image_string_to_PILImage(image_string)
-        img = Image.open(BytesIO(base64.b64decode(image_string[22:])))
-
-        text = pytesseract.image_to_string(img, lang='eng', config='--psm 7')
-        print('text', text)
-        return (
-            text,
-            image_string)  # todo : handle condition which ocr cannot recognize: return message: "enpty, try again"
-
-    else:
-        raise PreventUpdate
-
-
-@app.callback([Output('text-output-iam', 'children'),
-               Output('my-image-iam', 'src')],
-              [Input('canvas', 'json_data')])
-def update_iam_output(string):
-    # TODO: put in IAM model in this callback
-    if string:
-        mask = parse_jsonstring(string, shape=(canvas_height, canvas_width))
-        # np.savetxt('data.csv', mask) use this to save the canvas annotations as a numpy array
-        print(mask)
-        # Invert True and False
-        mask = (~mask.astype(bool)).astype(int)
-        print(mask)
-
         # image_string = array_to_data_url((255 * mask[:225]).astype(np.uint8))  # todo: include outputted image as well
         image_string = array_to_data_url((255 * mask).astype(np.uint8))  # todo: include outputted image as well
 
@@ -146,9 +117,36 @@ def update_iam_output(string):
         print('img', img)
         text = pytesseract.image_to_string(img, lang='eng', config='--psm 6')
         print('text', text)
-        return (
-            text,
-            image_string)  # todo : handle condition which ocr cannot recognize: return message: "enpty, try again"
+        return (text, image_string)  # todo : handle condition which ocr cannot recognize: return message: "enpty, try again"
+
+    else:
+        raise PreventUpdate
+
+
+@app.callback(Output('text-output-iam', 'children'),
+              [Input('canvas', 'json_data')])
+def update_iam_output(string):
+    # TODO: put in IAM model in this callback
+    if string:
+        mask = parse_jsonstring(string, shape=(canvas_height, canvas_width))
+        # np.savetxt('data.csv', mask) use this to save the canvas annotations as a numpy array
+        # print(mask)
+        # Invert True and False
+        mask = (~mask.astype(bool)).astype(int)
+        # print(mask)
+
+        # image_string = array_to_data_url((255 * mask[:225]).astype(np.uint8))  # todo: include outputted image as well
+        image_string = array_to_data_url((255 * mask).astype(np.uint8))  # todo: include outputted image as well
+
+        # this is from canvas.utils.image_string_to_PILImage(image_string)
+        img = Image.open(BytesIO(base64.b64decode(image_string[22:])))  # try save img to see what it looks like?
+
+        img.save("my_writing.png")
+        # print('img', img)
+        # text = main(img)
+        text = main()
+        # print('text', text)
+        return text  # todo : handle condition which ocr cannot recognize: return message: "enpty, try again"
 
     else:
         raise PreventUpdate
