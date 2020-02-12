@@ -11,14 +11,14 @@ from dash_canvas.utils import array_to_data_url, parse_jsonstring
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 
-from iam_model.main import main
+# from iam_model.main import main
 
 import pytesseract
 
 app = dash.Dash(__name__)
 server = app.server
 
-canvas_width = 600
+canvas_width = 800
 canvas_height = 200
 
 app.layout = html.Div(
@@ -43,7 +43,7 @@ app.layout = html.Div(
                         html.Div(
                             DashCanvas(
                                 id="canvas",
-                                lineWidth=10,
+                                lineWidth=8,
                                 width=canvas_width,
                                 height=canvas_height,
                                 hide_buttons=[
@@ -58,9 +58,15 @@ app.layout = html.Div(
                                 goButtonTitle="Sign",
                             ),
                             className="canvas-outer",
+                            style={'margin-top': '1em'}
                         ),
                     ],
                     className="v-card-content",
+                ),
+
+                html.Div(
+                    dcc.Markdown(id='reset-markdown', children="[CLEAR]({})".format(app.get_relative_path('/'))),
+                    className='v-card-content-markdown-outer'
                 ),
                 # Annotation Geometry
                 html.Div(
@@ -68,30 +74,36 @@ app.layout = html.Div(
                         html.P(
                             "Handwriting annotation geometry", className="section_title"
                         ),
-                        html.Img(id="my-image", width=canvas_width,),
+                        html.Img(id="my-image", width=canvas_width),
                     ],
+                    style={'margin-top': '1em'},
                     className="v-card-content",
                 ),
                 # OCR output div
-                html.Div(
-                    [dcc.Markdown(id="text-output", children="")],
-                    className="v-card-content",
-                ),
-                html.Div("below tests IAMA model"),
                 html.Div(
                     [
-                        html.P(
-                            "Handwriting annotation geometry", className="section_title"
-                        ),
-                        html.Img(id="my-image-iam", width=canvas_width,),
-                    ],
+                        html.B("Text Recognition Output", className="section_title"),
+                        html.P("Pytesseract output: "),
+                        dcc.Loading(dcc.Markdown(id="text-output", children=""))],
                     className="v-card-content",
+                    style={'margin-top': '1em'}
                 ),
+                # html.Div(
+                #     [
+                #         html.P(
+                #             "Handwriting annotation geometry", className="section_title"
+                #         ),
+                #         html.Img(id="my-image-iam", width=canvas_width,),
+                #     ],
+                #     className="v-card-content",
+                # ),
                 # OCR output div
-                html.Div(
-                    [dcc.Markdown(id="text-output-iam", children="")],
-                    className="v-card-content",
-                ),
+                # html.Div(
+                #     [
+                #         html.P("IAM Trained Model Output: "),
+                #         dcc.Loading(dcc.Markdown(id="text-output-iam", children=""))],
+                #     className="v-card-content",
+                # ),
             ],
             className="app__content",
         ),
@@ -112,7 +124,6 @@ def update_data(string):
         mask = (~mask.astype(bool)).astype(int)
         # print(mask)
 
-        # image_string = array_to_data_url((255 * mask[:225]).astype(np.uint8))  # todo: include outputted image as well
         image_string = array_to_data_url(
             (255 * mask).astype(np.uint8)
         )  # todo: include outputted image as well
@@ -124,7 +135,7 @@ def update_data(string):
 
         # img.save("geeks2.png")
         # print('img', img)
-        text = "Pytesseract output: {}".format(
+        text = "{}".format(
             pytesseract.image_to_string(img, lang="eng", config="--psm 6")
         )
         # print('text', text)
@@ -137,36 +148,33 @@ def update_data(string):
         raise PreventUpdate
 
 
-@app.callback(Output("text-output-iam", "children"), [Input("canvas", "json_data")])
-def update_iam_output(string):
-    # TODO: put in IAM model in this callback
-    if string:
-        mask = parse_jsonstring(string, shape=(canvas_height, canvas_width))
-        # np.savetxt('data.csv', mask) use this to save the canvas annotations as a numpy array
-        # print(mask)
-        # Invert True and False
-        mask = (~mask.astype(bool)).astype(int)
-        # print(mask)
-
-        # image_string = array_to_data_url((255 * mask[:225]).astype(np.uint8))  # todo: include outputted image as well
-        image_string = array_to_data_url(
-            (255 * mask).astype(np.uint8)
-        )  # todo: include outputted image as well
-
-        # this is from canvas.utils.image_string_to_PILImage(image_string)
-        img = Image.open(
-            BytesIO(base64.b64decode(image_string[22:]))
-        )  # try save img to see what it looks like?
-
-        img.save("my_writing.png")
-        # print('img', img)
-        # text = main(img)
-        text = "IAM Trained Model Output: {}".format(str(main()))
-        # print('text', text)
-        return text  # todo : handle condition which ocr cannot recognize: return message: "enpty, try again"
-
-    else:
-        raise PreventUpdate
+# @app.callback(Output("text-output-iam", "children"), [Input("canvas", "json_data")])
+# def update_iam_output(string):
+#     if string:
+#         mask = parse_jsonstring(string, shape=(canvas_height, canvas_width))
+#         # np.savetxt('data.csv', mask) use this to save the canvas annotations as a numpy array
+#         # print(mask)
+#         # Invert True and False
+#         mask = (~mask.astype(bool)).astype(int)
+#         # print(mask)
+#
+#         image_string = array_to_data_url(
+#             (255 * mask).astype(np.uint8)
+#         )  # todo: include outputted image as well
+#
+#         # this is from canvas.utils.image_string_to_PILImage(image_string)
+#         img = Image.open(
+#             BytesIO(base64.b64decode(image_string[22:]))
+#         )  # try save img to see what it looks like?
+#
+#         img.save("my_writing.png")
+#         # print('img', img)
+#         # text = main(img)
+#         text = "{}".format(str(main()))
+#         return text  # todo : handle condition which ocr cannot recognize: return message: "enpty, try again"
+#
+#     else:
+#         raise PreventUpdate
 
 
 if __name__ == "__main__":

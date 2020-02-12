@@ -14,7 +14,7 @@
   font-family: Roboto;
   font-weight: 600;
   letter-spacing: 0.1em;
-  margin-left:20px;
+  margin-left: 20px;
 }
 
 body {
@@ -33,7 +33,7 @@ body {
   margin: 1em 0px;
 }
 
-.v-card-content {
+.v-card-content, .v-card-content-markdown-outer {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -49,8 +49,66 @@ body {
   color: black !important;
 }
 
+div.app__content > div:nth-child(1) > div > div > button:nth-child(2), div.app__content > div:nth-child(1) > div > div > button:nth-child(3) {
+  padding-top: 5px !important;
+}
+
+
 #my-image {
   border: 1px solid grey;
   height: 150px;
 }
 
+#text-output {
+  text-align: center;
+  line-height: 2;
+  font-weight: 800;
+  color: #3a6c8a;
+  font-size: 1.7em;
+  font-style: italic;
+}
+
+
+#reset-markdown {
+  text-decoration: none;
+  font-size: 11px;
+  color: black;
+  border: solid 1px black;
+  border-radius: 4px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 2px;
+  padding-bottom: 0px;
+  font-weight: 550;
+  text-align: center;
+  line-height: 25px;
+  letter-spacing: .1rem;
+  font-family: system-ui;
+
+}
+
+#reset-markdown p {
+  margin-top: 0.3rem;
+}
+
+#reset-markdown:hover, #reset-markdown a:hover {
+  color: white !important;
+  background-color: black !important;
+  cursor: pointer;
+}
+
+#reset-markdown a {
+  text-decoration: none !important;
+  color: black;
+}
+
+.v-card-content-markdown-outer {
+  display: flex;
+  width: 800px;
+  align-items: flex-end;
+  padding-right: 10px;
+}
+
+#reset-markdown {
+  margin-top: -53px;
+}
