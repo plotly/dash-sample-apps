@@ -96,7 +96,7 @@ def update_data(string):
         try:
             mask = parse_jsonstring(string, shape=(canvas_height, canvas_width))
         except:
-            return "Out of Bounding Box, click clear button and try again", empty_img
+            return "Out of Bounding Box, click clear button and try again"
         # np.savetxt('data.csv', mask) use this to save the canvas annotations as a numpy array
         # Invert True and False
         mask = (~mask.astype(bool)).astype(int)
