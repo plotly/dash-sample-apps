@@ -117,7 +117,13 @@ app.layout = html.Div(
 )
 def update_data(string):
     if string:
-        mask = parse_jsonstring(string, shape=(canvas_height, canvas_width))
+        emtpy_array = np.ones((150, 600), dtype=np.bool)  # Temp set canvas height with empty image
+        empty_img = array_to_data_url(emtpy_array)
+
+        try:
+            mask = parse_jsonstring(string, shape=(canvas_height, canvas_width))
+        except:
+            return "Out of Bounding Box, click clear button and try again", empty_img
         # np.savetxt('data.csv', mask) use this to save the canvas annotations as a numpy array
         # print(mask)
         # Invert True and False
