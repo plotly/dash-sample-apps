@@ -52,6 +52,7 @@ app.layout = html.Div(
                                     "rectangle",
                                     "select",
                                 ],
+                                add_only=False,
                                 lineColor="black",
                                 goButtonTitle="Sign",
                             ),
@@ -61,13 +62,18 @@ app.layout = html.Div(
                     ],
                     className="v-card-content",
                 ),
+
                 html.Div(
-                    dcc.Markdown(
-                        id="reset-markdown",
-                        children="[CLEAR]({})".format(app.get_relative_path("/")),
-                    ),
-                    className="v-card-content-markdown-outer",
-                ),
+                    html.Button(id='clear', children='clear'),
+                    className="v-card-content-markdown-outer"
+                         ),
+                # html.Div(
+                #     dcc.Markdown(
+                #         id="reset-markdown",
+                #         children="[CLEAR]({})".format(app.get_relative_path("/")),
+                #     ),
+                #     className="v-card-content-markdown-outer",
+                # ),
                 html.Div(
                     [
                         html.B("Text Recognition Output", className="section_title"),
@@ -81,6 +87,17 @@ app.layout = html.Div(
         ),
     ]
 )
+
+
+@app.callback(
+    Output('canvas', 'json_objects'),
+    [Input('clear', "n_clicks")]
+)
+def clear_canvas(n):
+    if n is None:
+        return dash.no_update
+    strings = ['{"objects":[ ]}', '{"objects":[]}']
+    return strings[n % 2]
 
 
 @app.callback(
