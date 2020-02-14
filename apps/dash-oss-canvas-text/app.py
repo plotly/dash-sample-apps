@@ -98,10 +98,6 @@ def clear_canvas(n):
 )
 def update_data(string):
     if string:
-        emtpy_array = np.ones(
-            (150, 600), dtype=np.bool
-        )  # Temp set canvas height with empty image
-        empty_img = array_to_data_url(emtpy_array)
 
         try:
             mask = parse_jsonstring(string, shape=(canvas_height, canvas_width))
@@ -119,8 +115,7 @@ def update_data(string):
         text = "{}".format(
             pytesseract.image_to_string(img, lang="eng", config="--psm 6")
         )
-        return text  # todo : handle condition which ocr cannot recognize: return message: "empty, try again"
-
+        return text
     else:
         raise PreventUpdate
 
