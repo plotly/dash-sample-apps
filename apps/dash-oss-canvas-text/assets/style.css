@@ -67,40 +67,17 @@ div.app__content > div:nth-child(1) > div > div > button:nth-child(2), div.app__
   font-style: italic;
 }
 
-
-#reset-markdown {
-  text-decoration: none;
-  font-size: 11px;
-  color: black;
-  border: solid 1px black;
-  border-radius: 4px;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 2px;
-  padding-bottom: 0px;
-  font-weight: bold;
-  text-align: center;
-  line-height: 25px;
-  letter-spacing: .1rem;
-  font-family: system-ui;
-  height: 33px;
-
-}
-
-#reset-markdown p {
-  margin-top: 0.3rem;
-}
-
-#reset-markdown:hover, #reset-markdown a:hover {
-  color: white !important;
-  background-color: black !important;
-  cursor: pointer;
-}
-
-#reset-markdown a {
-  text-decoration: none !important;
+#clear {
+  margin-top: -55px;
+  border: 1px solid black;
   color: black;
 }
+
+button#clear:hover {
+  color: white;
+  background-color: black;
+}
+
 
 .v-card-content-markdown-outer {
   display: flex;
@@ -109,6 +86,7 @@ div.app__content > div:nth-child(1) > div > div > button:nth-child(2), div.app__
   padding-right: 10px;
 }
 
-#reset-markdown {
-  margin-top: -55px;
+
+.canvas-outer > div > div {
+  background-color: #CCDDFF !important;
 }
