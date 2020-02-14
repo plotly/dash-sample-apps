@@ -67,13 +67,6 @@ app.layout = html.Div(
                     html.Button(id='clear', children='clear'),
                     className="v-card-content-markdown-outer"
                          ),
-                # html.Div(
-                #     dcc.Markdown(
-                #         id="reset-markdown",
-                #         children="[CLEAR]({})".format(app.get_relative_path("/")),
-                #     ),
-                #     className="v-card-content-markdown-outer",
-                # ),
                 html.Div(
                     [
                         html.B("Text Recognition Output", className="section_title"),

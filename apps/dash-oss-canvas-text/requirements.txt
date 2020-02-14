@@ -1,5 +1,5 @@
 dash==1.8.0
-dash_canvas==0.1.0
+dash_canvas-0.2.0rc1.tar.gz
 Pillow==7.0.0
 pytesseract==0.3.2
 gunicorn==20.0.4
