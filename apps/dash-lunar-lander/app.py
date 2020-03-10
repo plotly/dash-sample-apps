@@ -397,10 +397,10 @@ def wrapperRWSC(IC, args, optimal):
     ig_flat = casadi.vertcat(*[casadi.reshape(e, -1, 1) for e in ig_list])
 
     # Generating Defect Vector
-    xLow = states[0: (nodes - 1), :]
+    xLow = states[0 : (nodes - 1), :]
     xHigh = states[1:nodes, :]
 
-    contLow = controls[0: (nodes - 1), :]
+    contLow = controls[0 : (nodes - 1), :]
     contHi = controls[1:nodes, :]
     contMid = (contLow + contHi) / 2
 
