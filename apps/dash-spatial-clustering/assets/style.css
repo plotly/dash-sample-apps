@@ -1,0 +1,55 @@
+#intro-text p {
+  font-weight: normal;
+  text-align: justify;
+  margin-right: 20px;
+}
+
+.logo {
+  display: inline-block;
+  height: 60px;
+  margin-right: 2em;
+}
+
+.header__title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1em;
+}
+
+.named-card {
+  padding: 1em;
+}
+
+hr {
+  margin: 10px 0px;
+}
+
+p {
+  font-weight: bold;
+  margin: 20px 0px;
+}
+
+#btn-updt-map {
+  margin: 20px;
+}
+
+.btn-outer {
+  text-align: center;
+}
+
+#listing-div {
+  text-align: right
+}
+
+#listing-ind {
+  font-weight: 600 !important;
+  font-family: 'Lato', sans-serif;
+  font-size: 2em;
+  line-height: 1em;
+}
+
+#geodemo-chart {
+  max-height: 430px;
+  overflow-y: scroll;
+}
