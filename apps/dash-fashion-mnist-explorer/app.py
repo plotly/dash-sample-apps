@@ -11,13 +11,7 @@ from dash.dependencies import Input, Output, State
 import pickle
 import plotly.express as px
 
-from helpers import (
-    load_mnist,
-    parse_image,
-    numpy_to_b64,
-    create_img,
-    label_mapping,
-)
+from helpers import load_mnist, parse_image, numpy_to_b64, create_img, label_mapping
 
 train_images, train_labels = load_mnist("./fashion", subset="train")
 test_images, test_labels = load_mnist("./fashion", subset="test")
@@ -192,7 +186,7 @@ app.layout = html.Div(
                             value="Train",
                         ),
                         html.Span(
-                            className="control-label", children="Upload an Image",
+                            className="control-label", children="Upload an Image"
                         ),
                         dcc.Upload(
                             id="img-upload",
@@ -226,7 +220,7 @@ app.layout = html.Div(
                                             figure=create_tsne_graph("Test"),
                                         ),
                                     ],
-                                ),
+                                )
                             ],
                         ),
                         html.Div(
@@ -237,13 +231,13 @@ app.layout = html.Div(
                                     className="img-card",
                                     children=[
                                         html.Div(
-                                            "Hover Point:", style={"height": "20%",},
+                                            "Hover Point:", style={"height": "20%"}
                                         ),
                                         html.Br(),
                                         html.Br(),
                                         html.Br(),
                                         html.Img(
-                                            id="hover-point-graph", className="image",
+                                            id="hover-point-graph", className="image"
                                         ),
                                     ],
                                 ),
@@ -275,7 +269,7 @@ app.layout = html.Div(
                                                     src=create_img(np.zeros((28, 28))),
                                                 ),
                                             ],
-                                        ),
+                                        )
                                     ],
                                 ),
                             ],
@@ -284,7 +278,7 @@ app.layout = html.Div(
                 ),
             ],
         ),
-    ],
+    ]
 )
 
 
@@ -305,7 +299,7 @@ def display_uploaded_img(contents, fname, date):
             "Your uploaded image: ",
             html.Img(className="image", src=original_img),
             "Image fed the model: ",
-            html.Img(className="image", src=create_img(resized_img),),
+            html.Img(className="image", src=create_img(resized_img)),
             f"The model thinks this is a {label_mapping[prediction]}",
             html.Button(
                 id="clear-button", children="Remove Uploaded Image", n_clicks=0
