@@ -57,11 +57,11 @@ bar_coloway = [
 intro_text = """
 **About this app**
 
-This app applies spatial clustering and regionalization analysis to discover the [dataset of AirBnb listings in the 
-city of Austin](http://insideairbnb.com/get-the-data.html). Models are created using [pysal](https://pysal.readthedocs.io/en/latest/) 
+This app applies spatial clustering and regionalization analysis to discover the [dataset of AirBnb listings in the
+city of Austin](http://insideairbnb.com/get-the-data.html). Models are created using [pysal](https://pysal.readthedocs.io/en/latest/)
 and scikit-learn.
 
-Select the type of model from radioitem, click on the button to run clustering and visualize output regions geographically on the map, computing may take seconds to finish. Click 
+Select the type of model from radioitem, click on the button to run clustering and visualize output regions geographically on the map, computing may take seconds to finish. Click
 on regions on the map to update the number of airbnb listings from your highlighted group.
 
 """
