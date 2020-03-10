@@ -267,7 +267,7 @@ def plotly_wordcloud(data_frame):
     if len(complaints_text) < 1:
         return {}, {}, {}
 
-    ## join all documents in corpus
+    # join all documents in corpus
     text = " ".join(list(complaints_text))
 
     word_cloud = WordCloud(stopwords=set(STOPWORDS), max_words=100, max_font_size=90)
@@ -364,7 +364,7 @@ def plotly_wordcloud(data_frame):
 In an effort to clean up the code a bit, we decided to break it apart into
 sections. For instance: LEFT_COLUMN is the input controls you see in that gray
 box on the top left. The body variable is the overall structure which most other
-sections go into. This just makes it ever so slightly easier to find the right 
+sections go into. This just makes it ever so slightly easier to find the right
 spot to add to or change without having to count too many brackets.
 """
 
