@@ -37,7 +37,7 @@ app.layout = html.Div(
                         ),
                         dcc.Markdown(
                             """
-                ### A View of a Chart That Predicts The Economic Future: 
+                ### A View of a Chart That Predicts The Economic Future:
                 
                 ### The Yield Curve
                 """.replace(

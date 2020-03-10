@@ -380,7 +380,7 @@ def pp_trace(df, fig):
     return fig
 
 
-## MAIN CHART TRACES (STYLE tab)
+# MAIN CHART TRACES (STYLE tab)
 def line_trace(df):
     trace = go.Scatter(
         x=df.index, y=df["close"], mode="lines", showlegend=False, name="line"
@@ -800,8 +800,8 @@ app.layout = html.Div(
                         html.H6(className="title-header", children="FOREX TRADER"),
                         html.P(
                             """
-                            This app continually queries csv files and updates Ask and Bid prices 
-                            for major currency pairs as well as Stock Charts. You can also virtually 
+                            This app continually queries csv files and updates Ask and Bid prices
+                            for major currency pairs as well as Stock Charts. You can also virtually
                             buy and sell stocks and see the profit updates.
                             """
                         ),
