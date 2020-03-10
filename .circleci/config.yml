@@ -19,7 +19,7 @@ jobs:
       - run:
           name: run flake8
           command: |
-            flake8 --select=E203,E265,E711,W291
+            flake8 --select=E265,E711,W291
   deploy_to_playground:
     docker:
       - image: circleci/python:3.6-stretch
