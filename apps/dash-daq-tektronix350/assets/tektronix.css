@@ -152,16 +152,21 @@ input[type="radio"] {
 }
 
 .knobs, .led-displays{
-  margin-left: 20%;
+  margin-left: 10%;
   text-align: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.knobs {
+  display: flex;
+  justify-content: space-between;
 }
 
 .radio-items{
   display: flex;
-  width: 80%;
   align-items: center;
   justify-content: space-between;
-  margin: 30px auto 0px auto;
 }
 
 .five.columns{
@@ -243,11 +248,11 @@ input[type="radio"] {
     display: block;
   }
 
-  .left-panel-color-picker{
+   .left-panel-color-picker{
     width: 100%;
     display: block;
     float: none;
-  }
+  } 
   
   .logo{
     display: block;
@@ -274,3 +279,5 @@ input[type="radio"] {
 
 
 }
+
+
