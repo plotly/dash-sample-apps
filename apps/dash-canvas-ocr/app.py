@@ -62,11 +62,10 @@ app.layout = html.Div(
                     ],
                     className="v-card-content",
                 ),
-
                 html.Div(
-                    html.Button(id='clear', children='clear'),
-                    className="v-card-content-markdown-outer"
-                         ),
+                    html.Button(id="clear", children="clear"),
+                    className="v-card-content-markdown-outer",
+                ),
                 html.Div(
                     [
                         html.B("Text Recognition Output", className="section_title"),
@@ -82,10 +81,7 @@ app.layout = html.Div(
 )
 
 
-@app.callback(
-    Output('canvas', 'json_objects'),
-    [Input('clear', "n_clicks")]
-)
+@app.callback(Output("canvas", "json_objects"), [Input("clear", "n_clicks")])
 def clear_canvas(n):
     if n is None:
         return dash.no_update
