@@ -1,0 +1,92 @@
+.app__logo {
+  height: 40px;
+  margin: 10px;
+}
+
+.app__header {
+  display: flex;
+  align-items: center;
+  background-color: #eeeeee;
+  height: 60px;
+}
+
+.header__text {
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-left: 20px;
+}
+
+body {
+  margin: 0px;
+  font-family: "Open Sans", verdana, arial, sans-serif;
+}
+
+.app__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.section_title {
+  margin: 1em 0px;
+}
+
+.v-card-content, .v-card-content-markdown-outer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0em 0em 0.5em 0em;
+}
+
+.canvas-outer button {
+  margin: 10px 5px !important;
+  border: 1px solid black;
+  background-color: white;
+  transition: all 0.2s ease;
+  height: 37px !important;
+  color: black !important;
+}
+
+div.app__content > div:nth-child(1) > div > div > button:nth-child(2), div.app__content > div:nth-child(1) > div > div > button:nth-child(3) {
+  padding-top: 5px !important;
+}
+
+
+#my-image {
+  border: 1px solid grey;
+  height: 150px;
+}
+
+#text-output {
+  text-align: center;
+  line-height: 2;
+  font-weight: 800;
+  color: #3a6c8a;
+  font-size: 1.7em;
+  font-style: italic;
+}
+
+#clear {
+  margin-top: -55px;
+  border: 1px solid black;
+  color: black;
+}
+
+button#clear:hover {
+  color: white;
+  background-color: black;
+}
+
+
+.v-card-content-markdown-outer {
+  display: flex;
+  width: 800px;
+  align-items: flex-end;
+  padding-right: 10px;
+}
+
+
+.canvas-outer > div > div {
+  background-color: #CCDDFF !important;
+}
