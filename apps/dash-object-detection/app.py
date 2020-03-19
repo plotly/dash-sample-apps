@@ -399,7 +399,7 @@ def update_output(dropdown_value):
                         ),
                     ),
                 ]
-            ),
+            )
         ]
     return []
 
@@ -419,7 +419,7 @@ def update_detection_mode(value):
                     ),
                     dcc.Graph(id="bar-score-graph"),
                 ]
-            ),
+            )
         ]
     return []
 

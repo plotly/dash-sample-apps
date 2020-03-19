@@ -68,7 +68,7 @@ def knobs(cur_input, cur_tab):
                 id="offset-input",
                 label="Offset (mV)",
                 labelPosition="bottom",
-                size=72,
+                size=70,
                 scale={"labelInterval": 10},
                 color=theme["primary"],
                 max=10,
@@ -249,6 +249,7 @@ app.layout = html.Div(
                                 html.Div(
                                     id="dark-theme-components",
                                     className="left-panel-controls",
+                                    style={"height": 705},
                                     children=DarkThemeProvider(
                                         theme=theme,
                                         children=[
@@ -256,18 +257,7 @@ app.layout = html.Div(
                                             function_setting_div(None, "1"),
                                         ],
                                     ),
-                                ),
-                                html.Div(
-                                    className="left-panel-color-picker",
-                                    children=[
-                                        daq.ColorPicker(
-                                            id="color-picker",
-                                            label=" ",
-                                            value=dict(hex="#0054A6"),
-                                            size=164,
-                                        )
-                                    ],
-                                ),
+                                )
                             ],
                         )
                     ],
@@ -490,46 +480,6 @@ def generate_graph(cur_inputs, theme_value, tab_index: str):
     return base_figure, info
 
 
-# Callback to update theme layout
-@app.callback(
-    Output("dark-theme-components", "children"),
-    [Input("toggleTheme", "value"), Input("color-picker", "value")],
-    [State("control-inputs", "data"), State("tabs", "value")],
-)
-def turn_dark(turn_dark, color_pick, cur_inputs, cur_tab_value):
-    theme.update(dark=turn_dark)
-
-    if color_pick is not None:
-        theme.update(primary=color_pick["hex"])
-
-    return DarkThemeProvider(
-        theme=theme,
-        children=[
-            power_setting_div(cur_inputs, cur_tab_value),
-            function_setting_div(cur_inputs, cur_tab_value),
-        ],
-    )
-
-
-# Update colors upon color-picker changes
-@app.callback(
-    [
-        Output("power-title", "style"),
-        Output("function-title", "style"),
-        Output("graph-title", "style"),
-        Output("div-graph-info", "style"),
-        Output("tabs", "color"),
-    ],
-    [Input("color-picker", "value")],
-)
-def color_update(color):
-    return (
-        list({"color": color["hex"]} for _ in range(3))
-        + [{"border": ("1px solid " + color["hex"]), "color": "inherit"}]
-        + [{"border": color["hex"]}]
-    )
-
-
 # Callback updating backgrounds
 @app.callback(
     [
@@ -568,16 +518,16 @@ def update_offset_display(value):
 @app.callback(
     [Output("tabs", "children"), Output("tabs", "value")],
     [Input("new-tab", "n_clicks")],
-    [State("control-inputs", "data"), State("color-picker", "value")],
+    [State("control-inputs", "data")],
 )
-def update_total_tab_number(n_clicks, cur_inputs, color):
+def update_total_tab_number(n_clicks, cur_inputs):
     return (
         list(
             dcc.Tab(
                 label="Run #{}".format(i),
                 value="{}".format(i),
                 selected_style={
-                    "color": color["hex"],
+                    "color": "black",
                     "backgroundColor": "transparent",
                     "border": "none",
                 },
