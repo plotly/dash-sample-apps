@@ -26,7 +26,7 @@ build_dtm <- function(df) {
 
 
 build_lda_topics <- function(dtm) {
-  lda = LDA(dtm, k = 5, control = list(seed = 1234))
+  lda = LDA(dtm, k = 5, method= "Gibbs", control = list(seed = 1234))
   topics <- tidy(lda, matrix = "beta")
   return(topics)
 }
@@ -48,9 +48,13 @@ top_terms <- function(topics) {
 }
 
 build_lda_df <- function(df) {
+  message("Build dtm")
   dtm <- build_dtm(df)
+  message("Build LDA topics")
   ap_topics <- build_lda_topics(dtm)
+  message("Build tsne")
   tsne_df <- tsne_topics(ap_topics)
+  message("Return cbind(ap_topics, tsne_df)")
   return(cbind(ap_topics, tsne_df))
 }
 

@@ -10,7 +10,7 @@ stoplist_funct <- function(bank) {
   a <- strsplit(as.character(bank), " ")
   a <- tolower(unlist(a))
   # create stop list
-  stop_words <- c(a, "INC.", "Ltd.", "xxxxxxxx", "xxxxxxxxxxxxxxxx", "XXXX", "XX", "xx", "xxxx", "n't", "Trans Union", "BOA", "Citi", "account")
+  stop_words <- c(a, "INC.", "Ltd.", "xxxxxxxx","xxxxxxxxxxxx", "xxxxxxxxxxxxxxxx", "XXXX", "XX", "xx", "xxxx", "n't", "Trans Union", "BOA", "Citi", "account")
   stop_words <- tolower(stop_words)
   stop_words <- gsub(pattern = "\\,", "", stop_words)
   stop_words <- gsub(pattern = "\\.", "", stop_words)

@@ -197,6 +197,23 @@ LDA_PLACEHOLDER <- htmlDiv(
   )
 )
 
+LDA_TABLE_PLACEHOLDER <- htmlDiv(
+  className = 'row',
+  children = list(
+    htmlDiv(
+      className = "col-md-12",
+      children = list(
+        dccLoading(
+          children = list(
+            htmlTable(id='lda-table')
+          )
+        )
+      )
+    )
+  )
+)
+
+
 #### TAB
 get_tabs <- function(fig_treemap, fig_wordcloud) {
   if (is.na(fig_treemap)) {
@@ -382,7 +399,8 @@ app$layout(
       HEADER,
       SELECTION,
       TEST,
-      LDA_PLACEHOLDER
+      LDA_PLACEHOLDER,
+      LDA_TABLE_PLACEHOLDER
     )
   )
 )
@@ -522,5 +540,61 @@ app$callback(
   }
 )
 
+
+
+app$callback(
+  output('lda-table', 'children'),
+  params = list(
+    input('n-selection-slider', 'value'),
+    input('bank-selection', 'value'),
+    input('time-slider', 'value'),
+    input('lda', 'clickData')
+  ),
+  function(sample_pct, company, selected_time, clickData) {
+    print(clickData)
+    selectedTopic <- clickData$points[[1]]$curveNumber
+    selectedPoint <- clickData$points[[1]]$pointNumber
+    print(clickData$points[[1]]$pointIndex)
+
+    time <- selected_time
+    after <- as.integer(selected_time[1])
+    before <- as.integer(selected_time[2])
+
+    df <- filtered_data(ceiling(sample_pct / 10), company, after, before)
+    # df <- df[1:25,]
+
+    dtm <- build_dtm(df)
+    dtm <- tidy(dtm)
+    selectedDocumentNum <- dtm[selectedPoint, ]$document
+    selectedDocument <- df[selectedDocumentNum, ]
+    
+    print(selectedDocument)
+    
+    lda_df <- build_lda_df(df)
+
+    num_topics <- max(lda_df$topic)
+    tops <- top_terms(lda_df)
+    top_terms_by_topic <- aggregate(term~topic, tops, paste, collapse = ',')
+
+    print(lda_df[lda_df$topic == selectedTopic, ][selectedPoint, ])
+    print(top_terms_by_topic[top_terms_by_topic$topic == selectedTopic, ]$term)
+
+    return(list(
+      htmlThead(
+        children = list(
+          htmlTh("Top terms"),
+          htmlTh("Document No"),
+          htmlTh("Complaint text")
+        )
+      ),
+      htmlTr(children = list(
+        htmlTd(top_terms_by_topic[top_terms_by_topic$topic == selectedTopic, ]$term),
+        htmlTd(selectedDocumentNum),
+        htmlTd(selectedDocument$complaint)
+      ))
+      )
+    )
+  }
+)
 
 app$run_server(showcase = FALSE)
