@@ -24,9 +24,13 @@ from wordcloud import WordCloud, STOPWORDS
 from ldacomplaints import lda_analysis
 from sklearn.manifold import TSNE
 
-embed_df = pd.read_csv('data/tsne_bigram_data.csv', index_col=0)  # Bigram embedding dataframe, with placeholder tsne values (at perplexity=3)
-vects_df = pd.read_csv('data/bigram_vectors.csv', index_col=0)  # Simple averages of GLoVe 50d vectors
-bigram_df = pd.read_csv('data/bigram_counts_data.csv', index_col=0)
+embed_df = pd.read_csv(
+    "data/tsne_bigram_data.csv", index_col=0
+)  # Bigram embedding dataframe, with placeholder tsne values (at perplexity=3)
+vects_df = pd.read_csv(
+    "data/bigram_vectors.csv", index_col=0
+)  # Simple averages of GLoVe 50d vectors
+bigram_df = pd.read_csv("data/bigram_counts_data.csv", index_col=0)
 
 DATA_PATH = pathlib.Path(__file__).parent.resolve()
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
@@ -605,16 +609,24 @@ TOP_BIGRAM_PLOT = [
                         color="warning",
                         style={"display": "none"},
                     ),
-                    dbc.Row([
-                        dbc.Col(['Choose a t-SNE perplexity value:'], md=6),
-                        dbc.Col([
-                            dcc.Dropdown(
-                                id='bigrams-perplex-dropdown',
-                                options=[{'label': str(i), 'value': i} for i in range(3, 7)],
-                                value=3
-                            )
-                        ], md=3)
-                    ]),
+                    dbc.Row(
+                        [
+                            dbc.Col(["Choose a t-SNE perplexity value:"], md=6),
+                            dbc.Col(
+                                [
+                                    dcc.Dropdown(
+                                        id="bigrams-perplex-dropdown",
+                                        options=[
+                                            {"label": str(i), "value": i}
+                                            for i in range(3, 7)
+                                        ],
+                                        value=3,
+                                    )
+                                ],
+                                md=3,
+                            ),
+                        ]
+                    ),
                     dcc.Graph(id="bigrams-scatter"),
                 ],
                 type="default",
@@ -637,24 +649,37 @@ TOP_BIGRAM_COMPS = [
                         color="warning",
                         style={"display": "none"},
                     ),
-
-                    dbc.Row([
-                        dbc.Col(html.H3('Choose two companies to compare:'), md=12),
-                        dbc.Col([
-                            dcc.Dropdown(
-                                id='bigrams-comp_1',
-                                options=[{'label': i, 'value': i} for i in bigram_df.company.unique()],
-                                value='EQUIFAX, INC.'
-                            )
-                        ], md=6),
-                        dbc.Col([
-                            dcc.Dropdown(
-                                id='bigrams-comp_2',
-                                options=[{'label': i, 'value': i} for i in bigram_df.company.unique()],
-                                value='TRANSUNION INTERMEDIATE HOLDINGS, INC.'
-                            )
-                        ], md=6),
-                    ]),
+                    dbc.Row(
+                        [
+                            dbc.Col(html.H3("Choose two companies to compare:"), md=12),
+                            dbc.Col(
+                                [
+                                    dcc.Dropdown(
+                                        id="bigrams-comp_1",
+                                        options=[
+                                            {"label": i, "value": i}
+                                            for i in bigram_df.company.unique()
+                                        ],
+                                        value="EQUIFAX, INC.",
+                                    )
+                                ],
+                                md=6,
+                            ),
+                            dbc.Col(
+                                [
+                                    dcc.Dropdown(
+                                        id="bigrams-comp_2",
+                                        options=[
+                                            {"label": i, "value": i}
+                                            for i in bigram_df.company.unique()
+                                        ],
+                                        value="TRANSUNION INTERMEDIATE HOLDINGS, INC.",
+                                    )
+                                ],
+                                md=6,
+                            ),
+                        ]
+                    ),
                     dcc.Graph(id="bigrams-comps"),
                 ],
                 type="default",
@@ -666,18 +691,8 @@ TOP_BIGRAM_COMPS = [
 
 BODY = dbc.Container(
     [
-        dbc.Row(
-            [
-                dbc.Col(dbc.Card(TOP_BIGRAM_COMPS)),
-            ]
-            , style={"marginTop": 30}
-        ),
-        dbc.Row(
-            [
-                dbc.Col(dbc.Card(TOP_BIGRAM_PLOT)),
-            ]
-            , style={"marginTop": 30}
-        ),
+        dbc.Row([dbc.Col(dbc.Card(TOP_BIGRAM_COMPS)),], style={"marginTop": 30}),
+        dbc.Row([dbc.Col(dbc.Card(TOP_BIGRAM_PLOT)),], style={"marginTop": 30}),
         dbc.Row(
             [
                 dbc.Col(LEFT_COLUMN, md=4, align="center"),
@@ -704,19 +719,30 @@ app.layout = html.Div(children=[NAVBAR, BODY])
 #  Callbacks
 """
 
+
 @app.callback(
-    Output("bigrams-scatter", "figure"),
-    [Input("bigrams-perplex-dropdown", "value")],
+    Output("bigrams-scatter", "figure"), [Input("bigrams-perplex-dropdown", "value")],
 )
 def populate_bigram_scatter(perplexity):
     X_embedded = TSNE(n_components=2, perplexity=perplexity).fit_transform(vects_df)
 
-    embed_df['tsne_1'] = X_embedded[:, 0]
-    embed_df['tsne_2'] = X_embedded[:, 1]
-    fig = px.scatter(embed_df, x='tsne_1', y='tsne_2', hover_name='bigram', text='bigram', size='count', color='words', size_max=45
-                     , template='plotly_white', title='Bigram similarity and frequency', labels={'words': 'Avg. Length<BR>(words)'}
-                     , color_continuous_scale=px.colors.sequential.Sunsetdark)
-    fig.update_traces(marker=dict(line=dict(width=1, color='Gray')))
+    embed_df["tsne_1"] = X_embedded[:, 0]
+    embed_df["tsne_2"] = X_embedded[:, 1]
+    fig = px.scatter(
+        embed_df,
+        x="tsne_1",
+        y="tsne_2",
+        hover_name="bigram",
+        text="bigram",
+        size="count",
+        color="words",
+        size_max=45,
+        template="plotly_white",
+        title="Bigram similarity and frequency",
+        labels={"words": "Avg. Length<BR>(words)"},
+        color_continuous_scale=px.colors.sequential.Sunsetdark,
+    )
+    fig.update_traces(marker=dict(line=dict(width=1, color="Gray")))
     fig.update_xaxes(visible=False)
     fig.update_yaxes(visible=False)
     return fig
@@ -729,14 +755,24 @@ def populate_bigram_scatter(perplexity):
 def comp_bigram_comparisons(comp_first, comp_second):
     comp_list = [comp_first, comp_second]
     temp_df = bigram_df[bigram_df.company.isin(comp_list)]
-    temp_df.loc[temp_df.company == comp_list[-1], 'value'] = -temp_df[temp_df.company == comp_list[-1]].value.values
+    temp_df.loc[temp_df.company == comp_list[-1], "value"] = -temp_df[
+        temp_df.company == comp_list[-1]
+    ].value.values
 
-    fig = px.bar(temp_df, title='Comparison: ' + comp_first + ' | ' + comp_second, x='ngram', y='value'
-                 , color='company', template='plotly_white', color_discrete_sequence=px.colors.qualitative.Bold
-                 , labels={'company': 'Company:', 'ngram': 'N-Gram'}, hover_data='')
+    fig = px.bar(
+        temp_df,
+        title="Comparison: " + comp_first + " | " + comp_second,
+        x="ngram",
+        y="value",
+        color="company",
+        template="plotly_white",
+        color_discrete_sequence=px.colors.qualitative.Bold,
+        labels={"company": "Company:", "ngram": "N-Gram"},
+        hover_data="",
+    )
     fig.update_layout(legend=dict(x=0.1, y=1.1), legend_orientation="h")
-    fig.update_yaxes(title='', showticklabels=False)
-    fig.data[0]['hovertemplate'] = fig.data[0]['hovertemplate'][:-14]
+    fig.update_yaxes(title="", showticklabels=False)
+    fig.data[0]["hovertemplate"] = fig.data[0]["hovertemplate"][:-14]
     return fig
 
 
