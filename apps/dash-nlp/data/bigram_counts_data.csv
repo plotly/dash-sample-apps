@@ -1,0 +1,551 @@
+,ngram,company,value
+0,credit_report,Total,7036
+1,credit_card,Total,3577
+2,make_payment,Total,2227
+3,customer_service,Total,1585
+4,credit_reporting,Total,1430
+5,call_back,Total,1390
+6,phone_call,Total,1390
+7,collection_agency,Total,1386
+8,credit_bureaus,Total,1345
+9,credit_score,Total,1305
+10,30_day,Total,1270
+11,student_loan,Total,1260
+12,report_credit,Total,1206
+13,interest_rate,Total,1192
+14,receive_letter,Total,1065
+15,loan_modification,Total,1051
+16,late_payment,Total,1050
+17,late_fee,Total,1045
+18,even_though,Total,1017
+19,would_like,Total,1006
+20,send_letter,Total,999
+21,never_receive,Total,960
+22,monthly_payment,Total,949
+23,reporting_agency,Total,884
+24,identity_theft,Total,867
+25,phone_number,Total,859
+26,pay_full,Total,850
+27,tell_would,Total,836
+28,file_complaint,Total,831
+29,past_due,Total,824
+30,payment_make,Total,823
+31,credit_bureau,Total,801
+32,remove_credit,Total,794
+33,social_security,Total,773
+34,mortgage_payment,Total,763
+35,please_help,Total,759
+36,several_time,Total,749
+37,credit_file,Total,749
+38,year_ago,Total,736
+39,say_would,Total,727
+40,debt_collection,Total,709
+41,mortgage_company,Total,701
+42,debt_collector,Total,695
+43,collect_debt,Total,661
+44,receive_call,Total,607
+45,try_get,Total,594
+46,short_sale,Total,569
+47,information_credit,Total,569
+48,day_late,Total,545
+49,us_bank,Total,540
+50,credit_report,"EQUIFAX, INC.",827
+51,credit_card,"EQUIFAX, INC.",112
+52,make_payment,"EQUIFAX, INC.",19
+53,customer_service,"EQUIFAX, INC.",29
+54,credit_reporting,"EQUIFAX, INC.",204
+55,call_back,"EQUIFAX, INC.",7
+56,phone_call,"EQUIFAX, INC.",33
+57,collection_agency,"EQUIFAX, INC.",55
+58,credit_bureaus,"EQUIFAX, INC.",154
+59,credit_score,"EQUIFAX, INC.",136
+60,30_day,"EQUIFAX, INC.",97
+61,student_loan,"EQUIFAX, INC.",45
+62,report_credit,"EQUIFAX, INC.",145
+63,interest_rate,"EQUIFAX, INC.",18
+64,receive_letter,"EQUIFAX, INC.",35
+65,loan_modification,"EQUIFAX, INC.",3
+66,late_payment,"EQUIFAX, INC.",52
+67,late_fee,"EQUIFAX, INC.",7
+68,even_though,"EQUIFAX, INC.",47
+69,would_like,"EQUIFAX, INC.",70
+70,send_letter,"EQUIFAX, INC.",69
+71,never_receive,"EQUIFAX, INC.",43
+72,monthly_payment,"EQUIFAX, INC.",17
+73,reporting_agency,"EQUIFAX, INC.",141
+74,identity_theft,"EQUIFAX, INC.",108
+75,phone_number,"EQUIFAX, INC.",39
+76,pay_full,"EQUIFAX, INC.",48
+77,tell_would,"EQUIFAX, INC.",16
+78,file_complaint,"EQUIFAX, INC.",73
+79,past_due,"EQUIFAX, INC.",38
+80,payment_make,"EQUIFAX, INC.",18
+81,credit_bureau,"EQUIFAX, INC.",225
+82,remove_credit,"EQUIFAX, INC.",116
+83,social_security,"EQUIFAX, INC.",76
+84,mortgage_payment,"EQUIFAX, INC.",5
+85,please_help,"EQUIFAX, INC.",40
+86,several_time,"EQUIFAX, INC.",50
+87,credit_file,"EQUIFAX, INC.",131
+88,year_ago,"EQUIFAX, INC.",42
+89,say_would,"EQUIFAX, INC.",14
+90,debt_collection,"EQUIFAX, INC.",22
+91,mortgage_company,"EQUIFAX, INC.",12
+92,debt_collector,"EQUIFAX, INC.",16
+93,collect_debt,"EQUIFAX, INC.",10
+94,receive_call,"EQUIFAX, INC.",5
+95,try_get,"EQUIFAX, INC.",39
+96,short_sale,"EQUIFAX, INC.",4
+97,information_credit,"EQUIFAX, INC.",106
+98,day_late,"EQUIFAX, INC.",44
+99,us_bank,"EQUIFAX, INC.",1
+100,credit_report,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",655
+101,credit_card,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",96
+102,make_payment,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",20
+103,customer_service,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",34
+104,credit_reporting,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",152
+105,call_back,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",12
+106,phone_call,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",22
+107,collection_agency,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",54
+108,credit_bureaus,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",124
+109,credit_score,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",118
+110,30_day,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",100
+111,student_loan,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",48
+112,report_credit,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",116
+113,interest_rate,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",9
+114,receive_letter,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",31
+115,loan_modification,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",3
+116,late_payment,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",53
+117,late_fee,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",1
+118,even_though,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",20
+119,would_like,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",67
+120,send_letter,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",47
+121,never_receive,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",25
+122,monthly_payment,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",11
+123,reporting_agency,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",98
+124,identity_theft,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",68
+125,phone_number,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",32
+126,pay_full,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",39
+127,tell_would,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",18
+128,file_complaint,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",52
+129,past_due,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",21
+130,payment_make,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",15
+131,credit_bureau,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",197
+132,remove_credit,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",91
+133,social_security,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",47
+134,mortgage_payment,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",6
+135,please_help,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",42
+136,several_time,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",43
+137,credit_file,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",93
+138,year_ago,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",39
+139,say_would,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",7
+140,debt_collection,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",20
+141,mortgage_company,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",6
+142,debt_collector,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",11
+143,collect_debt,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",9
+144,receive_call,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",4
+145,try_get,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",31
+146,short_sale,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",2
+147,information_credit,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",77
+148,day_late,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",45
+149,us_bank,"TRANSUNION INTERMEDIATE HOLDINGS, INC.",4
+150,credit_report,Experian Information Solutions Inc.,696
+151,credit_card,Experian Information Solutions Inc.,117
+152,make_payment,Experian Information Solutions Inc.,30
+153,customer_service,Experian Information Solutions Inc.,19
+154,credit_reporting,Experian Information Solutions Inc.,176
+155,call_back,Experian Information Solutions Inc.,15
+156,phone_call,Experian Information Solutions Inc.,15
+157,collection_agency,Experian Information Solutions Inc.,49
+158,credit_bureaus,Experian Information Solutions Inc.,124
+159,credit_score,Experian Information Solutions Inc.,101
+160,30_day,Experian Information Solutions Inc.,96
+161,student_loan,Experian Information Solutions Inc.,41
+162,report_credit,Experian Information Solutions Inc.,107
+163,interest_rate,Experian Information Solutions Inc.,17
+164,receive_letter,Experian Information Solutions Inc.,29
+165,loan_modification,Experian Information Solutions Inc.,3
+166,late_payment,Experian Information Solutions Inc.,49
+167,late_fee,Experian Information Solutions Inc.,4
+168,even_though,Experian Information Solutions Inc.,35
+169,would_like,Experian Information Solutions Inc.,60
+170,send_letter,Experian Information Solutions Inc.,68
+171,never_receive,Experian Information Solutions Inc.,23
+172,monthly_payment,Experian Information Solutions Inc.,14
+173,reporting_agency,Experian Information Solutions Inc.,122
+174,identity_theft,Experian Information Solutions Inc.,82
+175,phone_number,Experian Information Solutions Inc.,41
+176,pay_full,Experian Information Solutions Inc.,37
+177,tell_would,Experian Information Solutions Inc.,7
+178,file_complaint,Experian Information Solutions Inc.,58
+179,past_due,Experian Information Solutions Inc.,39
+180,payment_make,Experian Information Solutions Inc.,19
+181,credit_bureau,Experian Information Solutions Inc.,185
+182,remove_credit,Experian Information Solutions Inc.,94
+183,social_security,Experian Information Solutions Inc.,69
+184,mortgage_payment,Experian Information Solutions Inc.,4
+185,please_help,Experian Information Solutions Inc.,44
+186,several_time,Experian Information Solutions Inc.,36
+187,credit_file,Experian Information Solutions Inc.,96
+188,year_ago,Experian Information Solutions Inc.,26
+189,say_would,Experian Information Solutions Inc.,15
+190,debt_collection,Experian Information Solutions Inc.,18
+191,mortgage_company,Experian Information Solutions Inc.,6
+192,debt_collector,Experian Information Solutions Inc.,19
+193,collect_debt,Experian Information Solutions Inc.,8
+194,receive_call,Experian Information Solutions Inc.,4
+195,try_get,Experian Information Solutions Inc.,33
+196,short_sale,Experian Information Solutions Inc.,6
+197,information_credit,Experian Information Solutions Inc.,104
+198,day_late,Experian Information Solutions Inc.,39
+199,us_bank,Experian Information Solutions Inc.,5
+200,credit_report,WELLS FARGO & COMPANY,70
+201,credit_card,WELLS FARGO & COMPANY,92
+202,make_payment,WELLS FARGO & COMPANY,80
+203,customer_service,WELLS FARGO & COMPANY,52
+204,credit_reporting,WELLS FARGO & COMPANY,16
+205,call_back,WELLS FARGO & COMPANY,44
+206,phone_call,WELLS FARGO & COMPANY,47
+207,collection_agency,WELLS FARGO & COMPANY,1
+208,credit_bureaus,WELLS FARGO & COMPANY,14
+209,credit_score,WELLS FARGO & COMPANY,23
+210,30_day,WELLS FARGO & COMPANY,37
+211,student_loan,WELLS FARGO & COMPANY,18
+212,report_credit,WELLS FARGO & COMPANY,21
+213,interest_rate,WELLS FARGO & COMPANY,54
+214,receive_letter,WELLS FARGO & COMPANY,44
+215,loan_modification,WELLS FARGO & COMPANY,71
+216,late_payment,WELLS FARGO & COMPANY,39
+217,late_fee,WELLS FARGO & COMPANY,29
+218,even_though,WELLS FARGO & COMPANY,54
+219,would_like,WELLS FARGO & COMPANY,46
+220,send_letter,WELLS FARGO & COMPANY,33
+221,never_receive,WELLS FARGO & COMPANY,35
+222,monthly_payment,WELLS FARGO & COMPANY,32
+223,reporting_agency,WELLS FARGO & COMPANY,9
+224,identity_theft,WELLS FARGO & COMPANY,13
+225,phone_number,WELLS FARGO & COMPANY,23
+226,pay_full,WELLS FARGO & COMPANY,16
+227,tell_would,WELLS FARGO & COMPANY,39
+228,file_complaint,WELLS FARGO & COMPANY,28
+229,past_due,WELLS FARGO & COMPANY,25
+230,payment_make,WELLS FARGO & COMPANY,28
+231,credit_bureau,WELLS FARGO & COMPANY,22
+232,remove_credit,WELLS FARGO & COMPANY,8
+233,social_security,WELLS FARGO & COMPANY,21
+234,mortgage_payment,WELLS FARGO & COMPANY,54
+235,please_help,WELLS FARGO & COMPANY,35
+236,several_time,WELLS FARGO & COMPANY,31
+237,credit_file,WELLS FARGO & COMPANY,4
+238,year_ago,WELLS FARGO & COMPANY,26
+239,say_would,WELLS FARGO & COMPANY,35
+240,debt_collection,WELLS FARGO & COMPANY,6
+241,mortgage_company,WELLS FARGO & COMPANY,27
+242,debt_collector,WELLS FARGO & COMPANY,5
+243,collect_debt,WELLS FARGO & COMPANY,11
+244,receive_call,WELLS FARGO & COMPANY,18
+245,try_get,WELLS FARGO & COMPANY,28
+246,short_sale,WELLS FARGO & COMPANY,35
+247,information_credit,WELLS FARGO & COMPANY,5
+248,day_late,WELLS FARGO & COMPANY,29
+249,us_bank,WELLS FARGO & COMPANY,7
+250,credit_report,"BANK OF AMERICA, NATIONAL ASSOCIATION",93
+251,credit_card,"BANK OF AMERICA, NATIONAL ASSOCIATION",144
+252,make_payment,"BANK OF AMERICA, NATIONAL ASSOCIATION",71
+253,customer_service,"BANK OF AMERICA, NATIONAL ASSOCIATION",64
+254,credit_reporting,"BANK OF AMERICA, NATIONAL ASSOCIATION",24
+255,call_back,"BANK OF AMERICA, NATIONAL ASSOCIATION",47
+256,phone_call,"BANK OF AMERICA, NATIONAL ASSOCIATION",49
+257,collection_agency,"BANK OF AMERICA, NATIONAL ASSOCIATION",9
+258,credit_bureaus,"BANK OF AMERICA, NATIONAL ASSOCIATION",22
+259,credit_score,"BANK OF AMERICA, NATIONAL ASSOCIATION",31
+260,30_day,"BANK OF AMERICA, NATIONAL ASSOCIATION",31
+261,student_loan,"BANK OF AMERICA, NATIONAL ASSOCIATION",1
+262,report_credit,"BANK OF AMERICA, NATIONAL ASSOCIATION",21
+263,interest_rate,"BANK OF AMERICA, NATIONAL ASSOCIATION",47
+264,receive_letter,"BANK OF AMERICA, NATIONAL ASSOCIATION",60
+265,loan_modification,"BANK OF AMERICA, NATIONAL ASSOCIATION",63
+266,late_payment,"BANK OF AMERICA, NATIONAL ASSOCIATION",30
+267,late_fee,"BANK OF AMERICA, NATIONAL ASSOCIATION",29
+268,even_though,"BANK OF AMERICA, NATIONAL ASSOCIATION",55
+269,would_like,"BANK OF AMERICA, NATIONAL ASSOCIATION",44
+270,send_letter,"BANK OF AMERICA, NATIONAL ASSOCIATION",40
+271,never_receive,"BANK OF AMERICA, NATIONAL ASSOCIATION",35
+272,monthly_payment,"BANK OF AMERICA, NATIONAL ASSOCIATION",25
+273,reporting_agency,"BANK OF AMERICA, NATIONAL ASSOCIATION",15
+274,identity_theft,"BANK OF AMERICA, NATIONAL ASSOCIATION",10
+275,phone_number,"BANK OF AMERICA, NATIONAL ASSOCIATION",33
+276,pay_full,"BANK OF AMERICA, NATIONAL ASSOCIATION",17
+277,tell_would,"BANK OF AMERICA, NATIONAL ASSOCIATION",41
+278,file_complaint,"BANK OF AMERICA, NATIONAL ASSOCIATION",32
+279,past_due,"BANK OF AMERICA, NATIONAL ASSOCIATION",14
+280,payment_make,"BANK OF AMERICA, NATIONAL ASSOCIATION",31
+281,credit_bureau,"BANK OF AMERICA, NATIONAL ASSOCIATION",26
+282,remove_credit,"BANK OF AMERICA, NATIONAL ASSOCIATION",7
+283,social_security,"BANK OF AMERICA, NATIONAL ASSOCIATION",20
+284,mortgage_payment,"BANK OF AMERICA, NATIONAL ASSOCIATION",37
+285,please_help,"BANK OF AMERICA, NATIONAL ASSOCIATION",35
+286,several_time,"BANK OF AMERICA, NATIONAL ASSOCIATION",28
+287,credit_file,"BANK OF AMERICA, NATIONAL ASSOCIATION",7
+288,year_ago,"BANK OF AMERICA, NATIONAL ASSOCIATION",33
+289,say_would,"BANK OF AMERICA, NATIONAL ASSOCIATION",31
+290,debt_collection,"BANK OF AMERICA, NATIONAL ASSOCIATION",9
+291,mortgage_company,"BANK OF AMERICA, NATIONAL ASSOCIATION",12
+292,debt_collector,"BANK OF AMERICA, NATIONAL ASSOCIATION",10
+293,collect_debt,"BANK OF AMERICA, NATIONAL ASSOCIATION",9
+294,receive_call,"BANK OF AMERICA, NATIONAL ASSOCIATION",24
+295,try_get,"BANK OF AMERICA, NATIONAL ASSOCIATION",29
+296,short_sale,"BANK OF AMERICA, NATIONAL ASSOCIATION",26
+297,information_credit,"BANK OF AMERICA, NATIONAL ASSOCIATION",8
+298,day_late,"BANK OF AMERICA, NATIONAL ASSOCIATION",31
+299,us_bank,"BANK OF AMERICA, NATIONAL ASSOCIATION",10
+300,credit_report,"Navient Solutions, LLC.",63
+301,credit_card,"Navient Solutions, LLC.",19
+302,make_payment,"Navient Solutions, LLC.",132
+303,customer_service,"Navient Solutions, LLC.",41
+304,credit_reporting,"Navient Solutions, LLC.",8
+305,call_back,"Navient Solutions, LLC.",36
+306,phone_call,"Navient Solutions, LLC.",64
+307,collection_agency,"Navient Solutions, LLC.",17
+308,credit_bureaus,"Navient Solutions, LLC.",24
+309,credit_score,"Navient Solutions, LLC.",36
+310,30_day,"Navient Solutions, LLC.",8
+311,student_loan,"Navient Solutions, LLC.",273
+312,report_credit,"Navient Solutions, LLC.",25
+313,interest_rate,"Navient Solutions, LLC.",94
+314,receive_letter,"Navient Solutions, LLC.",14
+315,loan_modification,"Navient Solutions, LLC.",3
+316,late_payment,"Navient Solutions, LLC.",33
+317,late_fee,"Navient Solutions, LLC.",31
+318,even_though,"Navient Solutions, LLC.",59
+319,would_like,"Navient Solutions, LLC.",31
+320,send_letter,"Navient Solutions, LLC.",17
+321,never_receive,"Navient Solutions, LLC.",24
+322,monthly_payment,"Navient Solutions, LLC.",99
+323,reporting_agency,"Navient Solutions, LLC.",6
+324,identity_theft,"Navient Solutions, LLC.",2
+325,phone_number,"Navient Solutions, LLC.",19
+326,pay_full,"Navient Solutions, LLC.",28
+327,tell_would,"Navient Solutions, LLC.",42
+328,file_complaint,"Navient Solutions, LLC.",12
+329,past_due,"Navient Solutions, LLC.",30
+330,payment_make,"Navient Solutions, LLC.",39
+331,credit_bureau,"Navient Solutions, LLC.",33
+332,remove_credit,"Navient Solutions, LLC.",9
+333,social_security,"Navient Solutions, LLC.",12
+334,mortgage_payment,"Navient Solutions, LLC.",2
+335,please_help,"Navient Solutions, LLC.",28
+336,several_time,"Navient Solutions, LLC.",36
+337,credit_file,"Navient Solutions, LLC.",3
+338,year_ago,"Navient Solutions, LLC.",52
+339,say_would,"Navient Solutions, LLC.",23
+340,debt_collection,"Navient Solutions, LLC.",9
+341,mortgage_company,"Navient Solutions, LLC.",4
+342,debt_collector,"Navient Solutions, LLC.",8
+343,collect_debt,"Navient Solutions, LLC.",6
+344,receive_call,"Navient Solutions, LLC.",11
+345,try_get,"Navient Solutions, LLC.",32
+346,short_sale,"Navient Solutions, LLC.",0
+347,information_credit,"Navient Solutions, LLC.",6
+348,day_late,"Navient Solutions, LLC.",24
+349,us_bank,"Navient Solutions, LLC.",0
+350,credit_report,"CITIBANK, N.A.",89
+351,credit_card,"CITIBANK, N.A.",262
+352,make_payment,"CITIBANK, N.A.",88
+353,customer_service,"CITIBANK, N.A.",99
+354,credit_reporting,"CITIBANK, N.A.",19
+355,call_back,"CITIBANK, N.A.",33
+356,phone_call,"CITIBANK, N.A.",59
+357,collection_agency,"CITIBANK, N.A.",18
+358,credit_bureaus,"CITIBANK, N.A.",26
+359,credit_score,"CITIBANK, N.A.",52
+360,30_day,"CITIBANK, N.A.",39
+361,student_loan,"CITIBANK, N.A.",6
+362,report_credit,"CITIBANK, N.A.",26
+363,interest_rate,"CITIBANK, N.A.",26
+364,receive_letter,"CITIBANK, N.A.",48
+365,loan_modification,"CITIBANK, N.A.",19
+366,late_payment,"CITIBANK, N.A.",36
+367,late_fee,"CITIBANK, N.A.",62
+368,even_though,"CITIBANK, N.A.",49
+369,would_like,"CITIBANK, N.A.",40
+370,send_letter,"CITIBANK, N.A.",28
+371,never_receive,"CITIBANK, N.A.",44
+372,monthly_payment,"CITIBANK, N.A.",18
+373,reporting_agency,"CITIBANK, N.A.",10
+374,identity_theft,"CITIBANK, N.A.",12
+375,phone_number,"CITIBANK, N.A.",32
+376,pay_full,"CITIBANK, N.A.",31
+377,tell_would,"CITIBANK, N.A.",50
+378,file_complaint,"CITIBANK, N.A.",28
+379,past_due,"CITIBANK, N.A.",23
+380,payment_make,"CITIBANK, N.A.",32
+381,credit_bureau,"CITIBANK, N.A.",36
+382,remove_credit,"CITIBANK, N.A.",12
+383,social_security,"CITIBANK, N.A.",19
+384,mortgage_payment,"CITIBANK, N.A.",9
+385,please_help,"CITIBANK, N.A.",39
+386,several_time,"CITIBANK, N.A.",23
+387,credit_file,"CITIBANK, N.A.",7
+388,year_ago,"CITIBANK, N.A.",20
+389,say_would,"CITIBANK, N.A.",41
+390,debt_collection,"CITIBANK, N.A.",7
+391,mortgage_company,"CITIBANK, N.A.",5
+392,debt_collector,"CITIBANK, N.A.",6
+393,collect_debt,"CITIBANK, N.A.",8
+394,receive_call,"CITIBANK, N.A.",21
+395,try_get,"CITIBANK, N.A.",14
+396,short_sale,"CITIBANK, N.A.",8
+397,information_credit,"CITIBANK, N.A.",3
+398,day_late,"CITIBANK, N.A.",25
+399,us_bank,"CITIBANK, N.A.",4
+400,credit_report,JPMORGAN CHASE & CO.,82
+401,credit_card,JPMORGAN CHASE & CO.,194
+402,make_payment,JPMORGAN CHASE & CO.,51
+403,customer_service,JPMORGAN CHASE & CO.,61
+404,credit_reporting,JPMORGAN CHASE & CO.,12
+405,call_back,JPMORGAN CHASE & CO.,45
+406,phone_call,JPMORGAN CHASE & CO.,42
+407,collection_agency,JPMORGAN CHASE & CO.,5
+408,credit_bureaus,JPMORGAN CHASE & CO.,13
+409,credit_score,JPMORGAN CHASE & CO.,29
+410,30_day,JPMORGAN CHASE & CO.,28
+411,student_loan,JPMORGAN CHASE & CO.,5
+412,report_credit,JPMORGAN CHASE & CO.,29
+413,interest_rate,JPMORGAN CHASE & CO.,29
+414,receive_letter,JPMORGAN CHASE & CO.,36
+415,loan_modification,JPMORGAN CHASE & CO.,31
+416,late_payment,JPMORGAN CHASE & CO.,20
+417,late_fee,JPMORGAN CHASE & CO.,23
+418,even_though,JPMORGAN CHASE & CO.,40
+419,would_like,JPMORGAN CHASE & CO.,36
+420,send_letter,JPMORGAN CHASE & CO.,28
+421,never_receive,JPMORGAN CHASE & CO.,32
+422,monthly_payment,JPMORGAN CHASE & CO.,27
+423,reporting_agency,JPMORGAN CHASE & CO.,10
+424,identity_theft,JPMORGAN CHASE & CO.,15
+425,phone_number,JPMORGAN CHASE & CO.,24
+426,pay_full,JPMORGAN CHASE & CO.,18
+427,tell_would,JPMORGAN CHASE & CO.,36
+428,file_complaint,JPMORGAN CHASE & CO.,32
+429,past_due,JPMORGAN CHASE & CO.,16
+430,payment_make,JPMORGAN CHASE & CO.,29
+431,credit_bureau,JPMORGAN CHASE & CO.,25
+432,remove_credit,JPMORGAN CHASE & CO.,8
+433,social_security,JPMORGAN CHASE & CO.,16
+434,mortgage_payment,JPMORGAN CHASE & CO.,30
+435,please_help,JPMORGAN CHASE & CO.,36
+436,several_time,JPMORGAN CHASE & CO.,28
+437,credit_file,JPMORGAN CHASE & CO.,9
+438,year_ago,JPMORGAN CHASE & CO.,27
+439,say_would,JPMORGAN CHASE & CO.,35
+440,debt_collection,JPMORGAN CHASE & CO.,11
+441,mortgage_company,JPMORGAN CHASE & CO.,10
+442,debt_collector,JPMORGAN CHASE & CO.,9
+443,collect_debt,JPMORGAN CHASE & CO.,5
+444,receive_call,JPMORGAN CHASE & CO.,18
+445,try_get,JPMORGAN CHASE & CO.,22
+446,short_sale,JPMORGAN CHASE & CO.,22
+447,information_credit,JPMORGAN CHASE & CO.,10
+448,day_late,JPMORGAN CHASE & CO.,36
+449,us_bank,JPMORGAN CHASE & CO.,3
+450,credit_report,CAPITAL ONE FINANCIAL CORPORATION,98
+451,credit_card,CAPITAL ONE FINANCIAL CORPORATION,175
+452,make_payment,CAPITAL ONE FINANCIAL CORPORATION,51
+453,customer_service,CAPITAL ONE FINANCIAL CORPORATION,33
+454,credit_reporting,CAPITAL ONE FINANCIAL CORPORATION,20
+455,call_back,CAPITAL ONE FINANCIAL CORPORATION,32
+456,phone_call,CAPITAL ONE FINANCIAL CORPORATION,20
+457,collection_agency,CAPITAL ONE FINANCIAL CORPORATION,5
+458,credit_bureaus,CAPITAL ONE FINANCIAL CORPORATION,24
+459,credit_score,CAPITAL ONE FINANCIAL CORPORATION,21
+460,30_day,CAPITAL ONE FINANCIAL CORPORATION,30
+461,student_loan,CAPITAL ONE FINANCIAL CORPORATION,1
+462,report_credit,CAPITAL ONE FINANCIAL CORPORATION,27
+463,interest_rate,CAPITAL ONE FINANCIAL CORPORATION,22
+464,receive_letter,CAPITAL ONE FINANCIAL CORPORATION,15
+465,loan_modification,CAPITAL ONE FINANCIAL CORPORATION,1
+466,late_payment,CAPITAL ONE FINANCIAL CORPORATION,33
+467,late_fee,CAPITAL ONE FINANCIAL CORPORATION,39
+468,even_though,CAPITAL ONE FINANCIAL CORPORATION,31
+469,would_like,CAPITAL ONE FINANCIAL CORPORATION,29
+470,send_letter,CAPITAL ONE FINANCIAL CORPORATION,16
+471,never_receive,CAPITAL ONE FINANCIAL CORPORATION,19
+472,monthly_payment,CAPITAL ONE FINANCIAL CORPORATION,15
+473,reporting_agency,CAPITAL ONE FINANCIAL CORPORATION,14
+474,identity_theft,CAPITAL ONE FINANCIAL CORPORATION,11
+475,phone_number,CAPITAL ONE FINANCIAL CORPORATION,12
+476,pay_full,CAPITAL ONE FINANCIAL CORPORATION,22
+477,tell_would,CAPITAL ONE FINANCIAL CORPORATION,28
+478,file_complaint,CAPITAL ONE FINANCIAL CORPORATION,16
+479,past_due,CAPITAL ONE FINANCIAL CORPORATION,21
+480,payment_make,CAPITAL ONE FINANCIAL CORPORATION,16
+481,credit_bureau,CAPITAL ONE FINANCIAL CORPORATION,39
+482,remove_credit,CAPITAL ONE FINANCIAL CORPORATION,16
+483,social_security,CAPITAL ONE FINANCIAL CORPORATION,17
+484,mortgage_payment,CAPITAL ONE FINANCIAL CORPORATION,2
+485,please_help,CAPITAL ONE FINANCIAL CORPORATION,15
+486,several_time,CAPITAL ONE FINANCIAL CORPORATION,16
+487,credit_file,CAPITAL ONE FINANCIAL CORPORATION,10
+488,year_ago,CAPITAL ONE FINANCIAL CORPORATION,14
+489,say_would,CAPITAL ONE FINANCIAL CORPORATION,18
+490,debt_collection,CAPITAL ONE FINANCIAL CORPORATION,2
+491,mortgage_company,CAPITAL ONE FINANCIAL CORPORATION,2
+492,debt_collector,CAPITAL ONE FINANCIAL CORPORATION,6
+493,collect_debt,CAPITAL ONE FINANCIAL CORPORATION,5
+494,receive_call,CAPITAL ONE FINANCIAL CORPORATION,19
+495,try_get,CAPITAL ONE FINANCIAL CORPORATION,15
+496,short_sale,CAPITAL ONE FINANCIAL CORPORATION,3
+497,information_credit,CAPITAL ONE FINANCIAL CORPORATION,6
+498,day_late,CAPITAL ONE FINANCIAL CORPORATION,26
+499,us_bank,CAPITAL ONE FINANCIAL CORPORATION,1
+500,credit_report,SYNCHRONY FINANCIAL,69
+501,credit_card,SYNCHRONY FINANCIAL,119
+502,make_payment,SYNCHRONY FINANCIAL,41
+503,customer_service,SYNCHRONY FINANCIAL,31
+504,credit_reporting,SYNCHRONY FINANCIAL,15
+505,call_back,SYNCHRONY FINANCIAL,13
+506,phone_call,SYNCHRONY FINANCIAL,18
+507,collection_agency,SYNCHRONY FINANCIAL,12
+508,credit_bureaus,SYNCHRONY FINANCIAL,23
+509,credit_score,SYNCHRONY FINANCIAL,30
+510,30_day,SYNCHRONY FINANCIAL,16
+511,student_loan,SYNCHRONY FINANCIAL,0
+512,report_credit,SYNCHRONY FINANCIAL,11
+513,interest_rate,SYNCHRONY FINANCIAL,16
+514,receive_letter,SYNCHRONY FINANCIAL,16
+515,loan_modification,SYNCHRONY FINANCIAL,0
+516,late_payment,SYNCHRONY FINANCIAL,20
+517,late_fee,SYNCHRONY FINANCIAL,44
+518,even_though,SYNCHRONY FINANCIAL,22
+519,would_like,SYNCHRONY FINANCIAL,14
+520,send_letter,SYNCHRONY FINANCIAL,11
+521,never_receive,SYNCHRONY FINANCIAL,15
+522,monthly_payment,SYNCHRONY FINANCIAL,9
+523,reporting_agency,SYNCHRONY FINANCIAL,7
+524,identity_theft,SYNCHRONY FINANCIAL,5
+525,phone_number,SYNCHRONY FINANCIAL,11
+526,pay_full,SYNCHRONY FINANCIAL,26
+527,tell_would,SYNCHRONY FINANCIAL,6
+528,file_complaint,SYNCHRONY FINANCIAL,11
+529,past_due,SYNCHRONY FINANCIAL,18
+530,payment_make,SYNCHRONY FINANCIAL,17
+531,credit_bureau,SYNCHRONY FINANCIAL,27
+532,remove_credit,SYNCHRONY FINANCIAL,12
+533,social_security,SYNCHRONY FINANCIAL,10
+534,mortgage_payment,SYNCHRONY FINANCIAL,0
+535,please_help,SYNCHRONY FINANCIAL,18
+536,several_time,SYNCHRONY FINANCIAL,13
+537,credit_file,SYNCHRONY FINANCIAL,6
+538,year_ago,SYNCHRONY FINANCIAL,10
+539,say_would,SYNCHRONY FINANCIAL,8
+540,debt_collection,SYNCHRONY FINANCIAL,4
+541,mortgage_company,SYNCHRONY FINANCIAL,1
+542,debt_collector,SYNCHRONY FINANCIAL,7
+543,collect_debt,SYNCHRONY FINANCIAL,5
+544,receive_call,SYNCHRONY FINANCIAL,13
+545,try_get,SYNCHRONY FINANCIAL,6
+546,short_sale,SYNCHRONY FINANCIAL,0
+547,information_credit,SYNCHRONY FINANCIAL,10
+548,day_late,SYNCHRONY FINANCIAL,10
+549,us_bank,SYNCHRONY FINANCIAL,1

@@ -14,6 +14,7 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
+import plotly.express as px
 import pandas as pd
 import numpy as np
 from precomputing import add_stopwords
@@ -21,7 +22,15 @@ from dash.dependencies import Output, Input, State
 from dateutil import relativedelta
 from wordcloud import WordCloud, STOPWORDS
 from ldacomplaints import lda_analysis
+from sklearn.manifold import TSNE
 
+embed_df = pd.read_csv(
+    "data/tsne_bigram_data.csv", index_col=0
+)  # Bigram embedding dataframe, with placeholder tsne values (at perplexity=3)
+vects_df = pd.read_csv(
+    "data/bigram_vectors.csv", index_col=0
+)  # Simple averages of GLoVe 50d vectors
+bigram_df = pd.read_csv("data/bigram_counts_data.csv", index_col=0)
 
 DATA_PATH = pathlib.Path(__file__).parent.resolve()
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
@@ -587,8 +596,103 @@ TOP_BANKS_PLOT = [
     ),
 ]
 
+TOP_BIGRAM_PLOT = [
+    dbc.CardHeader(html.H5("Top bigrams found in the database")),
+    dbc.CardBody(
+        [
+            dcc.Loading(
+                id="loading-bigrams-scatter",
+                children=[
+                    dbc.Alert(
+                        "Something's gone wrong! Give us a moment, but try loading this page again if problem persists.",
+                        id="no-data-alert-bigrams",
+                        color="warning",
+                        style={"display": "none"},
+                    ),
+                    dbc.Row(
+                        [
+                            dbc.Col(html.P(["Choose a t-SNE perplexity value:"]), md=6),
+                            dbc.Col(
+                                [
+                                    dcc.Dropdown(
+                                        id="bigrams-perplex-dropdown",
+                                        options=[
+                                            {"label": str(i), "value": i}
+                                            for i in range(3, 7)
+                                        ],
+                                        value=3,
+                                    )
+                                ],
+                                md=3,
+                            ),
+                        ]
+                    ),
+                    dcc.Graph(id="bigrams-scatter"),
+                ],
+                type="default",
+            )
+        ],
+        style={"marginTop": 0, "marginBottom": 0},
+    ),
+]
+
+TOP_BIGRAM_COMPS = [
+    dbc.CardHeader(html.H5("Comparison of bigrams for two companies")),
+    dbc.CardBody(
+        [
+            dcc.Loading(
+                id="loading-bigrams-comps",
+                children=[
+                    dbc.Alert(
+                        "Something's gone wrong! Give us a moment, but try loading this page again if problem persists.",
+                        id="no-data-alert-bigrams_comp",
+                        color="warning",
+                        style={"display": "none"},
+                    ),
+                    dbc.Row(
+                        [
+                            dbc.Col(html.P("Choose two companies to compare:"), md=12),
+                            dbc.Col(
+                                [
+                                    dcc.Dropdown(
+                                        id="bigrams-comp_1",
+                                        options=[
+                                            {"label": i, "value": i}
+                                            for i in bigram_df.company.unique()
+                                        ],
+                                        value="EQUIFAX, INC.",
+                                    )
+                                ],
+                                md=6,
+                            ),
+                            dbc.Col(
+                                [
+                                    dcc.Dropdown(
+                                        id="bigrams-comp_2",
+                                        options=[
+                                            {"label": i, "value": i}
+                                            for i in bigram_df.company.unique()
+                                        ],
+                                        value="TRANSUNION INTERMEDIATE HOLDINGS, INC.",
+                                    )
+                                ],
+                                md=6,
+                            ),
+                        ]
+                    ),
+                    dcc.Graph(id="bigrams-comps"),
+                ],
+                type="default",
+            )
+        ],
+        style={"marginTop": 0, "marginBottom": 0},
+    ),
+]
+
 BODY = dbc.Container(
     [
+        dbc.Row([dbc.Col(dbc.Card(TOP_BIGRAM_COMPS)),], style={"marginTop": 30}),
+        dbc.Row([dbc.Col(dbc.Card(TOP_BIGRAM_PLOT)),], style={"marginTop": 30}),
         dbc.Row(
             [
                 dbc.Col(LEFT_COLUMN, md=4, align="center"),
@@ -603,13 +707,70 @@ BODY = dbc.Container(
 )
 
 
-server = flask.Flask(__name__)
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], server=server)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server  # for Heroku deployment
+
 app.layout = html.Div(children=[NAVBAR, BODY])
 
 """
 #  Callbacks
 """
+
+
+@app.callback(
+    Output("bigrams-scatter", "figure"), [Input("bigrams-perplex-dropdown", "value")],
+)
+def populate_bigram_scatter(perplexity):
+    X_embedded = TSNE(n_components=2, perplexity=perplexity).fit_transform(vects_df)
+
+    embed_df["tsne_1"] = X_embedded[:, 0]
+    embed_df["tsne_2"] = X_embedded[:, 1]
+    fig = px.scatter(
+        embed_df,
+        x="tsne_1",
+        y="tsne_2",
+        hover_name="bigram",
+        text="bigram",
+        size="count",
+        color="words",
+        size_max=45,
+        template="plotly_white",
+        title="Bigram similarity and frequency",
+        labels={"words": "Avg. Length<BR>(words)"},
+        color_continuous_scale=px.colors.sequential.Sunsetdark,
+    )
+    fig.update_traces(marker=dict(line=dict(width=1, color="Gray")))
+    fig.update_xaxes(visible=False)
+    fig.update_yaxes(visible=False)
+    return fig
+
+
+@app.callback(
+    Output("bigrams-comps", "figure"),
+    [Input("bigrams-comp_1", "value"), Input("bigrams-comp_2", "value")],
+)
+def comp_bigram_comparisons(comp_first, comp_second):
+    comp_list = [comp_first, comp_second]
+    temp_df = bigram_df[bigram_df.company.isin(comp_list)]
+    temp_df.loc[temp_df.company == comp_list[-1], "value"] = -temp_df[
+        temp_df.company == comp_list[-1]
+    ].value.values
+
+    fig = px.bar(
+        temp_df,
+        title="Comparison: " + comp_first + " | " + comp_second,
+        x="ngram",
+        y="value",
+        color="company",
+        template="plotly_white",
+        color_discrete_sequence=px.colors.qualitative.Bold,
+        labels={"company": "Company:", "ngram": "N-Gram"},
+        hover_data="",
+    )
+    fig.update_layout(legend=dict(x=0.1, y=1.1), legend_orientation="h")
+    fig.update_yaxes(title="", showticklabels=False)
+    fig.data[0]["hovertemplate"] = fig.data[0]["hovertemplate"][:-14]
+    return fig
 
 
 @app.callback(
