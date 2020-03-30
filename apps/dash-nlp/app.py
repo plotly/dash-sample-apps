@@ -611,7 +611,7 @@ TOP_BIGRAM_PLOT = [
                     ),
                     dbc.Row(
                         [
-                            dbc.Col(["Choose a t-SNE perplexity value:"], md=6),
+                            dbc.Col(html.P(["Choose a t-SNE perplexity value:"]), md=6),
                             dbc.Col(
                                 [
                                     dcc.Dropdown(
@@ -651,7 +651,7 @@ TOP_BIGRAM_COMPS = [
                     ),
                     dbc.Row(
                         [
-                            dbc.Col(html.H3("Choose two companies to compare:"), md=12),
+                            dbc.Col(html.P("Choose two companies to compare:"), md=12),
                             dbc.Col(
                                 [
                                     dcc.Dropdown(
@@ -707,8 +707,6 @@ BODY = dbc.Container(
 )
 
 
-# server = flask.Flask(__name__)
-# app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], server=server)
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server  # for Heroku deployment
