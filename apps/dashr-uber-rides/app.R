@@ -1,7 +1,7 @@
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != "") {
   pathPrefix <- sprintf("/%s/", appName)
-  
+
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
 }
@@ -19,7 +19,7 @@ library(fasttime)
 
 ridesPart1 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv"
 ridesPart2 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv"
-ridesPart3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv" 
+ridesPart3 <- "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv"
 # Links for datasets
 
 ridesRaw_1 <- fread(ridesPart1, stringsAsFactors = FALSE)
@@ -83,19 +83,18 @@ colorScale <- list(
   list(csSeq[17], "#2D7EB0"), list(csSeq[18], "#2D65AC"),
   list(csSeq[19], "#2E4EA4"), list(csSeq[20],  "#2E38A4"),
   list(csSeq[21], "#3B2FA0"), list(csSeq[22], "#4E2F9C"),
-  list(csSeq[23], "#603099"))                
-# Create custom colorScale list 
+  list(csSeq[23], "#603099"))
+# Create custom colorScale list
 
 ridesDf$rideHour <- as.numeric(as.POSIXlt(ridesDf$Date.Time)$hour)
 # Extract hour from dates and append corresponding color codes as a column for coloring later
 # Factor works too
 
-mapboxToken <- paste("pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaT",
-                "AxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g", sep = "")
+mapboxToken <- "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
 # Mapbox token for plotly | this one is for plot_mapbox figure
 
 Sys.setenv("MAPBOX_TOKEN" = mapboxToken)
-# Setting mapbox token for R environment 
+# Setting mapbox token for R environment
 
 locationOptions <- list(
   list(label = "New York Main", value = "default"),
@@ -106,7 +105,7 @@ locationOptions <- list(
   list(label = "JFK Airport", value = "JFK Airport"),
   list(label = "Grand Central Station", value = "Grand Central Station"),
   list(label = "Times Square", value = "Times Square"))
-                  
+
 allHours <- c(
   sapply(
     0:23,
@@ -120,7 +119,7 @@ allHours <- c(
 hourOptions <- c(
   list(list(label = "Entire Day", value = "entire_day")),
   lapply(
-    0:23, 
+    0:23,
     function(h){
       hr <- formatC(h, width = 2, flag = "0")
       list(label = paste0(hr , ":00"), value = paste0(" ", hr, ":00:00"))
@@ -167,7 +166,7 @@ datePicker <- dccDatePickerSingle(
   min_date_allowed = make_date(year = 2014L, month = 4L, day = 1L),
   max_date_allowed = make_date(year = 2014L, month = 9L, day = 30L),
   className = "date-picker", style = list(display = "block"))
-                            
+
 sourceObj <- dccMarkdown(
   paste(
     "Source: [FiveThirtyEight](https://github.com/fivethirtyeight/uber-",
@@ -506,7 +505,7 @@ app$callback(output = list(id = "total-rides", property = "children"),
 ####################################################################################################
 
 if (appName != "") {
-  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050)) 
+  app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
   app$run_server()
 }
