@@ -23,7 +23,7 @@ server = app.server
 app.config["suppress_callback_exceptions"] = True
 
 # mapbox
-mapbox_access_token = "pk.eyJ1IjoieWNhb2tyaXMiLCJhIjoiY2p1MDR5c3JmMzJsbjQ1cGlhNHA3MHFkaCJ9.xb3lXp5JskCYFewsv5uU1w"
+mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
 
 # Load data
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())

@@ -23,7 +23,7 @@ app.config.suppress_callback_exceptions = True
 # CONSTANTS
 grouped = austin_listings.groupby("zipcode").size()
 
-mapbox_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
+mapbox_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
 
 geo_colors = [
     "#8dd3c7",

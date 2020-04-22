@@ -1,7 +1,7 @@
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != "") {
   pathPrefix <- sprintf("/%s/", appName)
-  
+
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
 }
@@ -9,9 +9,9 @@ if (appName != "") {
 
 
 # Mapbox token for plotly | this one is for plot_mapbox figure
-mapboxToken <- ("pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g")
+mapboxToken <- ("pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A")
 
-# Setting mapbox token for R environment 
+# Setting mapbox token for R environment
 Sys.setenv("MAPBOX_TOKEN" = mapboxToken)
 
 
@@ -116,7 +116,7 @@ tabs <- htmlDiv(dccTabs(id = 'circos-control-tabs', value = 'what-is', children 
       )
     )
   ),
-  
+
   dccTab(
     label = 'Options',
     value = 'data',
@@ -158,7 +158,7 @@ tabs <- htmlDiv(dccTabs(id = 'circos-control-tabs', value = 'what-is', children 
           options = list(list(label = "sum", value = "sum"),
                          list(label = "any", value = "any"),
                          list(label = "mean", value = "mean")),
-          
+
           value = 'sum'
         ),
         htmlH4("Pixel Size", style = list("font-size" = "18pt", "font-weight" = "200", "letter-spacing" = "1px")),
@@ -237,13 +237,13 @@ app$callback(
       if (length(relayout) == 4) {
         x_range <- c(relayout$`xaxis.range[0]`, relayout$`xaxis.range[1]`)
         y_range <- c(relayout$`yaxis.range[0]`, relayout$`yaxis.range[1]`)
-        
+
         x_difference <- relayout$`xaxis.range[1]` - relayout$`xaxis.range[0]`
         y_difference <- relayout$`yaxis.range[1]` - relayout$`yaxis.range[0]`
-        
+
         differences = c(x_difference, y_difference)
       }
-      
+
       else {
         x_range <- c(min(ridesDf[,"Lon"], na.rm=T), -72.5)
         y_range <- c(39.9, max(ridesDf[,"Lat"], na.rm=T))
@@ -276,13 +276,13 @@ app$callback(
     } else {
       eval(parse(text = cmap))
     }
-    
+
     if(background != "black") {
       color <- rev(color)
     }
-    
+
     len_col <- length(color)
-    
+
     colorscale <- lapply(0:len_col,
                          function(i) {
                            if(i == 0) {
@@ -292,23 +292,23 @@ app$callback(
                            }
                          }
     )
-    
+
     x_min <- data[[1]][[1]]
     x_max <- data[[1]][[2]]
     y_min <- data[[2]][[1]]
     y_max <- data[[2]][[2]]
-    
-    
+
+
     x_difference = data[[3]][[1]]
     y_difference = data[[3]][[2]]
 
-    
-    filtered_df_lat <- ridesDf[ridesDf[, "Lat"] > y_min & ridesDf[, "Lat"] < y_max, ]    
+
+    filtered_df_lat <- ridesDf[ridesDf[, "Lat"] > y_min & ridesDf[, "Lat"] < y_max, ]
     filtered_df_lon <- filtered_df_lat[filtered_df_lat[,"Lon"] > x_min & filtered_df_lat[,"Lon"] < x_max, ]
-    
+
     colorbar_title <- ifelse(scale == "log", "Log(No. of Rides)", "No. of Rides")
     # plot_ly requires a data.frame
-    
+
     if (x_difference < 0.2904274 || y_difference < 0.2109278) {
       return(plot_mapbox(as.data.frame(ridesDf)[sample(nrow(as.data.frame(ridesDf)), 10000, replace = TRUE),], lon = ~Lon, lat = ~Lat) %>%
                layout(mapbox = list(zoom = 12,
@@ -343,7 +343,7 @@ app$callback(
                               constrain = "domain"))
       )
     }
-    
+
   }
 )
 
@@ -351,7 +351,7 @@ app$callback(
 if(appName != "") {
   app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 } else {
-  app$run_server(host = "127.0.0.1", 
-                 port=8050, 
+  app$run_server(host = "127.0.0.1",
+                 port=8050,
                  debug = FALSE)
 }
