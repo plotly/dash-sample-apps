@@ -21,7 +21,7 @@ server = app.server
 virus_name = "measles"
 species = ["Avian", "Ebola", "Lassa", "Measles", "Mumps", "Zika"]
 tree_fig = {}
-mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
+mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
 
 tree_file, metadata_file, metadata_file_stat = create_paths_file(
     virus_name, level1="", level2="", level3=""

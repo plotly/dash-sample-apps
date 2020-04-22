@@ -11,27 +11,27 @@ library(rapportools)
 appName <- Sys.getenv("DASH_APP_NAME")
 if (appName != ""){
   pathPrefix <- sprintf("/%s/", appName)
-  
+
   Sys.setenv(DASH_ROUTES_PATHNAME_PREFIX = pathPrefix,
              DASH_REQUESTS_PATHNAME_PREFIX = pathPrefix)
 }
 
 app <- Dash$new()
-source("points.R") #Ensure you are able to source these and run. 
+source("points.R") #Ensure you are able to source these and run.
 source("controls.R")
 
 # Create global chart template
-mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w'
-county_options <- lapply(1:length(COUNTIES), 
-                         function(x){list(label=unname(COUNTIES[x]), 
+mapbox_access_token = 'pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A'
+county_options <- lapply(1:length(COUNTIES),
+                         function(x){list(label=unname(COUNTIES[x]),
                                           value=labels(COUNTIES[x]))})
 
-well_status_options = lapply(1:length(WELL_STATUSES), 
-                             function(x){list(label=unname(WELL_STATUSES[x]), 
+well_status_options = lapply(1:length(WELL_STATUSES),
+                             function(x){list(label=unname(WELL_STATUSES[x]),
                                               value=labels(WELL_STATUSES[x]))})
 
-well_type_options = lapply(1:length(WELL_TYPES), 
-                           function(x){list(label=unname(WELL_TYPES[x]), 
+well_type_options = lapply(1:length(WELL_TYPES),
+                           function(x){list(label=unname(WELL_TYPES[x]),
                                             value=labels(WELL_TYPES[x]))})
 
 # Load data
@@ -228,9 +228,9 @@ app$layout(htmlDiv(
   style=list("display"= "flex", "flex-direction"= "column")
 ))
 
-filter_Dataframe <- function(df, 
-                             well_statuses, 
-                             well_types, 
+filter_Dataframe <- function(df,
+                             well_statuses,
+                             well_types,
                              year_slider){
   df <- as.data.table(df)
   min_year <- as.Date(paste0(year_slider[[1]], "-01-01"))
@@ -241,15 +241,15 @@ filter_Dataframe <- function(df,
 }
 
 fetch_individual <- function(api){
-  
+
   index <- as.list(c(min(dfIn[dfIn$API_WellNo == api,'Reporting.Year']):
                        max(dfIn[dfIn$API_WellNo == api,'Reporting.Year'])))
   gas <- list()
   oil <- list()
   water <- list()
-  
+
   for (year in index) {
-    
+
     gas[[year]]  <- dfIn[dfIn$API_WellNo == api & dfIn$Reporting.Year == year,'Gas.Produced..MCF']
     oil[[year]]  <- dfIn[dfIn$API_WellNo == api & dfIn$Reporting.Year == year,'Oil.Produced..bbl']
     water[[year]] <- dfIn[dfIn$API_WellNo == api & dfIn$Reporting.Year == year,'Water.Produced..bbl']
@@ -262,17 +262,17 @@ fetch_aggregate <- function(dff,year_slider){
   oil1 = 0
   water1 = 0
   min_year <- paste0(year_slider[[1]], "-01-01")
-  
+
   index = max(year(as.Date(min_year)):1985):2017
-  
+
   gas <- list()
   oil <- list()
-  water <- list()  
+  water <- list()
   inn <- merge(dff,dfIn, by = 'API_WellNo')
   for (year in index) {
     count_gas = 0
     count_oil = 0
-    count_water = 0 
+    count_water = 0
     count_gas <- sum(inn$Gas.Produced..MCF[inn$Reporting.Year %in% year])
     count_water <- sum(inn$Water.Produced..bbl[inn$Reporting.Year %in% year])
     count_oil <- sum(inn$Oil.Produced..bbl[inn$Reporting.Year %in% year])
@@ -291,17 +291,17 @@ fetch_abs <- function(selected, year_slider){
   oil1 = 0
   water1 = 0
   min_year <- paste0(year_slider[[1]], "-01-01")
-  
+
   index = max(year(as.Date(min_year)):1985):2017
-  
+
   gas = list()
   oil = list()
-  water = list()  
+  water = list()
   inn <- merge(selected,dfIn, by = 'API_WellNo')
   for (year in index) {
     count_gas = 0
     count_oil = 0
-    count_water = 0 
+    count_water = 0
     count_gas <- sum(inn$Gas.Produced..MCF[inn$Reporting.Year %in% year])
     count_water <- sum(inn$Water.Produced..bbl[inn$Reporting.Year %in% year])
     count_oil <- sum(inn$Oil.Produced..bbl[inn$Reporting.Year %in% year])
@@ -350,7 +350,7 @@ app$callback(output = list(id ='gasText', property ='children'),
                input(id='well_statuses', property='value'),
                input(id='well_types', property='value'),
                input(id='year_slider', property='value')),
-             function(well_statuses, well_types, year_slider){   
+             function(well_statuses, well_types, year_slider){
                dff <- filter_Dataframe(df, well_statuses, well_types, year_slider)
                sprintf("%g M mcg ⑆", round(as.numeric(fetch_aggregate(dff,year_slider)[1])/1000000,2))
              })
@@ -359,7 +359,7 @@ app$callback(output = list(id ='oilText', property ='children'),
                input(id='well_statuses', property='value'),
                input(id='well_types', property='value'),
                input(id='year_slider', property='value')),
-             function(well_statuses, well_types, year_slider){   
+             function(well_statuses, well_types, year_slider){
                dff <- filter_Dataframe(df, well_statuses, well_types, year_slider)
                sprintf("%g M bbl ⑆", round(as.numeric(fetch_aggregate(dff,year_slider)[2])/1000000,2))
              })
@@ -368,7 +368,7 @@ app$callback(output = list(id ='waterText', property ='children'),
                input(id='well_statuses', property='value'),
                input(id='well_types', property='value'),
                input(id='year_slider', property='value')),
-             function(well_statuses, well_types, year_slider){   
+             function(well_statuses, well_types, year_slider){
                dff <- filter_Dataframe(df, well_statuses, well_types, year_slider)
                sprintf("%g M bbl ⑆", round(as.numeric(fetch_aggregate(dff,year_slider)[3])/1000000,2))
              })
@@ -393,7 +393,7 @@ app$callback(output=list(id='year_slider', property='value'),
                  return(list(min(unlist(nums)) + 1960, max(unlist(nums)) + 1961))
                }
              }
-)  
+)
 
 #MAIN
 app$callback(output=list(id='main_graph', property='figure'),
@@ -423,7 +423,7 @@ app$callback(output=list(id='main_graph', property='figure'),
                    ),
                    name = as.character(WELL_TYPES[type[i]])
                  )}
-               
+
                if (!is.null(main_graph_layout) & 'locked' %in% selector){
                  lon = -78.05
                  lat = 42.54
@@ -433,7 +433,7 @@ app$callback(output=list(id='main_graph', property='figure'),
                  lat = 42.54
                  zoom = 7
                }
-               
+
                return (list(
                  'data' = traces,
                  'layout'= list(
@@ -470,20 +470,20 @@ app$callback(output=list(id='individual_graph', property='figure'),
                input(id='main_graph', property='hoverData')),
              function(main_graph_hover){
                if (length(main_graph_hover[['points']]['customdata']) == 0){
-                 #chosen <- list(31003002470000) #Default value, 
+                 #chosen <- list(31003002470000) #Default value,
                  index <- list(1995:2012)
                  water <- list(0,0,0,260,192,0,0,0,0,93,0,1342,0,26829,8952,17,0)
                  oil <- list(replicate(18,0))
                  gas <- list(replicate(18,0))
                } else{
-                 
+
                  chosen <- unlist(lapply(main_graph_hover[["points"]], "[[", "customdata"))
                  index <- fetch_individual(chosen[[1]])[1] #fetch ind is slow.
                  gas <- fetch_individual(chosen[[1]])[2]
                  oil <- fetch_individual(chosen[[1]])[3]
                  water <- fetch_individual(chosen[[1]])[4]
                }
-               
+
                if (is.null(index)){
                  annotation = list(
                    text='No data available',
@@ -495,8 +495,8 @@ app$callback(output=list(id='individual_graph', property='figure'),
                    yref="paper"
                  )
                  data = list()
-               } 
-               
+               }
+
                else{
                  data = list(
                    list(
@@ -542,7 +542,7 @@ app$callback(output=list(id='individual_graph', property='figure'),
                      marker=list(symbol='diamond-open')
                    ))
                }
-               
+
                return(list(
                  'data' = data,
                  'layout' = list(
@@ -583,7 +583,7 @@ app$callback(output=list(id='count_graph', property='figure'),
                dff = filter_Dataframe(df, well_statuses, well_types, year_slider)
                g = dff[,c('API_WellNo', 'Date_Well_Completed')]
                gyeartotals <- data.frame(table(year(g$'Date_Well_Completed')))
-               
+
                data = list(
                  list(
                    type='bar',
@@ -623,8 +623,8 @@ app$callback(output=list(id='count_graph', property='figure'),
                      zoom=7
                    ))
                ))
-               
-               
+
+
              })
 
 #PIE
@@ -633,14 +633,14 @@ app$callback(output=list(id='pie_graph', property='figure'),
                input(id='well_statuses', property='value'),
                input(id='well_types', property='value'),
                input(id='year_slider', property='value')),
-             
+
              function(well_statuses, well_types, year_slider){
                dff <- filter_Dataframe(df, well_statuses, well_types, year_slider)
                gas <- fetch_aggregate(dff,year_slider)[1]
                oil <- fetch_aggregate(dff,year_slider)[2]
                water <- fetch_aggregate(dff,year_slider)[3]
                aggregate = data.frame(table(dff$'Well_Type'))
-               
+
                i <- 1
                label <- vector()
                for (j in aggregate$Var1) {
@@ -650,11 +650,11 @@ app$callback(output=list(id='pie_graph', property='figure'),
                i <- 1
                colors <- list()
                for (j in aggregate$Var1) {
-                 
+
                  colors[[i]] <- WELL_COLORS[j]
                  i <- i + 1
                }
-               
+
                data = list(
                  list(
                    type='pie',
@@ -719,7 +719,7 @@ app$callback(output=list(id='aggregate_graph', property='figure'),
                input(id='well_types', property='value'),
                input(id='year_slider', property='value'),
                input(id='main_graph', property='hoverData')),
-             
+
              function(well_statuses, well_types, year_slider,
                       main_graph_hover){
                chosen <- unlist(lapply(main_graph_hover[["points"]], "[[", "customdata"))
@@ -734,7 +734,7 @@ app$callback(output=list(id='aggregate_graph', property='figure'),
                oil1 <- oil[[1]][c(unlist(index))]
                water <- fetch_abs(selected,year_slider)[4]
                water1 <- water[[1]][c(unlist(index))]
-               
+
                data = list(
                  list(
                    type='scatter',
