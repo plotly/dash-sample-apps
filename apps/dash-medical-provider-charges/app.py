@@ -181,17 +181,13 @@ def build_upper_left_panel():
                         children=dcc.Checklist(
                             id="region-select-all",
                             options=[{"label": "Select All Regions", "value": "All"}],
-                            values=["All"],
+                            value=[],
                         ),
                     ),
                     html.Div(
                         id="region-select-dropdown-outer",
                         children=dcc.Dropdown(
-                            id="region-select",
-                            options=[{"label": i, "value": i} for i in init_region],
-                            value=init_region[:4],
-                            multi=True,
-                            searchable=True,
+                            id="region-select", multi=True, searchable=True,
                         ),
                     ),
                 ],
@@ -478,41 +474,36 @@ app.layout = html.Div(
 
 @app.callback(
     [
-        Output("region-select-dropdown-outer", "children"),
+        Output("region-select", "value"),
+        Output("region-select", "options"),
         Output("map-title", "children"),
     ],
-    [Input("state-select", "value")],
+    [Input("region-select-all", "value"), Input("state-select", "value"),],
 )
-def update_region_dropdown(state_select):
+def update_region_dropdown(select_all, state_select):
     state_raw_data = data_dict[state_select]
     regions = state_raw_data["Hospital Referral Region (HRR) Description"].unique()
+    options = [{"label": i, "value": i} for i in regions]
+
+    ctx = dash.callback_context
+    if ctx.triggered[0]["prop_id"].split(".")[0] == "region-select-all":
+        if select_all == ["All"]:
+            value = [i["value"] for i in options]
+        else:
+            value = dash.no_update
+    else:
+        value = regions[:4]
     return (
-        dcc.Dropdown(
-            id="region-select",
-            options=[{"label": i, "value": i} for i in regions],
-            value=regions[:4],
-            multi=True,
-            searchable=True,
-        ),
+        value,
+        options,
         "Medicare Provider Charges in the State of {}".format(state_map[state_select]),
     )
 
 
 @app.callback(
-    Output("region-select", "value"),
-    [Input("region-select-all", "values")],
-    [State("region-select", "options")],
-)
-def update_region_select(select_all, options):
-    if select_all == ["All"]:
-        return [i["value"] for i in options]
-    raise PreventUpdate()
-
-
-@app.callback(
     Output("checklist-container", "children"),
     [Input("region-select", "value")],
-    [State("region-select", "options"), State("region-select-all", "values")],
+    [State("region-select", "options"), State("region-select-all", "value")],
 )
 def update_checklist(selected, select_options, checked):
     if len(selected) < len(select_options) and len(checked) == 0:
@@ -522,7 +513,7 @@ def update_checklist(selected, select_options, checked):
         return dcc.Checklist(
             id="region-select-all",
             options=[{"label": "Select All Regions", "value": "All"}],
-            values=[],
+            value=[],
         )
 
     elif len(selected) == len(select_options) and len(checked) == 1:
@@ -531,7 +522,7 @@ def update_checklist(selected, select_options, checked):
     return dcc.Checklist(
         id="region-select-all",
         options=[{"label": "Select All Regions", "value": "All"}],
-        values=["All"],
+        value=["All"],
     )
 
 
@@ -559,57 +550,59 @@ def update_hospital_datatable(geo_select, procedure_select, cost_select, state_s
     if ctx.triggered:
         prop_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
-    # make table from procedure-select
-    if prop_id == "procedure-plot" and procedure_select is not None:
+        # make table from procedure-select
+        if prop_id == "procedure-plot" and procedure_select is not None:
 
-        for point in procedure_select["points"]:
-            provider = point["customdata"]
+            for point in procedure_select["points"]:
+                provider = point["customdata"]
 
-            dff = state_agg[state_agg["Provider Name"] == provider]
+                dff = state_agg[state_agg["Provider Name"] == provider]
 
-            geo_data_dict["Provider Name"].append(point["customdata"])
-            city = dff["Hospital Referral Region (HRR) Description"].tolist()[0]
-            geo_data_dict["City"].append(city)
+                geo_data_dict["Provider Name"].append(point["customdata"])
+                city = dff["Hospital Referral Region (HRR) Description"].tolist()[0]
+                geo_data_dict["City"].append(city)
 
-            address = dff["Provider Street Address"].tolist()[0]
-            geo_data_dict["Street Address"].append(address)
+                address = dff["Provider Street Address"].tolist()[0]
+                geo_data_dict["Street Address"].append(address)
 
-            geo_data_dict["Maximum Cost ($)"].append(
-                dff[cost_select]["max"].tolist()[0]
-            )
-            geo_data_dict["Minimum Cost ($)"].append(
-                dff[cost_select]["min"].tolist()[0]
-            )
+                geo_data_dict["Maximum Cost ($)"].append(
+                    dff[cost_select]["max"].tolist()[0]
+                )
+                geo_data_dict["Minimum Cost ($)"].append(
+                    dff[cost_select]["min"].tolist()[0]
+                )
 
-    if prop_id == "geo-map" and geo_select is not None:
+        if prop_id == "geo-map" and geo_select is not None:
 
-        for point in geo_select["points"]:
-            provider = point["customdata"][0]
-            dff = state_agg[state_agg["Provider Name"] == provider]
+            for point in geo_select["points"]:
+                provider = point["customdata"][0]
+                dff = state_agg[state_agg["Provider Name"] == provider]
 
-            geo_data_dict["Provider Name"].append(point["customdata"][0])
-            geo_data_dict["City"].append(point["customdata"][1].split("- ")[1])
+                geo_data_dict["Provider Name"].append(point["customdata"][0])
+                geo_data_dict["City"].append(point["customdata"][1].split("- ")[1])
 
-            address = dff["Provider Street Address"].tolist()[0]
-            geo_data_dict["Street Address"].append(address)
+                address = dff["Provider Street Address"].tolist()[0]
+                geo_data_dict["Street Address"].append(address)
 
-            geo_data_dict["Maximum Cost ($)"].append(
-                dff[cost_select]["max"].tolist()[0]
-            )
-            geo_data_dict["Minimum Cost ($)"].append(
-                dff[cost_select]["min"].tolist()[0]
-            )
+                geo_data_dict["Maximum Cost ($)"].append(
+                    dff[cost_select]["max"].tolist()[0]
+                )
+                geo_data_dict["Minimum Cost ($)"].append(
+                    dff[cost_select]["min"].tolist()[0]
+                )
 
-    geo_data_df = pd.DataFrame(data=geo_data_dict)
+        geo_data_df = pd.DataFrame(data=geo_data_dict)
+        data = geo_data_df.to_dict("rows")
+
+    else:
+        data = [{}]
 
     return dash_table.DataTable(
         id="cost-stats-table",
         columns=[{"name": i, "id": i} for i in geo_data_dict.keys()],
-        data=geo_data_df.to_dict("rows"),
-        filtering=True,
-        pagination_mode="fe",
-        pagination_settings={"displayed_pages": 1, "current_page": 0, "page_size": 5},
-        navigation="page",
+        data=data,
+        filter_action="native",
+        page_size=5,
         style_cell={"background-color": "#242a3b", "color": "#7b7d8d"},
         style_as_list_view=False,
         style_header={"background-color": "#1f2536", "padding": "0px 5px"},
@@ -679,17 +672,15 @@ def update_procedure_stats(procedure_select, geo_select, cost_select, state_sele
         id="procedure-stats-table",
         columns=[{"name": i, "id": i} for i in procedure_dict.keys()],
         data=procedure_data_df.to_dict("rows"),
-        filtering=True,
-        sorting=True,
+        filter_action="native",
+        sort_action="native",
         style_cell={
             "textOverflow": "ellipsis",
             "background-color": "#242a3b",
             "color": "#7b7d8d",
         },
-        sorting_type="multi",
-        pagination_mode="fe",
-        pagination_settings={"displayed_pages": 1, "current_page": 0, "page_size": 5},
-        navigation="page",
+        sort_mode="multi",
+        page_size=5,
         style_as_list_view=False,
         style_header={"background-color": "#1f2536", "padding": "2px 12px 0px 12px"},
     )
