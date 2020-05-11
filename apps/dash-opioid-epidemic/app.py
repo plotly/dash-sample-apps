@@ -145,14 +145,6 @@ app.layout = html.Div(
                                 dcc.Graph(
                                     id="county-choropleth",
                                     figure=dict(
-                                        data=[
-                                            dict(
-                                                lat=df_lat_lon["Latitude "],
-                                                lon=df_lat_lon["Longitude"],
-                                                text=df_lat_lon["Hover"],
-                                                type="scattermapbox",
-                                            )
-                                        ],
                                         layout=dict(
                                             mapbox=dict(
                                                 layers=[],
@@ -271,8 +263,8 @@ def display_map(year, figure):
         lon = figure["layout"]["mapbox"]["center"]["lon"]
         zoom = figure["layout"]["mapbox"]["zoom"]
     else:
-        lat = (38.72490,)
-        lon = (-95.61446,)
+        lat = 38.72490
+        lon = -95.61446
         zoom = 3.5
 
     layout = dict(
