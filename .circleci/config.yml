@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Install dds-client
           command: |
-            curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.1.0/dds-client_0.1.0_linux_x86_64.tgz
+            curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.3.0/dds-client_0.3.0_linux_x86_64.tgz
             mkdir $HOME/bin
             tar xzf dds-client.tgz -C $HOME/bin
             chmod +x $HOME/bin/dds-client

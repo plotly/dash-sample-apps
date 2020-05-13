@@ -107,8 +107,23 @@ main() {
     [[ -n "$celery_version" ]] && log-info "celery python version: $(cat "$app_dir/requirements.txt" | grep -E "^celery=")"
     [[ -n "$redis_version" ]] && log-info "redis python version: $(cat "$app_dir/requirements.txt" | grep -E "^redis=")"
 
+    [[ -n "$sqlalchemy_version" ]] && log-info "sqlalchemy python version: $(cat "$app_dir/requirements.txt" | grep -E "^sqlalchemy=")"
+    [[ -n "$flask_sqlalchemy_version" ]] && log-info "flask-sqlalchemy python version: $(cat "$app_dir/requirements.txt" | grep -E "^flask-sqlalchemy=")"
+
+    if [[ -n "$sqlalchemy_version" ]] || [[ -n "$flask_sqlalchemy_version" ]]; then
+      if ! dds-client postgres:exists --name "$APP"; then
+        log-info "postgres not found, creating"
+        dds-client postgres:create --name "$APP"
+        dds-client postgres:link --name "$APP" --app "$APP"
+      fi
+    fi
+
     if [[ -n "$celery_version" ]] || [[ -n "$redis_version" ]]; then
-      log-exit "Skipping service that requires a redis instance"
+      if ! dds-client redis:exists --name "$APP"; then
+        log-info "redis not found, creating"
+        dds-client redis:create --name "$APP"
+        dds-client redis:link --name "$APP" --app "$APP"
+      fi
     fi
   fi
 
