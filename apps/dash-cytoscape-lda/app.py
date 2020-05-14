@@ -39,10 +39,8 @@ cache = Cache(
     app.server,
     config={
         # try 'filesystem' if you don't want to setup redis
-        "CACHE_TYPE": "filesystem",
-        "CACHE_DIR": cache_dir,
-        "CACHE_DEFAULT_TIMEOUT": 300,
-        "CACHE_THRESHOLD": 100,  # To limit cache size
+        "CACHE_TYPE": "redis",
+        "CACHE_REDIS_URL": os.environ.get("REDIS_URL", ""),
     },
 )
 
@@ -325,7 +323,7 @@ body_layout = dbc.Container(
                                 dcc.Dropdown(
                                     id="n_cites_dropdown",
                                     options=[
-                                        {"label": k, "value": k} for k in range(21)
+                                        {"label": k, "value": k} for k in range(1, 21)
                                     ],
                                     clearable=False,
                                     value=2,
