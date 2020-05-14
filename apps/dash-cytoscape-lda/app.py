@@ -35,16 +35,11 @@ cache_dir = "./cache"
 if not os.path.exists(cache_dir):
     os.mkdir(cache_dir)
 
-cache = Cache(
-    app.server,
-    config={
-        # try 'filesystem' if you don't want to setup redis
-        "CACHE_TYPE": "filesystem",
-        "CACHE_DIR": cache_dir,
-        "CACHE_DEFAULT_TIMEOUT": 300,
-        "CACHE_THRESHOLD": 100,  # To limit cache size
-    },
-)
+cache = Cache(app.server, config={
+    # try 'filesystem' if you don't want to setup redis
+    'CACHE_TYPE': 'redis',
+    'CACHE_REDIS_URL': os.environ.get('REDIS_URL', '')
+})
 
 # network_df = pd.read_csv('outputs/network_df.csv', index_col=0)  # ~8300 nodes
 network_df = pd.read_csv("outputs/network_df_sm.csv", index_col=0)  # ~4700 nodes
