@@ -99,8 +99,8 @@ def update_node_data(dim_red_algo, tsne_perp, in_df):
     # print("Ranges: ", x_range, y_range)
 
     scale_factor = int(4000 / (x_range + y_range))
-    in_df['x'] = x_list
-    in_df['y'] = y_list
+    in_df["x"] = x_list
+    in_df["y"] = y_list
 
     node_list_in = get_node_list(in_df)
     for i in range(len(in_df)):
@@ -139,18 +139,15 @@ def draw_edges(in_df=network_df):
 min_n_cites = 3
 top_journals = list(journal_ser.index)[:3]
 
-startup_elms = dict(
-    n_cites = min_n_cites,
-    journals = top_journals
-)
+startup_elms = dict(n_cites=min_n_cites, journals=top_journals)
 
 filt_df = network_df[
     (network_df.n_cites >= min_n_cites) & (network_df.journal.isin(top_journals))
-    ]
+]
 
 node_list = get_node_list(filt_df)
 edge_list = draw_edges(filt_df)
-startup_elms['elm_list'] = node_list + edge_list
+startup_elms["elm_list"] = node_list + edge_list
 
-with open('outputs/startup_elms.json', 'w') as f:
+with open("outputs/startup_elms.json", "w") as f:
     json.dump(startup_elms, f)

@@ -116,11 +116,13 @@ def update_node_data(dim_red_algo, tsne_perp, in_df):
     # print("Ranges: ", x_range, y_range)
 
     scale_factor = int(4000 / (x_range + y_range))
-    in_df['x'] = x_list
-    in_df['y'] = y_list
+    in_df["x"] = x_list
+    in_df["y"] = y_list
 
     tmp_node_list = get_node_list(in_df)
-    for i in range(len(in_df)):  # Re-scaling to ensure proper canvas scaling vs node sizes
+    for i in range(
+        len(in_df)
+    ):  # Re-scaling to ensure proper canvas scaling vs node sizes
         tmp_node_list[i]["position"]["x"] = tsne_to_cyto(x_list[i], scale_factor)
         tmp_node_list[i]["position"]["y"] = tsne_to_cyto(y_list[i], scale_factor)
 
@@ -153,12 +155,12 @@ def draw_edges(in_df=network_df):
     return conn_list_out
 
 
-with open('outputs/startup_elms.json', 'r') as f:
+with open("outputs/startup_elms.json", "r") as f:
     startup_elms = json.load(f)
 
-startup_n_cites = startup_elms['n_cites']
-startup_journals = startup_elms['journals']
-startup_elm_list = startup_elms['elm_list']
+startup_n_cites = startup_elms["n_cites"]
+startup_journals = startup_elms["journals"]
+startup_elm_list = startup_elms["elm_list"]
 
 
 col_swatch = px.colors.qualitative.Dark24
@@ -445,8 +447,14 @@ def update_output(value):
 def filter_nodes(usr_min_cites, usr_journals_list, show_edges, dim_red_algo, tsne_perp):
     print(usr_min_cites, usr_journals_list, show_edges, dim_red_algo, tsne_perp)
     # Use pre-calculated nodes/edges if default values are used
-    if usr_min_cites == startup_n_cites and usr_journals_list == startup_journals and show_edges == True and dim_red_algo == 'tsne' and tsne_perp == 40:
-        logger.info('Using the default element list')
+    if (
+        usr_min_cites == startup_n_cites
+        and usr_journals_list == startup_journals
+        and show_edges == True
+        and dim_red_algo == "tsne"
+        and tsne_perp == 40
+    ):
+        logger.info("Using the default element list")
         return startup_elm_list
 
     else:
@@ -455,9 +463,7 @@ def filter_nodes(usr_min_cites, usr_journals_list, show_edges, dim_red_algo, tsn
         if usr_journals_list is not None and usr_journals_list != []:
             cur_df = cur_df[(cur_df.journal.isin(usr_journals_list))]
 
-        cur_node_list = update_node_data(
-            dim_red_algo, tsne_perp, in_df=cur_df
-        )
+        cur_node_list = update_node_data(dim_red_algo, tsne_perp, in_df=cur_df)
         conn_list = []
 
         if show_edges:
