@@ -45,15 +45,13 @@ topics_txt = [[j.split("*")[1].replace('"', "") for j in i] for i in topics_txt]
 topics_txt = ["; ".join(i) for i in topics_txt]
 
 journal_ser = network_df.groupby("journal")["0"].count().sort_values(ascending=False)
-top_journals = list(journal_ser.index[:2])
-def_n_cites = 4
 
 
 def tsne_to_cyto(tsne_val, scale_factor=40):
     return int(scale_factor * (float(tsne_val)))
 
 
-def get_node_list(in_df=network_df):  # Convert DF data to node list for cytoscape
+def get_node_list(in_df):  # Convert DF data to node list for cytoscape
     return [
         {
             "data": {
@@ -74,13 +72,6 @@ def get_node_list(in_df=network_df):  # Convert DF data to node list for cytosca
         }
         for i, row in in_df.iterrows()
     ]
-
-
-node_list = get_node_list(
-    network_df[
-        (network_df.n_cites > def_n_cites) & (network_df.journal.isin(top_journals))
-    ]
-)
 
 
 def get_node_locs(in_df, dim_red_algo="tsne", tsne_perp=40):
@@ -117,7 +108,7 @@ def get_node_locs(in_df, dim_red_algo="tsne", tsne_perp=40):
 default_tsne = 40
 
 
-def update_node_data(dim_red_algo, tsne_perp, node_list_in, in_df):
+def update_node_data(dim_red_algo, tsne_perp, in_df):
     (x_list, y_list) = get_node_locs(in_df, dim_red_algo, tsne_perp=tsne_perp)
 
     x_range = max(x_list) - min(x_list)
@@ -125,12 +116,15 @@ def update_node_data(dim_red_algo, tsne_perp, node_list_in, in_df):
     # print("Ranges: ", x_range, y_range)
 
     scale_factor = int(4000 / (x_range + y_range))
+    in_df['x'] = x_list
+    in_df['y'] = y_list
 
-    for i in range(len(in_df)):
-        node_list_in[i]["position"]["x"] = tsne_to_cyto(x_list[i], scale_factor)
-        node_list_in[i]["position"]["y"] = tsne_to_cyto(y_list[i], scale_factor)
+    tmp_node_list = get_node_list(in_df)
+    for i in range(len(in_df)):  # Re-scaling to ensure proper canvas scaling vs node sizes
+        tmp_node_list[i]["position"]["x"] = tsne_to_cyto(x_list[i], scale_factor)
+        tmp_node_list[i]["position"]["y"] = tsne_to_cyto(y_list[i], scale_factor)
 
-    return node_list_in
+    return tmp_node_list
 
 
 def draw_edges(in_df=network_df):
@@ -159,7 +153,13 @@ def draw_edges(in_df=network_df):
     return conn_list_out
 
 
-elm_list = node_list
+with open('outputs/startup_elms.json', 'r') as f:
+    startup_elms = json.load(f)
+
+startup_n_cites = startup_elms['n_cites']
+startup_journals = startup_elms['journals']
+startup_elm_list = startup_elms['elm_list']
+
 
 col_swatch = px.colors.qualitative.Dark24
 def_stylesheet = [
@@ -267,7 +267,7 @@ body_layout = dbc.Container(
                                     id="core_19_cytoscape",
                                     layout={"name": "preset"},
                                     style={"width": "100%", "height": "400px"},
-                                    elements=elm_list,
+                                    elements=startup_elm_list,
                                     stylesheet=def_stylesheet,
                                     minZoom=0.06,
                                 )
@@ -296,10 +296,10 @@ body_layout = dbc.Container(
                                 dcc.Dropdown(
                                     id="n_cites_dropdown",
                                     options=[
-                                        {"label": k, "value": k} for k in range(1, 21)
+                                        {"label": k, "value": k} for k in range(3, 21)
                                     ],
                                     clearable=False,
-                                    value=def_n_cites,
+                                    value=startup_n_cites,
                                     style={"width": "50px"},
                                 )
                             ]
@@ -321,7 +321,7 @@ body_layout = dbc.Container(
                                         }
                                         for i, v in journal_ser.items()
                                     ],
-                                    value=top_journals,
+                                    value=startup_journals,
                                     multi=True,
                                     style={"width": "100%"},
                                 ),
@@ -443,23 +443,27 @@ def update_output(value):
     ],
 )
 def filter_nodes(usr_min_cites, usr_journals_list, show_edges, dim_red_algo, tsne_perp):
-    # New logic:
-    # Update base DF based on filter (all nodes are 'on')
-    # Generate node list
-    cur_df = network_df[(network_df.n_cites >= usr_min_cites)]
-    if usr_journals_list is not None and usr_journals_list != []:
-        cur_df = cur_df[(cur_df.journal.isin(usr_journals_list))]
+    print(usr_min_cites, usr_journals_list, show_edges, dim_red_algo, tsne_perp)
+    # Use pre-calculated nodes/edges if default values are used
+    if usr_min_cites == startup_n_cites and usr_journals_list == startup_journals and show_edges == True and dim_red_algo == 'tsne' and tsne_perp == 40:
+        logger.info('Using the default element list')
+        return startup_elm_list
 
-    cur_node_list = get_node_list(cur_df)
-    cur_node_list = update_node_data(
-        dim_red_algo, tsne_perp, node_list_in=cur_node_list, in_df=cur_df
-    )
-    conn_list = []
+    else:
+        # Generate node list
+        cur_df = network_df[(network_df.n_cites >= usr_min_cites)]
+        if usr_journals_list is not None and usr_journals_list != []:
+            cur_df = cur_df[(cur_df.journal.isin(usr_journals_list))]
 
-    if show_edges:
-        conn_list = draw_edges(cur_df)
+        cur_node_list = update_node_data(
+            dim_red_algo, tsne_perp, in_df=cur_df
+        )
+        conn_list = []
 
-    elm_list = cur_node_list + conn_list
+        if show_edges:
+            conn_list = draw_edges(cur_df)
+
+        elm_list = cur_node_list + conn_list
 
     return elm_list
 
