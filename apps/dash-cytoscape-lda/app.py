@@ -78,14 +78,15 @@ def get_node_list(in_df=network_df):  # Convert DF data to node list for cytosca
 
 node_list = get_node_list(
     network_df[
-        (network_df.n_cites > def_n_cites)
-        & (network_df.journal.isin(top_journals))
+        (network_df.n_cites > def_n_cites) & (network_df.journal.isin(top_journals))
     ]
 )
 
 
 def get_node_locs(in_df, dim_red_algo="tsne", tsne_perp=40):
-    logger.info(f"Starting dimensionality reduction on {len(in_df)} nodes, with {dim_red_algo}")
+    logger.info(
+        f"Starting dimensionality reduction on {len(in_df)} nodes, with {dim_red_algo}"
+    )
 
     if dim_red_algo == "tsne":
         node_locs = TSNE(
@@ -313,9 +314,9 @@ body_layout = dbc.Container(
                                     options=[
                                         {
                                             "label": i
-                                                     + " ("
-                                                     + str(v)
-                                                     + " publication(s))",
+                                            + " ("
+                                            + str(v)
+                                            + " publication(s))",
                                             "value": i,
                                         }
                                         for i, v in journal_ser.items()
@@ -389,7 +390,7 @@ body_layout = dbc.Container(
                                     min=10,
                                     max=100,
                                     step=1,
-                                    marks={10: "10", 100: "100", },
+                                    marks={10: "10", 100: "100",},
                                     value=40,
                                 ),
                                 # html.Div(id='slider-output')
