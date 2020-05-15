@@ -1,6 +1,6 @@
 dash==1.12.0
 plotly==4.7.1
-cufflinks>=0.16
-gunicorn>=19.7.1
-numpy>=1.14.0
-pandas>=0.22.0
+cufflinks==0.17.3
+gunicorn==20.0.4
+numpy==1.18.4
+pandas==1.0.3
