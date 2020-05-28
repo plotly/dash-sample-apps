@@ -338,7 +338,7 @@ app.layout = html.Div(
                 dcc.Checklist(
                     id="auto_arima_order",
                     options=[{"label": "Auto", "value": "true"}],
-                    value=["true"],
+                    value=[],
                     style={
                         "margin": "1vw 0vw 0.25vw 4.5vw",
                         "display": "inline-block",
@@ -363,7 +363,7 @@ app.layout = html.Div(
                             id="p",
                             type="number",
                             min=0,
-                            value=0,
+                            value=3,
                             style={
                                 "height": "2vw",
                                 "width": "63%",
@@ -390,7 +390,7 @@ app.layout = html.Div(
                             id="d",
                             type="number",
                             min=0,
-                            value=0,
+                            value=1,
                             style={
                                 "height": "2vw",
                                 "width": "63%",
@@ -417,7 +417,7 @@ app.layout = html.Div(
                             id="q",
                             type="number",
                             min=0,
-                            value=0,
+                            value=2,
                             style={
                                 "height": "2vw",
                                 "width": "63%",
@@ -511,7 +511,7 @@ app.layout = html.Div(
                             id="P",
                             type="number",
                             min=0,
-                            value=0,
+                            value=1,
                             style={
                                 "height": "2vw",
                                 "width": "63%",
@@ -565,7 +565,7 @@ app.layout = html.Div(
                             id="Q",
                             type="number",
                             min=0,
-                            value=0,
+                            value=2,
                             style={
                                 "height": "2vw",
                                 "width": "63%",
@@ -592,7 +592,7 @@ app.layout = html.Div(
                             id="s",
                             type="number",
                             min=1,
-                            value=1,
+                            value=12,
                             style={
                                 "height": "2vw",
                                 "width": "63%",
