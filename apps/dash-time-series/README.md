@@ -33,7 +33,7 @@ To run this app, clone the repository and then open a terminal to the app folder
 
 ```
 git clone https://github.com/plotly/dash-sample-apps.git
-cd dash-sample-apps-master/apps/dash-time-series/
+cd dash-sample-apps/apps/dash-time-series/
 ```
 
 1. Create and activate a new virtual environment (recommended) by running
