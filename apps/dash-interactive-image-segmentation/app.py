@@ -71,8 +71,6 @@ def store_shapes_seg_pair(d, key, seg, remove_old=True):
     seg is a PIL.Image object
     if remove_old True, deletes all the old keys and values.
     """
-    # TODO alternatively, if given a numpy array, we could serialize its raw
-    # representation
     bytes_to_encode = io.BytesIO()
     seg.save(bytes_to_encode, format="png")
     bytes_to_encode.seek(0)
@@ -211,7 +209,7 @@ app.layout = html.Div(
                                     "Download classifier", id="download-button"
                                 ),
                                 html.Span(
-                                    "A script for using the classifier can be found in the source repository of this webapp: https://github.com/plotly/dash-sample-apps/.",
+                                    "A script for using the classifier can be found in the source repository of this webapp: https://github.com/plotly/dash-sample-apps/dash-interactive-image-segmentation.",
                                     className="tooltiptext",
                                 ),
                             ],
@@ -253,6 +251,9 @@ app.layout = html.Div(
 )
 
 
+# Converts image classifier to a JSON compatible encoding and creates a
+# dictionary that can be downloaded
+# see use_ml_image_segmentation_classifier.py
 def save_img_classifier(clf, segmenter_args, label_to_colors_args):
     clfbytes = io.BytesIO()
     pickle.dump(clf, clfbytes)
