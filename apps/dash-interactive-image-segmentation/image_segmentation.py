@@ -117,7 +117,7 @@ def trainable_segmentation(
     sigma_max=16,
     downsample=10,
     clf=None,
-    verbose=False
+    verbose=False,
 ):
     """
     Segmentation using labeled parts of the image and a random forest classifier.
