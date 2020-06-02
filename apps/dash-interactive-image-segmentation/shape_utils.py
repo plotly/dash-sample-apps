@@ -7,8 +7,8 @@ import numpy as np
 
 def shape_to_svg_code(shape, fig=None, width=None, height=None):
     """
-    fig is the figure which shape resides in (to get width and height) and shape
-    is one of the shapes the figure contains.
+    fig is the plotly.py figure which shape resides in (to get width and height)
+    and shape is one of the shapes the figure contains.
     """
     if fig is not None:
         # get width and height
