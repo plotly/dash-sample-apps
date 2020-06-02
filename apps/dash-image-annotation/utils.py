@@ -49,22 +49,3 @@ def make_figure(filename_uri, mode="layout", dragmode="drawrect", show_axes=True
         fig.update_xaxes(showgrid=False)
         fig.update_yaxes(showgrid=False)
     return fig
-
-
-def path_to_indices(path):
-    """From SVG path to numpy array of coordinates, each row being a (row, col) point
-    """
-    indices_str = [
-        el.replace("M", "").replace("Z", "").split(",") for el in path.split("L")
-    ]
-    return np.array(indices_str, dtype=float)
-
-
-def indices_to_path(indices):
-    """From numpy array to SVG path
-    """
-    path = "M"
-    for row in indices.astype(str):
-        path += row[0] + "," + row[1] + "L"
-    path = path[:-1] + "Z"
-    return path

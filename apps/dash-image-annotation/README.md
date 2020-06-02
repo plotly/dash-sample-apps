@@ -3,12 +3,12 @@
 ## About this app
 
 This shows how Dash can be used to make an application that collects annotations
-of the content in parts of images. These annotations could be downloaded and
-used to train an image content classifier.
+of the content in parts of images. These bounding-box annotations could be
+downloaded and used to train an image content classifier.
 
 ## How to run this app locally
 
-(The following instructions are for unix-like systems)
+(The following instructions are for unix-like shells)
 
 Clone this repository and navigate to the directory containing this `README` in
 a terminal.

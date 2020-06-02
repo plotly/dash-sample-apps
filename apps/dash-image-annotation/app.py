@@ -264,7 +264,6 @@ app.layout = html.Div(
                 html.H6("Choose image"),
                 html.Button("Previous", id="previous", className="button"),
                 html.Button("Next", id="next", className="button"),
-                html.Button("Add Shape", id="add-shape", className="button"),
                 html.H6("Annotations"),
                 # We use this pattern because we want to be able to download the
                 # annotations by clicking on a button
@@ -289,7 +288,6 @@ app.layout = html.Div(
 @app.callback(
     [Output("annotations-table", "data"), Output("image_files", "data")],
     [
-        Input("add-shape", "n_clicks"),
         Input("previous", "n_clicks"),
         Input("next", "n_clicks"),
         Input("graph", "relayoutData"),
@@ -302,7 +300,6 @@ app.layout = html.Div(
     ],
 )
 def modify_table_entries(
-    add_shape_n_clicks,
     previous_n_clicks,
     next_n_clicks,
     graph_relayoutData,
@@ -332,14 +329,6 @@ def modify_table_entries(
         else:
             debug_print("annotations_table_data after:", annotations_table_data)
             return (annotations_table_data, image_files_data)
-    if cbcontext == "add-shape.n_clicks":
-        if annotations_table_data is None:
-            annotations_table_data = []
-        row = default_table_row()
-        row["Type"] = annotation_type
-        if row not in annotations_table_data:
-            annotations_table_data.append(row)
-        return (annotations_table_data, image_files_data)
     image_index_change = 0
     if cbcontext == "previous.n_clicks":
         image_index_change = -1
