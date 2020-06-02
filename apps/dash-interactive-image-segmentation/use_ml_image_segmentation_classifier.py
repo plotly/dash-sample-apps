@@ -22,6 +22,7 @@ import io
 import skimage.io
 import json
 
+
 def getenv(e):
     try:
         return os.environ[e]
@@ -65,4 +66,4 @@ if __name__ == "__main__":
     blend_img = shapes_to_segmentations.blend_image_and_classified_regions(
         skimage.io.imread(img_path), skimage.io.imread(out_img_path)
     )
-    skimage.io.imsave(blend_path,blend_img)
+    skimage.io.imsave(blend_path, blend_img)
