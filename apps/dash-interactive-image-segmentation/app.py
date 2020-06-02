@@ -110,13 +110,16 @@ app.layout = html.Div(
             id="description",
             children=[
                 html.P(
-                    "This is an example of interactive machine learning for image classification. To train the classifier, draw some marks on the picture using different colors for different parts, like in the example image. Then enable \"Show segmentation\" to see the classes a Random Forest Classifier gave to regions of the image, based on the marks you used as a guide. You may add more marks to clarify parts of the image where the classifier was not sucessful and the classification will update.",
-                    className="ten columns"),
-                html.Img(id='example-image',
-                src='assets/segmentation_img_example_marks.png',
-                className="two columns")
+                    'This is an example of interactive machine learning for image classification. To train the classifier, draw some marks on the picture using different colors for different parts, like in the example image. Then enable "Show segmentation" to see the classes a Random Forest Classifier gave to regions of the image, based on the marks you used as a guide. You may add more marks to clarify parts of the image where the classifier was not sucessful and the classification will update.',
+                    className="ten columns",
+                ),
+                html.Img(
+                    id="example-image",
+                    src="assets/segmentation_img_example_marks.png",
+                    className="two columns",
+                ),
             ],
-            className="twelve columns app-background"
+            className="twelve columns app-background",
         ),
         html.Div(
             id="main-content",
@@ -204,12 +207,15 @@ app.layout = html.Div(
                             id="download",
                             download="classifier.json",
                             children=[
-                                html.Button("Download classifier", id="download-button"),
+                                html.Button(
+                                    "Download classifier", id="download-button"
+                                ),
                                 html.Span(
                                     "A script for using the classifier can be found in the source repository of this webapp: https://github.com/plotly/dash-sample-apps/.",
-                                          className="tooltiptext")
+                                    className="tooltiptext",
+                                ),
                             ],
-                            className="tooltip"
+                            className="tooltip",
                         ),
                         html.A(
                             id="download-image",
@@ -225,7 +231,7 @@ app.layout = html.Div(
                     className="six columns app-background",
                 ),
             ],
-            className="twelve columns"
+            className="twelve columns",
         ),
         html.Div(
             id="no-display",
