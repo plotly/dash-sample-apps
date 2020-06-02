@@ -27,9 +27,9 @@ def shape_to_svg_code(shape, fig=None, width=None, height=None):
     )
     return """
 <svg
-    width="{width}" 
-    height="{height}" 
-    viewBox="0 0 {width} {height}" 
+    width="{width}"
+    height="{height}"
+    viewBox="0 0 {width} {height}"
 >
 <path
     stroke="{stroke_color}"
