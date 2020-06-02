@@ -1,0 +1,15 @@
+dash_core_components==1.10.0
+plotly==4.7.1
+CairoSVG==2.4.2
+matplotlib==3.2.1
+scipy==1.4.1
+dash==1.12.0
+numpy==1.18.3
+scikit_image==0.16.2
+dash_html_components==1.0.3
+dash_table==4.7.0
+Pillow==7.1.2
+scikit_learn==0.23.1
+scikit-image==0.16.2
+gunicorn==20.0.4
+pandas==1.0.3
