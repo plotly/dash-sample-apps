@@ -1,0 +1,91 @@
+/* -- style banner -- */
+
+#main {
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.button {
+    background: lightgrey;
+}
+
+#graph {
+    background: lightgrey;
+}
+
+#logo {
+    display: inline;
+    vertical-align: middle;
+    margin: 10px;
+    padding: 5px;
+    width: 15%;
+    float: right;
+}
+
+#title {
+    text-align: center;
+    border: 1.5px solid grey;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 5px;
+    display: inline-block;
+    width: 500px;
+    background: white;
+}
+
+#table-container {
+    width: 100%;
+    display: table;
+    content: "";
+    clear: both;
+}
+    
+#timestamp-table {
+    width:20%;
+    float:left;
+    font-size: small;
+}
+
+#annotations-table {
+    width:80%;
+    float:left;
+    margin: 0;
+    font-size: small;
+}
+
+#app-container {
+    margin: 10px;
+    padding: 5px;
+    border: 1.5px solid grey;
+    border-radius: 5px;
+    float: left;
+    background: white;
+}
+
+#sidebar {
+    margin: 10px;
+    padding: 5px;
+    float: left;
+    border: 1.5px solid grey;
+    border-radius: 5px;
+    background: white;
+}
+
+/*
+#sidebar-contents {
+    position: absolute;
+    bottom: 0px;
+}
+*/
+
+#previous {
+    width: 50%;
+}
+
+#next {
+    width: 50%;
+}
+
+#download-button { 
+    width: 100%;
+}
