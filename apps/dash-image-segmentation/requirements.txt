@@ -1,5 +1,6 @@
 dash_core_components==1.10.0
 plotly==4.7.1
+plotly-express==0.4.1
 CairoSVG==2.4.2
 matplotlib==3.2.1
 scipy==1.4.1
