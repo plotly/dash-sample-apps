@@ -113,7 +113,7 @@ app.layout = html.Div(
                 ),
                 html.Img(
                     id="example-image",
-                    src="assets/segmentation_img_example_marks.png",
+                    src="assets/segmentation_img_example_marks.jpg",
                     className="two columns",
                 ),
             ],
