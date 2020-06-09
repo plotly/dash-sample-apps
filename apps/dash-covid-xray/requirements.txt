@@ -6,3 +6,4 @@ dash_canvas
 joblib
 ipython
 nilearn
+gunicorn
