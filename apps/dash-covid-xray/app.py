@@ -6,7 +6,7 @@ import dash_core_components as dcc
 import plotly.graph_objects as go
 from dash_canvas.utils import array_to_data_url
 from nilearn import image
-from skimage import draw
+from skimage import draw, segmentation
 from skimage import img_as_ubyte
 
 img = image.load_img("assets/radiopaedia_org_covid-19-pneumonia-7_85703_0-dcm.nii")
@@ -52,7 +52,7 @@ def make_figure(filename_uri, width, height, row=None, col=None, size_factor=1):
             opacity=1,
         )
     )
-    fig.update_layout(template=None, margin=dict(t=10, b=0))
+    fig.update_layout(template=None, margin=dict(t=10, b=0, l=0, r=0))
     fig.update_xaxes(
         showgrid=False, range=(0, width), showticklabels=False, zeroline=False
     )
@@ -78,7 +78,7 @@ def make_figure(filename_uri, width, height, row=None, col=None, size_factor=1):
         line=dict(width=5, color="red"),
         fillcolor="pink",
     )
-    fig.update_layout(dragmode="drawclosedpath", newshape_line_color="cyan")
+    fig.update_layout(dragmode="drawclosedpath", newshape_line_color="cyan", height=400)
     return fig
 
 
@@ -87,7 +87,18 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(
-    [
+    [        html.Div(
+            id="banner",
+            children=[
+                html.H2(
+                    "Exploration and annotation of CT images",
+                    id="title",
+                    className="seven columns",
+                ),
+                html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png"),),
+            ],
+            className="twelve columns app-background",
+        ),
         html.Div(
             [
                 dcc.Graph(
@@ -106,8 +117,10 @@ app.layout = html.Div(
                 ),
                 html.H6(id="slider-display"),
                 html.Button("interpolate", id="interp-button"),
+                html.H6(id="volume-display"),
             ],
-            style={"width": "50%", "display": "inline-block"},
+            className="app-background",
+            #style={"width": "50%", "display": "inline-block"},
         ),
         html.Div(
             [
@@ -127,7 +140,8 @@ app.layout = html.Div(
                 ),
                 html.H6(id="slider-2-display"),
             ],
-            style={"width": "50%", "display": "inline-block"},
+            className="app-background",
+            #style={"width": "50%", "display": "inline-block"},
         ),
         dcc.Store(id="small-slices", data=slices_1),
         dcc.Store(id="small-slices-2", data=slices_2),
@@ -136,12 +150,14 @@ app.layout = html.Div(
         dcc.Store(id="annotations", data={}),
         dcc.Store(id="interpolated-annotations", data={}),
         dcc.Store(id="last-shape", data={}),
-    ]
+    ],
+    className="twelve columns"
 )
 
 
 @app.callback(
-    Output("interpolated-annotations", "data"),
+    [Output("interpolated-annotations", "data"),
+        Output("volume-display", "children")],
     [Input("interp-button", "n_clicks")],
     [State("annotations", "data"),],
 )
@@ -152,10 +168,9 @@ def interpolate(n_clicks, annotations):
     keys = np.sort([int(key) for key in annotations])
     z_min = keys[0]
     z_max = keys[-1]
-    print(z_min, z_max)
+    volume = 0
     for z in np.arange(z_min + 1, z_max, dtype=np.uint8):
         i = np.searchsorted(keys, z)
-        print(z, i)
         t = (z - keys[i - 1]) / (keys[i] - keys[i - 1])
         path1 = path_to_indices(annotations[str(keys[i])]["path"])
         rr, cc = draw.polygon(path1[:, 1], path1[:, 0])
@@ -166,12 +181,11 @@ def interpolate(n_clicks, annotations):
         poly2 = np.zeros((l_lat, l_lat))
         poly2[rr, cc] = 1
         poly = (t * poly1 + (1 - t) * poly2) > 0.5
-        poly_img = np.ones((l_lat, l_lat, 3))
-        poly_img[poly, 0] = 0
-        # poly_img[np.logical_not(poly), -1] = 0
-        interps[str(z)] = array_to_data_url(img_as_ubyte(poly_img))
-    print(interps)
-    return interps
+        interps[str(z)] = array_to_data_url(img_as_ubyte(segmentation.mark_boundaries(img_1[z], poly, mode='thick')))
+        volume += poly.sum()
+    volume *= np.abs(np.linalg.det(mat)) / 1000
+    result = f"The volume of the occlusion is {volume:.0f} cm3"
+    return interps, result
 
 
 @app.callback(
@@ -203,18 +217,13 @@ function(n_slider, n_slider_2, slices, fig, annotations, interps){
         xpos = n_slider_2;
         let fig_ = {...fig};
         console.log("ok 1");
-        // fig_.layout.images = [...fig.layout.images[0]];
-        console.log("ok 2");
         fig_.layout.images[0].source = slices[zpos];
         fig_.layout.shapes = [fig.layout.shapes[0]];
         fig_.layout.shapes[0].y0 = xpos;
         fig_.layout.shapes[0].y1 = xpos;
         if (n_slider.toString() in interps){
             console.log("in interp range");
-            // fig_.layout.images.push({...fig.layout.images[0]});
-            console.log("ok 3");
-            // fig_.layout.images[1].source = interps[n_slider.toString()];
-            // fig_.layout.images[1].opacity = 0.3;
+            fig_.layout.images[0].source = interps[n_slider.toString()];
         }
         if (n_slider.toString() in annotations){
             console.log("bla");
