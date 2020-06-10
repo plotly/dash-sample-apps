@@ -21,7 +21,9 @@ l_lat = img.shape[0]
 size_factor = abs(mat[2, 2] / mat[0, 0])
 
 slices_1 = [array_to_data_url(img_1[i]) for i in range(img_1.shape[0])]
-slices_2 = [array_to_data_url(img_2[i]) for i in range(img_2.shape[0])[::-1]]  # vertical
+slices_2 = [
+    array_to_data_url(img_2[i]) for i in range(img_2.shape[0])[::-1]
+]  # vertical
 
 
 def path_to_indices(path):
@@ -87,7 +89,8 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(
-    [        html.Div(
+    [
+        html.Div(
             id="banner",
             children=[
                 html.H2(
@@ -120,7 +123,7 @@ app.layout = html.Div(
                 html.H6(id="volume-display"),
             ],
             className="app-background",
-            #style={"width": "50%", "display": "inline-block"},
+            # style={"width": "50%", "display": "inline-block"},
         ),
         html.Div(
             [
@@ -141,7 +144,7 @@ app.layout = html.Div(
                 html.H6(id="slider-2-display"),
             ],
             className="app-background",
-            #style={"width": "50%", "display": "inline-block"},
+            # style={"width": "50%", "display": "inline-block"},
         ),
         dcc.Store(id="small-slices", data=slices_1),
         dcc.Store(id="small-slices-2", data=slices_2),
@@ -151,13 +154,12 @@ app.layout = html.Div(
         dcc.Store(id="interpolated-annotations", data={}),
         dcc.Store(id="last-shape", data={}),
     ],
-    className="twelve columns"
+    className="twelve columns",
 )
 
 
 @app.callback(
-    [Output("interpolated-annotations", "data"),
-        Output("volume-display", "children")],
+    [Output("interpolated-annotations", "data"), Output("volume-display", "children")],
     [Input("interp-button", "n_clicks")],
     [State("annotations", "data"),],
 )
@@ -181,7 +183,9 @@ def interpolate(n_clicks, annotations):
         poly2 = np.zeros((l_lat, l_lat))
         poly2[rr, cc] = 1
         poly = (t * poly1 + (1 - t) * poly2) > 0.5
-        interps[str(z)] = array_to_data_url(img_as_ubyte(segmentation.mark_boundaries(img_1[z], poly, mode='thick')))
+        interps[str(z)] = array_to_data_url(
+            img_as_ubyte(segmentation.mark_boundaries(img_1[z], poly, mode="thick"))
+        )
         volume += poly.sum()
     volume *= np.abs(np.linalg.det(mat)) / 1000
     result = f"The volume of the occlusion is {volume:.0f} cm3"
