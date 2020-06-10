@@ -77,7 +77,7 @@ def make_figure(filename_uri, width, height, row=None, col=None, size_factor=1):
         x1=width // 2 + 50,
         y0=row,
         y1=row,
-        line=dict(width=5, color="red"),
+        line=dict(width=3, color="red"),
         fillcolor="pink",
     )
     fig.update_layout(dragmode="drawclosedpath", newshape_line_color="cyan", height=400)
@@ -109,6 +109,14 @@ app.layout = html.Div(
                     figure=make_figure(
                         slices_1[len(img_1) // 2], width=630, height=630
                     ),
+                    config={
+                        "modeBarButtonsToAdd": [
+                            "drawline",
+                            "drawclosedpath",
+                            "drawrect",
+                            "eraseshape",
+                        ]
+                    },
                 ),
                 dcc.Slider(
                     id="slider",
@@ -123,7 +131,6 @@ app.layout = html.Div(
                 html.H6(id="volume-display"),
             ],
             className="app-background",
-            # style={"width": "50%", "display": "inline-block"},
         ),
         html.Div(
             [
@@ -144,7 +151,6 @@ app.layout = html.Div(
                 html.H6(id="slider-2-display"),
             ],
             className="app-background",
-            # style={"width": "50%", "display": "inline-block"},
         ),
         dcc.Store(id="small-slices", data=slices_1),
         dcc.Store(id="small-slices-2", data=slices_2),
@@ -188,7 +194,7 @@ def interpolate(n_clicks, annotations):
         )
         volume += poly.sum()
     volume *= np.abs(np.linalg.det(mat)) / 1000
-    result = f"The volume of the occlusion is {volume:.0f} cm3"
+    result = f"The volume of the object is {volume:.0f} cm3"
     return interps, result
 
 
