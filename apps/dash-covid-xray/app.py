@@ -12,7 +12,7 @@ from skimage import img_as_ubyte
 img = image.load_img("assets/radiopaedia_org_covid-19-pneumonia-7_85703_0-dcm.nii")
 mat = img.affine
 img = img.get_data()
-img_1 = np.copy(np.moveaxis(img, -1, 0))
+img_1 = np.copy(np.moveaxis(img, -1, 0))[:, ::-1]
 img_2 = np.copy(np.moveaxis(img, -1, 1))
 
 l_h = img.shape[-1]
@@ -21,7 +21,7 @@ l_lat = img.shape[0]
 size_factor = abs(mat[2, 2] / mat[0, 0])
 
 slices_1 = [array_to_data_url(img_1[i]) for i in range(img_1.shape[0])]
-slices_2 = [array_to_data_url(img_2[i]) for i in range(img_2.shape[0])]  # vertical
+slices_2 = [array_to_data_url(img_2[i]) for i in range(img_2.shape[0])[::-1]]  # vertical
 
 
 def path_to_indices(path):
@@ -205,7 +205,6 @@ def update_store(relayout, z_pos, annotations, last_shape):
         shape = relayout["shapes"][-1]
         last_shape = relayout["shapes"][-1]["path"]
         annotations[str(z_pos)] = shape
-    print("relayout", relayout.keys(), z_pos, relayout)
     return annotations, last_shape
 
 
@@ -216,20 +215,16 @@ function(n_slider, n_slider_2, slices, fig, annotations, interps){
         zpos = n_slider;
         xpos = n_slider_2;
         let fig_ = {...fig};
-        console.log("ok 1");
         fig_.layout.images[0].source = slices[zpos];
         fig_.layout.shapes = [fig.layout.shapes[0]];
         fig_.layout.shapes[0].y0 = xpos;
         fig_.layout.shapes[0].y1 = xpos;
         if (n_slider.toString() in interps){
-            console.log("in interp range");
             fig_.layout.images[0].source = interps[n_slider.toString()];
         }
         if (n_slider.toString() in annotations){
-            console.log("bla");
             fig_.layout.shapes.push(annotations[n_slider.toString()]);
         }
-        console.log(fig_);
         return fig_;
     }
 """,
