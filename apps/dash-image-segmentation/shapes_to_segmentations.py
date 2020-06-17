@@ -71,18 +71,7 @@ def compute_segmentations(
     # load original image
     img = img_to_ubyte_array(img_path)
 
-    # load labels
-    label_imgs = []
-    for shape in shapes:
-        lab = img_to_ubyte_array(
-            io.BytesIO(
-                shape_utils.shape_to_png(
-                    shape=shape, width=img.shape[1], height=img.shape[0], write_to=None
-                )
-            )
-        )
-        label_imgs.append(lab)
-
+    # convert shapes to mask
     shape_args = [
         {"width": img.shape[1], "height": img.shape[0], "shape": shape}
         for shape in shapes
