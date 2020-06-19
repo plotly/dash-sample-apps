@@ -73,13 +73,23 @@ def make_figure(filename_uri, width, height, row=None, col=None, size_factor=1):
         col = width // 2
     fig.add_shape(
         type="line",
-        x0=width // 2 - 50,
-        x1=width // 2 + 50,
+        x0=0,
+        x1=width // 20 ,
         y0=row,
         y1=row,
         line=dict(width=3, color="red"),
         fillcolor="pink",
     )
+    fig.add_shape(
+        type="line",
+        x0=width - width // 20,
+        x1=width ,
+        y0=row,
+        y1=row,
+        line=dict(width=3, color="red"),
+        fillcolor="pink",
+    )
+
     fig.update_layout(dragmode="drawclosedpath", newshape_line_color="cyan", height=400)
     return fig
 
@@ -226,9 +236,11 @@ function(n_slider, n_slider_2, slices, fig, annotations, interps){
         xpos = n_slider_2;
         let fig_ = {...fig};
         fig_.layout.images[0].source = slices[zpos];
-        fig_.layout.shapes = [fig.layout.shapes[0]];
+        fig_.layout.shapes = [fig.layout.shapes[0], fig.layout.shapes[1]];
         fig_.layout.shapes[0].y0 = xpos;
         fig_.layout.shapes[0].y1 = xpos;
+        fig_.layout.shapes[1].y0 = xpos;
+        fig_.layout.shapes[1].y1 = xpos;
         if (n_slider.toString() in interps){
             fig_.layout.images[0].source = interps[n_slider.toString()];
         }
@@ -258,6 +270,8 @@ function(n_slider, n_slider_2, slices_2, fig_2){
         fig_2_.layout.images[0].source = slices_2[xpos];
         fig_2_.layout.shapes[0].y0 = zpos * size_factor;
         fig_2_.layout.shapes[0].y1 = zpos * size_factor;
+        fig_2_.layout.shapes[1].y0 = zpos * size_factor;
+        fig_2_.layout.shapes[1].y1 = zpos * size_factor;
         return fig_2_;
     }
 """,
