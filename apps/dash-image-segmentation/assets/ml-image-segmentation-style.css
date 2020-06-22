@@ -20,15 +20,27 @@
     left: 8px;
 }
 
+#title {
+    position: absolute;
+    top: 50%;
+    transform: translate(0,-50%);
+    left: 10px;
+    display: inline-block;
+    margin:0;
+}
+
 #banner {
     margin-bottom: 18px;
     position: relative;
+    height: 60px;
 }
 
 #logo {
     position: absolute;
-    top: 18%;
+    top: 50%;
+    transform: translate(0,-50%);
     right: 10px;
+    width: 200px;
 }
 
 .tooltip {}
