@@ -9,18 +9,19 @@ from transformers import BartTokenizer, BartForConditionalGeneration
 import torch
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-# device = "cpu"
 print(f"Device: {device}")
 
 # Load Model
-# pretrained = 'facebook/bart-large-xsum'
-pretrained = "sshleifer/distilbart-xsum-12-3"
+pretrained = "sshleifer/distilbart-xsum-12-6"
 model = BartForConditionalGeneration.from_pretrained(pretrained)
 tokenizer = BartTokenizer.from_pretrained(pretrained)
 
-# Switch to cuda if available
+# Switch to cuda, eval mode, and FP16 for faster inference
+if device == 'cuda':
+    model = model.half()
 model.to(device)
 model.eval()
+
 # Define app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
