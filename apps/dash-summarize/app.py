@@ -17,7 +17,7 @@ model = BartForConditionalGeneration.from_pretrained(pretrained)
 tokenizer = BartTokenizer.from_pretrained(pretrained)
 
 # Switch to cuda, eval mode, and FP16 for faster inference
-if device == 'cuda':
+if device == "cuda":
     model = model.half()
 model.to(device)
 model.eval()
