@@ -27,20 +27,25 @@ print("Done.")
 
 
 def textbox(text, box="other"):
-    style = {'max-width': '55%', 'width': 'max-content', 'padding': '10px 15px', 'border-radius': '25px'}
+    style = {
+        "max-width": "55%",
+        "width": "max-content",
+        "padding": "10px 15px",
+        "border-radius": "25px",
+    }
 
     if box == "self":
-        style['margin-left'] = 'auto'
-        style['margin-right'] = 0
+        style["margin-left"] = "auto"
+        style["margin-right"] = 0
 
-        color = 'primary'
+        color = "primary"
         inverse = True
 
     elif box == "other":
-        style['margin-left'] = 0
-        style['margin-right'] = 'auto'
+        style["margin-left"] = 0
+        style["margin-right"] = "auto"
 
-        color = 'light'
+        color = "light"
         inverse = False
 
     else:
@@ -49,25 +54,23 @@ def textbox(text, box="other"):
     return dbc.Card(text, style=style, body=True, color=color, inverse=inverse)
 
 
-
 conversation = html.Div(
-    style={'width': '80%', 'max-width': '800px', "height": "70vh", 'margin': 'auto', "overflow-y": "auto"},
-    id='display-conversation', 
-    children=[
-        textbox("Hello, world."),
-        textbox("How are you?", box='self')
-    ]
+    style={
+        "width": "80%",
+        "max-width": "800px",
+        "height": "70vh",
+        "margin": "auto",
+        "overflow-y": "auto",
+    },
+    id="display-conversation",
 )
 
 controls = dbc.InputGroup(
-    style={'width': '80%', 'max-width': '800px', 'margin': 'auto'},
+    style={"width": "80%", "max-width": "800px", "margin": "auto"},
     children=[
-        dbc.Input(id="user-input", placeholder="Write to the chatbot...", type='text'),
-        dbc.InputGroupAddon(
-            dbc.Button("Submit", id="submit"),
-            addon_type="append",
-        ),
-    ]
+        dbc.Input(id="user-input", placeholder="Write to the chatbot...", type="text"),
+        dbc.InputGroupAddon(dbc.Button("Submit", id="submit"), addon_type="append",),
+    ],
 )
 
 
@@ -84,8 +87,8 @@ app.layout = dbc.Container(
         html.Hr(),
         dcc.Store(id="store-conversation", data=""),
         conversation,
-        controls
-    ]
+        controls,
+    ],
 )
 
 
@@ -101,7 +104,7 @@ def update_display(chat_history):
 
 @app.callback(
     [Output("store-conversation", "data"), Output("user-input", "value")],
-    [Input("submit", "n_clicks"), Input('user-input', 'n_submit')],
+    [Input("submit", "n_clicks"), Input("user-input", "n_submit")],
     [State("user-input", "value"), State("store-conversation", "data")],
 )
 def run_chatbot(n_clicks, n_submit, user_input, chat_history):
@@ -116,8 +119,7 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
 
     # encode the new user input, add the eos_token and return a tensor in Pytorch
     bot_input_ids = tokenizer.encode(
-        chat_history + user_input + tokenizer.eos_token, 
-        return_tensors="pt"
+        chat_history + user_input + tokenizer.eos_token, return_tensors="pt"
     ).to(device)
 
     # generated a response while limiting the total chat history to 1000 tokens,
