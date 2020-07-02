@@ -9,7 +9,8 @@ from transformers import AutoModelWithLMHead, AutoTokenizer
 import torch
 
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
+# device = "cuda" if torch.cuda.is_available() else "cpu"
+device = 'cpu'
 print(f"Device: {device}")
 
 print("Start loading model...")
