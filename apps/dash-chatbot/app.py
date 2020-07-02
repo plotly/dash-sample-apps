@@ -13,7 +13,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Device: {device}")
 
 print("Start loading model...")
-name = "microsoft/DialoGPT-large"
+name = "microsoft/DialoGPT-medium"
 tokenizer = AutoTokenizer.from_pretrained(name)
 model = AutoModelWithLMHead.from_pretrained(name)
 
