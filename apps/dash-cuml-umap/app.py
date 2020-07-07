@@ -1,3 +1,4 @@
+import os
 import time
 
 import cudf
@@ -12,7 +13,8 @@ import plotly.express as px
 
 
 # Load CSV into a cudf
-path = 'creditcard.csv'
+data_dir = os.environ.get("DATA_DIR", "")
+path = os.path.join(data_dir, 'creditcard.csv')
 gdf = cudf.read_csv(path)
 gdf.Time = gdf.Time / 3600
 gdf.loc[gdf.Amount > 500, 'Amount'] = 500
