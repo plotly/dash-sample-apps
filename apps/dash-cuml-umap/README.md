@@ -2,6 +2,8 @@
 
 A demo of RAPIDS.ai's cuML UMAP functionality.
 
+![demo](demo.gif)
+
 ## Instructions
 
 To get started, first clone this repo:
