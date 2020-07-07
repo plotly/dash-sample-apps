@@ -359,12 +359,7 @@ def show_segmentation(image_path, mask_shapes, segmenter_args):
         Input("segmentation-features", "value"),
         Input("sigma-range-slider", "value"),
     ],
-    [
-        State("masks", "data"),
-        State("segmentation", "data"),
-        State("classifier-store", "data"),
-        State("classified-image-store", "data"),
-    ],
+    [State("masks", "data"), State("segmentation", "data"),],
 )
 def annotation_react(
     graph_relayoutData,
@@ -375,9 +370,10 @@ def annotation_react(
     sigma_range_slider_value,
     masks_data,
     segmentation_data,
-    classifier_store_data,
-    classified_image_store_data,
 ):
+    print(segmentation_data,)
+    classified_image_store_data = dash.no_update
+    classifier_store_data = dash.no_update
     cbcontext = [p["prop_id"] for p in dash.callback_context.triggered][0]
     if cbcontext == "graph.relayoutData":
         if "shapes" in graph_relayoutData.keys():
@@ -485,7 +481,6 @@ function(the_image_store_data) {
     [Input("learn-more-button", "n_clicks"), Input("markdown_close", "n_clicks")],
 )
 def update_click_output(button_click, close_click):
-    print(button_click, close_click)
     if button_click > close_click:
         return {"display": "block"}
     else:
