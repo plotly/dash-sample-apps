@@ -156,7 +156,7 @@ app.layout = html.Div(
                             children="Learn More",
                             n_clicks=0,
                             style={
-                                "borderColor": bkg_color["light"],
+                                "borderColor": "white",
                                 "color": "#FFFFFF",
                                 "backgroundColor": "DarkBlue",
                             },
