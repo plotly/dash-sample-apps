@@ -175,7 +175,10 @@ app.layout = html.Div(
 
 
 @app.callback(
-    [Output("interpolated-annotations", "data"), Output("volume-display", "children")],
+    [Output("interpolated-annotations", "data"),
+     Output("volume-display", "children"),
+     Output("graph_3d", "figure")
+     ],
     [Input("interp-button", "n_clicks")],
     [State("annotations", "data"),],
 )
