@@ -28,6 +28,10 @@ class_labels = list(range(NUM_LABEL_CLASSES))
 # we can't have less colors than classes
 assert NUM_LABEL_CLASSES <= len(class_label_colormap)
 
+# Font and background colors associated with each theme
+text_color = {"dark": "#95969A", "light": "#595959"}
+card_color = {"dark": "#2D3038", "light": "#FFFFFF"}
+
 
 def class_to_color(n):
     return class_label_colormap[n]
@@ -89,6 +93,40 @@ def look_up_seg(d, key):
     return img
 
 
+def generate_modal():
+    with open("explanations.md", "r") as f:
+        text_md = f.read()
+
+    return html.Div(
+        id="markdown",
+        className="modal",
+        style={"display": "none"},
+        children=[
+            html.Div(
+                id="markdown-container",
+                className="markdown-container",
+                style={
+                    "color": text_color["light"],
+                    "backgroundColor": card_color["light"],
+                },
+                children=[
+                    html.Div(
+                        className="close-container",
+                        children=html.Button(
+                            "Close",
+                            id="markdown_close",
+                            n_clicks=0,
+                            className="closeButton",
+                            style={"color": "DarkBlue"},
+                        ),
+                    ),
+                    html.Div(className="markdown-text", children=dcc.Markdown(text_md)),
+                ],
+            )
+        ],
+    )
+
+
 app.layout = html.Div(
     id="app-container",
     children=[
@@ -107,8 +145,23 @@ app.layout = html.Div(
         html.Div(
             id="description",
             children=[
-                html.P(
-                    'This is an example of interactive machine learning for image classification. To train the classifier, draw some marks on the picture using different colors for different parts, like in the example image. Then enable "Show segmentation" to see the classes a Random Forest Classifier gave to regions of the image, based on the marks you used as a guide. You may add more marks to clarify parts of the image where the classifier was not sucessful and the classification will update.',
+                html.Div(
+                    children=[
+                        html.P(
+                            'This is an example of interactive machine learning for image classification. To train the classifier, draw some marks on the picture using different colors for different parts, like in the example image. Then enable "Show segmentation" to see the classes a Random Forest Classifier gave to regions of the image, based on the marks you used as a guide. You may add more marks to clarify parts of the image where the classifier was not sucessful and the classification will update.',
+                        ),
+                        generate_modal(),  # modal window
+                        html.Button(
+                            id="learn-more-button",
+                            children="Learn More",
+                            n_clicks=0,
+                            style={
+                                "borderColor": "white",
+                                "color": "#FFFFFF",
+                                "backgroundColor": "DarkBlue",
+                            },
+                        ),
+                    ],
                     className="ten columns",
                 ),
                 html.Img(
@@ -306,12 +359,7 @@ def show_segmentation(image_path, mask_shapes, segmenter_args):
         Input("segmentation-features", "value"),
         Input("sigma-range-slider", "value"),
     ],
-    [
-        State("masks", "data"),
-        State("segmentation", "data"),
-        State("classifier-store", "data"),
-        State("classified-image-store", "data"),
-    ],
+    [State("masks", "data"), State("segmentation", "data"),],
 )
 def annotation_react(
     graph_relayoutData,
@@ -322,9 +370,10 @@ def annotation_react(
     sigma_range_slider_value,
     masks_data,
     segmentation_data,
-    classifier_store_data,
-    classified_image_store_data,
 ):
+    print(segmentation_data,)
+    classified_image_store_data = dash.no_update
+    classifier_store_data = dash.no_update
     cbcontext = [p["prop_id"] for p in dash.callback_context.triggered][0]
     if cbcontext == "graph.relayoutData":
         if "shapes" in graph_relayoutData.keys():
@@ -426,5 +475,17 @@ function(the_image_store_data) {
     [Input("classified-image-store", "data")],
 )
 
+# ======= Callback for modal popup =======
+@app.callback(
+    Output("markdown", "style"),
+    [Input("learn-more-button", "n_clicks"), Input("markdown_close", "n_clicks")],
+)
+def update_click_output(button_click, close_click):
+    if button_click > close_click:
+        return {"display": "block"}
+    else:
+        return {"display": "none"}
+
+
 if __name__ == "__main__":
-    app.run_server()
+    app.run_server(debug=True)
