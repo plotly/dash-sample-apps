@@ -6,6 +6,11 @@ A demo of RAPIDS.ai's cuML UMAP functionality.
 
 ## Instructions
 
+### Download the dataset
+
+In order to download the dataset, please create an account on kaggle.com, and download it [from this dataset](https://www.kaggle.com/mlg-ulb/creditcardfraud). Make sure to place `creditcard.csv` inside `dash-sample-apps/apps/dash-cuml-umap`.
+
+### Download Repo and App
 To get started, first clone this repo:
 ```
 git clone https://github.com/plotly/dash-sample-apps.git
