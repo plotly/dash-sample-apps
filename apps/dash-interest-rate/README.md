@@ -1,6 +1,8 @@
 # Dash Interest Rate Modeling (with Snowflake)
 
-TBD
+This app shows how to query loan data from a Snowflake Data Warehouse, and train and analyze a Ridge regression model using Dash.
+
+![demo](assets/demo.gif)
 
 ## Setting up Snowflake DB
 
