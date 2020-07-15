@@ -206,7 +206,7 @@ app.layout = html.Div(
         html.Div(
             id="sidebar",
             children=[
-                html.H2("Annotations",id='firsth2'),
+                html.H2("Annotations", id="firsth2"),
                 html.Div(
                     id="table-container",
                     children=[
