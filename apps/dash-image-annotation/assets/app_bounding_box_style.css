@@ -1,8 +1,18 @@
 /* -- style banner -- */
 
+@font-face {
+    font-family: TexGyreHerosBold;
+    src: url('fonts/texgyreheros-bold.otf')
+}
+
+html {
+    background: white;
+}
+
 #main {
     display: inline-block;
     border-radius: 5px;
+    background: darkgrey;
 }
 
 .button {
@@ -24,13 +34,16 @@
 
 #title {
     text-align: center;
-    border: 1.5px solid grey;
-    border-radius: 5px;
+    color: white;
     margin: 10px;
     padding: 5px;
     display: inline-block;
+    /*
     width: 500px;
+    border-radius: 5px;
+    border: 1.5px solid grey;
     background: white;
+    */
 }
 
 #table-container {

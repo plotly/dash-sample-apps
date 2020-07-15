@@ -206,6 +206,7 @@ app.layout = html.Div(
         html.Div(
             id="sidebar",
             children=[
+                html.H2("Annotations"),
                 html.Div(
                     id="table-container",
                     children=[
@@ -254,17 +255,16 @@ app.layout = html.Div(
                     ),
                 ),
                 dcc.Store(id="image_files", data={"files": filelist, "current": 0}),
-                html.H6("Type of annotation"),
+                html.H2("Type of annotation"),
                 dcc.Dropdown(
                     id="annotation-type-dropdown",
                     options=[{"label": t, "value": t} for t in annotation_types],
                     value=DEFAULT_ATYPE,
                     clearable=False,
                 ),
-                html.H6("Choose image"),
+                html.H2("Choose image"),
                 html.Button("Previous", id="previous", className="button"),
                 html.Button("Next", id="next", className="button"),
-                html.H6("Annotations"),
                 # We use this pattern because we want to be able to download the
                 # annotations by clicking on a button
                 html.A(

@@ -118,6 +118,13 @@
 
 }
 
+/*
+ * Font obtained from http://www.gust.org.pl/projects/e-foundry/tex-gyre/heros
+ */
+@font-face {
+    font-family: TexGyreHerosBold;
+    src: url('fonts/texgyreheros-bold.otf');
+}
 
 /* Base Styles
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -128,7 +135,7 @@ are based on 10px sizing. So basically 1.5rem = 15px :) */
 body {
   font-size: 1.2em; /* currently ems cause chrome bug misinterpreting rems on body element */
   font-weight: 400;
-  font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: TexGyreHerosBold, sans-serif;
   color: rgb(50, 50, 50); 
   background-color: #f4f4f4;
 }
@@ -139,13 +146,13 @@ body {
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 0;
-  font-weight: 400;
-  color: rgb(18, 7, 137);
+  font-weight: 200;
+  color: #555;
 }
-h1 { font-size: 2rem; letter-spacing: -.1rem; margin-bottom: 1.5rem; margin-top: 2.5rem}
+h1 { font-size: 2rem; letter-spacing: -.05rem; margin-bottom: 1.5rem; margin-top: 2.5rem}
 h1.title {font-size: 2.5rem; margin-left: 1em;}
-h2 { font-size: 1.5rem; letter-spacing: -.1rem; margin-bottom: 1rem; margin-top: 1.6rem;}
-h3 { font-size: 1.3rem; letter-spacing: -.1rem; margin-bottom: .8rem; margin-top: 1.4rem;}
+h2 { font-size: 1.5rem; letter-spacing: -.05rem; margin-bottom: .4rem; margin-top: .4rem;}
+h3 { font-size: 1.3rem; letter-spacing: -.05rem; margin-bottom: .4rem; margin-top: .4rem;}
 h4 { font-size: 1.2rem; letter-spacing: -.08rem; margin-bottom: .5rem; margin-top: 1.2rem;}
 h5 {letter-spacing: -.05rem; margin-bottom: 0.6rem; margin-top: 0.6rem;}
 h6 {letter-spacing: 0; margin-bottom: 0.75rem; margin-top: 0.75rem;}
@@ -187,11 +194,11 @@ input[type="button"] {
   padding: 0 30px;
   color: #555;
   text-align: center;
-  font-size: 11px;
-  font-weight: 600;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 200;
   line-height: 38px;
   letter-spacing: .1rem;
-  text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
   background-color: transparent;
