@@ -98,6 +98,8 @@ def blend_image_and_classified_regions(img, classr):
     divided by 255 to get the scalar.
     The returned image has no alpha channel.
     """
+    if img.ndim == 2:
+        img = skimage.color.gray2rgb(img)
     img = skimage.img_as_ubyte(img)
     classr = skimage.img_as_ubyte(classr)
     img = img[:, :, :3]
