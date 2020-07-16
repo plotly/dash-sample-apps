@@ -79,6 +79,7 @@ def connect_read_sql(query, engine):
     connection.close()
     return result
 
+
 # Build component parts
 avp_graph = dcc.Graph(id="avp-graph", style={"height": "500px"})
 div_alert = dbc.Spinner(html.Div(id="alert-msg"))
