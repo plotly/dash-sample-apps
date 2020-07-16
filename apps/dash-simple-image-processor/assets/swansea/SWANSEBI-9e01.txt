@@ -1,0 +1,90 @@
+LICENSE AGREEMENT
+
+The attached font 'SWANSEA BOLD-ITALIC' is Copyright [c] Roger White - all 
+rights reserved. In using this font it will be taken that you have read and 
+agreed to the following conditions:-
+
+DISTRIBUTION.
+
+The font archives must contain all of the files specified:-
+
+Postscript Type 1 package - SWANSEBI.ZIP contains:-
+
+SWANSEBI.AFM
+SWANSEBI.PFB
+SWANSEBI.PFM
+SWANSEBI.INF
+SWANSEBI.TXT
+
+TrueType package - SWANSEBI.ZIP Contains:-
+
+SWANSEBI.TTF
+SWANSEBI.TXT
+
+This font has been made available as Type 1 and Truetype for the PC.
+Alteration of the character set of the font, and conversion to any 
+other font format is expressly forbidden.
+
+PAYMENT FOR USE
+
+Provided this font is used for personal purposes then no fee is payable to 
+the author for it's use. You may use this font yourself and may pass on 
+copies to your friends provided that the copy contains all of the files 
+from the original package. Distribution can be by electronic means or on 
+floppy disk.
+
+If this font is used for commercial purposes then the user agrees to make a 
+one off payment to the author of £25.00.
+
+If this font is distributed as part of a collection which has not been 
+compiled by the author, whether on floppy disk, CD-ROM or any other such 
+media, the distributor agrees to pay to the author a royalty of £0.01 for 
+each of the authors fonts which are included in the collection, for each 
+copy of the collection which is sold.
+
+If this font is distributed on the cover of a magazine, whether on floppy 
+disk, cd-rom or any other medium, then the magazine agrees to pay to the 
+author the sum of £0.01 for each of the authors fonts included in the 
+collection, multiplied by the certified number of copies of the magazine 
+circulated.
+
+ABOUT THE FONT
+
+'SWANSEA BOLD-ITALIC' is a high quality font containing full hinting for correct
+rendering at small point sizes and a total of 417 kerning pairs for correct
+character spacing. It is supplied 'as is' and no waranty is implied or given
+by the author. The font is usable for both body text and for headlines and
+renders well at any size from 8 point upwards. The font contains a full 
+range of upper and lower case letters together with the figures 0 to 9 and 
+a full range of punctuation. There is a full range of diacritics, some of 
+which are non-standard as they have been developed to take account of the 
+additional characters necessary for printing in the Welsh language. It was
+hand traced in order to achieve a high quality outline and compiled using 
+Type Designer 3.1. This font represents aproximately 400 manhours
+of work.
+
+The character set of the font coincides with those specified in ISO 8859-1
+with the exception of the following characters:-
+
+Alt + 0178   I umlaut
+Alt + 0179   U umlaut
+Alt + 0180   W circumflex
+Alt + 0181   Y circumflex
+Alt + 0182   i umlaut
+Alt + 0183   u umlaut
+Alt + 0184   w circumflex
+Alt + 0185   y circumflex
+
+The latest version of this font is always available for download from the 
+file list of the fonts conference on the Cix conferencing system. The author 
+would appreciate notification of any problems experienced with this font 
+together with any suggestions for improvements.
+
+Roger White,
+1, Owens Close,
+Rugeley,
+Staffs,
+WS15 2YH,
+England.
+
+rogerwhite@cix.co.uk

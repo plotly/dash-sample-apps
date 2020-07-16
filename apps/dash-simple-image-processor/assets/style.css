@@ -1,0 +1,136 @@
+@font-face {
+    font-family: SwanseaRegular;
+    src: url('swansea/Swansea-q3pd.ttf')
+}
+
+body, html {
+    background-color: DarkSlateGray;
+    color: lightgray;
+    font-family: SwanseaRegular;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+
+#root {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#main {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    overflow-y: auto;
+}
+
+#result-container, #sidebar {
+    flex-grow: 1;
+}
+
+#result-container {
+    padding: 20px;
+    width: 70%;
+}
+
+#header {
+    display: flex;
+}
+
+#logo {
+    width: 200px;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+}
+
+#image-controls-container {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+}
+
+#image-container {
+    margin: 0 auto;
+}
+
+#image-container img {
+    height: 70vh;
+	object-fit: contain;
+}
+
+#controls {
+    width: 100%;
+    /*height: 20px;*/
+    background-color: grey;
+    position: relative;
+}
+
+.control-wrapper {
+    display: inline-block;
+    user-select: none;
+}
+
+#rotation-slider {
+    display: inline-block;
+    width:50%;
+    padding: 0 !important;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(0,-50%);
+}
+
+#rotation-display {
+    display: inline-block;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translate(10px,-50%);
+}
+
+#sidebar {
+    font-size: small;
+    background-color: #4b7071;
+    padding: 20px;
+    width: 30%;
+}
+
+.button-image {
+    width: 20px;
+}
+
+a {
+    color: #9de8cb;
+}
+
+a:visited, a:hover {
+    color: #6fb7b6;
+}
+
+.rc-slider-track {
+	/* color of active part of slider */
+	background-color: #9de8cb;
+}
+ 
+/* MOBILE VIEW */
+@media only screen and (max-width: 1310px) {
+    #main {
+        display: flex;
+        flex-direction: column;
+    }
+    #result-container, #sidebar {
+        flex-grow: initial;
+        width: 96%;
+    }
+    #image-controls-container {
+        width: 100%;
+    }
+    #image-container img {
+        width: 100%;
+    }
+}
+
+

@@ -1,0 +1,4 @@
+black==19.10b0
+dash-canvas==0.1.0
+gunicorn==20.0.4
+wheel==0.34.2
