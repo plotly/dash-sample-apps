@@ -55,6 +55,9 @@ app_types = get_unique(connection, flake_db, "APPLICATION_TYPE")
 purposes = get_unique(connection, flake_db, "PURPOSE")
 ownerships = get_unique(connection, flake_db, "HOME_OWNERSHIP")[1:]
 
+# Close connection
+connection.close()
+
 # Make some calculations based on value range retrieved
 loan_marks = loan_max // 4
 loan_min //= loan_marks
@@ -69,7 +72,12 @@ cache = Cache(
 )
 
 # Cache functions
-read_sql = cache.memoize(timeout=300)(pd.read_sql)
+@cache.memoize(timeout=300)
+def connect_read_sql(query, engine):
+    connection = engine.connect()
+    result = pd.read_sql(query, connection)
+    connection.close()
+    return result
 
 # Build component parts
 avp_graph = dcc.Graph(id="avp-graph", style={"height": "500px"})
@@ -148,7 +156,7 @@ def query_and_train(n_clicks, loan_range, inc_range, app_type, owner, purpose):
         PURPOSE = '{purpose}';
     """
     )
-    df = read_sql(query, connection)
+    df = connect_read_sql(query=query, engine=engine)
 
     # Model Training
     df = df.drop(columns=["grade", "policy_code"])
