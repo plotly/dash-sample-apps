@@ -226,7 +226,7 @@ def fit_segmenter(labels, features, clf):
         classifier object, exposing a ``fit`` and a ``predict`` method as in
         scikit-learn's API, for example an instance of
         ``RandomForestClassifier`` or ``LogisticRegression`` classifier.
-    
+
     Returns
     -------
     output : ndarray
@@ -257,7 +257,7 @@ def predict_segmenter(features, clf):
     ----------
     features : ndarray
         Array of features, with the first dimension corresponding to the number
-        of features, and the other dimensions are compatible with the shape of 
+        of features, and the other dimensions are compatible with the shape of
         the image to segment.
     clf : classifier object
         trained classifier object, exposing a ``predict`` method as in
