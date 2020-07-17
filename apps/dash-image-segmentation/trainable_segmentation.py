@@ -7,6 +7,7 @@ from joblib import Parallel, delayed
 
 try:
     from sklearn.exceptions import NotFittedError
+
     has_sklearn = True
 except ImportError:
     has_sklearn = False
@@ -15,15 +16,13 @@ except ImportError:
         pass
 
 
-
 def _texture_filter(gaussian_filtered):
     H_elems = [
-            np.gradient(np.gradient(gaussian_filtered)[ax0], axis=ax1)
-            for ax0, ax1 in combinations_with_replacement(range(gaussian_filtered.ndim), 2)
-        ]
+        np.gradient(np.gradient(gaussian_filtered)[ax0], axis=ax1)
+        for ax0, ax1 in combinations_with_replacement(range(gaussian_filtered.ndim), 2)
+    ]
     eigvals = feature.hessian_matrix_eigvals(H_elems)
     return eigvals
-
 
 
 def _mutiscale_basic_features_singlechannel(
@@ -43,17 +42,21 @@ def _mutiscale_basic_features_singlechannel(
         base=2,
         endpoint=True,
     )
-    all_filtered = Parallel(n_jobs=-1, prefer='threads')(delayed(filters.gaussian)(img, sigma) for sigma in sigmas)
+    all_filtered = Parallel(n_jobs=-1, prefer="threads")(
+        delayed(filters.gaussian)(img, sigma) for sigma in sigmas
+    )
     features = []
     if intensity:
         features += all_filtered
     if edges:
-        all_edges = Parallel(n_jobs=-1, prefer='threads')(delayed(filters.sobel)(filtered_img)
-                                for filtered_img in all_filtered)
+        all_edges = Parallel(n_jobs=-1, prefer="threads")(
+            delayed(filters.sobel)(filtered_img) for filtered_img in all_filtered
+        )
         features += all_edges
     if texture:
-        all_texture = Parallel(n_jobs=-1, prefer='threads')(delayed(_texture_filter)(filtered_img)
-                                for filtered_img in all_filtered)
+        all_texture = Parallel(n_jobs=-1, prefer="threads")(
+            delayed(_texture_filter)(filtered_img) for filtered_img in all_filtered
+        )
         features += itertools.chain.from_iterable(all_texture)
     return features
 
@@ -151,12 +154,13 @@ class TrainableSegmenter(object):
         if clf is None:
             try:
                 from sklearn.ensemble import RandomForestClassifier
+
                 self.clf = RandomForestClassifier(n_estimators=100, n_jobs=-1)
             except ImportError:
                 raise ImportError(
                     "Please install scikit-learn or pass a classifier instance"
                     "to TrainableSegmenter."
-                        )
+                )
         else:
             self.clf = clf
         self.features_func = features_func
@@ -185,7 +189,6 @@ class TrainableSegmenter(object):
             self.compute_features(image)
         output, clf = fit_segmenter(labels, self.features, self.clf)
         self.segmented_image = output
-
 
     def predict(self, image):
         """
@@ -279,8 +282,8 @@ def predict_segmenter(features, clf):
         predicted_labels = clf.predict(features)
     except NotFittedError:
         raise NotFittedError(
-                "You must train the classifier `clf` first"
-                "for example with the `fit_segmenter` function."
-                            )
+            "You must train the classifier `clf` first"
+            "for example with the `fit_segmenter` function."
+        )
     output = predicted_labels.reshape(sh[1:])
     return output
