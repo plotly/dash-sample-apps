@@ -198,7 +198,7 @@ app.layout = dbc.Container(
         dcc.Store(id="query-store"),
         html.H1("Dash Loan Grade Classification with Snowflake"),
         html.Hr(),
-        dbc.Row(controls, style={'padding': '20px 0px'}),
+        dbc.Row(controls, style={"padding": "20px 0px"}),
         dbc.Row(
             [
                 dbc.Col(
