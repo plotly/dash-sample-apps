@@ -15,6 +15,12 @@ import io
 import base64
 import PIL.Image
 import pickle
+from time import time
+from joblib import Memory
+
+memory = Memory("./joblib_cache", bytes_limit=3000000000, verbose=3)
+
+compute_features = memory.cache(multiscale_basic_features)
 
 DEFAULT_STROKE_WIDTH = 3  # gives line width of 2^3 = 8
 
@@ -347,23 +353,6 @@ def show_segmentation(image_path, mask_shapes, features):
 
 
 @app.callback(
-    Output("features_hash", "data"),
-    [Input("segmentation-features", "value"), Input("sigma-range-slider", "value"),],
-)
-def features_changed(segmentation_features_value, sigma_range_slider_value):
-    segmentation_features_dict = {feat: True for feat in segmentation_features_value}
-    features = multiscale_basic_features(
-        img,
-        **segmentation_features_dict,
-        sigma_min=sigma_range_slider_value[0],
-        sigma_max=sigma_range_slider_value[1],
-    )
-    features_hash = str(hash(features.ravel()[::1000].tostring()))
-    features_dict[features_hash] = features
-    return features_hash
-
-
-@app.callback(
     [
         Output("graph", "figure"),
         Output("masks", "data"),
@@ -379,8 +368,9 @@ def features_changed(segmentation_features_value, sigma_range_slider_value):
         ),
         Input("stroke-width", "value"),
         Input("show-segmentation", "value"),
-        Input("features_hash", "data"),
         Input("save-button", "n_clicks"),
+        Input("segmentation-features", "value"),
+        Input("sigma-range-slider", "value"),
     ],
     [State("masks", "data"),],
 )
@@ -389,14 +379,34 @@ def annotation_react(
     any_label_class_button_value,
     stroke_width_value,
     show_segmentation_value,
-    features_hash,
     save_n_clicks,
+    segmentation_features_value,
+    sigma_range_slider_value,
     masks_data,
 ):
     classified_image_store_data = dash.no_update
     classifier_store_data = dash.no_update
     cbcontext = [p["prop_id"] for p in dash.callback_context.triggered][0]
-    print(cbcontext)
+    if cbcontext in ["segmentation-features.value", "sigma-range-slider.value"] or (
+        ("Show segmentation" in show_segmentation_value)
+        and (len(masks_data["shapes"]) > 0)
+    ):
+        segmentation_features_dict = {
+            "intensity": False,
+            "edges": False,
+            "texture": False,
+        }
+        for feat in segmentation_features_value:
+            segmentation_features_dict[feat] = True
+        t1 = time()
+        features = compute_features(
+            img,
+            **segmentation_features_dict,
+            sigma_min=sigma_range_slider_value[0],
+            sigma_max=sigma_range_slider_value[1],
+        )
+        t2 = time()
+        print(t2 - t1)
     if cbcontext == "graph.relayoutData":
         if "shapes" in graph_relayoutData.keys():
             masks_data["shapes"] = graph_relayoutData["shapes"]
@@ -424,7 +434,7 @@ def annotation_react(
         segimgpng = None
         try:
             segimgpng, clf = show_segmentation(
-                DEFAULT_IMAGE_PATH, masks_data["shapes"], features_dict[features_hash]
+                DEFAULT_IMAGE_PATH, masks_data["shapes"], features
             )
             if cbcontext == "save-button.n_clicks":
                 classifier_store_data = clf

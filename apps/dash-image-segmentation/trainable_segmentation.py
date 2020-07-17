@@ -124,7 +124,7 @@ def multiscale_basic_features(
             sigma_min=sigma_min,
             sigma_max=sigma_max,
         )
-    return np.array(features)
+    return np.array(features, dtype=np.float32)
 
 
 class TrainableSegmenter(object):
