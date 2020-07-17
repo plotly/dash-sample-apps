@@ -9,6 +9,8 @@ from shapes_to_segmentations import (
     compute_segmentations,
     blend_image_and_classified_regions_pil,
 )
+from skimage import io as skio
+from trainable_segmentation import multiscale_basic_features
 import io
 import base64
 import PIL.Image
@@ -33,12 +35,18 @@ text_color = {"dark": "#95969A", "light": "#595959"}
 card_color = {"dark": "#2D3038", "light": "#FFFFFF"}
 
 
+
 def class_to_color(n):
     return class_label_colormap[n]
 
 
 def color_to_class(c):
     return class_label_colormap.index(c)
+
+
+img = skio.imread(DEFAULT_IMAGE_PATH)
+features = multiscale_basic_features(img)
+features_dict = {'default':features}
 
 
 app = dash.Dash(__name__)
@@ -290,14 +298,9 @@ app.layout = html.Div(
                 # Store for user created masks
                 # data is a list of dicts describing shapes
                 dcc.Store(id="masks", data={"shapes": []}),
-                # Store for storing segmentations from shapes
-                # the keys are hashes of shape lists and the data are pngdata
-                # representing the corresponding segmentation
-                # this is so we can download annotations and also not recompute
-                # needlessly old segmentations
-                dcc.Store(id="segmentation", data={}),
                 dcc.Store(id="classifier-store", data={}),
                 dcc.Store(id="classified-image-store", data=""),
+                dcc.Store(id='features_hash', data=""),
             ],
         ),
     ],
@@ -307,18 +310,17 @@ app.layout = html.Div(
 # Converts image classifier to a JSON compatible encoding and creates a
 # dictionary that can be downloaded
 # see use_ml_image_segmentation_classifier.py
-def save_img_classifier(clf, segmenter_args, label_to_colors_args):
+def save_img_classifier(clf, label_to_colors_args):
     clfbytes = io.BytesIO()
     pickle.dump(clf, clfbytes)
     clfb64 = base64.b64encode(clfbytes.getvalue()).decode()
     return {
         "classifier": clfb64,
-        "segmenter_args": segmenter_args,
         "label_to_colors_args": label_to_colors_args,
     }
 
 
-def show_segmentation(image_path, mask_shapes, segmenter_args):
+def show_segmentation(image_path, mask_shapes, features):
     """ adds an image showing segmentations to a figure's layout """
     # add 1 because classifier takes 0 to mean no mask
     shape_layers = [color_to_class(shape["line"]["color"]) + 1 for shape in mask_shapes]
@@ -329,21 +331,41 @@ def show_segmentation(image_path, mask_shapes, segmenter_args):
     segimg, _, clf = compute_segmentations(
         mask_shapes,
         img_path=image_path,
-        segmenter_args=segmenter_args,
         shape_layers=shape_layers,
         label_to_colors_args=label_to_colors_args,
+        features=features
     )
     # get the classifier that we can later store in the Store
-    classifier = save_img_classifier(clf, segmenter_args, label_to_colors_args)
+    classifier = save_img_classifier(clf, label_to_colors_args)
     segimgpng = plot_common.img_array_to_pil_image(segimg)
     return (segimgpng, classifier)
+
+
+@app.callback(
+        Output("features_hash", "data"),
+    [
+        Input("segmentation-features", "value"),
+        Input("sigma-range-slider", "value"),
+    ],
+)
+def features_changed(segmentation_features_value,
+                     sigma_range_slider_value):
+    segmentation_features_dict = {feat:True for feat in segmentation_features_value}
+    features = multiscale_basic_features(
+        img,
+        **segmentation_features_dict,
+        sigma_min=sigma_range_slider_value[0],
+        sigma_max=sigma_range_slider_value[1],
+        )
+    features_hash = str(hash(features.ravel()[::1000].tostring()))
+    features_dict[features_hash] = features
+    return features_hash
 
 
 @app.callback(
     [
         Output("graph", "figure"),
         Output("masks", "data"),
-        Output("segmentation", "data"),
         Output("stroke-width-display", "children"),
         Output("classifier-store", "data"),
         Output("classified-image-store", "data"),
@@ -356,22 +378,18 @@ def show_segmentation(image_path, mask_shapes, segmenter_args):
         ),
         Input("stroke-width", "value"),
         Input("show-segmentation", "value"),
-        Input("segmentation-features", "value"),
-        Input("sigma-range-slider", "value"),
+        Input("features_hash", "data"),
     ],
-    [State("masks", "data"), State("segmentation", "data"),],
+    [State("masks", "data"),],
 )
 def annotation_react(
     graph_relayoutData,
     any_label_class_button_value,
     stroke_width_value,
     show_segmentation_value,
-    segmentation_features_value,
-    sigma_range_slider_value,
+    features_hash,
     masks_data,
-    segmentation_data,
 ):
-    print(segmentation_data,)
     classified_image_store_data = dash.no_update
     classifier_store_data = dash.no_update
     cbcontext = [p["prop_id"] for p in dash.callback_context.triggered][0]
@@ -389,51 +407,30 @@ def annotation_react(
             enumerate(any_label_class_button_value),
             key=lambda t: 0 if t[1] is None else t[1],
         )[0]
+    
     fig = make_default_figure(
         stroke_color=class_to_color(label_class_value),
         stroke_width=stroke_width,
         shapes=masks_data["shapes"],
     )
+    # We want the segmentation to be computed
     if ("Show segmentation" in show_segmentation_value) and (
         len(masks_data["shapes"]) > 0
     ):
-        # to store segmentation data in the store, we need to base64 encode the
-        # PIL.Image and hash the set of shapes to use this as the key
-        # to retrieve the segmentation data, we need to base64 decode to a PIL.Image
-        # because this will give the dimensions of the image
-        sh = shapes_to_key(
-            [
-                masks_data["shapes"],
-                segmentation_features_value,
-                sigma_range_slider_value,
-            ]
-        )
-        if sh in segmentation_data.keys():
-            segimgpng = look_up_seg(segmentation_data, sh)
-        else:
-            segimgpng = None
-            try:
-                feature_opts = {
-                    key: (key in segmentation_features_value)
-                    for key in SEG_FEATURE_TYPES
-                }
-                feature_opts["sigma_min"] = sigma_range_slider_value[0]
-                feature_opts["sigma_max"] = sigma_range_slider_value[1]
-                if len(segmentation_features_value) > 0:
-                    segimgpng, classifier_store_data = show_segmentation(
-                        DEFAULT_IMAGE_PATH, masks_data["shapes"], feature_opts
-                    )
-                    segmentation_data = store_shapes_seg_pair(
-                        segmentation_data, sh, segimgpng
-                    )
-                    classified_image_store_data = plot_common.pil_image_to_uri(
-                        blend_image_and_classified_regions_pil(
-                            PIL.Image.open(DEFAULT_IMAGE_PATH), segimgpng
-                        )
-                    )
-            except ValueError:
-                # if segmentation fails, draw nothing
-                pass
+        segimgpng = None
+        try:
+            features_key = features_hash if features_hash else 'default'
+            segimgpng, classifier_store_data = show_segmentation(
+                DEFAULT_IMAGE_PATH, masks_data["shapes"], features_dict[features_hash]
+            )
+            classified_image_store_data = plot_common.pil_image_to_uri(
+                blend_image_and_classified_regions_pil(
+                    PIL.Image.open(DEFAULT_IMAGE_PATH), segimgpng
+                )
+            )
+        except ValueError:
+            # if segmentation fails, draw nothing
+            pass
         images_to_draw = []
         if segimgpng is not None:
             images_to_draw = [segimgpng]
@@ -441,7 +438,6 @@ def annotation_react(
     return (
         fig,
         masks_data,
-        segmentation_data,
         "Stroke width: %d" % (stroke_width,),
         classifier_store_data,
         classified_image_store_data,
