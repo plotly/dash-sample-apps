@@ -465,6 +465,7 @@ function(the_store_data) {
     [Input("classifier-store", "data")],
 )
 
+
 # set the download url to the contents of the classified-image-store (so they can be
 # downloaded from the browser's memory)
 app.clientside_callback(
@@ -476,6 +477,7 @@ function(the_image_store_data) {
     Output("download-image", "href"),
     [Input("classified-image-store", "data")],
 )
+
 
 # ======= Callback for modal popup =======
 @app.callback(
