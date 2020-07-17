@@ -446,6 +446,7 @@ def annotation_react(
         if segimgpng is not None:
             images_to_draw = [segimgpng]
         fig = plot_common.add_layout_images_to_fig(fig, images_to_draw)
+    fig.update_layout(uirevision='segmentation')
     return (
         fig,
         masks_data,
