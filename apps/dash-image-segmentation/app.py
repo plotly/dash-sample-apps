@@ -35,7 +35,6 @@ text_color = {"dark": "#95969A", "light": "#595959"}
 card_color = {"dark": "#2D3038", "light": "#FFFFFF"}
 
 
-
 def class_to_color(n):
     return class_label_colormap[n]
 
@@ -261,9 +260,8 @@ app.layout = html.Div(
                         # We use this pattern because we want to be able to download the
                         # annotations by clicking on a button
                         html.Button(
-                            'Save results', 
-                            id='save-button',
-                            style={'color':'indigo'}),
+                            "Save results", id="save-button", style={"color": "indigo"}
+                        ),
                         html.A(
                             id="download",
                             download="classifier.json",
@@ -290,7 +288,7 @@ app.layout = html.Div(
                                 html.Span(
                                     "Press Save results first before downloading the image.",
                                     className="tooltiptext",
-                                )
+                                ),
                             ],
                         ),
                     ],
@@ -307,7 +305,7 @@ app.layout = html.Div(
                 dcc.Store(id="masks", data={"shapes": []}),
                 dcc.Store(id="classifier-store", data={}),
                 dcc.Store(id="classified-image-store", data=""),
-                dcc.Store(id='features_hash', data=""),
+                dcc.Store(id="features_hash", data=""),
             ],
         ),
     ],
@@ -340,7 +338,7 @@ def show_segmentation(image_path, mask_shapes, features):
         img_path=image_path,
         shape_layers=shape_layers,
         label_to_colors_args=label_to_colors_args,
-        features=features
+        features=features,
     )
     # get the classifier that we can later store in the Store
     classifier = save_img_classifier(clf, label_to_colors_args)
@@ -349,21 +347,17 @@ def show_segmentation(image_path, mask_shapes, features):
 
 
 @app.callback(
-        Output("features_hash", "data"),
-    [
-        Input("segmentation-features", "value"),
-        Input("sigma-range-slider", "value"),
-    ],
+    Output("features_hash", "data"),
+    [Input("segmentation-features", "value"), Input("sigma-range-slider", "value"),],
 )
-def features_changed(segmentation_features_value,
-                     sigma_range_slider_value):
-    segmentation_features_dict = {feat:True for feat in segmentation_features_value}
+def features_changed(segmentation_features_value, sigma_range_slider_value):
+    segmentation_features_dict = {feat: True for feat in segmentation_features_value}
     features = multiscale_basic_features(
         img,
         **segmentation_features_dict,
         sigma_min=sigma_range_slider_value[0],
         sigma_max=sigma_range_slider_value[1],
-        )
+    )
     features_hash = str(hash(features.ravel()[::1000].tostring()))
     features_dict[features_hash] = features
     return features_hash
@@ -417,7 +411,7 @@ def annotation_react(
             enumerate(any_label_class_button_value),
             key=lambda t: 0 if t[1] is None else t[1],
         )[0]
-    
+
     fig = make_default_figure(
         stroke_color=class_to_color(label_class_value),
         stroke_width=stroke_width,
@@ -432,7 +426,7 @@ def annotation_react(
             segimgpng, clf = show_segmentation(
                 DEFAULT_IMAGE_PATH, masks_data["shapes"], features_dict[features_hash]
             )
-            if cbcontext == 'save-button.n_clicks':
+            if cbcontext == "save-button.n_clicks":
                 classifier_store_data = clf
                 classified_image_store_data = plot_common.pil_image_to_uri(
                     blend_image_and_classified_regions_pil(
@@ -446,7 +440,7 @@ def annotation_react(
         if segimgpng is not None:
             images_to_draw = [segimgpng]
         fig = plot_common.add_layout_images_to_fig(fig, images_to_draw)
-    fig.update_layout(uirevision='segmentation')
+    fig.update_layout(uirevision="segmentation")
     return (
         fig,
         masks_data,
