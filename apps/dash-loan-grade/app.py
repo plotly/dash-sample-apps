@@ -75,7 +75,7 @@ def svg_to_fig(svg_bytes, title=None, plot_bgcolor="white", x_lock=False, y_lock
     if y_lock is True:
         fig.update_yaxes(scaleanchor="x", scaleratio=1)
 
-    fig.update_layout(plot_bgcolor=plot_bgcolor)
+    fig.update_layout(plot_bgcolor=plot_bgcolor, margin=dict(r=5, l=5, b=5))
 
     if title:
         fig.update_layout(title=title)
@@ -133,7 +133,7 @@ query_card = dbc.Card(
 
 output_card = dbc.Card(
     [
-        dbc.CardHeader("Decision Tree Prediction"),
+        dbc.CardHeader("Real-time Prediction"),
         dbc.CardBody(html.H2(id="predicted-grade", style={"text-align": "center"})),
     ]
 )
@@ -158,7 +158,7 @@ model_selection = dbc.InputGroup(
 
 table_selection = dbc.InputGroup(
     [
-        dbc.InputGroupAddon("Select Table", addon_type="prepend"),
+        dbc.InputGroupAddon("Query Table", addon_type="prepend"),
         dbc.Select(
             id="table-selection",
             options=[{"label": t, "value": t} for t in ["RENT", "MORTGAGE", "OWNER"]],
@@ -198,7 +198,7 @@ app.layout = dbc.Container(
         dcc.Store(id="query-store"),
         html.H1("Dash Loan Grade Classification with Snowflake"),
         html.Hr(),
-        dbc.Card(dbc.Row(controls), body=True),
+        dbc.Row(controls, style={'padding': '20px 0px'}),
         dbc.Row(
             [
                 dbc.Col(
