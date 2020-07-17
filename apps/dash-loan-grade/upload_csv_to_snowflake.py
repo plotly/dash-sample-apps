@@ -26,7 +26,7 @@ CREATE OR REPLACE TABLE {name} (
     
 )
 
-STAGE_FILE_FORMAT = ( TYPE = 'csv' FIELD_DELIMITER= ',' SKIP_HEADERS=1);
+STAGE_FILE_FORMAT = ( TYPE = 'csv' FIELD_DELIMITER= ',');
     """
 
     return connection.execute(cmd)
@@ -38,12 +38,12 @@ FLAKE_USER = os.getenv("FLAKE_USER")
 FLAKE_PW = os.getenv("FLAKE_PW")
 
 flake_warehouse = "snowflake_demos"
-flake_db = "LOANS"
-stage = "LOAN_STAGE"
+flake_db = "NEW_CLIENTS"
+stage = "NEW_CLIENT_STAGE"
 
 # New table vars
-path = "loan_desc.csv"
-table_name = "LOAN_DESC"
+path = "owner.csv"
+table_name = "OWNER"
 abs_path = os.path.abspath(path)
 
 # Create Engine and connect to DB
@@ -76,4 +76,6 @@ connection.execute(f"REMOVE @{stage}")
 connection.execute(f"PUT file://{abs_path} @{stage}")
 
 # Copy the CSV file into the table
-connection.execute(f"COPY INTO {table_name} FROM @{stage}")
+connection.execute(
+    f"COPY INTO {table_name} FROM @{stage} FILE_FORMAT=(TYPE=CSV SKIP_HEADER=1)"
+)
