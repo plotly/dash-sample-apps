@@ -45,9 +45,7 @@ def color_to_class(c):
 
 
 img = skio.imread(DEFAULT_IMAGE_PATH)
-features = multiscale_basic_features(img)
-features_dict = {'default':features}
-
+features_dict = {}
 
 app = dash.Dash(__name__)
 server = app.server
@@ -262,6 +260,10 @@ app.layout = html.Div(
                         ),
                         # We use this pattern because we want to be able to download the
                         # annotations by clicking on a button
+                        html.Button(
+                            'Save results', 
+                            id='save-button',
+                            style={'color':'indigo'}),
                         html.A(
                             id="download",
                             download="classifier.json",
@@ -270,6 +272,7 @@ app.layout = html.Div(
                                     "Download classifier", id="download-button"
                                 ),
                                 html.Span(
+                                    "Press Save results first before downloading the classifier. "
                                     "A script for using the classifier can be found in the source repository of this webapp: https://github.com/plotly/dash-sample-apps/dash-interactive-image-segmentation.",
                                     className="tooltiptext",
                                 ),
@@ -283,6 +286,10 @@ app.layout = html.Div(
                                 html.Button(
                                     "Download classified image",
                                     id="download-image-button",
+                                ),
+                                html.Span(
+                                    "Press Save results first before downloading the image.",
+                                    className="tooltiptext",
                                 )
                             ],
                         ),
@@ -379,6 +386,7 @@ def features_changed(segmentation_features_value,
         Input("stroke-width", "value"),
         Input("show-segmentation", "value"),
         Input("features_hash", "data"),
+        Input("save-button", "n_clicks"),
     ],
     [State("masks", "data"),],
 )
@@ -388,11 +396,13 @@ def annotation_react(
     stroke_width_value,
     show_segmentation_value,
     features_hash,
+    save_n_clicks,
     masks_data,
 ):
     classified_image_store_data = dash.no_update
     classifier_store_data = dash.no_update
     cbcontext = [p["prop_id"] for p in dash.callback_context.triggered][0]
+    print(cbcontext)
     if cbcontext == "graph.relayoutData":
         if "shapes" in graph_relayoutData.keys():
             masks_data["shapes"] = graph_relayoutData["shapes"]
@@ -419,15 +429,16 @@ def annotation_react(
     ):
         segimgpng = None
         try:
-            features_key = features_hash if features_hash else 'default'
-            segimgpng, classifier_store_data = show_segmentation(
+            segimgpng, clf = show_segmentation(
                 DEFAULT_IMAGE_PATH, masks_data["shapes"], features_dict[features_hash]
             )
-            classified_image_store_data = plot_common.pil_image_to_uri(
-                blend_image_and_classified_regions_pil(
-                    PIL.Image.open(DEFAULT_IMAGE_PATH), segimgpng
+            if cbcontext == 'save-button.n_clicks':
+                classifier_store_data = clf
+                classified_image_store_data = plot_common.pil_image_to_uri(
+                    blend_image_and_classified_regions_pil(
+                        PIL.Image.open(DEFAULT_IMAGE_PATH), segimgpng
+                    )
                 )
-            )
         except ValueError:
             # if segmentation fails, draw nothing
             pass
