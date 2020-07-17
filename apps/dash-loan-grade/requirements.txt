@@ -27,6 +27,7 @@ Flask==1.1.2
 Flask-Caching==1.9.0
 Flask-Compress==1.5.0
 future==0.18.2
+graphviz==0.14
 gunicorn==20.0.4
 idna==2.9
 importlib-metadata==1.7.0
@@ -66,6 +67,7 @@ prompt-toolkit==3.0.5
 ptyprocess==0.6.0
 pycparser==2.20
 pycryptodomex==3.9.8
+pydot==1.4.1
 Pygments==2.6.1
 PyJWT==1.7.1
 pyOpenSSL==19.1.0
