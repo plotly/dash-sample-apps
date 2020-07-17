@@ -2,7 +2,11 @@
 
 This app shows how to query loan data from a Snowflake Data Warehouse, and train and analyze a Ridge regression model using Dash.
 
-![demo](assets/demo.gif)
+![demo](assets/dash-loan-grade.gif)
+
+## Model Training/Data Generation
+
+In order to train the decision tree, as well as generate the various CSV files included, please refer to the Notebook "Train Decision Trees". You will need that to create `rent.csv`, `mortgage.csv`, `owner.csv`.
 
 ## Setting up Snowflake DB
 
@@ -34,12 +38,12 @@ For uploading the CSV files, please read `upload_csv_to_snowflake.py` carefully.
 * Put your CSV file into the stage
 * Copy the CSV file from your stage to the newly created table
 
-It's recommended not to use the name of an existing stage or table, since it will be overwritten. In our case, we used the following table names:
-* `loan_desc.csv`: "LOAN_DESC"
-* `loan_clean.csv`: "LOAN_CLEAN"
+It's recommended not to use the name of an existing stage or table, since it will be overwritten. In our case, the database was called "NEW_CLIENTS" and we used the following table names:
+* `rent.csv`: "RENT"
+* `mortgage.csv`: "MORTGAGE"
+* `owner.csv`: "OWNER"
 
 To learn more about loading bulk data, please read the official Snowflake documentation.
-
 
 ## Setting up the app
 
@@ -51,8 +55,8 @@ cd dash-sample-apps/apps/dash-interest-rate
 
 Create a conda env (or venv) and install the requirements:
 ```
-conda create -n dash-interest-rate python=3.6.7
-conda activate dash-interest-rate
+conda create -n dash-loan-grade python=3.6.7
+conda activate dash-loan-grade
 pip install -r requirements.txt
 ```
 
