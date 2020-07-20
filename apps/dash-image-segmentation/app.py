@@ -321,17 +321,18 @@ app.layout = html.Div(
 # Converts image classifier to a JSON compatible encoding and creates a
 # dictionary that can be downloaded
 # see use_ml_image_segmentation_classifier.py
-def save_img_classifier(clf, label_to_colors_args):
+def save_img_classifier(clf, label_to_colors_args, segmenter_args):
     clfbytes = io.BytesIO()
     pickle.dump(clf, clfbytes)
     clfb64 = base64.b64encode(clfbytes.getvalue()).decode()
     return {
         "classifier": clfb64,
+        "segmenter_args": segmenter_args,
         "label_to_colors_args": label_to_colors_args,
     }
 
 
-def show_segmentation(image_path, mask_shapes, features):
+def show_segmentation(image_path, mask_shapes, features, segmenter_args):
     """ adds an image showing segmentations to a figure's layout """
     # add 1 because classifier takes 0 to mean no mask
     shape_layers = [color_to_class(shape["line"]["color"]) + 1 for shape in mask_shapes]
@@ -347,7 +348,7 @@ def show_segmentation(image_path, mask_shapes, features):
         features=features,
     )
     # get the classifier that we can later store in the Store
-    classifier = save_img_classifier(clf, label_to_colors_args)
+    classifier = save_img_classifier(clf, label_to_colors_args, segmenter_args)
     segimgpng = plot_common.img_array_to_pil_image(segimg)
     return (segimgpng, classifier)
 
@@ -433,8 +434,11 @@ def annotation_react(
     ):
         segimgpng = None
         try:
+            feature_opts = dict(segmentation_features_dict=segmentation_features_dict)
+            feature_opts["sigma_min"] = sigma_range_slider_value[0]
+            feature_opts["sigma_max"] = sigma_range_slider_value[1]
             segimgpng, clf = show_segmentation(
-                DEFAULT_IMAGE_PATH, masks_data["shapes"], features
+                DEFAULT_IMAGE_PATH, masks_data["shapes"], features, feature_opts
             )
             if cbcontext == "save-button.n_clicks":
                 classifier_store_data = clf
