@@ -263,40 +263,28 @@ app.layout = html.Div(
                             step=0.01,
                             value=[0.5, 16],
                         ),
-                        # We use this pattern because we want to be able to download the
-                        # annotations by clicking on a button
-                        html.Button(
-                            "Save results", id="save-button", style={"color": "indigo"}
-                        ),
-                        html.A(
-                            id="download",
-                            download="classifier.json",
+                        html.Div(
                             children=[
                                 html.Button(
                                     "Download classifier", id="download-button"
                                 ),
                                 html.Span(
-                                    "Press Save results first before downloading the classifier. "
                                     "A script for using the classifier can be found in the source repository of this webapp: https://github.com/plotly/dash-sample-apps/dash-interactive-image-segmentation.",
                                     className="tooltiptext",
                                 ),
                             ],
                             className="tooltip",
                         ),
-                        html.A(
-                            id="download-image",
-                            download="classified-image.png",
+                        html.A(id="download", download="classifier.json",),
+                        html.Div(
                             children=[
                                 html.Button(
                                     "Download classified image",
                                     id="download-image-button",
                                 ),
-                                html.Span(
-                                    "Press Save results first before downloading the image.",
-                                    className="tooltiptext",
-                                ),
                             ],
                         ),
+                        html.A(id="download-image", download="classified-image.png",),
                     ],
                     className="six columns app-background",
                 ),
@@ -314,6 +302,8 @@ app.layout = html.Div(
                 dcc.Store(id="features_hash", data=""),
             ],
         ),
+        html.Div(id="download-dummy"),
+        html.Div(id="download-image-dummy"),
     ],
 )
 
@@ -369,7 +359,8 @@ def show_segmentation(image_path, mask_shapes, features, segmenter_args):
         ),
         Input("stroke-width", "value"),
         Input("show-segmentation", "value"),
-        Input("save-button", "n_clicks"),
+        Input("download-button", "n_clicks"),
+        Input("download-image-button", "n_clicks"),
         Input("segmentation-features", "value"),
         Input("sigma-range-slider", "value"),
     ],
@@ -380,7 +371,8 @@ def annotation_react(
     any_label_class_button_value,
     stroke_width_value,
     show_segmentation_value,
-    save_n_clicks,
+    download_button_n_clicks,
+    download_image_button_n_clicks,
     segmentation_features_value,
     sigma_range_slider_value,
     masks_data,
@@ -414,7 +406,7 @@ def annotation_react(
         else:
             return dash.no_update
     stroke_width = int(round(2 ** (stroke_width_value)))
-    # find label class value by finding button with the greatest n_clicks
+    # find label class value by finding button with the most recent click
     if any_label_class_button_value is None:
         label_class_value = DEFAULT_LABEL_CLASS
     else:
@@ -440,8 +432,9 @@ def annotation_react(
             segimgpng, clf = show_segmentation(
                 DEFAULT_IMAGE_PATH, masks_data["shapes"], features, feature_opts
             )
-            if cbcontext == "save-button.n_clicks":
+            if cbcontext == "download-button.n_clicks":
                 classifier_store_data = clf
+            if cbcontext == "download-image-button.n_clicks":
                 classified_image_store_data = plot_common.pil_image_to_uri(
                     blend_image_and_classified_regions_pil(
                         PIL.Image.open(DEFAULT_IMAGE_PATH), segimgpng
@@ -490,6 +483,32 @@ function(the_image_store_data) {
 """,
     Output("download-image", "href"),
     [Input("classified-image-store", "data")],
+)
+
+# simulate a click on the <a> element when download.href is updated
+app.clientside_callback(
+    """
+function (download_href) {
+    let elem = document.querySelector('#download');
+    elem.click()
+    return "";
+}
+""",
+    Output("download-dummy", "children"),
+    [Input("download", "href")],
+)
+
+# simulate a click on the <a> element when download.href is updated
+app.clientside_callback(
+    """
+function (download_image_href) {
+    let elem = document.querySelector('#download-image');
+    elem.click()
+    return "";
+}
+""",
+    Output("download-image-dummy", "children"),
+    [Input("download-image", "href")],
 )
 
 
