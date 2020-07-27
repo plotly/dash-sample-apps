@@ -4,19 +4,20 @@ Specify files to use on the command line like so:
 
     CLF_PATH=path/to/classifier.json \\
     IMG_PATH=path/to/image/to/classify.some_image_ending \\
-    OUT_IMG_PATH=path/to/where/to/put/classified/image.some_image_ending \\
-    OUT_BLEND_PATH=path/to/where/to/put/classified/blended/with/original/image.some_image_ending \\
+    OUT_IMG_PATH=path/to/where/to/put/classified/image.png \\
+    OUT_BLEND_PATH=path/to/where/to/put/classified/blended/with/original/image.png \\
     python use_ml_image_segmentation_classifier.py
 
-some_image_ending can be a common image format's ending, e.g., png or jpg
+some_image_ending can be a common image format's ending, e.g., png or jpg.
+Note that currently only png format is supported for output images.
 
 """
 
 import os
 import plot_common
 import shapes_to_segmentations
+from trainable_segmentation import multiscale_basic_features, predict_segmenter
 import pickle
-import image_segmentation
 import base64
 import io
 import skimage.io
@@ -35,7 +36,14 @@ def use_img_classifier_in_mem(
     clf, segmenter_args, label_to_colors_args, img_path, out_img
 ):
     img = skimage.io.imread(img_path)
-    seg, clf = image_segmentation.trainable_segmentation(img, clf=clf, **segmenter_args)
+
+    features = multiscale_basic_features(
+        img,
+        sigma_min=segmenter_args["sigma_min"],
+        sigma_max=segmenter_args["sigma_max"],
+        **segmenter_args["segmentation_features_dict"],
+    )
+    seg = predict_segmenter(features, clf)
     color_seg = shapes_to_segmentations.label_to_colors(seg, **label_to_colors_args)
     segimgpil = plot_common.img_array_to_pil_image(color_seg)
     segimgpil.save(out_img)
