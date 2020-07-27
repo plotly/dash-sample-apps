@@ -1,4 +1,5 @@
 # Dash Neural Machine Translation (with MarianMT)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/plotly/dash-sample-apps/blob/master/apps/dash-translate/ColabDemo.ipynb)
 
 This app written in less than 150 lines of Python lets you build a full fledge application for translating english text into romance languages, using [Huggingface's version of Marian](https://huggingface.co/transformers/model_doc/marian.html). This app can be easily modified to incorporate other languages, other models, and even other frameworks (such as [fairseq](https://github.com/pytorch/fairseq)).
 
