@@ -1,4 +1,5 @@
 # Dash Summarization
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/plotly/dash-sample-apps/blob/master/apps/dash-summarize/ColabDemo.ipynb)
 
 This app lets you use [DistilBART](https://huggingface.co/sshleifer/distilbart-xsum-12-3) for automatically summarizing a piece of text.
 
