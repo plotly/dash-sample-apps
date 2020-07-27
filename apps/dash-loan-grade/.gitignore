@@ -1,0 +1,5 @@
+*__pycache__*
+*.vscode*
+clean_loan.csv
+loan_desc.csv
+.ipynb_checkpoints/*
