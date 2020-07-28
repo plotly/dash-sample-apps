@@ -54,7 +54,7 @@ features_dict = {}
 
 app = dash.Dash(__name__)
 server = app.server
-
+app.title = "Interactive image segmentation based on machine learning"
 
 def make_default_figure(
     images=[DEFAULT_IMAGE_PATH],
