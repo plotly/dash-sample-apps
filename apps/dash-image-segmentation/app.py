@@ -56,6 +56,7 @@ app = dash.Dash(__name__)
 server = app.server
 app.title = "Interactive image segmentation based on machine learning"
 
+
 def make_default_figure(
     images=[DEFAULT_IMAGE_PATH],
     stroke_color=class_to_color(DEFAULT_LABEL_CLASS),
