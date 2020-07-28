@@ -3,23 +3,33 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 col_map = {
-    "trestbps": "Resting blood pressure",
-    "chol": "Cerum cholestoral",
-    "fbs": "asting blood sugar",
-    "restecg": "resting electrocardiographic results",
-    "thalach": "maximum heart rate achieved",
-    "exang": "exercise induced angina",
-    "oldpeak": "ST depression due to exercise vs. rest",
-    "age": "age",
-    "sex": "sex",
-    "cp": "chest pain type",
-    "slope": "slope of peak exercise ST segment",
-    "ca": "num. major vessels",
-    "thal": "defect type",
+    "trestbps": "Resting blood pressure (trestbps)",
+    "chol": "Cerum cholestoral (chol)",
+    "fbs": "Fasting blood sugar (fbs)",
+    "restecg": "Resting electrocardiographic results (restecg)",
+    "thalach": "Maximum heart rate achieved (thalach)",
+    "exang": "Exercise induced angina (exang)",
+    "oldpeak": "S-T depression induced by exercise relative to rest (oldpeak)",
+    "age": "Age",
+    "sex": "Sex",
+    "cp": "Chest pain type (cp)",
+    "slope": "Slope of peak exercise S-T segment (slope)",
+    "ca": "Number of major vessels (ca)",
+    "thal": "Defect type (thal)",
+}
+
+num2desc = {
+    'sex': {0: 'Female', 1: 'Male'},
+    'cp': {0: 'typical angina', 1: 'atypical angina', 2: 'non-aginal pain', 3: 'asymptomatic'},
+    'fbs': {0: 'False', 1: 'True'},
+    'restecg': {0: 'normal', 1: 'ST-T wave abnormality', 2: 'left ventricular hypertrophy'}
 }
 
 # Load and preprocess dataset
 df = pd.read_csv("heart.csv")
+for k, v in num2desc.items():
+    df[k] = df[k].replace(v)
+
 y = df.pop("target")
 dfTrain, dfTest, yTrain, yTest = train_test_split(df, y, random_state=0, stratify=y)
 
