@@ -3,7 +3,7 @@ import numpy as np
 
 
 def compute_plot_gam(model, Xorig, fb, features=None):
-    """Plot generalized additive model component, which includes first-degree rules 
+    """Plot generalized additive model component, which includes first-degree rules
     and linear functions of unbinarized ordinal features but excludes higher-degree rules.
 
     Args:
