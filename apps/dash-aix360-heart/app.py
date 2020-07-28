@@ -22,8 +22,11 @@ def Header(name, app):
 
 
 def LabeledSelect(label, **kwargs):
-    return dbc.InputGroup(
-        [dbc.Select(**kwargs), dbc.InputGroupAddon(label, addon_type="append")]
+    return dbc.FormGroup(
+        [
+            dbc.Label(label),
+            dbc.Select(**kwargs)
+        ]
     )
 
 
@@ -35,7 +38,7 @@ test_acc = accuracy_score(yTest, lrr.predict(dfTest, dfTestStd))
 
 
 # Start the app
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
 
@@ -72,24 +75,24 @@ cards = [
 # Graph components
 graphs = [
     [
-        dcc.Graph(id="graph-coef"),
         LabeledSelect(
             id="select-coef",
-            options=[{"label": v.capitalize(), "value": k} for k, v in col_map.items()],
+            options=[{"label": v, "value": k} for k, v in col_map.items()],
             value=list(xPlot.keys())[0],
             label="Filter Features",
         ),
+        dcc.Graph(id="graph-coef"),
     ],
     [
-        dcc.Graph("graph-gam"),
         LabeledSelect(
             id="select-gam",
             options=[
-                {"label": col_map[k].capitalize(), "value": k} for k in xPlot.keys()
+                {"label": col_map[k], "value": k} for k in xPlot.keys()
             ],
             value=list(xPlot.keys())[0],
             label="Visualize GAM",
         ),
+        dcc.Graph("graph-gam"),
     ],
 ]
 
@@ -98,6 +101,7 @@ app.layout = dbc.Container(
         Header("Dash Heart Disease Prediction with AIX360", app),
         html.Hr(),
         dbc.Row([dbc.Col(card) for card in cards]),
+        html.Br(),
         dbc.Row([dbc.Col(graph) for graph in graphs]),
     ],
     fluid=False,
