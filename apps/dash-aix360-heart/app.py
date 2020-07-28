@@ -22,12 +22,7 @@ def Header(name, app):
 
 
 def LabeledSelect(label, **kwargs):
-    return dbc.FormGroup(
-        [
-            dbc.Label(label),
-            dbc.Select(**kwargs)
-        ]
-    )
+    return dbc.FormGroup([dbc.Label(label), dbc.Select(**kwargs)])
 
 
 # Compute the explanation dataframe, GAM, and scores
@@ -86,9 +81,7 @@ graphs = [
     [
         LabeledSelect(
             id="select-gam",
-            options=[
-                {"label": col_map[k], "value": k} for k in xPlot.keys()
-            ],
+            options=[{"label": col_map[k], "value": k} for k in xPlot.keys()],
             value=list(xPlot.keys())[0],
             label="Visualize GAM",
         ),

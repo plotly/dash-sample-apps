@@ -19,10 +19,19 @@ col_map = {
 }
 
 num2desc = {
-    'sex': {0: 'Female', 1: 'Male'},
-    'cp': {0: 'typical angina', 1: 'atypical angina', 2: 'non-aginal pain', 3: 'asymptomatic'},
-    'fbs': {0: 'False', 1: 'True'},
-    'restecg': {0: 'normal', 1: 'ST-T wave abnormality', 2: 'left ventricular hypertrophy'}
+    "sex": {0: "Female", 1: "Male"},
+    "cp": {
+        0: "typical angina",
+        1: "atypical angina",
+        2: "non-aginal pain",
+        3: "asymptomatic",
+    },
+    "fbs": {0: "False", 1: "True"},
+    "restecg": {
+        0: "normal",
+        1: "ST-T wave abnormality",
+        2: "left ventricular hypertrophy",
+    },
 }
 
 # Load and preprocess dataset
