@@ -136,6 +136,16 @@ app.layout = html.Div(
                                     "here",
                                     href="https://commons.wikimedia.org/wiki/File:Euchondrus_septemdentatus_01.JPG",
                                 ),
+                                '. The font "Tex-Gyre-Heros" can be found ',
+                                html.A(
+                                    "here",
+                                    href="https://ctan.org/pkg/tex-gyre-heros?lang=en",
+                                ),
+                                " and is used under the ",
+                                html.A(
+                                    "GUST Font License",
+                                    href="https://ctan.org/license/gfl",
+                                ),
                                 ".",
                             ]
                         ),
