@@ -14,3 +14,4 @@ scikit_learn==0.23.1
 scikit-image==0.16.2
 gunicorn==20.0.4
 pandas==1.0.3
+joblib==0.15.1
