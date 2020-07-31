@@ -7,7 +7,7 @@ from data import data
 
 
 def Header(name, app):
-    img_style = {"float": "right", "height": 40, 'margin-right': 10}
+    img_style = {"float": "right", "height": 40, "margin-right": 10}
     dash_logo = html.Img(src=app.get_asset_url("dash.png"), style=img_style)
     ghub_logo = html.Img(src=app.get_asset_url("github.png"), style=img_style)
 
@@ -16,7 +16,7 @@ def Header(name, app):
             html.H1(name, style={"margin": 10, "display": "inline"}),
             html.A(dash_logo, href="https://plotly.com/dash/"),
             html.A(ghub_logo, href="https://github.com/plotly/dash-pivottable"),
-            html.Hr()
+            html.Hr(),
         ]
     )
 
