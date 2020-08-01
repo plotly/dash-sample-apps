@@ -22,7 +22,8 @@ def Header(name, app):
 
 
 app = dash.Dash(__name__)
-app.title = "My Dash example"
+app.title = "Dash Pivottable"
+server = app.server
 
 app.layout = html.Div(
     [
