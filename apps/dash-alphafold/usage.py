@@ -128,7 +128,6 @@ data_tab = [
         id='pdb-dropdown',
         clearable=False,
         options=[{'label': k, 'value': k} for k in pdbs_list],
-        value=pdbs_list[0],
         placeholder='Select a molecule',
     ),
     html.Br(),
