@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  dash_ngl:
+    build:
+      context: .
+    image: dash_ngl:$VERSION
+    container_name: dash_ngl
+    ports:
+      - "8051:8051"
+    environment:
+      - TARGET=$TARGET
+    restart: unless-stopped

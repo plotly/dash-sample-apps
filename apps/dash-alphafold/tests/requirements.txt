@@ -1,0 +1,5 @@
+# Packages needed to run the tests.
+# Switch into a virtual environment
+# pip install -r requirements.txt
+
+dash[dev,testing]>=1.3.1

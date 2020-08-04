@@ -1,0 +1,13 @@
+Package: dashNgl
+Title: python dash wrapper for the ngl protein viewer
+Version: 0.0.1
+Description: python dash wrapper for the ngl protein viewer
+Depends: R (>= 3.0.2)
+Imports: 
+Suggests: 
+License: MIT + file LICENSE
+URL: https://github.com/https://github.com/IvoLeist/dash-ngl
+BugReports: https://github.com/https://github.com/IvoLeist/dash-ngl/issues
+Encoding: UTF-8
+LazyData: true
+KeepSource: true

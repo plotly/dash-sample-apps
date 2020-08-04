@@ -1,0 +1,7 @@
+include dash_ngl/dash_ngl.min.js
+include dash_ngl/dash_ngl.min.js.map
+include dash_ngl/metadata.json
+include dash_ngl/package-info.json
+include README.md
+include LICENSE
+include package.json

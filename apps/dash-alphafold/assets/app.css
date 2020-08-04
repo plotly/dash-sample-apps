@@ -1,0 +1,90 @@
+#ngl-body {
+    background-color: #FFFFFF !important;
+    color: #636363 !important;
+}
+
+#ngl-control-tabs {
+    background-color: #FFFAFA !important;
+}
+#ngl-biomolecule-viewer {
+    width: calc(100% - 500px);
+    float: left;
+    margin-top: 50px;
+    margin-right: 50px
+}
+#ngl-body ::-webkit-scrollbar {
+    background-color: #FFFFFF !important;
+}
+#ngl-body ::-webkit-scrollbar-thumb {
+    background-color: #E7625F !important;
+}
+
+#mol-3d > .molecule-3d {
+    width: 800px !important;
+    height: 500px !important;
+}
+
+#ngl-coloring-value {
+    border: none;
+}
+
+.ngl-controls .Select-control {
+    border: none !important;
+}
+
+#ngl-control-tabs .tab {
+    background-color: #FFFAFA !important;
+}
+
+#ngl-control-tabs .tab--selected {
+    color: #E7625F !important;
+}
+
+#ngl-selection-output {
+    max-height: 135px;
+    overflow-y: auto;
+    margin: 10px;
+    margin-bottom: 0px;
+}
+#ngl-body .chrome-picker {
+    border: none !important;
+    border-radius: 0px !important;
+}
+#ngl-coloring-value {
+    margin-top: 20px;
+}
+
+#ngl-body .control-upload {
+    border-color: #E7625F !important;
+}
+
+#ngl-body .control-download:hover {
+    color: #E7625F !important;
+    border-color: #E7625F !important;
+}
+
+#ngl-coloring-key, #dropdown-style-color, #dropdown-demostr {
+    display: inline-block;
+    width: 150px;
+}
+#dropdown-style-color {
+    margin-right: 8px;
+}
+#ngl-coloring-key {
+    margin-left: 8px;
+}
+
+#ngl-selection_output {
+    width: 100%;
+    height: 30%;
+    left: 50%;
+    top: 30%;
+}
+
+#ngl-body h4 {
+    text-align: center;
+}
+
+#warning_div {
+    color: red !important;
+}

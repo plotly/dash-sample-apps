@@ -1,0 +1,341 @@
+{
+  "src/lib/components/DashNgl.react.js": {
+    "description": "The NglMoleculeViewer is used to render schematic diagrams\nof biomolecules in ribbon-structure representations.\nRead more about the used WebGL protein viewer here:\nhttps://github.com/arose/ngl",
+    "displayName": "DashNgl",
+    "methods": [
+      {
+        "name": "generateImage",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      },
+      {
+        "name": "highlightAtoms",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "args",
+            "type": null
+          },
+          {
+            "name": "sele",
+            "type": null
+          },
+          {
+            "name": "struc",
+            "type": null
+          },
+          {
+            "name": "chosenAtoms",
+            "type": null
+          },
+          {
+            "name": "chosenResidues",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "addMolStyle",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "struc",
+            "type": null
+          },
+          {
+            "name": "sele",
+            "type": null
+          },
+          {
+            "name": "chosen",
+            "type": null
+          },
+          {
+            "name": "color",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "showStructure",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "stageObj",
+            "type": null
+          },
+          {
+            "name": "chain",
+            "type": null
+          },
+          {
+            "name": "aaRange",
+            "type": null
+          },
+          {
+            "name": "chosen",
+            "type": null
+          },
+          {
+            "name": "color",
+            "type": null
+          },
+          {
+            "name": "xOffset",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "processDataFromBackend",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "data",
+            "type": null
+          },
+          {
+            "name": "structuresList",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "loadData",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "data",
+            "type": null
+          },
+          {
+            "name": "xOffset",
+            "type": null
+          }
+        ],
+        "returns": null
+      }
+    ],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The ID of this component, used to identify dash components in callbacks.\nThe ID needs to be unique across all of the components in an app."
+      },
+      "viewportStyle": {
+        "type": {
+          "name": "exact",
+          "value": {
+            "width": {
+              "name": "string",
+              "required": false
+            },
+            "height": {
+              "name": "string",
+              "required": false
+            }
+          }
+        },
+        "required": false,
+        "description": "The height and the width (in px) of the container\nin which the molecules will be displayed.\nDefault: width:1000px / height:500px\nIt should be in JSON format.",
+        "defaultValue": {
+          "value": "{\n  width: '500x',\n  height: '500px'\n}",
+          "computed": false
+        }
+      },
+      "stageParameters": {
+        "type": {
+          "name": "exact",
+          "value": {
+            "quality": {
+              "name": "string",
+              "required": false
+            },
+            "backgroundColor": {
+              "name": "string",
+              "required": false
+            },
+            "cameraType": {
+              "name": "string",
+              "required": false
+            }
+          }
+        },
+        "required": false,
+        "description": "Parameters (in JSON format) for the stage object of ngl.\nCurrently implemented are the quality of the visualisation\nand the background colorFor a full list see:\nhttp://nglviewer.org/ngl/api/file/src/stage/stage.js.html",
+        "defaultValue": {
+          "value": "{\n  quality: 'medium',\n  backgroundColor: 'white',\n  cameraType: 'perspective',\n}",
+          "computed": false
+        }
+      },
+      "imageParameters": {
+        "type": {
+          "name": "exact",
+          "value": {
+            "antialias": {
+              "name": "bool",
+              "required": false
+            },
+            "transparent": {
+              "name": "bool",
+              "required": false
+            },
+            "trim": {
+              "name": "bool",
+              "required": false
+            },
+            "defaultFilename": {
+              "name": "string",
+              "required": false
+            }
+          }
+        },
+        "required": false,
+        "description": "Parameters (in JSON format) for exporting the image",
+        "defaultValue": {
+          "value": "{\n  antialias: true,\n  transparent: true,\n  trim: true,\n  defaultFilename: 'dashNGL_output'\n}",
+          "computed": false
+        }
+      },
+      "downloadImage": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "flag if download image was pressed",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "pdbString": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Variable which defines how many molecules should be shown and/or which chain\nThe following format needs to be used:\npdbID1.chain:start-end@atom1,atom2_pdbID2.chain:start-end\n. indicates that only one chain should be shown\n: indicates that a specific amino acid range should be shown (e.g. 1-50)\n@ indicates that chosen atoms should be highlighted (e.g. @50,100,150)\n _ indicates that more than one protein should be shown"
+      },
+      "data": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "exact",
+            "value": {
+              "filename": {
+                "name": "string",
+                "required": true
+              },
+              "ext": {
+                "name": "string",
+                "required": true
+              },
+              "selectedValue": {
+                "name": "string",
+                "required": true
+              },
+              "chain": {
+                "name": "string",
+                "required": true
+              },
+              "aaRange": {
+                "name": "string",
+                "required": true
+              },
+              "color": {
+                "name": "string",
+                "required": true
+              },
+              "chosen": {
+                "name": "exact",
+                "value": {
+                  "residues": {
+                    "name": "string",
+                    "required": true
+                  },
+                  "atoms": {
+                    "name": "string",
+                    "required": true
+                  }
+                },
+                "required": false
+              },
+              "config": {
+                "name": "exact",
+                "value": {
+                  "type": {
+                    "name": "string",
+                    "required": true
+                  },
+                  "input": {
+                    "name": "string",
+                    "required": true
+                  }
+                },
+                "required": false
+              },
+              "resetView": {
+                "name": "bool",
+                "required": true
+              },
+              "uploaded": {
+                "name": "bool",
+                "required": true
+              }
+            }
+          }
+        },
+        "required": false,
+        "description": "The data (in JSON format) that will be used to display the molecule\nfilename: name of the used pdb/cif file\next: file extensions (pdb or cif)\nselectedValue: pdbString\nmolStyles: selected molecule representation (cartoon, stick, sphere)\nchain: selected chain\ncolor: chain color\naaRange: selected residues range\nconfig.input: content of the pdb file\nconfig.type: format of config.input\nresetView: bool if the view should be resettet\nuploaded: bool if the file was uploaded",
+        "defaultValue": {
+          "value": "[{\n  filename: 'placeholder',\n  ext: '',\n  selectedValue: 'placeholder',\n  chain: 'ALL',\n  aaRange: 'ALL',\n  color: 'red',\n  chosen: {\n    'chosenAtoms':'',\n    'chosenResidues':''\n  },\n  config: {\n    type: 'text/plain',\n    input: ''\n  },\n  uploaded: true,\n  resetView: false,\n}]",
+          "computed": false
+        }
+      },
+      "molStyles": {
+        "type": {
+          "name": "exact",
+          "value": {
+            "representations": {
+              "name": "arrayOf",
+              "value": {
+                "name": "string"
+              },
+              "required": false
+            },
+            "chosenAtomsColor": {
+              "name": "string",
+              "required": true
+            },
+            "chosenAtomsRadius": {
+              "name": "number",
+              "required": true
+            },
+            "molSpacingXaxis": {
+              "name": "number",
+              "required": true
+            }
+          }
+        },
+        "required": false,
+        "description": "The data (in JSON format) that will be used to style the displayed molecule\nrepresentations: one or multiple selected molecule representation\n - Possible molecule styles:\n   'backbone,'ball+stick','cartoon', 'hyperball','licorice','line',\n   'ribbon',''rope','spacefill','surface','trace','tube'\n - Possible additional representations:\n   'axes','axes+box','helixorient','unitcell'\nchosenAtomsColor: color of the 'ball+stick' representation of the chosen atoms",
+        "defaultValue": {
+          "value": "{\n  representations:['cartoon','axes+box'],\n  chosenAtomsColor:'#808080',\n  chosenAtomsRadius: 1,\n  molSpacingXaxis: 100,\n}",
+          "computed": false
+        }
+      }
+    }
+  }
+}
