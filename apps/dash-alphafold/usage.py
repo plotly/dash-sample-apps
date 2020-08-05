@@ -3,6 +3,7 @@ import glob
 import gzip
 import zlib
 import re
+from textwrap import dedent
 
 import flask
 
@@ -85,24 +86,48 @@ viewer = html.Div(
 )
 
 about_html = [
-    html.H4(className="what-is", children="What is Ngl Molecule Viewer?"),
-    html.P(
-        "Ngl Molecule Viewer is a visualizer that allows you"
-        " to view biomolecules in multiple representations."
-    ),
-    html.P(
-        "You can select a preloaded structure, or upload your own,"
-        ' in the "Data" tab. Supported formats: .pdb(.gz) / .cif(.gz) '
-    ),
-    html.P(
-        "Additionally you can show multiple structures and (or) specify a chain/"
-        " residues range / highlight Cα of chosen residues or single atoms."
-    ),
-    html.P(
-        'In the "View" tab, you can change the style of the viewer.'
-        " Like the background color, the chain colors, the render quality etc."
-        " On top you can change the molecular representation."
-    ),
+    dcc.Markdown(dedent("""
+        This app is an extension of @IvoLeist's [Dash NGL](https://github.com/IvoLeist/dash_ngl) that displays
+        the recently released 
+        [predictions by DeepMind's AlphaFold](https://deepmind.com/blog/article/AlphaFold-Using-AI-for-scientific-discovery).
+
+
+        #### Usage
+
+        You can select a preloaded structure, or upload your own, in the "Data" tab. Supported formats: .pdb(.gz) / .cif(.gz).
+        
+        Additionally you can show multiple structures and (or) specify a chain/ residues range / highlight Cα of chosen residues or single atoms.
+
+        In the "View" tab, you can change the style of the viewer. Like the background color, the chain colors, the render quality etc. On top you can change the molecular representation.
+
+        #### DeepMind's AlphaFold
+
+        Structural predictions of under-studied proteins associated with SARS-CoV-2, 
+        the virus that causes COVID-19. These computationally structures of some of 
+        the virus proteins were determined by 
+        [Deep Mind's AlphaFold system](https://deepmind.com/blog/article/AlphaFold-Using-AI-for-scientific-discovery). 
+        Knowledge of a virus's protein structure can aid in development of therapeutics and antibodies.
+
+        #### NGL Viewer
+
+        [Ngl Molecule Viewer](https://github.com/IvoLeist/dash_ngl) 
+        is a visualizer that allows you to view biomolecules in multiple representations. 
+        The project consists of a Dash component wrapping 
+        [NGL](https://github.com/nglviewer/ngl), a WebGL protein viewer, and a self-contained
+        [Dash app](https://github.com/IvoLeist/dash_ngl/blob/master/usage.py) 
+        that let you explore various structures and upload your own PDB files. This app was 
+        cloned from Dash NGL and adapted to demo AlphaFold's predictions. Parts of the instructions
+        come from the original app.
+
+        #### Citations
+
+        To cite the paper, please use the reference below:
+
+        *John Jumper, Kathryn Tunyasuvunakool, Pushmeet Kohli, Demis Hassabis, and the AlphaFold Team, 
+        “Computational predictions of protein structures associated with COVID-19”, Version 3, DeepMind website, 4 August 2020, 
+        https://deepmind.com/research/open-source/computational-predictions-of-protein-structures-associated-with-COVID-19*
+
+    """)),
 ]
 
 regexp = ["^([A-Za-z0-9]{4})", "(.[a-zA-Z])?", "([:][0-9-]+)?", "[@]?([a0-9,]+)?"]
@@ -114,15 +139,18 @@ data_tab = [
         clearable=False,
         options=[{"label": k, "value": k} for k in pdbs_list],
         placeholder="Select a molecule",
+        value=pdbs_list[0]
     ),
     html.Br(),
     html.Div(
         children=[
-            html.P(
-                "Show multiple structures and (or) \
-                 specify a chain/ residues range/ \
-                 highlight chosen residues/ atoms",
-                style={"fontSize": "10pt"},
+            dcc.Markdown(dedent("""
+            Structural predictions of under-studied proteins associated with SARS-CoV-2, 
+            the virus that causes COVID-19. These computationally structures of some of 
+            the virus proteins were determined by 
+            [Deep Mind's AlphaFold system](https://deepmind.com/blog/article/AlphaFold-Using-AI-for-scientific-discovery). 
+            Knowledge of a virus's protein structure can aid in development of therapeutics and antibodies.
+            """), style={"fontSize": "10pt"},
             )
         ]
     ),
@@ -602,11 +630,13 @@ def getUploadedData(uploaded_content):
     ],
 )
 def display_output(
+    # Inputs
     selection,
     uploaded_content,
     pdbString_clicks,
     resetView_clicks,
     molStyles_list,
+    # States
     pdbString,
     dropdown_options,
     files,
@@ -639,7 +669,9 @@ def display_output(
     ctx = dash.callback_context
     if ctx.triggered:
         input_id = ctx.triggered[0]["prop_id"].split(".")[0]
-
+    else:
+        input_id = 'pdb-dropdown'
+    
     print("triggered", input_id)
 
     molStyles_dict = {
