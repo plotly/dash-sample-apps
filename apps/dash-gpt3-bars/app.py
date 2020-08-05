@@ -33,7 +33,7 @@ formatted_exp = black.format_str(code_exp, mode=black.FileMode(line_length=50))
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
-content_style={'height': '475px'}
+content_style = {"height": "475px"}
 
 controls = [
     dbc.InputGroup(
@@ -51,11 +51,11 @@ controls = [
 ]
 output_graph = [
     dbc.CardHeader("Plotly Express Graph"),
-    dbc.CardBody(dcc.Graph(id="output-graph", style={'height': '400px'}))
+    dbc.CardBody(dcc.Graph(id="output-graph", style={"height": "400px"})),
 ]
 output_code = [
     dbc.CardHeader("GPT-3 Generated Code"),
-    dcc.Markdown(id="output-code", style={'margin': '50px 5px'}),
+    dcc.Markdown(id="output-code", style={"margin": "50px 5px"}),
 ]
 
 explanation = f"""
@@ -71,25 +71,24 @@ Code:
 """
 explanation_card = [
     dbc.CardHeader("What am I looking at?"),
-    dbc.CardBody(dcc.Markdown(explanation))
+    dbc.CardBody(dcc.Markdown(explanation)),
 ]
 
 app.layout = dbc.Container(
     [
         Header("Dash GPT-3 Chart Generation", app),
         html.Hr(),
-        html.Div(controls, style={'padding-bottom': '15px'}),
+        html.Div(controls, style={"padding-bottom": "15px"}),
         dbc.Spinner(
             dbc.Row(
                 [
                     dbc.Col(dbc.Card(comp, style=content_style))
                     for comp in [output_graph, output_code]
                 ],
-                style={'padding-bottom': '15px'}
+                style={"padding-bottom": "15px"},
             )
         ),
-
-        dbc.Card(explanation_card)
+        dbc.Card(explanation_card),
     ],
     fluid=False,
 )
@@ -97,7 +96,7 @@ app.layout = dbc.Container(
 
 @app.callback(
     [Output("output-graph", "figure"), Output("output-code", "children")],
-    [Input("button-submit", "n_clicks"), Input('input-text', 'n_submit')],
+    [Input("button-submit", "n_clicks"), Input("input-text", "n_submit")],
     [State("input-text", "value")],
 )
 def generate_graph(n_clicks, n_submit, text):
