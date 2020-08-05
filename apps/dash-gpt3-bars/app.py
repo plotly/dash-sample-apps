@@ -106,7 +106,7 @@ def generate_graph(n_clicks, n_submit, text):
     prompt = dedent(
         f"""
         description: {desc}
-        code: 
+        code:
         {code_exp}
 
         description: {text}
