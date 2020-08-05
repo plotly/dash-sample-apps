@@ -44,7 +44,7 @@ content_style = {"height": "475px"}
 chat_input = dbc.InputGroup(
     [
         dbc.Input(
-            id="input-text", placeholder="Tell GPT-3 what you want to generate...",
+            id="input-text", placeholder="Tell GPT-3 what you want to generate..."
         ),
         dbc.InputGroupAddon(
             dbc.Button("Submit", id="button-submit", color="primary"),
@@ -77,11 +77,7 @@ explanation_card = [
 
 left_col = [dbc.Card(output_graph), html.Br(), dbc.Card(explanation_card)]
 
-right_col = [
-    dbc.Card(output_code),
-    html.Br(),
-    chat_input,
-]
+right_col = [dbc.Card(output_code), html.Br(), chat_input]
 
 app.layout = dbc.Container(
     [
