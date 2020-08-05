@@ -2,12 +2,13 @@
 
 ![demo](images/demo.gif)
 
-This demos shows how to use GPT-3 to not only generate line charts using a given dataset (in this case, the [Gapminder dataset](https://plotly.com/python/plotly-express/)), but also update it in real time with only natural language queries.
+This demos shows how to use GPT-3 to not only generate line charts using a given dataset (in this case, the [Gapminder dataset](https://plotly.com/python/plotly-express/)), but also update it in real time with only natural language queries:
 
-It only took one Plotly Express code snippet (given in the card on the bottom left) for it to learn how to generate line charts:
 ![snippet](images/snippet.png)
 
-For a smoother demo, [view the video here](https://youtu.be/QMu7U5xFQBc).
+It only took one Plotly Express code snippet (given in the card on the bottom left) for it to learn how to generate line charts.
+
+For a smoother demo, [watch the video here](https://youtu.be/QMu7U5xFQBc).
 
 ## OpenAI GPT-3 API Access
 
