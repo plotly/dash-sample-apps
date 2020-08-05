@@ -86,8 +86,8 @@ conversation = html.Div(
 controls = dbc.InputGroup(
     children=[
         dbc.Input(id="user-input", placeholder="Write to the chatbot...", type="text"),
-        dbc.InputGroupAddon(dbc.Button("Submit", id="submit"), addon_type="append",),
-    ],
+        dbc.InputGroupAddon(dbc.Button("Submit", id="submit"), addon_type="append"),
+    ]
 )
 
 app.layout = dbc.Container(
@@ -135,12 +135,14 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
 
     name = "Philippe"
 
-    prompt = dedent(f"""
+    prompt = dedent(
+        f"""
     {description}
 
     You: Hello {name}!
     {name}: Hello! Glad to be talking to you today.
-    """)
+    """
+    )
 
     # First add the user input to the chat history
     chat_history += f"You: {user_input}<split>{name}:"
