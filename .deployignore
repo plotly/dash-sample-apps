@@ -4,3 +4,6 @@ dash-translate
 dash-cuml-umap
 dash-chatbot
 dash-translate
+dash-gpt3-chatbot
+dash-gpt3-lines
+dash-gpt3-bars
