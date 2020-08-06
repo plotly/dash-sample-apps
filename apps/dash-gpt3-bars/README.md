@@ -2,6 +2,8 @@
 
 ![demo](images/demo.gif)
 
+[Try it now](https://dash-gallery.plotly.host/dash-gpt3-bars/)
+
 This Dash app lets you write a simple description, and GPT-3 can automatically generate the PX code to produce a bar chart for you.
 
 It only took one Plotly Express code snippet for it to learn how to create bar charts:
