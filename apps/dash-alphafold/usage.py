@@ -107,7 +107,7 @@ about_html = [
         #### Usage
 
         You can select a preloaded structure, or upload your own, in the "Data" tab. Supported formats: .pdb(.gz) / .cif(.gz).
-        
+
         Additionally you can show multiple structures and (or) specify a chain/ residues range / highlight Cα of chosen residues or single atoms.
 
         In the "View" tab, you can change the style of the viewer. Like the background color, the chain colors, the render quality etc. On top you can change the molecular representation.
