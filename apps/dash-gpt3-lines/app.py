@@ -36,7 +36,7 @@ Our dataframe "df" only contains the following columns: country, continent, year
 """
 
 # Create
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
 content_style = {"height": "475px"}
@@ -65,7 +65,8 @@ output_code = [
 ]
 
 explanation = f"""
-*GPT-3 can generate Plotly graphs from a simple description of what you want!
+*GPT-3 can generate Plotly graphs from a simple description of what you want, and it
+can even modify what you have previously generated!
 We only needed to load the Gapminder dataset and give the following prompt to GPT-3:*
 
 {prompt}
@@ -81,7 +82,7 @@ right_col = [dbc.Card(output_code), html.Br(), chat_input]
 
 app.layout = dbc.Container(
     [
-        Header("Dash GPT-3 Chart Generation", app),
+        Header("Dash GPT-3 Line Charts Update", app),
         html.Hr(),
         dbc.Row([dbc.Col(left_col, md=7), dbc.Col(right_col, md=5)]),
     ],
@@ -100,16 +101,19 @@ app.layout = dbc.Container(
 )
 def generate_graph(n_clicks, n_submit, text, conversation):
     if n_clicks is None and n_submit is None:
-        return (dash.no_update,) * 3
+        default_fig = px.line(df.query("continent == 'Oceania'"), x='year', y='lifeExp', color='country', log_y=False, log_x=False)
+        return default_fig, dash.no_update, dash.no_update
 
     conversation += dedent(
         f"""
     **Description**: {text}
 
-    **Code**: """
+    **Code**:"""
     )
 
     gpt_input = (prompt + conversation).replace("```", "").replace("**", "")
+    print(gpt_input)
+    print("-"*40)
 
     response = openai.Completion.create(
         engine="davinci",
@@ -117,17 +121,22 @@ def generate_graph(n_clicks, n_submit, text, conversation):
         max_tokens=200,
         stop=["Description:", "Code:"],
         temperature=0,
+        top_p=1,
+        n=1
     )
 
     output = response.choices[0].text.strip()
-    print(gpt_input)
 
-    conversation += f"```{output}```\n"
+    conversation += f" ```{output}```\n"
 
-    fig = eval(output)
+
+    try:
+        fig = eval(output)
+    except Exception as e:
+        fig = px.line(title=f"Exception: {e}. Please try again!")
 
     return fig, conversation, ""
 
 
 if __name__ == "__main__":
-    app.run_server(debug=False)
+    app.run_server(debug=True)
