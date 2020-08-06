@@ -15,6 +15,7 @@ from dash.dash import no_update
 import dash_html_components as html
 import dash_core_components as dcc
 import dash_bootstrap_components as dbc
+import dash_daq as daq
 
 f_app = flask.Flask(__name__)
 app = dash.Dash(__name__, server=f_app, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -55,7 +56,16 @@ representations = [
 ]
 
 # PDB examples
-pdbs_list = ["M_protein", "nsp2", "nsp4", "nsp6", "PL_PRO_C_terminal"]
+pdbs_list = ["Mpro", "nsp2", "nsp4", "nsp6", "PLCt"]
+
+# PDB list
+pdbs_dict = {
+    "M protein": "Mpro",
+    "NSP2": "nsp2",
+    "NSP4": "nsp4",
+    "NSP6": "nsp6",
+    "PL-PRO C terminal": "PLCt"
+}
 
 # Placeholder which is loaded if no molecule is selected
 data_dict = {
@@ -133,13 +143,31 @@ about_html = [
 regexp = ["^([A-Za-z0-9]{4})", "(.[a-zA-Z])?", "([:][0-9-]+)?", "[@]?([a0-9,]+)?"]
 
 data_tab = [
-    html.Div(className="app-controls-name", children="Select structure"),
+    html.Div(className="app-controls-name", children="Select structure(s)"),
+    html.Div(
+        dcc.Dropdown(
+            id="pdb-dropdown",
+            clearable=False,
+            options=[{"label": k, "value": k} for k in pdbs_list],
+            placeholder="Select a molecule",
+            value='nsp2'
+        ),
+        style={'display': 'none'}
+    ),
     dcc.Dropdown(
-        id="pdb-dropdown",
+        id='update-pdb-string',
         clearable=False,
-        options=[{"label": k, "value": k} for k in pdbs_list],
-        placeholder="Select a molecule",
-        value=pdbs_list[0]
+        options=[{"label": k, "value": v} for k, v in pdbs_dict.items()],
+        placeholder="Select molecules...",
+        multi=True,
+        value='nsp2',
+    ),
+    html.Br(),
+    daq.ToggleSwitch(
+        id='toggle-separate',
+        value=False,
+        label='Combined | Separate',
+        labelPosition='bottom'
     ),
     html.Br(),
     html.Div(
@@ -164,7 +192,7 @@ data_tab = [
         debounce=True,
     ),
     html.Br(),
-    html.Button("submit", id="btn-pdbString"),
+    html.Button("submit", id="btn-pdbString", n_clicks=0),
     html.Button("reset view", id="btn-resetView"),
     html.Br(),
     html.Div(
@@ -184,6 +212,7 @@ data_tab = [
             # html.Div(id='uploaded-files', children=html.Div([''])),
             html.Div(id="warning_div", children=html.Div([""])),
         ],
+        style={'display': 'none'}
     ),
     html.Div(id="ngl-data-info"),
 ]
@@ -601,6 +630,26 @@ def getUploadedData(uploaded_content):
     return data, uploads
 
 
+@app.callback(
+    [Output('pdb-string', 'value'),
+     Output("btn-pdbString", "n_clicks")],
+    [Input('update-pdb-string', 'value'),
+     Input('toggle-separate', 'value')],
+    [State("btn-pdbString", "n_clicks")]
+)
+def update_pdb_string(values, separate_mols, n_clicks):
+    if type(values) is str:
+        values = [values]
+    
+    if separate_mols is True:
+        values = [v + ".A" for v in values]
+
+    if len(values) == 0:
+        return (dash.no_update,) * 2
+    else:
+        return "_".join(values), n_clicks+1
+
+
 # CB viewport
 @app.callback(
     [
@@ -817,6 +866,11 @@ def display_output(
                 )
         else:
             data.append(data_dict)
+
+        print("="*40)
+        print("DATA")
+        print(type(data))
+        print("="*40)
 
         return data, molStyles_dict, options, files, "Select a molecule", warning, False
 
