@@ -64,7 +64,7 @@ pdbs_dict = {
     "NSP2": "nsp2",
     "NSP4": "nsp4",
     "NSP6": "nsp6",
-    "PL-PRO C terminal": "PLCt"
+    "PL-PRO C terminal": "PLCt",
 }
 
 # Placeholder which is loaded if no molecule is selected
@@ -96,7 +96,9 @@ viewer = html.Div(
 )
 
 about_html = [
-    dcc.Markdown(dedent("""
+    dcc.Markdown(
+        dedent(
+            """
         This app is an extension of @IvoLeist's [Dash NGL](https://github.com/IvoLeist/dash_ngl) that displays
         the recently released 
         [predictions by DeepMind's AlphaFold](https://deepmind.com/blog/article/AlphaFold-Using-AI-for-scientific-discovery).
@@ -137,7 +139,9 @@ about_html = [
         “Computational predictions of protein structures associated with COVID-19”, Version 3, DeepMind website, 4 August 2020, 
         https://deepmind.com/research/open-source/computational-predictions-of-protein-structures-associated-with-COVID-19*
 
-    """)),
+    """
+        )
+    )
 ]
 
 regexp = ["^([A-Za-z0-9]{4})", "(.[a-zA-Z])?", "([:][0-9-]+)?", "[@]?([a0-9,]+)?"]
@@ -150,35 +154,39 @@ data_tab = [
             clearable=False,
             options=[{"label": k, "value": k} for k in pdbs_list],
             placeholder="Select a molecule",
-            value='nsp2'
+            value="nsp2",
         ),
-        style={'display': 'none'}
+        style={"display": "none"},
     ),
     dcc.Dropdown(
-        id='update-pdb-string',
+        id="update-pdb-string",
         clearable=False,
         options=[{"label": k, "value": v} for k, v in pdbs_dict.items()],
         placeholder="Select molecules...",
         multi=True,
-        value='nsp2',
+        value="nsp2",
     ),
     html.Br(),
     daq.ToggleSwitch(
-        id='toggle-separate',
+        id="toggle-separate",
         value=False,
-        label='Combined | Separate',
-        labelPosition='bottom'
+        label="Combined | Separate",
+        labelPosition="bottom",
     ),
     html.Br(),
     html.Div(
         children=[
-            dcc.Markdown(dedent("""
+            dcc.Markdown(
+                dedent(
+                    """
             Structural predictions of under-studied proteins associated with SARS-CoV-2, 
             the virus that causes COVID-19. These computationally structures of some of 
             the virus proteins were determined by 
             [Deep Mind's AlphaFold system](https://deepmind.com/blog/article/AlphaFold-Using-AI-for-scientific-discovery). 
             Knowledge of a virus's protein structure can aid in development of therapeutics and antibodies.
-            """), style={"fontSize": "10pt"},
+            """
+                ),
+                style={"fontSize": "10pt"},
             )
         ]
     ),
@@ -212,7 +220,7 @@ data_tab = [
             # html.Div(id='uploaded-files', children=html.Div([''])),
             html.Div(id="warning_div", children=html.Div([""])),
         ],
-        style={'display': 'none'}
+        style={"display": "none"},
     ),
     html.Div(id="ngl-data-info"),
 ]
@@ -631,23 +639,21 @@ def getUploadedData(uploaded_content):
 
 
 @app.callback(
-    [Output('pdb-string', 'value'),
-     Output("btn-pdbString", "n_clicks")],
-    [Input('update-pdb-string', 'value'),
-     Input('toggle-separate', 'value')],
-    [State("btn-pdbString", "n_clicks")]
+    [Output("pdb-string", "value"), Output("btn-pdbString", "n_clicks")],
+    [Input("update-pdb-string", "value"), Input("toggle-separate", "value")],
+    [State("btn-pdbString", "n_clicks")],
 )
 def update_pdb_string(values, separate_mols, n_clicks):
     if type(values) is str:
         values = [values]
-    
+
     if separate_mols is True:
         values = [v + ".A" for v in values]
 
     if len(values) == 0:
         return (dash.no_update,) * 2
     else:
-        return "_".join(values), n_clicks+1
+        return "_".join(values), n_clicks + 1
 
 
 # CB viewport
@@ -719,8 +725,8 @@ def display_output(
     if ctx.triggered:
         input_id = ctx.triggered[0]["prop_id"].split(".")[0]
     else:
-        input_id = 'pdb-dropdown'
-    
+        input_id = "pdb-dropdown"
+
     print("triggered", input_id)
 
     molStyles_dict = {
@@ -867,10 +873,10 @@ def display_output(
         else:
             data.append(data_dict)
 
-        print("="*40)
+        print("=" * 40)
         print("DATA")
         print(type(data))
-        print("="*40)
+        print("=" * 40)
 
         return data, molStyles_dict, options, files, "Select a molecule", warning, False
 
