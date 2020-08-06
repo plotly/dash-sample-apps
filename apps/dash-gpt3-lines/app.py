@@ -101,7 +101,14 @@ app.layout = dbc.Container(
 )
 def generate_graph(n_clicks, n_submit, text, conversation):
     if n_clicks is None and n_submit is None:
-        default_fig = px.line(df.query("continent == 'Oceania'"), x='year', y='lifeExp', color='country', log_y=False, log_x=False)
+        default_fig = px.line(
+            df.query("continent == 'Oceania'"),
+            x="year",
+            y="lifeExp",
+            color="country",
+            log_y=False,
+            log_x=False,
+        )
         return default_fig, dash.no_update, dash.no_update
 
     conversation += dedent(
@@ -113,7 +120,7 @@ def generate_graph(n_clicks, n_submit, text, conversation):
 
     gpt_input = (prompt + conversation).replace("```", "").replace("**", "")
     print(gpt_input)
-    print("-"*40)
+    print("-" * 40)
 
     response = openai.Completion.create(
         engine="davinci",
@@ -122,13 +129,12 @@ def generate_graph(n_clicks, n_submit, text, conversation):
         stop=["Description:", "Code:"],
         temperature=0,
         top_p=1,
-        n=1
+        n=1,
     )
 
     output = response.choices[0].text.strip()
 
     conversation += f" ```{output}```\n"
-
 
     try:
         fig = eval(output)
