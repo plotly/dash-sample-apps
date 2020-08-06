@@ -2,6 +2,10 @@
 
 ![demo](images/demo.gif)
 
+
+[Try it now](https://dash-gallery.plotly.host/dash-gpt3-lines/)
+
+
 This demos shows how to use GPT-3 to not only generate line charts using a given dataset (in this case, the [Gapminder dataset](https://plotly.com/python/plotly-express/)), but also update it in real time with only natural language queries:
 
 ![snippet](images/snippet.png)
