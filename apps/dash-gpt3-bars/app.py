@@ -30,7 +30,7 @@ code_exp = "px.bar(x=['giraffes', 'orangutans', 'monkeys'], y=[20, 14, 23], labe
 formatted_exp = black.format_str(code_exp, mode=black.FileMode(line_length=50))
 
 # Create
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
 content_style = {"height": "475px"}
@@ -125,7 +125,11 @@ def generate_graph(n_clicks, n_submit, text):
 
     code = f"import plotly.express as px\nfig = {output}\nfig.show()"
     formatted = black.format_str(code, mode=black.FileMode(line_length=50))
-    fig = eval(output).update_layout(margin=dict(l=35, r=35, t=35, b=35))
+
+    try:
+        fig = eval(output).update_layout(margin=dict(l=35, r=35, t=35, b=35))
+    except Exception as e:
+        fig = px.line(title=f"Exception: {e}. Please try again!")
 
     return fig, f"```\n{formatted}\n```"
 
