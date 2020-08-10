@@ -10,7 +10,7 @@ This is the description we gave to GPT-3:
 ![snippet](images/snippet.png)
 
 
-For a smoother demo, [watch the video here](https://youtu.be/5NqMqkIyWzc).
+For a smoother demo, [watch the YouTube video here](https://youtu.be/t4M-CWzJf6w).
 
 ## OpenAI GPT-3 API Access
 
