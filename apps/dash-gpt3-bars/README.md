@@ -10,7 +10,7 @@ It only took one Plotly Express code snippet for it to learn how to create bar c
 
 ![snippet](images/snippet.png)
 
-For a smoother demo, [watch the video here](https://youtu.be/JeCvtiHdYWc).
+For a smoother demo, [watch the video here](https://youtu.be/CRH504hq7MI).
 
 ## OpenAI GPT-3 API Access
 

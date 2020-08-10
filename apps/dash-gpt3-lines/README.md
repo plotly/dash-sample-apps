@@ -12,7 +12,7 @@ This demos shows how to use GPT-3 to not only generate line charts using a given
 
 It only took one Plotly Express code snippet (given in the card on the bottom left) for it to learn how to generate line charts.
 
-For a smoother demo, [watch the video here](https://youtu.be/QMu7U5xFQBc).
+For a smoother demo, [watch the video here](https://youtu.be/baAXmxcyZo4).
 
 ## OpenAI GPT-3 API Access
 
