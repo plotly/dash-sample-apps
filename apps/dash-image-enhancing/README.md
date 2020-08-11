@@ -12,6 +12,8 @@ If this is in dash sample apps and you have a colab demo, uncomment the "Open in
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/plotly/dash-sample-apps/blob/master/apps/dash-image-enhancing/ColabDemo.ipynb)
 
 
+![demo](demo.gif)
+
 This app shows you how to use [Tensorflow Hub](https://www.tensorflow.org/hub) to load [ESRGAN](https://tfhub.dev/captain-pool/esrgan-tf2/1), a type of Generative Adversarial Network trained to upscale smaller images by 4x.
 
 For optimal speed, we recommend running this app using a Nvidia GPU with sufficient memory (e.g. V100). To try this app, please use Google Colab with a GPU accelerator (access the notebook by clicking the badge above).
