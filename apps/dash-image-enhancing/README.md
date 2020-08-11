@@ -1,37 +1,44 @@
 <!--
 To get started, replace
-{{app.name}} with your app name (e.g. Dash Super Cool App)
-{{app.short}} with the short handle (e.g. dash-super-cool)
+Dash Image Ehancing with your app name (e.g. Dash Super Cool App)
+dash-image-enhancing with the short handle (e.g. dash-super-cool)
 
 If this is in dash sample apps, uncomment the second "git clone https..." and remove the first one.
 If this is in dash sample apps and you have a colab demo, uncomment the "Open in Colab" link to see the badge (make sure to create a ColabDemo.ipynb) first.
 
 -->
-# {{app.name}}
-<!-- 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/plotly/dash-sample-apps/blob/master/apps/{{app.short}}/ColabDemo.ipynb)
- -->
+# Dash Image Ehancing
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/plotly/dash-sample-apps/blob/master/apps/dash-image-enhancing/ColabDemo.ipynb)
+
+
+This app shows you how to use [Tensorflow Hub](https://www.tensorflow.org/hub) to load [ESRGAN](https://tfhub.dev/captain-pool/esrgan-tf2/1), a type of Generative Adversarial Network trained to upscale smaller images by 4x.
+
+For optimal speed, we recommend running this app using a Nvidia GPU with sufficient memory (e.g. V100). To try this app, please use Google Colab with a GPU accelerator (access the notebook by clicking the badge above).
+
+This works pretty well for very small images, such as [texture from older games](https://www.reddit.com/r/GameUpscale/), or scenes of nature. However, it might not work so well with human faces. We also ask you to be careful about potentially harmful biases when using this model with pictures of people, considering that this model was not thoroughly validated in terms of biases.
+
 
 ## Instructions
 
 To get started, first clone this repo:
-
+<!-- 
 ```
-git clone https://github.com/plotly/{{app.short}}.git
-cd {{app.short}}
+git clone https://github.com/plotly/dash-image-enhancing.git
+cd dash-image-enhancing
 ```
+ -->
 
-<!--
 ```
 git clone https://github.com/plotly/dash-sample-apps.git
-cd dash-sample-apps/apps/{{app.short}}
+cd dash-sample-apps/apps/dash-image-enhancing
 ```
--->
+
 
 Create and activate a conda env:
 ```
-conda create -n {{app.short}} python=3.7.6
-conda activate {{app.short}}
+conda create -n dash-image-enhancing python=3.7.6
+conda activate dash-image-enhancing
 ```
 
 Then, install the gpu version of TensorFlow:
@@ -53,4 +60,4 @@ and visit http://127.0.0.1:8050/.
 
 ## Contact
 
-Interested in building or deploying apps like this? [Reach out](https://plotly.com/contact-us/) or [get a demo](https://plotly.com/get-demo).
+Interested in building or deploying apps like this? [Reach out](https://plotly.com/contact-us/) to learn more or [get a demo](https://plotly.com/get-demo) of Dash Enterprise.
