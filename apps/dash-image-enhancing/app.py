@@ -82,12 +82,14 @@ app.layout = dbc.Container(
         html.Hr(),
         dbc.Row([dbc.Col(c) for c in controls]),
         html.Br(),
-        dbc.Row(
-            [
-                dbc.Col(html.Div(id=img_id))
-                for img_id in ["original-img", "enhanced-img"]
-            ]
-        ),
+        dbc.Spinner(
+            dbc.Row(
+                [
+                    dbc.Col(html.Div(id=img_id))
+                    for img_id in ["original-img", "enhanced-img"]
+                ]
+            )
+        )
     ],
     fluid=False,
 )
