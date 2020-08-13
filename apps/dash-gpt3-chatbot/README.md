@@ -1,5 +1,7 @@
 # Dash GPT-3 Chatbot
 
+*Disclaimer: This app was created to help you learn Dash and try the OpenAI API beta. Feel free to use the source code for building private prototypes. If you are planning to deploy GPT-3 based apps, please make sure to reach out to support@openai.com for a proper review.*
+
 ![demo](images/demo.gif)
 
 This demo shows you how to build a chatbot with GPT-3. It features a highly customized UI without stepping out of Python.
