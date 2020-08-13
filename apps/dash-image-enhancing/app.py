@@ -89,7 +89,7 @@ app.layout = dbc.Container(
                     for img_id in ["original-img", "enhanced-img"]
                 ]
             )
-        )
+        ),
     ],
     fluid=False,
 )
