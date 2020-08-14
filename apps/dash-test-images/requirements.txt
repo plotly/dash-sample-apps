@@ -5,4 +5,4 @@ numpy
 scikit_image
 Pillow
 gunicorn
-dash_canvas
+pypng
