@@ -15,18 +15,16 @@ img = data.retina()
 img_flip = np.ascontiguousarray(img[::-1])
 
 
-def _array_to_b64str(img, backend='pil', compression=4):
+def _array_to_b64str(img, backend="pil", compression=4):
     if img.ndim == 2:
-        mode = 'L'
+        mode = "L"
     elif img.ndim == 3 and img.shape[-1] == 3:
-        mode = 'RGB'
+        mode = "RGB"
     elif img.ndim == 3 and img.shape[-1] == 4:
-        mode = 'RGBA'
+        mode = "RGBA"
     else:
-        raise ValueError(
-                "Invalid image shape"
-                )
-    if backend == 'png':
+        raise ValueError("Invalid image shape")
+    if backend == "png":
         ndim = img.ndim
         sh = img.shape
         if ndim == 3:
@@ -41,12 +39,12 @@ def _array_to_b64str(img, backend='pil', compression=4):
         pil_img = Image.fromarray(img)
         prefix = "data:image/png;base64,"
         with BytesIO() as stream:
-            pil_img.save(stream, format='png', compress_level=compression)
+            pil_img.save(stream, format="png", compress_level=compression)
             base64_string = prefix + base64.b64encode(stream.getvalue()).decode("utf-8")
     return base64_string
 
 
-def make_image_fig(img_array, backend='pil', compression=-1):
+def make_image_fig(img_array, backend="pil", compression=-1):
     """
     This is the code we would like to get rid of :-)
     """
@@ -100,21 +98,20 @@ app.layout = html.Div(
                 html.H4("Layout image"),
                 dcc.Graph(id="graph2", figure=make_image_fig(img)),
                 dcc.Dropdown(
-                    id='mode',
-                    options=[{'label':'pil', 'value':'pil'}, {'label':'png', 'value':'png'}],
-                    value='png'
-                    ),
-                html.H6('Compression level, between 0 and 9'),
-                dcc.Input(
-                    id='level',
-                    type='number',
-                    value=5
-                    ),
+                    id="mode",
+                    options=[
+                        {"label": "pil", "value": "pil"},
+                        {"label": "png", "value": "png"},
+                    ],
+                    value="png",
+                ),
+                html.H6("Compression level, between 0 and 9"),
+                dcc.Input(id="level", type="number", value=5),
                 html.Button("Refresh", id="button2"),
             ],
             style={"width": "45%", "display": "inline-block"},
         ),
-        dcc.Store(id='changes', data=0)
+        dcc.Store(id="changes", data=0),
     ]
 )
 
@@ -131,12 +128,11 @@ def update_graph(n):
     return px.imshow(im)
 
 
-@app.callback([Output("graph2", "figure"),
-               Output("changes", "data")],
-            [Input("button2", "n_clicks"),
-             Input("level", "value"),
-             Input("mode", "value")],
-             [State("changes", 'data')])
+@app.callback(
+    [Output("graph2", "figure"), Output("changes", "data")],
+    [Input("button2", "n_clicks"), Input("level", "value"), Input("mode", "value")],
+    [State("changes", "data")],
+)
 def update_other_graph(n, compression, backend, changes):
     if n is None and compression is None and backend is None:
         return dash.no_update, dash.no_update
