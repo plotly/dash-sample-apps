@@ -734,6 +734,7 @@ def display_output(
         "chosenAtomsColor": chosenAtomsColor,
         "chosenAtomsRadius": float(chosenAtomsRadius),
         "molSpacingXaxis": float(molSpacing_xAxis),
+        "sideByside": True
     }
 
     if input_id is None:

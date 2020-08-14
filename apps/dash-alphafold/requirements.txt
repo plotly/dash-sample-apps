@@ -1,6 +1,6 @@
 dash
 dash-daq
 dash-bootstrap-components
-git+https://github.com/IvoLeist/dash_ngl@1202bbed29c2d1d42ab0a71ee9e70c69b8dae755
+git+https://github.com/IvoLeist/dash_ngl@a774b052d67f03fc665e1e969d5d4f61f85ceb85
 gunicorn
 plotly
