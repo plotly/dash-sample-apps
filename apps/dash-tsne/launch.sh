@@ -1,3 +1,3 @@
-wget https://github.com/plotly/datasets/releases/download/v0.0.1-data/dash-tsne.zip
+wget https://github.com/plotly/datasets/releases/download/dash-sample-apps/dash-tsne.zip
 unzip dash-tsne.zip
 gunicorn app:server --workers 4
