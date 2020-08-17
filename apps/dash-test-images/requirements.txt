@@ -1,0 +1,8 @@
+dash
+plotly
+pandas
+numpy
+scikit_image
+Pillow
+gunicorn
+pypng
