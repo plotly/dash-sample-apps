@@ -33,7 +33,13 @@ cd dash-sample-apps/apps/dash-tsne
 pip install -r requirements.txt
 ```
 
-Run the app
+Now, download the data from [this link](https://github.com/plotly/datasets/releases/download/v0.0.1-data/dash-tsne.zip), and unzip it in the working directly (i.e. `dash-sample-apps/apps/dash-tsne`). on MacOS/Linux, you can do:
+```
+wget https://github.com/plotly/datasets/releases/download/v0.0.1-data/dash-tsne.zip
+unzip dash-tsne.zip
+```
+
+Finally,run the app
 
 ```
 python app.py
