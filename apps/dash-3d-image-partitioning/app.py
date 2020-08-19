@@ -59,7 +59,6 @@ def make_default_figure(
     images=[],
     stroke_color=DEFAULT_STROKE_COLOR,
     stroke_width=DEFAULT_STROKE_WIDTH,
-    shapes=[],
     img_args=dict(layer="above"),
     width_scale=1,
     height_scale=1,
@@ -94,7 +93,6 @@ def make_default_figure(
     fig.update_layout(
         {
             "dragmode": "drawopenpath",
-            "shapes": shapes,
             "newshape.line.color": stroke_color,
             "newshape.line.width": stroke_width,
             "margin": dict(l=0, r=0, b=0, t=0, pad=4),
@@ -106,7 +104,6 @@ def make_default_figure(
 
 img = image.load_img("assets/BraTS19_2013_10_1_flair.nii")
 img = img.get_data().transpose(2, 0, 1)[::-1].astype("float")
-print("img.shape", img.shape)
 img = img_as_ubyte((img - img.min()) / (img.max() - img.min()))
 
 
@@ -514,6 +511,7 @@ function(
     // append shapes that show what slice the other figure is in
     sizex = top_figure.layout.images[0].sizex,
     sizey = top_figure.layout.images[0].sizey;
+    // tri_shape draws the triangular shape, see assets/app_clientside.js
     if (top_figure.layout.shapes) {{
         top_figure.layout.shapes=top_figure.layout.shapes.concat([
             tri_shape(d/2,sizey*image_select_side_value/found_segs_data[1].length,
@@ -852,7 +850,6 @@ function (view_select_button_nclicks,current_render_id) {
     [State("current-render-id", "data")],
 )
 
-# This could in theory be clientside but let's try our luck with serverside
 @app.callback(
     Output("fig-3d-scene", "data"),
     [Input("image-display-graph-3d", "relayoutData")],

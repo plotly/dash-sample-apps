@@ -1,6 +1,5 @@
 #!/bin/bash
 
-git submodule init && git submodule update
 
 [ -d "venv" ] && (echo "venv already exisits, aborting..." && exit 1)
 [ "$VIRTUAL_ENV" == "" ] || (echo "virtual env already active, aborting..." && exit 2)
