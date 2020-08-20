@@ -13,12 +13,12 @@ from nilearn import image
 import nibabel as nib
 import plotly.express as px
 import shape_utils
-from app_utils import get_env
 from sys import exit
 import io
 import base64
 import skimage
 import time
+import os
 
 DEBUG_MASK = False
 DEFAULT_STROKE_COLOR = px.colors.qualitative.Light24[0]
@@ -36,9 +36,16 @@ INDICATOR_COLOR = "DarkOrange"
 DISPLAY_BG_COLOR = "darkgrey"
 
 # A string, if length non-zero, saves superpixels to this file and then exits
-SAVE_SUPERPIXEL = get_env("SAVE_SUPERPIXEL", default="")
+SAVE_SUPERPIXEL = os.environ.get("SAVE_SUPERPIXEL", default="")
 # A string, if length non-zero, loads superpixels from this file
-LOAD_SUPERPIXEL = get_env("LOAD_SUPERPIXEL", default="")
+LOAD_SUPERPIXEL = os.environ.get("LOAD_SUPERPIXEL", default="")
+# If not "0", debugging mode is on.
+DEBUG = os.environ.get("DEBUG", default="0") != "0"
+
+
+def PRINT(*vargs):
+    if DEBUG:
+        print(*vargs)
 
 
 def make_seg_image(img):
@@ -694,7 +701,7 @@ def draw_shapes_react(
         drawn_shapes_data, image_display_top_figure, image_display_side_figure,
     )
     t2 = time.time()
-    print("Time to convert shapes to segments:", t2 - t1)
+    PRINT("Time to convert shapes to segments:", t2 - t1)
     # convert to a colored image
     fst_colored = image_utils.label_to_colors(
         found_segs_tensor,
@@ -707,7 +714,7 @@ def draw_shapes_react(
         no_map_zero=True,
     )
     t3 = time.time()
-    print("Time to convert from labels to colored image:", t3 - t2)
+    PRINT("Time to convert from labels to colored image:", t3 - t2)
     fstc_slices = [
         [
             array_to_data_url(s) if np.any(s != 0) else blank_seg_slices[j]
@@ -716,8 +723,8 @@ def draw_shapes_react(
         for j in range(NUM_DIMS_DISPLAYED)
     ]
     t4 = time.time()
-    print("Time to convert to data URLs:", t4 - t3)
-    print("Total time to compute 2D annotations:", t4 - t1)
+    PRINT("Time to convert to data URLs:", t4 - t3)
+    PRINT("Total time to compute 2D annotations:", t4 - t1)
     return fstc_slices, current_render_id + 1
 
 
@@ -737,16 +744,16 @@ def slice_image_list_to_ndarray(fstc_slices):
         _decode_b64_slice(fstc_slices[0][len(uri_header) :])
     )
     fstc_ndarray = np.zeros((n_slices,) + first_img.shape, dtype=first_img.dtype)
-    print("first_img.dtype", first_img.dtype)
+    PRINT("first_img.dtype", first_img.dtype)
     fstc_ndarray[0] = first_img
     for n, img_slice in enumerate(fstc_slices[1:]):
         img = plot_common.str_to_img_ndarrary(
             _decode_b64_slice(img_slice[len(uri_header) :])
         )
         fstc_ndarray[n] = img
-    print("fstc_ndarray.shape", fstc_ndarray.shape)
+    PRINT("fstc_ndarray.shape", fstc_ndarray.shape)
     # transpose back to original
-    print("fstc_ndarray.shape", fstc_ndarray.shape)
+    PRINT("fstc_ndarray.shape", fstc_ndarray.shape)
     return fstc_ndarray.transpose((1, 2, 0, 3))
 
 
@@ -850,13 +857,14 @@ function (view_select_button_nclicks,current_render_id) {
     [State("current-render-id", "data")],
 )
 
+
 @app.callback(
     Output("fig-3d-scene", "data"),
     [Input("image-display-graph-3d", "relayoutData")],
     [State("fig-3d-scene", "data")],
 )
 def store_scene_data(graph_3d_relayoutData, last_3d_scene):
-    print("graph_3d_relayoutData", graph_3d_relayoutData)
+    PRINT("graph_3d_relayoutData", graph_3d_relayoutData)
     if graph_3d_relayoutData is not None:
         for k in graph_3d_relayoutData.keys():
             last_3d_scene[k] = graph_3d_relayoutData[k]
@@ -891,15 +899,15 @@ def populate_3d_graph(
     cbcontext = [p["prop_id"] for p in dash.callback_context.triggered][0]
     # check that we're not toggling the display of the 3D annotation
     if cbcontext != "show-hide-seg-3d.children":
-        print(
+        PRINT(
             "might render 3D, current_id: %d, last_id: %d"
             % (current_render_id, last_render_id)
         )
         if graph_shown != "3d shown" or current_render_id == last_render_id:
             if current_render_id == last_render_id:
-                print("not rendering 3D because it is up to date")
+                PRINT("not rendering 3D because it is up to date")
             return dash.no_update
-    print("rendering 3D")
+    PRINT("rendering 3D")
     segs_ndarray = shapes_to_segs(
         drawn_shapes_data, image_display_top_figure, image_display_side_figure,
     ).transpose((1, 2, 0))
@@ -924,9 +932,9 @@ def populate_3d_graph(
     fig = go.Figure(data=data)
     fig.update_layout(**last_3d_scene)
     end_time = time.time()
-    print("serverside 3D generation took: %f seconds" % (end_time - start_time,))
+    PRINT("serverside 3D generation took: %f seconds" % (end_time - start_time,))
     return (fig, current_render_id)
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=DEBUG)
