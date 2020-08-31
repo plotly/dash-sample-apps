@@ -3,7 +3,7 @@ dash-core-components==1.10.0
 dash-html-components==1.0.3
 dash-table==4.7.0
 numpy==1.18.3
-plotly==4.7.1
 scikit-image==0.16.2
 pandas==1.0.3
 gunicorn==20.0.4
+https://github.com/plotly/plotly.py/archive/fast-image.zip
