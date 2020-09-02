@@ -162,14 +162,14 @@ external_stylesheets = ["assets/style.css", "assets/app_bounding_box_style.css"]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 filelist = [
-    app.get_asset_url("driving.jpg"),
-    app.get_asset_url("professional-transport-autos-bridge-traffic-road-rush-hour.jpg"),
-    app.get_asset_url("rocket.jpg"),
+    "assets/driving.jpg",
+    "assets/professional-transport-autos-bridge-traffic-road-rush-hour.jpg",
+    "assets/rocket.jpg",
 ]
 
 server = app.server
 
-fig = px.imshow(io.imread(filelist[0][1:]))
+fig = px.imshow(io.imread(filelist[0]))
 fig.update_layout(
     newshape_line_color=color_dict[DEFAULT_ATYPE],
     margin=dict(l=0, r=0, b=0, t=0, pad=4),
@@ -388,7 +388,7 @@ def send_figure_to_graph(
             ]["timestamp"]
         shapes = fig_shapes
         debug_print("shapes:", shapes)
-        fig = px.imshow(io.imread(filename[1:]))
+        fig = px.imshow(io.imread(filename))
         fig.update_layout(
             shapes=[shape_data_remove_timestamp(sh) for sh in shapes],
             # reduce space between image and graph edges
