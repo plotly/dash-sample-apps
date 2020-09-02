@@ -169,7 +169,7 @@ filelist = [
 
 server = app.server
 
-fig = px.imshow(io.imread(filelist[0]))
+fig = px.imshow(io.imread(filelist[0]), origin="lower")
 fig.update_layout(
     newshape_line_color=color_dict[DEFAULT_ATYPE],
     margin=dict(l=0, r=0, b=0, t=0, pad=4),
@@ -388,7 +388,7 @@ def send_figure_to_graph(
             ]["timestamp"]
         shapes = fig_shapes
         debug_print("shapes:", shapes)
-        fig = px.imshow(io.imread(filename))
+        fig = px.imshow(io.imread(filename), origin="lower")
         fig.update_layout(
             shapes=[shape_data_remove_timestamp(sh) for sh in shapes],
             # reduce space between image and graph edges
