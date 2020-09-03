@@ -1,2 +1,2 @@
 # app:server
-web: bash ./launch.sh
+web: bash launch.sh

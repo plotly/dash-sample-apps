@@ -35,8 +35,10 @@ pip install -r requirements.txt
 
 Now, download the data from [this link](https://github.com/plotly/datasets/releases/download/v0.0.1-data/dash-tsne.zip), and unzip it in the working directly (i.e. `dash-sample-apps/apps/dash-tsne`). on MacOS/Linux, you can do:
 ```
-wget https://github.com/plotly/datasets/releases/download/v0.0.1-data/dash-tsne.zip
-unzip dash-tsne.zip
+wget -N https://github.com/plotly/datasets/raw/master/dash-sample-apps/dash-tsne/data.zip
+wget -N https://github.com/plotly/datasets/raw/master/dash-sample-apps/dash-tsne/demo_embeddings.zip
+unzip -nq data.zip
+unzip -nq demo_embeddings.zip
 ```
 
 Finally,run the app
