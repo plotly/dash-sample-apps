@@ -1,3 +1,2 @@
 # app:server
-web: chmod +x launch.sh
-web: source launch.sh
+web: bash launch.sh
