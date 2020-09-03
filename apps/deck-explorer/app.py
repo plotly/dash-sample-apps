@@ -36,7 +36,7 @@ deck_demos = [
 
 deck_modules = {demo: import_module(f"demos.usage-{demo}") for demo in tqdm(deck_demos)}
 
-print("Loaded demos:", deck_demos)
+print("Demos Loaded:", deck_demos)
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 server = app.server
