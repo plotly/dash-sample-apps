@@ -11,7 +11,7 @@ jobs:
       - run:
           name: install black and flake8
           command: |
-            sudo pip install black flake8
+            sudo pip install black==19.10b0 flake8
       - run:
           name: run black
           command: |
