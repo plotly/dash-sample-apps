@@ -1,7 +1,7 @@
 """
 Adapted from: https://pydeck.gl/gallery/text_layer.html
 
-Names of various public transit stops within San Francisco, 
+Names of various public transit stops within San Francisco,
 plotted at the location of that stop
 
 """

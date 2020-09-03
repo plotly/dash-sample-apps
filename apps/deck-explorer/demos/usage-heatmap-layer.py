@@ -2,12 +2,12 @@
 Adapted from: https://pydeck.gl/gallery/heatmap_layer.html
 
 Location of livestock raised in New Mexico in the United States in 2006,
-via the United Nations and FAOSTAT, with the source data viewable here: 
+via the United Nations and FAOSTAT, with the source data viewable here:
 http://www.fao.org/faostat/en/
 
 Locations for poultry are viewable in blue and cattle are in orange.
 
-Overlaid with the satellite imagery from Mapbox to highlight the how 
+Overlaid with the satellite imagery from Mapbox to highlight the how
 terrain affects agriculture.
 
 """

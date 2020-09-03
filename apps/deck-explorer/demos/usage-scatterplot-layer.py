@@ -1,7 +1,7 @@
 """
 Adapted from: https://pydeck.gl/gallery/scatterplot_layer.html
 
-Plot of the number of exits for various subway stops within 
+Plot of the number of exits for various subway stops within
 San Francisco, California.
 
 Adapted from the deck.gl documentation.

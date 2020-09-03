@@ -1,7 +1,7 @@
 """
 Adapted from: https://pydeck.gl/gallery/point_cloud_layer.html
 
-A subset of a Creative Commons-licensed laser-scanned point cloud of 
+A subset of a Creative Commons-licensed laser-scanned point cloud of
 Choshi-Otaki Falls in Aomori, Japan.
 
 The full data set is viewable here:
