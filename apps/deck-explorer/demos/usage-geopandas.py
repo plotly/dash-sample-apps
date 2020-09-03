@@ -3,6 +3,7 @@ Adapted from: https://pydeck.gl/gallery/geopandas_integration.html
 
 This demos shows how to use the geopandas library in pydeck and Dash Deck.
 """
+import geopandas as gpd
 import os
 
 import dash
@@ -13,8 +14,6 @@ import pandas as pd
 
 mapbox_api_token = os.getenv("MAPBOX_ACCESS_TOKEN")
 
-
-import geopandas as gpd
 
 world = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
 

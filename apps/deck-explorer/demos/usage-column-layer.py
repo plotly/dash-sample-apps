@@ -2,10 +2,10 @@
 Adapted from: https://pydeck.gl/gallery/column_layer.html
 
 Real estate values for select properties in Taipei. Data is from 2012-2013.
-The height of a column indicates increasing price per unit area, and the color 
+The height of a column indicates increasing price per unit area, and the color
 indicates distance from a subway stop.
 
-The real estate valuation data set from UC Irvine's Machine Learning repository, 
+The real estate valuation data set from UC Irvine's Machine Learning repository,
 viewable here:
 https://archive.ics.uci.edu/ml/datasets/Real+estate+valuation+data+set
 """

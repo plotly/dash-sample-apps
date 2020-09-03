@@ -1,8 +1,8 @@
 """
 Adapted from: https://pydeck.gl/gallery/h3_cluster_layer.html
 
-Data grouped by H3 geohash, as an example of one of the geohash schemes 
-supported by pydeck. If you'd simply like to plot a value at an H3 hex 
+Data grouped by H3 geohash, as an example of one of the geohash schemes
+supported by pydeck. If you'd simply like to plot a value at an H3 hex
 ID, see the H3HexagonLayer.
 
 """

@@ -1,7 +1,7 @@
 """
 Adapted from: https://pydeck.gl/gallery/globe_view.html
 
-This demos the experimental Glove View from deck.gl/pydeck by using the GeoJSON 
+This demos the experimental Glove View from deck.gl/pydeck by using the GeoJSON
 and column layers. The data used contains global plant database and can be found here:
 https://github.com/ajduberstein/geo_datasets
 
