@@ -1,0 +1,11 @@
+git+https://github.com/plotly/dash-deck.git
+dash
+dash-bootstrap-components
+gunicorn
+networkx
+pandas
+geopandas
+numpy
+pydeck
+tqdm
+requests
