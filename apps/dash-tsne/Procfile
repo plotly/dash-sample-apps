@@ -1,2 +1,3 @@
 # app:server
+web: chmod +x ./launch.sh
 web: ./launch.sh
