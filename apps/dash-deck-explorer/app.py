@@ -88,14 +88,18 @@ layout = [
 app.layout = dbc.Container(layout, fluid=True)
 
 
-@app.callback(Output("url", "pathname"), Input("demo-selection", "value"), State('url', 'pathname'))
+@app.callback(
+    Output("url", "pathname"),
+    Input("demo-selection", "value"),
+    State("url", "pathname"),
+)
 def update_url(name, pathname):
     if name is None:
         if pathname in ["/dash-deck-explorer/", None, "/dash-deck-explorer"]:
             name = deck_demos[0]
         else:
             return dash.no_update
-    
+
     return "/dash-deck-explorer/" + name
 
 
