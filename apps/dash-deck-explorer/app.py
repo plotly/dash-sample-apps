@@ -103,7 +103,7 @@ def update_url(name):
     Input("url", "pathname"),
 )
 def update_demo(pathname):
-    if pathname in ["/dash-deck-explorer/", None, "/"]:
+    if pathname in ["/dash-deck-explorer/", "/dash-deck-explorer", None, "/"]:
         return dash.no_update
 
     name = pathname.split("/")[-1]
