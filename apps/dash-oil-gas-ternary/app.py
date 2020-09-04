@@ -605,6 +605,8 @@ def update_ternary_map(
         splitted = ctx.triggered[0]["prop_id"].split(".")
         prop_id = splitted[0]
         prop_type = splitted[1]
+    else:
+        return curr_fig
 
     processed_data = {}
 
