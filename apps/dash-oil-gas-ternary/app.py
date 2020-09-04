@@ -601,12 +601,12 @@ def update_ternary_map(
     # Find which one has been triggered
     ctx = dash.callback_context
 
+    prop_id = ""
+    prop_type = ""
     if ctx.triggered:
         splitted = ctx.triggered[0]["prop_id"].split(".")
         prop_id = splitted[0]
         prop_type = splitted[1]
-    else:
-        return curr_fig
 
     processed_data = {}
 
