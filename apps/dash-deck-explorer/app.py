@@ -91,7 +91,7 @@ app.layout = dbc.Container(layout, fluid=True)
 
 @app.callback(Output("url", "pathname"), Input("demo-selection", "value"))
 def update_url(name):
-    return "/deck-explorer/" + name
+    return "/dash-deck-explorer/" + name
 
 
 @app.callback(
