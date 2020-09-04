@@ -7,7 +7,7 @@ import dash
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from tqdm import tqdm
 
 
@@ -52,7 +52,6 @@ app_selection = dbc.FormGroup(
                     for demo in deck_demos
                 ],
                 className="form-control-plaintext",
-                value=deck_demos[0],
             ),
             width=9,
         ),
@@ -89,8 +88,18 @@ layout = [
 app.layout = dbc.Container(layout, fluid=True)
 
 
-@app.callback(Output("url", "pathname"), Input("demo-selection", "value"))
-def update_url(name):
+@app.callback(
+    Output("url", "pathname"),
+    Input("demo-selection", "value"),
+    State("url", "pathname"),
+)
+def update_url(name, pathname):
+    if name is None:
+        if pathname in ["/dash-deck-explorer/", None, "/dash-deck-explorer"]:
+            name = deck_demos[0]
+        else:
+            return dash.no_update
+
     return "/dash-deck-explorer/" + name
 
 
