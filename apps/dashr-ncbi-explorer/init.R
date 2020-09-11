@@ -11,11 +11,16 @@ options(repos=r)
 # ======================================================================
 # packages go here
 remotes::install_github("plotly/dashR", dependencies=TRUE, upgrade=TRUE)
+remotes::install_github("plotly/dash-bio", dependencies=TRUE, upgrade=TRUE)
 remotes::install_github("plotly/rasterly", ref = "64f215b", upgrade=TRUE)
 
 install.packages("stringr")
 install.packages("rentrez")
 install.packages("ape")
 install.packages("readr")
-install.packages("Biostrings")
 
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "3.9")
+
+BiocManager::install(c("Biostrings"))
