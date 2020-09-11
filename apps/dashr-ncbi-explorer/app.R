@@ -235,8 +235,12 @@ first_row <- htmlDiv(list(
 ), className = "container")
 
 app$layout(
-  header,
-  first_row
+  htmlDiv(
+    list(
+      header,
+      first_row
+    )
+  )
 )
 
 # Callbacks for Sequence Viewer Output
