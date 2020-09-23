@@ -27,7 +27,7 @@ app <- Dash$new()
 
 # Functions and Data Loading
 
-FASTA_DATA <- readBStringSet(filepath = "data/alignment_viewer_p53_clustalo.FASTA")
+FASTA_DATA <- readBStringSet(filepath = "data/alignment_viewer_p53_clustalo.fasta")
 
 blank_dataframe <- data.frame(matrix(ncol=0,nrow=0))
 
@@ -164,8 +164,8 @@ first_row <- htmlDiv(list(
               "Download FASTA data",
               className="control-download"
             ),
-            href="data/random_fasta.FASTA",
-            download="random_fasta.FASTA"
+            href="data/random_fasta.fasta",
+            download="random_fasta.fasta"
           ),
           
           htmlDiv(id='alignment-file-upload-container', children=list(
@@ -235,8 +235,12 @@ first_row <- htmlDiv(list(
 ), className = "container")
 
 app$layout(
-  header,
-  first_row
+  htmlDiv(
+    list(
+      header,
+      first_row
+    )
+  )
 )
 
 # Callbacks for Sequence Viewer Output
@@ -271,7 +275,7 @@ app$callback(
   
   update_sequence <- function(data, value) {
     if (value != 1) {
-      dna_data <- readDNAStringSet("data/random_fasta.FASTA", "fasta")
+      dna_data <- readDNAStringSet("data/random_fasta.fasta", "fasta")
       return(as.character(dna_data[[value]]))
     }
     else{
@@ -305,8 +309,8 @@ app$callback(
     
     if (ctx$triggered$prop_id == "submit-button-2.n_clicks") {
       bio_file <- read.GenBank(access.nb = accession_id)
-      write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
-      fasta_file <- toupper(read_file("data/random_fasta.FASTA"))
+      write.dna(bio_file, file ="data/random_fasta.fasta", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
+      fasta_file <- toupper(read_file("data/random_fasta.fasta"))
       alignment_chart <- dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 1150)
     }
     
@@ -317,8 +321,8 @@ app$callback(
       accession_id <- gsub(" ", "", accession_id)
       
       bio_file <- read.GenBank(access.nb = accession_id)
-      write.dna(bio_file, file ="data/random_fasta.FASTA", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
-      fasta_file <- toupper(read_file("data/random_fasta.FASTA"))
+      write.dna(bio_file, file ="data/random_fasta.fasta", format = "fasta", append = TRUE, nbcol = 6, colsep = "", colw = 10)
+      fasta_file <- toupper(read_file("data/random_fasta.fasta"))
       alignment_chart <- dashbioAlignmentChart(id = 'alignment-chart', data = fasta_file, height = 750, width = 1150)
     }
     
@@ -326,7 +330,7 @@ app$callback(
     else if (n_clicks < 1) {
       alignment_chart <- dashbioAlignmentChart(
         id = 'alignment-chart',
-        data = read_file("data/alignment_viewer_p53_clustalo.FASTA"),
+        data = read_file("data/alignment_viewer_p53_clustalo.fasta"),
         height = 750,
         width = 1150,
         opacity = 0.5
@@ -445,7 +449,7 @@ app$callback(
   
   select_trace <- function(n_clicks, search_clicks, reset_clicks) {
     if (n_clicks > 0 | search_clicks > 0 | reset_clicks > 0) {
-      dna_data = readDNAStringSet("data/random_fasta.FASTA", "fasta")
+      dna_data = readDNAStringSet("data/random_fasta.fasta", "fasta")
       trace_names <- unique(names(dna_data))
       
       list_options <- lapply(trace_names, function(x) {
@@ -467,7 +471,7 @@ app$callback(
   ),
   update_gc <- function(n_clicks, option) {
     if (n_clicks > 0) {
-      dna_data = readDNAStringSet("data/random_fasta.FASTA", "fasta")
+      dna_data = readDNAStringSet("data/random_fasta.fasta", "fasta")
       window = 100
       gc = rowSums(letterFrequencyInSlidingView(dna_data[[option]], window, c("G", "C")))/window
       g = as.data.frame(gc)
@@ -500,7 +504,7 @@ app$callback(
     }
     
     else {
-      dna_data = readDNAStringSet("data/dnastring.FASTA", "fasta")
+      dna_data = readDNAStringSet("data/dnastring.fasta", "fasta")
       window = 100
       gc = rowSums(letterFrequencyInSlidingView(dna_data[[option]], window, c("G", "C")))/window
       g = as.data.frame(gc)
@@ -569,7 +573,7 @@ app$callback(
   ),
   reset_fasta <- function(n_clicks) {
     if (n_clicks > 0) {
-      write.dna(" ", file ="data/random_fasta.FASTA", format = "fasta", append = FALSE, nbcol = 6, colsep = "", colw = 10)
+      write.dna(" ", file ="data/random_fasta.fasta", format = "fasta", append = FALSE, nbcol = 6, colsep = "", colw = 10)
       print("FASTA CLEARED")
     }
   }
