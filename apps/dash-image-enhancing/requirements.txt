@@ -1,0 +1,8 @@
+dash
+dash-bootstrap-components
+plotly
+numpy
+gunicorn
+tensorflow
+tensorflow-hub
+Pillow
