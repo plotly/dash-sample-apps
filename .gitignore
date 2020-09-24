@@ -5,3 +5,10 @@ venv/
 .idea/
 .DS_Store
 .Rproj.user
+*.vscode*
+apps/dash-loan-grade/.ipynb_checkpoints/Train Decision Trees-checkpoint.ipynb
+.ipynb_checkpoints/*
+apps/*/.ipynb_checkpoints/*
+apps/*/__pycache__/*
+apps/dash-tsne/data
+apps/dash-tsne/demo_embeddings
