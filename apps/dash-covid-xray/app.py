@@ -36,6 +36,8 @@ very_filtered_img = filters.median(img_1, selem=np.ones((1, 7, 7), dtype=np.bool
 verts, faces, _, _ = measure.marching_cubes(very_filtered_img, 200, step_size=3)
 x, y, z = verts.T
 i, j, k = faces.T
+
+print(len(x))
 fig_mesh = go.Figure()
 fig_mesh.add_trace(go.Mesh3d(x=z, y=y, z=x, opacity=0.2, i=k, j=j, k=i))
 
@@ -227,6 +229,7 @@ app.layout = html.Div(
         dcc.Store(id="annotations", data={}),
         dcc.Store(id="segmentation-slices", data={}),
         dcc.Store(id="segmentation-slices-2", data={}),
+        dcc.Store(id="occlusion-surface", data={}),
     ],
     className="twelve columns",
 )
@@ -267,12 +270,12 @@ def update_histo(annotations):
     [
         Output("segmentation-slices", "data"),
         Output("segmentation-slices-2", "data"),
-        Output("graph-helper", "figure"),
+        Output("occlusion-surface", "data"),
     ],
     [Input("graph-histogram", "selectedData")],
-    [State("annotations", "data"), State("graph-helper", "figure")],
+    [State("annotations", "data")],
 )
-def update_segmentation_slices(selected, annotations, fig_mesh3d):
+def update_segmentation_slices(selected, annotations):
     if (
         annotations is None
         or annotations.get("x") is None
@@ -302,22 +305,15 @@ def update_segmentation_slices(selected, annotations, fig_mesh3d):
         print("build the mask", t_end - t_start)
         t_start = time()
         # Update 3d viz
-        verts, faces, _, _ = measure.marching_cubes(img_mask, 0.5, step_size=3)
+        verts, faces, _, _ = measure.marching_cubes(
+            filters.median(img_mask, selem=np.ones((1, 7, 7))), 0.5, step_size=3
+        )
         t_end = time()
         print("marching cubes", t_end - t_start)
         x, y, z = verts.T
         i, j, k = faces.T
-        fig = go.Figure(fig_mesh3d)
+        print(len(x))
         trace = go.Mesh3d(x=z, y=y, z=x, color="red", opacity=0.8, i=k, j=j, k=i)
-        if len(fig.data) > 1:
-            fig.data[1]["x"] = z
-            fig.data[1]["y"] = y
-            fig.data[1]["z"] = x
-            fig.data[1]["i"] = k
-            fig.data[1]["j"] = j
-            fig.data[1]["k"] = i
-        else:
-            fig.add_trace(trace)
         t_start = time()
         # Build lists of binary strings for segmented slices
         slices_dict = {
@@ -329,7 +325,7 @@ def update_segmentation_slices(selected, annotations, fig_mesh3d):
         }
         t_end = time()
         print("binary string", t_end - t_start)
-        return (slices_dict, slices_dict_2, fig)
+        return (slices_dict, slices_dict_2, trace)
     else:
         return (dash.no_update,) * 3
 
@@ -349,6 +345,21 @@ def update_store(relayout, relayout2, annotations):
         shape = relayout2["shapes"][-1]
         annotations["x"] = shape
     return annotations
+
+
+app.clientside_callback(
+    """
+function(surf, fig){
+        let fig_ = {...fig};
+        fig_.data[1] = surf;
+        console.log(fig_);
+        return fig_;
+    }
+""",
+    output=Output("graph-helper", "figure"),
+    inputs=[Input("occlusion-surface", "data"),],
+    state=[State("graph-helper", "figure"),],
+)
 
 
 app.clientside_callback(
