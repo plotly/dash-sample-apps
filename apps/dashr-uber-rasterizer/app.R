@@ -193,14 +193,15 @@ options <- htmlDiv(list(
 ), className = 'item-a')
 
 
-app$layout(
+app$layout(htmlDiv(list(
   header,
   htmlDiv(list(
     options,
     htmlDiv(children = dccGraph(id = 'rasterizer-output',
                                 figure = default_plot, style = list("height" = "88vh")), className = 'item-b'),
     dccStore(id = 'store')
-  ), className = 'container'))
+  ), className = 'container')
+)))
 
 ################################################### App Callbacks ###############################################
 
@@ -309,7 +310,7 @@ app$callback(
     colorbar_title <- ifelse(scale == "log", "Log(No. of Rides)", "No. of Rides")
     # plot_ly requires a data.frame
 
-    if (x_difference < 0.2904274 || y_difference < 0.2109278) {
+    if (x_difference < 0.1004274 || y_difference < 0.0409278) {
       return(plot_mapbox(as.data.frame(ridesDf)[sample(nrow(as.data.frame(ridesDf)), 10000, replace = TRUE),], lon = ~Lon, lat = ~Lat) %>%
                layout(mapbox = list(zoom = 12,
                                     accesstoken = mapboxToken,

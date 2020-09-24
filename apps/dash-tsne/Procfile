@@ -1,1 +1,2 @@
-web: gunicorn app:server
+# app:server
+web: bash launch.sh
