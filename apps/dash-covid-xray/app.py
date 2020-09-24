@@ -256,11 +256,10 @@ def update_histo(annotations):
     fig = px.bar(
         x=hi[1],
         y=hi[0],
-        title="3 - Histogram of intensity values - select a range of values to segment the occlusion",
+        title="3 - Histogram of intensity values - select a range of values to segment the occlusion <br> Hover on slices to find the typical values of the occlusion",
         labels={"x": "intensity", "y": "count"},
     )
-    fig.update_layout(dragmode="select")
-    fig.update_layout(images=[])
+    fig.update_layout(dragmode="select", title_font=dict(size=20, color="blue"))
     return fig
 
 
