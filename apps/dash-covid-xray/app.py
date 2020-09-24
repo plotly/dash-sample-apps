@@ -52,18 +52,14 @@ def path_to_indices(path):
 
 
 def make_figure(
-    filename_uri,
-    width,
-    height,
-    row=None,
-    col=None,
-    size_factor=1,
-    dragmode="drawclosedpath",
+    img, row=None, col=None, size_factor=1, dragmode="drawclosedpath",
 ):
     """
     Build plotly figure with image slice and visual cues at specific positions.
     """
-    fig = go.Figure(go.Image(source=filename_uri))
+    fig = px.imshow(img, binary_string=True)
+    height, width = img.shape
+    height = int(height * size_factor)
     fig.update_traces(dy=size_factor)
     fig.update_layout(
         template=None,
@@ -73,12 +69,15 @@ def make_figure(
         height=400,
     )
     fig.update_xaxes(
-        showgrid=False, range=(0, width), showticklabels=False, zeroline=False
+        showgrid=False,
+        # range=(0, width),
+        showticklabels=False,
+        zeroline=False,
     )
     fig.update_yaxes(
         showgrid=False,
         scaleanchor="x",
-        range=(height, 0),
+        # range=(height, 0),
         showticklabels=False,
         zeroline=False,
     )
@@ -142,9 +141,7 @@ app.layout = html.Div(
             [
                 dcc.Graph(
                     id="graph",
-                    figure=make_figure(
-                        slices_1[len(img_1) // 2], width=630, height=630
-                    ),
+                    figure=make_figure(img_1[len(img_1) // 2],),
                     config={
                         "modeBarButtonsToAdd": [
                             "drawline",
@@ -174,9 +171,9 @@ app.layout = html.Div(
                 dcc.Graph(
                     id="graph-2",
                     figure=make_figure(
-                        slices_2[len(img_2) // 2],
-                        width=630,
-                        height=45 * size_factor,
+                        img_2[len(img_2) // 2],
+                        # width=630,
+                        # height=45 * size_factor,
                         dragmode="drawrect",
                         size_factor=size_factor,
                     ),
@@ -366,9 +363,13 @@ function(n_slider, n_slider_2, seg_slices, slices, fig, annotations){
         if (fig_.data.length  == 1 && zpos in seg_slices){
             fig_.data.push({...fig.data[0]});
             fig_.data[1].source = seg_slices[zpos];
+            fig_.data[1].hoverinfo = 'skip';
+            fig_.data[1].hovertemplate = '';
         }
         if (fig_.data.length  > 1 && zpos in seg_slices){
             fig_.data[1].source = seg_slices[zpos];
+            fig_.data[1].hoverinfo = 'skip';
+            fig_.data[1].hovertemplate = '';
         }
         fig_.layout.shapes[0].y0 = xpos;
         fig_.layout.shapes[0].y1 = xpos;
@@ -405,9 +406,13 @@ function(n_slider, n_slider_2, seg_slices_2, slices_2, fig_2, annotations){
         if (fig_2_.data.length  == 1 && xpos in seg_slices_2){
             fig_2_.data.push({...fig_2.data[0]});
             fig_2_.data[1].source = seg_slices_2[xpos];
+            fig_2_.data[1].hoverinfo = 'skip';
+            fig_2_.data[1].hovertemplate = '';
         }
         if (fig_2_.data.length  > 1 && zpos in seg_slices_2){
             fig_2_.data[1].source = seg_slices_2[xpos];
+            fig_2_.data[1].hoverinfo = 'skip';
+            fig_2_.data[1].hovertemplate = '';
         }
         fig_2_.layout.shapes[0].y0 = zpos * size_factor;
         fig_2_.layout.shapes[0].y1 = zpos * size_factor;
