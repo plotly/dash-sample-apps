@@ -1,4 +1,4 @@
-plotly
+plotly>=4.10.0
 dash
 pandas
 scikit-image
