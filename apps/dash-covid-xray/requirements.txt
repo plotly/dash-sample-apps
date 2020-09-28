@@ -1,5 +1,5 @@
 plotly>=4.10.0
-dash
+dash>=1.16.1
 pandas
 scikit-image
 dash_canvas
