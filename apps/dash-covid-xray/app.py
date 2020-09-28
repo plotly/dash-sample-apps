@@ -37,7 +37,6 @@ verts, faces, _, _ = measure.marching_cubes(very_filtered_img, 200, step_size=3)
 x, y, z = verts.T
 i, j, k = faces.T
 
-print(len(x))
 fig_mesh = go.Figure()
 fig_mesh.add_trace(go.Mesh3d(x=z, y=y, z=x, opacity=0.2, i=k, j=j, k=i))
 
@@ -312,7 +311,6 @@ def update_segmentation_slices(selected, annotations):
         print("marching cubes", t_end - t_start)
         x, y, z = verts.T
         i, j, k = faces.T
-        print(len(x))
         trace = go.Mesh3d(x=z, y=y, z=x, color="red", opacity=0.8, i=k, j=j, k=i)
         t_start = time()
         # Build lists of binary strings for segmented slices
@@ -336,14 +334,24 @@ def update_segmentation_slices(selected, annotations):
     [State("annotations", "data")],
 )
 def update_store(relayout, relayout2, annotations):
-    if relayout is None:
-        return dash.no_update
-    if relayout is not None and "shapes" in relayout and len(relayout["shapes"]) > 1:
-        shape = relayout["shapes"][-1]
-        annotations["z"] = shape
-    if relayout2 is not None and "shapes" in relayout2 and len(relayout2["shapes"]) > 1:
-        shape = relayout2["shapes"][-1]
-        annotations["x"] = shape
+    print(relayout, relayout2)
+    if relayout is not None and "shapes" in relayout:
+        if len(relayout["shapes"]) >= 3:
+            shape = relayout["shapes"][-1]
+            annotations["z"] = shape
+        else:
+            annotations.pop("z", None)
+    elif relayout is not None and "shapes[2].path" in relayout:
+        annotations["z"]["path"] = relayout["shapes[2].path"]
+    if relayout2 is not None and "shapes" in relayout2:
+        if len(relayout2["shapes"]) >= 3:
+            shape = relayout2["shapes"][-1]
+            annotations["x"] = shape
+        else:
+            annotations.pop("x", None)
+    elif relayout2 is not None and "shapes[2].y0" in relayout2:
+        annotations["z"]["y0"] = relayout2["shapes[2].y0"]
+        annotations["z"]["y1"] = relayout2["shapes[2].y1"]
     return annotations
 
 
@@ -352,7 +360,6 @@ app.clientside_callback(
 function(surf, fig){
         let fig_ = {...fig};
         fig_.data[1] = surf;
-        console.log(fig_);
         return fig_;
     }
 """,
@@ -381,12 +388,18 @@ function(n_slider, n_slider_2, seg_slices, slices, fig, annotations){
             fig_.data[1].hoverinfo = 'skip';
             fig_.data[1].hovertemplate = '';
         }
+        if (fig_.data.length  > 1 && !(zpos in seg_slices)){
+            fig_.data = fig_.data.slice(0, 1);
+        }
         fig_.layout.shapes[0].y0 = xpos;
         fig_.layout.shapes[0].y1 = xpos;
         fig_.layout.shapes[1].y0 = xpos;
         fig_.layout.shapes[1].y1 = xpos;
-        if ('z' in annotations){
+        if ('z' in annotations && fig_.layout.shapes.length < 3){
             fig_.layout.shapes.push(annotations['z']);
+            }
+        if (!('z' in annotations)){
+            fig_.layout.shapes = fig_.layout.shapes.slice(0, 2);
             }
         return fig_;
     }
@@ -428,8 +441,11 @@ function(n_slider, n_slider_2, seg_slices_2, slices_2, fig_2, annotations){
         fig_2_.layout.shapes[0].y1 = zpos * size_factor;
         fig_2_.layout.shapes[1].y0 = zpos * size_factor;
         fig_2_.layout.shapes[1].y1 = zpos * size_factor;
-        if ('x' in annotations){
+        if ('x' in annotations && fig_2_.layout.shapes.length < 3){
             fig_2_.layout.shapes.push(annotations['x']);
+            }
+        if (!('x' in annotations)){
+            fig_2_.layout.shapes = fig_2_.layout.shapes.slice(0, 2);
             }
         return fig_2_;
     }
