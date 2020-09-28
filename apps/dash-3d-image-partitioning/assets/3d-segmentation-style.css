@@ -1,0 +1,35 @@
+#loader-wrapper > div {
+    visibility: visible !important;
+}
+
+#view-select-tabs, #view-select-tabs-parent {
+    display: inline-flex !important;
+}
+
+#view-select-tabs div {
+    box-sizing:unset;
+}
+
+#image-select-side,#image-select-top {
+    padding: 0 10px 0 10px !important;
+    position: relative;
+    top: 50%;
+    transform: translate(0,-50%);
+}
+
+#image-select-side-display,#image-select-top-display {
+    height: 20px;
+    line-height: 20px;
+    padding: 15px;
+}
+
+#main {
+    background-color: black;
+}
+
+#title {
+}
+
+#logo {
+}
+
