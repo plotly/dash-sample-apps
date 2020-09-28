@@ -1,6 +1,7 @@
 import numpy as np
 import dash
 from dash.dependencies import Input, Output, State
+import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash_core_components as dcc
 import plotly.graph_objects as go
@@ -162,7 +163,16 @@ app.layout = html.Div(
                     updatemode="drag",
                 ),
                 html.H6(
-                    "1 - Slide to find the occlusion and draw a path around its contour"
+                    [
+                        html.Span(
+                            "1 - Slide to find the occlusion and draw a path around its contour ❓",
+                            id="tooltip-target-1",
+                        ),
+                    ]
+                ),
+                dbc.Tooltip(
+                    "Draw a rough path which encloses the occlusion at all heights",
+                    target="tooltip-target-1",
                 ),
             ],
             className="app-background",
@@ -189,7 +199,16 @@ app.layout = html.Div(
                     updatemode="drag",
                 ),
                 html.H6(
-                    "2 - Draw a rectangle to determine the min and max height of the occlusion"
+                    [
+                        html.Span(
+                            "2 - Draw a rectangle to determine the min and max height of the occlusion ❓",
+                            id="tooltip-target-2",
+                        ),
+                    ],
+                ),
+                dbc.Tooltip(
+                    "Only the min and max height of the rectangle are used, the width is ignored",
+                    target="tooltip-target-2",
                 ),
             ],
             className="app-background",
@@ -334,7 +353,6 @@ def update_segmentation_slices(selected, annotations):
     [State("annotations", "data")],
 )
 def update_store(relayout, relayout2, annotations):
-    print(relayout, relayout2)
     if relayout is not None and "shapes" in relayout:
         if len(relayout["shapes"]) >= 3:
             shape = relayout["shapes"][-1]
