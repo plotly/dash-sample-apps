@@ -55,6 +55,18 @@ def make_seg_image(img):
     seg = segmentation.slic(
         img, start_label=1, multichannel=False, compactness=0.1, n_segments=300
     )
+    # Only keep superpixels with an average intensity greater than threshold
+    # in order to remove superpixels of the background
+    superpx_avg = (
+        np.histogram(
+            seg.astype(np.float), bins=np.arange(0, 310), weights=img.astype(np.float)
+        )[0]
+        / np.histogram(seg.astype(np.float), bins=np.arange(0, 310))[0]
+        > 10
+    )
+    mask_brain = superpx_avg[seg]
+    seg[np.logical_not(mask_brain)] = 0
+    seg, _, _ = segmentation.relabel_sequential(seg)
     segb = segmentation.find_boundaries(seg).astype("uint8")
     segl = image_utils.label_to_colors(
         segb, colormap=["#000000", "#E48F72"], alpha=[0, 128], color_class_offset=0
