@@ -266,13 +266,17 @@ def update_histo(annotations):
     # Horizontal mask
     path = path_to_indices(annotations["z"]["path"])
     rr, cc = draw.polygon(path[:, 1], path[:, 0])
+    if len(rr) == 0 or len(cc) == 0:
+        return dash.no_update
     mask = np.zeros((l_lat, l_lat))
     mask[rr, cc] = 1
     mask = ndimage.binary_fill_holes(mask)
-    # top and bottom
-    top = int(annotations["x"]["y0"] / size_factor)
-    bottom = int(annotations["x"]["y1"] / size_factor)
+    # top and bottom, the top is a lower number than the bottom because y values
+    # increase moving down the figure
+    top, bottom = sorted([int(annotations["x"][c] / size_factor) for c in ["y0", "y1"]])
     intensities = med_img[top:bottom, mask].ravel()
+    if len(intensities) == 0:
+        return dash.no_update
     hi = exposure.histogram(intensities)
     fig = px.bar(
         x=hi[1],
@@ -301,6 +305,8 @@ def update_segmentation_slices(selected, annotations):
     ):
         return (dash.no_update,) * 3
     if selected is not None and "range" in selected:
+        if len(selected["points"]) == 0:
+            return (dash.no_update,) * 3
         v_min, v_max = selected["range"]["x"]
         t_start = time()
         img_mask = np.logical_and(med_img > v_min, med_img <= v_max)
@@ -311,8 +317,11 @@ def update_segmentation_slices(selected, annotations):
         mask[rr, cc] = 1
         mask = ndimage.binary_fill_holes(mask)
         # top and bottom
-        top = int(annotations["x"]["y0"] / size_factor)
-        bottom = int(annotations["x"]["y1"] / size_factor)
+        # top and bottom, the top is a lower number than the bottom because y values
+        # increase moving down the figure
+        top, bottom = sorted(
+            [int(annotations["x"][c] / size_factor) for c in ["y0", "y1"]]
+        )
         img_mask = np.logical_and(med_img > v_min, med_img <= v_max)
         img_mask[:top] = False
         img_mask[bottom:] = False
