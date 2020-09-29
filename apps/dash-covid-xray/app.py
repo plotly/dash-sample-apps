@@ -145,12 +145,7 @@ app.layout = html.Div(
                     id="graph",
                     figure=make_figure(img_1[len(img_1) // 2],),
                     config={
-                        "modeBarButtonsToAdd": [
-                            "drawline",
-                            "drawclosedpath",
-                            "drawrect",
-                            "eraseshape",
-                        ],
+                        "modeBarButtonsToAdd": ["drawclosedpath", "eraseshape",],
                         "scrollZoom": True,
                     },
                 ),
@@ -183,12 +178,13 @@ app.layout = html.Div(
                     id="graph-2",
                     figure=make_figure(
                         img_2[len(img_2) // 2],
-                        # width=630,
-                        # height=45 * size_factor,
                         dragmode="drawrect",
                         size_factor=size_factor,
                     ),
-                    config={"scrollZoom": True},
+                    config={
+                        "modeBarButtonsToAdd": ["drawrect", "eraseshape",],
+                        "scrollZoom": True,
+                    },
                 ),
                 dcc.Slider(
                     id="slider-2",
