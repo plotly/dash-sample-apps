@@ -250,7 +250,9 @@ app.layout = html.Div(
 
 
 @app.callback(
-    Output("graph-histogram", "figure"), [Input("annotations", "data")],
+    Output("graph-histogram", "figure"),
+    [Input("annotations", "data")],
+    prevent_initial_call=True,
 )
 def update_histo(annotations):
     if (
@@ -291,6 +293,7 @@ def update_histo(annotations):
         Output("occlusion-surface", "data"),
     ],
     [Input("graph-histogram", "selectedData"), Input("annotations", "data")],
+    prevent_initial_call=True,
 )
 def update_segmentation_slices(selected, annotations):
     ctx = dash.callback_context
@@ -358,6 +361,7 @@ def update_segmentation_slices(selected, annotations):
     Output("annotations", "data"),
     [Input("graph", "relayoutData"), Input("graph-2", "relayoutData"),],
     [State("annotations", "data")],
+    prevent_initial_call=True,
 )
 def update_store(relayout, relayout2, annotations):
     if relayout is not None and "shapes" in relayout:
