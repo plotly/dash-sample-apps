@@ -225,7 +225,7 @@ app.layout = html.Div(
             children=[
                 html.Div(
                     html.H1(
-                        "3D Image Annotation",
+                        "3D Image Annotation - test",
                         id="title",
                         style={
                             "color": "#f9f9f9",
