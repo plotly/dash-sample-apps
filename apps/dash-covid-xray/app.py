@@ -290,17 +290,19 @@ def update_histo(annotations):
         Output("segmentation-slices-2", "data"),
         Output("occlusion-surface", "data"),
     ],
-    [Input("graph-histogram", "selectedData")],
-    [State("annotations", "data")],
+    [Input("graph-histogram", "selectedData"), Input("annotations", "data")],
 )
 def update_segmentation_slices(selected, annotations):
+    ctx = dash.callback_context
+    # When shape annotations are changed, reset segmentation visualization
     if (
-        annotations is None
+        ctx.triggered[0]["prop_id"] == "annotations.data"
+        or annotations is None
         or annotations.get("x") is None
         or annotations.get("z") is None
     ):
-        return (dash.no_update,) * 3
-    if selected is not None and "range" in selected:
+        return {}, {}, go.Mesh3d()
+    elif selected is not None and "range" in selected:
         if len(selected["points"]) == 0:
             return (dash.no_update,) * 3
         v_min, v_max = selected["range"]["x"]
@@ -372,9 +374,11 @@ def update_store(relayout, relayout2, annotations):
             annotations["x"] = shape
         else:
             annotations.pop("x", None)
-    elif relayout2 is not None and "shapes[2].y0" in relayout2:
-        annotations["z"]["y0"] = relayout2["shapes[2].y0"]
-        annotations["z"]["y1"] = relayout2["shapes[2].y1"]
+    elif relayout2 is not None and (
+        "shapes[2].y0" in relayout2 or "shapes[2].y1" in relayout2
+    ):
+        annotations["x"]["y0"] = relayout2["shapes[2].y0"]
+        annotations["x"]["y1"] = relayout2["shapes[2].y1"]
     return annotations
 
 
