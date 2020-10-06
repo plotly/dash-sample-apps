@@ -2,6 +2,7 @@ import dash
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
 import dash_core_components as dcc
+import dash_bootstrap_components as dbc
 import dash_table
 import plotly.express as px
 import re
@@ -158,7 +159,7 @@ def shape_data_remove_timestamp(shape):
     return new_shape
 
 
-external_stylesheets = ["assets/style.css", "assets/app_bounding_box_style.css"]
+external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/style.css", "assets/app_bounding_box_style.css"]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 filelist = [

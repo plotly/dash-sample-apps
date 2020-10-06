@@ -52,6 +52,14 @@ html {
     content: "";
     clear: both;
 }
+
+/* set the margins of row elements to zero to
+override the settings in the dash bootstrap stylesheet
+ */
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
     
 #timestamp-table {
     width:20%;

@@ -4,3 +4,4 @@ plotly==4.10.0
 scikit-image==0.16.2
 pandas==1.0.3
 gunicorn==20.0.4
+dash_bootstrap_components==0.10.7
