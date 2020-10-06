@@ -46,6 +46,9 @@ for typ, col in typ_col_pairs:
 
 options = list(color_dict.keys())
 columns = ["Type", "X0", "Y0", "X1", "Y1"]
+# Open the readme for use in the context info
+with open("README.md", "r") as f:
+    readme = f.readlines()
 
 
 def debug_print(*args):
@@ -159,7 +162,11 @@ def shape_data_remove_timestamp(shape):
     return new_shape
 
 
-external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/style.css", "assets/app_bounding_box_style.css"]
+external_stylesheets = [
+    dbc.themes.BOOTSTRAP,
+    "assets/style.css",
+    "assets/app_bounding_box_style.css",
+]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 filelist = [
@@ -183,8 +190,53 @@ app.layout = html.Div(
         html.Div(
             id="banner",
             children=[
-                html.H1("Bounding Box Classification App", id="title"),
-                html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png")),
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            html.Img(
+                                id="logo", src=app.get_asset_url("dash-logo-new.png")
+                            ),
+                            width=2,
+                            align="center",
+                        ),
+                        dbc.Col(
+                            html.H1("Bounding Box Classification App", id="title"),
+                            width=4,
+                            align="center",
+                        ),
+                        dbc.Col(
+                            [
+                                dbc.Button(
+                                    "Readme",
+                                    id="readme-open",
+                                    color="secondary",
+                                    style={"margin": "5px"},
+                                ),
+                                dbc.Modal(
+                                    [
+                                        dbc.ModalBody(
+                                            html.Div(
+                                                [dcc.Markdown(readme, id="readme-md")]
+                                            )
+                                        ),
+                                        dbc.ModalFooter(
+                                            dbc.Button(
+                                                "Close",
+                                                id="readme-close",
+                                                className="ml-auto",
+                                            )
+                                        ),
+                                    ],
+                                    id="modal",
+                                    size="md",
+                                    style={"font-size": "small"},
+                                ),
+                            ],
+                            width=2,
+                            align="center",
+                        ),
+                    ]
+                ),
             ],
             className="twelve columns",
         ),
@@ -400,6 +452,17 @@ def send_figure_to_graph(
         annotations_store[filename]["shapes"] = shapes
         return (fig, annotations_store, [{"Timestamp": s["timestamp"]} for s in shapes])
     return dash.no_update
+
+
+@app.callback(
+    Output("modal", "is_open"),
+    [Input("readme-open", "n_clicks"), Input("readme-close", "n_clicks")],
+    [State("modal", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
 
 
 # set the download url to the contents of the annotations-store (so they can be
