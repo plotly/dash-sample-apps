@@ -43,13 +43,16 @@ well_type_options = [
 # Download pickle file
 urllib.request.urlretrieve(
     "https://raw.githubusercontent.com/plotly/datasets/master/dash-sample-apps/dash-oil-and-gas/data/points.pkl",
-    DATA_PATH.joinpath("points.pkl")
+    DATA_PATH.joinpath("points.pkl"),
 )
 points = pickle.load(open(DATA_PATH.joinpath("points.pkl"), "rb"))
 
 
 # Load data
-df = pd.read_csv("https://github.com/plotly/datasets/raw/master/dash-sample-apps/dash-oil-and-gas/data/wellspublic.csv", low_memory=False)
+df = pd.read_csv(
+    "https://github.com/plotly/datasets/raw/master/dash-sample-apps/dash-oil-and-gas/data/wellspublic.csv",
+    low_memory=False,
+)
 df["Date_Well_Completed"] = pd.to_datetime(df["Date_Well_Completed"])
 df = df[df["Date_Well_Completed"] > dt.datetime(1960, 1, 1)]
 
