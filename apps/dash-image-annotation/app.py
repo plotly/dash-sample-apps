@@ -231,6 +231,13 @@ app.layout = html.Div(
                                     size="md",
                                     style={"font-size": "small"},
                                 ),
+                                dbc.Button(
+                                    "View Code on github",
+                                    outline=True,
+                                    color="primary",
+                                    href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-image-annotation",
+                                    id="gh-link",
+                                ),
                             ],
                             width=2,
                             align="center",
