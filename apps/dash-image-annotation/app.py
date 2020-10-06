@@ -197,7 +197,7 @@ app.layout = html.Div(
                                 id="logo", src=app.get_asset_url("dash-logo-new.png")
                             ),
                             width=2,
-                            align="center",
+                            # align="center",
                         ),
                         dbc.Col(
                             html.H1("Bounding Box Classification App", id="title"),

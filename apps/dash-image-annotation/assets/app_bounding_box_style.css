@@ -29,7 +29,9 @@ html {
     float: left;
 }
 
+
 #title {
+    margin: 0;
     color: white;
     /*
     width: 500px;
