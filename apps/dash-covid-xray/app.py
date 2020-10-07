@@ -12,6 +12,11 @@ from skimage import draw, filters, exposure, measure
 from scipy import ndimage
 from time import time
 
+app = dash.Dash(__name__)
+
+server = app.server
+
+t1 = time()
 # ------------- I/O and data massaging ---------------------------------------------------
 
 img = image.load_img("assets/radiopaedia_org_covid-19-pneumonia-7_85703_0-dcm.nii")
@@ -121,9 +126,9 @@ def mask_to_color(img):
     return mask
 
 
-app = dash.Dash(__name__)
+t2 = time()
+print("initial calculations", t2 -t1)
 
-server = app.server
 
 app.layout = html.Div(
     [
@@ -248,6 +253,8 @@ app.layout = html.Div(
     className="twelve columns",
 )
 
+t3 = time()
+print("layout definition", t3 -t2)
 
 @app.callback(
     Output("graph-histogram", "figure"), [Input("annotations", "data")],
