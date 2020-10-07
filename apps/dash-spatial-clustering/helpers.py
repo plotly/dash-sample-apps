@@ -16,7 +16,10 @@ from sklearn.preprocessing import scale
 app_path = pathlib.Path(__file__).parent.resolve()
 data_path = pathlib.Path(__file__).parent.joinpath("data")
 geo_json_path = data_path.joinpath("Zipcodes.geojson")
-austin_listings = pd.read_csv(data_path.joinpath("listings.csv"), low_memory=False)
+austin_listings = pd.read_csv(
+    "https://raw.githubusercontent.com/plotly/datasets/master/dash-sample-apps/dash-spatial-clustering/data/listings.csv",
+    low_memory=False,
+)
 
 # Refractor zipcode outlier, modify in place
 zip_outlier = austin_listings[austin_listings["zipcode"] == "TX 78702"].index
