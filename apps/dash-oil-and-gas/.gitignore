@@ -99,3 +99,5 @@ vv
 .DS_Store
 pyvenv.cfg
 .vscode/
+
+data/points.pkl
