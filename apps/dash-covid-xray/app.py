@@ -127,7 +127,7 @@ def mask_to_color(img):
 
 
 t2 = time()
-print("initial calculations", t2 -t1)
+print("initial calculations", t2 - t1)
 
 
 app.layout = html.Div(
@@ -254,7 +254,8 @@ app.layout = html.Div(
 )
 
 t3 = time()
-print("layout definition", t3 -t2)
+print("layout definition", t3 - t2)
+
 
 @app.callback(
     Output("graph-histogram", "figure"), [Input("annotations", "data")],
