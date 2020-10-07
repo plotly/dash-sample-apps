@@ -39,7 +39,7 @@ slices_2 = [
 med_img = filters.median(img_1, selem=np.ones((1, 3, 3), dtype=np.bool))
 # very_filtered_img = filters.median(img_1, selem=np.ones((1, 7, 7), dtype=np.bool))
 
-#verts, faces, _, _ = measure.marching_cubes(very_filtered_img, 200, step_size=3)
+# verts, faces, _, _ = measure.marching_cubes(very_filtered_img, 200, step_size=3)
 verts, faces, _, _ = measure.marching_cubes(med_img, 200, step_size=3)
 x, y, z = verts.T
 i, j, k = faces.T
