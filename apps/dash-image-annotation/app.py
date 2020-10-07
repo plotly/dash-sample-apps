@@ -47,8 +47,10 @@ for typ, col in typ_col_pairs:
 options = list(color_dict.keys())
 columns = ["Type", "X0", "Y0", "X1", "Y1"]
 # Open the readme for use in the context info
-with open("README.md", "r") as f:
-    readme = f.readlines()
+with open("assets/Howto.md", "r") as f:
+    # Using .read rather than .readlines because dcc.Markdown
+    # joins list of strings with newline characters
+    howto = f.read()
 
 
 def debug_print(*args):
@@ -207,23 +209,25 @@ app.layout = html.Div(
                         dbc.Col(
                             [
                                 dbc.Button(
-                                    "Readme",
-                                    id="readme-open",
+                                    "Learn more",
+                                    id="howto-open",
+                                    outline=True,
                                     color="secondary",
-                                    style={"margin": "5px"},
+                                    # Turn off lowercase transformation for class .button in stylesheet
+                                    style={"margin": "5px", "text-transform": "none"},
                                 ),
                                 dbc.Modal(
                                     [
                                         dbc.ModalBody(
                                             html.Div(
-                                                [dcc.Markdown(readme, id="readme-md")]
+                                                [dcc.Markdown(howto, id="howto-md")]
                                             )
                                         ),
                                         dbc.ModalFooter(
                                             dbc.Button(
                                                 "Close",
-                                                id="readme-close",
-                                                className="ml-auto",
+                                                id="howto-close",
+                                                className="howto-bn",
                                             )
                                         ),
                                     ],
@@ -239,8 +243,8 @@ app.layout = html.Div(
                                     id="gh-link",
                                 ),
                             ],
-                            width=2,
-                            align="center",
+                            width=3,
+                            align="right",
                         ),
                     ]
                 ),
@@ -463,7 +467,7 @@ def send_figure_to_graph(
 
 @app.callback(
     Output("modal", "is_open"),
-    [Input("readme-open", "n_clicks"), Input("readme-close", "n_clicks")],
+    [Input("howto-open", "n_clicks"), Input("howto-close", "n_clicks")],
     [State("modal", "is_open")],
 )
 def toggle_modal(n1, n2, is_open):
@@ -503,4 +507,4 @@ function(download_button_n_clicks)
 
 
 if __name__ == "__main__":
-    app.run_server()
+    app.run_server(debug=True)

@@ -57,7 +57,7 @@ override the settings in the dash bootstrap stylesheet
 }
 
 /* Set image width in the modal */
-#readme-md img {
+#howto-md img {
     max-width: 100%;
 }
     
