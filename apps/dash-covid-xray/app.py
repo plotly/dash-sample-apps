@@ -6,7 +6,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 import plotly.graph_objects as go
 import plotly.express as px
-from dash_canvas.utils import array_to_data_url
+from plotly.express._imshow import _array_to_b64str
 from nilearn import image
 from skimage import draw, filters, exposure, measure
 from scipy import ndimage
@@ -30,9 +30,9 @@ l_lat = img.shape[0]
 
 size_factor = abs(mat[2, 2] / mat[0, 0])
 
-slices_1 = [array_to_data_url(img_1[i]) for i in range(img_1.shape[0])]
+slices_1 = [_array_to_b64str(img_1[i], ext="jpg") for i in range(img_1.shape[0])]
 slices_2 = [
-    array_to_data_url(img_2[i]) for i in range(img_2.shape[0])[::-1]
+    _array_to_b64str(img_2[i], ext="jpg") for i in range(img_2.shape[0])[::-1]
 ]  # vertical
 
 
@@ -256,6 +256,101 @@ app.layout = html.Div(
 
 t3 = time()
 print("layout definition", t3 - t2)
+
+
+app.clientside_callback(
+    """
+function(n_slider, n_slider_2, seg_slices, slices, fig, annotations){
+        var size_factor = 8.777;
+        zpos = n_slider;
+        xpos = n_slider_2;
+        let fig_ = {...fig};
+        fig_.data[0].source = slices[zpos];
+        if (fig_.data.length  == 1 && zpos in seg_slices){
+            fig_.data.push({...fig.data[0]});
+            fig_.data[1].source = seg_slices[zpos];
+            fig_.data[1].hoverinfo = 'skip';
+            fig_.data[1].hovertemplate = '';
+        }
+        if (fig_.data.length  > 1 && zpos in seg_slices){
+            fig_.data[1].source = seg_slices[zpos];
+            fig_.data[1].hoverinfo = 'skip';
+            fig_.data[1].hovertemplate = '';
+        }
+        if (fig_.data.length  > 1 && !(zpos in seg_slices)){
+            fig_.data = fig_.data.slice(0, 1);
+        }
+        fig_.layout.shapes[0].y0 = xpos;
+        fig_.layout.shapes[0].y1 = xpos;
+        fig_.layout.shapes[1].y0 = xpos;
+        fig_.layout.shapes[1].y1 = xpos;
+        if ('z' in annotations && fig_.layout.shapes.length < 3){
+            fig_.layout.shapes.push(annotations['z']);
+            }
+        if (!('z' in annotations)){
+            fig_.layout.shapes = fig_.layout.shapes.slice(0, 2);
+            }
+        return fig_;
+    }
+""",
+    output=Output("graph", "figure"),
+    inputs=[
+        Input("slider", "value"),
+        Input("slider-2", "value"),
+        Input("segmentation-slices", "data"),
+    ],
+    state=[
+        State("small-slices", "data"),
+        State("graph", "figure"),
+        State("annotations", "data"),
+    ],
+)
+
+
+app.clientside_callback(
+    """
+function(n_slider, n_slider_2, seg_slices_2, slices_2, fig_2, annotations){
+        var size_factor = 8.777;
+        zpos = n_slider;
+        xpos = n_slider_2;
+        let fig_2_ = {...fig_2};
+        fig_2_.data[0].source = slices_2[xpos];
+        if (fig_2_.data.length  == 1 && xpos in seg_slices_2){
+            fig_2_.data.push({...fig_2.data[0]});
+            fig_2_.data[1].source = seg_slices_2[xpos];
+            fig_2_.data[1].hoverinfo = 'skip';
+            fig_2_.data[1].hovertemplate = '';
+        }
+        if (fig_2_.data.length  > 1 && zpos in seg_slices_2){
+            fig_2_.data[1].source = seg_slices_2[xpos];
+            fig_2_.data[1].hoverinfo = 'skip';
+            fig_2_.data[1].hovertemplate = '';
+        }
+        fig_2_.layout.shapes[0].y0 = zpos * size_factor;
+        fig_2_.layout.shapes[0].y1 = zpos * size_factor;
+        fig_2_.layout.shapes[1].y0 = zpos * size_factor;
+        fig_2_.layout.shapes[1].y1 = zpos * size_factor;
+        if ('x' in annotations && fig_2_.layout.shapes.length < 3){
+            fig_2_.layout.shapes.push(annotations['x']);
+            }
+        if (!('x' in annotations)){
+            fig_2_.layout.shapes = fig_2_.layout.shapes.slice(0, 2);
+            }
+        return fig_2_;
+    }
+""",
+    output=Output("graph-2", "figure"),
+    inputs=[
+        Input("slider", "value"),
+        Input("slider-2", "value"),
+        Input("segmentation-slices-2", "data"),
+    ],
+    state=[
+        State("small-slices-2", "data"),
+        State("graph-2", "figure"),
+        State("annotations", "data"),
+    ],
+)
 
 
 if __name__ == "__main__":
