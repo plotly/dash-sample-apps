@@ -2,6 +2,7 @@ import dash
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
 import dash_core_components as dcc
+import dash_bootstrap_components as dbc
 import dash_table
 import plotly.express as px
 import re
@@ -45,6 +46,11 @@ for typ, col in typ_col_pairs:
 
 options = list(color_dict.keys())
 columns = ["Type", "X0", "Y0", "X1", "Y1"]
+# Open the readme for use in the context info
+with open("assets/Howto.md", "r") as f:
+    # Using .read rather than .readlines because dcc.Markdown
+    # joins list of strings with newline characters
+    howto = f.read()
 
 
 def debug_print(*args):
@@ -158,7 +164,11 @@ def shape_data_remove_timestamp(shape):
     return new_shape
 
 
-external_stylesheets = ["assets/style.css", "assets/app_bounding_box_style.css"]
+external_stylesheets = [
+    dbc.themes.BOOTSTRAP,
+    "assets/style.css",
+    "assets/app_bounding_box_style.css",
+]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 filelist = [
@@ -182,8 +192,62 @@ app.layout = html.Div(
         html.Div(
             id="banner",
             children=[
-                html.H1("Bounding Box Classification App", id="title"),
-                html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png")),
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            html.Img(
+                                id="logo", src=app.get_asset_url("dash-logo-new.png")
+                            ),
+                            width=2,
+                            # align="center",
+                        ),
+                        dbc.Col(
+                            html.H1("Bounding Box Classification App", id="title"),
+                            width=4,
+                            align="center",
+                        ),
+                        dbc.Col(
+                            [
+                                dbc.Button(
+                                    "Learn more",
+                                    id="howto-open",
+                                    outline=True,
+                                    color="secondary",
+                                    # Turn off lowercase transformation for class .button in stylesheet
+                                    style={"margin": "5px", "text-transform": "none"},
+                                ),
+                                dbc.Modal(
+                                    [
+                                        dbc.ModalBody(
+                                            html.Div(
+                                                [dcc.Markdown(howto, id="howto-md")]
+                                            )
+                                        ),
+                                        dbc.ModalFooter(
+                                            dbc.Button(
+                                                "Close",
+                                                id="howto-close",
+                                                className="howto-bn",
+                                            )
+                                        ),
+                                    ],
+                                    id="modal",
+                                    size="md",
+                                    style={"font-size": "small"},
+                                ),
+                                dbc.Button(
+                                    "View Code on github",
+                                    outline=True,
+                                    color="primary",
+                                    href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-image-annotation",
+                                    id="gh-link",
+                                ),
+                            ],
+                            width=3,
+                            align="right",
+                        ),
+                    ]
+                ),
             ],
             className="twelve columns",
         ),
@@ -399,6 +463,17 @@ def send_figure_to_graph(
         annotations_store[filename]["shapes"] = shapes
         return (fig, annotations_store, [{"Timestamp": s["timestamp"]} for s in shapes])
     return dash.no_update
+
+
+@app.callback(
+    Output("modal", "is_open"),
+    [Input("howto-open", "n_clicks"), Input("howto-close", "n_clicks")],
+    [State("modal", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
 
 
 # set the download url to the contents of the annotations-store (so they can be
