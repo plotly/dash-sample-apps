@@ -405,7 +405,6 @@ function(surf, fig){
 )
 
 
-
 app.clientside_callback(
     """
 function(n_slider, n_slider_2, seg_slices, slices, fig, annotations){
