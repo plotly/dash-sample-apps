@@ -258,6 +258,154 @@ t3 = time()
 print("layout definition", t3 - t2)
 
 
+@app.callback(
+    Output("graph-histogram", "figure"), [Input("annotations", "data")],
+)
+def update_histo(annotations):
+    if (
+        annotations is None
+        or annotations.get("x") is None
+        or annotations.get("z") is None
+    ):
+        return dash.no_update
+    # Horizontal mask
+    path = path_to_indices(annotations["z"]["path"])
+    rr, cc = draw.polygon(path[:, 1], path[:, 0])
+    if len(rr) == 0 or len(cc) == 0:
+        return dash.no_update
+    mask = np.zeros((l_lat, l_lat))
+    mask[rr, cc] = 1
+    mask = ndimage.binary_fill_holes(mask)
+    # top and bottom, the top is a lower number than the bottom because y values
+    # increase moving down the figure
+    top, bottom = sorted([int(annotations["x"][c] / size_factor) for c in ["y0", "y1"]])
+    intensities = med_img[top:bottom, mask].ravel()
+    if len(intensities) == 0:
+        return dash.no_update
+    hi = exposure.histogram(intensities)
+    fig = px.bar(
+        x=hi[1],
+        y=hi[0],
+        title="3 - Histogram of intensity values - select a range of values to segment the occlusion <br> Hover on slices to find the typical values of the occlusion",
+        labels={"x": "intensity", "y": "count"},
+    )
+    fig.update_layout(dragmode="select", title_font=dict(size=20, color="blue"))
+    return fig
+
+
+@app.callback(
+    [
+        Output("segmentation-slices", "data"),
+        Output("segmentation-slices-2", "data"),
+        Output("occlusion-surface", "data"),
+    ],
+    [Input("graph-histogram", "selectedData"), Input("annotations", "data")],
+)
+def update_segmentation_slices(selected, annotations):
+    ctx = dash.callback_context
+    # When shape annotations are changed, reset segmentation visualization
+    if (
+        ctx.triggered[0]["prop_id"] == "annotations.data"
+        or annotations is None
+        or annotations.get("x") is None
+        or annotations.get("z") is None
+    ):
+        return {}, {}, go.Mesh3d()
+    elif selected is not None and "range" in selected:
+        if len(selected["points"]) == 0:
+            return (dash.no_update,) * 3
+        v_min, v_max = selected["range"]["x"]
+        t_start = time()
+        img_mask = np.logical_and(med_img > v_min, med_img <= v_max)
+        # Horizontal mask
+        path = path_to_indices(annotations["z"]["path"])
+        rr, cc = draw.polygon(path[:, 1], path[:, 0])
+        mask = np.zeros((l_lat, l_lat))
+        mask[rr, cc] = 1
+        mask = ndimage.binary_fill_holes(mask)
+        # top and bottom
+        # top and bottom, the top is a lower number than the bottom because y values
+        # increase moving down the figure
+        top, bottom = sorted(
+            [int(annotations["x"][c] / size_factor) for c in ["y0", "y1"]]
+        )
+        img_mask = np.logical_and(med_img > v_min, med_img <= v_max)
+        img_mask[:top] = False
+        img_mask[bottom:] = False
+        img_mask[top:bottom, np.logical_not(mask)] = False
+        img_mask = largest_connected_component(img_mask)
+        img_mask_color = mask_to_color(img_mask)
+        t_end = time()
+        print("build the mask", t_end - t_start)
+        t_start = time()
+        # Update 3d viz
+        verts, faces, _, _ = measure.marching_cubes(
+            filters.median(img_mask, selem=np.ones((1, 7, 7))), 0.5, step_size=3
+        )
+        t_end = time()
+        print("marching cubes", t_end - t_start)
+        x, y, z = verts.T
+        i, j, k = faces.T
+        trace = go.Mesh3d(x=z, y=y, z=x, color="red", opacity=0.8, i=k, j=j, k=i)
+        t_start = time()
+        # Build lists of binary strings for segmented slices
+        slices_dict = {
+            str(i): _array_to_b64str(img_mask_color[i]) for i in range(top, bottom)
+        }
+        slices_dict_2 = {
+            str(i): _array_to_b64str(img_mask_color[:, i])
+            for i in range(img_mask_color.shape[1])
+        }
+        t_end = time()
+        print("binary string", t_end - t_start)
+        return (slices_dict, slices_dict_2, trace)
+    else:
+        return (dash.no_update,) * 3
+
+
+@app.callback(
+    Output("annotations", "data"),
+    [Input("graph", "relayoutData"), Input("graph-2", "relayoutData"),],
+    [State("annotations", "data")],
+)
+def update_store(relayout, relayout2, annotations):
+    if relayout is not None and "shapes" in relayout:
+        if len(relayout["shapes"]) >= 3:
+            shape = relayout["shapes"][-1]
+            annotations["z"] = shape
+        else:
+            annotations.pop("z", None)
+    elif relayout is not None and "shapes[2].path" in relayout:
+        annotations["z"]["path"] = relayout["shapes[2].path"]
+    if relayout2 is not None and "shapes" in relayout2:
+        if len(relayout2["shapes"]) >= 3:
+            shape = relayout2["shapes"][-1]
+            annotations["x"] = shape
+        else:
+            annotations.pop("x", None)
+    elif relayout2 is not None and (
+        "shapes[2].y0" in relayout2 or "shapes[2].y1" in relayout2
+    ):
+        annotations["x"]["y0"] = relayout2["shapes[2].y0"]
+        annotations["x"]["y1"] = relayout2["shapes[2].y1"]
+    return annotations
+
+
+app.clientside_callback(
+    """
+function(surf, fig){
+        let fig_ = {...fig};
+        fig_.data[1] = surf;
+        return fig_;
+    }
+""",
+    output=Output("graph-helper", "figure"),
+    inputs=[Input("occlusion-surface", "data"),],
+    state=[State("graph-helper", "figure"),],
+)
+
+
+
 app.clientside_callback(
     """
 function(n_slider, n_slider_2, seg_slices, slices, fig, annotations){
