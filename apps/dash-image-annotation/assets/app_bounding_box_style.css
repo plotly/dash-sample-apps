@@ -24,20 +24,15 @@ html {
 }
 
 #logo {
-    display: inline;
     vertical-align: middle;
-    margin: 10px;
-    padding: 5px;
-    width: 15%;
-    float: right;
+    width: 100%;
+    float: left;
 }
 
+
 #title {
-    text-align: center;
+    margin: 0;
     color: white;
-    margin: 10px;
-    padding: 5px;
-    display: inline-block;
     /*
     width: 500px;
     border-radius: 5px;
@@ -51,6 +46,19 @@ html {
     display: table;
     content: "";
     clear: both;
+}
+
+/* set the margins of row elements to zero to
+override the settings in the dash bootstrap stylesheet
+ */
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+/* Set image width in the modal */
+#howto-md img {
+    max-width: 100%;
 }
     
 #timestamp-table {
