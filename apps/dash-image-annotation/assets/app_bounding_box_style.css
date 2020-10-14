@@ -29,6 +29,11 @@ html {
     float: left;
 }
 
+#logobar {
+    margin-left: 0;
+    margin-right: auto;
+}
+
 
 #title {
     margin: 0;
