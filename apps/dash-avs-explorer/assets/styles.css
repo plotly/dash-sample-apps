@@ -1,0 +1,58 @@
+body {
+	margin: 0;
+}
+
+#container {
+	position: fixed;
+	display: flex;
+	height: 100vh;
+	overflow: hidden;
+}
+
+#control-panel {
+	box-sizing: border-box;
+	width: 320px;
+	padding: 12px;
+	position: relative;
+	z-index: 1;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#control-panel hr {
+	margin: 24px -12px;
+	opacity: 0.3;
+}
+
+#log-panel {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+#map-view {
+	flex-grow: 1;
+	position: relative;
+}
+
+#timeline {
+	padding: 24px 0;
+	position: relative;
+}
+
+#hud {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+#hud hr {
+	margin: 0;
+	opacity: 0.3;
+}
