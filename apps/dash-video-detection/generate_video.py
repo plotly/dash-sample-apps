@@ -120,7 +120,6 @@ def fast_draw_boxes(
     return np.array(image_pil)
 
 
-
 module_handle = "https://tfhub.dev/google/openimages_v4/ssd/mobilenet_v2/1"
 detector = hub.load(module_handle).signatures["default"]
 codec = "XVID"
@@ -133,7 +132,7 @@ except IOError:
     print("Font not found, using default font.")
     font = ImageFont.load_default()
 
-i=2
+i = 2
 # Define the codec and create VideoWriter object
 VIDEO_PATH = f"./data/scene-{i}.mov"
 VIDEO_OUT = f"./data/processed/scene_{i}.mov"
@@ -156,7 +155,9 @@ sample_rate = 3
 for i, img in enumerate(tqdm(frames)):
     if i % sample_rate == 0:
         resized = cv2.resize(img, (512, 512))
-        image_tensor = tf.image.convert_image_dtype(resized, tf.float32)[tf.newaxis, ...]
+        image_tensor = tf.image.convert_image_dtype(resized, tf.float32)[
+            tf.newaxis, ...
+        ]
 
         result = detector(image_tensor)
 

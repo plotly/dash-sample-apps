@@ -171,15 +171,15 @@ def update_table(relayout_data, figure, table_data, curr_time, scene):
 
     if len(keys) == 0:
         return dash.no_update
-    elif 'shapes' in keys:
-        shapes = relayout_data['shapes']
+    elif "shapes" in keys:
+        shapes = relayout_data["shapes"]
         i = len(shapes) - 1
-    
+
     elif "shapes[" in keys[0]:
         i = int(keys[0].replace("shapes[", "").split("].")[0])
     else:
         return dash.no_update
-    
+
     if i >= len(shapes):
         return dash.no_update
 
@@ -210,20 +210,23 @@ def update_table(relayout_data, figure, table_data, curr_time, scene):
     return filtered_table_data
 
 
-@app.callback(Output("graph-detection", "figure"), [Input("store-figure", "data"), Input('graph-detection', 'relayoutData')])
+@app.callback(
+    Output("graph-detection", "figure"),
+    [Input("store-figure", "data"), Input("graph-detection", "relayoutData")],
+)
 def store_to_graph(data, relayout_data):
     ctx = dash.callback_context
 
     if not ctx.triggered:
         return dash.no_update
-    
-    prop_id = ctx.triggered[0]['prop_id'] 
 
-    if prop_id == 'store-figure.data':
+    prop_id = ctx.triggered[0]["prop_id"]
+
+    if prop_id == "store-figure.data":
         return data
-    
-    if 'shapes' in relayout_data:
-        data['layout']['shapes'] = relayout_data.get('shapes')
+
+    if "shapes" in relayout_data:
+        data["layout"]["shapes"] = relayout_data.get("shapes")
         return data
     else:
         return dash.no_update
@@ -262,7 +265,9 @@ def show_time(n_clicks, scene, ms):
     fig = px.imshow(im, binary_format="jpg")
     fig.update_xaxes(visible=False)
     fig.update_yaxes(visible=False)
-    fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=0, b=0), uirevision=n_clicks)
+    fig.update_layout(
+        showlegend=False, margin=dict(l=0, r=0, t=0, b=0), uirevision=n_clicks
+    )
 
     for i in range(min(10, boxes.shape[0])):
         class_id = scores[i].argmax()
