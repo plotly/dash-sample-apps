@@ -90,9 +90,9 @@ info_collapse = dbc.Collapse(
             dcc.Markdown(
                 dedent(
                     """
-            This app is based on [avs.auto](http://avs.auto/). This app 
-            loads scenes collected from self-driving car trips, and display 
-            both sensor (e.g. lidar, path) and human annotated data (bounding 
+            This app is based on [avs.auto](http://avs.auto/). This app
+            loads scenes collected from self-driving car trips, and display
+            both sensor (e.g. lidar, path) and human annotated data (bounding
             boxes). You can choose between two different UIs, a basic and an advanced one.
             Both UIs were created using [streetscape.gl](https://avs.auto/#/streetscape.gl/overview/introduction)
             and are available as Dash components inside [this repo](https://github.com/plotly/dash-avs-ui).
