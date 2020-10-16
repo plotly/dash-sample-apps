@@ -12,26 +12,29 @@ If this is in dash sample apps and you have a colab demo, uncomment the "Open in
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/plotly/dash-sample-apps/blob/master/apps/dash-av-video-detection/ColabDemo.ipynb)
  -->
 
+Given a pre-annotated video, this lets you run 2D object detection on a selected frame. You can also edit the annotations, add new bounding boxes, and export the new data table. Get the source code and read the blog post.
+
+💻 [Demo](https://dash-gallery.plotly.host/dash-video-detection/)
+
+📰 [Article](https://medium.com/plotly/the-history-of-autonomous-vehicle-datasets-and-3-open-source-python-apps-for-visualizing-them-afee9d13f58a)
+
+![demo](assets/demo.gif)
+
 ## Instructions
 
 To get started, first clone this repo:
 
-```
-git clone https://github.com/plotly/dash-av-video-detection.git
-cd dash-av-video-detection
-```
 
-<!--
 ```
 git clone https://github.com/plotly/dash-sample-apps.git
-cd dash-sample-apps/apps/dash-av-video-detection
+cd dash-sample-apps/apps/dash-video-detection
 ```
--->
+
 
 Create and activate a conda env:
 ```
-conda create -n dash-av-video-detection python=3.7.6
-conda activate dash-av-video-detection
+conda create -n dash-video-detection python=3.7.6
+conda activate dash-video-detection
 ```
 
 Or a venv (make sure your `python3` is 3.6+):
