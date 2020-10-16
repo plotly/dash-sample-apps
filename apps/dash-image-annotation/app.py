@@ -230,7 +230,7 @@ image_annotation_card = dbc.Card(
             [
                 dcc.Markdown(
                     "To annotate the above image, select an appropriate label on the right and then draw a "
-                    "rectangle with your cursor around the area of the image you wish to annotate\n\n"
+                    "rectangle with your cursor around the area of the image you wish to annotate.\n\n"
                     "**Choose a different image to annotate**:"
                 ),
                 dbc.ButtonGroup(
