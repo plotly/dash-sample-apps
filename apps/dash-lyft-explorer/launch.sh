@@ -1,4 +1,4 @@
-wget -O data.zip -Nq https://github.com/plotly/dash-lyft-perception-data/archive/master.zip
+wget -O data.zip -Nq https://sampleappsdata.blob.core.windows.net/dash-sample-apps-data/dash-lyft-perception-data-master.zip
 unzip -nq ./data.zip
 mv dash-lyft-perception-data-master ./data
 rm ./data.zip
