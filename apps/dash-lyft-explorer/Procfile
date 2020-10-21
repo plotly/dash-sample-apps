@@ -1,0 +1,2 @@
+# app:server
+web: bash launch.sh
