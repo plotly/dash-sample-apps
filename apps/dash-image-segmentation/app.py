@@ -304,12 +304,12 @@ sidebar = [
             dbc.CardHeader("Tools"),
             dbc.CardBody(
                 [
-                    html.H6("Label class"),
+                    html.H6("Label class", className="card-title"),
                     # Label class chosen with buttons
                     html.Div(
                         id="label-class-buttons",
                         children=[
-                            html.Button(
+                            dbc.Button(
                                 "%2d" % (n,),
                                 id={"type": "label-class-button", "index": n},
                                 style={"background-color": class_to_color(c)},
@@ -317,47 +317,77 @@ sidebar = [
                             for n, c in enumerate(class_labels)
                         ],
                     ),
-                    html.H6(id="stroke-width-display"),
-                    # Slider for specifying stroke width
-                    dcc.Slider(
-                        id="stroke-width",
-                        min=0,
-                        max=6,
-                        step=0.1,
-                        value=DEFAULT_STROKE_WIDTH,
-                    ),
-                    # Indicate showing most recently computed segmentation
-                    dcc.Checklist(
-                        id="show-segmentation",
-                        options=[
-                            {
-                                "label": "Show segmentation",
-                                "value": "Show segmentation",
-                            }
-                        ],
-                        value=[],
-                    ),
-                    html.H6("Features"),
-                    dcc.Checklist(
-                        id="segmentation-features",
-                        options=[
-                            {"label": l.capitalize(), "value": l}
-                            for l in SEG_FEATURE_TYPES
-                        ],
-                        value=["intensity", "edges"],
-                    ),
-                    html.H6("Blurring parameter"),
-                    dcc.RangeSlider(
-                        id="sigma-range-slider",
-                        min=0.01,
-                        max=20,
-                        step=0.01,
-                        value=[0.5, 16],
+                    html.Hr(),
+                    dbc.Form(
+                        [
+                            dbc.FormGroup(
+                                [
+                                    dbc.Label(
+                                        "Width of annotation paintbrush",
+                                        html_for="stroke-width",
+                                    ),
+                                    # Slider for specifying stroke width
+                                    dcc.Slider(
+                                        id="stroke-width",
+                                        min=0,
+                                        max=6,
+                                        step=0.1,
+                                        value=DEFAULT_STROKE_WIDTH,
+                                    ),
+                                ]
+                            ),
+                            dbc.FormGroup(
+                                [
+                                    html.H6(
+                                        id="stroke-width-display",
+                                        className="card-title",
+                                    ),
+                                    dbc.Label(
+                                        "Blurring parameter",
+                                        html_for="sigma-range-slider",
+                                    ),
+                                    dcc.RangeSlider(
+                                        id="sigma-range-slider",
+                                        min=0.01,
+                                        max=20,
+                                        step=0.01,
+                                        value=[0.5, 16],
+                                    ),
+                                ]
+                            ),
+                            dbc.FormGroup(
+                                [
+                                    dbc.Label(
+                                        "Select features",
+                                        html_for="segmentation-features",
+                                    ),
+                                    dcc.Checklist(
+                                        id="segmentation-features",
+                                        options=[
+                                            {"label": l.capitalize(), "value": l}
+                                            for l in SEG_FEATURE_TYPES
+                                        ],
+                                        value=["intensity", "edges"],
+                                    ),
+                                ]
+                            ),
+                            # Indicate showing most recently computed segmentation
+                            dcc.Checklist(
+                                id="show-segmentation",
+                                options=[
+                                    {
+                                        "label": "Show segmentation",
+                                        "value": "Show segmentation",
+                                    }
+                                ],
+                                value=[],
+                            ),
+                        ]
                     ),
                 ]
             ),
         ],
-    )
+    ),
 ]
 
 meta = [
@@ -623,4 +653,4 @@ def toggle_navbar_collapse(n, is_open):
 
 
 if __name__ == "__main__":
-    app.run_server()
+    app.run_server(debug=True)
