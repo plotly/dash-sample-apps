@@ -14,5 +14,10 @@
 
 .card {
     margin: 1em 0 1em 0;
-    min-width: min-content;
+    min-width: auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 0;
 }
