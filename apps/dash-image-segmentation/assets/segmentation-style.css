@@ -7,3 +7,8 @@
 #howto-open {
     white-space: nowrap;
 }
+
+.card {
+    margin: 1em 0 1em 0;
+    min-width: min-content;
+}

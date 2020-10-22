@@ -130,6 +130,15 @@ button_howto = dbc.Button(
     style={"textTransform": "none"},
 )
 
+button_github = dbc.Button(
+    "View Code on github",
+    outline=True,
+    color="primary",
+    href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-image-segmentation",
+    id="gh-link",
+    style={"text-transform": "none"},
+)
+
 # Header
 header = dbc.Navbar(
     dbc.Container(
@@ -142,7 +151,7 @@ header = dbc.Navbar(
                             src=app.get_asset_url("dash-logo-new.png"),
                             height="30px",
                         ),
-                        md="auto"
+                        md="auto",
                     ),
                     dbc.Col(
                         [
@@ -166,13 +175,19 @@ header = dbc.Navbar(
                         [
                             dbc.NavbarToggler(id="navbar-toggler"),
                             dbc.Collapse(
-                                dbc.Nav(dbc.NavItem(button_howto), navbar=True,),
+                                dbc.Nav(
+                                    [
+                                        dbc.NavItem(button_howto),
+                                        dbc.NavItem(button_github),
+                                    ],
+                                    navbar=True,
+                                ),
                                 id="navbar-collapse",
                                 navbar=True,
                             ),
                             modal_overlay,
                         ],
-                        md=2
+                        md=2,
                     ),
                 ],
                 align="center",
@@ -182,46 +197,100 @@ header = dbc.Navbar(
     ),
     dark=True,
     color="dark",
+    sticky="top",
 )
 
 # Description
-description = dbc.Row(
-    children=[
-        dbc.Col(
-            html.P(
-                "This is an example of interactive machine learning for image classification. "
-                "To train the classifier, draw some marks on the picture using different colors for "
-                'different parts, like in the example image. Then enable "Show segmentation" to see the '
-                "classes a Random Forest Classifier gave to regions of the image, based on the marks you "
-                "used as a guide. You may add more marks to clarify parts of the image where the "
-                "classifier was not successful and the classification will update.",
-            ),
-            md=10,
-        ),
-        dbc.Col(
-            html.Img(
-                id="example-image",
-                # TODO replace with get url from asset (see above)
-                src="assets/segmentation_img_example_marks.jpg",
-            ),
-            md=2,
-        ),
-    ]
+description = dbc.Col(
+    [
+        dbc.Card(
+            id="description-card",
+            children=[
+                dbc.CardHeader("Explanation"),
+                dbc.CardBody(
+                    [
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    [
+                                        html.Img(
+                                            src="assets/segmentation_img_example_marks.jpg",
+                                            width="200px",
+                                        )
+                                    ],
+                                    md="auto",
+                                ),
+                                dbc.Col(
+                                    html.P(
+                                        "This is an example of interactive machine learning for image classification. "
+                                        "To train the classifier, draw some marks on the picture using different colors for "
+                                        'different parts, like in the example image. Then enable "Show segmentation" to see the '
+                                        "classes a Random Forest Classifier gave to regions of the image, based on the marks you "
+                                        "used as a guide. You may add more marks to clarify parts of the image where the "
+                                        "classifier was not successful and the classification will update."
+                                    ),
+                                    md=True,
+                                ),
+                            ]
+                        ),
+                    ]
+                ),
+            ],
+        )
+    ],
+    md=12,
 )
 
 # Image Segmentation
 segmentation = [
-    dcc.Loading(
-        id="segmentations-loading",
-        type="circle",
+    dbc.Card(
+        id="segmentation-card",
         children=[
-            # Graph
-            dcc.Graph(
-                id="graph",
-                figure=make_default_figure(),
-                config={
-                    "modeBarButtonsToAdd": ["drawrect", "drawopenpath", "eraseshape",]
-                },
+            dbc.CardHeader("Viewer"),
+            dbc.CardBody(
+                [
+                    dcc.Loading(
+                        id="segmentations-loading",
+                        type="circle",
+                        children=[
+                            # Graph
+                            dcc.Graph(
+                                id="graph",
+                                figure=make_default_figure(),
+                                config={
+                                    "modeBarButtonsToAdd": [
+                                        "drawrect",
+                                        "drawopenpath",
+                                        "eraseshape",
+                                    ]
+                                },
+                            ),
+                        ],
+                    ),
+                    # Download links
+                    html.A(id="download", download="classifier.json",),
+                    html.Div(
+                        children=[
+                            dbc.ButtonGroup(
+                                [
+                                    dbc.Button(
+                                        "Download classified image",
+                                        id="download-image-button",
+                                        outline=True,
+                                    ),
+                                    dbc.Button(
+                                        "Download classifier",
+                                        id="download-button",
+                                        outline=True,
+                                    ),
+                                ],
+                                size="lg",
+                                style={"width": "100%"},
+                            ),
+                        ],
+                    ),
+                    html.A(id="download-image", download="classified-image.png",),
+                ]
             ),
         ],
     )
@@ -229,55 +298,66 @@ segmentation = [
 
 # sidebar
 sidebar = [
-    html.H6("Label class"),
-    # Label class chosen with buttons
-    html.Div(
-        id="label-class-buttons",
+    dbc.Card(
+        id="sidebar-card",
         children=[
-            html.Button(
-                "%2d" % (n,),
-                id={"type": "label-class-button", "index": n},
-                style={"background-color": class_to_color(c)},
-            )
-            for n, c in enumerate(class_labels)
-        ],
-    ),
-    html.H6(id="stroke-width-display"),
-    # Slider for specifying stroke width
-    dcc.Slider(id="stroke-width", min=0, max=6, step=0.1, value=DEFAULT_STROKE_WIDTH,),
-    # Indicate showing most recently computed segmentation
-    dcc.Checklist(
-        id="show-segmentation",
-        options=[{"label": "Show segmentation", "value": "Show segmentation",}],
-        value=[],
-    ),
-    html.H6("Features"),
-    dcc.Checklist(
-        id="segmentation-features",
-        options=[{"label": l.capitalize(), "value": l} for l in SEG_FEATURE_TYPES],
-        value=["intensity", "edges"],
-    ),
-    html.H6("Blurring parameter"),
-    dcc.RangeSlider(
-        id="sigma-range-slider", min=0.01, max=20, step=0.01, value=[0.5, 16],
-    ),
-    html.Div(
-        children=[
-            html.Button("Download classifier", id="download-button"),
-            html.Span(
-                "A script for using the classifier can be found in the source repository of this webapp: https://github.com/plotly/dash-sample-apps/dash-interactive-image-segmentation.",
-                className="tooltiptext",
+            dbc.CardHeader("Tools"),
+            dbc.CardBody(
+                [
+                    html.H6("Label class"),
+                    # Label class chosen with buttons
+                    html.Div(
+                        id="label-class-buttons",
+                        children=[
+                            html.Button(
+                                "%2d" % (n,),
+                                id={"type": "label-class-button", "index": n},
+                                style={"background-color": class_to_color(c)},
+                            )
+                            for n, c in enumerate(class_labels)
+                        ],
+                    ),
+                    html.H6(id="stroke-width-display"),
+                    # Slider for specifying stroke width
+                    dcc.Slider(
+                        id="stroke-width",
+                        min=0,
+                        max=6,
+                        step=0.1,
+                        value=DEFAULT_STROKE_WIDTH,
+                    ),
+                    # Indicate showing most recently computed segmentation
+                    dcc.Checklist(
+                        id="show-segmentation",
+                        options=[
+                            {
+                                "label": "Show segmentation",
+                                "value": "Show segmentation",
+                            }
+                        ],
+                        value=[],
+                    ),
+                    html.H6("Features"),
+                    dcc.Checklist(
+                        id="segmentation-features",
+                        options=[
+                            {"label": l.capitalize(), "value": l}
+                            for l in SEG_FEATURE_TYPES
+                        ],
+                        value=["intensity", "edges"],
+                    ),
+                    html.H6("Blurring parameter"),
+                    dcc.RangeSlider(
+                        id="sigma-range-slider",
+                        min=0.01,
+                        max=20,
+                        step=0.01,
+                        value=[0.5, 16],
+                    ),
+                ]
             ),
         ],
-        className="tooltip",
-    ),
-    html.A(id="download", download="classifier.json",),
-    html.Div(
-        children=[
-            html.Button("Download classified image", id="download-image-button",),
-        ],
-    ),
-    html.A(id="download-image", download="classified-image.png",),
+    )
 ]
 
 meta = [
@@ -301,7 +381,7 @@ app.layout = html.Div(
         header,
         dbc.Container(
             [
-                description,
+                dbc.Row(description),
                 dbc.Row(
                     id="app-content",
                     children=[dbc.Col(segmentation, md=8), dbc.Col(sidebar, md=4)],
@@ -543,4 +623,4 @@ def toggle_navbar_collapse(n, is_open):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server()
