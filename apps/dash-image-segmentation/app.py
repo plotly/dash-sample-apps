@@ -583,7 +583,7 @@ app.clientside_callback(
     """
 function(the_store_data) {
     let s = JSON.stringify(the_store_data);
-    let b = new Blob([s],{type: 'text/plain'});         
+    let b = new Blob([s],{type: 'text/plain'});
     let url = URL.createObjectURL(b);
     return url;
 }
