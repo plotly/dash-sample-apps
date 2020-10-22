@@ -267,6 +267,10 @@ segmentation = [
                             ),
                         ],
                     ),
+                ]
+            ),
+            dbc.CardFooter(
+                [
                     # Download links
                     html.A(id="download", download="classifier.json",),
                     html.Div(
@@ -567,7 +571,7 @@ def annotation_react(
     return (
         fig,
         masks_data,
-        "Stroke width: %d" % (stroke_width,),
+        "Current paintbrush width: %d" % (stroke_width,),
         classifier_store_data,
         classified_image_store_data,
     )
