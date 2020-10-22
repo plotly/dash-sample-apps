@@ -1,0 +1,10 @@
+plotly>=4.10.0
+dash>=1.16.1
+dash_bootstrap_components
+pandas
+scikit-image
+dash_canvas
+joblib
+ipython
+nilearn
+gunicorn
