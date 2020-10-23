@@ -216,6 +216,39 @@ def make_default_3d_fig():
     return fig
 
 
+def make_modal():
+    with open("README.md", "r") as f:
+        readme_md = f.read()
+
+    return html.Div(
+        id="markdown",
+        className="modal",
+        style={"display": "none"},
+        children=[
+            html.Div(
+                id="markdown-container",
+                className="markdown-container",
+                # style={
+                #     "color": text_color["light"],
+                #     "backgroundColor": card_color["light"],
+                # },
+                children=[
+                    html.Div(
+                        className="close-container",
+                        children=html.Button(
+                            "Close",
+                            id="markdown_close",
+                            n_clicks=0,
+                            className="closeButton",
+                            style={"color": "DarkBlue"},
+                        ),
+                    ),
+                    html.Div(className="markdown-text", children=dcc.Markdown(readme_md)),
+                ],
+            )
+        ],
+    )
+
 app.layout = html.Div(
     id="main",
     children=[
@@ -233,17 +266,21 @@ app.layout = html.Div(
                             "margin": "0",
                         },
                     ),
-                    style={
-                        "flex": "5 1 0",
-                        "position": "relative",
-                        "align-items": "center",
-                        "display": "flex",
-                    },
                 ),
+                html.Div(
+                    html.Button(
+                        "Learn more",
+                        id="learn-more-button",
+                        n_clicks=0,
+                        style={"width": "auto"},
+                    ),
+                ),
+                # Adding the modal content here. It is only shown if the show-modal
+                # button is pressed
+                make_modal(),
                 html.Img(
                     id="logo",
                     src=app.get_asset_url("dash-logo-new.png"),
-                    style={"flex": "1 1 0", "object-fit": "contain"},
                 ),
             ],
             style={
@@ -946,6 +983,18 @@ def populate_3d_graph(
     end_time = time.time()
     PRINT("serverside 3D generation took: %f seconds" % (end_time - start_time,))
     return (fig, current_render_id)
+
+
+# ======= Callback for modal popup =======
+@app.callback(
+    Output("markdown", "style"),
+    [Input("learn-more-button", "n_clicks"), Input("markdown_close", "n_clicks")],
+)
+def update_click_output(button_click, close_click):
+    if button_click > close_click:
+        return {"display": "block"}
+    else:
+        return {"display": "none"}
 
 
 if __name__ == "__main__":

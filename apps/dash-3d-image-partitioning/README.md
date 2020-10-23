@@ -1,4 +1,4 @@
-# Paritioning 3D images with `Dash` and `scikit-image`
+# Partitioning 3D images with `Dash` and `scikit-image`
 
 ## Setup
 
