@@ -21,3 +21,7 @@ label {
   display: block;
   margin-bottom: 0;
 }
+
+#transparent-loader-wrapper > div {
+    visibility: visible !important;
+}
