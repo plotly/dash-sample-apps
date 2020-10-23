@@ -63,3 +63,6 @@
   border-radius: 10px;
 }
 
+#markdown-container img {
+    max-width: 100%;
+}
