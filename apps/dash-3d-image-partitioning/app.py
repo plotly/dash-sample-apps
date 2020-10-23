@@ -243,11 +243,14 @@ def make_modal():
                             style={"color": "DarkBlue"},
                         ),
                     ),
-                    html.Div(className="markdown-text", children=dcc.Markdown(readme_md)),
+                    html.Div(
+                        className="markdown-text", children=dcc.Markdown(readme_md)
+                    ),
                 ],
             )
         ],
     )
+
 
 app.layout = html.Div(
     id="main",
@@ -278,10 +281,7 @@ app.layout = html.Div(
                 # Adding the modal content here. It is only shown if the show-modal
                 # button is pressed
                 make_modal(),
-                html.Img(
-                    id="logo",
-                    src=app.get_asset_url("dash-logo-new.png"),
-                ),
+                html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png"),),
             ],
             style={
                 "display": "flex",
