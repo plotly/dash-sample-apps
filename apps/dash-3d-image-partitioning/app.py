@@ -217,7 +217,7 @@ def make_default_3d_fig():
 
 
 def make_modal():
-    with open("README.md", "r") as f:
+    with open("assets/howto.md", "r") as f:
         readme_md = f.read()
 
     return html.Div(
