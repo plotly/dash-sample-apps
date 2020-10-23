@@ -638,7 +638,7 @@ function (download_image_href) {
 )
 
 
-# ======= Callback for modal popup =======
+# Callback for modal popup
 @app.callback(
     Output("modal", "is_open"),
     [Input("howto-open", "n_clicks"), Input("howto-close", "n_clicks")],
