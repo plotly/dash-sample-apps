@@ -249,22 +249,28 @@ segmentation = [
             dbc.CardHeader("Viewer"),
             dbc.CardBody(
                 [
-                    dcc.Loading(
-                        id="segmentations-loading",
-                        type="circle",
+                    # Wrap dcc.Loading in a div to force transparency when loading
+                    html.Div(
+                        id="transparent-loader-wrapper",
                         children=[
-                            # Graph
-                            dcc.Graph(
-                                id="graph",
-                                figure=make_default_figure(),
-                                config={
-                                    "modeBarButtonsToAdd": [
-                                        "drawrect",
-                                        "drawopenpath",
-                                        "eraseshape",
-                                    ]
-                                },
-                            ),
+                            dcc.Loading(
+                                id="segmentations-loading",
+                                type="circle",
+                                children=[
+                                    # Graph
+                                    dcc.Graph(
+                                        id="graph",
+                                        figure=make_default_figure(),
+                                        config={
+                                            "modeBarButtonsToAdd": [
+                                                "drawrect",
+                                                "drawopenpath",
+                                                "eraseshape",
+                                            ]
+                                        },
+                                    ),
+                                ],
+                            )
                         ],
                     ),
                 ]
