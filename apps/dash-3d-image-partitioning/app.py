@@ -838,7 +838,12 @@ def save_found_slices(fstc_slices):
     [Input("download-button", "n_clicks"), Input("download-brain-button", "n_clicks")],
     [State("found-segs", "data"), State("image-slices", "data")],
 )
-def download_button_react(download_button_n_clicks, download_brain_button_n_clicks, found_segs_data, brain_data):
+def download_button_react(
+    download_button_n_clicks,
+    download_brain_button_n_clicks,
+    found_segs_data,
+    brain_data,
+):
     ctx = dash.callback_context
     # Find out which download button was triggered
     if not ctx.triggered:
