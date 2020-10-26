@@ -364,9 +364,14 @@ app.layout = html.Div(
                                     style={"width": "25%"},
                                 ),
                                 html.Button(
+                                    "Download Brain Volume",
+                                    id="download-brain-button",
+                                    style={"width": "auto"},
+                                ),
+                                html.Button(
                                     "Download Selected Partitions",
                                     id="download-button",
-                                    style={"width": "25%"},
+                                    style={"width": "auto"},
                                 ),
                                 html.Button(
                                     "Undo",
@@ -802,7 +807,10 @@ def slice_image_list_to_ndarray(fstc_slices):
         fstc_ndarray[n] = img
     PRINT("fstc_ndarray.shape", fstc_ndarray.shape)
     # transpose back to original
-    PRINT("fstc_ndarray.shape", fstc_ndarray.shape)
+    if len(fstc_ndarray.shape) == 3:
+        # Brain data is lacking the 4th channel dimension
+        # Here we allow for this function to also return an array for the 3D brain data
+        return fstc_ndarray.transpose((1, 2, 0))
     return fstc_ndarray.transpose((1, 2, 0, 3))
 
 
@@ -827,11 +835,23 @@ def save_found_slices(fstc_slices):
 
 @app.callback(
     Output("found-image-tensor-data", "data"),
-    [Input("download-button", "n_clicks")],
-    [State("found-segs", "data")],
+    [Input("download-button", "n_clicks"), Input("download-brain-button", "n_clicks")],
+    [State("found-segs", "data"), State("image-slices", "data")],
 )
-def download_button_react(download_button_n_clicks, found_segs_data):
-    ret = save_found_slices(found_segs_data)
+def download_button_react(download_button_n_clicks, download_brain_button_n_clicks, found_segs_data, brain_data):
+    ctx = dash.callback_context
+    # Find out which download button was triggered
+    if not ctx.triggered:
+        # Nothing has happened yet
+        return ""
+    trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
+    if trigger_id == "download-button":
+        ret = save_found_slices(found_segs_data)
+    elif trigger_id == "download-brain-button":
+        ret = save_found_slices(brain_data)
+    else:
+        return ""
+
     if ret is None:
         return ""
     return ret
