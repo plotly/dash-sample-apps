@@ -3,7 +3,7 @@ This dash app allows you to annotate automatically segmented brain regions.
 You might, for example, want to annotate an area of hypoperfusion in an acutely infarcted brain and then download this annotation for further use. 
 This app allows you to:
 - interactively move through sliced representations of the brain
-- see an overlay of the automatically computed segmentation of the brain into superpixels (regions of the brain)
+- see an overlay of the automatically computed over-segmentation of the brain into superpixels (regions of the brain)
 - highlight one or several superpixels
 - see the highlighted superpixels rendered in a 3D glass brain representation
 - download a file with that contains the highlighted superpixels
