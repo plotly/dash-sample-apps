@@ -1,6 +1,8 @@
 ## What this app can do
 This dash app allows you to annotate automatically segmented brain regions. 
-You might, for example, want to annotate an area of hypoperfusion in an acutely infarcted brain and then download this annotation for further use. 
+Here you can see a brain that contains a brain tumour. The dataset is taken from the [MICCAI Brain Tumor Segmentation Challenge](http://braintumorsegmentation.org/). 
+
+You may want to annotate the area of the brain where the tumour is located and then download this annotation for further use.
 This app allows you to:
 - interactively move through sliced representations of the brain
 - see an overlay of the automatically computed over-segmentation of the brain into superpixels (regions of the brain)
@@ -23,8 +25,9 @@ All areas that you draw on in this way will then be highlighted in the Top View 
 
 You can undo or redo your last drawing with the corresponding buttons. To see the annotated superpixels in an interactive 3D rendering,
 click on the "3D View" button. 
-The "Download Selected Partitions" button will download the highlighted areas as a Nifti file.
-You can open and explore this file with a viewer program like [MRIcroGL](https://www.mccauslandcenter.sc.edu/mricrogl/home).
+The "Download Selected Partitions" button will download the highlighted areas as a Nifti file and you can download the underlying brain volume with the "Download Brain Volume" button.
+
+You can open, plot, and explore the downloaded .nii files with one of the [plotting functions from the nilearn library](https://nilearn.github.io/plotting/index.html) or with a viewer program like [MRIcroGL](https://www.mccauslandcenter.sc.edu/mricrogl/home).
 
 ## Where to find out more about this app
 You can find the source code of this app [on Github](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-3d-image-partitioning).
