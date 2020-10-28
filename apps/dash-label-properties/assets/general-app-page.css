@@ -1,0 +1,46 @@
+#app-page-content {
+    margin: 0px;
+    margin-top: -1px; /* hide border between header and content */
+    width: 100%;
+    height: auto;
+    min-height: calc(100vh - 100px);
+    position: absolute;
+    top: 100px;
+}
+
+#app-page-header {
+    width: 100%;
+    height: 100px !important;
+    font-family: 'Dosis';
+    position: absolute;
+    top: 0px;
+}
+
+#app-page-header > a > img {
+    height: 70px;
+    float: left;
+    padding: 10px;
+    padding-bottom: 0px;
+    transition-duration:500ms;
+}
+
+#app-page-header > a > img:hover {
+    filter:brightness(2.00); 
+}
+
+#app-page-header h2 {
+    font-size: 34pt;
+    display: inline-block;
+}
+
+#app-page-header #gh-link > img {
+    height: 50px;
+    float:right;
+    margin-top: 15px;
+    margin-right: 10px;
+    transition-duration:500ms;
+}
+
+#app-page-header #gh-link > img:hover {
+    -webkit-filter:invert(100%);
+}
