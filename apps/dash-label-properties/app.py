@@ -116,7 +116,6 @@ data = pd.DataFrame(
 
 app = dash.Dash(__name__)
 server = app.server
-app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div(
     [
@@ -203,6 +202,9 @@ def higlight_row(string):
     When hovering hover label, highlight corresponding row in table,
     using label column.
     """
+    if not dash.callback_context.triggered:
+        # Nothing has happened yet
+        return []
     index = string["points"][0]["z"]
     return [
         {
@@ -247,15 +249,19 @@ def highlight_filter(indices, cell_index, data, current_labels, previous_row):
             hoverinfo="skip",
         )
         return [fig, current_labels, cell_index["row"]]
-    filtered_labels = np.array(
-        pd.DataFrame(data).lookup(np.array(indices), ["label",] * len(indices))
-    )
-    mask = np.in1d(labels.ravel(), filtered_labels).reshape(labels.shape)
-    new_labels = np.copy(labels)
-    new_labels *= mask
+    if not dash.callback_context.triggered:
+        # Nothing has happened yet
+        new_labels = labels
+    else:
+        filtered_labels = np.array(
+            pd.DataFrame(data).lookup(np.array(indices), ["label",] * len(indices))
+        )
+        mask = np.in1d(labels.ravel(), filtered_labels).reshape(labels.shape)
+        new_labels = np.copy(labels)
+        new_labels *= mask
     fig = image_with_contour(img, new_labels, mode=None)
     return [fig, new_labels, previous_row]
 
 
 if __name__ == "__main__":
-    app.run_server()
+    app.run_server(debug=True)
