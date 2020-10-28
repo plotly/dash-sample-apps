@@ -298,7 +298,7 @@ def highlight_filter(indices, cell_index, data, current_labels, previous_row):
     When a cell is selected (active_cell), highlight this particular label
     with a red outline.
 
-    When the set of filtered labels changes, or when a row is deleted. 
+    When the set of filtered labels changes, or when a row is deleted.
     """
     if cell_index and cell_index["row"] != previous_row:
         current_labels = np.asanyarray(current_labels)
