@@ -10,3 +10,4 @@ scikit-learn
 pandas
 numpy
 Pillow
+dash-bootstrap-components==0.10.7
