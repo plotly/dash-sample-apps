@@ -1,0 +1,1 @@
+web: gunicorn apps.object-properties.app:server --workers 2
