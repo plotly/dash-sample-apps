@@ -30,10 +30,8 @@ filename = (
 )
 img = io.imread(filename, as_gray=True)[:660:2, :800:2]
 labels = measure.label(img < filters.threshold_otsu(img))
-props = measure.regionprops(labels, img)
-
-# Define table columns
-list_columns = [
+# Compute and store properties of the labeled image
+prop_names = [
     "label",
     "area",
     "perimeter",
@@ -41,6 +39,11 @@ list_columns = [
     "euler_number",
     "mean_intensity",
 ]
+prop_table = measure.regionprops_table(
+    labels, intensity_image=img, properties=prop_names
+)
+table = pd.DataFrame(prop_table)
+# Format the Table columns
 columns = [
     {"name": label_name, "id": label_name}
     if precision is None
@@ -50,12 +53,8 @@ columns = [
         "type": "numeric",
         "format": Format(precision=precision),
     }
-    for label_name, precision in zip(list_columns, (None, None, 4, 4, None, 3))
+    for label_name, precision in zip(prop_names, (None, None, 4, 4, None, 3))
 ]
-table = pd.DataFrame(
-    [[getattr(prop, col) for col in list_columns] for prop in props],
-    columns=list_columns,
-)
 
 
 def image_with_contour(img, labels, mode="lines", shape=None):
@@ -262,16 +261,15 @@ app.layout = html.Div(
 
 
 @app.callback(
-    Output("table-line", "style_data_conditional"), [Input("graph", "hoverData")]
+    Output("table-line", "style_data_conditional"),
+    [Input("graph", "hoverData")],
+    prevent_initial_call=True,
 )
 def higlight_row(string):
     """
     When hovering hover label, highlight corresponding row in table,
     using label column.
     """
-    if not dash.callback_context.triggered:
-        # Nothing has happened yet
-        return []
     index = string["points"][0]["z"]
     return [
         {
@@ -290,6 +288,7 @@ def higlight_row(string):
         Input("table-line", "data"),
     ],
     [State("cache", "data"), State("row", "children")],
+    prevent_initial_call=True,
 )
 def highlight_filter(indices, cell_index, data, current_labels, previous_row):
     """
