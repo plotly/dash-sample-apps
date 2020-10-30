@@ -57,7 +57,7 @@ columns = [
 ]
 
 
-def image_with_contour(img, labels, mode="lines", shape=None):
+def image_with_contour(img, labels, data_table, mode="lines", shape=None):
     """
     Figure with contour plot of labels superimposed on background image.
 
@@ -90,16 +90,38 @@ def image_with_contour(img, labels, mode="lines", shape=None):
     print("mode is", mode)
     opacity = 0.4 if mode is None else 1
 
-    fig = px.imshow(img, binary_backend="jpg")
+    # Compute overlay data to display in hovertemplate
+    overlay_columns = data_table.columns[1:]
+    indices = data_table.label.values
+    values = np.zeros((indices.max() + 1, len(overlay_columns)))
+    values[indices, :] = data_table[overlay_columns].values
+    overlay_data = np.dstack(
+        [
+            values[:, col_id][labels.astype(int)]
+            for col_id, col in enumerate(overlay_columns)
+        ]
+    )
+    # Display hover data with precision if data is float
+    hover_string = [
+        f"{col}: %{{customdata[{col_id}]:.3f}}"
+        if data_table[col].dtype in (np.float,)
+        else f"{col}: %{{customdata[{col_id}]:d}}"
+        for col_id, col in enumerate(overlay_columns)
+    ]
+    hovertemplate = "<br>".join(hover_string)
+    fig = px.imshow(img, binary_string=True, binary_backend="jpg")
     fig.add_contour(
         z=labels,
         contours=dict(start=0, end=labels.max() + 1, size=1, coloring=mode),
+        customdata=overlay_data,
+        hovertemplate=hovertemplate,
         line=dict(width=1),
         showscale=False,
         colorscale=custom_viridis,
         opacity=opacity,
     )
-    # Remove axis ticks and labels
+    # Remove axis ticks and labels and have the image fill the container
+    fig.update_layout(margin=dict(l=0, r=0, b=0, t=0, pad=0),)
     fig.update_xaxes(showticklabels=False).update_yaxes(showticklabels=False)
 
     return fig
@@ -215,7 +237,8 @@ image_card = dbc.Card(
             dbc.Row(
                 dbc.Col(
                     dcc.Graph(
-                        id="graph", figure=image_with_contour(img, labels, mode=None),
+                        id="graph",
+                        figure=image_with_contour(img, labels, table, mode=None),
                     )
                 )
             )
@@ -299,11 +322,12 @@ def highlight_filter(indices, cell_index, data, current_labels, previous_row):
 
     When the set of filtered labels changes, or when a row is deleted.
     """
+    _table = pd.DataFrame(data)
     if cell_index and cell_index["row"] != previous_row:
         current_labels = np.asanyarray(current_labels)
         label = indices[cell_index["row"]] + 1
         mask = (labels == label).astype(np.float)
-        fig = image_with_contour(img, current_labels, mode=None)
+        fig = image_with_contour(img, current_labels, _table, mode=None)
         # Add the outline of the selected label as a contour to the figure
         fig.add_contour(
             z=mask,
@@ -315,17 +339,13 @@ def highlight_filter(indices, cell_index, data, current_labels, previous_row):
             hoverinfo="skip",
         )
         return [fig, current_labels, cell_index["row"]]
-    if not dash.callback_context.triggered:
-        # Nothing has happened yet
-        new_labels = labels
-    else:
-        filtered_labels = np.array(
-            pd.DataFrame(data).lookup(np.array(indices), ["label",] * len(indices))
-        )
-        mask = np.in1d(labels.ravel(), filtered_labels).reshape(labels.shape)
-        new_labels = np.copy(labels)
-        new_labels *= mask
-    fig = image_with_contour(img, new_labels, mode=None)
+    filtered_labels = np.array(
+        _table.lookup(np.array(indices), ["label",] * len(indices))
+    )
+    mask = np.in1d(labels.ravel(), filtered_labels).reshape(labels.shape)
+    new_labels = np.copy(labels)
+    new_labels *= mask
+    fig = image_with_contour(img, new_labels, _table, mode=None)
     return [fig, new_labels, previous_row]
 
 
