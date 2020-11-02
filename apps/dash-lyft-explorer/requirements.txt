@@ -1,0 +1,13 @@
+dash
+dash-deck
+dash-bootstrap-components
+lyft-dataset-sdk
+pydeck
+jupyter
+colorlover
+plotly
+Pillow
+gunicorn
+numpy
+pandas
+opencv-python==4.2.0.34

@@ -1,0 +1,27 @@
+/*!* Set image width in the modal *!*/
+#howto-md img {
+    max-width: 100%;
+}
+
+/* set the margins of row elements to zero to
+override the settings in the dash bootstrap stylesheet */
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#gh-link {
+    white-space: nowrap;
+}
+
+#howto-open {
+    white-space: nowrap;
+}
+
+.card {
+    margin-bottom: 10px;
+}
+
+h3 {
+    padding-top: 10px;
+}

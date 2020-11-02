@@ -216,6 +216,42 @@ def make_default_3d_fig():
     return fig
 
 
+def make_modal():
+    with open("assets/howto.md", "r") as f:
+        readme_md = f.read()
+
+    return html.Div(
+        id="markdown",
+        className="modal",
+        style={"display": "none"},
+        children=[
+            html.Div(
+                id="markdown-container",
+                className="markdown-container",
+                # style={
+                #     "color": text_color["light"],
+                #     "backgroundColor": card_color["light"],
+                # },
+                children=[
+                    html.Div(
+                        className="close-container",
+                        children=html.Button(
+                            "Close",
+                            id="markdown_close",
+                            n_clicks=0,
+                            className="closeButton",
+                            style={"color": "DarkBlue"},
+                        ),
+                    ),
+                    html.Div(
+                        className="markdown-text", children=dcc.Markdown(readme_md)
+                    ),
+                ],
+            )
+        ],
+    )
+
+
 app.layout = html.Div(
     id="main",
     children=[
@@ -233,18 +269,19 @@ app.layout = html.Div(
                             "margin": "0",
                         },
                     ),
-                    style={
-                        "flex": "5 1 0",
-                        "position": "relative",
-                        "align-items": "center",
-                        "display": "flex",
-                    },
                 ),
-                html.Img(
-                    id="logo",
-                    src=app.get_asset_url("dash-logo-new.png"),
-                    style={"flex": "1 1 0", "object-fit": "contain"},
+                html.Div(
+                    html.Button(
+                        "Learn more",
+                        id="learn-more-button",
+                        n_clicks=0,
+                        style={"width": "auto"},
+                    ),
                 ),
+                # Adding the modal content here. It is only shown if the show-modal
+                # button is pressed
+                make_modal(),
+                html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png"),),
             ],
             style={
                 "display": "flex",
@@ -327,9 +364,14 @@ app.layout = html.Div(
                                     style={"width": "25%"},
                                 ),
                                 html.Button(
+                                    "Download Brain Volume",
+                                    id="download-brain-button",
+                                    style={"width": "auto"},
+                                ),
+                                html.Button(
                                     "Download Selected Partitions",
                                     id="download-button",
-                                    style={"width": "25%"},
+                                    style={"width": "auto"},
                                 ),
                                 html.Button(
                                     "Undo",
@@ -765,7 +807,10 @@ def slice_image_list_to_ndarray(fstc_slices):
         fstc_ndarray[n] = img
     PRINT("fstc_ndarray.shape", fstc_ndarray.shape)
     # transpose back to original
-    PRINT("fstc_ndarray.shape", fstc_ndarray.shape)
+    if len(fstc_ndarray.shape) == 3:
+        # Brain data is lacking the 4th channel dimension
+        # Here we allow for this function to also return an array for the 3D brain data
+        return fstc_ndarray.transpose((1, 2, 0))
     return fstc_ndarray.transpose((1, 2, 0, 3))
 
 
@@ -790,11 +835,28 @@ def save_found_slices(fstc_slices):
 
 @app.callback(
     Output("found-image-tensor-data", "data"),
-    [Input("download-button", "n_clicks")],
-    [State("found-segs", "data")],
+    [Input("download-button", "n_clicks"), Input("download-brain-button", "n_clicks")],
+    [State("found-segs", "data"), State("image-slices", "data")],
 )
-def download_button_react(download_button_n_clicks, found_segs_data):
-    ret = save_found_slices(found_segs_data)
+def download_button_react(
+    download_button_n_clicks,
+    download_brain_button_n_clicks,
+    found_segs_data,
+    brain_data,
+):
+    ctx = dash.callback_context
+    # Find out which download button was triggered
+    if not ctx.triggered:
+        # Nothing has happened yet
+        return ""
+    trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
+    if trigger_id == "download-button":
+        ret = save_found_slices(found_segs_data)
+    elif trigger_id == "download-brain-button":
+        ret = save_found_slices(brain_data)
+    else:
+        return ""
+
     if ret is None:
         return ""
     return ret
@@ -946,6 +1008,18 @@ def populate_3d_graph(
     end_time = time.time()
     PRINT("serverside 3D generation took: %f seconds" % (end_time - start_time,))
     return (fig, current_render_id)
+
+
+# ======= Callback for modal popup =======
+@app.callback(
+    Output("markdown", "style"),
+    [Input("learn-more-button", "n_clicks"), Input("markdown_close", "n_clicks")],
+)
+def update_click_output(button_click, close_click):
+    if button_click > close_click:
+        return {"display": "block"}
+    else:
+        return {"display": "none"}
 
 
 if __name__ == "__main__":
