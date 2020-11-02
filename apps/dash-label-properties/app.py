@@ -29,7 +29,8 @@ filename = (
     "https://upload.wikimedia.org/wikipedia/commons/a/ac/Monocyte_no_vacuoles.JPG"
 )
 img = io.imread(filename, as_gray=True)[:660:2, :800:2]
-labels = measure.label(img < filters.threshold_otsu(img))
+label_array = measure.label(img < filters.threshold_otsu(img))
+current_labels = np.flatnonzero(np.unique(label_array))
 # Compute and store properties of the labeled image
 prop_names = [
     "label",
@@ -40,7 +41,7 @@ prop_names = [
     "mean_intensity",
 ]
 prop_table = measure.regionprops_table(
-    labels, intensity_image=img, properties=prop_names
+    label_array, intensity_image=img, properties=prop_names
 )
 table = pd.DataFrame(prop_table)
 # Format the Table columns
@@ -57,18 +58,19 @@ columns = [
 ]
 
 
-def image_with_contour(img, labels, data_table, mode="lines", shape=None):
+def image_with_contour(img, current_labels, data_table, mode="lines", shape=None):
     """
     Figure with contour plot of labels superimposed on background image.
 
     Parameters
     ----------
 
+
     img : URL, dataURI or ndarray
         Background image. If a numpy array, it is transformed into a PIL
         Image object.
-    labels : 2D ndarray
-        Contours are the isolines of labels.
+    current_labels : list
+        the currently visible labels in the datatable
     shape: tuple, optional
         Shape of the arrays, to be provided if ``img`` is not a numpy array.
     """
@@ -82,7 +84,10 @@ def image_with_contour(img, labels, data_table, mode="lines", shape=None):
     if type(img) == np.ndarray:
         img = img_as_ubyte(color.gray2rgb(img))
         img = PIL.Image.fromarray(img)
-    labels = labels.astype(np.float)
+    # Filter the label array based on the currently visible labels
+    mask = np.in1d(label_array.ravel(), current_labels).reshape(label_array.shape)
+    new_labels = np.copy(label_array)
+    new_labels *= mask
     custom_viridis = colors.PLOTLY_SCALES["Viridis"]
     custom_viridis.insert(0, [0, "#FFFFFF"])
     custom_viridis[1][0] = 1.0e-4
@@ -97,22 +102,22 @@ def image_with_contour(img, labels, data_table, mode="lines", shape=None):
     values[indices, :] = data_table[overlay_columns].values
     overlay_data = np.dstack(
         [
-            values[:, col_id][labels.astype(int)]
+            values[:, col_id][new_labels.astype(int)]
             for col_id, col in enumerate(overlay_columns)
         ]
     )
     # Display hover data with precision if data is float
     hover_string = [
         f"{col}: %{{customdata[{col_id}]:.3f}}"
-        if data_table[col].dtype in (np.float,)
+        if np.issubdtype(data_table[col].dtype, "float")
         else f"{col}: %{{customdata[{col_id}]:d}}"
         for col_id, col in enumerate(overlay_columns)
     ]
     hovertemplate = "<br>".join(hover_string)
     fig = px.imshow(img, binary_string=True, binary_backend="jpg")
     fig.add_contour(
-        z=labels,
-        contours=dict(start=0, end=labels.max() + 1, size=1, coloring=mode),
+        z=new_labels,
+        contours=dict(start=0, end=new_labels.max() + 1, size=1, coloring=mode),
         customdata=overlay_data,
         hovertemplate=hovertemplate,
         line=dict(width=1),
@@ -238,7 +243,9 @@ image_card = dbc.Card(
                 dbc.Col(
                     dcc.Graph(
                         id="graph",
-                        figure=image_with_contour(img, labels, table, mode=None),
+                        figure=image_with_contour(
+                            img, current_labels, table, mode=None
+                        ),
                     )
                 )
             )
@@ -263,7 +270,7 @@ table_card = dbc.Card(
                             fixed_rows={"headers": False, "data": 0},
                             style_cell={"width": "85px"},
                         ),
-                        dcc.Store(id="cache", data=labels),
+                        dcc.Store(id="cache-label-list", data=current_labels),
                         html.Div(id="row", hidden=True, children=None),
                     ]
                 )
@@ -304,16 +311,20 @@ def higlight_row(string):
 
 
 @app.callback(
-    [Output("graph", "figure"), Output("cache", "data"), Output("row", "children")],
+    [
+        Output("graph", "figure"),
+        Output("cache-label-list", "data"),
+        Output("row", "children"),
+    ],
     [
         Input("table-line", "derived_virtual_indices"),
         Input("table-line", "active_cell"),
         Input("table-line", "data"),
     ],
-    [State("cache", "data"), State("row", "children")],
+    [State("cache-label-list", "data"), State("row", "children"),],
     prevent_initial_call=True,
 )
-def highlight_filter(indices, cell_index, data, current_labels, previous_row):
+def highlight_filter(indices, cell_index, data, active_labels, previous_row):
     """
     Updates figure and labels array when a selection is made in the table.
 
@@ -324,10 +335,9 @@ def highlight_filter(indices, cell_index, data, current_labels, previous_row):
     """
     _table = pd.DataFrame(data)
     if cell_index and cell_index["row"] != previous_row:
-        current_labels = np.asanyarray(current_labels)
         label = indices[cell_index["row"]] + 1
-        mask = (labels == label).astype(np.float)
-        fig = image_with_contour(img, current_labels, _table, mode=None)
+        mask = (label_array == label).astype(np.float)
+        fig = image_with_contour(img, active_labels, _table, mode=None)
         # Add the outline of the selected label as a contour to the figure
         fig.add_contour(
             z=mask,
@@ -338,15 +348,10 @@ def highlight_filter(indices, cell_index, data, current_labels, previous_row):
             opacity=0.8,
             hoverinfo="skip",
         )
-        return [fig, current_labels, cell_index["row"]]
-    filtered_labels = np.array(
-        _table.lookup(np.array(indices), ["label",] * len(indices))
-    )
-    mask = np.in1d(labels.ravel(), filtered_labels).reshape(labels.shape)
-    new_labels = np.copy(labels)
-    new_labels *= mask
-    fig = image_with_contour(img, new_labels, _table, mode=None)
-    return [fig, new_labels, previous_row]
+        return [fig, active_labels, cell_index["row"]]
+    filtered_labels = _table.loc[indices, "label"].values
+    fig = image_with_contour(img, filtered_labels, _table, mode=None)
+    return [fig, filtered_labels, previous_row]
 
 
 @app.callback(

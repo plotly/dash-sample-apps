@@ -1,0 +1,5 @@
+/* set the margins of row elements to zero to
+override the settings in the dash bootstrap stylesheet */
+.row {
+    margin: 0 1px 0 1px;
+}
