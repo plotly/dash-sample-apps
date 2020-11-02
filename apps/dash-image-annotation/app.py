@@ -164,11 +164,7 @@ def shape_data_remove_timestamp(shape):
     return new_shape
 
 
-external_stylesheets = [
-    dbc.themes.BOOTSTRAP,
-    "assets/style.css",
-    "assets/app_bounding_box_style.css",
-]
+external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/image_annotation_style.css"]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 filelist = [
@@ -185,165 +181,236 @@ fig.update_layout(
     margin=dict(l=0, r=0, b=0, t=0, pad=4),
     dragmode="drawrect",
 )
-app.layout = html.Div(
-    id="main",
+
+# Buttons
+button_gh = dbc.Button(
+    "Learn more",
+    id="howto-open",
+    outline=True,
+    color="secondary",
+    # Turn off lowercase transformation for class .button in stylesheet
+    style={"textTransform": "none"},
+)
+
+button_howto = dbc.Button(
+    "View Code on github",
+    outline=True,
+    color="primary",
+    href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-image-annotation",
+    id="gh-link",
+    style={"text-transform": "none"},
+)
+
+# Modal
+modal_overlay = dbc.Modal(
+    [
+        dbc.ModalBody(html.Div([dcc.Markdown(howto, id="howto-md")])),
+        dbc.ModalFooter(dbc.Button("Close", id="howto-close", className="howto-bn",)),
+    ],
+    id="modal",
+    size="lg",
+    style={"font-size": "small"},
+)
+
+# Cards
+image_annotation_card = dbc.Card(
+    id="imagebox",
     children=[
-        # Banner display
-        html.Div(
-            id="banner",
-            children=[
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            html.Img(
-                                id="logo", src=app.get_asset_url("dash-logo-new.png")
-                            ),
-                            width=2,
-                            # align="center",
-                        ),
-                        dbc.Col(
-                            html.H1("Bounding Box Classification App", id="title"),
-                            width=4,
-                            align="center",
-                        ),
-                        dbc.Col(
-                            [
-                                dbc.Button(
-                                    "Learn more",
-                                    id="howto-open",
-                                    outline=True,
-                                    color="secondary",
-                                    # Turn off lowercase transformation for class .button in stylesheet
-                                    style={"margin": "5px", "text-transform": "none"},
-                                ),
-                                dbc.Modal(
-                                    [
-                                        dbc.ModalBody(
-                                            html.Div(
-                                                [dcc.Markdown(howto, id="howto-md")]
-                                            )
-                                        ),
-                                        dbc.ModalFooter(
-                                            dbc.Button(
-                                                "Close",
-                                                id="howto-close",
-                                                className="howto-bn",
-                                            )
-                                        ),
-                                    ],
-                                    id="modal",
-                                    size="md",
-                                    style={"font-size": "small"},
-                                ),
-                                dbc.Button(
-                                    "View Code on github",
-                                    outline=True,
-                                    color="primary",
-                                    href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-image-annotation",
-                                    id="gh-link",
-                                ),
-                            ],
-                            width=3,
-                            align="right",
-                        ),
-                    ]
-                ),
-            ],
-            className="twelve columns",
-        ),
-        # Main body
-        html.Div(
-            id="app-container",
-            children=[
-                # Graph
+        dbc.CardHeader(html.H2("Annotation area")),
+        dbc.CardBody(
+            [
                 dcc.Graph(
                     id="graph",
                     figure=fig,
                     config={"modeBarButtonsToAdd": ["drawrect", "eraseshape"]},
-                ),
-            ],
-            className="seven columns",
+                )
+            ]
         ),
-        # Sidebar
-        html.Div(
-            id="sidebar",
-            children=[
-                html.H2("Annotations", id="firsth2"),
-                html.Div(
-                    id="table-container",
-                    children=[
-                        # Timestamp table
-                        dash_table.DataTable(
-                            id="timestamp-table",
-                            columns=[{"name": "Timestamp", "id": "Timestamp"}],
-                            style_data={"height": 40},
-                        ),
-                        # Data table
-                        dash_table.DataTable(
-                            id="annotations-table",
-                            columns=[
-                                dict(
-                                    name=n,
-                                    id=n,
-                                    presentation=(
-                                        "dropdown" if n == "Type" else "input"
-                                    ),
-                                )
-                                for n in columns
-                            ],
-                            editable=True,
-                            style_data={"height": 40},
-                            dropdown={
-                                "Type": {
-                                    "options": [
-                                        {"label": o, "value": o}
-                                        for o in annotation_types
-                                    ],
-                                    "clearable": False,
-                                }
-                            },
-                            style_cell_conditional=[
-                                {"if": {"column_id": "Type"}, "textAlign": "left"}
-                            ],
-                        ),
+        dbc.CardFooter(
+            [
+                dcc.Markdown(
+                    "To annotate the above image, select an appropriate label on the right and then draw a "
+                    "rectangle with your cursor around the area of the image you wish to annotate.\n\n"
+                    "**Choose a different image to annotate**:"
+                ),
+                dbc.ButtonGroup(
+                    [
+                        dbc.Button("Previous image", id="previous", outline=True),
+                        dbc.Button("Next image", id="next", outline=True),
                     ],
+                    size="lg",
+                    style={"width": "100%"},
                 ),
-                dcc.Store(id="graph-copy", data=fig),
-                dcc.Store(
-                    id="annotations-store",
-                    data=dict(
-                        **{filename: {"shapes": []} for filename in filelist},
-                        **{"starttime": time_passed()}
-                    ),
-                ),
-                dcc.Store(id="image_files", data={"files": filelist, "current": 0}),
-                html.H2("Type of annotation"),
-                dcc.Dropdown(
-                    id="annotation-type-dropdown",
-                    options=[{"label": t, "value": t} for t in annotation_types],
-                    value=DEFAULT_ATYPE,
-                    clearable=False,
-                ),
-                html.H2("Choose image"),
-                html.Button("Previous", id="previous", className="button"),
-                html.Button("Next", id="next", className="button"),
-                # We use this pattern because we want to be able to download the
-                # annotations by clicking on a button
-                html.A(
-                    id="download",
-                    download="annotations.json",
-                    # make invisble, we just want it to click on it
-                    style={"display": "none"},
-                ),
-                html.Button(
-                    "Download annotations", id="download-button", className="button"
-                ),
-                html.Div(id="dummy", style={"display": "none"}),
-            ],
-            className="five columns",
+            ]
         ),
     ],
-    className="twelve columns",
+)
+
+annotated_data_card = dbc.Card(
+    [
+        dbc.CardHeader(html.H2("Annotated data")),
+        dbc.CardBody(
+            [
+                dbc.Row(dbc.Col(html.H3("Coordinates of annotations"))),
+                dbc.Row(
+                    dbc.Col(
+                        [
+                            dash_table.DataTable(
+                                id="annotations-table",
+                                columns=[
+                                    dict(
+                                        name=n,
+                                        id=n,
+                                        presentation=(
+                                            "dropdown" if n == "Type" else "input"
+                                        ),
+                                    )
+                                    for n in columns
+                                ],
+                                editable=True,
+                                style_data={"height": 40},
+                                style_cell={
+                                    "overflow": "hidden",
+                                    "textOverflow": "ellipsis",
+                                    "maxWidth": 0,
+                                },
+                                dropdown={
+                                    "Type": {
+                                        "options": [
+                                            {"label": o, "value": o}
+                                            for o in annotation_types
+                                        ],
+                                        "clearable": False,
+                                    }
+                                },
+                                style_cell_conditional=[
+                                    {"if": {"column_id": "Type"}, "textAlign": "left",}
+                                ],
+                                fill_width=True,
+                            ),
+                            dcc.Store(id="graph-copy", data=fig),
+                            dcc.Store(
+                                id="annotations-store",
+                                data=dict(
+                                    **{
+                                        filename: {"shapes": []}
+                                        for filename in filelist
+                                    },
+                                    **{"starttime": time_passed()}
+                                ),
+                            ),
+                            dcc.Store(
+                                id="image_files",
+                                data={"files": filelist, "current": 0},
+                            ),
+                        ],
+                    ),
+                ),
+                dbc.Row(
+                    dbc.Col(
+                        [
+                            html.H3("Create new annotation for"),
+                            dcc.Dropdown(
+                                id="annotation-type-dropdown",
+                                options=[
+                                    {"label": t, "value": t} for t in annotation_types
+                                ],
+                                value=DEFAULT_ATYPE,
+                                clearable=False,
+                            ),
+                        ],
+                        align="center",
+                    )
+                ),
+            ]
+        ),
+        dbc.CardFooter(
+            [
+                html.Div(
+                    [
+                        # We use this pattern because we want to be able to download the
+                        # annotations by clicking on a button
+                        html.A(
+                            id="download",
+                            download="annotations.json",
+                            # make invisble, we just want it to click on it
+                            style={"display": "none"},
+                        ),
+                        dbc.Button(
+                            "Download annotations", id="download-button", outline=True,
+                        ),
+                        html.Div(id="dummy", style={"display": "none"}),
+                        dbc.Tooltip(
+                            "You can download the annotated data in a .json format by clicking this button",
+                            target="download-button",
+                        ),
+                    ],
+                )
+            ]
+        ),
+    ],
+)
+
+# Navbar
+navbar = dbc.Navbar(
+    dbc.Container(
+        [
+            dbc.Row(
+                [
+                    dbc.Col(
+                        html.A(
+                            html.Img(
+                                src=app.get_asset_url("dash-logo-new.png"),
+                                height="30px",
+                            ),
+                            href="https://plot.ly",
+                        )
+                    ),
+                    dbc.Col(dbc.NavbarBrand("Image Annotation App")),
+                ],
+                align="center",
+            ),
+            dbc.Row(
+                dbc.Col(
+                    [
+                        dbc.NavbarToggler(id="navbar-toggler"),
+                        dbc.Collapse(
+                            dbc.Nav(
+                                [dbc.NavItem(button_howto), dbc.NavItem(button_gh)],
+                                className="ml-auto",
+                                navbar=True,
+                            ),
+                            id="navbar-collapse",
+                            navbar=True,
+                        ),
+                        modal_overlay,
+                    ]
+                ),
+                align="center",
+            ),
+        ],
+        fluid=True,
+    ),
+    color="dark",
+    dark=True,
+    className="mb-5",
+)
+
+app.layout = html.Div(
+    [
+        navbar,
+        dbc.Container(
+            [
+                dbc.Row(
+                    [
+                        dbc.Col(image_annotation_card, md=7),
+                        dbc.Col(annotated_data_card, md=5),
+                    ],
+                ),
+            ],
+            fluid=True,
+        ),
+    ]
 )
 
 
@@ -411,11 +478,7 @@ def modify_table_entries(
 
 
 @app.callback(
-    [
-        Output("graph", "figure"),
-        Output("annotations-store", "data"),
-        Output("timestamp-table", "data"),
-    ],
+    [Output("graph", "figure"), Output("annotations-store", "data"),],
     [Input("annotations-table", "data"), Input("annotation-type-dropdown", "value")],
     [State("image_files", "data"), State("annotations-store", "data")],
 )
@@ -461,7 +524,7 @@ def send_figure_to_graph(
             dragmode="drawrect",
         )
         annotations_store[filename]["shapes"] = shapes
-        return (fig, annotations_store, [{"Timestamp": s["timestamp"]} for s in shapes])
+        return (fig, annotations_store)
     return dash.no_update
 
 
@@ -504,6 +567,19 @@ function(download_button_n_clicks)
     Output("dummy", "children"),
     [Input("download-button", "n_clicks")],
 )
+
+
+# TODO comment the dbc link
+# we use a callback to toggle the collapse on small screens
+@app.callback(
+    Output("navbar-collapse", "is_open"),
+    [Input("navbar-toggler", "n_clicks")],
+    [State("navbar-collapse", "is_open")],
+)
+def toggle_navbar_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open
 
 
 if __name__ == "__main__":
