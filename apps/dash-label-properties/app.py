@@ -3,11 +3,11 @@ from dash.dependencies import Input, Output, State
 import dash_html_components as html
 import dash_core_components as dcc
 import dash_bootstrap_components as dbc
-from dash.exceptions import PreventUpdate
 import dash_table
 from dash_table.Format import Format
 import plotly.express as px
 import plotly.graph_objs as go
+import datashader as ds
 
 import numpy as np
 from skimage import io, filters, measure
@@ -16,8 +16,9 @@ import pandas as pd
 import PIL
 from skimage import color, img_as_ubyte
 from plotly import colors
-from textwrap import dedent
 
+import base64
+import xarray as xr
 
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
@@ -30,7 +31,7 @@ filename = (
 )
 img = io.imread(filename, as_gray=True)[:660:2, :800:2]
 label_array = measure.label(img < filters.threshold_otsu(img))
-current_labels = np.flatnonzero(np.unique(label_array))
+current_labels = np.unique(label_array)[np.nonzero(np.unique(label_array))]
 # Compute and store properties of the labeled image
 prop_names = [
     "label",
@@ -56,21 +57,23 @@ columns = [
     }
     for label_name, precision in zip(prop_names, (None, None, 4, 4, None, 3))
 ]
+img = img_as_ubyte(color.gray2rgb(img))
+img = PIL.Image.fromarray(img)
 
 
-def image_with_contour(img, current_labels, data_table, mode="lines", shape=None):
+def image_with_contour(img, active_labels, data_table, mode="lines", shape=None):
     """
     Figure with contour plot of labels superimposed on background image.
 
     Parameters
     ----------
-
-
     img : URL, dataURI or ndarray
         Background image. If a numpy array, it is transformed into a PIL
         Image object.
-    current_labels : list
+    active_labels : list
         the currently visible labels in the datatable
+    data_table : pandas.DataFrame
+        the currently visible entries of the datatable
     shape: tuple, optional
         Shape of the arrays, to be provided if ``img`` is not a numpy array.
     """
@@ -85,46 +88,56 @@ def image_with_contour(img, current_labels, data_table, mode="lines", shape=None
         img = img_as_ubyte(color.gray2rgb(img))
         img = PIL.Image.fromarray(img)
     # Filter the label array based on the currently visible labels
-    mask = np.in1d(label_array.ravel(), current_labels).reshape(label_array.shape)
-    new_labels = np.copy(label_array)
-    new_labels *= mask
-    custom_viridis = colors.PLOTLY_SCALES["Viridis"]
-    custom_viridis.insert(0, [0, "#FFFFFF"])
-    custom_viridis[1][0] = 1.0e-4
-    # Contour plot of segmentation
+    mask = np.in1d(label_array.ravel(), active_labels, invert=True).reshape(
+        label_array.shape
+    )
+    masked_labels = np.ma.masked_where(mask, label_array)
+
     print("mode is", mode)
     opacity = 0.4 if mode is None else 1
 
-    # Compute overlay data to display in hovertemplate
-    overlay_columns = data_table.columns[1:]
-    indices = data_table.label.values
-    values = np.zeros((indices.max() + 1, len(overlay_columns)))
-    values[indices, :] = data_table[overlay_columns].values
-    overlay_data = np.dstack(
-        [
-            values[:, col_id][new_labels.astype(int)]
-            for col_id, col in enumerate(overlay_columns)
-        ]
-    )
-    # Display hover data with precision if data is float
-    hover_string = [
-        f"{col}: %{{customdata[{col_id}]:.3f}}"
-        if np.issubdtype(data_table[col].dtype, "float")
-        else f"{col}: %{{customdata[{col_id}]:d}}"
-        for col_id, col in enumerate(overlay_columns)
-    ]
-    hovertemplate = "<br>".join(hover_string)
     fig = px.imshow(img, binary_string=True, binary_backend="jpg")
-    fig.add_contour(
-        z=new_labels,
-        contours=dict(start=0, end=new_labels.max() + 1, size=1, coloring=mode),
-        customdata=overlay_data,
-        hovertemplate=hovertemplate,
-        line=dict(width=1),
-        showscale=False,
-        colorscale=custom_viridis,
-        opacity=opacity,
-    )
+    # Overlay the current labels
+    _, hex_list = zip(*colors.PLOTLY_SCALES["Viridis"])
+    label_data_array = xr.DataArray(np.flipud(masked_labels))
+    label_multi_byte = ds.transfer_functions.shade(
+        label_data_array, cmap=list(hex_list)
+    ).to_bytesio()
+    label_multi_enc = base64.b64encode(label_multi_byte.getvalue()).decode()
+    label_multi_str = "data:image/png;base64,{}".format(label_multi_enc)
+
+    fig.add_image(colormodel="rgba", source=label_multi_str, opacity=opacity)
+
+    # Overlay the colored label info with a hidden (opaque) scatter trace to display hoverinfo
+    # see also: https://scikit-image.org/docs/dev/auto_examples/segmentation/plot_regionprops.html#sphx-glr-auto-examples-segmentation-plot-regionprops-py
+    overlay_columns = data_table.columns[1:]
+    for rid, row in data_table.iterrows():
+        label = row.label
+        contour = measure.find_contours(label_array == label, 0.5)[0]
+        y, x = contour.T
+        hoverinfo = "<br>".join(
+            [
+                f"{prop_name}: {prop_val:.3f}"
+                if np.issubdtype(type(prop_val), "float")
+                else f"{prop_name}: {prop_val:d}"
+                for prop_name, prop_val in row[overlay_columns].iteritems()
+            ]
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=x,
+                y=y,
+                opacity=0,
+                name=label,
+                mode="lines",
+                line=dict(color="grey"),
+                fill="toself",
+                showlegend=False,
+                hovertemplate=hoverinfo,
+                hoveron="points+fills",
+            )
+        )
+
     # Remove axis ticks and labels and have the image fill the container
     fig.update_layout(margin=dict(l=0, r=0, b=0, t=0, pad=0),)
     fig.update_xaxes(showticklabels=False).update_yaxes(showticklabels=False)
@@ -300,7 +313,7 @@ def higlight_row(string):
     When hovering hover label, highlight corresponding row in table,
     using label column.
     """
-    index = string["points"][0]["z"]
+    index = string["points"][0]["curveNumber"]
     return [
         {
             "if": {"filter_query": "{label} eq %d" % index},
