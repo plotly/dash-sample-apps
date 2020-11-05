@@ -2,7 +2,7 @@
 
 ## About this app
 
-This app shows how to explore 3-D data of chest tomography thanks to Dash. 
+This app shows how to explore 3-D chest tomography data using Dash. 
 
 The data used in this app come from the open dataset of
 https://github.com/ieee8023/covid-chestxray-dataset
