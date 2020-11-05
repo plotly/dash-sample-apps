@@ -132,6 +132,7 @@ def image_with_contour(img, active_labels, data_table, mode="lines", shape=None)
                 mode="lines",
                 line=dict(color="grey"),
                 fill="toself",
+                customdata=[label] * len(x),
                 showlegend=False,
                 hovertemplate=hoverinfo,
                 hoveron="points+fills",
@@ -313,7 +314,7 @@ def higlight_row(string):
     When hovering hover label, highlight corresponding row in table,
     using label column.
     """
-    index = string["points"][0]["curveNumber"]
+    index = string["points"][0]["customdata"]
     return [
         {
             "if": {"filter_query": "{label} eq %d" % index},
