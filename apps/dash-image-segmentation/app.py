@@ -32,7 +32,7 @@ SEG_FEATURE_TYPES = ["intensity", "edges", "texture"]
 # the number of different classes for labels
 NUM_LABEL_CLASSES = 5
 DEFAULT_LABEL_CLASS = 0
-class_label_colormap = px.colors.qualitative.Light24
+class_label_colormap = ["#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2"]
 class_labels = list(range(NUM_LABEL_CLASSES))
 # we can't have less colors than classes
 assert NUM_LABEL_CLASSES <= len(class_label_colormap)
