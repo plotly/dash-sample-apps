@@ -11,4 +11,4 @@ pandas
 numpy
 Pillow
 dash-bootstrap-components==0.10.7
-datashader
+datashader==0.6.9
