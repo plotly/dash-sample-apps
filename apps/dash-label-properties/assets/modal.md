@@ -21,7 +21,7 @@ line in the datatable
 - remove rows from the datatable to delete the annotation of the corresponding regions from the image
 
 See also:
-![short video on app function]("assets/label-prop-demo.gif")
+![short video on app function](assets/label-prop-demo.gif)
 ## Where to learn more
 If you want to learn how to build apps like this, check out:
 - [Dash by plotly](https://plotly.com/dash/) for a python based framework to build powerful dashboard apps

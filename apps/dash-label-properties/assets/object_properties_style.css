@@ -7,3 +7,7 @@ override the settings in the dash bootstrap stylesheet */
 .cell {
     margin-top: 1em;
 }
+
+#howto-md img {
+    max-width: 100%;
+}
