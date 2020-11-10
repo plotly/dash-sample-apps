@@ -6,19 +6,14 @@ import dash_bootstrap_components as dbc
 import dash_table
 from dash_table.Format import Format
 import plotly.express as px
-import plotly.graph_objs as go
-import datashader as ds
 
 import numpy as np
 from skimage import io, filters, measure
 import pandas as pd
+import matplotlib as mpl
 
 import PIL
 from skimage import color, img_as_ubyte
-from plotly import colors
-
-import base64
-import xarray as xr
 
 external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/object_properties_style.css"]
 
@@ -65,9 +60,7 @@ img = img_as_ubyte(color.gray2rgb(img))
 img = PIL.Image.fromarray(img)
 
 
-def image_with_contour(
-    img, active_labels, data_table, active_columns, color_column, mode="lines"
-):
+def image_with_contour(img, active_labels, data_table, active_columns, color_column):
     """
     Figure with contour plot of labels superimposed on background image.
 
@@ -83,33 +76,15 @@ def image_with_contour(
     color_column: str
         name of the datatable column that is used to define the image colorscale
     """
-    # Filter the label array based on the currently visible labels
-    mask = np.in1d(label_array.ravel(), active_labels, invert=False).reshape(
-        label_array.shape
-    )
-    masked_labels = label_array * mask
-    values = list(table[color_column].values)
-    value_array = np.array([0] + values)[masked_labels]
-    # Prefer a masked array so we can handle integer values
-    # Background cannot be zero when using datashader (because 'span' is not correctly implemented
-    # in current old version)
-    masked_values = np.ma.masked_where(~mask, value_array)
 
-    print("mode is", mode)
-    opacity = 0.4 if mode is None else 1
+    values = np.array(table[color_column].values)
+    norm = mpl.colors.Normalize(vmin=values.min(), vmax=values.max())
+    cmap = mpl.cm.get_cmap("viridis")
 
     fig = px.imshow(img, binary_string=True, binary_backend="jpg",)
-    # Overlay the current labels
-    _, hex_list = zip(*colors.PLOTLY_SCALES["Viridis"])
-    label_data_array = xr.DataArray(np.flipud(masked_values))
-    label_multi_byte = ds.transfer_functions.shade(
-        label_data_array, cmap=list(hex_list)
-    ).to_bytesio()
-    label_multi_enc = base64.b64encode(label_multi_byte.getvalue()).decode()
-    label_multi_str = "data:image/png;base64,{}".format(label_multi_enc)
+    # Disable the hover information for figure so far
+    fig.update_traces(hoverinfo="skip", hovertemplate=None)
 
-    # Add the color value overlay
-    fig.add_image(colormodel="rgba", source=label_multi_str, opacity=opacity)
     # Add a colorbar
     fig.add_scatter(
         x=[None],
@@ -117,7 +92,7 @@ def image_with_contour(
         mode="markers",
         showlegend=False,
         marker=dict(
-            colorscale=hex_list,
+            colorscale=[mpl.colors.rgb2hex(cmap(i)) for i in np.linspace(0, 1, 50)],
             showscale=True,
             cmin=-5,
             cmax=5,
@@ -135,14 +110,14 @@ def image_with_contour(
         hoverinfo="none",
     )
 
-    # Disable the hover information for figure so far
-    fig.update_traces(hoverinfo="skip", hovertemplate=None)
-
     # Overlay the colored label info with a hidden (opaque) scatter trace to display hoverinfo
     # see also: https://scikit-image.org/docs/dev/auto_examples/segmentation/plot_regionprops.html#sphx-glr-auto-examples-segmentation-plot-regionprops-py
     for rid, row in data_table.iterrows():
         label = row.label
-        contour = measure.find_contours(label_array == label, 0.5)[0]
+        value = row[color_column]
+        contour = measure.find_contours(
+            label_array == label, 0.5, fully_connected="high"
+        )[0]
         y, x = contour.T
         hoverinfo = (
             "<br>".join(
@@ -159,10 +134,9 @@ def image_with_contour(
         fig.add_scatter(
             x=x,
             y=y,
-            opacity=0,
             name=label,
             mode="lines",
-            line=dict(color="#3D9970"),
+            line=dict(color=mpl.colors.rgb2hex(cmap(norm(value))),),
             fill="toself",
             customdata=[label] * len(x),
             showlegend=False,
@@ -171,8 +145,8 @@ def image_with_contour(
         )
 
     # Remove axis ticks and labels and have the image fill the container
-    fig.update_layout(margin=dict(l=0, r=0, b=0, t=0, pad=0),)
-    fig.update_xaxes(showticklabels=False).update_yaxes(showticklabels=False)
+    fig.update_layout(margin=dict(l=0, r=0, b=0, t=0, pad=0), template="simple_white")
+    fig.update_xaxes(visible=False).update_yaxes(visible=False)
 
     return fig
 
@@ -286,6 +260,7 @@ color_drop = dcc.Dropdown(
         {"label": col_name.capitalize(), "value": col_name}
         for col_name in table.columns
     ],
+    value="label",
 )
 
 # Define Cards
@@ -303,7 +278,6 @@ image_card = dbc.Card(
                             table,
                             initial_columns,
                             color_column="area",
-                            mode=None,
                         ),
                     ),
                 )
@@ -408,7 +382,7 @@ def highlight_filter(
     filtered_labels = _table.loc[indices, "label"].values
     filtered_table = _table.query("label in @filtered_labels")
     fig = image_with_contour(
-        img, filtered_labels, filtered_table, active_columns, color_column, mode=None
+        img, filtered_labels, filtered_table, active_columns, color_column
     )
 
     if cell_index and cell_index["row"] != previous_row:
@@ -419,7 +393,7 @@ def highlight_filter(
             z=mask,
             contours=dict(coloring="lines"),
             showscale=False,
-            line=dict(width=6),
+            line=dict(width=8),
             colorscale="YlOrRd",
             opacity=0.8,
             hoverinfo="skip",
