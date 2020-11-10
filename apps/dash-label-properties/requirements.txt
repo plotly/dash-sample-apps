@@ -2,4 +2,4 @@ dash
 dash-bootstrap-components==0.10.7
 dash-canvas>=0.0.8
 gunicorn==20.0.4
-andas==1.1.4
+pandas==1.1.4
