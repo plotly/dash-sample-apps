@@ -20,7 +20,7 @@ from plotly import colors
 import base64
 import xarray as xr
 
-external_stylesheets = [dbc.themes.BOOTSTRAP]
+external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/object_properties_style.css"]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
@@ -66,7 +66,7 @@ img = PIL.Image.fromarray(img)
 
 
 def image_with_contour(
-    img, active_labels, data_table, active_columns, mode="lines", shape=None
+    img, active_labels, data_table, active_columns, color_column, mode="lines"
 ):
     """
     Figure with contour plot of labels superimposed on background image.
@@ -78,14 +78,22 @@ def image_with_contour(
         the currently visible labels in the datatable
     data_table : pandas.DataFrame
         the currently visible entries of the datatable
-    shape: tuple, optional
-        Shape of the arrays, to be provided if ``img`` is not a numpy array.
+    active_columns: list
+        the currently selected columns of the datatable
+    color_column: str
+        name of the datatable column that is used to define the image colorscale
     """
     # Filter the label array based on the currently visible labels
-    mask = np.in1d(label_array.ravel(), active_labels, invert=True).reshape(
+    mask = np.in1d(label_array.ravel(), active_labels, invert=False).reshape(
         label_array.shape
     )
-    masked_labels = np.ma.masked_where(mask, label_array)
+    masked_labels = label_array * mask
+    values = list(table[color_column].values)
+    value_array = np.array([0] + values)[masked_labels]
+    # Prefer a masked array so we can handle integer values
+    # Background cannot be zero when using datashader (because 'span' is not correctly implemented
+    # in current old version)
+    masked_values = np.ma.masked_where(~mask, value_array)
 
     print("mode is", mode)
     opacity = 0.4 if mode is None else 1
@@ -93,14 +101,39 @@ def image_with_contour(
     fig = px.imshow(img, binary_string=True, binary_backend="jpg",)
     # Overlay the current labels
     _, hex_list = zip(*colors.PLOTLY_SCALES["Viridis"])
-    label_data_array = xr.DataArray(np.flipud(masked_labels))
+    label_data_array = xr.DataArray(np.flipud(masked_values))
     label_multi_byte = ds.transfer_functions.shade(
         label_data_array, cmap=list(hex_list)
     ).to_bytesio()
     label_multi_enc = base64.b64encode(label_multi_byte.getvalue()).decode()
     label_multi_str = "data:image/png;base64,{}".format(label_multi_enc)
 
+    # Add the color value overlay
     fig.add_image(colormodel="rgba", source=label_multi_str, opacity=opacity)
+    # Add a colorbar
+    fig.add_scatter(
+        x=[None],
+        y=[None],
+        mode="markers",
+        showlegend=False,
+        marker=dict(
+            colorscale=hex_list,
+            showscale=True,
+            cmin=-5,
+            cmax=5,
+            colorbar=dict(
+                thickness=0.05,
+                tickvals=[-5, 5],
+                ticktext=[f"{np.min(values[values!=0]):.2f}", f"{np.max(values):.2f}",],
+                len=0.6,
+                lenmode="fraction",
+                thicknessmode="fraction",
+                outlinewidth=1,
+                title=dict(text=f"<b>{color_column.capitalize()}</b>"),
+            ),
+        ),
+        hoverinfo="none",
+    )
 
     # Disable the hover information for figure so far
     fig.update_traces(hoverinfo="skip", hovertemplate=None)
@@ -246,6 +279,15 @@ header = dbc.Navbar(
     dark=True,
 )
 
+# Color selector dropdown
+color_drop = dcc.Dropdown(
+    id="color-drop-menu",
+    options=[
+        {"label": col_name.capitalize(), "value": col_name}
+        for col_name in table.columns
+    ],
+)
+
 # Define Cards
 image_card = dbc.Card(
     [
@@ -256,11 +298,27 @@ image_card = dbc.Card(
                     dcc.Graph(
                         id="graph",
                         figure=image_with_contour(
-                            img, current_labels, table, initial_columns, mode=None
+                            img,
+                            current_labels,
+                            table,
+                            initial_columns,
+                            color_column="area",
+                            mode=None,
                         ),
-                    )
+                    ),
                 )
             )
+        ),
+        dbc.CardFooter(
+            dbc.Row(
+                [
+                    dbc.Col(
+                        "Use the dropdown menu to select which variable to base the colorscale on:"
+                    ),
+                    dbc.Col(color_drop),
+                ],
+                align="center",
+            ),
         ),
     ]
 )
@@ -330,11 +388,14 @@ def higlight_row(string):
         Input("table-line", "active_cell"),
         Input("table-line", "data"),
         Input("table-line", "selected_columns"),
+        Input("color-drop-menu", "value"),
     ],
     [State("row", "children"),],
     prevent_initial_call=True,
 )
-def highlight_filter(indices, cell_index, data, active_columns, previous_row):
+def highlight_filter(
+    indices, cell_index, data, active_columns, color_column, previous_row
+):
     """
     Updates figure and labels array when a selection is made in the table.
 
@@ -347,7 +408,7 @@ def highlight_filter(indices, cell_index, data, active_columns, previous_row):
     filtered_labels = _table.loc[indices, "label"].values
     filtered_table = _table.query("label in @filtered_labels")
     fig = image_with_contour(
-        img, filtered_labels, filtered_table, active_columns, mode=None
+        img, filtered_labels, filtered_table, active_columns, color_column, mode=None
     )
 
     if cell_index and cell_index["row"] != previous_row:
