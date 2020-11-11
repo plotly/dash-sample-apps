@@ -1,4 +1,4 @@
-# Dash Object Properties App
+# Dash Label Properties App
 
 ## About this app
 
