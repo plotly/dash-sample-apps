@@ -57,6 +57,8 @@ initial_columns = ["label", "area"]
 
 img = img_as_ubyte(color.gray2rgb(img))
 img = PIL.Image.fromarray(img)
+# Pad label-array with zero to get contours of regions on the edge
+label_array = np.pad(label_array, (1,), "constant", constant_values=(0,))
 
 
 def image_with_contour(img, active_labels, data_table, active_columns, color_column):
@@ -80,7 +82,7 @@ def image_with_contour(img, active_labels, data_table, active_columns, color_col
     # First we get the values from the selected datatable column and use them to define a colormap
     values = np.array(table[color_column].values)
     norm = mpl.colors.Normalize(vmin=values.min(), vmax=values.max())
-    cmap = mpl.cm.get_cmap("viridis")
+    cmap = mpl.cm.get_cmap("plasma")
 
     # Now we convert our background image to a greyscale bytestring that is very small and can be transferred very
     # efficiently over the network. We do not want any hover-information for this image, so we disable it
@@ -93,10 +95,10 @@ def image_with_contour(img, active_labels, data_table, active_columns, color_col
     for rid, row in data_table.iterrows():
         label = row.label
         value = row[color_column]
-        contour = measure.find_contours(
-            label_array == label, 0.5, fully_connected="high"
-        )[0]
-        y, x = contour.T
+        contour = measure.find_contours(label_array == label, 0.5)[0]
+        # We need to move the contour left and up by one, because
+        # we padded the label array
+        y, x = contour.T - 1
         # We add the values of the selected datatable columns to the hover information of the current region
         hoverinfo = (
             "<br>".join(
@@ -158,7 +160,9 @@ def image_with_contour(img, active_labels, data_table, active_columns, color_col
 
     # Remove axis ticks and labels and have the image fill the container
     fig.update_layout(margin=dict(l=0, r=0, b=0, t=0, pad=0), template="simple_white")
-    fig.update_xaxes(visible=False).update_yaxes(visible=False)
+    fig.update_xaxes(visible=False, range=[0, img.width]).update_yaxes(
+        visible=False, range=[img.height, 0]
+    )
 
     return fig
 
@@ -410,15 +414,19 @@ def highlight_filter(
     if cell_index and cell_index["row"] != previous_row:
         label = filtered_labels[cell_index["row"]]
         mask = (label_array == label).astype(np.float)
-        # Add the outline of the selected label as a contour to the figure
-        fig.add_contour(
-            z=mask,
-            contours=dict(coloring="lines"),
-            showscale=False,
-            line=dict(width=8),
-            colorscale="YlOrRd",
-            opacity=0.8,
+        contour = measure.find_contours(label_array == label, 0.5)[0]
+        # We need to move the contour left and up by one, because
+        # we padded the label array
+        y, x = contour.T - 1
+        # Add the computed contour to the figure as a scatter trace
+        fig.add_scatter(
+            x=x,
+            y=y,
+            mode="lines",
+            showlegend=False,
+            line=dict(color="#3D9970", width=6),
             hoverinfo="skip",
+            opacity=0.9,
         )
         return [fig, cell_index["row"], False]
 
