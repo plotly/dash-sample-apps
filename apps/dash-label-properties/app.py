@@ -285,7 +285,7 @@ image_card = dbc.Card(
                         [
                             html.P(
                                 "In order to use all functions of this app, please select a value "
-                                "to compute the colorscale on",
+                                "to compute the colorscale on.",
                                 className="mb-0",
                             )
                         ],
