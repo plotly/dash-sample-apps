@@ -284,7 +284,7 @@ image_card = dbc.Card(
                     dbc.Toast(
                         [
                             html.P(
-                                "In order to use all functions of this app, please select a value "
+                                "In order to use all functions of this app, please select a variable "
                                 "to compute the colorscale on.",
                                 className="mb-0",
                             )
