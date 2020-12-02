@@ -44,19 +44,13 @@ fig_mesh.add_trace(go.Mesh3d(x=z, y=y, z=x, opacity=0.2, i=k, j=j, k=i))
 slicer1 = VolumeSlicer(app, img, axis=0, spacing=spacing)
 slicer1.graph.figure.update_layout(dragmode="drawclosedpath")
 slicer1.graph.config.update(
-    modeBarButtonsToAdd=[
-        "drawclosedpath",
-        "eraseshape",
-    ]
+    modeBarButtonsToAdd=["drawclosedpath", "eraseshape",]
 )
 
 slicer2 = VolumeSlicer(app, img, axis=1, spacing=spacing)
 slicer2.graph.figure.update_layout(dragmode="drawrect")
 slicer2.graph.config.update(
-    modeBarButtonsToAdd=[
-        "drawrect",
-        "eraseshape",
-    ]
+    modeBarButtonsToAdd=["drawrect", "eraseshape",]
 )
 
 
@@ -88,10 +82,7 @@ app.layout = html.Div(
                     id="title",
                     className="seven columns",
                 ),
-                html.Img(
-                    id="logo",
-                    src=app.get_asset_url("dash-logo-new.png"),
-                ),
+                html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png"),),
             ],
             className="twelve columns app-background",
         ),
@@ -159,9 +150,7 @@ app.layout = html.Div(
             className="app-background",
         ),
         html.Div(
-            [
-                dcc.Graph(id="graph-helper", figure=fig_mesh),
-            ],
+            [dcc.Graph(id="graph-helper", figure=fig_mesh),],
             className="app-background",
         ),
         dcc.Store(id="annotations", data={}),
@@ -175,8 +164,7 @@ print("layout definition", t3 - t2)
 
 
 @app.callback(
-    Output("graph-histogram", "figure"),
-    [Input("annotations", "data")],
+    Output("graph-histogram", "figure"), [Input("annotations", "data")],
 )
 def update_histo(annotations):
     if (
@@ -268,10 +256,7 @@ def update_segmentation_slices(selected, annotations):
 
 @app.callback(
     Output("annotations", "data"),
-    [
-        Input(slicer1.graph.id, "relayoutData"),
-        Input(slicer2.graph.id, "relayoutData"),
-    ],
+    [Input(slicer1.graph.id, "relayoutData"), Input(slicer2.graph.id, "relayoutData"),],
     [State("annotations", "data")],
 )
 def update_annotations(relayout1, relayout2, annotations):
@@ -307,12 +292,8 @@ function(surf, fig){
     }
 """,
     output=Output("graph-helper", "figure"),
-    inputs=[
-        Input("occlusion-surface", "data"),
-    ],
-    state=[
-        State("graph-helper", "figure"),
-    ],
+    inputs=[Input("occlusion-surface", "data"),],
+    state=[State("graph-helper", "figure"),],
 )
 
 
