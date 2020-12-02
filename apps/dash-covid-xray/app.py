@@ -200,7 +200,11 @@ def update_histo(annotations):
 
 
 @app.callback(
-    Output("occlusion-surface", "data"),
+    [
+        Output("occlusion-surface", "data"),
+        Output(slicer1.overlay_data.id, "data"),
+        Output(slicer2.overlay_data.id, "data"),
+    ],
     [Input("graph-histogram", "selectedData"), Input("annotations", "data")],
 )
 def update_segmentation_slices(selected, annotations):
@@ -212,7 +216,7 @@ def update_segmentation_slices(selected, annotations):
         or annotations.get("x") is None
         or annotations.get("z") is None
     ):
-        return go.Mesh3d()
+        return go.Mesh3d(), dash.no_update, dash.no_update
     elif selected is not None and "range" in selected:
         if len(selected["points"]) == 0:
             return dash.no_update
@@ -247,12 +251,12 @@ def update_segmentation_slices(selected, annotations):
         x, y, z = verts.T
         i, j, k = faces.T
         trace = go.Mesh3d(x=z, y=y, z=x, color="red", opacity=0.8, i=k, j=j, k=i)
-        slicer1.set_overlay(img_mask)
-        slicer2.set_overlay(img_mask)
+        overlay1 = slicer1.create_overlay_data(img_mask)
+        overlay2 = slicer2.create_overlay_data(img_mask)
         # todo: do we need an output to trigger an update?
-        return trace
+        return trace, overlay1, overlay2
     else:
-        return dash.no_update
+        return (dash.no_update,) * 3
 
 
 @app.callback(
