@@ -10,16 +10,15 @@ from holoviews.operation.datashader import datashade
 from holoviews.plotting.plotly.dash import to_dash
 from holoviews.selection import link_selections
 
-from download_dataset import download_dataset
-from mapbox_token import get_mapbox_token
-
 import pandas as pd
 import plotly.io as pio
 from plotly import colors
 
 pio.templates.default = "plotly_white"
 
-df = pd.read_parquet(download_dataset())
+df = pd.read_parquet(
+    "https://github.com/plotly/dash-holoviews-taxi/releases/download/v0.0.1a1/nyc_taxi_small.parq"
+)
 ds = hv.Dataset(df)
 
 # Uncomment for CUDF support
@@ -33,7 +32,7 @@ points = hv.Points(ds, ["dropoff_x", "dropoff_y"])
 shaded = datashade(points, cmap=colors.sequential.Plasma)
 tiles = hv.Tiles().opts(
     mapboxstyle="light",
-    accesstoken=get_mapbox_token(),
+    accesstoken="pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A",
     height=500,
     width=500,
     padding=0,
