@@ -16,6 +16,8 @@ import dash_core_components as dcc
 from dash_slicer import VolumeSlicer
 
 app = dash.Dash(__name__)
+server = app.server
+
 
 t1 = time()
 
