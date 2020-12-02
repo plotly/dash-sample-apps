@@ -1,4 +1,4 @@
-# Dash Object Properties App
+# Dash Label Properties App
 
 ## About this app
 
@@ -31,3 +31,6 @@ displayed in the terminal.
 ```bash
 python app.py
 ```
+
+
+
