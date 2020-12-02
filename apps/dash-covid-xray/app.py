@@ -25,7 +25,7 @@ t1 = time()
 
 img = image.load_img("assets/radiopaedia_org_covid-19-pneumonia-7_85703_0-dcm.nii")
 mat = img.affine
-img = img.get_fdata()
+img = img.get_data()
 img = np.copy(np.moveaxis(img, -1, 0))[:, ::-1]
 
 spacing = abs(mat[2, 2]), abs(mat[1, 1]), abs(mat[0, 0])
@@ -43,13 +43,15 @@ fig_mesh.add_trace(go.Mesh3d(x=z, y=y, z=x, opacity=0.2, i=k, j=j, k=i))
 
 # Create slicers
 slicer1 = VolumeSlicer(app, img, axis=0, spacing=spacing)
-slicer1.graph.figure.update_layout(dragmode="drawclosedpath")
+slicer1.graph.figure.update_layout(
+    dragmode="drawclosedpath", newshape_line_color="cyan"
+)
 slicer1.graph.config.update(
     modeBarButtonsToAdd=["drawclosedpath", "eraseshape",]
 )
 
 slicer2 = VolumeSlicer(app, img, axis=1, spacing=spacing)
-slicer2.graph.figure.update_layout(dragmode="drawrect")
+slicer2.graph.figure.update_layout(dragmode="drawrect", newshape_line_color="cyan")
 slicer2.graph.config.update(
     modeBarButtonsToAdd=["drawrect", "eraseshape",]
 )
@@ -216,7 +218,10 @@ def update_segmentation_slices(selected, annotations):
         or annotations.get("x") is None
         or annotations.get("z") is None
     ):
-        return go.Mesh3d(), dash.no_update, dash.no_update
+        mask = np.zeros_like(med_img)
+        overlay1 = slicer1.create_overlay_data(mask)
+        overlay2 = slicer2.create_overlay_data(mask)
+        return go.Mesh3d(), overlay1, overlay2
     elif selected is not None and "range" in selected:
         if len(selected["points"]) == 0:
             return dash.no_update
