@@ -1,0 +1,10 @@
+dash==1.17
+plotly==4.13
+pandas==1.1
+pyarrow==2.0.0
+dash-bootstrap-components==0.10.7
+gunicorn==20.0
+holoviews>=1.14.0a10<1.14.1
+datashader==0.8.0
+numba==0.47.0
+llvmlite==0.31.0
