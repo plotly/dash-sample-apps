@@ -8,3 +8,4 @@ joblib
 ipython
 nilearn
 gunicorn
+dash-slicer
