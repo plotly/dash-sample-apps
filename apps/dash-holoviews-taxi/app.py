@@ -66,10 +66,7 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
 components = to_dash(
-    app,
-    [linked_map, linked_hist],
-    reset_button=True,
-    button_class=dbc.Button,
+    app, [linked_map, linked_hist], reset_button=True, button_class=dbc.Button,
 )
 
 app.layout = dbc.Container(
@@ -84,11 +81,7 @@ app.layout = dbc.Container(
                         dbc.Card(
                             [
                                 dbc.CardHeader("Drop off locations"),
-                                dbc.CardBody(
-                                    children=[
-                                        components.graphs[0],
-                                    ]
-                                ),
+                                dbc.CardBody(children=[components.graphs[0],]),
                             ]
                         )
                     ]
