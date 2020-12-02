@@ -7,7 +7,6 @@ from scipy import ndimage
 
 import plotly.graph_objects as go
 import plotly.express as px
-from plotly.express._imshow import _array_to_b64str
 
 import dash
 from dash.dependencies import Input, Output, State
