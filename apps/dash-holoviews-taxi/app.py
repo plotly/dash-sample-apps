@@ -20,7 +20,7 @@ pio.templates.default = "plotly_white"
 df = pd.read_parquet(
     "https://github.com/plotly/dash-holoviews-taxi/releases/download/v0.0.1a1/nyc_taxi_small.parq"
 )
-ds = hv.Dataset(dd.from_pandas(df, npartitions=8).persist())
+ds = hv.Dataset(df)
 
 # Uncomment for CUDF support
 # import cudf
