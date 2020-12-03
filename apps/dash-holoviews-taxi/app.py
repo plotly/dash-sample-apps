@@ -22,10 +22,6 @@ df = pd.read_parquet(
 )
 ds = hv.Dataset(df)
 
-# Uncomment for CUDF support
-# import cudf
-# ds = hv.Dataset(cudf.from_pandas(df))
-
 # Add more descriptive labels
 ds = ds.redim.label(fare_amount="Fare Amount")
 
