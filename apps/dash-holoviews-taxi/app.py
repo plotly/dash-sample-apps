@@ -11,6 +11,7 @@ from holoviews.plotting.plotly.dash import to_dash
 from holoviews.selection import link_selections
 
 import pandas as pd
+import dask.dataframe as dd
 import plotly.io as pio
 from plotly import colors
 
@@ -19,7 +20,7 @@ pio.templates.default = "plotly_white"
 df = pd.read_parquet(
     "https://github.com/plotly/dash-holoviews-taxi/releases/download/v0.0.1a1/nyc_taxi_small.parq"
 )
-ds = hv.Dataset(df)
+ds = hv.Dataset(dd.from_pandas(df, npartitions=8).persist())
 
 # Uncomment for CUDF support
 # import cudf
