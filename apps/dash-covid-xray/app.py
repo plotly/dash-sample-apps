@@ -15,7 +15,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 from dash_slicer import VolumeSlicer
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, update_title=None)
 server = app.server
 
 
