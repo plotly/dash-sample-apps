@@ -304,10 +304,12 @@ def select_thresholding(val, conn_mat):
         Input("region_table", "active_cell"),
         Input(saggital_slicer.graph.id, "clickData"),
         Input(coronal_slicer.graph.id, "clickData"),
-        Input(axial_slicer.graph.id, "clickData")
+        Input(axial_slicer.graph.id, "clickData"),
     ],
     [
-        State({"scene": axial_slicer.scene_id, "context": ALL, "name": "state"}, "data"),
+        State(
+            {"scene": axial_slicer.scene_id, "context": ALL, "name": "state"}, "data"
+        ),
         State("store_selected_region", "data"),
         State("region_table", "data"),
     ],
