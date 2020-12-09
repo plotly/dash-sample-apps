@@ -1,0 +1,14 @@
+dash
+dash-table
+plotly
+pandas
+numpy
+nilearn
+nibabel
+dash-bootstrap-components
+dash-bio
+matplotlib
+pytest
+gunicorn
+scikit-image
+-e git+https://github.com/plotly/dash-slicer.git@9363a79222ccd2806c18f3753dc29327685e4bec#egg=dash_slicer
