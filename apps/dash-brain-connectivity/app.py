@@ -218,7 +218,6 @@ connectivity_card = dbc.Card(
         dcc.Store(id="store_selected_region"),
         dcc.Store(id="store_selected_brain_location"),
         dcc.Store(id="store_conn_mat", data=conn_mat),
-        dcc.Store(id="store_last_region_selector"),
         setpos_store,
     ]
 )
@@ -299,28 +298,29 @@ def select_thresholding(val, conn_mat):
     [
         Output("store_selected_region", "data"),
         Output("store_selected_brain_location", "data"),
-        Output("store_last_region_selector", "data"),
     ],
     [
         Input("conn_mat", "clickData"),
         Input("region_table", "active_cell"),
-        Input(
-            {"scene": axial_slicer.scene_id, "context": ALL, "name": "state"}, "data"
-        ),
+        Input(saggital_slicer.graph.id, "clickData"),
+        Input(coronal_slicer.graph.id, "clickData"),
+        Input(axial_slicer.graph.id, "clickData")
     ],
     [
+        State({"scene": axial_slicer.scene_id, "context": ALL, "name": "state"}, "data"),
         State("store_selected_region", "data"),
         State("region_table", "data"),
-        State("store_last_region_selector", "data"),
     ],
 )
 def update_selected_region(
     click_data,
     current_table_cell,
+    saggital_trigger,
+    coronal_trigger,
+    axial_trigger,
     brain_index,
     current_region,
     table_data,
-    last_region_selector,
 ):
     # Understand what has happened
     ctx = dash.callback_context
@@ -342,16 +342,9 @@ def update_selected_region(
         selected_brain_location = tuple(table_row[["X", "Y", "Z"]])
 
     elif "slicer" in ctx.triggered[0]["prop_id"]:
-        # TODO see if we cannot find a better way to achieve this
-        # Here we stop the slicer position from updating the selected region if it was not caused by a mouse click
-        if last_region_selector is None or not last_region_selector == "brain_slicer":
-            last_region_selector = "brain_slicer"
-            return dash.no_update, selected_brain_location, last_region_selector
         if brain_index is None or all(map(lambda x: x is None, brain_index)):
-            last_region_selector = "brain_slicer"
-            return None, selected_brain_location, last_region_selector
+            return None, selected_brain_location
 
-        last_region_selector = "brain_slicer"
         x_pos = brain_index[0]["index"]
         y_pos = brain_index[1]["index"]
         z_pos = brain_index[2]["index"]
@@ -359,16 +352,16 @@ def update_selected_region(
 
         # TODO: do something smarter with the fact that we have selected background
         if clicked_region_number == 0:
-            return None, selected_brain_location, last_region_selector
+            return None, selected_brain_location
 
         corresponding_row = table.query("`Region ID` == @clicked_region_number")
         clicked_region = corresponding_row["Region Name"].values[0]
         # selected_brain_location = tuple(corresponding_row[["X", "Y", "Z"]].values[0])
 
     if clicked_region == current_region:
-        return None, selected_brain_location, last_region_selector
+        return None, selected_brain_location
     else:
-        return clicked_region, selected_brain_location, last_region_selector
+        return clicked_region, selected_brain_location
 
 
 @app.callback(
