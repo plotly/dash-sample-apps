@@ -26,7 +26,7 @@ def make_circos(df, gap=0.1, focus_region=None):
         conn_mask[focus_idx, :] = False
         conn_mask[:, focus_idx] = False
         conn_mat[conn_mask] = False
-    
+
     np.fill_diagonal(conn_mat, False)
     n_conn_nodes = np.sum(conn_mat, 0)
     node_layout = [
@@ -92,7 +92,6 @@ def make_circos(df, gap=0.1, focus_region=None):
     return node_layout, highlight_data, connection_data
 
 
-
 def make_heatmap(df):
     axis_ticks = df.columns
     n_elements = len(axis_ticks)
@@ -110,12 +109,20 @@ def make_heatmap(df):
             tickvals=np.arange(-0.5, df.shape[0], 1),
         ),
         xaxis=dict(
-            constrain="domain", tickvals=np.arange(-0.5, df.shape[0], 1), showgrid=True, showticklabels=False,
+            constrain="domain",
+            tickvals=np.arange(-0.5, df.shape[0], 1),
+            showgrid=True,
+            showticklabels=False,
         ),
         margin=dict(l=0, r=0, b=0, t=0, pad=0),
     )
     heatmap = go.Heatmap(
-        z=df, x=axis_ticks, y=axis_ticks, xgap=gap_width, ygap=gap_width, hoverongaps=False,
+        z=df,
+        x=axis_ticks,
+        y=axis_ticks,
+        xgap=gap_width,
+        ygap=gap_width,
+        hoverongaps=False,
     )
     fig = go.Figure(heatmap, layout)
     fig.update_traces(showscale=False)
@@ -125,11 +132,11 @@ def make_heatmap(df):
 
 def thr_conn_mat(conn_mat, thr, labels, mode="absolute"):
     out_mat = np.copy(conn_mat)
-    
+
     if mode == "percentage":
         conn_vec = np.abs(conn_mat[np.tril_indices(len(labels), -1)])
-        thr = np.percentile(conn_vec, thr*100)
-    
+        thr = np.percentile(conn_vec, thr * 100)
+
     out_mat[np.abs(out_mat) < thr] = np.nan
     out_df = pd.DataFrame(data=out_mat, columns=labels, index=labels)
     return out_df
@@ -141,10 +148,10 @@ def add_region_shape(fig, region_id):
         type="rect",
         xref="x",
         yref="y",
-        x0= -0.5,
-        y0= y_pos - 0.5,
-        x1= len(fig.data[0]["x"]) - 0.5,
-        y1= y_pos + 0.5,
+        x0=-0.5,
+        y0=y_pos - 0.5,
+        x1=len(fig.data[0]["x"]) - 0.5,
+        y1=y_pos + 0.5,
         line=dict(color="LightSeaGreen", width=3,),
     )
     return fig
@@ -152,12 +159,18 @@ def add_region_shape(fig, region_id):
 
 def compute_region_table(parcellation_img, parcellation_labels):
     # This step alone takes about 1 second. Might need to move outside the function in the future.
-    coordinates, region_ids = plotting.find_parcellation_cut_coords(parcellation_img, return_label_names=True)
+    coordinates, region_ids = plotting.find_parcellation_cut_coords(
+        parcellation_img, return_label_names=True
+    )
     if len(parcellation_labels) > len(region_ids):
         parcellation_labels = parcellation_labels[1:]
-    table = pd.DataFrame({"Region ID": region_ids,
-             "Region Name": parcellation_labels,
-             "X": np.round(coordinates[:, 0], 2),
-             "Y": np.round(coordinates[:, 1], 2),
-             "Z": np.round(coordinates[:, 2], 2)})
+    table = pd.DataFrame(
+        {
+            "Region ID": region_ids,
+            "Region Name": parcellation_labels,
+            "X": np.round(coordinates[:, 0], 2),
+            "Y": np.round(coordinates[:, 1], 2),
+            "Z": np.round(coordinates[:, 2], 2),
+        }
+    )
     return table

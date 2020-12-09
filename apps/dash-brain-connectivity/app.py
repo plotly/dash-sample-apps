@@ -299,7 +299,7 @@ def select_thresholding(val, conn_mat):
     [
         Output("store_selected_region", "data"),
         Output("store_selected_brain_location", "data"),
-        Output("store_last_region_selector", "data")
+        Output("store_last_region_selector", "data"),
     ],
     [
         Input("conn_mat", "clickData"),
@@ -308,10 +308,19 @@ def select_thresholding(val, conn_mat):
             {"scene": axial_slicer.scene_id, "context": ALL, "name": "state"}, "data"
         ),
     ],
-    [State("store_selected_region", "data"), State("region_table", "data"), State("store_last_region_selector", "data")],
+    [
+        State("store_selected_region", "data"),
+        State("region_table", "data"),
+        State("store_last_region_selector", "data"),
+    ],
 )
 def update_selected_region(
-    click_data, current_table_cell, brain_index, current_region, table_data, last_region_selector
+    click_data,
+    current_table_cell,
+    brain_index,
+    current_region,
+    table_data,
+    last_region_selector,
 ):
     # Understand what has happened
     ctx = dash.callback_context
@@ -363,9 +372,7 @@ def update_selected_region(
 
 
 @app.callback(
-    Output(
-        setpos_store.id, "data"
-    ),
+    Output(setpos_store.id, "data"),
     Input("store_selected_brain_location", "data"),
     prevent_inital_call=True,
 )
