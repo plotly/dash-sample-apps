@@ -44,5 +44,3 @@ python app.py
 Open http://127.0.0.1:8050/ in your browser.
 
 Drag a section of the top graph in order to display the zoomed in graph on the bottom.
-
-
