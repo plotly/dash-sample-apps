@@ -42,7 +42,7 @@ fig_mesh = go.Figure()
 fig_mesh.add_trace(go.Mesh3d(x=z, y=y, z=x, opacity=0.2, i=k, j=j, k=i))
 
 # Create slicers
-slicer1 = VolumeSlicer(app, img, axis=0, spacing=spacing)
+slicer1 = VolumeSlicer(app, img, axis=0, spacing=spacing, thumbnail=False)
 slicer1.graph.figure.update_layout(
     dragmode="drawclosedpath", newshape_line_color="cyan"
 )
@@ -50,7 +50,7 @@ slicer1.graph.config.update(
     modeBarButtonsToAdd=["drawclosedpath", "eraseshape",]
 )
 
-slicer2 = VolumeSlicer(app, img, axis=1, spacing=spacing)
+slicer2 = VolumeSlicer(app, img, axis=1, spacing=spacing, thumbnail=False)
 slicer2.graph.figure.update_layout(dragmode="drawrect", newshape_line_color="cyan")
 slicer2.graph.config.update(
     modeBarButtonsToAdd=["drawrect", "eraseshape",]
@@ -308,4 +308,4 @@ function(surf, fig){
 
 
 if __name__ == "__main__":
-    app.run_server(debug=False)
+    app.run_server(debug=True, dev_tools_props_check=False)
