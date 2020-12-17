@@ -12,11 +12,10 @@ from nilearn import datasets, image
 import pandas as pd
 import dash_table
 import dash_bio as dashbio
-from plotly import graph_objects as go
+#from plotly import graph_objects as go
 
 from nibabel.affines import apply_affine
 import pathlib
-import plotly
 
 import sys
 
@@ -40,21 +39,43 @@ parc_img_res = image.resample_to_img(parcellation_img, img, interpolation="neare
 parcellation = parc_img_res.get_fdata().squeeze().astype(np.uint8)
 data = img.get_fdata().squeeze()
 vol = data
+origin = img.affine[:3, 3]
+origin = [-90, -126, -72]  # first position has inverse sign
+origin = [0, 0, 0]
+spacing = np.diag(img.affine[:3, :3])
+spacing = [1, 1, 1]
 
 colormap = px.colors.qualitative.Alphabet
-saggital_slicer = VolumeSlicer(app, vol, axis=0, scene_id="brain")
-coronal_slicer = VolumeSlicer(app, vol, axis=1, scene_id="brain")
-axial_slicer = VolumeSlicer(app, vol, axis=2, scene_id="brain")
+saggital_slicer = VolumeSlicer(
+    app, vol, spacing=spacing, origin=origin, axis=0, scene_id="brain"
+)
+coronal_slicer = VolumeSlicer(
+    app, vol, spacing=spacing, origin=origin, axis=1, scene_id="brain"
+)
+axial_slicer = VolumeSlicer(
+    app, vol, spacing=spacing, origin=origin, axis=2, scene_id="brain"
+)
 
 # Update all slicers in order
-for slicer in [saggital_slicer, coronal_slicer, axial_slicer]:
+# TODO figure out if we need to explicitly define these in order for the Cards to be equal height
+slicer_list = []
+for slicer_idx, slicer in enumerate([saggital_slicer, coronal_slicer, axial_slicer]):
     slicer.graph.figure.update_layout(dragmode=False, plot_bgcolor="rgb(0, 0, 0)")
     slicer.overlay_data.data = slicer.create_overlay_data(parcellation, colormap)
+    aux_slider = dcc.Slider(id=f"aux-slider-{slicer_idx}", max=slicer.nslices)
+    slicer_list.append(
+        html.Div(
+            [
+                slicer.graph,
+                html.Div([slicer.slider, aux_slider], style={"display": "none"}),
+                *slicer.stores,
+            ]
+        )
+    )
 
 setpos_store = dcc.Store(
     id={"context": "app", "scene": saggital_slicer.scene_id, "name": "setpos"}
 )
-
 
 # Define Navbar
 # button_gh = "Hello"
@@ -112,54 +133,69 @@ navbar = dbc.Navbar(
 
 # Layout Slicer Positions
 saggital_slicer_card = dbc.Card(
-    [
-        dbc.CardHeader("Saggital View"),
-        dbc.CardBody(
-            [
-                saggital_slicer.graph,
-                html.Div(saggital_slicer.slider, style={"display": "none"}),
-                *saggital_slicer.stores,
-            ]
-        ),
-    ],
+    [dbc.CardHeader("Saggital View"), dbc.CardBody(dbc.CardBody(slicer_list[0])),],
     color="dark",
     inverse=True,
 )
-
 coronal_slicer_card = dbc.Card(
-    [
-        dbc.CardHeader("Coronal View"),
-        dbc.CardBody(
-            [
-                coronal_slicer.graph,
-                html.Div(coronal_slicer.slider, style={"display": "none"}),
-                *coronal_slicer.stores,
-            ]
-        ),
-    ],
+    [dbc.CardHeader("Coronal View"), dbc.CardBody(slicer_list[1]),],
     color="dark",
     inverse=True,
 )
 
 axial_slicer_card = dbc.Card(
-    [
-        dbc.CardHeader("Axial View"),
-        dbc.CardBody(
-            [
-                axial_slicer.graph,
-                html.Div(axial_slicer.slider, style={"display": "none"}),
-                *axial_slicer.stores,
-            ]
-        ),
-    ],
+    [dbc.CardHeader("Axial View"), dbc.CardBody(dbc.CardBody(slicer_list[2])),],
     color="dark",
     inverse=True,
 )
 
+nav_table = html.Div(
+    [
+        dbc.Row([dbc.Col(""), dbc.Col("Voxel Position")]),
+        dbc.Row(
+            [
+                dbc.Col("X"),
+                dbc.Col(dcc.Input(id="x-vox", type="number", placeholder="X value", style={"width": "100%"})),
+                dbc.Col(dcc.Input(id="x-world", type="number", placeholder="X world", style={"width": "100%"})),
+            ]
+        ),
+        dbc.Row(
+            [
+                dbc.Col("Y"),
+                dbc.Col(dcc.Input(id="y-vox", type="number", placeholder="Y value", style={"width": "100%"})),
+                dbc.Col(dcc.Input(id="y-world", type="number", placeholder="Y world", style={"width": "100%"})),
+            ]
+        ),
+        dbc.Row(
+            [
+                dbc.Col("Z"),
+                dbc.Col(dcc.Input(id="z-vox", type="number", placeholder="Z value", style={"width": "100%"})),
+                dbc.Col(dcc.Input(id="z-world", type="number", placeholder="Z world", style={"width": "100%"})),
+            ]
+        ),
+    ],
+    style={"width": "40%"},
+)
+
+
 controls_card = dbc.Card(
     [
         dbc.CardHeader("Controls"),
-        dbc.CardBody([html.Div(id="markdown")]),
+        dbc.CardBody(
+            dbc.Row(
+                [
+                    dbc.Col(nav_table),
+                    dbc.Col(
+                        [
+                            html.Pre(id="write_selected_position"),
+                            html.Pre(id="write_slicer_region"),
+                            html.Pre(id="write_graph_region"),
+                            html.Pre(id="write_highlight_region"),
+                        ]
+                    ),
+                ]
+            )
+        ),
         dbc.CardFooter(
             [
                 html.Div(dcc.Slider(id="val_slider"), style={"width": "50%"}),
@@ -198,7 +234,7 @@ table_card = dbc.Card(
     inverse=False,
 )
 
-heatmap_tab = dbc.Card(dbc.CardBody([dcc.Graph(id="conn_mat"),]))
+heatmap_tab = dbc.Card(dbc.CardBody([dcc.Graph(id="conn_mat")]))
 
 circos_tab = dbc.Card(
     [dbc.CardBody(id="circos_graph"), dbc.CardFooter(html.Div(id="circos_footer"))]
@@ -215,9 +251,11 @@ connectivity_card = dbc.Card(
         dbc.CardHeader("Functional Connectivity"),
         dbc.CardBody(connectivity_tabs),
         dcc.Store(id="store_region_names", data=region_labels),
-        dcc.Store(id="store_selected_region"),
-        dcc.Store(id="store_selected_brain_location"),
         dcc.Store(id="store_conn_mat", data=conn_mat),
+        dcc.Store(id="store_slicer_region"),
+        dcc.Store(id="store_graph_position"),
+        dcc.Store(id="store_graph_region"),
+        dcc.Store(id="store_highlight_region"),
         setpos_store,
     ]
 )
@@ -246,6 +284,108 @@ app.layout = html.Div(
         ),
     ]
 )
+
+
+# Update the nav table values to show the current slicer positions
+# Note that we are listening to the "drag_value" attributes here to avoid circularity of the callbacks
+@app.callback(
+    [Output("x-vox", "value"), Output("y-vox", "value"), Output("z-vox", "value")],
+    [
+        Input(saggital_slicer.slider.id, "drag_value"),
+        Input(coronal_slicer.slider.id, "drag_value"),
+        Input(axial_slicer.slider.id, "drag_value"),
+        Input("store_graph_position", "data"),
+    ],
+)
+def update_navtable(x_pos, y_pos, z_pos, requested_position):
+    ctx = dash.callback_context
+    if ctx.triggered[0]["prop_id"] == "store_graph_position.data":
+        x_pos, y_pos, z_pos = np.floor(apply_affine(np.linalg.inv(img.affine), requested_position)).astype(int)
+    return x_pos, y_pos, z_pos
+
+
+# Listen for changes to the nav table values and update the slicer position accordingly
+@app.callback(
+    [
+        Output(setpos_store.id, "data"),
+        Output("x-world", "value"),
+        Output("y-world", "value"),
+        Output("z-world", "value"),
+        Output("write_selected_position", "children"),
+        Output("store_slicer_region", "data"),
+    ],
+    [Input("x-vox", "value"), Input("y-vox", "value"), Input("z-vox", "value"),],
+    State("region_table", "data"),
+)
+def write_table_values_to_slicer(x_vox, y_vox, z_vox, table_data):
+    # Find the overlay value at the current slicer position
+    region_number = parcellation[x_vox, y_vox, z_vox]
+    # Compute the world positions
+    x_world, y_world, z_world = apply_affine(img.affine, (x_vox, y_vox, z_vox))
+    if not region_number == 0:
+        region_name = table.query("`Region ID` == @region_number")[
+            "Region Name"
+        ].values[0]
+    else:
+        region_name = None
+    return (
+        (z_vox, y_vox, x_vox),
+        x_world,
+        y_world,
+        z_world,
+        f"Current voxel positions\nx: {x_vox}, y: {y_vox}, z: {z_vox}",
+        region_name,
+    )
+
+
+# TODO remove this
+@app.callback(
+    Output("write_slicer_region", "children"), Input("store_slicer_region", "data")
+)
+def temp_writer1(string):
+    return f"The current slicer region is: {string}"
+
+
+@app.callback(
+    Output("write_graph_region", "children"), Input("store_graph_region", "data")
+)
+def temp_writer2(string):
+    return f"The current graph region is: {string}"
+
+
+@app.callback(
+    Output("write_highlight_region", "children"),
+    Input("store_highlight_region", "data"),
+)
+def temp_writer3(string):
+    return f"The current highlight region is: {string}"
+
+
+# React to clicks on graphs and update the corresponding region
+@app.callback(
+    [Output("store_graph_region", "data"), Output("store_graph_position", "data")],
+    [Input("conn_mat", "clickData"), Input("region_table", "active_cell")],
+    [State("region_table", "data"), State("store_graph_region", "data")],
+)
+def listen_to_graph_clicks(
+    heatmap_clickdata, active_table_cell, table_data, previous_region
+):
+    ctx = dash.callback_context
+    table = pd.DataFrame(table_data)
+    region_name = None
+    if ctx.triggered[0]["prop_id"] == "conn_mat.clickData":
+        region_name = heatmap_clickdata["points"][0]["y"]
+    elif ctx.triggered[0]["prop_id"] == "region_table.active_cell":
+        region_name = table.iloc[active_table_cell["row"]]["Region Name"]
+    if region_name == previous_region:
+        return None, dash.no_update
+    else:
+        # Find the corresponding position
+        region_position = tuple(
+            table.query("`Region Name` == @region_name")[["X", "Y", "Z"]].values[0]
+        )
+        return region_name, region_position
+
 
 # Set the threshold slider according to the threshold mode
 @app.callback(
@@ -293,150 +433,47 @@ def select_thresholding(val, conn_mat):
         raise Exception(f"received unknown threshold mode {val}")
 
 
-# Update the currently selected brain region
 @app.callback(
-    [
-        Output("store_selected_region", "data"),
-        Output("store_selected_brain_location", "data"),
-    ],
-    [
-        Input("conn_mat", "clickData"),
-        Input("region_table", "active_cell"),
-        Input(saggital_slicer.graph.id, "clickData"),
-        Input(coronal_slicer.graph.id, "clickData"),
-        Input(axial_slicer.graph.id, "clickData"),
-    ],
-    [
-        State(
-            {"scene": axial_slicer.scene_id, "context": ALL, "name": "state"}, "data"
-        ),
-        State("store_selected_region", "data"),
-        State("region_table", "data"),
-    ],
+    Output("store_highlight_region", "data"),
+    [Input("store_graph_region", "data"), Input("store_slicer_region", "data")],
 )
-def update_selected_region(
-    click_data,
-    current_table_cell,
-    saggital_trigger,
-    coronal_trigger,
-    axial_trigger,
-    brain_index,
-    current_region,
-    table_data,
-):
-    # Understand what has happened
+def update_highlight_region(graph_region, slicer_region):
     ctx = dash.callback_context
-    clicked_region = None
-    selected_brain_location = dash.no_update
-    table = pd.DataFrame(table_data)
-    # See if the heatmap was clicked
-    if ctx.triggered[0]["prop_id"] == "conn_mat.clickData":
-        last_region_selector = None
-        clicked_region = click_data["points"][0]["y"]
-        corresponding_row = table.query("`Region Name` == @clicked_region")
-        selected_brain_location = tuple(corresponding_row[["X", "Y", "Z"]].values[0])
-
-    # See if the table row was clicked
-    elif ctx.triggered[0]["prop_id"] == "region_table.active_cell":
-        last_region_selector = None
-        table_row = table.iloc[current_table_cell["row"]]
-        clicked_region = table_row["Region Name"]
-        selected_brain_location = tuple(table_row[["X", "Y", "Z"]])
-
-    elif "slicer" in ctx.triggered[0]["prop_id"]:
-        if brain_index is None or all(map(lambda x: x is None, brain_index)):
-            return None, selected_brain_location
-
-        x_pos = brain_index[0]["index"]
-        y_pos = brain_index[1]["index"]
-        z_pos = brain_index[2]["index"]
-        clicked_region_number = parcellation[x_pos, y_pos, z_pos]
-
-        # TODO: do something smarter with the fact that we have selected background
-        if clicked_region_number == 0:
-            return None, selected_brain_location
-
-        corresponding_row = table.query("`Region ID` == @clicked_region_number")
-        clicked_region = corresponding_row["Region Name"].values[0]
-        # selected_brain_location = tuple(corresponding_row[["X", "Y", "Z"]].values[0])
-
-    if clicked_region == current_region:
-        return None, selected_brain_location
+    if ctx.triggered[0]["prop_id"] == "store_graph_region.data":
+        return graph_region
+    elif ctx.triggered[0]["prop_id"] == "store_slicer_region.data":
+        return slicer_region
     else:
-        return clicked_region, selected_brain_location
+        # TODO remove this, 'tis silly
+        raise Exception("This is not supposed to happen")
 
 
 @app.callback(
-    Output(setpos_store.id, "data"),
-    Input("store_selected_brain_location", "data"),
-    prevent_inital_call=True,
-)
-def focus_brain_region(selected_brain_index):
-    # Extract the MNI coordinates
-    if selected_brain_index is None:
-        return dash.no_update  # , dash.no_update, dash.no_update
-    x, y, z = selected_brain_index
-    # Convert them to voxel coordinate
-    x_vox, y_vox, z_vox = np.floor(
-        apply_affine(np.linalg.inv(parc_img_res.affine), (x, y, z))
-    ).astype(int)
-    return x_vox, y_vox, z_vox
-
-
-# Draw the connectivity matrix given the current threshold
-# also: redraw it quickly if only a click event has occured
-@app.callback(
-    [Output("conn_mat", "figure"), Output("markdown", "children"),],
-    [Input("val_slider", "value"), Input("store_selected_region", "data")],
+    Output("conn_mat", "figure"),
+    [Input("val_slider", "value"), Input("store_highlight_region", "data")],
     [
-        State("conn_mat", "figure"),
         State("store_conn_mat", "data"),
         State("store_region_names", "data"),
         State("threshold-mode", "value"),
     ],
 )
 def connectivity_heatmap(
-    threshold, current_region, fig, conn_mat, region_names, thr_mode
+    threshold, current_region, conn_mat, region_names, thr_mode
 ):
     conn_mat = np.array(conn_mat)
     conn_mat_df = hf.thr_conn_mat(conn_mat, threshold, region_names, thr_mode)
+    # Redraw the figure
+    fig = hf.make_heatmap(conn_mat_df)
 
-    # Understand what has happened
-    ctx = dash.callback_context
-    if not ctx.triggered:
-        # Nothing has happened yet, this is the setup
-        # Draw the figure and move on
-        fig = hf.make_heatmap(conn_mat_df)
-        return fig, "nothing happened yet"
-
-    # If we start because the threshold has changed
-    elif ctx.triggered[0]["prop_id"] == "store_selected_region.data":
-        fig = go.Figure(fig)
-        fig.layout.shapes = []
-        # The selected region has been updated by some event
-        # We either draw a new shape or we draw only the figure
-        if current_region is None:
-            return fig, f"removed {current_region}"
+    if current_region is not None:
         fig = hf.add_region_shape(fig, current_region)
-        return fig, f"{current_region}"
-
-    elif ctx.triggered[0]["prop_id"] == "val_slider.value":
-        # The threshold has changed
-        # Redraw the figure
-        fig = hf.make_heatmap(conn_mat_df)
-        if current_region is not None:
-            # We also want to draw the current region shape on the heatmap
-            fig = hf.add_region_shape(fig, current_region)
-        return fig, f"{threshold} and {current_region}"
-
-    else:
-        raise Exception(f"You shouldn't have come here: {ctx.triggered[0]['prop_id']}")
+    return fig
 
 
 # Draw circos here
 @app.callback(
     Output("circos_graph", "children"),
-    [Input("val_slider", "value"), Input("store_selected_region", "data")],
+    [Input("val_slider", "value"), Input("store_highlight_region", "data")],
     [
         State("store_conn_mat", "data"),
         State("store_region_names", "data"),
@@ -481,14 +518,13 @@ def connectivity_circos(threshold, current_region, conn_mat, region_names, thr_m
             },
         ],
     )
-
     return circos
 
 
 # Highlight the table region
 @app.callback(
     Output("region_table", "style_data_conditional"),
-    Input("store_selected_region", "data"),
+    Input("store_highlight_region", "data"),
     prevent_initial_call=True,
 )
 def higlight_row(region_name):
@@ -507,4 +543,4 @@ def higlight_row(region_name):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, dev_tools_props_check=False, port=8052)
+    app.run_server(debug=True, dev_tools_props_check=False, port=8053)
