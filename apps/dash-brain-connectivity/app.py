@@ -543,4 +543,4 @@ def higlight_row(region_name):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, dev_tools_props_check=False, port=8053)
+    app.run_server(debug=True, dev_tools_props_check=False)
