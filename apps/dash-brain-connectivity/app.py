@@ -12,7 +12,8 @@ from nilearn import datasets, image
 import pandas as pd
 import dash_table
 import dash_bio as dashbio
-#from plotly import graph_objects as go
+
+# from plotly import graph_objects as go
 
 from nibabel.affines import apply_affine
 import pathlib
@@ -155,22 +156,64 @@ nav_table = html.Div(
         dbc.Row(
             [
                 dbc.Col("X"),
-                dbc.Col(dcc.Input(id="x-vox", type="number", placeholder="X value", style={"width": "100%"})),
-                dbc.Col(dcc.Input(id="x-world", type="number", placeholder="X world", style={"width": "100%"})),
+                dbc.Col(
+                    dcc.Input(
+                        id="x-vox",
+                        type="number",
+                        placeholder="X value",
+                        style={"width": "100%"},
+                    )
+                ),
+                dbc.Col(
+                    dcc.Input(
+                        id="x-world",
+                        type="number",
+                        placeholder="X world",
+                        style={"width": "100%"},
+                    )
+                ),
             ]
         ),
         dbc.Row(
             [
                 dbc.Col("Y"),
-                dbc.Col(dcc.Input(id="y-vox", type="number", placeholder="Y value", style={"width": "100%"})),
-                dbc.Col(dcc.Input(id="y-world", type="number", placeholder="Y world", style={"width": "100%"})),
+                dbc.Col(
+                    dcc.Input(
+                        id="y-vox",
+                        type="number",
+                        placeholder="Y value",
+                        style={"width": "100%"},
+                    )
+                ),
+                dbc.Col(
+                    dcc.Input(
+                        id="y-world",
+                        type="number",
+                        placeholder="Y world",
+                        style={"width": "100%"},
+                    )
+                ),
             ]
         ),
         dbc.Row(
             [
                 dbc.Col("Z"),
-                dbc.Col(dcc.Input(id="z-vox", type="number", placeholder="Z value", style={"width": "100%"})),
-                dbc.Col(dcc.Input(id="z-world", type="number", placeholder="Z world", style={"width": "100%"})),
+                dbc.Col(
+                    dcc.Input(
+                        id="z-vox",
+                        type="number",
+                        placeholder="Z value",
+                        style={"width": "100%"},
+                    )
+                ),
+                dbc.Col(
+                    dcc.Input(
+                        id="z-world",
+                        type="number",
+                        placeholder="Z world",
+                        style={"width": "100%"},
+                    )
+                ),
             ]
         ),
     ],
@@ -300,7 +343,9 @@ app.layout = html.Div(
 def update_navtable(x_pos, y_pos, z_pos, requested_position):
     ctx = dash.callback_context
     if ctx.triggered[0]["prop_id"] == "store_graph_position.data":
-        x_pos, y_pos, z_pos = np.floor(apply_affine(np.linalg.inv(img.affine), requested_position)).astype(int)
+        x_pos, y_pos, z_pos = np.floor(
+            apply_affine(np.linalg.inv(img.affine), requested_position)
+        ).astype(int)
     return x_pos, y_pos, z_pos
 
 
@@ -457,9 +502,7 @@ def update_highlight_region(graph_region, slicer_region):
         State("threshold-mode", "value"),
     ],
 )
-def connectivity_heatmap(
-    threshold, current_region, conn_mat, region_names, thr_mode
-):
+def connectivity_heatmap(threshold, current_region, conn_mat, region_names, thr_mode):
     conn_mat = np.array(conn_mat)
     conn_mat_df = hf.thr_conn_mat(conn_mat, threshold, region_names, thr_mode)
     # Redraw the figure
