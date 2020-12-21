@@ -1,5 +1,6 @@
 .card {
     margin-top: 1em;
+    height: 50vh;
 }
 
 div#app_title {
@@ -10,4 +11,8 @@ div#app_title {
 .tooltip-target {
     text-decoration: underline;
     cursor: pointer;
+}
+
+.dash-graph {
+    height: 100%;
 }

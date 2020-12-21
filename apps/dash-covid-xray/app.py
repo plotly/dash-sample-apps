@@ -286,7 +286,7 @@ app.layout = html.Div(
                 dbc.Row([dbc.Col(axial_card), dbc.Col(saggital_card)]),
                 dbc.Row([dbc.Col(histogram_card), dbc.Col(mesh_card),]),
             ],
-            fluid=False,
+            fluid=True,
         ),
         dcc.Store(id="annotations", data={}),
         dcc.Store(id="occlusion-surface", data={}),
