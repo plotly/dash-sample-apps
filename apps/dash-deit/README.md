@@ -12,7 +12,7 @@ If this is in dash sample apps and you have a colab demo, uncomment the "Open in
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/plotly/dash-sample-apps/blob/master/apps/dash-deit/ColabDemo.ipynb)
  -->
 
-*A User Interface for DeiT built with Dash in ~130 lines of pure Python. [Click here](dash-gallery.plotly.host/dash-deit) for a demo.*
+*A User Interface for DeiT built with Dash in ~130 lines of pure Python. [Click here](https://dash-gallery.plotly.host/dash-deit/) for a demo.*
 
 [Data-efficient image Transformers (DeiT)](https://ai.facebook.com/blog/data-efficient-image-transformers-a-promising-new-technique-for-image-classification/) is a new family of computer vision models that achieve near state-of-the-art performance on ImageNet with significantly less training data and computation resources. The smaller variant can process up to 500 images per second with very high accuracy, and the largest variant matches the performance of EfficientNet-B7 on ImageNet while being 2x faster to train.
 
