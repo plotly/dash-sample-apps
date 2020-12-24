@@ -11,6 +11,8 @@ import torch
 import torchvision.transforms as T
 from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
 
+torch.hub.set_dir("./")
+
 
 def format_label(label):
     label = " ".join(label.split()[1:])
