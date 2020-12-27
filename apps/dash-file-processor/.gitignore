@@ -1,0 +1,5 @@
+output/*.txt
+build/
+dist/
+pkg_NSKHALDI.egg-info/
+docs/
