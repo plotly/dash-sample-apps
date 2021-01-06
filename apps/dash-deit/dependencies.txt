@@ -1,0 +1,10 @@
+dash
+dash-bootstrap-components
+pandas
+numpy
+gunicorn
+torch
+timm==0.3.2
+requests
+pandas
+Pillow
