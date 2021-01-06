@@ -92,7 +92,7 @@ def make_circos(df, gap=0.1, focus_region=None):
     return node_layout, highlight_data, connection_data
 
 
-def make_heatmap(df):
+def make_heatmap(df, colormap=None):
     axis_ticks = df.columns
     n_elements = len(axis_ticks)
     gap_width = 20 / n_elements
@@ -118,41 +118,34 @@ def make_heatmap(df):
     )
     heatmap = go.Heatmap(
         z=df,
+        zmin=0,
+        zmax=1,
         x=axis_ticks,
         y=axis_ticks,
         xgap=gap_width,
         ygap=gap_width,
         hoverongaps=False,
+        autocolorscale=True if colormap is None else False,
+        colorscale=colormap,
     )
     fig = go.Figure(heatmap, layout)
-    fig.update_traces(showscale=False)
+    fig.update_traces(showscale=True)
 
     return fig
 
 
-def thr_conn_mat(conn_mat, thr, labels, mode="absolute"):
-    out_mat = np.copy(conn_mat)
-
-    if mode == "percentage":
-        conn_vec = np.abs(conn_mat[np.tril_indices(len(labels), -1)])
-        thr = np.percentile(conn_vec, thr * 100)
-
-    out_mat[np.abs(out_mat) < thr] = np.nan
-    out_df = pd.DataFrame(data=out_mat, columns=labels, index=labels)
-    return out_df
-
-
-def add_region_shape(fig, region_id):
-    y_pos = np.where(np.array(fig.data[0]["y"]) == region_id)[0][0]
+def add_region_shape(fig, region_id, line=None, orientation="h"):
+    # We just use the position along the y axis here but because the matrix is symmetrical, there is no difference
+    draw_pos = np.where(np.array(fig.data[0]["y"]) == region_id)[0][0]
     fig.add_shape(
         type="rect",
         xref="x",
         yref="y",
-        x0=-0.5,
-        y0=y_pos - 0.5,
-        x1=len(fig.data[0]["x"]) - 0.5,
-        y1=y_pos + 0.5,
-        line=dict(color="LightSeaGreen", width=3,),
+        x0=-0.5 if orientation == "h" else draw_pos - 0.5,
+        y0=draw_pos - 0.5 if orientation == "h" else -0.5,
+        x1=len(fig.data[0]["x"]) - 0.5 if orientation == "h" else draw_pos + 0.5,
+        y1=draw_pos + 0.5 if orientation == "h" else len(fig.data[0]["y"]) - 0.5,
+        line=line if line is not None else dict(color="LightSeaGreen", width=3),
     )
     return fig
 
