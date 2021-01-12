@@ -15,7 +15,9 @@ import dash_html_components as html
 import dash_core_components as dcc
 from dash_slicer import VolumeSlicer
 
-app = dash.Dash(__name__, update_title=None)
+
+external_stylesheets = [dbc.themes.BOOTSTRAP]
+app = dash.Dash(__name__, update_title=None, external_stylesheets=external_stylesheets)
 server = app.server
 
 
@@ -44,14 +46,16 @@ fig_mesh.add_trace(go.Mesh3d(x=z, y=y, z=x, opacity=0.2, i=k, j=j, k=i))
 # Create slicers
 slicer1 = VolumeSlicer(app, img, axis=0, spacing=spacing, thumbnail=False)
 slicer1.graph.figure.update_layout(
-    dragmode="drawclosedpath", newshape_line_color="cyan"
+    dragmode="drawclosedpath", newshape_line_color="cyan", plot_bgcolor="rgb(0, 0, 0)"
 )
 slicer1.graph.config.update(
     modeBarButtonsToAdd=["drawclosedpath", "eraseshape",]
 )
 
 slicer2 = VolumeSlicer(app, img, axis=1, spacing=spacing, thumbnail=False)
-slicer2.graph.figure.update_layout(dragmode="drawrect", newshape_line_color="cyan")
+slicer2.graph.figure.update_layout(
+    dragmode="drawrect", newshape_line_color="cyan", plot_bgcolor="rgb(0, 0, 0)"
+)
 slicer2.graph.config.update(
     modeBarButtonsToAdd=["drawrect", "eraseshape",]
 )
@@ -74,69 +78,69 @@ def largest_connected_component(mask):
 t2 = time()
 print("initial calculations", t2 - t1)
 
-
-app.layout = html.Div(
+# ------------- Define App Layout ---------------------------------------------------
+axial_card = dbc.Card(
     [
-        html.Div(
-            id="banner",
-            children=[
-                html.H2(
-                    "Exploration and annotation of CT images",
-                    id="title",
-                    className="seven columns",
-                ),
-                html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png"),),
-            ],
-            className="twelve columns app-background",
-        ),
-        html.Div(
+        dbc.CardHeader("Axial view of the lung"),
+        dbc.CardBody([slicer1.graph, slicer1.slider, *slicer1.stores]),
+        dbc.CardFooter(
             [
-                slicer1.graph,
-                slicer1.slider,
                 html.H6(
                     [
+                        "Step 1: Draw a rough outline that encompasses all ground glass occlusions across ",
                         html.Span(
-                            "1 - Slide to find the occlusion and draw a path around its contour ❓",
+                            "all axial slices",
                             id="tooltip-target-1",
+                            className="tooltip-target",
                         ),
+                        ".",
                     ]
                 ),
                 dbc.Tooltip(
-                    "Draw a rough path which encloses the occlusion at all heights",
+                    "Use the slider to scroll vertically through the image and look for the ground glass occlusions.",
                     target="tooltip-target-1",
                 ),
-                *slicer1.stores,
-            ],
-            className="app-background",
+            ]
         ),
-        html.Div(
+    ]
+)
+
+saggital_card = dbc.Card(
+    [
+        dbc.CardHeader("Sagittal view of the lung"),
+        dbc.CardBody([slicer2.graph, slicer2.slider, *slicer2.stores]),
+        dbc.CardFooter(
             [
-                slicer2.graph,
-                slicer2.slider,
                 html.H6(
                     [
+                        "Step 2:\n\nDraw a rectangle to determine the ",
                         html.Span(
-                            "2 - Draw a rectangle to determine the min and max height of the occlusion ❓",
+                            "min and max height ",
                             id="tooltip-target-2",
+                            className="tooltip-target",
                         ),
-                    ],
+                        "of the occlusion.",
+                    ]
                 ),
                 dbc.Tooltip(
                     "Only the min and max height of the rectangle are used, the width is ignored",
                     target="tooltip-target-2",
                 ),
-                *slicer2.stores,
-            ],
-            className="app-background",
+            ]
         ),
-        html.Div(
+    ]
+)
+
+histogram_card = dbc.Card(
+    [
+        dbc.CardHeader("Histogram of intensity values"),
+        dbc.CardBody(
             [
                 dcc.Graph(
                     id="graph-histogram",
                     figure=px.bar(
                         x=hi[1],
                         y=hi[0],
-                        title="Histogram of intensity values - please select first a volume of interest by annotating slices",
                         labels={"x": "intensity", "y": "count"},
                         template="plotly_white",
                     ),
@@ -149,25 +153,154 @@ app.layout = html.Div(
                         ]
                     },
                 ),
-            ],
-            className="app-background",
+            ]
         ),
-        html.Div(
-            [dcc.Graph(id="graph-helper", figure=fig_mesh),],
-            className="app-background",
+        dbc.CardFooter(
+            [
+                dbc.Toast(
+                    [
+                        html.P(
+                            "Before you can select value ranges in this histogram, you need to define a region"
+                            " of interest in the slicer views above (step 1 and 2)!",
+                            className="mb-0",
+                        )
+                    ],
+                    id="roi-warning",
+                    header="Please select a volume of interest first",
+                    icon="danger",
+                    is_open=True,
+                    dismissable=False,
+                ),
+                "Step 3: Select a range of values to segment the occlusion. Hover on slices to find the typical "
+                "values of the occlusion.",
+            ]
+        ),
+    ]
+)
+
+mesh_card = dbc.Card(
+    [
+        dbc.CardHeader("3D mesh representation of the image data and annotation"),
+        dbc.CardBody([dcc.Graph(id="graph-helper", figure=fig_mesh)]),
+    ]
+)
+
+# Define Modal
+with open("assets/modal.md", "r") as f:
+    howto_md = f.read()
+
+modal_overlay = dbc.Modal(
+    [
+        dbc.ModalBody(html.Div([dcc.Markdown(howto_md)], id="howto-md")),
+        dbc.ModalFooter(dbc.Button("Close", id="howto-close", className="howto-bn")),
+    ],
+    id="modal",
+    size="lg",
+)
+
+# Buttons
+button_gh = dbc.Button(
+    "Learn more",
+    id="howto-open",
+    outline=True,
+    color="secondary",
+    # Turn off lowercase transformation for class .button in stylesheet
+    style={"textTransform": "none"},
+)
+
+button_howto = dbc.Button(
+    "View Code on github",
+    outline=True,
+    color="primary",
+    href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-covid-xray",
+    id="gh-link",
+    style={"text-transform": "none"},
+)
+
+nav_bar = dbc.Navbar(
+    dbc.Container(
+        [
+            dbc.Row(
+                [
+                    dbc.Col(
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    html.A(
+                                        html.Img(
+                                            src=app.get_asset_url("dash-logo-new.png"),
+                                            height="30px",
+                                        ),
+                                        href="https://plotly.com/dash/",
+                                    ),
+                                    style={"width": "min-content"},
+                                ),
+                                dbc.Col(
+                                    html.Div(
+                                        [
+                                            html.H3("Covid X-Ray app"),
+                                            html.P(
+                                                "Exploration and annotation of CT images"
+                                            ),
+                                        ],
+                                        id="app_title",
+                                    )
+                                ),
+                            ],
+                            align="center",
+                            style={"display": "inline-flex"},
+                        )
+                    ),
+                    dbc.Col(
+                        [
+                            dbc.NavbarToggler(id="navbar-toggler"),
+                            dbc.Collapse(
+                                dbc.Nav(
+                                    [dbc.NavItem(button_howto), dbc.NavItem(button_gh)],
+                                    className="ml-auto",
+                                    navbar=True,
+                                ),
+                                id="navbar-collapse",
+                                navbar=True,
+                            ),
+                        ]
+                    ),
+                    modal_overlay,
+                ],
+                align="center",
+                style={"width": "100%"},
+            ),
+        ],
+        fluid=True,
+    ),
+    color="dark",
+    dark=True,
+)
+
+
+app.layout = html.Div(
+    [
+        nav_bar,
+        dbc.Container(
+            [
+                dbc.Row([dbc.Col(axial_card), dbc.Col(saggital_card)]),
+                dbc.Row([dbc.Col(histogram_card), dbc.Col(mesh_card),]),
+            ],
+            fluid=True,
         ),
         dcc.Store(id="annotations", data={}),
         dcc.Store(id="occlusion-surface", data={}),
     ],
-    className="twelve columns",
 )
 
 t3 = time()
 print("layout definition", t3 - t2)
 
 
+# ------------- Define App Interactivity ---------------------------------------------------
 @app.callback(
-    Output("graph-histogram", "figure"), [Input("annotations", "data")],
+    [Output("graph-histogram", "figure"), Output("roi-warning", "is_open")],
+    [Input("annotations", "data")],
 )
 def update_histo(annotations):
     if (
@@ -175,12 +308,12 @@ def update_histo(annotations):
         or annotations.get("x") is None
         or annotations.get("z") is None
     ):
-        return dash.no_update
+        return dash.no_update, dash.no_update
     # Horizontal mask for the xy plane (z-axis)
     path = path_to_coords(annotations["z"]["path"])
     rr, cc = draw.polygon(path[:, 1] / spacing[1], path[:, 0] / spacing[2])
     if len(rr) == 0 or len(cc) == 0:
-        return dash.no_update
+        return dash.no_update, dash.no_update
     mask = np.zeros(img.shape[1:])
     mask[rr, cc] = 1
     mask = ndimage.binary_fill_holes(mask)
@@ -189,16 +322,16 @@ def update_histo(annotations):
     top, bottom = sorted([int(annotations["x"][c] / spacing[0]) for c in ["y0", "y1"]])
     intensities = med_img[top:bottom, mask].ravel()
     if len(intensities) == 0:
-        return dash.no_update
+        return dash.no_update, dash.no_update
     hi = exposure.histogram(intensities)
     fig = px.bar(
         x=hi[1],
         y=hi[0],
-        title="3 - Histogram of intensity values - select a range of values to segment the occlusion <br> Hover on slices to find the typical values of the occlusion",
+        # Histogram
         labels={"x": "intensity", "y": "count"},
     )
     fig.update_layout(dragmode="select", title_font=dict(size=20, color="blue"))
-    return fig
+    return fig, False
 
 
 @app.callback(
@@ -305,6 +438,17 @@ function(surf, fig){
     inputs=[Input("occlusion-surface", "data"),],
     state=[State("graph-helper", "figure"),],
 )
+
+
+@app.callback(
+    Output("modal", "is_open"),
+    [Input("howto-open", "n_clicks"), Input("howto-close", "n_clicks")],
+    [State("modal", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
 
 
 if __name__ == "__main__":
