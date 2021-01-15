@@ -1,0 +1,68 @@
+#loader-wrapper > div {
+    visibility: visible !important;
+}
+
+#view-select-tabs, #view-select-tabs-parent {
+    display: inline-flex !important;
+}
+
+#view-select-tabs div {
+    box-sizing:unset;
+}
+
+#image-select-side,#image-select-top {
+    padding: 0 10px 0 10px !important;
+    position: relative;
+    top: 50%;
+    transform: translate(0,-50%);
+}
+
+#image-select-side-display,#image-select-top-display {
+    height: 20px;
+    line-height: 20px;
+    padding: 15px;
+}
+
+#main {
+    background-color: black;
+}
+
+#title {
+}
+
+#banner {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#logo {
+    width: min-content;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /*Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1005; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.markdown-container {
+  width: 60vw;
+  margin: 10% auto;
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+#markdown-container img {
+    max-width: 100%;
+}
