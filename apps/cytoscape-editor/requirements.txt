@@ -4,3 +4,4 @@ gunicorn
 plotly
 dash
 colour
+dash-cytoscape
