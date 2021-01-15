@@ -1,0 +1,18 @@
+.card {
+    margin-top: 1em;
+    height: 60vh;
+}
+
+div#app_title {
+    min-width: max-content;
+    color: white;
+}
+
+.tooltip-target {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.dash-graph {
+    height: 100%;
+}
