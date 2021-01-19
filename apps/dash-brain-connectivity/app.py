@@ -794,9 +794,7 @@ def connectivity_heatmap(graph_region, slicer_region, conn_mat, region_names):
 
     if graph_region is not None:
         # We have a selected region and are in connectivity drawing mode
-        fig = add_region_shape(
-            fig, graph_region, line=dict(color="#c3e6cb", width=4)
-        )
+        fig = add_region_shape(fig, graph_region, line=dict(color="#c3e6cb", width=4))
 
     if slicer_region is not None:
         fig = add_region_shape(
