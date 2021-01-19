@@ -790,16 +790,16 @@ def connectivity_heatmap(graph_region, slicer_region, conn_mat, region_names):
     conn_mat[conn_mat < 0] = 0
     conn_mat_df = pd.DataFrame(conn_mat, columns=region_names, index=region_names)
     # Redraw the figure
-    fig = hf.make_heatmap(conn_mat_df, colormap=connectivity_colormap)
+    fig = make_heatmap(conn_mat_df, colormap=connectivity_colormap)
 
     if graph_region is not None:
         # We have a selected region and are in connectivity drawing mode
-        fig = hf.add_region_shape(
+        fig = add_region_shape(
             fig, graph_region, line=dict(color="#c3e6cb", width=4)
         )
 
     if slicer_region is not None:
-        fig = hf.add_region_shape(
+        fig = add_region_shape(
             fig,
             slicer_region,
             line=dict(color="#b8daff", width=4),
