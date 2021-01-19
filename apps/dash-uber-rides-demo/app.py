@@ -210,7 +210,7 @@ def get_selection(month, day, selection):
     return [np.array(xVal), np.array(yVal), np.array(colorVal)]
 
 
-# Selected Data in the Histogram updates the Values in the DatePicker
+# Selected Data in the Histogram updates the Values in the Hours selection dropdown menu
 @app.callback(
     Output("bar-selector", "value"),
     [Input("histogram", "selectedData"), Input("histogram", "clickData")],
