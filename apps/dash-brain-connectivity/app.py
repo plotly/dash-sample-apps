@@ -182,27 +182,18 @@ navbar = dbc.Navbar(
 
 # Layout Slicer Positions
 saggital_slicer_card = dbc.Card(
-    [
-        dbc.CardHeader("Saggital View"),
-        dbc.CardBody(dbc.CardBody(slicer_list[0])),
-    ],
+    [dbc.CardHeader("Saggital View"), dbc.CardBody(dbc.CardBody(slicer_list[0])),],
     color="dark",
     inverse=True,
 )
 coronal_slicer_card = dbc.Card(
-    [
-        dbc.CardHeader("Coronal View"),
-        dbc.CardBody(slicer_list[1]),
-    ],
+    [dbc.CardHeader("Coronal View"), dbc.CardBody(slicer_list[1]),],
     color="dark",
     inverse=True,
 )
 
 axial_slicer_card = dbc.Card(
-    [
-        dbc.CardHeader("Axial View"),
-        dbc.CardBody(dbc.CardBody(slicer_list[2])),
-    ],
+    [dbc.CardHeader("Axial View"), dbc.CardBody(dbc.CardBody(slicer_list[2])),],
     color="dark",
     inverse=True,
 )
@@ -289,10 +280,7 @@ connectivity_info = html.Div(
         dbc.Row(
             [
                 dbc.Col("The current region: ", width=3),
-                dbc.Col(
-                    html.Pre(id="position-region-info"),
-                    width="auto",
-                ),
+                dbc.Col(html.Pre(id="position-region-info"), width="auto",),
             ],
         ),
         dbc.Row(
@@ -304,10 +292,7 @@ connectivity_info = html.Div(
         dbc.Row(
             [
                 dbc.Col("with a strength of: ", width=3),
-                dbc.Col(
-                    html.Pre(id="connection-conn-info"),
-                    width="auto",
-                ),
+                dbc.Col(html.Pre(id="connection-conn-info"), width="auto",),
             ],
         ),
     ],
@@ -429,11 +414,7 @@ table_card = dbc.Card(
 connectivity_card = dbc.Card(
     [
         dbc.CardHeader("Functional Connectivity"),
-        dbc.CardBody(
-            [
-                dcc.Graph(id="conn_mat"),
-            ]
-        ),
+        dbc.CardBody([dcc.Graph(id="conn_mat"),]),
         dbc.CardFooter(
             [
                 html.Div(
@@ -581,17 +562,10 @@ def position_info(seed_region, brain_region, region_names, raw_conn_mat):
     Input("store_graph_region", "data"),
     Input("store_conn_thr_mat", "data"),
     Input("store_parcellation", "data"),
-    [
-        State("region_table", "data"),
-        State("threshold-mode", "value"),
-    ],
+    [State("region_table", "data"), State("threshold-mode", "value"),],
 )
 def update_brain_overlay(
-    graph_region,
-    conn_mat_data,
-    parcellation_data,
-    table_data,
-    threshold,
+    graph_region, conn_mat_data, parcellation_data, table_data, threshold,
 ):
     conn_mat = np.array(conn_mat_data)
     parcellation = np.array(parcellation_data).astype(np.uint8)
