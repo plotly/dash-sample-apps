@@ -1,56 +1,18 @@
-/* make the graph still visible while the loading spinner is displayed */
-*[data-dash-is-loading="true"]{
-    visibility: visible;
+.card {
+    margin-top: 1em;
+    height: 60vh;
 }
 
-.app-background {
-    background-color: lightgrey;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 10px;
-    width: 46%;
-    display: inline-block;
+div#app_title {
+    min-width: max-content;
+    color: white;
 }
 
-#right-column {
-    position: absolute;
-    right: 3px;
+.tooltip-target {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
-#left-column {
-    position: absolute;
-    left: 8px;
-}
-
-#banner {
-    margin-bottom: 18px;
-    position: relative;
-}
-
-#logo {
-    position: absolute;
-    top: 18%;
-    right: 10px;
-}
-
-.tooltip {}
-
-.tooltiptext {
-    visibility: hidden;
-    text-align: left;
-    border-radius: 5px;
-    position: absolute;
-    z-index: 1; 
-    top: 100%;
-    left: 0;
-    font-size: small;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-}
-
-#description {
-    margin-bottom: 20px;
+.dash-graph {
+    height: 100%;
 }
