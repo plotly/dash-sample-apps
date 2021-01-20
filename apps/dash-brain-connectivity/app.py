@@ -17,7 +17,10 @@ from plotly import graph_objects as go
 from nibabel.affines import apply_affine
 from matplotlib import pyplot as plt
 
+from time import time
+from datetime import datetime
 
+t1 = time()
 stylesheets = [dbc.themes.BOOTSTRAP]
 app = dash.Dash(__name__, external_stylesheets=stylesheets)
 server = app.server
@@ -125,6 +128,9 @@ for slicer_idx, slicer in enumerate([sagittal_slicer, coronal_slicer, axial_slic
 setpos_store = dcc.Store(
     id={"context": "app", "scene": sagittal_slicer.scene_id, "name": "setpos"}
 )
+
+t2 = time()
+print(t2 - t1)
 
 # Define Navbar
 # button_gh = "Hello"
@@ -488,6 +494,8 @@ def map_color(vector):
     Input("atlas-drop-menu", "value"),
 )
 def update_atlas(atlas_selection):
+    now = datetime.now()
+    print("cb 0", now.minute, now.second)
     (table, description, reference, conn_mat, parcellation) = get_atlas(atlas_selection)
     region_labels = table["Region Name"]
     region_tooltips = [
@@ -512,6 +520,8 @@ def update_atlas(atlas_selection):
     Input("store_graph_region", "data"),
 )
 def announce_viewmode(graph_data):
+    now = datetime.now()
+    print("cb 1", now.minute, now.second)
     view_mode = "Brain atlas view mode"
     color = "primary"
     if graph_data is not None:
@@ -534,6 +544,8 @@ def announce_viewmode(graph_data):
     [State("store_conn_mat", "data")],
 )
 def position_info(seed_region, brain_region, region_names, raw_conn_mat):
+    now = datetime.now()
+    print("cb 2", now.minute, now.second)
     conn_val = "Select a seed region to display its connectivity here"
     conn_mat = np.array(raw_conn_mat)
     if seed_region is not None:
@@ -567,6 +579,8 @@ def position_info(seed_region, brain_region, region_names, raw_conn_mat):
 def update_brain_overlay(
     graph_region, conn_mat_data, parcellation_data, table_data, threshold,
 ):
+    now = datetime.now()
+    print("cb 3", now.minute, now.second)
     conn_mat = np.array(conn_mat_data)
     parcellation = np.array(parcellation_data).astype(np.uint8)
     overlay = None
@@ -603,6 +617,8 @@ def update_brain_overlay(
     ],
 )
 def update_navtable(x_pos, y_pos, z_pos, requested_position):
+    now = datetime.now()
+    print("cb 4", now.minute, now.second)
     ctx = dash.callback_context
     if ctx.triggered[0]["prop_id"] == "store_graph_position.data":
         x_pos, y_pos, z_pos = np.floor(
@@ -630,6 +646,8 @@ def update_navtable(x_pos, y_pos, z_pos, requested_position):
 )
 def write_table_values_to_slicer(x_vox, y_vox, z_vox, parcellation_data, table_data):
     # Find the overlay value at the current slicer position
+    now = datetime.now()
+    print("cb 5", now.minute, now.second)
     parcellation = np.array(parcellation_data)
     region_number = parcellation[x_vox, y_vox, z_vox]
     # Compute the world positions
@@ -659,6 +677,8 @@ def write_table_values_to_slicer(x_vox, y_vox, z_vox, parcellation_data, table_d
 def listen_to_graph_clicks(
     heatmap_clickdata, active_table_cell, table_data, previous_region
 ):
+    now = datetime.now()
+    print("cb 6", now.minute, now.second)
     ctx = dash.callback_context
     table = pd.DataFrame(table_data)
     region_name = None
@@ -688,6 +708,8 @@ def listen_to_graph_clicks(
     Input("threshold-mode", "value"),
 )
 def select_thresholding(val):
+    now = datetime.now()
+    print("cb 7", now.minute, now.second)
     min_val = 0
     max_val = 1
     step = 0.1
@@ -726,6 +748,8 @@ def select_thresholding(val):
     [Input("store_graph_region", "data"), Input("store_slicer_region", "data")],
 )
 def update_highlight_region(graph_region, slicer_region):
+    now = datetime.now()
+    print("cb 8", now.minute, now.second)
     ctx = dash.callback_context
     if ctx.triggered[0]["prop_id"] == "store_graph_region.data":
         return graph_region
@@ -741,6 +765,8 @@ def update_highlight_region(graph_region, slicer_region):
     [State("threshold-mode", "value")],
 )
 def update_connmat(thr_value, raw_conn_mat, thr_mode):
+    now = datetime.now()
+    print("cb 9", now.minute, now.second)
     conn_mat = np.array(raw_conn_mat)
     if thr_mode == "percentage":
         conn_vec = np.abs(conn_mat[np.tril_indices(conn_mat.shape[0], -1)])
@@ -760,6 +786,8 @@ def update_connmat(thr_value, raw_conn_mat, thr_mode):
     State("store_region_names", "data"),
 )
 def connectivity_heatmap(graph_region, slicer_region, conn_mat, region_names):
+    now = datetime.now()
+    print("cb 10", now.minute, now.second)
     conn_mat = np.array(conn_mat, dtype=np.float)
     conn_mat[conn_mat < 0] = 0
     conn_mat_df = pd.DataFrame(conn_mat, columns=region_names, index=region_names)
@@ -806,6 +834,8 @@ def higlight_row(graph_region, slicer_region):
     """
     When a region is selected, highlight the corresponding table row.
     """
+    now = datetime.now()
+    print("cb 11", now.minute, now.second)
     style = [
         {
             "if": {"filter_query": "{Region Name} = '%s'" % graph_region},
