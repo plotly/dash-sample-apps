@@ -1,5 +1,5 @@
 plotly>=4.10.0
-dash>=1.16.1
+dash>=1.19.0
 dash_bootstrap_components
 pandas
 scikit-image
