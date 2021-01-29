@@ -3,3 +3,4 @@ dash-vtk
 dash-bootstrap-components
 pyvista
 numpy
+gunicorn
