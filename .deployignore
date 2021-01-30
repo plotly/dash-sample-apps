@@ -8,3 +8,4 @@ dash-image-enhancing
 dash-mapd-demo
 dash-datashader
 pyvista-point-cloud
+pyvista-terrain-following-mesh
