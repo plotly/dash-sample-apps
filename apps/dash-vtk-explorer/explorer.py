@@ -61,7 +61,7 @@ def prepend_callback_list(ls: list, prefix: str) -> list:
     new_ls = []
     for di in ls:
         di = deepcopy(di)
-        if type(di['output']) == list:
+        if type(di["output"]) == list:
             di["output"] = prepend_list_of_dict(di["output"], prefix)
         else:
             di["output"] = prefix + di["output"]
@@ -75,10 +75,7 @@ def prepend_callback_list(ls: list, prefix: str) -> list:
 
 def Header(name, app):
     title = html.H2(name, style={"display": "inline-block"})
-    logo = html.Img(
-        src=app.get_asset_url("dash-logo.png"),
-        style={"height": 60},
-    )
+    logo = html.Img(src=app.get_asset_url("dash-logo.png"), style={"height": 60},)
     link = html.A(logo, href="https://plotly.com/dash/", target="_blank")
 
     return html.Div([link, title])
@@ -104,10 +101,7 @@ def display_demo(name, layout, code):
     return html.Div(
         [
             html.Div(
-                [
-                    download_btn,
-                    dcc.Markdown(f"```\n{code}\n```"),
-                ],
+                [download_btn, dcc.Markdown(f"```\n{code}\n```"),],
                 style={
                     "float": "left",
                     "width": "49%",
@@ -134,17 +128,16 @@ def display_demo(name, layout, code):
     )
 
 
-prefix_ignored = [
-    
-]
+prefix_ignored = []
 
-ignored_pages = [
-    'assets', 
-    'data'
-]
+ignored_pages = ["assets", "data"]
 
 
-app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(
+    __name__,
+    suppress_callback_exceptions=True,
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
+)
 server = app.server
 
 app_subdomain = os.getenv("APP_SUBDOMAIN", "dash-vtk-explorer")
@@ -181,13 +174,13 @@ app.layout = dbc.Container(
         dcc.Location(id="url", refresh=False),
         html.Div(id="display"),
     ],
-    fluid=True
+    fluid=True,
 )
 
 for k in apps:
     new_callback_map = apps[k].callback_map
     new_callback_list = apps[k]._callback_list
-    
+
     # Prepend to layout IDs recursively in-place
     # if k in prefix_ignored:
     #     new_callback_map = apps[k].callback_map
