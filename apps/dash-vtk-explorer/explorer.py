@@ -130,7 +130,7 @@ def display_demo(name, layout, code):
 
 prefix_ignored = []
 
-ignored_pages = ["assets", "data"]
+ignored_pages = ["assets", "data", "heroku"]
 
 
 app = dash.Dash(
