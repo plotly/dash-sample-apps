@@ -11,3 +11,4 @@ pyvista-point-cloud
 pyvista-terrain-following-mesh
 slice-rendering
 usage-vtk-cfd
+volume-rendering
