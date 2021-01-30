@@ -9,3 +9,5 @@ dash-mapd-demo
 dash-datashader
 pyvista-point-cloud
 pyvista-terrain-following-mesh
+slice-rendering
+usage-vtk-cfd
