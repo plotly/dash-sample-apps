@@ -18,21 +18,18 @@ reader.Update()
 
 volume_state = to_volume_state(reader.GetOutput())
 
+vtk_view = dash_vtk.View(
+    dash_vtk.VolumeRepresentation(
+        children=[dash_vtk.VolumeController(), dash_vtk.Volume(state=volume_state),]
+    )
+)
+
 app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(
-    style={"height": "calc(100vh - 30px)", "width": "100%",},
-    children=[
-        dash_vtk.View(
-            dash_vtk.VolumeRepresentation(
-                children=[
-                    dash_vtk.VolumeController(),
-                    dash_vtk.Volume(state=volume_state),
-                ]
-            )
-        )
-    ],
+    style={"height": "calc(100vh - 16px)", "width": "100%"},
+    children=[html.Div(vtk_view, style={"height": "100%", "width": "100%"})],
 )
 
 if __name__ == "__main__":
