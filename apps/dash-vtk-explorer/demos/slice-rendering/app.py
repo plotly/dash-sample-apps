@@ -106,9 +106,8 @@ server = app.server
 
 app.layout = dbc.Container(
     fluid=True,
+    style={"padding-top": "15px"},
     children=[
-        html.H2("Demo of Slice Rendering"),
-        html.Br(),
         controls,
         html.Br(),
         dbc.Row(
