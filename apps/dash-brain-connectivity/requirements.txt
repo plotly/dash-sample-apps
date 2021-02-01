@@ -1,0 +1,15 @@
+dash
+dash-table
+plotly
+pandas
+numpy
+nilearn
+nibabel
+dash-bootstrap-components
+dash-bio
+matplotlib
+pytest
+gunicorn
+scikit-image
+dash-slicer
+dash_core_components-1.14.1.tar.gz
