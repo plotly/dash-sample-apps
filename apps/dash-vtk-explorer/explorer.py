@@ -130,7 +130,7 @@ def display_demo(name, layout, code):
 
 prefix_ignored = []
 
-ignored_pages = ['data']
+ignored_pages = ["data"]
 
 
 app = dash.Dash(
@@ -142,7 +142,7 @@ server = app.server
 
 app_subdomain = os.getenv("APP_SUBDOMAIN", "dash-vtk-explorer")
 
-pages = [p for p in sorted(os.listdir('demos')) if p not in ignored_pages]
+pages = [p for p in sorted(os.listdir("demos")) if p not in ignored_pages]
 print(pages)
 modules = {p: import_module(f"demos.{p}.app") for p in pages}
 apps = {p: m.app for p, m in modules.items()}
