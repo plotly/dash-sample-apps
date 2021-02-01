@@ -1,9 +1,2 @@
--r ./demos/usage-algorithm/requirements.txt
--r ./demos/pyvista-terrain-following-mesh/requirements.txt
--r ./demos/slice-rendering/requirements.txt
--r ./demos/pyvista-point-cloud/requirements.txt
--r ./demos/volume-rendering/requirements.txt
--r ./demos/usage-vtk-cfd/requirements.txt
--r ./demos/usage-algorithm/requirements.txt
--r ./demos/synthetic-volume-rendering/requirements.txt
+-r ./demos/requirements.txt
 gunicorn
