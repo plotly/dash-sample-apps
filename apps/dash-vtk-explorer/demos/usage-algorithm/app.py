@@ -55,22 +55,19 @@ controls = dbc.Card(
 
 app.layout = dbc.Container(
     fluid=True,
+    style={"margin-top": "15px", "height": "calc(100vh - 30px)"},
     children=[
-        html.H1("Demo of dash_vtk.Algorithm"),
-        html.Hr(),
         dbc.Row(
             [
                 dbc.Col(width=4, children=controls),
                 dbc.Col(
                     width=8,
                     children=[
-                        html.Div(
-                            vtk_view,
-                            style={"height": "calc(80vh - 20px)", "width": "100%"},
-                        )
+                        html.Div(vtk_view, style={"height": "100%", "width": "100%"},)
                     ],
                 ),
-            ]
+            ],
+            style={"height": "100%"},
         ),
     ],
 )

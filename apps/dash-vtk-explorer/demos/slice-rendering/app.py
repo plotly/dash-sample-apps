@@ -30,7 +30,7 @@ def custom_card(children):
     return dbc.Card(
         html.Div(children, style={"height": "100%"}),
         body=True,
-        style={"height": "70vh"},
+        style={"height": "100%"},
     )
 
 
@@ -106,16 +106,18 @@ server = app.server
 
 app.layout = dbc.Container(
     fluid=True,
+    style={"height": "calc(100vh - 30px)"},
     children=[
-        html.H2("Demo of Slice Rendering"),
-        html.Br(),
-        controls,
-        html.Br(),
+        html.Div(
+            style={"height": "20%", "display": "flex", "align-items": "center"},
+            children=[html.Br(), controls, html.Br(),],
+        ),
         dbc.Row(
-            [
+            style={"height": "80%"},
+            children=[
                 dbc.Col(width=6, children=custom_card(slice_view)),
                 dbc.Col(width=6, children=custom_card(volume_view)),
-            ]
+            ],
         ),
     ],
 )

@@ -139,74 +139,73 @@ vtk_view = dash_vtk.View(
 # Control UI
 # -----------------------------------------------------------------------------
 
-controls = dbc.Col(
-    children=[
-        dbc.Card(
-            [
-                dbc.CardHeader("Seeds"),
-                dbc.CardBody(
-                    [
-                        html.P("Seed line:"),
-                        dcc.Slider(
-                            id="point-1",
-                            min=-1,
-                            max=1,
-                            step=0.01,
-                            value=0,
-                            marks={-1: "-1", 1: "+1"},
-                        ),
-                        dcc.Slider(
-                            id="point-2",
-                            min=-1,
-                            max=1,
-                            step=0.01,
-                            value=0,
-                            marks={-1: "-1", 1: "+1"},
-                        ),
-                        html.Br(),
-                        html.P("Line resolution:"),
-                        dcc.Slider(
-                            id="seed-resolution",
-                            min=5,
-                            max=50,
-                            step=1,
-                            value=10,
-                            marks={5: "5", 50: "50"},
-                        ),
-                    ]
-                ),
-            ]
-        ),
-        dbc.Card(
-            [
-                dbc.CardHeader("Color By"),
-                dbc.CardBody(
-                    [
-                        html.P("Field name"),
-                        dcc.Dropdown(
-                            id="color-by",
-                            options=[
-                                {"label": "p", "value": "p"},
-                                {"label": "Rotation", "value": "Rotation"},
-                                {"label": "U", "value": "U"},
-                                {"label": "Vorticity", "value": "Vorticity"},
-                                {"label": "k", "value": "k"},
-                            ],
-                            value="p",
-                        ),
-                        html.Br(),
-                        html.P("Color Preset"),
-                        dcc.Dropdown(
-                            id="preset",
-                            options=preset_as_options,
-                            value="erdc_rainbow_bright",
-                        ),
-                    ]
-                ),
-            ]
-        ),
-    ]
-)
+controls = [
+    dbc.Card(
+        [
+            dbc.CardHeader("Seeds"),
+            dbc.CardBody(
+                [
+                    html.P("Seed line:"),
+                    dcc.Slider(
+                        id="point-1",
+                        min=-1,
+                        max=1,
+                        step=0.01,
+                        value=0,
+                        marks={-1: "-1", 1: "+1"},
+                    ),
+                    dcc.Slider(
+                        id="point-2",
+                        min=-1,
+                        max=1,
+                        step=0.01,
+                        value=0,
+                        marks={-1: "-1", 1: "+1"},
+                    ),
+                    html.Br(),
+                    html.P("Line resolution:"),
+                    dcc.Slider(
+                        id="seed-resolution",
+                        min=5,
+                        max=50,
+                        step=1,
+                        value=10,
+                        marks={5: "5", 50: "50"},
+                    ),
+                ]
+            ),
+        ]
+    ),
+    html.Br(),
+    dbc.Card(
+        [
+            dbc.CardHeader("Color By"),
+            dbc.CardBody(
+                [
+                    html.P("Field name"),
+                    dcc.Dropdown(
+                        id="color-by",
+                        options=[
+                            {"label": "p", "value": "p"},
+                            {"label": "Rotation", "value": "Rotation"},
+                            {"label": "U", "value": "U"},
+                            {"label": "Vorticity", "value": "Vorticity"},
+                            {"label": "k", "value": "k"},
+                        ],
+                        value="p",
+                    ),
+                    html.Br(),
+                    html.P("Color Preset"),
+                    dcc.Dropdown(
+                        id="preset",
+                        options=preset_as_options,
+                        value="erdc_rainbow_bright",
+                    ),
+                ]
+            ),
+        ]
+    ),
+]
 
 # -----------------------------------------------------------------------------
 # App UI
@@ -214,22 +213,19 @@ controls = dbc.Col(
 
 app.layout = dbc.Container(
     fluid=True,
+    style={"margin-top": "15px", "height": "calc(100vh - 30px)"},
     children=[
-        html.H1("dash_vtk rendering with VTK processing"),
-        html.Hr(),
         dbc.Row(
             [
-                dbc.Col(width=4, children=[controls],),
+                dbc.Col(width=4, children=controls),
                 dbc.Col(
                     width=8,
                     children=[
-                        html.Div(
-                            vtk_view,
-                            style={"height": "calc(80vh - 20px)", "width": "100%"},
-                        )
+                        html.Div(vtk_view, style={"height": "100%", "width": "100%"})
                     ],
                 ),
-            ]
+            ],
+            style={"height": "100%"},
         ),
     ],
 )
