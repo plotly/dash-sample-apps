@@ -74,7 +74,7 @@ def prepend_callback_list(ls: list, prefix: str) -> list:
 
 
 def Header(name, app):
-    title = html.H3(name, style={"display": "inline-flex"})
+    title = html.H2(name, style={"display": "inline-flex"})
     logo = html.Img(
         src=app.get_asset_url("dash-logo.png"),
         style={
