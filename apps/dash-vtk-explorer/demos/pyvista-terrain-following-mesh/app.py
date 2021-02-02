@@ -75,48 +75,33 @@ vtk_view = dash_vtk.View(
 
 app.layout = dbc.Container(
     fluid=True,
+    style={"height": "100vh"},
     children=[
         dbc.Row(
             [
-                dbc.Col(width=6, children=[html.H1("Terrain deformation"),]),
                 dbc.Col(
-                    width=3,
-                    children=[
-                        dcc.Slider(
-                            id="scale-factor",
-                            min=0.1,
-                            max=5,
-                            step=0.1,
-                            value=1,
-                            marks={0.1: "0.1", 5: "5"},
-                        ),
-                    ],
+                    children=dcc.Slider(
+                        id="scale-factor",
+                        min=0.1,
+                        max=5,
+                        step=0.1,
+                        value=1,
+                        marks={0.1: "0.1", 5: "5"},
+                    )
                 ),
                 dbc.Col(
-                    width=3,
-                    children=[
-                        dcc.Dropdown(
-                            id="dropdown-preset",
-                            options=list(map(toDropOption, presets)),
-                            value="erdc_rainbow_bright",
-                        ),
-                    ],
+                    children=dcc.Dropdown(
+                        id="dropdown-preset",
+                        options=list(map(toDropOption, presets)),
+                        value="erdc_rainbow_bright",
+                    ),
                 ),
-            ]
+            ],
+            style={"height": "12%", "align-items": "center"},
         ),
-        html.Hr(),
-        dbc.Row(
-            [
-                dbc.Col(
-                    width=12,
-                    children=[
-                        html.Div(
-                            vtk_view,
-                            style={"height": "calc(80vh - 20px)", "width": "100%"},
-                        )
-                    ],
-                ),
-            ]
+        html.Div(
+            html.Div(vtk_view, style={"height": "100%", "width": "100%"}),
+            style={"height": "88%"},
         ),
     ],
 )
