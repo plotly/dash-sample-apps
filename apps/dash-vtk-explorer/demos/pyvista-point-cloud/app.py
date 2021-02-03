@@ -8,6 +8,8 @@ import numpy as np
 import pyvista as pv
 from pyvista import examples
 
+np.random.seed(42)
+
 # Get point cloud data from PyVista
 dataset = examples.download_lidar()
 subset = 0.2
