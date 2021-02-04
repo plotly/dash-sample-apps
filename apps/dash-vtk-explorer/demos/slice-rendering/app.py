@@ -26,14 +26,6 @@ reader.Update()
 volume_state = to_volume_state(reader.GetOutput())
 
 
-def custom_card(children):
-    return dbc.Card(
-        html.Div(children, style={"height": "100%"}),
-        body=True,
-        style={"height": "100%"},
-    )
-
-
 sliders = {
     "Slice i": dcc.Slider(id="slider-i", min=0, max=256, value=128),
     "Slice j": dcc.Slider(id="slider-j", min=0, max=256, value=128),
@@ -84,23 +76,6 @@ slice_view = dash_vtk.View(
 )
 
 
-volume_view = dash_vtk.View(
-    id="volume-view",
-    background=[0, 0, 0],
-    cameraPosition=[1, 0, 0],
-    cameraViewUp=[0, 0, -1],
-    cameraParallelProjection=False,
-    children=[
-        dash_vtk.VolumeRepresentation(
-            [
-                html.Div(dash_vtk.VolumeController(), style={"display": "none"}),
-                dash_vtk.ShareDataSet(),
-            ]
-        )
-    ],
-)
-
-
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
@@ -112,13 +87,7 @@ app.layout = dbc.Container(
             style={"height": "20%", "display": "flex", "align-items": "center"},
             children=[html.Br(), controls, html.Br(),],
         ),
-        dbc.Row(
-            style={"height": "80%"},
-            children=[
-                dbc.Col(width=6, children=custom_card(slice_view)),
-                dbc.Col(width=6, children=custom_card(volume_view)),
-            ],
-        ),
+        html.Div(slice_view, style={"height": "80%"}),
     ],
 )
 
