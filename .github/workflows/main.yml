@@ -1,0 +1,44 @@
+# https://github.com/actions/upload-release-asset/issues/28#issuecomment-617208601
+on:
+  push:
+    branches:
+      - master
+
+name: Release and upload apps
+
+jobs:
+  build:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Bump version and push tag
+        id: version_bump
+        uses: anothrNick/github-tag-action@1.34.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+      - name: Compress apps
+        run: |
+          cd ./apps;
+          for f in */; do
+            echo "Zipping ${f}...";
+            zip -qr "${f%/*}" "${f}"*;
+          done
+          cd -;
+      - name: Create release and upload zipped apps
+        run: |
+          cd ./apps;
+          set -x
+          assets=()
+          for asset in ./*.zip; do
+            assets+=("-a" "$asset")
+          done
+          hub release create "${assets[@]}" -m "Release ${RELEASE_TAG}" "${RELEASE_TAG}"
+          cd -;
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.version_bump.outputs.new_tag }}
