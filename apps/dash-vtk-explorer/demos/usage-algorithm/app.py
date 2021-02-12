@@ -63,10 +63,7 @@ app.layout = dbc.Container(
                 dbc.Col(
                     width=8,
                     children=[
-                        html.Div(
-                            vtk_view,
-                            style={"height": "100%", "width": "100%"},
-                        )
+                        html.Div(vtk_view, style={"height": "100%", "width": "100%"},)
                     ],
                 ),
             ],
