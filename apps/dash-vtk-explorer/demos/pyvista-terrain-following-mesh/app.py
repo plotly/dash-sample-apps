@@ -68,7 +68,9 @@ vtk_view = dash_vtk.View(
             ],
             colorMapPreset="erdc_blue2green_muted",
             colorDataRange=color_range,
-            property={"edgeVisibility": True,},
+            property={
+                "edgeVisibility": True,
+            },
         )
     ],
 )

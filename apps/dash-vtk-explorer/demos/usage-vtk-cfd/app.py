@@ -115,20 +115,36 @@ vtk_view = dash_vtk.View(
     children=[
         dash_vtk.GeometryRepresentation(
             id="bike-rep",
-            children=[dash_vtk.Mesh(id="bike", state=viz.getBikeMesh(),)],
+            children=[
+                dash_vtk.Mesh(
+                    id="bike",
+                    state=viz.getBikeMesh(),
+                )
+            ],
         ),
         dash_vtk.GeometryRepresentation(
             id="tubes-rep",
             colorMapPreset="erdc_rainbow_bright",
             colorDataRange=viz.getColorRange(),
-            children=[dash_vtk.Mesh(id="tubes-mesh", state=viz.getTubesMesh("p"),)],
+            children=[
+                dash_vtk.Mesh(
+                    id="tubes-mesh",
+                    state=viz.getTubesMesh("p"),
+                )
+            ],
         ),
         dash_vtk.GeometryRepresentation(
             id="seed-rep",
-            property={"color": [0.8, 0, 0], "representation": 0, "pointSize": 8,},
+            property={
+                "color": [0.8, 0, 0],
+                "representation": 0,
+                "pointSize": 8,
+            },
             children=[
                 dash_vtk.Algorithm(
-                    id="seed-line", vtkClass="vtkLineSource", state=viz.getSeedState(),
+                    id="seed-line",
+                    vtkClass="vtkLineSource",
+                    state=viz.getSeedState(),
                 )
             ],
         ),
