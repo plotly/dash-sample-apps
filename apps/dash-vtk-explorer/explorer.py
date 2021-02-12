@@ -109,10 +109,7 @@ def display_demo(name, layout, code):
     return html.Div(
         [
             html.Div(
-                [
-                    download_btn,
-                    dcc.Markdown(f"```\n{code}\n```"),
-                ],
+                [download_btn, dcc.Markdown(f"```\n{code}\n```"),],
                 style={
                     "float": "left",
                     "width": "49%",
@@ -171,12 +168,7 @@ app.layout = dbc.Container(
         dbc.Row(
             style={"height": "10%", "align-items": "center"},
             children=[
-                dbc.Col(
-                    [
-                        Header("VTK Explorer", app),
-                    ],
-                    width=8,
-                ),
+                dbc.Col([Header("VTK Explorer", app),], width=8,),
                 dbc.Col(
                     dbc.Spinner(
                         dbc.Select(

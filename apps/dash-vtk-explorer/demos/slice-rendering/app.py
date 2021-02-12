@@ -85,11 +85,7 @@ app.layout = dbc.Container(
     children=[
         html.Div(
             style={"height": "20%", "display": "flex", "align-items": "center"},
-            children=[
-                html.Br(),
-                controls,
-                html.Br(),
-            ],
+            children=[html.Br(), controls, html.Br(),],
         ),
         html.Div(slice_view, style={"height": "80%"}),
     ],
