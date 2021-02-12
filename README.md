@@ -3,7 +3,7 @@
 This is a monorepo designed to host all of the apps that have been
 created for the Python Dash Gallery.
 
-## Running an example app
+## Running an example app after cloning the repo
 
 You will need to run applications, and specify filenames, from the
 root directory of the repository. e.g., if the name of the app you
@@ -13,6 +13,21 @@ of the repository.
 
 Each app has a requirements.txt, install the dependecies in a virtual
 environment.
+
+## Downloading and running a single app
+
+Visit the [releases page](https://github.com/plotly/dash-sample-apps/releases) and download and `unzip` the app you want. Then `cd` into the app directory and install its dependencies in a virtual environment in the following way:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # Windows: \venv\scripts\activate
+pip install -r requirements.txt
+```
+
+then run the app:
+```bash
+python app.py
+```
 
 ## Contributing to the sample apps repo
 
