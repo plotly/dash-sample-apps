@@ -168,7 +168,7 @@ app.layout = dbc.Container(
         dbc.Row(
             style={"height": "10%", "align-items": "center"},
             children=[
-                dbc.Col([Header("VTK Explorer", app),], width=8),
+                dbc.Col([Header("VTK Explorer", app),], width=8,),
                 dbc.Col(
                     dbc.Spinner(
                         dbc.Select(
