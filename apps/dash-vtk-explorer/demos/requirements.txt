@@ -6,6 +6,3 @@
 -r ./usage-vtk-cfd/requirements.txt
 -r ./usage-algorithm/requirements.txt
 -r ./synthetic-volume-rendering/requirements.txt
--r ./dicom-ct-lung/requirements.txt
--r ./dicom-mri-pancreas/requirements.txt
--r ./dicom-mri-brain/requirements.txt
