@@ -1,2 +1,2 @@
--r ./demos/requirements.txt
 gunicorn
+-r ./demos/requirements.txt
