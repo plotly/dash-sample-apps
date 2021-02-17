@@ -191,7 +191,7 @@ app.layout = dbc.Container(
             ],
         ),
         html.Div(id="display", style={"height": "90%"}),
-        dcc.Location(id="url", refresh=False),
+        dcc.Location(id="url", refresh=True),
     ],
     style={"height": "calc(100vh - 15px)"},
     fluid=True,
