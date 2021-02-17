@@ -176,7 +176,12 @@ app.layout = dbc.Container(
                             placeholder="Please select an app...",
                             style={"width": "100%"},
                             options=[
-                                {"label": x.replace("-", " ").replace("dicom", "").capitalize(), "value": x}
+                                {
+                                    "label": x.replace("-", " ")
+                                    .replace("dicom", "")
+                                    .capitalize(),
+                                    "value": x,
+                                }
                                 for x in pages
                             ],
                         ),
