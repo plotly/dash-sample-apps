@@ -148,7 +148,7 @@ app = dash.Dash(
 )
 server = app.server
 
-app_subdomain = os.getenv("APP_SUBDOMAIN", "dash-vtk-explorer")
+app_subdomain = os.getenv("APP_SUBDOMAIN", "vtk-dicom")
 
 pages = [p for p in sorted(os.listdir("demos")) if p not in ignored_pages]
 print(pages)
