@@ -1,0 +1,3 @@
+-r ./dicom-mri-brain/requirements.txt
+-r ./dicom-mri-pancreas/requirements.txt
+-r ./dicom-ct-lung/requirements.txt
