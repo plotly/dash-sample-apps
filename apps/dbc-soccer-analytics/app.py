@@ -87,7 +87,7 @@ simulator_controls = [
 app.layout = dbc.Container(
     fluid=True,
     children=[
-        html.Header([html.H3("Match Analysis Tool")]),
+        html.Header([html.H3("Soccer Match Analysis")]),
         dbc.Card(
             dbc.Row([dbc.Col(c) for c in static_graph_controls], form=True), body=True
         ),
