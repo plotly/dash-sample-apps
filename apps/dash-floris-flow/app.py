@@ -28,13 +28,7 @@ def CustomSlider(data: np.array, label: str, id: str):
     return dbc.FormGroup(
         [
             dbc.Label(label),
-            dcc.Slider(
-                min=0,
-                max=n_unique,
-                value=n_unique / 2,
-                step=1,
-                id=id,
-            ),
+            dcc.Slider(min=0, max=n_unique, value=n_unique / 2, step=1, id=id,),
         ]
     )
 
@@ -137,12 +131,7 @@ controls = [
         [
             dbc.Label("Color Window"),
             dcc.Slider(
-                min=0.01,
-                max=1,
-                value=0.5,
-                step=0.01,
-                id="color-window",
-                tooltip={},
+                min=0.01, max=1, value=0.5, step=0.01, id="color-window", tooltip={},
             ),
         ]
     ),
@@ -150,12 +139,7 @@ controls = [
         [
             dbc.Label("Color Level"),
             dcc.Slider(
-                min=0.01,
-                max=1,
-                value=0.5,
-                step=0.01,
-                id="color-level",
-                tooltip={},
+                min=0.01, max=1, value=0.5, step=0.01, id="color-level", tooltip={},
             ),
         ]
     ),
@@ -181,10 +165,7 @@ app.layout = dbc.Container(
                 dbc.Col(
                     width=4,
                     children=dbc.Card(
-                        [
-                            dbc.CardHeader("Controls"),
-                            dbc.CardBody(controls),
-                        ]
+                        [dbc.CardHeader("Controls"), dbc.CardBody(controls),]
                     ),
                 ),
                 dbc.Col(
