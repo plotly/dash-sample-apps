@@ -5,3 +5,4 @@ floris
 dash-bootstrap-components
 dash-vtk>=0.0.6
 black
+pyproj~=2.1
