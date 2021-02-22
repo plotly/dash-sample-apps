@@ -1,0 +1,32 @@
+/* Your custom css code goes here */
+
+.rc-slider-dot-active {
+    border-color: var(--slider_active, #96dbfa);
+}
+
+.rc-slider-mark-text-active {
+    color: inherit;
+}
+
+.rc-slider-handle, .rc-slider-handle:focus, .rc-slider-handle:hover {
+    border-color: var(--slider_active, #96dbfa);
+}
+.rc-slider-handle:focus {
+    box-shadow: 0 0 4px var(--slider_active, #96dbfa);
+}
+
+.rc-slider-dot {
+    border-color: var(--slider_inactive, #e9e9e9);
+}
+
+.rc-slider-dot-active {
+    border-color: var(--slider_active, #96dbfa);
+}
+
+.rc-slider-track {
+    background-color: var(--slider_active, #96dbfa);
+}
+
+.rc-slider-tooltip-inner {
+    background-color: var(--slider_active, gray);
+}

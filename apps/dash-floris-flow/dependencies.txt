@@ -1,0 +1,7 @@
+dash
+gunicorn
+pandas
+floris
+dash-bootstrap-components
+dash-vtk>=0.0.6
+black
