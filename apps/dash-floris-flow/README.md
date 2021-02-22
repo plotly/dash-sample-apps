@@ -1,60 +1,25 @@
 # Flow Visualization with FLORIS and VTK
 
-## Instructions
+* [Demo](https://dash-gallery.plotly.host/dash-floris-flow)
+* [FLORIS Repo](https://github.com/NREL/floris)
+* [Dash VTK](https://github.com/plotly/dash-vtk)
 
-To get started, first clone this repo:
+![image demo](./demo.jpg)
 
-```
-git clone https://github.com/xhlulu/floris-flow-vtk.git
-cd floris-flow-vtk
-```
-### Usual setup
+## Downloading and running a single app
 
-Create and activate a virtual environment (make sure your `python3` is 3.6+):
-```
-python3 -m venv venv
-source venv/bin/activate
-```
+Visit the [releases page](https://github.com/plotly/dash-sample-apps/releases) and download and `unzip` the app you want. Then `cd` into the app directory and install its dependencies in a virtual environment in the following way:
 
-Install all the requirements:
-
-```
-pip3 install -r requirements.txt
+```bash
+python -m venv venv
+source venv/bin/activate  # Windows: \venv\scripts\activate
+pip install -r requirements.txt
 ```
 
-You can now run the app:
+then run the app:
+```bash
+python app.py
 ```
-python3 app.py
-```
-
-and visit http://127.0.0.1:8050/.
-
-### Alternative setups
-
-#### Windows
-```
-python3 -m venv venv
-venv\Scripts\activate.bat
-pip3 install -r requirements.txt
-python3 app.py
-```
-
-#### Conda
-```
-conda create -n floris-flow-vtk python=3.7
-conda activate floris-flow-vtk
-pip3 install -r requirements.txt
-python3 app.py
-```
-
-#### Pipenv
-```
-pipenv --python 3.7
-pipenv install -r requirements.txt
-```
-
-
-
 
 ## Contact
 
