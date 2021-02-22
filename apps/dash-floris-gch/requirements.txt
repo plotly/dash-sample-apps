@@ -49,7 +49,7 @@ ptyprocess==0.7.0
 py==1.10.0
 Pygments==2.7.4
 pyparsing==2.4.7
-pyproj==3.0.0.post1
+pyproj~=2.1
 pytest==6.2.2
 python-dateutil==2.8.1
 pytz==2021.1
