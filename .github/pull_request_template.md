@@ -35,3 +35,10 @@ I have addressed all of the following questions:
   readable and, where it isn't, it has been commented appropriately.)]
 - [ ] Am I reinventing the wheel? (I have used appropriate packages to
   lessen the volume of code that needs to be maintained.)
+
+## Post PR (at merge time)
+
+- [ ] When you are merging, make sure to write one of the following tags in the commit message (or it will default to patch):
+  - `#patch` - An app has been updated or fixed
+  - `#minor` - A new app has been added, or an app has been significantly reworked
+  - `#major` - Breaking changes, make sure to discuss with dash-core before using this tag
