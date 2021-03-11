@@ -1,7 +1,17 @@
 # Dash Sample Apps [![CircleCI](https://circleci.com/gh/plotly/dash-sample-apps.svg?style=svg)](https://circleci.com/gh/plotly/dash-sample-apps)
 
-This is a monorepo designed to host all of the apps that have been
-created for the Python Dash Gallery.
+This monorepo contains open-source apps demoing
+various capabilities of Dash and integration with
+the Python or R ecosystem. Most of the apps here
+are hosted on the 
+[Dash Gallery](https://dash-gallery.plotly.host/Portal/),
+which runs on the
+[Dash Kubernetes](https://plotly.com/dash/kubernetes/) platform
+and host both open-source apps and demos for 
+[Design Kit](https://plotly.com/dash/design-kit/) and 
+[Snapshot Engine](https://plotly.com/dash/snapshot-engine/). Reach
+out to [get a demo](https://plotly.com/get-demo/) of our licensed 
+products.
 
 ## Running an example app after cloning the repo
 
