@@ -54,7 +54,7 @@ def find_assists(df):
 
 
 # Locate and build a dataframe of all set plays, ignoring kick-offs and throw-ins
-def find_set_plays(df):
+def find_set_plays(df, mode):
     sp_df = pd.DataFrame()
 
     count = 0
@@ -100,8 +100,13 @@ def find_set_plays(df):
                         ),
                         ignore_index=True,
                     )
+                    if mode == "progressive":
+                        df = df.drop(index + 1)
             except Exception as e:
                 print(e)
+
+    if mode == "progressive":
+        sp_df = df
 
     sp_df.loc[sp_df.To.isnull(), "Type"] = "Incomplete"
     return sp_df
@@ -130,7 +135,7 @@ def left_justify_events(df, team_on_left):
     return df
 
 
-# Once number of clusters is auto-calculated, graph the cluseters
+# Once number of clusters is auto-calculated, graph the clusters
 def create_cluster_graph(df, num_clusters):
     # creates a new trace for each set of data
     fig = make_subplots(
@@ -206,6 +211,67 @@ def drawAnnotations(df):
     return annotations_list
 
 
+def find_progressive_passes(df):
+    # df = df.loc[(df['End_X'] - df['location_x']) > 1000]  # limit passes to those greater than 10M forward
+    df_own_half = df.loc[
+        (df["End_X"] < 0.5) & (df["Start_X"] < 0.5)
+    ]  # passes in own half
+    df_diff_half = df.loc[
+        (df["End_X"] > 0.5) & (df["Start_X"] < 0.5)
+    ]  # passes in different half
+    df_opp_half = df.loc[
+        (df["End_X"] > 0.5) & (df["Start_X"] > 0.5)
+    ]  # passes in opponent's half
+    goal_x = float(1)
+    goal_y = float(0.5)
+
+    # Passes in own half
+    if len(df_own_half) > 0:
+        # dist = math.hypot(x2 - x1, y2 - y1)
+        df_own_half["orig_distance_to_goal"] = df_own_half.apply(
+            lambda x: math.hypot(x["Start_X"] - goal_x, x["Start_Y"] - goal_y), axis=1
+        )
+        df_own_half["end_distance_to_goal"] = df_own_half.apply(
+            lambda x: math.hypot(x["End_X"] - goal_x, x["End_Y"] - goal_y), axis=1
+        )
+        df_own_half["distance"] = (
+            df_own_half["orig_distance_to_goal"] - df_own_half["end_distance_to_goal"]
+        )
+        df_own_half = df_own_half.loc[(df_own_half["distance"]) >= 0.30]
+
+    # Passes in both halves
+    if len(df_diff_half) > 0:
+        df_diff_half["orig_distance_to_goal"] = df_diff_half.apply(
+            lambda x: math.hypot(x["Start_X"] - goal_x, x["Start_Y"] - goal_y), axis=1
+        )
+        df_diff_half["end_distance_to_goal"] = df_diff_half.apply(
+            lambda x: math.hypot(x["End_X"] - goal_x, x["End_Y"] - goal_y), axis=1
+        )
+
+        df_diff_half["distance"] = (
+            df_diff_half["orig_distance_to_goal"] - df_diff_half["end_distance_to_goal"]
+        )
+        df_diff_half = df_diff_half.loc[(df_diff_half["distance"]) >= 0.15]
+
+        # Passes in opposition half
+    if len(df_opp_half) > 0:
+        df_opp_half["orig_distance_to_goal"] = df_opp_half.apply(
+            lambda x: math.hypot(x["Start_X"] - goal_x, x["Start_Y"] - goal_y), axis=1
+        )
+        df_opp_half["end_distance_to_goal"] = df_opp_half.apply(
+            lambda x: math.hypot(x["End_X"] - goal_x, x["End_Y"] - goal_y), axis=1
+        )
+        df_opp_half["distance"] = (
+            df_opp_half["orig_distance_to_goal"] - df_opp_half["end_distance_to_goal"]
+        )
+        df_opp_half = df_opp_half.loc[(df_opp_half["distance"]) >= 0.12]
+
+    df_list = [df_own_half, df_diff_half, df_opp_half]  # List of your dataframes
+    df_combo = pd.concat(df_list)
+
+    return df_combo
+
+
 # Main function - graph all football events which occur in a match
 def plotEvents(eventType, filename, team, team_on_left):
     # Read in event csv data file
@@ -225,7 +291,7 @@ def plotEvents(eventType, filename, team, team_on_left):
 
     # For events involving the graphing of movement of the ball from one location to another
     if (
-        (eventType == "Progressive Passes Into Final 3rd")
+        (eventType == "Progressive Passes")
         or (eventType == "Crosses")
         or (eventType == "Set Plays")
         or (eventType == "Assists to Shots")
@@ -235,14 +301,15 @@ def plotEvents(eventType, filename, team, team_on_left):
         if eventType == "Assists to Shots":
             df = find_assists(events_df)
         elif eventType == "Set Plays":
-            df = find_set_plays(events_df)
-        elif eventType == "Progressive Passes Into Final 3rd":
-            df = events_df.loc[events_df["Type"] == "PASS"]
+            df = find_set_plays(events_df, "normal")
+        elif eventType == "Progressive Passes":
+            df = find_set_plays(
+                events_df, "progressive"
+            )  # take out set plays as they include corners and throw-ins
+            df = df[(df["Start_Y"] > 0) & (df["Start_Y"] < 1)]
+            df = df.loc[events_df["Type"] == "PASS"]
             df.reset_index(drop=True, inplace=True)
-            df = df.loc[
-                (df["End_X"] - df["Start_X"]) > 0.1
-            ]  # limit passes to those greater than 10M forward
-            df = df.loc[df["End_X"] > 0.7]
+            df = find_progressive_passes(df)
         elif eventType == "Crosses":
             df = events_df.loc[events_df["Subtype"].str.contains("CROSS", na=False)]
             df.reset_index(drop=True, inplace=True)
@@ -279,7 +346,7 @@ def plotEvents(eventType, filename, team, team_on_left):
             "Crosses",
             "Set Plays",
             "Assists to Shots",
-            "Progressive Passes Into Final 3rd",
+            "Progressive Passes",
         ]:
             colorfactor = df["Type"]
             fig = px.scatter(
@@ -299,7 +366,6 @@ def plotEvents(eventType, filename, team, team_on_left):
                     "Start_X": False,
                     "Start_Y": False,
                     "size": False,
-                    "Type": False,
                     "From": True,
                     "To": True,
                 },
@@ -377,6 +443,14 @@ def plotEvents(eventType, filename, team, team_on_left):
     # Metrica data starts 0, 0 at top left corner. Need to account for that or markers will be wrong
     fig.update_yaxes(autorange="reversed")
 
+    # Add corner flags to prevent zoom and pitch distortion
+    fig.add_scatter(
+        x=[0, 0, 1, 1],
+        y=[0, 1, 0, 1],
+        mode="markers",
+        marker=dict(size=2, color="grey"),
+    )
+
     # Remove side color scale and hide zero and gridlines
     fig.update_layout(
         coloraxis_showscale=False,
@@ -423,7 +497,7 @@ def plotEvents(eventType, filename, team, team_on_left):
     fig.update_xaxes(title_text="")
     fig.update_yaxes(title_text="")
     image_file = "assets/Pitch.png"
-    fig.update_yaxes(scaleanchor="x", scaleratio=0.65)
+    fig.update_yaxes(scaleanchor="x", scaleratio=0.70)
 
     from PIL import Image
 

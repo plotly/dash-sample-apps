@@ -87,7 +87,7 @@ simulator_controls = [
 app.layout = dbc.Container(
     fluid=True,
     children=[
-        html.Header([html.H3("Soccer Match Analysis")]),
+        html.Header([html.H3("Match Analysis Tool")]),
         dbc.Card(
             dbc.Row([dbc.Col(c) for c in static_graph_controls], form=True), body=True
         ),
@@ -349,7 +349,7 @@ def event_graph(event_file, team):
         fig_crosses = plotEvents("Crosses", event_file, team, "Home")
         fig_set_plays = plotEvents("Set Plays", event_file, team, "Home")
         fig_progressive_passes = plotEvents(
-            "Progressive Passes Into Final 3rd", event_file, team, "Home"
+            "Progressive Passes", event_file, team, "Home"
         )
         for x in [
             fig_shots,
@@ -433,6 +433,8 @@ def game_simulation_graph(n_clicks, speed, filename):
         plot_bgcolor="rgba(0, 0, 0, 0)",
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
+    fig["layout"]["template"]["data"]["scatter"][0]["marker"]["line"]["color"] = "white"
+    fig["layout"]["template"]["data"]["scatter"][0]["marker"]["opacity"] = 0.9
     return fig
 
 
