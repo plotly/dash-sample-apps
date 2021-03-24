@@ -4,9 +4,10 @@ import plotly.graph_objects as go
 
 # Create initial placeholder figure for game simulator
 def initial_figure_simulator():
-    fig = px.scatter(x=[0, 0, 105, 105], y=[69, -2, 69, -2])
-    fig.update_layout(xaxis=dict(range=[-4, 110]))
-    fig.update_layout(yaxis=dict(range=[-4, 72]))
+    # fig = px.scatter(x=[0, 0, 105, 105], y=[69, -2, 69, -2])
+    fig = px.scatter(x=[0, 0, 1, 1], y=[0, 1, 0, 1])
+    fig.update_layout(xaxis=dict(range=[0, 1]))
+    fig.update_layout(yaxis=dict(range=[0, 1]))
     fig.update_traces(marker=dict(color="white", size=6))
 
     # Remove side color scale and hide zero and gridlines
@@ -40,16 +41,16 @@ def initial_figure_simulator():
             xref="x",
             yref="y",
             x=0,
-            y=69,
-            sizex=105,
-            sizey=71,
+            y=1,
+            sizex=1,
+            sizey=1,
             sizing="stretch",
             opacity=0.7,
             layer="below",
         )
     )
 
-    fig.update_yaxes(scaleanchor="x", scaleratio=1)
+    fig.update_yaxes(scaleanchor="x", scaleratio=0.70)
 
     fig.update_layout(autosize=True)
 
@@ -64,11 +65,11 @@ def initial_figure_simulator():
 
 # Create initial placeholder figure for event plot
 def initial_figure_events():
-    fig = px.scatter(x=[0], y=[0])
-
+    # fig = px.scatter(x=[0], y=[0])
+    fig = px.scatter(x=[0, 0, 1, 1], y=[0, 1, 0, 1])
     fig.update_traces(marker=dict(color="white", size=6))
-    fig.update_layout(yaxis=dict(range=[-3650, 3650]))
-    fig.update_layout(xaxis=dict(range=[-5300, 5300]))
+    fig.update_layout(yaxis=dict(range=[0, 1]))
+    fig.update_layout(xaxis=dict(range=[0, 1]))
     fig.update_layout(margin=dict(l=10, r=100, b=10, t=45))
 
     fig.update_layout(modebar=dict(bgcolor="rgba(0, 0, 0, 0)"))
@@ -93,7 +94,7 @@ def initial_figure_events():
     fig.update_xaxes(title_text="")
     fig.update_yaxes(title_text="")
     fig.update_xaxes(fixedrange=True)
-    fig.update_yaxes(scaleanchor="x", scaleratio=1)
+    fig.update_yaxes(scaleanchor="x", scaleratio=0.70)
     fig.update_layout(margin=dict(l=10, r=30, b=30, t=30), autosize=True)
     image_file = "assets/Pitch.png"
 
@@ -105,10 +106,10 @@ def initial_figure_events():
             source=img,
             xref="x",
             yref="y",
-            x=-5150,
-            y=3685,
-            sizex=10450,
-            sizey=7340,
+            x=0,
+            y=1,
+            sizex=1,
+            sizey=1,
             sizing="stretch",
             opacity=0.8,
             layer="below",
