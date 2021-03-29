@@ -1,0 +1,40 @@
+
+.banner {
+  padding-top: 2%;
+  font-style: italic;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.menu {
+  margin-left: auto;
+  margin-right: auto;
+  width: 67%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.era-slider {
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.app-page {
+  height: fit-content;
+}
+
+.home {
+  padding: 5%;
+}
+
+.home a:link {
+  color:gray;
+}
+
+.home a:visited {
+  color: black;
+}
