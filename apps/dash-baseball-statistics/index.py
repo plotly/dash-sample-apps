@@ -1,4 +1,6 @@
 # import dash-core, dash-html, dash io, bootstrap
+import os
+
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
@@ -25,6 +27,8 @@ from app import app
 from app import srv as server
 
 
+app_name = os.getenv("DASH_APP_PATH", "/dash-baseball-statistics")
+
 # Layout variables, navbar, header, content, and container
 nav = Navbar()
 
@@ -49,7 +53,7 @@ container = dbc.Container([header, content])
 # Declair function  that connects other pages with content to container
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
-    if pathname == "/":
+    if pathname == app_name:
         return html.Div(
             [
                 dcc.Markdown(
@@ -78,11 +82,11 @@ def display_page(pathname):
             ],
             className="home",
         )
-    elif pathname == "/team":
+    elif pathname.endswith("/team"):
         return appMenu, menuSlider, teamLayout
-    elif pathname == "/player":
+    elif pathname.endswith("/player"):
         return appMenu, menuSlider, playerMenu, battingLayout
-    elif pathname == "/field":
+    elif pathname.endswith("/field"):
         return appMenu, menuSlider, playerMenu, fieldingLayout
     else:
         return "ERROR 404: Page not found!"
