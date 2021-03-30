@@ -176,7 +176,7 @@ main() {
 
   if [[ "$is_dashr" == false ]]; then
     log-info "Python app detected, injecting common python-specific files"
-    cp -p "$SOURCE_DIR/app.json" "$tmp_full_clone/app.json"
+    cp -p -n "$SOURCE_DIR/app.json" "$tmp_full_clone/app.json"
     cp -p "$SOURCE_DIR/predeploy.py" "$tmp_full_clone/predeploy.py"
     test -f "$tmp_full_clone/runtime.txt" || cp -p "$SOURCE_DIR/runtime.txt" "$tmp_full_clone/runtime.txt"
   fi
