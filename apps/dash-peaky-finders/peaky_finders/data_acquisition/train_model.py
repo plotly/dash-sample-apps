@@ -43,7 +43,6 @@ MONTH_TO_SEASON = {
 
 BASE_URL = "https://api.darksky.net/forecast"
 EXCLUDE = "flags, minutely, daily, alerts"
-API_KEY = os.environ["DARKSKY_KEY"]
 
 LOAD_COLS = ["load_MW", "timestamp"]
 EASTERN_TZ = "US/Eastern"
@@ -64,7 +63,6 @@ class LoadCollector:
         self.holidays = holidays.UnitedStates()
         self.load = self.get_historical_load()
         self.model_input = None
-        self.weather_url = f"{BASE_URL}/{API_KEY}/{self.lat},{self.lon},"
 
     def get_historical_load(self) -> pd.DataFrame:
         if self.iso_name == "CAISO":
