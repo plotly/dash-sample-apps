@@ -94,7 +94,7 @@ main() {
   fi
 
   if [[ ! -d "$app_dir/assets" ]]; then
-    log-fail "App $APP is missing the assets directory"
+    log-warn "App $APP is missing the assets directory. Make sure to create one if you use asset files."
   fi
 
   log-header "Deploying $APP"
