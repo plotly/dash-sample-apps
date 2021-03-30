@@ -53,7 +53,7 @@ container = dbc.Container([header, content])
 # Declair function  that connects other pages with content to container
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
-    if pathname in [app_name, app_name + '/']:
+    if pathname in [app_name, app_name + "/"]:
         return html.Div(
             [
                 dcc.Markdown(
