@@ -1,3 +1,5 @@
+import os
+
 import dash
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
@@ -15,6 +17,8 @@ from peaky_finders.predictor import (
     get_iso_map,
     get_forecasts,
 )
+
+app_name = os.getenv("APP_NAME", "dash-peaky-finders")
 
 iso_map = get_iso_map()
 peak_data = get_peak_data(ISO_LIST)
@@ -61,37 +65,37 @@ index_page = html.Div(
                                         html.Button(
                                             "HOME", id="home-button", className="mr-1"
                                         ),
-                                        href="/",
+                                        href=f"/{app_name}/",
                                     ),
                                     dcc.Link(
                                         html.Button(
                                             "CAISO", id="caiso-button", className="mr-1"
                                         ),
-                                        href="/caiso",
+                                        href=f"/{app_name}/caiso",
                                     ),
                                     dcc.Link(
                                         html.Button(
                                             "MISO", id="miso-button", className="mr-1"
                                         ),
-                                        href="/miso",
+                                        href=f"/{app_name}/miso",
                                     ),
                                     dcc.Link(
                                         html.Button(
                                             "PJM", id="pjm-button", className="mr-1"
                                         ),
-                                        href="/pjm",
+                                        href=f"/{app_name}/pjm",
                                     ),
                                     dcc.Link(
                                         html.Button(
                                             "NYISO", id="nyiso-button", className="mr-1"
                                         ),
-                                        href="/nyiso",
+                                        href=f"/{app_name}/nyiso",
                                     ),
                                     dcc.Link(
                                         html.Button(
                                             "ISONE", id="isone-button", className="mr-1"
                                         ),
-                                        href="/isone",
+                                        href=f"/{app_name}/isone",
                                     ),
                                 ]
                             ),
@@ -143,33 +147,33 @@ nyiso_layout = html.Div(
                         [
                             dcc.Link(
                                 html.Button("HOME", id="home-button", className="mr-1"),
-                                href="/",
+                                href=f"/{app_name}/",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "CAISO", id="caiso-button", className="mr-1"
                                 ),
-                                href="/caiso",
+                                href=f"/{app_name}/caiso",
                             ),
                             dcc.Link(
                                 html.Button("MISO", id="miso-button", className="mr-1"),
-                                href="/miso",
+                                href=f"/{app_name}/miso",
                             ),
                             dcc.Link(
                                 html.Button("PJM", id="pjm-button", className="mr-1"),
-                                href="/pjm",
+                                href=f"/{app_name}/pjm",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "NYISO", id="nyiso-button", className="mr-1"
                                 ),
-                                href="/nyiso",
+                                href=f"/{app_name}/nyiso",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "ISONE", id="isone-button", className="mr-1"
                                 ),
-                                href="/isone",
+                                href=f"/{app_name}/isone",
                             ),
                         ]
                     ),
@@ -382,6 +386,7 @@ def nyiso_scatter_plot(value):
     fig = px.scatter(peak_data["NYISO"], x="load_MW", y="temperature", color=value)
     return fig.update_layout(template=TEMPLATE, title="Peak Load vs. Temperature")
 
+app_name = os.getenv("APP_NAME", "dash-peaky-finders")
 
 """PJM LAYOUT"""
 pjm_layout = html.Div(
@@ -395,33 +400,33 @@ pjm_layout = html.Div(
                         [
                             dcc.Link(
                                 html.Button("HOME", id="home-button", className="mr-1"),
-                                href="/",
+                                href=f"/{app_name}/",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "CAISO", id="caiso-button", className="mr-1"
                                 ),
-                                href="/caiso",
+                                href=f"/{app_name}/caiso",
                             ),
                             dcc.Link(
                                 html.Button("MISO", id="miso-button", className="mr-1"),
-                                href="/miso",
+                                href=f"/{app_name}/miso",
                             ),
                             dcc.Link(
                                 html.Button("PJM", id="pjm-button", className="mr-1"),
-                                href="/pjm",
+                                href=f"/{app_name}/pjm",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "NYISO", id="nyiso-button", className="mr-1"
                                 ),
-                                href="/nyiso",
+                                href=f"/{app_name}/nyiso",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "ISONE", id="isone-button", className="mr-1"
                                 ),
-                                href="/isone",
+                                href=f"/{app_name}/isone",
                             ),
                         ]
                     ),
@@ -647,33 +652,33 @@ miso_layout = html.Div(
                         [
                             dcc.Link(
                                 html.Button("HOME", id="home-button", className="mr-1"),
-                                href="/",
+                                href=f"/{app_name}/",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "CAISO", id="caiso-button", className="mr-1"
                                 ),
-                                href="/caiso",
+                                href=f"/{app_name}/caiso",
                             ),
                             dcc.Link(
                                 html.Button("MISO", id="miso-button", className="mr-1"),
-                                href="/miso",
+                                href=f"/{app_name}/miso",
                             ),
                             dcc.Link(
                                 html.Button("PJM", id="pjm-button", className="mr-1"),
-                                href="/pjm",
+                                href=f"/{app_name}/pjm",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "NYISO", id="nyiso-button", className="mr-1"
                                 ),
-                                href="/nyiso",
+                                href=f"/{app_name}/nyiso",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "ISONE", id="isone-button", className="mr-1"
                                 ),
-                                href="/isone",
+                                href=f"/{app_name}/isone",
                             ),
                         ]
                     ),
@@ -901,33 +906,33 @@ isone_layout = html.Div(
                         [
                             dcc.Link(
                                 html.Button("HOME", id="home-button", className="mr-1"),
-                                href="/",
+                                href=f"/{app_name}/",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "CAISO", id="caiso-button", className="mr-1"
                                 ),
-                                href="/caiso",
+                                href=f"/{app_name}/caiso",
                             ),
                             dcc.Link(
                                 html.Button("MISO", id="miso-button", className="mr-1"),
-                                href="/miso",
+                                href=f"/{app_name}/miso",
                             ),
                             dcc.Link(
                                 html.Button("PJM", id="pjm-button", className="mr-1"),
-                                href="/pjm",
+                                href=f"/{app_name}/pjm",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "NYISO", id="nyiso-button", className="mr-1"
                                 ),
-                                href="/nyiso",
+                                href=f"/{app_name}/nyiso",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "ISONE", id="isone-button", className="mr-1"
                                 ),
-                                href="/isone",
+                                href=f"/{app_name}/isone",
                             ),
                         ]
                     ),
@@ -1156,33 +1161,33 @@ caiso_layout = html.Div(
                         [
                             dcc.Link(
                                 html.Button("HOME", id="home-button", className="mr-1"),
-                                href="/",
+                                href=f"/{app_name}/",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "CAISO", id="caiso-button", className="mr-1"
                                 ),
-                                href="/caiso",
+                                href=f"/{app_name}/caiso",
                             ),
                             dcc.Link(
                                 html.Button("MISO", id="miso-button", className="mr-1"),
-                                href="/miso",
+                                href=f"/{app_name}/miso",
                             ),
                             dcc.Link(
                                 html.Button("PJM", id="pjm-button", className="mr-1"),
-                                href="/pjm",
+                                href=f"/{app_name}/pjm",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "NYISO", id="nyiso-button", className="mr-1"
                                 ),
-                                href="/nyiso",
+                                href=f"/{app_name}/nyiso",
                             ),
                             dcc.Link(
                                 html.Button(
                                     "ISONE", id="isone-button", className="mr-1"
                                 ),
-                                href="/isone",
+                                href=f"/{app_name}/isone",
                             ),
                         ]
                     ),
@@ -1406,15 +1411,15 @@ def caiso_scatter_plot(value):
     [dash.dependencies.Input("url", "pathname")],
 )
 def display_page(pathname):
-    if pathname == "/nyiso":
+    if pathname.endswith("/nyiso"):
         return nyiso_layout
-    elif pathname == "/pjm":
+    elif pathname.endswith("/pjm"):
         return pjm_layout
-    elif pathname == "/isone":
+    elif pathname.endswith("/isone"):
         return isone_layout
-    elif pathname == "/miso":
+    elif pathname.endswith("/miso"):
         return miso_layout
-    elif pathname == "/caiso":
+    elif pathname.endswith("/caiso"):
         return caiso_layout
     else:
         return index_page
