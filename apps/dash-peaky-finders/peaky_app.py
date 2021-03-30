@@ -699,12 +699,12 @@ miso_layout = html.Div(
                 dbc.Col(
                     html.Div(
                         children="""
-            "Midcontinent Independent System Operator (MISO) is an independent,
-             not-for-profit organization that delivers safe, cost-effective 
-             electric power across 15 U.S. states and the Canadian province of 
-             Manitoba." For more information,
-            visit www.misoenergy.org.
-        """
+                        "Midcontinent Independent System Operator (MISO) is an independent,
+                        not-for-profit organization that delivers safe, cost-effective
+                        electric power across 15 U.S. states and the Canadian province of
+                        Manitoba." For more information,
+                        visit www.misoenergy.org.
+                        """
                     ),
                     width=9,
                 ),
@@ -760,9 +760,9 @@ miso_layout = html.Div(
                 dbc.Col(
                     html.Div(
                         children="""
-                    The MISO forecasting model was trained on historical load and weather data
-                    from 2018-2021. Temperature readings are from Minneapolis.
-                """
+                                    The MISO forecasting model was trained on historical load and weather data
+                                    from 2018-2021. Temperature readings are from Minneapolis.
+                                """
                     ),
                     width=9,
                 ),
@@ -954,9 +954,9 @@ isone_layout = html.Div(
                 dbc.Col(
                     html.Div(
                         children="""
-            ISONE is the "independent, not-for-profit corporation responsible 
-            for keeping electricity flowing across the six New England states 
-            and ensuring that the region has reliable, competitively priced 
+            ISONE is the "independent, not-for-profit corporation responsible
+            for keeping electricity flowing across the six New England states
+            and ensuring that the region has reliable, competitively priced
             wholesale electricity today and into the future." For more information,
             visit www.iso-ne.com.
         """
@@ -1208,9 +1208,9 @@ caiso_layout = html.Div(
                 dbc.Col(
                     html.Div(
                         children="""
-            "The California Independent System Operator (ISO) maintains 
-            reliability on one of the largest and most modern power grids in 
-            the world, and operates a transparent, accessible wholesale energy 
+            "The California Independent System Operator (ISO) maintains
+            reliability on one of the largest and most modern power grids in
+            the world, and operates a transparent, accessible wholesale energy
             market."  For more information,
             visit http://www.caiso.com/.
         """

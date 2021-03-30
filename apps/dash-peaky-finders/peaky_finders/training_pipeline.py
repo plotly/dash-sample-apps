@@ -34,7 +34,7 @@ class Pipeline:
         """
         Args:
             iso: the iso to forecast ('nyiso', 'ercot', etc.)
-            model: logistic regression 'log' or xgboost     
+            model: logistic regression 'log' or xgboost
         """
         self.iso_name = iso
         self.model = model
