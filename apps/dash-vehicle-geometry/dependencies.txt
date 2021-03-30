@@ -1,0 +1,7 @@
+dash>=1.19.0
+dash-vtk
+dash-bootstrap-components
+pyvista
+numpy
+vtk
+gunicorn
