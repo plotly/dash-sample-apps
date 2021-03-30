@@ -25,7 +25,7 @@ def _load_vtp(filepath, fieldname=None):
     reader = vtk.vtkXMLPolyDataReader()
     reader.SetFileName(filepath)
     reader.Update()
-    if fieldname == None:
+    if fieldname is None:
         return to_mesh_state(reader.GetOutput())
     else:
         return to_mesh_state(reader.GetOutput(), fieldname)
