@@ -386,6 +386,7 @@ def nyiso_scatter_plot(value):
     fig = px.scatter(peak_data["NYISO"], x="load_MW", y="temperature", color=value)
     return fig.update_layout(template=TEMPLATE, title="Peak Load vs. Temperature")
 
+
 app_name = os.getenv("APP_NAME", "dash-peaky-finders")
 
 """PJM LAYOUT"""
