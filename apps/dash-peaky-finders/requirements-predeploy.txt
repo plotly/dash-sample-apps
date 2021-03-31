@@ -86,7 +86,7 @@ Pygments==2.7.3
 pyiso==0.4.0
 PyMeeus==0.3.7
 pyparsing==2.4.7
-pyproj==3.0.0.post1
+pyproj==3.*
 pyrsistent==0.17.3
 python-dateutil==2.8.1
 pytz==2019.3
