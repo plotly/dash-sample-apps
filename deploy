@@ -94,7 +94,7 @@ main() {
   fi
 
   if [[ ! -d "$app_dir/assets" ]]; then
-    log-fail "App $APP is missing the assets directory"
+    log-warn "App $APP is missing the assets directory. Make sure to create one if you use asset files."
   fi
 
   log-header "Deploying $APP"
@@ -178,7 +178,7 @@ main() {
     log-info "Python app detected, injecting common python-specific files"
     cp -p -n "$SOURCE_DIR/app.json" "$tmp_full_clone/app.json"
     cp -p "$SOURCE_DIR/predeploy.py" "$tmp_full_clone/predeploy.py"
-    test -f "$tmp_full_clone/runtime.txt" || cp -p "$SOURCE_DIR/runtime.txt" "$tmp_full_clone/runtime.txt"
+    test -f "$tmp_full_clone/runtime.txt" || test -f "$SOURCE_DIR/runtime.txt" || cp -p "$SOURCE_DIR/runtime.txt" "$tmp_full_clone/runtime.txt"
   fi
 
   set +e
