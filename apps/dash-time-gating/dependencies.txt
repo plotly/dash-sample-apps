@@ -5,3 +5,4 @@ numpy
 matplotlib
 plotly
 Flask-Caching
+gunicorn
