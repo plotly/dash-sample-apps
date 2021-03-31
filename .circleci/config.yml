@@ -9,17 +9,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install black and flake8
+          name: install black
           command: |
-            sudo pip install black==19.10b0 flake8
+            sudo pip install black==19.10b0
       - run:
           name: run black
           command: |
             black . --check
-      - run:
-          name: run flake8
-          command: |
-            flake8 --select=E265,E711,W291
   deploy_to_playground:
     docker:
       - image: circleci/python:3.6-stretch
@@ -106,7 +102,7 @@ jobs:
 
             for APP in $APPS_MODIFIED
             do
-              DASH_ENTERPRISE_URL="$DASH_GALLERY_ENTERPRISE_URL" DASH_ENTERPRISE_API_KEY="$DASH_GALLERY_ENTERPRISE_API_KEY" PATH="$HOME/bin:$PATH" ./deploy "$APP"
+              CREATE_APP=true DASH_ENTERPRISE_URL="$DASH_GALLERY_ENTERPRISE_URL" DASH_ENTERPRISE_API_KEY="$DASH_GALLERY_ENTERPRISE_API_KEY" PATH="$HOME/bin:$PATH" ./deploy "$APP"
             done
 
 workflows:
