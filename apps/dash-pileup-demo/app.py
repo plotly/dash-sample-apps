@@ -24,20 +24,7 @@ def header_colors():
     }
 
 
-REFERENCE = {
-    "label": "mm10",
-    "url": "https://hgdownload.cse.ucsc.edu/goldenPath/mm10/bigZips/mm10.2bit",
-}
-
-DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets/data")
-
-# Differentially expressed genes (identified in R, see assets/data/rna/README.md)
-DE_dataframe = pd.read_csv(os.path.join(DATAPATH, "rna", "DE_genes.csv"))
-# add SNP column
-DE_dataframe["SNP"] = "NA"
-
-
-def layout(app):
+def rna_differential(app):
     basal_bam = {
         "url": app.get_asset_url("data/rna/SRR1552454.fastq.gz.sampled.converted.bam"),
         "indexUrl": app.get_asset_url(
@@ -50,7 +37,7 @@ def layout(app):
         "indexUrl": app.get_asset_url("data/rna/SRR1552448.fastq.gz.sampled.bam.bai"),
     }
 
-    rna_differential = {
+    return {
         "range": {"contig": "chr1", "start": 54986297, "stop": 54991347},
         "tracks": [
             {"viz": "scale", "label": "Scale"},
@@ -91,13 +78,29 @@ def layout(app):
         ],
     }
 
+
+REFERENCE = {
+    "label": "mm10",
+    "url": "https://hgdownload.cse.ucsc.edu/goldenPath/mm10/bigZips/mm10.2bit",
+}
+
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets/data")
+
+# Differentially expressed genes (identified in R, see assets/data/rna/README.md)
+DE_dataframe = pd.read_csv(os.path.join(DATAPATH, "rna", "DE_genes.csv"))
+# add SNP column
+DE_dataframe["SNP"] = "NA"
+
+
+def layout(app):
     HOSTED_CASE_DICT = {
-        "rna-differential": rna_differential,
+        "rna-differential": rna_differential(app),
     }
 
     HOSTED_USE_CASES = [
         {"value": "rna-differential", "label": "Differential RNA-seq"},
     ]
+    
     return html.Div(
         id="pileup-body",
         className="app-body",
@@ -180,6 +183,14 @@ def layout(app):
 
 
 def callbacks(_app):
+    HOSTED_CASE_DICT = {
+        "rna-differential": rna_differential(_app),
+    }
+
+    HOSTED_USE_CASES = [
+        {"value": "rna-differential", "label": "Differential RNA-seq"},
+    ]
+    
     @_app.callback(
         Output(_COMPONENT_ID, "range"), Input("pileup-dashbio-volcanoplot", "clickData")
     )
