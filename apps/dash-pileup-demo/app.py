@@ -100,7 +100,7 @@ def layout(app):
     HOSTED_USE_CASES = [
         {"value": "rna-differential", "label": "Differential RNA-seq"},
     ]
-    
+
     return html.Div(
         id="pileup-body",
         className="app-body",
@@ -190,7 +190,7 @@ def callbacks(_app):
     HOSTED_USE_CASES = [
         {"value": "rna-differential", "label": "Differential RNA-seq"},
     ]
-    
+
     @_app.callback(
         Output(_COMPONENT_ID, "range"), Input("pileup-dashbio-volcanoplot", "clickData")
     )
