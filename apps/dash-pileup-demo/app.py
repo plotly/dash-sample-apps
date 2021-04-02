@@ -36,67 +36,67 @@ DE_dataframe = pd.read_csv(os.path.join(DATAPATH, "rna", "DE_genes.csv"))
 # add SNP column
 DE_dataframe["SNP"] = "NA"
 
-basal_bam = {
-    "url": os.path.join("/assets/data/rna/SRR1552454.fastq.gz.sampled.converted.bam"),
-    "indexUrl": os.path.join(
-        "/assets/data/rna/SRR1552454.fastq.gz.sampled.converted.bam.bai"
-    ),
-}
-
-luminal_bam = {
-    "url": os.path.join("/assets/data/rna/SRR1552448.fastq.gz.sampled.bam"),
-    "indexUrl": os.path.join("/assets/data/rna/SRR1552448.fastq.gz.sampled.bam.bai"),
-}
-
-rna_differential = {
-    "range": {"contig": "chr1", "start": 54986297, "stop": 54991347},
-    "tracks": [
-        {"viz": "scale", "label": "Scale"},
-        {"viz": "location", "label": "Location"},
-        {
-            "viz": "genes",
-            "label": "genes",
-            "source": "bigBed",
-            "sourceOptions": {"url": "/assets/data/rna/mm10.chr1.ncbiRefSeq.sorted.bb"},
-        },
-        {
-            "viz": "coverage",
-            "label": "Basal Mouse cells",
-            "source": "bam",
-            "sourceOptions": basal_bam,
-        },
-        {
-            "viz": "pileup",
-            "vizOptions": {"viewAsPairs": True},
-            "label": "Basal Mouse cells",
-            "source": "bam",
-            "sourceOptions": basal_bam,
-        },
-        {
-            "viz": "coverage",
-            "label": "Luminal Mouse cells",
-            "source": "bam",
-            "sourceOptions": luminal_bam,
-        },
-        {
-            "viz": "pileup",
-            "label": "Luminal Mouse cells",
-            "source": "bam",
-            "sourceOptions": luminal_bam,
-        },
-    ],
-}
-
-HOSTED_CASE_DICT = {
-    "rna-differential": rna_differential,
-}
-
-HOSTED_USE_CASES = [
-    {"value": "rna-differential", "label": "Differential RNA-seq"},
-]
 
 
-def layout():
+def layout(app):
+    basal_bam = {
+        "url": app.get_asset_url("data/rna/SRR1552454.fastq.gz.sampled.converted.bam"),
+        "indexUrl": app.get_asset_url(
+            "data/rna/SRR1552454.fastq.gz.sampled.converted.bam.bai"
+        ),
+    }
+
+    luminal_bam = {
+        "url": app.get_asset_url("data/rna/SRR1552448.fastq.gz.sampled.bam"),
+        "indexUrl": app.get_asset_url("data/rna/SRR1552448.fastq.gz.sampled.bam.bai"),
+    }
+
+    rna_differential = {
+        "range": {"contig": "chr1", "start": 54986297, "stop": 54991347},
+        "tracks": [
+            {"viz": "scale", "label": "Scale"},
+            {"viz": "location", "label": "Location"},
+            {
+                "viz": "genes",
+                "label": "genes",
+                "source": "bigBed",
+                "sourceOptions": {"url": app.get_asset_url("data/rna/mm10.chr1.ncbiRefSeq.sorted.bb")},
+            },
+            {
+                "viz": "coverage",
+                "label": "Basal Mouse cells",
+                "source": "bam",
+                "sourceOptions": basal_bam,
+            },
+            {
+                "viz": "pileup",
+                "vizOptions": {"viewAsPairs": True},
+                "label": "Basal Mouse cells",
+                "source": "bam",
+                "sourceOptions": basal_bam,
+            },
+            {
+                "viz": "coverage",
+                "label": "Luminal Mouse cells",
+                "source": "bam",
+                "sourceOptions": luminal_bam,
+            },
+            {
+                "viz": "pileup",
+                "label": "Luminal Mouse cells",
+                "source": "bam",
+                "sourceOptions": luminal_bam,
+            },
+        ],
+    }
+
+    HOSTED_CASE_DICT = {
+        "rna-differential": rna_differential,
+    }
+
+    HOSTED_USE_CASES = [
+        {"value": "rna-differential", "label": "Differential RNA-seq"},
+    ]
     return html.Div(
         id="pileup-body",
         className="app-body",
