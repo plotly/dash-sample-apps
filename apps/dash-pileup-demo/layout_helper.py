@@ -23,7 +23,7 @@ def run_standalone_app(layout, callbacks, header_colors, filename):
 
     # Assign layout
     app.layout = app_page_layout(
-        page_layout=layout(),
+        page_layout=layout(app),
         app_title=app_title,
         app_name=app_name,
         standalone=True,
