@@ -1,6 +1,6 @@
 cython>=0.19
 dash>=1.6.1
--e git://github.com/plotly/dash-bio.git#egg=dash_bio
+dash_bio-0.6.1-py3-none-any.whl
 dash-bio-utils==0.0.4
 dash-daq==0.2.2
 gunicorn==19.9.0
