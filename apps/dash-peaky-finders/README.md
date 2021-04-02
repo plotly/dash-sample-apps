@@ -1,8 +1,10 @@
 # Peaky-Finders
 
+[*Original published here*](https://github.com/kbaranko/peaky-finders)
+
 Peaky Finders is a Plotly Dash application with helpful peak load visualizations and a day ahead forecasting model for five different ISOs. It does not demonstrate cutting-edge peak load forecasting methods -- there are a handful of high tech companies and millions of dollars spent trying to solve this problem -- but rather illustrate core concepts and explore how well a model can do with just historical load and temperature data.
 
-The application has been deployed on Heroku: https://peaky-finders.herokuapp.com/
+The application has been deployed on Gallery: https://dash-gallery.plotly.host/dash-peaky-finders
 
 ## Tech Stack
 
