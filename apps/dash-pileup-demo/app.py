@@ -37,7 +37,6 @@ DE_dataframe = pd.read_csv(os.path.join(DATAPATH, "rna", "DE_genes.csv"))
 DE_dataframe["SNP"] = "NA"
 
 
-
 def layout(app):
     basal_bam = {
         "url": app.get_asset_url("data/rna/SRR1552454.fastq.gz.sampled.converted.bam"),
@@ -60,7 +59,9 @@ def layout(app):
                 "viz": "genes",
                 "label": "genes",
                 "source": "bigBed",
-                "sourceOptions": {"url": app.get_asset_url("data/rna/mm10.chr1.ncbiRefSeq.sorted.bb")},
+                "sourceOptions": {
+                    "url": app.get_asset_url("data/rna/mm10.chr1.ncbiRefSeq.sorted.bb")
+                },
             },
             {
                 "viz": "coverage",
