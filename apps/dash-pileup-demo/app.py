@@ -17,6 +17,10 @@ def description():
     return "An interactive in-browser track viewer."
 
 
+def azure_url(file):
+    return "https://sampleappsdata.blob.core.windows.net/dash-pileup-demo/" + file
+
+
 def header_colors():
     return {
         "bg_color": "#0F5BA7",
@@ -26,15 +30,13 @@ def header_colors():
 
 def rna_differential(app):
     basal_bam = {
-        "url": app.get_asset_url("data/rna/SRR1552454.fastq.gz.sampled.converted.bam"),
-        "indexUrl": app.get_asset_url(
-            "data/rna/SRR1552454.fastq.gz.sampled.converted.bam.bai"
-        ),
+        "url": azure_url("SRR1552454.fastq.gz.sampled.converted.bam"),
+        "indexUrl": azure_url("SRR1552454.fastq.gz.sampled.converted.bam.bai"),
     }
 
     luminal_bam = {
-        "url": app.get_asset_url("data/rna/SRR1552448.fastq.gz.sampled.bam"),
-        "indexUrl": app.get_asset_url("data/rna/SRR1552448.fastq.gz.sampled.bam.bai"),
+        "url": azure_url("SRR1552448.fastq.gz.sampled.bam"),
+        "indexUrl": azure_url("SRR1552448.fastq.gz.sampled.bam.bai"),
     }
 
     return {
@@ -46,9 +48,7 @@ def rna_differential(app):
                 "viz": "genes",
                 "label": "genes",
                 "source": "bigBed",
-                "sourceOptions": {
-                    "url": app.get_asset_url("data/rna/mm10.chr1.ncbiRefSeq.sorted.bb")
-                },
+                "sourceOptions": {"url": azure_url("mm10.chr1.ncbiRefSeq.sorted.bb")},
             },
             {
                 "viz": "coverage",
