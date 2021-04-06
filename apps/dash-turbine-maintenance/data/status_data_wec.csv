@@ -1,0 +1,1850 @@
+Time,Main Status,Sub Status,Full Status,Status Text,T,Service,FaultMsg,Value0
+24/04/2014 12:37:38,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.4
+25/04/2014 19:27:24,71,104,71 : 104,Insulation monitoring : Insulation fault Phase U2,6,FALSE,TRUE,20.5
+26/04/2014 09:30:13,8,0,8 : 0,Maintenance,6,TRUE,FALSE,17.1
+26/04/2014 10:05:19,8,0,8 : 0,Maintenance,6,FALSE,FALSE,8.7
+26/04/2014 10:05:25,8,0,8 : 0,Maintenance,6,TRUE,FALSE,10.6
+01/05/2014 08:57:11,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+01/05/2014 11:28:32,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+01/05/2014 11:28:33,8,0,8 : 0,Maintenance,6,TRUE,FALSE,4
+14/05/2014 14:41:31,9,3,9 : 3,Generator heating : Hygrostat inverter,1,FALSE,FALSE,5.7
+14/05/2014 14:41:57,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,6.5
+14/05/2014 14:47:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.7
+14/05/2014 14:48:19,9,3,9 : 3,Generator heating : Hygrostat inverter,1,FALSE,FALSE,6.6
+14/05/2014 15:25:54,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5.5
+14/05/2014 15:30:32,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.3
+14/05/2014 15:44:42,8,0,8 : 0,Maintenance,6,TRUE,FALSE,3.4
+14/05/2014 15:58:27,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,5
+14/05/2014 17:25:44,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.9
+14/05/2014 17:30:43,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,4.7
+14/05/2014 18:43:13,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+14/05/2014 19:49:23,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+14/05/2014 20:27:40,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.4
+14/05/2014 20:27:42,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.3
+14/05/2014 20:30:23,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+15/05/2014 07:33:28,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,1.4
+15/05/2014 07:33:33,8,0,8 : 0,Maintenance,6,TRUE,FALSE,1.3
+15/05/2014 09:41:38,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+15/05/2014 11:43:10,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+15/05/2014 11:43:11,8,0,8 : 0,Maintenance,6,TRUE,FALSE,1.9
+15/05/2014 17:31:19,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.4
+15/05/2014 18:36:56,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.9
+16/05/2014 07:37:24,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,2.4
+16/05/2014 08:37:23,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+16/05/2014 08:49:05,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,2.2
+16/05/2014 09:49:51,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.9
+16/05/2014 10:51:16,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+16/05/2014 11:08:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.6
+16/05/2014 11:08:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.2
+16/05/2014 11:12:15,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.6
+19/05/2014 23:00:16,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+19/05/2014 23:09:09,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.6
+19/05/2014 23:09:10,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.3
+19/05/2014 23:12:47,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.3
+20/05/2014 01:45:12,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.3
+20/05/2014 03:41:03,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.7
+20/05/2014 03:41:05,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+20/05/2014 03:44:41,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.8
+20/05/2014 04:17:39,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+20/05/2014 08:26:55,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3
+20/05/2014 08:26:57,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3
+20/05/2014 08:30:34,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+20/05/2014 09:07:28,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+20/05/2014 11:36:39,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+20/05/2014 11:36:41,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.4
+20/05/2014 11:38:28,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.8
+20/05/2014 11:56:27,67,604,67 : 604,Overtemperature : Power choke inverter 4,6,FALSE,FALSE,4.1
+20/05/2014 11:56:54,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.4
+20/05/2014 11:59:18,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.4
+20/05/2014 12:00:43,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.7
+20/05/2014 23:43:55,26,373,26 : 373,Malfunction fan-inverter : Other control board errors system 3,6,FALSE,FALSE,9.1
+20/05/2014 23:44:26,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.7
+20/05/2014 23:46:48,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.6
+20/05/2014 23:47:53,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.7
+26/05/2014 09:48:26,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,2.2
+26/05/2014 09:48:29,8,0,8 : 0,Maintenance,6,TRUE,FALSE,1.8
+26/05/2014 10:13:17,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,0.8
+26/05/2014 10:13:46,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,0.6
+26/05/2014 10:18:18,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.7
+26/05/2014 10:21:17,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.7
+26/05/2014 11:17:40,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.9
+26/05/2014 11:17:42,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+26/05/2014 11:21:19,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.8
+26/05/2014 13:56:28,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,3.7
+26/05/2014 13:56:30,8,0,8 : 0,Maintenance,6,TRUE,FALSE,3.5
+26/05/2014 15:25:14,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.9
+26/05/2014 15:26:15,8,0,8 : 0,Maintenance,6,TRUE,FALSE,4.2
+26/05/2014 15:45:19,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,5.3
+26/05/2014 15:45:53,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.4
+27/05/2014 10:51:04,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,5.3
+27/05/2014 10:51:33,8,0,8 : 0,Maintenance,6,TRUE,FALSE,6.1
+27/05/2014 11:01:24,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+27/05/2014 16:00:33,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+27/05/2014 16:00:34,8,0,8 : 0,Maintenance,6,TRUE,FALSE,7.3
+27/05/2014 16:07:09,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,7.1
+27/05/2014 16:07:24,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.8
+27/05/2014 16:09:52,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.7
+27/05/2014 16:10:26,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,3.6
+27/05/2014 16:14:02,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.7
+27/05/2014 16:14:44,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.5
+28/05/2014 06:01:55,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+28/05/2014 06:35:42,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.9
+28/05/2014 06:35:44,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.3
+28/05/2014 06:39:20,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+28/05/2014 09:40:25,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.8
+28/05/2014 10:17:27,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.1
+28/05/2014 10:17:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.9
+28/05/2014 10:21:06,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.2
+28/05/2014 12:29:48,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.7
+28/05/2014 13:30:57,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+28/05/2014 13:30:59,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.5
+28/05/2014 13:34:35,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+28/05/2014 16:05:48,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,5.9
+28/05/2014 16:05:52,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5.9
+28/05/2014 17:43:52,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,3.7
+28/05/2014 17:43:58,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.5
+28/05/2014 17:46:27,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.9
+28/05/2014 17:47:01,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,5.3
+28/05/2014 17:51:59,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.2
+28/05/2014 17:52:49,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6
+29/05/2014 04:06:59,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,2.6
+29/05/2014 04:45:42,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,4.2
+29/05/2014 04:48:09,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.7
+29/05/2014 04:48:11,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4
+29/05/2014 04:49:56,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4
+29/05/2014 08:06:21,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+29/05/2014 09:25:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.6
+29/05/2014 09:25:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.7
+29/05/2014 09:29:15,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.9
+29/05/2014 14:50:28,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.3
+29/05/2014 15:26:42,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1
+29/05/2014 15:26:43,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.5
+29/05/2014 15:28:59,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.5
+31/05/2014 00:43:31,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+31/05/2014 02:17:03,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2
+31/05/2014 02:17:05,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+31/05/2014 02:20:41,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.8
+31/05/2014 04:44:18,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+31/05/2014 06:02:18,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.1
+31/05/2014 06:02:20,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3
+31/05/2014 06:05:56,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+31/05/2014 08:16:10,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,1.7
+31/05/2014 08:16:15,8,0,8 : 0,Maintenance,6,TRUE,FALSE,2.1
+31/05/2014 11:09:58,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,5.3
+31/05/2014 11:28:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.4
+31/05/2014 13:44:48,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.1
+31/05/2014 13:51:17,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.4
+31/05/2014 13:52:48,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.1
+04/06/2014 08:17:53,60,11,60 : 11,Mains failure : Undervoltage L1,3,FALSE,FALSE,6.5
+04/06/2014 08:20:34,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+04/06/2014 16:55:44,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+04/06/2014 16:55:45,222,1,222 : 1,Turbine reset : Power failure,6,FALSE,FALSE,5.8
+04/06/2014 16:55:45,220,56,220 : 56,Processor reset : Fan inverter,6,FALSE,FALSE,5.8
+04/06/2014 16:55:46,220,33,220 : 33,Processor reset : Power Control,6,FALSE,FALSE,6.1
+04/06/2014 16:55:46,60,2,60 : 2,Mains failure : Start delay,3,FALSE,FALSE,6.1
+04/06/2014 16:55:46,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,6.4
+04/06/2014 16:56:51,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.4
+04/06/2014 16:56:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.6
+04/06/2014 16:57:30,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,6.6
+04/06/2014 17:01:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.8
+04/06/2014 17:02:28,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.9
+05/06/2014 07:46:57,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+05/06/2014 08:41:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+05/06/2014 08:41:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.9
+05/06/2014 08:45:09,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.6
+05/06/2014 09:11:39,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+05/06/2014 10:16:27,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.4
+05/06/2014 10:16:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.6
+05/06/2014 10:20:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.1
+05/06/2014 15:53:24,60,11,60 : 11,Mains failure : Undervoltage L1,3,FALSE,FALSE,7.4
+05/06/2014 15:56:05,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+05/06/2014 17:33:14,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+05/06/2014 17:33:15,222,1,222 : 1,Turbine reset : Power failure,6,FALSE,FALSE,2.3
+05/06/2014 17:33:15,220,33,220 : 33,Processor reset : Power Control,6,FALSE,FALSE,2.3
+05/06/2014 17:33:16,62,505,62 : 505,Feeding fault : No zero crossing inverter 5,6,FALSE,FALSE,2.1
+05/06/2014 17:33:16,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,2.1
+05/06/2014 17:33:16,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+05/06/2014 17:35:09,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.2
+05/06/2014 17:35:43,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7.9
+05/06/2014 17:39:15,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.9
+05/06/2014 17:39:53,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.6
+09/06/2014 00:00:00,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,9.4
+09/06/2014 00:04:00,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.6
+09/06/2014 00:04:01,60,2,60 : 2,Mains failure : Start delay,3,FALSE,FALSE,3
+09/06/2014 00:04:10,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.4
+09/06/2014 00:06:43,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.4
+09/06/2014 00:07:18,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.8
+09/06/2014 00:09:38,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.9
+09/06/2014 00:10:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.7
+10/06/2014 00:00:00,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,7.4
+10/06/2014 00:03:09,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.6
+10/06/2014 00:03:10,60,2,60 : 2,Mains failure : Start delay,3,FALSE,FALSE,3
+10/06/2014 00:03:19,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9.1
+10/06/2014 00:03:21,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.6
+10/06/2014 00:03:59,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.9
+10/06/2014 00:10:01,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.4
+10/06/2014 00:10:37,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.6
+11/06/2014 00:00:00,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,7.5
+11/06/2014 00:02:26,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.6
+11/06/2014 00:02:27,60,2,60 : 2,Mains failure : Start delay,3,FALSE,FALSE,3
+11/06/2014 00:02:36,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.9
+11/06/2014 00:05:00,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.1
+11/06/2014 00:05:34,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,9.1
+11/06/2014 00:08:45,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.9
+11/06/2014 00:09:22,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9
+12/06/2014 00:00:00,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,3.7
+12/06/2014 00:03:34,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+12/06/2014 00:03:35,60,2,60 : 2,Mains failure : Start delay,3,FALSE,FALSE,3
+12/06/2014 00:03:44,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.8
+12/06/2014 00:03:51,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+12/06/2014 00:07:11,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.6
+12/06/2014 00:07:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.3
+12/06/2014 00:07:47,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,2.6
+12/06/2014 00:09:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.7
+12/06/2014 00:10:32,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.6
+12/06/2014 09:19:58,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7.6
+12/06/2014 09:25:40,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.6
+12/06/2014 09:26:50,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.4
+13/06/2014 10:11:10,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+13/06/2014 10:42:17,1,3,1 : 3,Turbine stopped : Scada System (ENERCON),1,FALSE,FALSE,0
+13/06/2014 10:57:12,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+13/06/2014 12:45:53,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+13/06/2014 12:45:54,222,1,222 : 1,Turbine reset : Power failure,6,FALSE,FALSE,6.6
+13/06/2014 12:45:54,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,6.7
+13/06/2014 12:45:54,220,56,220 : 56,Processor reset : Fan inverter,6,FALSE,FALSE,6.7
+13/06/2014 12:45:55,220,33,220 : 33,Processor reset : Power Control,6,FALSE,FALSE,6.7
+13/06/2014 12:45:55,62,501,62 : 501,Feeding fault : No zero crossing inverter 1,6,FALSE,FALSE,6.9
+13/06/2014 12:46:43,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,5.7
+13/06/2014 13:09:12,222,1,222 : 1,Turbine reset : Power failure,6,FALSE,FALSE,2.6
+13/06/2014 13:09:13,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,2.8
+13/06/2014 13:09:13,220,56,220 : 56,Processor reset : Fan inverter,6,FALSE,FALSE,2.8
+13/06/2014 13:09:13,220,33,220 : 33,Processor reset : Power Control,6,FALSE,FALSE,3
+13/06/2014 13:09:21,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,3.6
+13/06/2014 13:11:29,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5.5
+13/06/2014 13:30:13,1,3,1 : 3,Turbine stopped : Scada System (ENERCON),1,FALSE,FALSE,6.3
+13/06/2014 13:46:00,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.8
+13/06/2014 13:49:49,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,6.7
+13/06/2014 13:49:51,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5
+13/06/2014 13:51:17,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.9
+14/06/2014 20:30:11,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.5
+14/06/2014 20:45:45,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,1.6
+14/06/2014 21:24:08,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,3.1
+14/06/2014 21:26:34,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4
+14/06/2014 21:26:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.8
+14/06/2014 21:28:24,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.8
+15/06/2014 23:40:08,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.7
+16/06/2014 01:05:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.4
+16/06/2014 01:05:10,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.4
+16/06/2014 01:08:46,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.6
+21/06/2014 01:28:57,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+21/06/2014 03:00:35,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,0.5
+21/06/2014 03:00:38,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,0.9
+21/06/2014 03:04:13,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.3
+21/06/2014 14:11:36,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.7
+21/06/2014 14:58:55,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.3
+21/06/2014 14:58:57,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.3
+21/06/2014 15:00:36,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.6
+22/06/2014 00:47:19,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+22/06/2014 02:20:01,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+22/06/2014 02:20:03,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.9
+22/06/2014 02:23:38,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.6
+23/06/2014 01:56:09,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+23/06/2014 03:43:46,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.2
+23/06/2014 03:43:48,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+23/06/2014 03:47:25,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+24/06/2014 00:14:17,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,2.2
+24/06/2014 00:52:57,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,3.1
+24/06/2014 00:55:32,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.9
+24/06/2014 00:55:34,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.7
+24/06/2014 00:58:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.5
+24/06/2014 08:05:40,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+24/06/2014 09:39:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.6
+24/06/2014 09:39:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.6
+24/06/2014 09:43:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.6
+24/06/2014 17:16:21,67,604,67 : 604,Overtemperature : Power choke inverter 4,6,FALSE,FALSE,4.9
+24/06/2014 17:16:49,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.9
+24/06/2014 17:19:15,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.1
+24/06/2014 17:20:59,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.7
+25/06/2014 02:30:24,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+25/06/2014 04:12:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.5
+25/06/2014 04:12:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.4
+25/06/2014 04:16:08,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.4
+25/06/2014 12:43:17,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7.7
+25/06/2014 12:48:44,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.2
+25/06/2014 12:49:54,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.7
+25/06/2014 21:59:57,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,8.2
+25/06/2014 22:05:50,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+25/06/2014 22:05:51,60,2,60 : 2,Mains failure : Start delay,3,FALSE,FALSE,3
+25/06/2014 22:06:00,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.5
+25/06/2014 22:08:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.9
+25/06/2014 22:09:27,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,2.9
+25/06/2014 22:12:41,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.6
+25/06/2014 22:13:14,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.5
+26/06/2014 05:09:26,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+26/06/2014 05:51:54,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3
+26/06/2014 05:51:56,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.2
+26/06/2014 05:55:33,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.9
+27/06/2014 00:31:58,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+27/06/2014 01:20:20,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+27/06/2014 01:20:22,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+27/06/2014 01:23:58,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.7
+27/06/2014 11:47:20,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+27/06/2014 11:53:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.8
+27/06/2014 11:53:10,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.6
+27/06/2014 11:56:46,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+27/06/2014 15:12:26,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.3
+27/06/2014 15:51:16,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+27/06/2014 15:51:19,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.6
+27/06/2014 15:52:57,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5
+27/06/2014 18:47:14,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.5
+27/06/2014 19:45:16,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,3.4
+27/06/2014 20:23:40,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,3.1
+27/06/2014 20:26:17,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3
+27/06/2014 20:26:19,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.9
+27/06/2014 20:27:49,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.4
+30/06/2014 10:35:27,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,10.7
+30/06/2014 10:41:23,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.5
+30/06/2014 10:41:24,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,10.4
+30/06/2014 10:41:31,8,0,8 : 0,Maintenance,6,TRUE,FALSE,11
+30/06/2014 14:16:45,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,12.5
+30/06/2014 14:17:38,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.8
+01/07/2014 23:21:24,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+02/07/2014 05:37:52,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3
+02/07/2014 05:37:54,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.9
+02/07/2014 05:41:31,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.7
+03/07/2014 14:59:58,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,11.7
+03/07/2014 15:06:26,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.6
+03/07/2014 15:06:27,60,2,60 : 2,Mains failure : Start delay,3,FALSE,FALSE,3
+03/07/2014 15:06:36,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.5
+03/07/2014 15:08:56,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.9
+03/07/2014 15:09:31,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,11.3
+03/07/2014 15:10:23,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.7
+03/07/2014 15:10:55,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.2
+07/07/2014 09:59:04,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.3
+07/07/2014 12:06:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.3
+07/07/2014 12:06:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.6
+07/07/2014 12:10:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.5
+07/07/2014 13:54:43,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.2
+07/07/2014 13:56:47,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.6
+07/07/2014 13:58:03,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.1
+07/07/2014 22:44:56,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.8
+07/07/2014 23:19:54,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.9
+07/07/2014 23:19:56,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.9
+07/07/2014 23:23:32,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+10/07/2014 09:17:10,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,3.3
+10/07/2014 09:17:11,8,0,8 : 0,Maintenance,6,TRUE,FALSE,2.9
+10/07/2014 16:10:36,206,411,206 : 411,No data from power control : Inverter control 11 CPU2 CAN2,6,FALSE,FALSE,5.7
+10/07/2014 16:13:14,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.2
+10/07/2014 16:13:15,206,411,206 : 411,No data from power control : Inverter control 11 CPU2 CAN2,6,FALSE,FALSE,6
+10/07/2014 16:14:54,222,1,222 : 1,Turbine reset : Power failure,6,FALSE,FALSE,2.6
+10/07/2014 16:14:54,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,2.8
+10/07/2014 16:14:55,220,56,220 : 56,Processor reset : Fan inverter,6,FALSE,FALSE,2.8
+10/07/2014 16:14:56,220,52,220 : 52,Processor reset : Yaw inverter 2,6,FALSE,FALSE,3.2
+10/07/2014 16:14:57,220,51,220 : 51,Processor reset : Yaw inverter 1,6,FALSE,FALSE,3.3
+10/07/2014 16:14:57,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,3.3
+10/07/2014 16:15:02,206,411,206 : 411,No data from power control : Inverter control 11 CPU2 CAN2,6,FALSE,FALSE,3.8
+10/07/2014 16:15:11,222,5,222 : 5,Turbine reset : Remote display,6,FALSE,FALSE,2.3
+10/07/2014 16:15:12,206,411,206 : 411,No data from power control : Inverter control 11 CPU2 CAN2,6,FALSE,FALSE,2.8
+10/07/2014 16:22:16,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.5
+10/07/2014 16:22:16,206,411,206 : 411,No data from power control : Inverter control 11 CPU2 CAN2,6,FALSE,FALSE,6.5
+10/07/2014 16:24:15,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5.5
+11/07/2014 11:20:11,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,2
+11/07/2014 11:48:54,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+11/07/2014 11:53:46,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,2.8
+11/07/2014 12:19:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.8
+11/07/2014 13:06:01,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+11/07/2014 14:10:05,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.1
+11/07/2014 14:10:07,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.8
+11/07/2014 14:11:38,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.9
+12/07/2014 06:48:58,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.5
+12/07/2014 06:56:00,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.1
+12/07/2014 06:57:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.7
+13/07/2014 18:12:19,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.2
+13/07/2014 18:19:14,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.6
+13/07/2014 18:19:16,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.8
+13/07/2014 18:20:30,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.8
+14/07/2014 12:32:29,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,11.5
+14/07/2014 12:32:30,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.6
+14/07/2014 12:32:51,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9.3
+14/07/2014 12:35:24,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.6
+14/07/2014 12:36:18,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17.2
+15/07/2014 08:18:48,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+15/07/2014 08:52:34,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.9
+15/07/2014 08:52:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+15/07/2014 08:56:13,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.3
+17/07/2014 04:47:09,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+17/07/2014 06:26:56,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.2
+17/07/2014 06:26:58,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.4
+17/07/2014 06:30:34,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+17/07/2014 10:18:01,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+17/07/2014 10:20:02,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+17/07/2014 10:20:03,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.7
+18/07/2014 01:17:44,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,11.3
+18/07/2014 01:17:45,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.2
+18/07/2014 01:18:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.6
+18/07/2014 01:20:48,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.1
+18/07/2014 01:21:23,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,6.1
+18/07/2014 01:21:26,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12
+18/07/2014 01:21:50,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13
+18/07/2014 01:37:06,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,12.7
+18/07/2014 01:37:07,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.5
+18/07/2014 01:37:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,16.3
+18/07/2014 01:39:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11
+18/07/2014 01:40:51,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.3
+18/07/2014 01:52:20,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,10.7
+18/07/2014 01:52:42,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,13.1
+18/07/2014 01:55:08,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.8
+18/07/2014 01:56:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.1
+18/07/2014 07:45:57,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.3
+18/07/2014 08:49:01,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2
+18/07/2014 08:49:03,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.8
+18/07/2014 08:52:40,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.6
+18/07/2014 09:08:47,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.5
+18/07/2014 09:54:15,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.1
+18/07/2014 09:54:17,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4
+18/07/2014 09:56:27,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.2
+18/07/2014 15:56:36,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7.3
+18/07/2014 16:02:45,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.7
+18/07/2014 16:03:55,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.9
+18/07/2014 22:21:36,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+18/07/2014 23:35:26,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.7
+18/07/2014 23:35:28,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.8
+18/07/2014 23:39:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.1
+19/07/2014 00:10:41,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+19/07/2014 01:26:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2
+19/07/2014 01:26:10,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+19/07/2014 01:29:44,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.7
+19/07/2014 05:47:17,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.7
+19/07/2014 05:47:19,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.8
+19/07/2014 05:50:33,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+19/07/2014 09:08:50,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,0.5
+19/07/2014 09:47:30,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0
+19/07/2014 11:34:11,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.2
+19/07/2014 11:34:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.3
+19/07/2014 11:36:03,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.8
+20/07/2014 15:15:41,67,604,67 : 604,Overtemperature : Power choke inverter 4,6,FALSE,FALSE,4.4
+20/07/2014 15:16:09,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,6.3
+20/07/2014 15:18:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.4
+20/07/2014 15:19:57,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.6
+20/07/2014 16:43:28,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+20/07/2014 16:58:41,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.7
+20/07/2014 16:58:43,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.6
+20/07/2014 17:00:35,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.5
+21/07/2014 06:59:59,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,2
+21/07/2014 07:15:44,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.6
+21/07/2014 07:15:49,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+21/07/2014 07:18:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.5
+21/07/2014 07:19:12,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,2.9
+21/07/2014 07:23:24,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.6
+21/07/2014 07:24:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.9
+21/07/2014 11:27:56,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7.6
+21/07/2014 11:33:41,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.1
+21/07/2014 11:34:53,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.9
+22/07/2014 06:59:59,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,2.5
+22/07/2014 07:03:26,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.4
+22/07/2014 07:03:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.6
+22/07/2014 07:03:50,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.6
+22/07/2014 07:12:30,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+22/07/2014 07:12:32,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.1
+22/07/2014 07:14:34,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.6
+23/07/2014 13:27:50,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,2
+23/07/2014 14:18:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+23/07/2014 14:18:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.2
+23/07/2014 14:22:07,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+23/07/2014 21:58:07,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+23/07/2014 23:44:05,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+23/07/2014 23:44:07,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3
+23/07/2014 23:46:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.1
+24/07/2014 04:44:31,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7.8
+24/07/2014 04:46:27,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.2
+24/07/2014 04:47:33,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.9
+24/07/2014 13:01:50,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+24/07/2014 13:10:11,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.8
+24/07/2014 13:10:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+24/07/2014 13:13:50,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+24/07/2014 18:52:59,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.1
+24/07/2014 19:59:40,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.7
+24/07/2014 19:59:42,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.3
+24/07/2014 20:03:17,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.4
+24/07/2014 20:21:35,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.6
+24/07/2014 20:21:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.6
+24/07/2014 20:25:14,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.1
+25/07/2014 22:39:45,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+26/07/2014 00:52:33,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.2
+26/07/2014 00:52:35,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+26/07/2014 00:56:12,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,0.9
+30/07/2014 07:37:40,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,5.4
+30/07/2014 07:37:41,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5.7
+30/07/2014 13:17:27,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.8
+30/07/2014 13:22:55,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.2
+01/08/2014 10:08:53,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.3
+01/08/2014 12:25:50,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.3
+01/08/2014 12:25:52,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.4
+01/08/2014 12:29:29,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.1
+01/08/2014 15:20:59,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,6.7
+01/08/2014 15:22:11,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.3
+01/08/2014 15:23:20,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.4
+04/08/2014 01:26:55,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.8
+04/08/2014 03:59:48,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,0.6
+04/08/2014 03:59:50,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,0.5
+04/08/2014 04:03:27,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.3
+04/08/2014 05:05:24,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+04/08/2014 07:32:33,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.9
+04/08/2014 07:32:35,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.7
+04/08/2014 07:36:12,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+05/08/2014 08:33:25,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+05/08/2014 09:13:22,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.2
+05/08/2014 09:13:24,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1
+05/08/2014 09:15:34,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.5
+07/08/2014 06:52:07,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.7
+07/08/2014 09:13:06,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.7
+07/08/2014 09:13:08,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+07/08/2014 09:16:44,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.2
+07/08/2014 10:12:00,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+07/08/2014 10:24:38,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.1
+07/08/2014 10:24:40,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.4
+07/08/2014 10:28:18,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.1
+07/08/2014 16:59:58,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,7.5
+07/08/2014 17:03:24,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+07/08/2014 17:03:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+07/08/2014 17:06:34,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.4
+07/08/2014 17:07:07,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,2.8
+07/08/2014 17:07:40,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.6
+07/08/2014 17:08:17,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.4
+08/08/2014 01:14:19,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+08/08/2014 03:01:26,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.9
+08/08/2014 03:01:28,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.3
+08/08/2014 03:05:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.5
+08/08/2014 05:25:01,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+08/08/2014 07:30:35,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.9
+08/08/2014 07:30:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.9
+08/08/2014 07:34:11,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.5
+08/08/2014 08:44:07,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.6
+08/08/2014 08:44:09,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.8
+08/08/2014 08:46:42,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.7
+10/08/2014 12:14:53,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,12.4
+10/08/2014 12:14:53,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.4
+10/08/2014 12:15:15,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,15.8
+10/08/2014 12:17:41,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.7
+10/08/2014 12:18:41,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.3
+15/08/2014 19:59:57,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,7.8
+15/08/2014 20:14:07,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+15/08/2014 20:14:12,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+15/08/2014 20:16:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.6
+15/08/2014 20:17:05,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,9.3
+15/08/2014 20:20:59,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.7
+15/08/2014 20:21:32,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.8
+16/08/2014 19:59:57,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,7.2
+16/08/2014 20:03:24,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+16/08/2014 20:03:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+16/08/2014 20:03:42,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,2.8
+16/08/2014 20:06:27,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,6.6
+16/08/2014 20:06:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.8
+16/08/2014 20:07:03,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,6.2
+16/08/2014 20:12:04,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.3
+16/08/2014 20:12:43,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.6
+16/08/2014 20:18:56,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,6.6
+16/08/2014 20:23:11,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.4
+16/08/2014 20:24:15,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.8
+17/08/2014 17:20:26,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,12
+17/08/2014 17:20:26,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12
+17/08/2014 17:20:49,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,16.4
+17/08/2014 17:23:12,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9
+17/08/2014 17:24:14,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.6
+17/08/2014 19:59:57,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,10.9
+17/08/2014 20:02:38,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+17/08/2014 20:02:43,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+17/08/2014 20:05:00,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.2
+17/08/2014 20:05:35,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,11
+17/08/2014 20:05:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.9
+17/08/2014 20:06:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.1
+18/08/2014 19:59:57,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,9.4
+18/08/2014 20:03:37,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+18/08/2014 20:03:42,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+18/08/2014 20:06:06,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.5
+18/08/2014 20:06:40,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,10.6
+18/08/2014 20:06:43,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.6
+18/08/2014 20:07:09,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.8
+19/08/2014 19:59:57,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,7.6
+19/08/2014 20:07:51,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+19/08/2014 20:07:56,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+19/08/2014 20:10:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.3
+19/08/2014 20:10:48,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,5.5
+19/08/2014 20:12:16,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.6
+19/08/2014 20:12:59,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.4
+20/08/2014 19:59:57,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,3.5
+20/08/2014 20:05:54,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+20/08/2014 20:05:59,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+20/08/2014 20:06:58,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+20/08/2014 20:09:59,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.7
+20/08/2014 20:10:01,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.6
+20/08/2014 20:10:36,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,3.3
+20/08/2014 20:12:34,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.2
+20/08/2014 20:13:46,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.5
+21/08/2014 01:56:12,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7
+21/08/2014 02:01:41,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.9
+21/08/2014 02:02:46,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.5
+21/08/2014 19:59:57,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,6.5
+21/08/2014 20:04:18,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.6
+21/08/2014 20:04:23,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+21/08/2014 20:06:41,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.6
+21/08/2014 20:07:15,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.3
+21/08/2014 20:07:55,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.8
+21/08/2014 20:08:33,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.9
+22/08/2014 06:45:51,17,0,17 : 0,Test security system,6,FALSE,FALSE,3.8
+22/08/2014 06:46:12,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,5
+22/08/2014 06:47:10,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,6
+22/08/2014 06:48:32,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.9
+22/08/2014 06:49:06,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,5.6
+22/08/2014 06:50:47,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.8
+22/08/2014 06:51:38,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.6
+22/08/2014 19:59:57,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,7.2
+22/08/2014 20:05:14,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+22/08/2014 20:05:19,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+22/08/2014 20:07:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11
+22/08/2014 20:08:11,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,10.9
+22/08/2014 20:08:49,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.9
+22/08/2014 20:09:18,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.1
+28/08/2014 11:37:31,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,13.9
+28/08/2014 11:37:31,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.9
+28/08/2014 11:37:54,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.4
+28/08/2014 11:40:25,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,18.2
+28/08/2014 11:41:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,18.8
+29/08/2014 10:18:50,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,11.5
+29/08/2014 10:18:50,8,0,8 : 0,Maintenance,6,TRUE,FALSE,11.6
+29/08/2014 12:32:08,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,11.8
+29/08/2014 12:35:27,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.2
+30/08/2014 09:38:27,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,4.4
+30/08/2014 09:43:56,8,0,8 : 0,Maintenance,6,TRUE,FALSE,4.7
+30/08/2014 13:11:14,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,7.9
+30/08/2014 13:16:42,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.1
+31/08/2014 07:22:00,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+31/08/2014 07:40:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.8
+31/08/2014 07:40:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.8
+31/08/2014 07:44:15,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+02/09/2014 04:47:19,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+02/09/2014 04:57:16,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,0.4
+02/09/2014 04:57:18,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,0.4
+02/09/2014 05:00:54,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.6
+02/09/2014 10:29:49,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.6
+02/09/2014 10:45:27,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.3
+02/09/2014 10:45:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.3
+02/09/2014 10:48:31,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.7
+03/09/2014 12:21:28,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,5
+03/09/2014 12:21:30,8,0,8 : 0,Maintenance,6,TRUE,FALSE,4.9
+03/09/2014 15:49:40,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.7
+03/09/2014 15:59:57,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.1
+04/09/2014 22:58:30,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.7
+05/09/2014 00:08:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.9
+05/09/2014 00:08:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.8
+05/09/2014 00:12:09,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.2
+05/09/2014 08:48:59,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+05/09/2014 12:09:33,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.8
+05/09/2014 12:09:35,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.9
+05/09/2014 12:13:11,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.1
+05/09/2014 16:19:47,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+05/09/2014 17:29:06,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+05/09/2014 17:29:08,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+05/09/2014 17:32:44,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.2
+06/09/2014 13:35:52,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.4
+06/09/2014 14:09:54,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.3
+06/09/2014 14:09:56,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.4
+06/09/2014 14:13:32,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.5
+06/09/2014 18:36:13,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+06/09/2014 19:29:35,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.3
+06/09/2014 19:29:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4
+06/09/2014 19:31:44,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4
+07/09/2014 01:22:59,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+07/09/2014 01:57:35,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.8
+07/09/2014 01:57:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.8
+07/09/2014 01:59:54,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.9
+08/09/2014 21:41:27,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+08/09/2014 23:57:43,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2
+08/09/2014 23:57:45,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.7
+09/09/2014 00:01:20,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+09/09/2014 02:43:52,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.9
+09/09/2014 02:43:55,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.9
+09/09/2014 02:47:30,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.5
+09/09/2014 06:26:06,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+09/09/2014 13:24:48,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.7
+09/09/2014 13:24:50,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.8
+09/09/2014 13:28:27,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+14/09/2014 01:55:15,67,604,67 : 604,Overtemperature : Power choke inverter 4,6,FALSE,FALSE,7.4
+14/09/2014 01:55:43,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.3
+14/09/2014 01:58:07,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.6
+14/09/2014 01:59:23,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.8
+18/09/2014 11:59:58,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,10.1
+18/09/2014 12:04:59,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+18/09/2014 12:05:04,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+18/09/2014 12:07:22,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.1
+18/09/2014 12:07:56,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,14
+18/09/2014 12:10:28,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.8
+18/09/2014 12:10:59,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.3
+19/09/2014 09:04:07,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,2.8
+19/09/2014 09:04:08,8,0,8 : 0,Maintenance,6,TRUE,FALSE,2.9
+19/09/2014 13:07:44,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,5.3
+19/09/2014 13:18:11,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.8
+21/09/2014 01:40:32,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+21/09/2014 01:50:34,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,0.4
+21/09/2014 01:50:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,0.3
+21/09/2014 01:53:11,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.7
+22/09/2014 00:07:42,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+22/09/2014 01:00:22,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.5
+22/09/2014 01:00:24,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.7
+22/09/2014 01:04:01,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+22/09/2014 01:51:21,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.5
+22/09/2014 02:34:28,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4
+22/09/2014 02:34:30,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4
+22/09/2014 02:38:07,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+22/09/2014 08:54:10,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+22/09/2014 09:04:45,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2
+22/09/2014 09:04:47,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+22/09/2014 09:08:24,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.8
+22/09/2014 14:10:46,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.1
+22/09/2014 14:16:41,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7
+22/09/2014 14:17:32,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.6
+23/09/2014 20:40:07,67,604,67 : 604,Overtemperature : Power choke inverter 4,6,FALSE,FALSE,3.7
+23/09/2014 20:40:34,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.9
+23/09/2014 20:42:56,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.4
+23/09/2014 20:44:23,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.6
+24/09/2014 13:19:32,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,5.6
+24/09/2014 14:19:31,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.6
+25/09/2014 09:36:53,8,0,8 : 0,Maintenance,6,TRUE,FALSE,3.9
+25/09/2014 17:23:45,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,7.7
+25/09/2014 17:23:49,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.7
+26/09/2014 07:46:12,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.9
+26/09/2014 07:46:18,8,0,8 : 0,Maintenance,6,TRUE,FALSE,6.9
+26/09/2014 17:00:43,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.1
+26/09/2014 17:01:08,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.7
+27/09/2014 06:42:14,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+27/09/2014 07:13:36,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.8
+27/09/2014 07:13:38,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3
+27/09/2014 07:16:32,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+27/09/2014 07:38:51,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,2.9
+27/09/2014 07:38:53,8,0,8 : 0,Maintenance,6,TRUE,FALSE,2.8
+27/09/2014 14:09:01,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,4.9
+27/09/2014 14:09:11,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.3
+28/09/2014 20:35:57,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+28/09/2014 21:09:09,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.9
+28/09/2014 21:09:11,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.9
+28/09/2014 21:12:47,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.6
+29/09/2014 00:02:46,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+29/09/2014 02:48:20,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.8
+29/09/2014 02:48:22,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.6
+29/09/2014 02:51:58,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.9
+29/09/2014 04:37:05,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+29/09/2014 07:23:54,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.9
+29/09/2014 07:23:56,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+29/09/2014 07:27:32,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+29/09/2014 07:54:26,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,2.8
+29/09/2014 07:54:27,8,0,8 : 0,Maintenance,6,TRUE,FALSE,2.6
+29/09/2014 16:37:44,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,7.8
+29/09/2014 16:37:51,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.3
+30/09/2014 10:30:54,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,13.7
+30/09/2014 10:30:55,8,0,8 : 0,Maintenance,6,TRUE,FALSE,14.5
+30/09/2014 15:43:57,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,13.3
+30/09/2014 15:44:07,8,0,8 : 0,Maintenance,6,TRUE,FALSE,12.6
+30/09/2014 15:46:54,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,10.5
+30/09/2014 15:49:36,8,0,8 : 0,Maintenance,6,TRUE,FALSE,8.9
+30/09/2014 16:00:02,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,14.8
+30/09/2014 16:56:04,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.9
+01/10/2014 21:53:57,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,2.9
+01/10/2014 22:32:39,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,2.3
+01/10/2014 22:38:27,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.6
+01/10/2014 22:38:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.6
+01/10/2014 22:42:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+02/10/2014 09:22:54,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.5
+02/10/2014 10:39:17,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.6
+02/10/2014 10:39:19,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.6
+02/10/2014 10:42:56,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.8
+02/10/2014 11:49:23,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,6.5
+02/10/2014 11:51:45,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8
+02/10/2014 11:52:50,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.8
+02/10/2014 23:42:03,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,14.3
+02/10/2014 23:42:04,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,14.5
+02/10/2014 23:42:25,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11
+02/10/2014 23:44:50,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.1
+02/10/2014 23:45:48,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,16.4
+03/10/2014 00:46:12,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,14
+03/10/2014 00:46:13,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,14.5
+03/10/2014 00:46:34,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.3
+03/10/2014 00:48:58,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.7
+03/10/2014 00:49:51,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.9
+03/10/2014 01:03:50,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,15.5
+03/10/2014 01:04:12,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,20.7
+03/10/2014 01:06:35,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,15.2
+03/10/2014 01:07:25,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,18.6
+03/10/2014 19:37:46,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+03/10/2014 19:46:56,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.7
+03/10/2014 19:46:58,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5
+03/10/2014 19:48:32,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.2
+05/10/2014 16:55:22,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,17.8
+05/10/2014 16:55:23,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,17.8
+05/10/2014 16:55:43,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.3
+05/10/2014 16:58:12,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.7
+05/10/2014 16:59:11,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.5
+05/10/2014 17:58:53,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,17.7
+05/10/2014 17:58:55,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,16.9
+05/10/2014 17:59:14,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,23.8
+05/10/2014 18:01:42,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,20.2
+05/10/2014 18:02:40,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.9
+05/10/2014 18:54:15,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,18.8
+05/10/2014 18:54:36,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,13.2
+05/10/2014 18:57:02,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.9
+05/10/2014 18:57:48,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,23.5
+05/10/2014 19:59:55,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,12.2
+05/10/2014 19:59:56,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.2
+05/10/2014 20:00:17,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11
+05/10/2014 20:02:44,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.8
+05/10/2014 20:03:39,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,14.8
+05/10/2014 20:24:14,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,24
+05/10/2014 20:24:15,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,23.8
+05/10/2014 20:24:35,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,20.9
+05/10/2014 20:27:00,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,22.3
+05/10/2014 20:27:48,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,16.5
+07/10/2014 05:20:13,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+07/10/2014 05:52:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.9
+07/10/2014 05:52:10,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+07/10/2014 05:55:44,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+07/10/2014 06:15:17,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.7
+07/10/2014 06:15:19,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.7
+07/10/2014 06:16:57,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.8
+08/10/2014 07:03:07,60,11,60 : 11,Mains failure : Undervoltage L1,3,FALSE,FALSE,7.7
+08/10/2014 07:03:38,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7
+08/10/2014 07:06:00,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.6
+08/10/2014 07:07:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.7
+08/10/2014 08:25:42,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.3
+08/10/2014 08:48:35,8,0,8 : 0,Maintenance,6,TRUE,FALSE,9.4
+08/10/2014 09:19:58,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,9.8
+08/10/2014 09:27:30,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.4
+08/10/2014 13:36:33,60,12,60 : 12,Mains failure : Undervoltage L2,3,FALSE,FALSE,14.6
+08/10/2014 13:36:55,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,17.8
+08/10/2014 13:39:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,18.8
+08/10/2014 13:40:30,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17.7
+10/10/2014 23:54:37,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.4
+11/10/2014 01:03:26,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.3
+11/10/2014 01:03:28,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+11/10/2014 01:07:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.2
+11/10/2014 01:23:02,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+11/10/2014 03:02:27,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.2
+11/10/2014 03:02:30,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.7
+11/10/2014 03:06:06,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.4
+11/10/2014 03:15:44,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+11/10/2014 04:28:40,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.1
+11/10/2014 04:28:42,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.1
+11/10/2014 04:32:18,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+11/10/2014 10:39:56,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+11/10/2014 13:38:12,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.4
+11/10/2014 13:38:14,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.2
+11/10/2014 13:40:35,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.9
+11/10/2014 23:25:52,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+12/10/2014 01:58:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.3
+12/10/2014 01:58:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.2
+12/10/2014 02:02:12,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.5
+12/10/2014 05:47:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+12/10/2014 05:47:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+12/10/2014 05:51:14,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.8
+12/10/2014 07:11:07,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.7
+12/10/2014 07:11:09,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.5
+12/10/2014 07:14:45,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+14/10/2014 23:17:43,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,11.8
+14/10/2014 23:17:44,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.7
+14/10/2014 23:18:06,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,6.9
+14/10/2014 23:20:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.3
+14/10/2014 23:21:40,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.2
+15/10/2014 03:10:46,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,12.8
+15/10/2014 03:10:47,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.5
+15/10/2014 03:11:09,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,13.7
+15/10/2014 03:13:32,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,15.1
+15/10/2014 03:14:31,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.6
+15/10/2014 10:41:56,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,17.4
+15/10/2014 10:41:57,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,16.4
+15/10/2014 10:42:18,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,13.1
+15/10/2014 10:44:42,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.9
+15/10/2014 10:45:16,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,11.6
+15/10/2014 10:45:43,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,19
+15/10/2014 10:46:03,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,21.3
+15/10/2014 11:54:45,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.8
+15/10/2014 11:55:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10
+15/10/2014 11:57:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.5
+15/10/2014 11:58:32,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.1
+16/10/2014 08:26:28,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,10.3
+16/10/2014 08:26:29,8,0,8 : 0,Maintenance,6,TRUE,FALSE,10.6
+16/10/2014 14:40:11,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,12.4
+16/10/2014 14:40:37,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.2
+17/10/2014 07:16:59,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.7
+17/10/2014 07:17:00,8,0,8 : 0,Maintenance,6,TRUE,FALSE,7
+17/10/2014 11:57:56,9,4,9 : 4,Generator heating : Hygrostat rectifier,1,FALSE,FALSE,12.9
+17/10/2014 12:07:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,19.1
+17/10/2014 12:09:52,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,16.3
+17/10/2014 12:10:42,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17.2
+17/10/2014 13:45:06,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,13.9
+17/10/2014 13:45:06,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.9
+17/10/2014 13:45:28,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,19.7
+17/10/2014 13:47:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,16.9
+17/10/2014 13:48:47,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,18.2
+17/10/2014 19:31:49,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,15.8
+17/10/2014 19:31:51,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,15.8
+17/10/2014 19:32:11,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,17.4
+17/10/2014 19:34:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,15.2
+17/10/2014 19:35:12,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,16.7
+17/10/2014 19:36:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,18.5
+17/10/2014 19:36:37,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.2
+18/10/2014 21:20:30,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,18.3
+18/10/2014 21:20:51,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,24
+18/10/2014 21:23:16,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,15.3
+18/10/2014 21:23:51,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,14.2
+18/10/2014 21:24:12,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,19.3
+18/10/2014 21:24:33,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,18.5
+19/10/2014 02:56:46,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,22.7
+19/10/2014 02:56:47,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,22.3
+19/10/2014 02:57:07,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,19.2
+19/10/2014 02:59:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,15.8
+19/10/2014 03:00:28,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,16.2
+19/10/2014 06:29:51,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,13.5
+19/10/2014 06:29:52,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.5
+19/10/2014 06:30:14,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,12.8
+19/10/2014 06:32:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.3
+19/10/2014 06:33:11,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,12.7
+19/10/2014 06:33:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.6
+19/10/2014 06:33:51,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.5
+19/10/2014 06:52:48,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,11.6
+19/10/2014 06:52:49,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.7
+19/10/2014 06:53:10,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,16.6
+19/10/2014 06:55:34,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.1
+19/10/2014 06:56:32,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.6
+19/10/2014 09:21:43,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,12.8
+19/10/2014 09:21:45,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.4
+19/10/2014 09:22:06,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.9
+19/10/2014 09:24:32,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,15.7
+19/10/2014 09:25:29,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,16.9
+19/10/2014 10:28:14,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,11.9
+19/10/2014 10:28:15,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.1
+19/10/2014 10:28:36,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,14.1
+19/10/2014 10:31:03,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.7
+19/10/2014 10:31:38,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8
+19/10/2014 10:31:42,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.2
+19/10/2014 10:32:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.2
+19/10/2014 13:59:03,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.2
+19/10/2014 13:59:26,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.7
+19/10/2014 14:01:50,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.3
+19/10/2014 14:02:25,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,12.8
+19/10/2014 14:02:27,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.6
+19/10/2014 14:02:52,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.9
+20/10/2014 19:44:03,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,16.1
+20/10/2014 19:44:04,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,17
+20/10/2014 19:44:24,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.5
+20/10/2014 19:46:46,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.8
+20/10/2014 19:47:44,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13
+21/10/2014 04:45:07,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,11.5
+21/10/2014 04:45:08,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.5
+21/10/2014 04:45:30,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,13
+21/10/2014 04:48:15,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12
+21/10/2014 04:49:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17
+21/10/2014 05:05:42,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,13.4
+21/10/2014 05:05:43,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.6
+21/10/2014 05:06:03,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.9
+21/10/2014 05:08:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.5
+21/10/2014 05:09:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,16.2
+21/10/2014 05:41:11,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,13.3
+21/10/2014 05:41:12,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,14
+21/10/2014 05:41:32,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.4
+21/10/2014 05:43:57,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13
+21/10/2014 05:44:59,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.6
+21/10/2014 09:04:11,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.1
+21/10/2014 09:04:34,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4
+21/10/2014 09:06:59,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.3
+21/10/2014 09:07:54,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.2
+21/10/2014 09:44:37,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,15.6
+21/10/2014 09:44:38,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,15.5
+21/10/2014 09:45:00,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.2
+21/10/2014 09:47:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,21.8
+21/10/2014 09:48:27,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.6
+21/10/2014 10:34:29,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,17.1
+21/10/2014 10:34:30,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,16.4
+21/10/2014 10:34:51,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,14
+21/10/2014 10:37:20,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.8
+21/10/2014 10:38:11,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,18.5
+21/10/2014 12:39:45,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.3
+21/10/2014 12:40:07,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,14.5
+21/10/2014 12:42:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,17.3
+21/10/2014 12:43:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,14.7
+21/10/2014 13:14:52,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,16.9
+21/10/2014 13:14:52,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,16.9
+21/10/2014 13:15:13,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,17.8
+21/10/2014 13:17:35,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.7
+21/10/2014 13:18:36,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.2
+21/10/2014 14:23:53,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,12.9
+21/10/2014 14:23:54,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.1
+21/10/2014 14:24:15,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,15.2
+21/10/2014 14:26:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.5
+21/10/2014 14:27:29,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.7
+21/10/2014 15:58:50,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,11.9
+21/10/2014 15:58:52,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,TRUE,12.5
+21/10/2014 16:07:52,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.6
+21/10/2014 16:07:57,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+21/10/2014 16:10:44,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,21.1
+21/10/2014 16:11:38,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17.5
+21/10/2014 17:13:45,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,18.9
+21/10/2014 17:13:46,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,18.3
+21/10/2014 17:14:06,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,20.7
+21/10/2014 17:16:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,20.7
+21/10/2014 17:17:23,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17.7
+23/10/2014 07:46:52,17,0,17 : 0,Test security system,6,FALSE,FALSE,3.7
+23/10/2014 07:47:12,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,5.9
+23/10/2014 07:48:09,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9
+23/10/2014 07:49:40,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.7
+23/10/2014 07:50:15,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.4
+23/10/2014 07:54:48,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8
+23/10/2014 07:55:23,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.5
+25/10/2014 05:54:42,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,9.6
+25/10/2014 07:48:56,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+26/10/2014 18:03:59,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+26/10/2014 18:04:00,222,1,222 : 1,Turbine reset : Power failure,6,FALSE,FALSE,4.6
+26/10/2014 18:04:00,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,4.6
+26/10/2014 18:04:01,220,56,220 : 56,Processor reset : Fan inverter,6,FALSE,FALSE,5
+26/10/2014 18:04:01,220,52,220 : 52,Processor reset : Yaw inverter 2,6,FALSE,FALSE,5
+26/10/2014 18:04:01,220,51,220 : 51,Processor reset : Yaw inverter 1,6,FALSE,FALSE,5.2
+26/10/2014 18:04:02,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,5.2
+26/10/2014 18:04:02,15,111,15 : 111,Turbine moist : Rectifier,1,FALSE,FALSE,5
+26/10/2014 18:04:02,15,19,15 : 19,Turbine moist : Several inverters,1,FALSE,FALSE,5
+26/10/2014 18:04:02,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,4.8
+26/10/2014 18:08:34,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,6.7
+26/10/2014 18:08:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.2
+26/10/2014 18:09:13,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,9
+26/10/2014 18:12:25,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.8
+26/10/2014 18:12:48,9,4,9 : 4,Generator heating : Hygrostat rectifier,1,FALSE,FALSE,12.6
+26/10/2014 19:00:01,9,3,9 : 3,Generator heating : Hygrostat inverter,1,FALSE,FALSE,13.3
+26/10/2014 19:19:25,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.9
+26/10/2014 19:21:46,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.5
+26/10/2014 19:22:49,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.4
+27/10/2014 19:20:03,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,14
+27/10/2014 19:20:04,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.4
+27/10/2014 19:20:25,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.8
+27/10/2014 19:22:47,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.4
+27/10/2014 19:23:44,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.4
+27/10/2014 20:08:06,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,12.7
+27/10/2014 20:08:06,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.5
+27/10/2014 20:08:28,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9.6
+27/10/2014 20:10:54,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.3
+27/10/2014 20:11:50,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17.3
+27/10/2014 21:33:44,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.9
+27/10/2014 21:34:06,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10
+27/10/2014 21:36:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,15.5
+27/10/2014 21:37:31,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.2
+27/10/2014 22:13:32,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,10
+27/10/2014 22:13:33,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,10
+27/10/2014 22:13:54,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,12.7
+27/10/2014 22:16:21,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.7
+27/10/2014 22:17:24,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.4
+28/10/2014 01:52:04,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,11.6
+28/10/2014 01:52:05,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.9
+28/10/2014 01:52:28,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9.6
+28/10/2014 01:54:54,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.9
+28/10/2014 01:55:52,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13
+28/10/2014 03:59:38,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,10.8
+28/10/2014 03:59:38,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.6
+28/10/2014 04:00:00,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.4
+28/10/2014 04:02:23,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.8
+28/10/2014 04:03:23,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13
+28/10/2014 05:47:38,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,13.5
+28/10/2014 05:47:39,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13
+28/10/2014 05:48:00,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.8
+28/10/2014 05:50:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.9
+28/10/2014 05:51:30,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.9
+28/10/2014 06:23:31,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,11.8
+28/10/2014 06:23:32,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12
+28/10/2014 06:23:54,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.5
+28/10/2014 06:26:18,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,17
+28/10/2014 06:27:14,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17.9
+28/10/2014 08:31:35,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.2
+28/10/2014 08:31:58,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.5
+28/10/2014 08:34:26,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.6
+28/10/2014 08:35:25,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.4
+31/10/2014 11:55:19,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.6
+31/10/2014 11:55:41,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.9
+31/10/2014 11:58:07,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13
+31/10/2014 11:59:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.9
+01/11/2014 11:35:48,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,15.1
+01/11/2014 11:35:49,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,14.7
+01/11/2014 11:36:09,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.2
+01/11/2014 11:38:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.4
+01/11/2014 11:39:36,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.3
+01/11/2014 13:05:46,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,16
+01/11/2014 13:05:47,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,15.6
+01/11/2014 13:06:07,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.5
+01/11/2014 13:08:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,17.8
+01/11/2014 13:09:11,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,12.4
+01/11/2014 13:10:12,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,19.3
+01/11/2014 13:10:27,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,18.7
+01/11/2014 14:27:10,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,17.4
+01/11/2014 14:27:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.8
+01/11/2014 14:29:56,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.5
+01/11/2014 14:30:49,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,18
+01/11/2014 17:32:16,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,27.5
+01/11/2014 17:32:17,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,27.2
+01/11/2014 17:32:38,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,27.1
+01/11/2014 17:35:00,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,28
+01/11/2014 17:35:34,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,27.1
+01/11/2014 17:35:43,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,21.9
+01/11/2014 17:35:57,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,24.6
+01/11/2014 17:48:08,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,17.9
+01/11/2014 17:48:09,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,17.7
+01/11/2014 17:48:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,14.1
+01/11/2014 17:50:51,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,20.1
+01/11/2014 17:51:41,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,19.4
+05/11/2014 12:50:04,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,4.9
+05/11/2014 13:28:48,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,4.2
+05/11/2014 13:31:19,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,0.9
+05/11/2014 13:31:21,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.3
+05/11/2014 13:34:11,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.7
+05/11/2014 19:23:37,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.3
+05/11/2014 19:29:05,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.5
+05/11/2014 19:30:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.6
+06/11/2014 04:33:14,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,11.8
+06/11/2014 04:33:15,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.6
+06/11/2014 04:33:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.2
+06/11/2014 04:36:09,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,20.5
+06/11/2014 04:37:08,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,14
+06/11/2014 04:51:53,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,12.3
+06/11/2014 04:51:54,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.9
+06/11/2014 04:52:14,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,14.1
+06/11/2014 04:54:43,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.7
+06/11/2014 04:55:18,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,16.3
+06/11/2014 04:57:18,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.2
+06/11/2014 04:57:43,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.6
+08/11/2014 06:29:37,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.3
+08/11/2014 06:46:39,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.4
+08/11/2014 06:46:41,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.1
+08/11/2014 06:48:14,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.7
+10/11/2014 11:34:08,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,16.2
+10/11/2014 11:34:08,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,15.7
+10/11/2014 11:34:30,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,12.8
+10/11/2014 11:36:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,15.4
+10/11/2014 11:37:47,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17.8
+10/11/2014 12:44:04,62,3,62 : 3,Feeding fault : Load shedding,6,FALSE,FALSE,13.2
+10/11/2014 12:44:05,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.3
+10/11/2014 12:44:26,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.3
+10/11/2014 12:47:00,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.2
+10/11/2014 12:47:56,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,18
+11/11/2014 12:47:00,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.6
+11/11/2014 13:34:43,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5
+11/11/2014 15:40:24,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6
+11/11/2014 16:27:44,8,0,8 : 0,Maintenance,6,TRUE,FALSE,4.2
+11/11/2014 18:11:54,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,4.6
+11/11/2014 18:14:06,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.6
+12/11/2014 00:45:43,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,9
+12/11/2014 00:50:17,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.8
+12/11/2014 00:51:24,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7
+12/11/2014 07:16:46,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.8
+12/11/2014 07:17:09,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.8
+12/11/2014 07:19:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.4
+12/11/2014 07:20:34,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.8
+12/11/2014 10:22:57,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,5.6
+12/11/2014 10:23:11,8,0,8 : 0,Maintenance,6,TRUE,FALSE,6.5
+12/11/2014 18:29:05,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,8.2
+12/11/2014 18:29:47,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.8
+12/11/2014 22:23:14,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.3
+12/11/2014 22:23:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.9
+12/11/2014 22:25:59,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.4
+12/11/2014 22:26:33,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,11.4
+12/11/2014 22:26:44,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13
+12/11/2014 22:27:07,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.7
+13/11/2014 00:33:28,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,17.4
+13/11/2014 00:33:51,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,16.9
+13/11/2014 00:36:16,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,17
+13/11/2014 00:37:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,20.1
+13/11/2014 00:41:14,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,16.1
+13/11/2014 00:41:34,42,307,42 : 307,Pitch control error : Angle error blade C,6,FALSE,FALSE,15.5
+13/11/2014 00:41:49,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,15.4
+13/11/2014 00:42:25,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.5
+13/11/2014 00:43:29,42,307,42 : 307,Pitch control error : Angle error blade C,6,FALSE,FALSE,13.6
+13/11/2014 00:43:44,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,21.7
+13/11/2014 00:43:51,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,22
+13/11/2014 00:44:23,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,13.7
+13/11/2014 00:46:06,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.8
+13/11/2014 00:47:03,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.2
+13/11/2014 06:24:59,21,1,21 : 1,Cable twisted : Left (2-3 turns),1,FALSE,FALSE,2.3
+13/11/2014 07:03:38,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,3.2
+13/11/2014 07:08:06,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.7
+13/11/2014 07:08:08,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.5
+13/11/2014 07:10:39,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+13/11/2014 09:50:26,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,4.6
+13/11/2014 09:50:45,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5
+13/11/2014 16:24:06,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,9.1
+13/11/2014 16:26:41,8,0,8 : 0,Maintenance,6,TRUE,FALSE,8.6
+13/11/2014 17:12:02,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,8.9
+13/11/2014 17:12:57,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.5
+15/11/2014 20:44:37,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+15/11/2014 21:11:30,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.5
+15/11/2014 21:11:32,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+15/11/2014 21:15:08,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.7
+17/11/2014 06:50:45,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.3
+17/11/2014 06:51:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.9
+17/11/2014 06:53:30,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12
+17/11/2014 06:54:05,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,13
+17/11/2014 06:54:32,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.3
+17/11/2014 06:54:56,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.8
+18/11/2014 13:48:52,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.7
+18/11/2014 13:49:14,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,15.5
+18/11/2014 13:51:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.8
+18/11/2014 13:52:34,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17.4
+18/11/2014 14:19:01,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.1
+18/11/2014 14:19:24,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.7
+18/11/2014 14:21:52,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.9
+18/11/2014 14:22:55,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.3
+18/11/2014 15:16:54,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.9
+18/11/2014 15:17:15,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9.4
+18/11/2014 15:19:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12
+18/11/2014 15:20:39,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.2
+18/11/2014 15:27:21,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.2
+18/11/2014 15:27:44,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,12.7
+18/11/2014 15:30:06,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.5
+18/11/2014 15:31:04,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.5
+18/11/2014 15:47:33,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,14.9
+18/11/2014 15:47:54,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.1
+18/11/2014 15:50:17,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.6
+18/11/2014 15:51:15,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,14.6
+18/11/2014 18:08:45,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.2
+18/11/2014 18:09:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,6.1
+18/11/2014 18:11:30,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.9
+18/11/2014 18:12:31,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.8
+18/11/2014 19:51:50,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.6
+18/11/2014 19:52:13,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.5
+18/11/2014 19:54:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,15.1
+18/11/2014 19:55:38,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.2
+18/11/2014 20:06:46,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.7
+18/11/2014 20:07:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.5
+18/11/2014 20:09:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,15.2
+18/11/2014 20:10:27,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15
+18/11/2014 20:31:17,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,11.1
+18/11/2014 20:31:40,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,12.2
+18/11/2014 20:34:04,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.7
+18/11/2014 20:35:02,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,14.2
+21/11/2014 00:06:45,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.3
+21/11/2014 00:07:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,15.3
+21/11/2014 00:09:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.7
+21/11/2014 00:10:27,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,15.8
+21/11/2014 00:52:00,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.5
+21/11/2014 00:52:22,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.1
+21/11/2014 00:54:50,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.9
+21/11/2014 00:55:49,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.9
+21/11/2014 01:13:54,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.7
+21/11/2014 01:14:16,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.2
+21/11/2014 01:16:43,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.8
+21/11/2014 01:17:38,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,14
+21/11/2014 03:16:50,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.9
+21/11/2014 03:17:13,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9.9
+21/11/2014 03:19:38,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.9
+21/11/2014 03:20:42,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.9
+21/11/2014 05:14:39,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,12.4
+21/11/2014 05:15:01,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.5
+21/11/2014 05:17:27,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.8
+21/11/2014 05:18:29,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.1
+25/11/2014 20:28:56,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+25/11/2014 20:45:46,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.3
+25/11/2014 20:45:48,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.3
+25/11/2014 20:49:22,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,2.6
+25/11/2014 20:56:21,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.6
+25/11/2014 20:56:23,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.6
+25/11/2014 20:59:59,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.5
+26/11/2014 08:00:01,17,0,17 : 0,Test security system,6,FALSE,FALSE,2
+26/11/2014 08:00:23,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,3.3
+26/11/2014 08:01:26,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.3
+26/11/2014 08:02:00,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+26/11/2014 09:48:26,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.2
+26/11/2014 09:48:28,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.3
+26/11/2014 09:52:05,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.6
+26/11/2014 10:50:27,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+26/11/2014 12:35:48,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.2
+26/11/2014 12:35:50,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.7
+26/11/2014 12:38:20,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.7
+26/11/2014 20:58:48,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7
+26/11/2014 21:04:17,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.4
+26/11/2014 21:05:28,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.9
+27/11/2014 03:23:55,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,9
+27/11/2014 03:26:41,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.6
+27/11/2014 03:28:59,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.3
+27/11/2014 03:30:06,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.2
+27/11/2014 04:22:50,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.4
+27/11/2014 04:23:36,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,6.9
+27/11/2014 04:25:55,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7
+27/11/2014 04:27:03,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.4
+27/11/2014 05:01:51,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8
+27/11/2014 05:04:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.5
+27/11/2014 05:06:56,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.3
+27/11/2014 05:08:06,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.6
+27/11/2014 05:29:51,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,10
+27/11/2014 05:30:36,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.7
+27/11/2014 05:32:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.2
+27/11/2014 05:34:00,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.3
+27/11/2014 08:50:30,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,13.1
+27/11/2014 08:50:52,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,15.9
+27/11/2014 08:53:14,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.7
+27/11/2014 08:54:16,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.4
+27/11/2014 09:23:53,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,14.6
+27/11/2014 09:24:17,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.6
+27/11/2014 09:26:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13
+27/11/2014 09:27:36,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,14.2
+27/11/2014 13:25:15,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,10.2
+27/11/2014 13:25:38,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.8
+27/11/2014 13:28:04,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.2
+27/11/2014 13:29:08,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.6
+27/11/2014 14:02:50,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,16
+27/11/2014 14:03:11,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,13.4
+27/11/2014 14:05:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.5
+27/11/2014 14:06:29,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,17.6
+27/11/2014 14:21:29,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,14.6
+27/11/2014 14:21:51,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,18
+27/11/2014 14:24:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,16.3
+27/11/2014 14:25:07,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,16.8
+28/11/2014 17:24:36,80,21,80 : 21,Excitation error : Overvoltage DC-link,6,FALSE,FALSE,10.8
+28/11/2014 17:24:58,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11
+28/11/2014 17:27:22,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.2
+28/11/2014 17:27:57,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,10.1
+28/11/2014 17:28:07,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.9
+28/11/2014 17:28:31,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.2
+29/11/2014 12:03:48,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+29/11/2014 12:28:35,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.4
+29/11/2014 12:28:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.4
+29/11/2014 12:32:14,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.5
+29/11/2014 12:46:12,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+29/11/2014 13:31:21,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.4
+29/11/2014 13:31:23,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.5
+29/11/2014 13:34:59,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+30/11/2014 17:15:44,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+30/11/2014 18:58:48,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.1
+30/11/2014 18:58:50,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1
+30/11/2014 19:02:25,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.4
+30/11/2014 23:12:18,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+30/11/2014 23:12:20,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.5
+30/11/2014 23:15:57,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.8
+01/12/2014 01:48:29,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+01/12/2014 03:27:11,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3
+01/12/2014 03:27:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3
+01/12/2014 03:30:49,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.2
+01/12/2014 04:17:27,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.8
+01/12/2014 05:22:34,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.2
+01/12/2014 05:22:36,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.3
+01/12/2014 05:25:40,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.8
+02/12/2014 13:34:28,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,7.2
+02/12/2014 13:37:26,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5.9
+02/12/2014 14:19:57,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.9
+02/12/2014 14:26:20,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.9
+04/12/2014 10:47:39,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+04/12/2014 11:11:41,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.4
+04/12/2014 11:11:43,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.4
+04/12/2014 11:15:20,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.9
+04/12/2014 12:01:58,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.3
+04/12/2014 14:55:28,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.7
+04/12/2014 14:55:30,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.6
+04/12/2014 14:59:07,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.4
+04/12/2014 16:39:57,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+04/12/2014 18:48:44,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.4
+04/12/2014 18:48:46,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.4
+04/12/2014 18:52:22,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.8
+05/12/2014 01:41:32,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8
+05/12/2014 01:44:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.8
+05/12/2014 01:46:25,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.7
+05/12/2014 01:47:35,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10
+05/12/2014 02:14:10,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.8
+05/12/2014 02:15:17,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.1
+05/12/2014 02:17:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13.3
+05/12/2014 02:18:40,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.8
+05/12/2014 02:38:02,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,9
+05/12/2014 02:40:47,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.3
+05/12/2014 02:43:05,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.7
+05/12/2014 02:44:09,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.5
+05/12/2014 02:50:10,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.6
+05/12/2014 02:50:56,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.3
+05/12/2014 02:53:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.9
+05/12/2014 02:54:19,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.7
+05/12/2014 03:01:45,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.5
+05/12/2014 03:02:30,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.5
+05/12/2014 03:04:47,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.4
+05/12/2014 03:05:57,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.7
+05/12/2014 03:37:02,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,7.1
+05/12/2014 03:37:47,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,7.3
+05/12/2014 03:40:04,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.6
+05/12/2014 03:41:11,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.2
+05/12/2014 03:44:51,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.6
+05/12/2014 03:45:27,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.9
+05/12/2014 03:47:44,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.7
+05/12/2014 03:48:46,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.2
+05/12/2014 04:36:53,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.1
+05/12/2014 04:37:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9.5
+05/12/2014 04:39:46,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.1
+05/12/2014 04:40:54,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.5
+05/12/2014 05:02:51,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,9.4
+05/12/2014 05:03:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.6
+05/12/2014 05:05:54,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.9
+05/12/2014 05:06:58,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.2
+05/12/2014 12:36:59,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,TRUE,8.6
+05/12/2014 13:03:51,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.6
+05/12/2014 13:03:56,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+05/12/2014 13:06:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.1
+05/12/2014 13:06:47,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,6.8
+05/12/2014 13:06:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.8
+05/12/2014 13:07:26,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.7
+08/12/2014 03:04:29,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.3
+08/12/2014 03:05:15,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.3
+08/12/2014 03:07:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.5
+08/12/2014 03:08:42,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.4
+08/12/2014 03:58:55,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.5
+08/12/2014 03:59:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.8
+08/12/2014 04:01:48,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.4
+08/12/2014 04:02:52,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.4
+08/12/2014 04:06:27,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,9.4
+08/12/2014 04:07:13,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.1
+08/12/2014 04:09:30,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.1
+08/12/2014 04:10:34,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.6
+08/12/2014 04:48:26,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.5
+08/12/2014 04:49:12,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.8
+08/12/2014 04:51:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11
+08/12/2014 04:52:40,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.4
+08/12/2014 05:00:21,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.4
+08/12/2014 05:02:47,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.9
+08/12/2014 05:05:04,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.7
+08/12/2014 05:06:16,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8
+08/12/2014 05:23:03,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.3
+08/12/2014 05:25:39,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.4
+08/12/2014 05:27:59,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.1
+08/12/2014 05:29:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.1
+08/12/2014 07:09:57,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.4
+08/12/2014 07:10:33,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10
+08/12/2014 07:12:56,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,13
+08/12/2014 07:13:57,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.6
+08/12/2014 07:24:02,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,9.1
+08/12/2014 07:26:28,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.5
+08/12/2014 07:28:46,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.7
+08/12/2014 07:29:51,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.2
+08/12/2014 07:50:15,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,8.4
+08/12/2014 07:51:01,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.2
+08/12/2014 07:53:20,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.5
+08/12/2014 07:54:27,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10
+08/12/2014 08:22:27,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,TRUE,8.9
+08/12/2014 08:25:52,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+08/12/2014 08:25:58,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+08/12/2014 08:28:14,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.3
+08/12/2014 08:28:49,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.2
+08/12/2014 08:29:05,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.3
+08/12/2014 08:29:39,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.9
+08/12/2014 16:07:46,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,7.7
+08/12/2014 16:08:32,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9.7
+08/12/2014 16:11:01,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.5
+08/12/2014 16:12:15,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.6
+08/12/2014 16:48:05,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,4.5
+08/12/2014 16:48:10,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5.1
+08/12/2014 19:02:22,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,8.1
+08/12/2014 19:39:57,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.9
+09/12/2014 02:56:44,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,10
+09/12/2014 02:57:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.3
+09/12/2014 02:59:47,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.3
+09/12/2014 03:00:54,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.4
+09/12/2014 04:07:27,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,9.2
+09/12/2014 04:08:13,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,8.9
+09/12/2014 04:10:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.3
+09/12/2014 04:11:42,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.7
+09/12/2014 04:29:46,62,701,62 : 701,Feeding fault : Overload chopper inverter 1,6,FALSE,FALSE,9
+09/12/2014 04:30:32,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11
+09/12/2014 04:33:07,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.6
+09/12/2014 04:34:16,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9
+10/12/2014 09:54:44,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,11.4
+10/12/2014 09:59:48,8,0,8 : 0,Maintenance,6,TRUE,FALSE,10.6
+10/12/2014 12:28:50,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,9.4
+10/12/2014 12:32:52,8,0,8 : 0,Maintenance,6,TRUE,FALSE,6.5
+10/12/2014 12:41:57,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,11.3
+10/12/2014 13:17:47,8,0,8 : 0,Maintenance,6,TRUE,FALSE,8.5
+10/12/2014 13:53:23,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,14.8
+10/12/2014 13:54:19,8,0,8 : 0,Maintenance,6,TRUE,FALSE,15.7
+10/12/2014 14:45:37,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,9.9
+10/12/2014 14:57:40,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.8
+15/12/2014 12:14:13,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.5
+15/12/2014 13:14:17,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.3
+15/12/2014 13:14:19,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+15/12/2014 13:17:56,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.5
+15/12/2014 23:20:58,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,8.2
+15/12/2014 23:25:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.8
+15/12/2014 23:26:38,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.3
+01/01/2015 11:10:21,72,301,72 : 301,Air gap monitoring : Sensor 1 blade C,6,FALSE,FALSE,19
+01/01/2015 11:10:45,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9.2
+01/01/2015 11:13:22,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,18.4
+01/01/2015 11:13:57,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,22
+01/01/2015 11:15:48,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,24.1
+01/01/2015 11:16:11,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,19.8
+01/01/2015 18:50:00,62,519,62 : 519,Feeding fault : No zero crossing several inv.,6,FALSE,FALSE,12.4
+01/01/2015 19:43:57,222,1,222 : 1,Turbine reset : Power failure,6,FALSE,FALSE,2.6
+01/01/2015 19:43:58,220,56,220 : 56,Processor reset : Fan inverter,6,FALSE,FALSE,2.8
+01/01/2015 19:43:59,220,52,220 : 52,Processor reset : Yaw inverter 2,6,FALSE,FALSE,3.3
+01/01/2015 19:43:59,220,51,220 : 51,Processor reset : Yaw inverter 1,6,FALSE,FALSE,3.3
+01/01/2015 19:44:03,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,3.3
+01/01/2015 19:44:04,62,519,62 : 519,Feeding fault : No zero crossing several inv.,6,FALSE,FALSE,3.9
+01/01/2015 20:44:04,62,519,62 : 519,Feeding fault : No zero crossing several inv.,6,FALSE,TRUE,12.4
+01/01/2015 21:22:58,222,5,222 : 5,Turbine reset : Remote display,6,FALSE,FALSE,2.6
+01/01/2015 21:22:59,62,519,62 : 519,Feeding fault : No zero crossing several inv.,6,FALSE,FALSE,2.8
+01/01/2015 22:14:34,62,510,62 : 510,Feeding fault : No zero crossing inverter 10,6,FALSE,FALSE,10.3
+01/01/2015 22:18:14,62,919,62 : 919,Feeding fault : External shut down several inv.,6,FALSE,FALSE,9.7
+01/01/2015 22:19:04,62,910,62 : 910,Feeding fault : External shut down inverter 10,6,FALSE,FALSE,11
+01/01/2015 22:19:14,62,919,62 : 919,Feeding fault : External shut down several inv.,6,FALSE,FALSE,11.9
+01/01/2015 22:21:14,62,910,62 : 910,Feeding fault : External shut down inverter 10,6,FALSE,FALSE,9.7
+01/01/2015 22:21:24,62,919,62 : 919,Feeding fault : External shut down several inv.,6,FALSE,FALSE,11.4
+01/01/2015 22:21:54,62,519,62 : 519,Feeding fault : No zero crossing several inv.,6,FALSE,FALSE,13.1
+01/01/2015 22:22:04,62,502,62 : 502,Feeding fault : No zero crossing inverter 2,6,FALSE,FALSE,11.8
+01/01/2015 22:22:14,62,519,62 : 519,Feeding fault : No zero crossing several inv.,6,FALSE,TRUE,12.1
+02/01/2015 08:22:59,222,5,222 : 5,Turbine reset : Remote display,6,FALSE,FALSE,2.6
+02/01/2015 08:22:59,62,519,62 : 519,Feeding fault : No zero crossing several inv.,6,FALSE,FALSE,2.8
+02/01/2015 09:22:59,62,519,62 : 519,Feeding fault : No zero crossing several inv.,6,FALSE,TRUE,9.7
+02/01/2015 10:48:53,8,0,8 : 0,Maintenance,6,TRUE,FALSE,6.9
+03/01/2015 12:27:40,204,0,204 : 0,Data bus error all inverters,6,FALSE,FALSE,6.7
+03/01/2015 12:27:57,222,2,222 : 2,Turbine reset : Quit button,6,FALSE,FALSE,2.3
+03/01/2015 12:27:57,204,0,204 : 0,Data bus error all inverters,6,FALSE,FALSE,2.6
+03/01/2015 12:27:59,8,0,8 : 0,Maintenance,6,TRUE,FALSE,3.2
+05/01/2015 12:41:38,301,81,301 : 81,Feeding control bus error (Bus-Off) : I/O-board control cabinet,6,FALSE,FALSE,3.5
+05/01/2015 12:42:19,222,2,222 : 2,Turbine reset : Quit button,6,FALSE,FALSE,2.3
+05/01/2015 12:42:19,1,1,1 : 1,Turbine stopped : Control cabinet,1,FALSE,FALSE,2.6
+05/01/2015 12:42:20,301,81,301 : 81,Feeding control bus error (Bus-Off) : I/O-board control cabinet,6,FALSE,FALSE,2.8
+05/01/2015 12:43:18,220,33,220 : 33,Processor reset : Power Control,6,FALSE,FALSE,2.1
+05/01/2015 12:43:27,204,0,204 : 0,Data bus error all inverters,6,FALSE,FALSE,5.1
+05/01/2015 12:53:09,301,81,301 : 81,Feeding control bus error (Bus-Off) : I/O-board control cabinet,6,FALSE,FALSE,6.3
+05/01/2015 12:53:49,204,0,204 : 0,Data bus error all inverters,6,FALSE,FALSE,10
+05/01/2015 12:54:59,222,2,222 : 2,Turbine reset : Quit button,6,FALSE,FALSE,2.3
+05/01/2015 12:54:59,204,0,204 : 0,Data bus error all inverters,6,FALSE,FALSE,2.6
+05/01/2015 12:55:43,8,0,8 : 0,Maintenance,6,TRUE,FALSE,9.6
+06/01/2015 00:18:42,240,246,240 : 246,Remote control PC : Timeout receivebuffer,5,TRUE,TRUE,0
+07/01/2015 19:18:11,9,1,9 : 1,Generator heating : Isometer,1,FALSE,FALSE,9.5
+07/01/2015 23:17:24,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,11.7
+07/01/2015 23:19:47,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.4
+07/01/2015 23:20:52,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.8
+11/01/2015 19:43:54,304,56,304 : 56,Data bus error (Timeout) : Fan inverter,6,FALSE,FALSE,14.1
+11/01/2015 19:44:25,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,17
+11/01/2015 19:46:47,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,16.5
+11/01/2015 19:47:45,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,18.3
+13/01/2015 12:13:14,307,14,307 : 14,Data bus error blade control (timeout) : Blade load control B,6,FALSE,FALSE,13.5
+13/01/2015 12:13:36,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.9
+13/01/2015 12:16:25,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,21.9
+13/01/2015 12:17:02,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,9.8
+13/01/2015 12:19:16,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14
+13/01/2015 12:19:38,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,14.5
+14/01/2015 19:56:30,31,1,31 : 1,Tower oscillation : Transversal oscillation,6,FALSE,FALSE,26.6
+14/01/2015 19:57:17,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,26.4
+14/01/2015 19:59:35,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,24.8
+14/01/2015 20:00:20,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,29.1
+14/01/2015 20:04:59,3,12,3 : 12,Storm : Average windspeed - (10min),1,FALSE,FALSE,40.2
+14/01/2015 20:17:02,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,23.1
+14/01/2015 20:19:20,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,29.4
+14/01/2015 20:20:06,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,24.4
+15/01/2015 00:00:00,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,17.9
+15/01/2015 00:07:49,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.6
+15/01/2015 00:07:54,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+15/01/2015 00:10:20,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,14.6
+15/01/2015 00:10:55,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,18.7
+15/01/2015 00:12:00,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,20.5
+15/01/2015 00:12:22,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,20.3
+16/01/2015 00:00:00,228,100,228 : 100,Timeout warnmessage : Malfunction aircooling,6,FALSE,TRUE,8.3
+16/01/2015 00:06:34,222,3,222 : 3,Turbine reset : Scada system,6,FALSE,FALSE,2.3
+16/01/2015 00:06:39,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.4
+16/01/2015 00:09:06,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.3
+16/01/2015 00:09:40,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7.7
+16/01/2015 00:14:50,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.1
+16/01/2015 00:15:29,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.2
+16/01/2015 13:17:28,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,4.6
+16/01/2015 13:17:29,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5
+16/01/2015 15:17:11,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.3
+16/01/2015 15:17:59,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.7
+19/01/2015 06:15:05,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+19/01/2015 06:39:41,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.6
+19/01/2015 06:39:43,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.5
+19/01/2015 06:43:20,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.6
+19/01/2015 08:06:47,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+19/01/2015 09:36:56,8,0,8 : 0,Maintenance,6,TRUE,FALSE,3.8
+19/01/2015 10:06:28,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+19/01/2015 10:50:08,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+19/01/2015 10:52:44,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+19/01/2015 15:06:17,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+19/01/2015 15:06:19,8,0,8 : 0,Maintenance,6,TRUE,FALSE,12
+19/01/2015 15:11:00,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+19/01/2015 15:14:31,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+19/01/2015 15:14:33,8,0,8 : 0,Maintenance,6,TRUE,FALSE,9.5
+19/01/2015 15:21:05,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+19/01/2015 15:24:37,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+19/01/2015 15:24:39,8,0,8 : 0,Maintenance,6,TRUE,FALSE,9.3
+19/01/2015 15:58:36,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+19/01/2015 16:00:37,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+19/01/2015 16:00:38,8,0,8 : 0,Maintenance,6,TRUE,FALSE,10.8
+19/01/2015 16:01:37,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,11.3
+19/01/2015 16:13:48,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9.6
+20/01/2015 09:07:13,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,8.6
+20/01/2015 09:08:33,8,0,8 : 0,Maintenance,6,TRUE,FALSE,8.8
+20/01/2015 15:33:06,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,12
+20/01/2015 15:40:55,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,9
+21/01/2015 08:53:14,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,12.2
+21/01/2015 08:53:16,8,0,8 : 0,Maintenance,6,TRUE,FALSE,11.6
+21/01/2015 14:05:25,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,11.4
+21/01/2015 14:07:46,8,0,8 : 0,Maintenance,6,TRUE,FALSE,8.7
+21/01/2015 14:50:45,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.5
+21/01/2015 15:08:31,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.2
+22/01/2015 06:44:33,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+22/01/2015 07:08:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,0.8
+22/01/2015 07:08:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,0.4
+22/01/2015 07:12:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.1
+22/01/2015 11:50:56,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+22/01/2015 12:30:24,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.3
+22/01/2015 12:30:26,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.7
+22/01/2015 12:34:02,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.6
+28/01/2015 10:16:57,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,13.6
+28/01/2015 10:17:01,8,0,8 : 0,Maintenance,6,TRUE,FALSE,14.7
+28/01/2015 12:22:42,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,8.2
+28/01/2015 12:38:29,8,0,8 : 0,Maintenance,6,TRUE,FALSE,11
+28/01/2015 13:02:56,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,9.1
+28/01/2015 13:14:59,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.2
+01/02/2015 18:32:38,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+01/02/2015 21:26:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.7
+01/02/2015 21:26:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.6
+01/02/2015 21:30:09,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.2
+02/02/2015 19:19:01,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+02/02/2015 20:09:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2
+02/02/2015 20:09:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.9
+02/02/2015 20:13:09,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.5
+05/02/2015 10:07:54,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+05/02/2015 10:10:34,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+05/02/2015 10:10:36,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.4
+05/02/2015 10:22:26,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+05/02/2015 10:25:09,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+05/02/2015 10:25:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8
+08/02/2015 10:31:55,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+08/02/2015 13:28:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.4
+08/02/2015 13:28:10,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.8
+08/02/2015 13:31:46,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.2
+08/02/2015 14:51:06,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+08/02/2015 16:49:09,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.6
+08/02/2015 16:49:11,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.9
+08/02/2015 16:51:30,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.7
+09/02/2015 09:03:05,17,0,17 : 0,Test security system,6,FALSE,FALSE,3.8
+09/02/2015 09:03:25,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.1
+09/02/2015 09:03:26,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,5.1
+09/02/2015 09:04:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.7
+09/02/2015 09:05:46,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.4
+09/02/2015 09:06:21,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,4.4
+09/02/2015 09:12:52,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.4
+09/02/2015 09:13:40,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.8
+11/02/2015 14:17:04,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+11/02/2015 15:40:29,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.8
+11/02/2015 15:40:31,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+11/02/2015 15:44:05,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+11/02/2015 18:06:24,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.2
+11/02/2015 18:06:26,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.9
+11/02/2015 18:10:02,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+11/02/2015 20:31:24,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+11/02/2015 20:52:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.8
+11/02/2015 20:52:34,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+11/02/2015 20:56:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+12/02/2015 08:37:38,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,5.8
+12/02/2015 08:37:39,8,0,8 : 0,Maintenance,6,TRUE,FALSE,5.4
+12/02/2015 08:44:20,240,1,240 : 1,Remote control PC : switched off,5,FALSE,FALSE,0
+12/02/2015 09:05:36,240,0,240 : 0,Remote control PC : switched on,5,FALSE,FALSE,0
+12/02/2015 09:05:38,8,0,8 : 0,Maintenance,6,TRUE,FALSE,4.8
+12/02/2015 09:07:05,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.8
+12/02/2015 09:07:08,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,0.9
+12/02/2015 09:07:10,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1
+12/02/2015 09:07:47,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,3.7
+12/02/2015 09:12:55,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,5.8
+12/02/2015 09:13:47,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.8
+13/02/2015 09:27:56,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.7
+13/02/2015 09:28:11,8,0,8 : 0,Maintenance,6,TRUE,FALSE,7.6
+13/02/2015 09:46:10,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,7.6
+13/02/2015 10:24:41,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6
+14/02/2015 10:13:59,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,2.6
+14/02/2015 10:52:43,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+14/02/2015 11:39:26,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.4
+14/02/2015 11:39:28,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+14/02/2015 11:43:04,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.3
+14/02/2015 12:24:51,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.7
+14/02/2015 14:25:33,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1
+14/02/2015 14:25:35,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.4
+14/02/2015 14:29:10,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.8
+14/02/2015 14:41:20,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4
+14/02/2015 14:41:22,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.7
+14/02/2015 14:44:03,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.7
+20/02/2015 09:49:02,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,7
+20/02/2015 09:49:04,8,0,8 : 0,Maintenance,6,TRUE,FALSE,7
+20/02/2015 10:28:18,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,9.5
+20/02/2015 10:30:03,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7.7
+20/02/2015 10:30:07,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,6.9
+20/02/2015 10:30:18,8,0,8 : 0,Maintenance,6,TRUE,FALSE,8.1
+20/02/2015 14:16:12,0,8,0 : 8,Turbine in operation during maintenance,1,FALSE,FALSE,14.6
+20/02/2015 14:21:36,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,13.5
+28/02/2015 10:50:19,22,226,22 : 226,Yaw control fault : TWK NOCN: fault in cam switch mechanism,6,FALSE,FALSE,9
+28/02/2015 10:50:50,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,13.8
+28/02/2015 10:53:12,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,9.8
+28/02/2015 10:54:16,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.9
+02/03/2015 09:38:20,17,0,17 : 0,Test security system,6,FALSE,FALSE,3.7
+02/03/2015 09:38:42,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,7.1
+02/03/2015 09:39:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.3
+02/03/2015 09:41:50,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.3
+02/03/2015 09:42:24,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,5.3
+02/03/2015 09:48:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.6
+02/03/2015 09:49:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,5.8
+08/03/2015 18:10:29,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+08/03/2015 21:10:22,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.6
+08/03/2015 21:10:24,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.1
+08/03/2015 21:11:49,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.1
+10/03/2015 04:42:25,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+10/03/2015 05:15:51,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2
+10/03/2015 05:15:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.1
+10/03/2015 05:19:27,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.8
+10/03/2015 10:28:47,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.6
+10/03/2015 10:28:49,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.6
+10/03/2015 10:31:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.7
+14/03/2015 11:13:27,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.7
+14/03/2015 12:22:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.1
+14/03/2015 12:22:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.2
+14/03/2015 12:26:14,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.5
+14/03/2015 12:35:27,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.6
+14/03/2015 12:35:29,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3
+14/03/2015 12:39:06,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+17/03/2015 22:22:24,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+18/03/2015 00:26:57,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,0.6
+18/03/2015 00:26:59,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,0.5
+18/03/2015 00:30:34,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,2
+18/03/2015 00:44:11,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.1
+18/03/2015 00:44:13,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.1
+18/03/2015 00:47:49,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.2
+18/03/2015 01:12:50,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+18/03/2015 01:57:32,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.4
+18/03/2015 01:57:34,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3
+18/03/2015 02:01:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.8
+18/03/2015 08:26:27,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.3
+18/03/2015 11:30:22,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.1
+18/03/2015 11:30:24,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,0.8
+18/03/2015 11:33:59,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+18/03/2015 12:03:31,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.2
+18/03/2015 12:03:33,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.4
+18/03/2015 12:07:10,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+18/03/2015 12:44:47,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.5
+18/03/2015 13:00:39,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,2
+18/03/2015 13:39:05,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.6
+18/03/2015 14:42:51,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.1
+18/03/2015 14:42:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.2
+18/03/2015 14:44:16,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.7
+18/03/2015 18:05:30,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.8
+18/03/2015 19:46:21,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.4
+18/03/2015 19:46:23,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.4
+18/03/2015 19:50:00,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.8
+18/03/2015 21:37:42,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+18/03/2015 22:59:16,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3
+18/03/2015 22:59:17,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.3
+18/03/2015 23:02:53,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+19/03/2015 11:24:04,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+19/03/2015 11:43:39,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.3
+19/03/2015 11:43:41,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.3
+19/03/2015 11:47:18,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2
+19/03/2015 22:55:35,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7.6
+19/03/2015 22:57:18,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.7
+19/03/2015 22:58:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.5
+21/03/2015 19:52:47,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.1
+21/03/2015 20:38:09,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.5
+21/03/2015 20:38:11,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,0.6
+21/03/2015 20:41:48,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.6
+21/03/2015 22:11:11,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+21/03/2015 22:51:14,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.1
+21/03/2015 22:51:16,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.3
+21/03/2015 22:53:28,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.6
+22/03/2015 01:47:54,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+22/03/2015 04:31:14,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+22/03/2015 04:31:16,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.7
+22/03/2015 04:34:52,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.5
+22/03/2015 06:19:02,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+22/03/2015 06:41:35,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.6
+22/03/2015 06:41:37,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.6
+22/03/2015 06:45:12,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.6
+22/03/2015 10:50:28,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,4.2
+22/03/2015 10:50:30,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.2
+22/03/2015 10:52:19,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.6
+25/03/2015 09:42:00,22,226,22 : 226,Yaw control fault : TWK NOCN: fault in cam switch mechanism,6,FALSE,FALSE,1.8
+25/03/2015 09:42:26,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.2
+25/03/2015 09:44:57,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.7
+25/03/2015 09:48:34,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.3
+27/03/2015 01:40:25,2,2,2 : 2,Lack of wind : Wind speed to low,1,FALSE,FALSE,2.3
+27/03/2015 03:09:51,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.1
+27/03/2015 03:09:53,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.5
+27/03/2015 03:11:41,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.9
+30/03/2015 01:55:18,66,32,66 : 32,Feeding fault : External shut down several inv.,6,FALSE,FALSE,10.8
+30/03/2015 01:55:47,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.4
+30/03/2015 01:58:09,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,10.6
+30/03/2015 01:59:18,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,10.7
+04/04/2015 13:40:59,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,2.8
+04/04/2015 14:19:42,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+04/04/2015 14:46:18,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.7
+04/04/2015 14:46:20,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.1
+04/04/2015 14:48:23,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3
+04/04/2015 15:27:30,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0
+04/04/2015 15:44:42,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.9
+04/04/2015 15:44:44,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.5
+04/04/2015 15:48:19,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.3
+04/04/2015 16:18:17,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.9
+04/04/2015 16:18:19,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.3
+04/04/2015 16:20:03,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,3.4
+04/04/2015 17:51:02,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.7
+04/04/2015 17:58:13,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.2
+04/04/2015 17:58:15,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.2
+04/04/2015 18:01:50,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.5
+04/04/2015 18:46:58,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.3
+04/04/2015 18:47:00,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3
+04/04/2015 18:49:48,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.2
+05/04/2015 21:30:04,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+05/04/2015 23:27:43,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.2
+05/04/2015 23:27:45,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,0.9
+05/04/2015 23:31:22,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.7
+06/04/2015 05:06:00,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1.2
+06/04/2015 05:42:01,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.2
+06/04/2015 05:42:03,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.1
+06/04/2015 05:45:37,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.7
+06/04/2015 10:40:28,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.3
+06/04/2015 10:40:30,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.8
+06/04/2015 10:44:07,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,2.2
+06/04/2015 18:18:29,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,1
+06/04/2015 21:57:37,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,0.7
+06/04/2015 21:57:39,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.3
+06/04/2015 22:01:12,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,2.3
+06/04/2015 22:13:32,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,1.7
+06/04/2015 22:13:34,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2
+06/04/2015 22:17:11,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.5
+07/04/2015 22:47:39,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+08/04/2015 01:42:10,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.1
+08/04/2015 01:42:12,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,1.7
+08/04/2015 01:45:48,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.9
+09/04/2015 01:04:04,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,7.5
+09/04/2015 01:09:19,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,8.2
+09/04/2015 01:10:26,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.7
+10/04/2015 22:18:25,66,32,66 : 32,Feeding fault : External shut down several inv.,6,FALSE,FALSE,12.5
+10/04/2015 22:18:56,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,12.5
+10/04/2015 22:21:18,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,12.6
+10/04/2015 22:22:21,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,12.1
+11/04/2015 17:33:11,22,226,22 : 226,Yaw control fault : TWK NOCN: fault in cam switch mechanism,6,FALSE,FALSE,9.2
+11/04/2015 17:33:40,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,10.1
+11/04/2015 17:36:04,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,7.7
+11/04/2015 17:37:14,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,8.4
+12/04/2015 16:27:51,26,373,26 : 373,Malfunction fan-inverter : Other control board errors system 3,6,FALSE,FALSE,5.1
+12/04/2015 16:28:18,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.5
+12/04/2015 16:30:40,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6
+12/04/2015 16:32:04,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,6.4
+15/04/2015 10:32:41,21,2,21 : 2,Cable twisted : Right (2-3 turns),1,FALSE,FALSE,1.8
+15/04/2015 11:11:26,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,3.1
+15/04/2015 11:13:56,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,3.7
+15/04/2015 11:13:58,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,3.7
+15/04/2015 11:15:42,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,4.9
+17/04/2015 04:17:53,2,1,2 : 1,Lack of wind : Wind speed to low,1,FALSE,FALSE,0.9
+17/04/2015 04:40:56,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,2.1
+17/04/2015 04:40:58,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,2.2
+17/04/2015 04:44:35,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,1.5
+27/04/2015 07:16:20,17,0,17 : 0,Test security system,6,FALSE,FALSE,3.7
+27/04/2015 07:16:40,0,3,0 : 3,Start lead-up,1,FALSE,FALSE,5.6
+27/04/2015 07:17:39,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,5.1
+27/04/2015 07:19:02,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,4.6
+27/04/2015 07:19:36,0,5,0 : 5,Calibration of  load control,1,FALSE,FALSE,4.8
+27/04/2015 07:26:03,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,6.1
+27/04/2015 07:26:51,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,7
+28/04/2015 22:14:25,26,373,26 : 373,Malfunction fan-inverter : Other control board errors system 3,6,FALSE,FALSE,8.1
+28/04/2015 22:14:53,0,2,0 : 2,Turbine operational,1,FALSE,FALSE,9.5
+28/04/2015 22:17:15,0,1,0 : 1,Turbine starting,1,FALSE,FALSE,11.1
+28/04/2015 22:18:19,0,0,0 : 0,Turbine in operation,1,FALSE,FALSE,11.5
