@@ -3,3 +3,4 @@ gunicorn
 dash
 dash-bootstrap-components
 vtk
+numpy
