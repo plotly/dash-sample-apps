@@ -3,5 +3,5 @@ dash-bootstrap-components
 pyvista
 numpy
 vtk
-dash >= 1.19.0
+dash
 gunicorn
