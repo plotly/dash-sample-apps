@@ -21,14 +21,11 @@ DATA_PATH = "data"
 # -----------------------------------------------------------------------------
 
 
-def _load_vtp(filepath, fieldname=None):
+def _load_vtp(filepath, fieldname=None, point_arrays=[], cell_arrays=[]):
     reader = vtk.vtkXMLPolyDataReader()
     reader.SetFileName(filepath)
     reader.Update()
-    if fieldname is None:
-        return to_mesh_state(reader.GetOutput())
-    else:
-        return to_mesh_state(reader.GetOutput(), fieldname)
+    return to_mesh_state(reader.GetOutput(), fieldname, point_arrays, cell_arrays)
 
 
 # -----------------------------------------------------------------------------
@@ -45,13 +42,14 @@ server = app.server
 # vehicle geometry
 vehicle_vtk = []
 for filename in glob.glob(os.path.join(DATA_PATH, "vehicle") + "/*.vtp"):
-    mesh = _load_vtp(filename)
+    mesh = _load_vtp(filename, point_arrays=["U", "p"])
     part_name = filename.split("/")[-1].replace(".vtp", "")
     child = dash_vtk.GeometryRepresentation(
         id=f"{part_name}-rep",
         colorMapPreset="erdc_rainbow_bright",
         colorDataRange=[0, 100],
-        property={"opacity": 1},
+        actor={"visibility": 1},
+        mapper={"scalarVisibility": False},
         children=[dash_vtk.Mesh(id=f"{part_name}-mesh", state=mesh,)],
     )
     vehicle_vtk.append(child)
@@ -64,7 +62,8 @@ for filename in glob.glob(os.path.join(DATA_PATH, "isosurfaces") + "/*.vtp"):
     surf_name = filename.split("/")[-1].replace(".vtp", "")
     child = dash_vtk.GeometryRepresentation(
         id=f"{surf_name}-rep",
-        property={"opacity": 0, "color": [1, 0, 0]},
+        property={"color": [1, 0, 0]},
+        actor={"visibility": 0},
         children=[dash_vtk.Mesh(id=f"{surf_name}-mesh", state=mesh,)],
     )
 
@@ -112,6 +111,7 @@ controls = [
                         options=[
                             {"label": "solid", "value": "solid"},
                             {"label": "U", "value": "U"},
+                            {"label": "p", "value": "p"},
                         ],
                         value="solid",
                     ),
@@ -165,12 +165,19 @@ app.layout = dbc.Container(
 # Handle controls
 # -----------------------------------------------------------------------------
 
+COLOR_RANGES = {
+    "solid": [0, 1],
+    "U": [0, 100],
+    "p": [-4464, 1700],
+}
+
 
 @app.callback(
     [Output("vtk-view", "triggerRender")]
-    + [Output(item.id.replace("rep", "mesh"), "state") for item in vehicle_vtk]
-    + [Output(item.id, "property") for item in vehicle_vtk]
-    + [Output("cp-rep", "property")],
+    + [Output(item.id, "mapper") for item in vehicle_vtk]
+    + [Output(item.id, "actor") for item in vehicle_vtk]
+    + [Output(item.id, "colorDataRange") for item in vehicle_vtk]
+    + [Output("cp-rep", "actor")],
     [
         Input("geometry", "value"),
         Input("isosurfaces", "value"),
@@ -184,9 +191,9 @@ def update_scene(geometry, isosurfaces, surfcolor):
     geo_viz, iso_viz = [], []
     if triggered and "geometry" in triggered[0]["prop_id"]:
         geo_viz = [
-            {"opacity": 1}
+            {"visibility": 1}
             if part.id.replace("-rep", "").split("_")[0] in triggered[0]["value"]
-            else {"opacity": 0}
+            else {"visibility": 0}
             for part in vehicle_vtk
         ]
     else:
@@ -195,26 +202,31 @@ def update_scene(geometry, isosurfaces, surfcolor):
     # update isosurface visibility
     if triggered and "isosurfaces" in triggered[0]["prop_id"]:
         if "cp" in triggered[0]["value"]:
-            iso_viz = {"opacity": 1}
+            iso_viz = {"visibility": 1}
         else:
-            iso_viz = {"opacity": 0}
+            iso_viz = {"visibility": 0}
     else:
         iso_viz = dash.no_update
 
     # update surface coloring
     if triggered and "surfcolor" in triggered[0]["prop_id"]:
-        surf_state = []
+        color_range = COLOR_RANGES[triggered[0]["value"]]
+        mapper = {
+            "colorByArrayName": triggered[0]["value"],
+            "scalarMode": 3,
+            "interpolateScalarsBeforeMapping": True,
+            "scalarVisibility": True,
+        }
+        if triggered[0]["value"] == "solid":
+            mapper = {"scalarVisibility": False}
 
-        for filename in glob.glob(os.path.join(DATA_PATH, "vehicle") + "/*.vtp"):
-            if triggered[0]["value"] == "solid":
-                mesh = _load_vtp(filename)
-            else:
-                mesh = _load_vtp(filename, triggered[0]["value"])
-            surf_state.append(mesh)
+        surf_state = [mapper for item in vehicle_vtk]
+        color_ranges = [color_range for item in vehicle_vtk]
     else:
         surf_state = [dash.no_update for item in vehicle_vtk]
+        color_ranges = [dash.no_update for item in vehicle_vtk]
 
-    return [random.random()] + surf_state + geo_viz + [iso_viz]
+    return [random.random()] + surf_state + geo_viz + color_ranges + [iso_viz]
 
 
 # -----------------------------------------------------------------------------
