@@ -1,2 +1,7 @@
--r ./demos/requirements.txt
+dash-vtk
+dash-bootstrap-components
+pyvista
+numpy
+vtk
+dash
 gunicorn

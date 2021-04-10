@@ -6,6 +6,7 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
 
 import random
+import json
 import numpy as np
 import pyvista as pv
 from pyvista import examples
@@ -44,6 +45,7 @@ server = app.server
 
 vtk_view = dash_vtk.View(
     id="vtk-view",
+    pickingModes=["hover"],
     children=[
         dash_vtk.GeometryRepresentation(
             id="vtk-representation",
@@ -68,8 +70,19 @@ vtk_view = dash_vtk.View(
             ],
             colorMapPreset="erdc_blue2green_muted",
             colorDataRange=color_range,
-            property={"edgeVisibility": True,},
-        )
+            property={"edgeVisibility": True},
+            showCubeAxes=True,
+            cubeAxesStyle={"axisLabels": ["", "", "Altitude"]},
+        ),
+        dash_vtk.GeometryRepresentation(
+            id="pick-rep",
+            actor={"visibility": False},
+            children=[
+                dash_vtk.Algorithm(
+                    id="pick-sphere", vtkClass="vtkSphereSource", state={"radius": 100},
+                )
+            ],
+        ),
     ],
 )
 
@@ -96,6 +109,14 @@ app.layout = dbc.Container(
                         value="erdc_rainbow_bright",
                     ),
                 ),
+                dbc.Col(
+                    children=dcc.Checklist(
+                        id="toggle-cube-axes",
+                        options=[{"label": " Show axis grid", "value": "grid"},],
+                        value=[],
+                        labelStyle={"display": "inline-block"},
+                    ),
+                ),
             ],
             style={"height": "12%", "align-items": "center"},
         ),
@@ -103,12 +124,23 @@ app.layout = dbc.Container(
             html.Div(vtk_view, style={"height": "100%", "width": "100%"}),
             style={"height": "88%"},
         ),
+        html.Pre(
+            id="tooltip",
+            style={
+                "position": "absolute",
+                "bottom": "25px",
+                "left": "25px",
+                "zIndex": 1,
+                "color": "white",
+            },
+        ),
     ],
 )
 
 
 @app.callback(
     [
+        Output("vtk-representation", "showCubeAxes"),
         Output("vtk-representation", "colorMapPreset"),
         Output("vtk-representation", "colorDataRange"),
         Output("vtk-polydata", "points"),
@@ -116,11 +148,47 @@ app.layout = dbc.Container(
         Output("vtk-array", "values"),
         Output("vtk-view", "triggerResetCamera"),
     ],
-    [Input("dropdown-preset", "value"), Input("scale-factor", "value")],
+    [
+        Input("dropdown-preset", "value"),
+        Input("scale-factor", "value"),
+        Input("toggle-cube-axes", "value"),
+    ],
 )
-def updatePresetName(name, scale_factor):
+def updatePresetName(name, scale_factor, cubeAxes):
     points, polys, elevation, color_range = updateWarp(scale_factor)
-    return [name, color_range, points, polys, elevation, random.random()]
+    return [
+        "grid" in cubeAxes,
+        name,
+        color_range,
+        points,
+        polys,
+        elevation,
+        random.random(),
+    ]
+
+
+@app.callback(
+    [
+        Output("tooltip", "children"),
+        Output("pick-sphere", "state"),
+        Output("pick-rep", "actor"),
+    ],
+    [Input("vtk-view", "clickInfo"), Input("vtk-view", "hoverInfo"),],
+)
+def onInfo(clickData, hoverData):
+    info = hoverData if hoverData else clickData
+    if info:
+        if (
+            "representationId" in info
+            and info["representationId"] == "vtk-representation"
+        ):
+            return (
+                [json.dumps(info, indent=2)],
+                {"center": info["worldPosition"]},
+                {"visibility": True},
+            )
+        return dash.no_update, dash.no_update, dash.no_update
+    return [""], {}, {"visibility": False}
 
 
 if __name__ == "__main__":
