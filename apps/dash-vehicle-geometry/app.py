@@ -32,7 +32,11 @@ def _load_vtp(filepath, fieldname=None, point_arrays=[], cell_arrays=[]):
 # GUI setup
 # -----------------------------------------------------------------------------
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
+app = dash.Dash(
+    __name__,
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    suppress_callback_exceptions=True,
+)
 server = app.server
 
 # -----------------------------------------------------------------------------
@@ -53,7 +57,7 @@ for filename in glob.glob(os.path.join(DATA_PATH, "vehicle") + "/*.vtp"):
         colorDataRange=[0, 100],
         actor={"visibility": 1},
         mapper={"scalarVisibility": False},
-        children=[dash_vtk.Mesh(id=f"{part_name}-mesh", state=mesh,)],
+        children=[dash_vtk.Mesh(id=f"{part_name}-mesh", state=mesh)],
         # children=[dash_vtk.Mesh(id=f"{part_name}-mesh")],
     )
     vehicle_vtk.append(child)
@@ -74,7 +78,7 @@ for filename in glob.glob(os.path.join(DATA_PATH, "isosurfaces") + "/*.vtp"):
         id=f"{surf_name}-rep",
         property={"color": [1, 0, 0]},
         actor={"visibility": 0},
-        children=[dash_vtk.Mesh(id=f"{surf_name}-mesh", state=mesh,)],
+        children=[dash_vtk.Mesh(id=f"{surf_name}-mesh", state=mesh)],
         # children=[dash_vtk.Mesh(id=f"{surf_name}-mesh")],
     )
 
@@ -111,7 +115,7 @@ controls = [
                         ],
                         labelStyle={"display": "block"},
                         value=["body", "drive-train", "front-wing", "rear-wing"],
-                    ),
+                    )
                 ]
             ),
         ]
@@ -130,7 +134,7 @@ controls = [
                             {"label": "p", "value": "p"},
                         ],
                         value="solid",
-                    ),
+                    )
                 ]
             ),
         ]
@@ -146,7 +150,7 @@ controls = [
                         options=[{"label": " Cp", "value": "cp"}],
                         labelStyle={"display": "block"},
                         value=[],
-                    ),
+                    )
                 ]
             ),
         ]
@@ -172,14 +176,16 @@ app.layout = dbc.Container(
                             dbc.Spinner(
                                 html.Div(
                                     id="vtk-view-container",
-                                    style={"height": "calc(100vh - 230px)", "width": "100%"}
+                                    style={
+                                        "height": "calc(100vh - 230px)",
+                                        "width": "100%",
+                                    },
                                 ),
-                                color='light'
+                                color="light",
                             ),
-                            style={'background-color': '#334c66'}
+                            style={"background-color": "#334c66"},
                         )
                     ],
-                    
                 ),
             ],
             style={"margin-top": "15px", "height": "calc(100vh - 230px)"},
@@ -191,25 +197,16 @@ app.layout = dbc.Container(
 # This Handle controls
 # -----------------------------------------------------------------------------
 
-COLOR_RANGES = {
-    "solid": [0, 1],
-    "U": [0, 100],
-    "p": [-4464, 1700],
-}
+COLOR_RANGES = {"solid": [0, 1], "U": [0, 100], "p": [-4464, 1700]}
 
 
-
-@app.callback(
-    Output('vtk-view-container', 'children'),
-    [Input('geometry', 'value')]
-)
+@app.callback(Output("vtk-view-container", "children"), [Input("geometry", "value")])
 def initial_loading(geometry):
     triggered = dash.callback_context.triggered
     if triggered:
         return dash.no_update
-    
-    return dash_vtk.View(id="vtk-view", children=vehicle_vtk + isosurfs_vtk)
 
+    return dash_vtk.View(id="vtk-view", children=vehicle_vtk + isosurfs_vtk)
 
 
 @app.callback(
@@ -223,7 +220,7 @@ def initial_loading(geometry):
         Input("isosurfaces", "value"),
         Input("surfcolor", "value"),
     ],
-    prevent_initial_call=True
+    prevent_initial_call=True,
 )
 def update_scene(geometry, isosurfaces, surfcolor):
     triggered = dash.callback_context.triggered
