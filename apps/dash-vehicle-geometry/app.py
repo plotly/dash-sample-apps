@@ -32,7 +32,11 @@ def _load_vtp(filepath, fieldname=None, point_arrays=[], cell_arrays=[]):
 # GUI setup
 # -----------------------------------------------------------------------------
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(
+    __name__,
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    suppress_callback_exceptions=True,
+)
 server = app.server
 
 # -----------------------------------------------------------------------------
@@ -41,6 +45,9 @@ server = app.server
 
 # vehicle geometry
 vehicle_vtk = []
+vehicle_mesh_ids = []
+vehicle_meshes = []
+
 for filename in glob.glob(os.path.join(DATA_PATH, "vehicle") + "/*.vtp"):
     mesh = _load_vtp(filename, point_arrays=["U", "p"])
     part_name = filename.split("/")[-1].replace(".vtp", "")
@@ -50,12 +57,19 @@ for filename in glob.glob(os.path.join(DATA_PATH, "vehicle") + "/*.vtp"):
         colorDataRange=[0, 100],
         actor={"visibility": 1},
         mapper={"scalarVisibility": False},
-        children=[dash_vtk.Mesh(id=f"{part_name}-mesh", state=mesh,)],
+        children=[dash_vtk.Mesh(id=f"{part_name}-mesh", state=mesh)],
+        # children=[dash_vtk.Mesh(id=f"{part_name}-mesh")],
     )
     vehicle_vtk.append(child)
 
+    vehicle_mesh_ids.append(f"{part_name}-mesh")
+    vehicle_meshes.append(mesh)
+
 # isosurfaces
 isosurfs_vtk = []
+isomesh_ids = []
+isosurfs_meshes = []
+
 for filename in glob.glob(os.path.join(DATA_PATH, "isosurfaces") + "/*.vtp"):
     mesh = _load_vtp(filename)
 
@@ -64,16 +78,22 @@ for filename in glob.glob(os.path.join(DATA_PATH, "isosurfaces") + "/*.vtp"):
         id=f"{surf_name}-rep",
         property={"color": [1, 0, 0]},
         actor={"visibility": 0},
-        children=[dash_vtk.Mesh(id=f"{surf_name}-mesh", state=mesh,)],
+        children=[dash_vtk.Mesh(id=f"{surf_name}-mesh", state=mesh)],
+        # children=[dash_vtk.Mesh(id=f"{surf_name}-mesh")],
     )
 
     isosurfs_vtk.append(child)
+
+    isomesh_ids.append(f"{surf_name}-mesh")
+    isosurfs_meshes.append(mesh)
+
 
 # -----------------------------------------------------------------------------
 # 3D Viz
 # -----------------------------------------------------------------------------
 
-vtk_view = dash_vtk.View(id="vtk-view", children=vehicle_vtk + isosurfs_vtk)
+# vtk_view = dash_vtk.View(id="vtk-view", children=vehicle_vtk + isosurfs_vtk)
+vtk_view = dash_vtk.View(id="vtk-view")
 
 # -----------------------------------------------------------------------------
 # Control UI
@@ -95,7 +115,7 @@ controls = [
                         ],
                         labelStyle={"display": "block"},
                         value=["body", "drive-train", "front-wing", "rear-wing"],
-                    ),
+                    )
                 ]
             ),
         ]
@@ -114,7 +134,7 @@ controls = [
                             {"label": "p", "value": "p"},
                         ],
                         value="solid",
-                    ),
+                    )
                 ]
             ),
         ]
@@ -130,7 +150,7 @@ controls = [
                         options=[{"label": " Cp", "value": "cp"}],
                         labelStyle={"display": "block"},
                         value=[],
-                    ),
+                    )
                 ]
             ),
         ]
@@ -152,7 +172,19 @@ app.layout = dbc.Container(
                 dbc.Col(
                     width=8,
                     children=[
-                        html.Div(vtk_view, style={"height": "100%", "width": "100%"})
+                        html.Div(
+                            dbc.Spinner(
+                                html.Div(
+                                    id="vtk-view-container",
+                                    style={
+                                        "height": "calc(100vh - 230px)",
+                                        "width": "100%",
+                                    },
+                                ),
+                                color="light",
+                            ),
+                            style={"background-color": "#334c66"},
+                        )
                     ],
                 ),
             ],
@@ -165,11 +197,16 @@ app.layout = dbc.Container(
 # This Handle controls
 # -----------------------------------------------------------------------------
 
-COLOR_RANGES = {
-    "solid": [0, 1],
-    "U": [0, 100],
-    "p": [-4464, 1700],
-}
+COLOR_RANGES = {"solid": [0, 1], "U": [0, 100], "p": [-4464, 1700]}
+
+
+@app.callback(Output("vtk-view-container", "children"), [Input("geometry", "value")])
+def initial_loading(geometry):
+    triggered = dash.callback_context.triggered
+    if triggered:
+        return dash.no_update
+
+    return dash_vtk.View(id="vtk-view", children=vehicle_vtk + isosurfs_vtk)
 
 
 @app.callback(
@@ -183,6 +220,7 @@ COLOR_RANGES = {
         Input("isosurfaces", "value"),
         Input("surfcolor", "value"),
     ],
+    prevent_initial_call=True,
 )
 def update_scene(geometry, isosurfaces, surfcolor):
     triggered = dash.callback_context.triggered
@@ -223,8 +261,8 @@ def update_scene(geometry, isosurfaces, surfcolor):
         surf_state = [mapper for item in vehicle_vtk]
         color_ranges = [color_range for item in vehicle_vtk]
     else:
-        surf_state = [dash.no_update for item in vehicle_vtk]
-        color_ranges = [dash.no_update for item in vehicle_vtk]
+        surf_state = [dash.no_update] * len(vehicle_vtk)
+        color_ranges = [dash.no_update] * len(vehicle_vtk)
 
     return [random.random()] + surf_state + geo_viz + color_ranges + [iso_viz]
 
