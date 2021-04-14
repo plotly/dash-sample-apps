@@ -831,7 +831,7 @@ def update_graph(selected_column, start_date, end_date, n_get_new_info, n_pred):
             y_pred = model.predict(x_test)
             df_out = pd.DataFrame()
             df_out["pred"] = y_pred
-            value_rul = int(max(df_out["pred"]))
+            value_rul = round(max(df_out["pred"]))
             information_update = "RUL is estimated based on the readings from the last week: " "from " + str(
                 x_test.index[0]
             ) + " to " + str(
