@@ -1,0 +1,23 @@
+{
+  "name": "dash-port-dashboard",
+  "version": "1.0.0",
+  "description": "This repository contains source code for the Port Dashboard.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Appsilon/dash-port-dashboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Appsilon/dash-port-dashboard/issues"
+  },
+  "homepage": "https://github.com/Appsilon/dash-port-dashboard#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.1.0"
+  }
+}

@@ -1,0 +1,71 @@
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner td {
+  background-color: initial !important;
+}
+
+.dash-spreadsheet-container {
+  margin: $padding-desktop;
+  padding-bottom: $padding-desktop;
+  box-sizing: content-box;
+}
+
+.map-table-container {
+  font-size: 14px;
+  border: none;
+  .dash-header {
+    text-align: center;
+  }
+
+  @media screen and (max-width: 400px) {
+    .dash-cell {
+      padding: 10px 5px !important;
+    }
+  }
+}
+
+table tbody tr:nth-child(even) {
+  background-color: transparent !important;
+}
+
+table tbody tr {
+  color: $theme_dark-white;
+  transition: 0.3s;
+
+  &:nth-child(2n + 3) {
+    background: $theme_dark-accent !important;
+  }
+
+  // headers and sorting
+  &:first-child {
+    border-bottom: 1px solid $theme_dark-Gray-1;
+    background-color: transparent !important;
+    path {
+      fill: $theme_dark-Gray-3;
+    }
+
+    .fa-sort-up path,
+    .fa-sort-down path {
+      fill: $color-main;
+    }
+  }
+
+  // filters
+  &:nth-child(2) {
+    background-color: transparent !important;
+    &:hover {
+      background-color: transparent !important;
+    }
+    th {
+      border: 0px !important;
+      background-color: transparent !important;
+    }
+
+    input {
+      background-color: transparent !important;
+
+      color: $theme_dark-Gray-2  !important;
+      text-align: center !important;
+    }
+  }
+}
+
+
