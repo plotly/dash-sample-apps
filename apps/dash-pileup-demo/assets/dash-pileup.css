@@ -15,7 +15,7 @@
 
 #pileup-control-tabs {
     width: 400px;
-    height: 550px;
+    height: 750px !important;
     margin: 50px;
     margin-right: 0px;
     background-color: #fff;
@@ -26,10 +26,17 @@
 #pileup-control-tabs .tab-content {
     padding: 20px;
 }
+#app-page-content .control-tab {
+  height: 750px !important;
+}
 .pileup-tab {
     max-height: 420px;
     overflow-y: auto;
     padding-right: 15px;
+}
+
+#pileup-tabs-parent .tab-content {
+  height: 820px !important;
 }
 
 #pileup-body .control-tabs .tab--selected {
