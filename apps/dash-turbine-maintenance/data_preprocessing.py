@@ -93,7 +93,7 @@ def data_preprocessing():
         if i in list(df):
             df_trimmed.drop(i, axis=1, inplace=True)
 
-    df_trimmed = df_trimmed.head(38140)
+    df_trimmed = df_trimmed.head(39298)
     df_trimmed.set_index("Time", inplace=True)
 
     df = df_trimmed.copy()
