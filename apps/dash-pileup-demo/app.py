@@ -18,7 +18,7 @@ def description():
 
 
 def azure_url(file):
-    return "https://sampleappsdata.blob.core.windows.net/dash-pileup-demo/" + file
+    return os.path.join("https://sampleappsdata.blob.core.windows.net/dash-pileup-demo/rna/", file)
 
 
 def header_colors():
