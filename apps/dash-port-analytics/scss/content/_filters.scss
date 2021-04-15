@@ -1,0 +1,172 @@
+.tab-port-map-controls {
+  width: 100%;
+  min-height: $cotrol-min-height;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr;
+
+  background-color: $theme_dark-accent;
+
+  -webkit-box-shadow: inset 0px -13px 4px -10px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: inset 0px -13px 4px -10px rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0px -13px 4px -10px rgba(0, 0, 0, 0.15);
+
+  // separating vertical line
+  .tab-port-map-single-control-separator {
+    height: 100%;
+    width: 1px;
+    background-color: $theme_dark-Gray-1;
+
+    &.smaller-line {
+      margin: auto;
+      height: 75%;
+    }
+  }
+
+  @media screen and (max-width: $device-width-2) {
+    grid-template-columns: 1fr 1px 1fr;
+    grid-auto-rows: $cotrol-min-height 1px $cotrol-min-height;
+    grid-template-areas:
+      "a b c"
+      "d d d"
+      "e e e";
+
+    .area-a {
+      grid-area: a;
+    }
+
+    .area-b {
+      grid-area: b;
+    }
+
+    .area-c {
+      grid-area: c;
+    }
+
+    .area-d {
+      grid-area: d;
+
+      height: 1px;
+      width: 100%;
+    }
+
+    .area-e {
+      grid-area: e;
+    }
+  }
+
+  .date-grid {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+  }
+
+  .tab-port-map-single-control-container {
+    position: relative;
+    text-transform: uppercase;
+    width: 100%;
+
+    .control-label {
+      position: absolute;
+      color: $theme_dark-Gray-2;
+      font-size: 10px;
+      margin-bottom: 0px;
+      padding-top: 10px;
+      padding-left: $padding-desktop;
+    }
+
+    .Select-control {
+      //prevent default style from bootstrap after focusing and hovering item
+      border-radius: 0;
+      cursor: pointer;
+      box-shadow: none !important;
+      border: 0 !important;
+      background-color: transparent !important;
+
+      &:hover {
+        box-shadow: none;
+      }
+
+      //styling
+      min-height: $cotrol-min-height;
+      .Select-multi-value-wrapper {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 3px;
+        width: 100%;
+      }
+
+      .Select-value {
+        width: 100%;
+        padding: 0px $padding-desktop;
+
+        span {
+          color: $theme_dark-white !important;
+        }
+      }
+      .Select-input {
+        padding: 0px $padding-desktop;
+        width: calc(100% - 20px);
+        input {
+          max-width: 100% !important;
+          color: $theme_dark-white !important;
+        }
+      }
+    }
+
+    .Select-arrow-zone {
+      padding-right: $padding-desktop;
+    }
+
+    .Select-control .Select-arrow {
+      border-color: $theme_dark-white transparent transparent !important;
+      border-width: 6px 4px 2.5px;
+    }
+    .is-open .Select-control {
+      .Select-arrow {
+        border-width: 0px 4px 6px;
+        border-color: transparent transparent $theme_dark-white !important;
+      }
+    }
+
+    //------------------------ Dropbox
+
+    .Select-menu-outer {
+      -webkit-animation: fadein 0.2s linear alternate;
+      -moz-animation: fadein 0.2s linear alternate;
+      animation: fadein 0.2s linear alternate;
+      animation-iteration-count: 1;
+
+      margin-top: 0px;
+      z-index: 5;
+      border-radius: 0;
+      border: 0px;
+      -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.46);
+      -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.46);
+      box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.46);
+
+      background-color: $theme_dark-background;
+      color: $theme_dark-white;
+
+      .VirtualizedSelectOption {
+        cursor: pointer;
+        padding-left: $padding-desktop;
+        padding-right: $padding-desktop;
+      }
+
+      .VirtualizedSelectSelectedOption {
+        font-weight: bold;
+        color: $color-main;
+      }
+
+      .VirtualizedSelectFocusedOption {
+        background-color: $theme_dark-accent;
+      }
+    }
+  }
+}
+
+.tab-compare-controls {
+  .tab-compare-single-control-container {
+    min-width: 30%;
+  }
+}

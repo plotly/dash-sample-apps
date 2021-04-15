@@ -1,0 +1,266 @@
+"","port","ship_type","date","sum_dwt","n"
+"1","Gdańsk","Cargo",2016-12-13,455725,16
+"2","Gdańsk","Cargo",2016-12-14,519575,23
+"3","Gdańsk","Cargo",2016-12-15,353783,20
+"4","Gdańsk","Cargo",2016-12-16,748183,20
+"5","Gdańsk","Cargo",2016-12-17,541925,13
+"6","Gdańsk","Cargo",2016-12-18,509926,10
+"7","Gdańsk","Cargo",2016-12-19,727102,19
+"8","Gdańsk","Cargo",2016-12-20,528237,17
+"9","Gdańsk","Fishing",2016-12-13,6744,4
+"10","Gdańsk","Fishing",2016-12-14,10116,5
+"11","Gdańsk","Fishing",2016-12-15,10116,5
+"12","Gdańsk","Fishing",2016-12-16,10147,5
+"13","Gdańsk","Fishing",2016-12-17,10147,6
+"14","Gdańsk","Fishing",2016-12-18,13519,7
+"15","Gdańsk","Fishing",2016-12-19,10599,5
+"16","Gdańsk","Fishing",2016-12-20,10599,6
+"17","Gdańsk","Passenger",2016-12-13,11382,4
+"18","Gdańsk","Passenger",2016-12-14,7881,3
+"19","Gdańsk","Passenger",2016-12-15,11382,4
+"20","Gdańsk","Passenger",2016-12-16,7881,3
+"21","Gdańsk","Passenger",2016-12-17,11382,3
+"22","Gdańsk","Passenger",2016-12-18,7881,2
+"23","Gdańsk","Passenger",2016-12-19,11382,3
+"24","Gdańsk","Passenger",2016-12-20,81,1
+"25","Gdańsk","Pleasure",2016-12-13,0,4
+"26","Gdańsk","Pleasure",2016-12-14,0,4
+"27","Gdańsk","Pleasure",2016-12-15,0,4
+"28","Gdańsk","Pleasure",2016-12-16,0,5
+"29","Gdańsk","Pleasure",2016-12-17,0,4
+"30","Gdańsk","Pleasure",2016-12-18,0,3
+"31","Gdańsk","Pleasure",2016-12-19,0,4
+"32","Gdańsk","Pleasure",2016-12-20,0,4
+"33","Gdańsk","Tanker",2016-12-13,238649,6
+"34","Gdańsk","Tanker",2016-12-14,400106,7
+"35","Gdańsk","Tanker",2016-12-15,349402,9
+"36","Gdańsk","Tanker",2016-12-16,374345,8
+"37","Gdańsk","Tanker",2016-12-17,210016,9
+"38","Gdańsk","Tanker",2016-12-18,177530,8
+"39","Gdańsk","Tanker",2016-12-19,178720,7
+"40","Gdańsk","Tanker",2016-12-20,155030,6
+"41","Gdańsk","Tug",2016-12-13,38314,28
+"42","Gdańsk","Tug",2016-12-14,47009,29
+"43","Gdańsk","Tug",2016-12-15,47163,32
+"44","Gdańsk","Tug",2016-12-16,44202,30
+"45","Gdańsk","Tug",2016-12-17,44202,29
+"46","Gdańsk","Tug",2016-12-18,44073,26
+"47","Gdańsk","Tug",2016-12-19,42304,27
+"48","Gdańsk","Tug",2016-12-20,42228,23
+"49","Gdańsk","Unspecified",2016-12-13,0,1
+"50","Gdańsk","Unspecified",2016-12-14,0,1
+"51","Gdańsk","Unspecified",2016-12-15,0,1
+"52","Gdańsk","Unspecified",2016-12-16,0,1
+"53","Gdańsk","Unspecified",2016-12-17,0,1
+"54","Gdańsk","Unspecified",2016-12-18,0,1
+"55","Gdańsk","Unspecified",2016-12-19,0,1
+"56","Gdańsk","Unspecified",2016-12-20,0,1
+"57","Gdynia","Cargo",2016-12-13,615152,26
+"58","Gdynia","Cargo",2016-12-14,827919,33
+"59","Gdynia","Cargo",2016-12-15,706330,34
+"60","Gdynia","Cargo",2016-12-16,1223063,33
+"61","Gdynia","Cargo",2016-12-17,576871,20
+"62","Gdynia","Cargo",2016-12-18,371542,14
+"63","Gdynia","Cargo",2016-12-19,696863,25
+"64","Gdynia","Cargo",2016-12-20,242936,16
+"65","Gdynia","Fishing",2016-12-13,1197,7
+"66","Gdynia","Fishing",2016-12-14,1297,6
+"67","Gdynia","Fishing",2016-12-15,1567,9
+"68","Gdynia","Fishing",2016-12-16,1256,8
+"69","Gdynia","Fishing",2016-12-17,955,7
+"70","Gdynia","Fishing",2016-12-18,1131,6
+"71","Gdynia","Fishing",2016-12-19,783,5
+"72","Gdynia","Fishing",2016-12-20,486,7
+"73","Gdynia","Passenger",2016-12-13,15605,5
+"74","Gdynia","Passenger",2016-12-14,12104,4
+"75","Gdynia","Passenger",2016-12-15,13905,5
+"76","Gdynia","Passenger",2016-12-16,16604,5
+"77","Gdynia","Passenger",2016-12-17,20105,6
+"78","Gdynia","Passenger",2016-12-18,16604,5
+"79","Gdynia","Passenger",2016-12-19,27905,7
+"80","Gdynia","Passenger",2016-12-20,12104,4
+"81","Gdynia","Pleasure",2016-12-13,667,5
+"82","Gdynia","Pleasure",2016-12-14,667,5
+"83","Gdynia","Pleasure",2016-12-15,667,4
+"84","Gdynia","Pleasure",2016-12-16,667,4
+"85","Gdynia","Pleasure",2016-12-17,667,4
+"86","Gdynia","Pleasure",2016-12-18,667,4
+"87","Gdynia","Pleasure",2016-12-19,667,4
+"88","Gdynia","Pleasure",2016-12-20,667,3
+"89","Gdynia","Tanker",2016-12-13,176257,7
+"90","Gdynia","Tanker",2016-12-14,371218,8
+"91","Gdynia","Tanker",2016-12-15,251968,10
+"92","Gdynia","Tanker",2016-12-16,280911,10
+"93","Gdynia","Tanker",2016-12-17,111371,9
+"94","Gdynia","Tanker",2016-12-18,75137,8
+"95","Gdynia","Tanker",2016-12-19,75774,7
+"96","Gdynia","Tanker",2016-12-20,54684,6
+"97","Gdynia","Tug",2016-12-13,13641,31
+"98","Gdynia","Tug",2016-12-14,18299,35
+"99","Gdynia","Tug",2016-12-15,23761,43
+"100","Gdynia","Tug",2016-12-16,22126,40
+"101","Gdynia","Tug",2016-12-17,21118,38
+"102","Gdynia","Tug",2016-12-18,21797,31
+"103","Gdynia","Tug",2016-12-19,20228,33
+"104","Gdynia","Tug",2016-12-20,18344,30
+"105","Gdynia","Unspecified",2016-12-13,0,2
+"106","Gdynia","Unspecified",2016-12-14,0,2
+"107","Gdynia","Unspecified",2016-12-15,0,2
+"108","Gdynia","Unspecified",2016-12-16,0,2
+"109","Gdynia","Unspecified",2016-12-17,0,1
+"110","Gdynia","Unspecified",2016-12-18,0,2
+"111","Gdynia","Unspecified",2016-12-19,0,3
+"112","Gdynia","Unspecified",2016-12-20,0,3
+"113","Kalingrad","Cargo",2016-12-13,30410,4
+"114","Kalingrad","Cargo",2016-12-14,33596,5
+"115","Kalingrad","Cargo",2016-12-15,46530,9
+"116","Kalingrad","Cargo",2016-12-16,36315,6
+"117","Kalingrad","Cargo",2016-12-17,18391,4
+"118","Kalingrad","Cargo",2016-12-18,38414,8
+"119","Kalingrad","Cargo",2016-12-19,47493,8
+"120","Kalingrad","Cargo",2016-12-20,19893,2
+"121","Kalingrad","Fishing",2016-12-14,7240,4
+"122","Kalingrad","Fishing",2016-12-15,6157,4
+"123","Kalingrad","Fishing",2016-12-16,5430,3
+"124","Kalingrad","Fishing",2016-12-17,5430,3
+"125","Kalingrad","Fishing",2016-12-18,5430,3
+"126","Kalingrad","Fishing",2016-12-19,5430,3
+"127","Kalingrad","Pleasure",2016-12-13,1645,1
+"128","Kalingrad","Pleasure",2016-12-16,1645,1
+"129","Kalingrad","Pleasure",2016-12-17,1645,1
+"130","Kalingrad","Pleasure",2016-12-18,1645,1
+"131","Kalingrad","Tanker",2016-12-13,4351,5
+"132","Kalingrad","Tanker",2016-12-14,4351,4
+"133","Kalingrad","Tanker",2016-12-15,4351,4
+"134","Kalingrad","Tanker",2016-12-16,10924,6
+"135","Kalingrad","Tanker",2016-12-17,20395,5
+"136","Kalingrad","Tanker",2016-12-18,16355,5
+"137","Kalingrad","Tanker",2016-12-19,15324,5
+"138","Kalingrad","Tanker",2016-12-20,13506,4
+"139","Kalingrad","Tug",2016-12-13,0,1
+"140","Kalingrad","Tug",2016-12-14,1000,3
+"141","Kalingrad","Tug",2016-12-15,1000,5
+"142","Kalingrad","Tug",2016-12-16,165,5
+"143","Kalingrad","Tug",2016-12-17,47,1
+"144","Kalingrad","Tug",2016-12-18,2783,4
+"145","Kalingrad","Tug",2016-12-19,15699,5
+"146","Kalingrad","Tug",2016-12-20,14310,2
+"147","Kalingrad","Unspecified",2016-12-15,0,1
+"148","Kalingrad","Unspecified",2016-12-16,0,1
+"149","Kalingrad","Unspecified",2016-12-17,0,1
+"150","Klaipeda","Cargo",2016-12-13,396654,18
+"151","Klaipeda","Cargo",2016-12-14,483794,29
+"152","Klaipeda","Cargo",2016-12-15,464974,31
+"153","Klaipeda","Cargo",2016-12-16,379125,27
+"154","Klaipeda","Cargo",2016-12-17,440547,27
+"155","Klaipeda","Cargo",2016-12-18,468342,27
+"156","Klaipeda","Cargo",2016-12-19,452229,20
+"157","Klaipeda","Cargo",2016-12-20,337426,14
+"158","Klaipeda","Fishing",2016-12-13,448,3
+"159","Klaipeda","Fishing",2016-12-14,787,13
+"160","Klaipeda","Fishing",2016-12-15,601,8
+"161","Klaipeda","Fishing",2016-12-16,451,3
+"162","Klaipeda","Fishing",2016-12-17,626,9
+"163","Klaipeda","Fishing",2016-12-18,305,10
+"164","Klaipeda","Fishing",2016-12-19,539,5
+"165","Klaipeda","Fishing",2016-12-20,482,4
+"166","Klaipeda","Passenger",2016-12-13,21758,3
+"167","Klaipeda","Passenger",2016-12-14,15000,2
+"168","Klaipeda","Passenger",2016-12-15,21758,3
+"169","Klaipeda","Passenger",2016-12-16,15000,2
+"170","Klaipeda","Passenger",2016-12-17,21758,3
+"171","Klaipeda","Passenger",2016-12-18,19758,3
+"172","Klaipeda","Passenger",2016-12-19,17000,2
+"173","Klaipeda","Passenger",2016-12-20,12258,2
+"174","Klaipeda","Pleasure",2016-12-15,0,2
+"175","Klaipeda","Pleasure",2016-12-16,0,1
+"176","Klaipeda","Pleasure",2016-12-17,0,2
+"177","Klaipeda","Pleasure",2016-12-20,0,1
+"178","Klaipeda","Tanker",2016-12-13,226460,3
+"179","Klaipeda","Tanker",2016-12-14,357510,8
+"180","Klaipeda","Tanker",2016-12-15,225082,7
+"181","Klaipeda","Tanker",2016-12-16,256661,8
+"182","Klaipeda","Tanker",2016-12-17,226241,7
+"183","Klaipeda","Tanker",2016-12-18,269366,7
+"184","Klaipeda","Tanker",2016-12-19,162739,6
+"185","Klaipeda","Tanker",2016-12-20,159442,5
+"186","Klaipeda","Tug",2016-12-13,16591,14
+"187","Klaipeda","Tug",2016-12-14,8891,20
+"188","Klaipeda","Tug",2016-12-15,7804,18
+"189","Klaipeda","Tug",2016-12-16,7775,19
+"190","Klaipeda","Tug",2016-12-17,7693,18
+"191","Klaipeda","Tug",2016-12-18,12497,18
+"192","Klaipeda","Tug",2016-12-19,12497,22
+"193","Klaipeda","Tug",2016-12-20,6911,13
+"194","Klaipeda","Unspecified",2016-12-13,0,1
+"195","Klaipeda","Unspecified",2016-12-14,0,1
+"196","Klaipeda","Unspecified",2016-12-15,0,1
+"197","Klaipeda","Unspecified",2016-12-16,0,1
+"198","Klaipeda","Unspecified",2016-12-17,0,1
+"199","Klaipeda","Unspecified",2016-12-18,0,2
+"200","Klaipeda","Unspecified",2016-12-19,0,2
+"201","Klaipeda","Unspecified",2016-12-20,0,1
+"202","St. Petersburg","Cargo",2016-12-13,505149,35
+"203","St. Petersburg","Cargo",2016-12-14,645896,40
+"204","St. Petersburg","Cargo",2016-12-15,634279,42
+"205","St. Petersburg","Cargo",2016-12-16,608916,36
+"206","St. Petersburg","Cargo",2016-12-17,527048,34
+"207","St. Petersburg","Cargo",2016-12-18,692749,40
+"208","St. Petersburg","Cargo",2016-12-19,819933,49
+"209","St. Petersburg","Cargo",2016-12-20,832723,51
+"210","St. Petersburg","Fishing",2016-12-13,36,1
+"211","St. Petersburg","Fishing",2016-12-14,36,1
+"212","St. Petersburg","Fishing",2016-12-15,36,2
+"213","St. Petersburg","Fishing",2016-12-16,36,1
+"214","St. Petersburg","Fishing",2016-12-17,36,1
+"215","St. Petersburg","Fishing",2016-12-18,36,1
+"216","St. Petersburg","Fishing",2016-12-19,36,1
+"217","St. Petersburg","Fishing",2016-12-20,36,1
+"218","St. Petersburg","Navigation",2016-12-13,0,1
+"219","St. Petersburg","Navigation",2016-12-14,0,1
+"220","St. Petersburg","Navigation",2016-12-15,0,1
+"221","St. Petersburg","Navigation",2016-12-16,0,1
+"222","St. Petersburg","Navigation",2016-12-17,0,1
+"223","St. Petersburg","Navigation",2016-12-18,0,1
+"224","St. Petersburg","Navigation",2016-12-19,0,1
+"225","St. Petersburg","Navigation",2016-12-20,0,1
+"226","St. Petersburg","Passenger",2016-12-13,0,2
+"227","St. Petersburg","Passenger",2016-12-14,0,3
+"228","St. Petersburg","Passenger",2016-12-15,0,3
+"229","St. Petersburg","Passenger",2016-12-16,4000,3
+"230","St. Petersburg","Passenger",2016-12-17,0,2
+"231","St. Petersburg","Passenger",2016-12-18,0,2
+"232","St. Petersburg","Passenger",2016-12-19,0,2
+"233","St. Petersburg","Passenger",2016-12-20,4000,4
+"234","St. Petersburg","Pleasure",2016-12-13,761,1
+"235","St. Petersburg","Pleasure",2016-12-14,761,1
+"236","St. Petersburg","Pleasure",2016-12-15,761,2
+"237","St. Petersburg","Pleasure",2016-12-16,761,2
+"238","St. Petersburg","Pleasure",2016-12-17,761,2
+"239","St. Petersburg","Pleasure",2016-12-18,761,1
+"240","St. Petersburg","Pleasure",2016-12-19,761,1
+"241","St. Petersburg","Pleasure",2016-12-20,761,1
+"242","St. Petersburg","Tanker",2016-12-13,93454,35
+"243","St. Petersburg","Tanker",2016-12-14,101659,37
+"244","St. Petersburg","Tanker",2016-12-15,119248,39
+"245","St. Petersburg","Tanker",2016-12-16,168015,39
+"246","St. Petersburg","Tanker",2016-12-17,157039,37
+"247","St. Petersburg","Tanker",2016-12-18,190265,37
+"248","St. Petersburg","Tanker",2016-12-19,173151,37
+"249","St. Petersburg","Tanker",2016-12-20,60172,34
+"250","St. Petersburg","Tug",2016-12-13,49633,38
+"251","St. Petersburg","Tug",2016-12-14,53750,40
+"252","St. Petersburg","Tug",2016-12-15,54891,44
+"253","St. Petersburg","Tug",2016-12-16,52517,39
+"254","St. Petersburg","Tug",2016-12-17,52245,36
+"255","St. Petersburg","Tug",2016-12-18,52245,37
+"256","St. Petersburg","Tug",2016-12-19,52845,39
+"257","St. Petersburg","Tug",2016-12-20,52845,38
+"258","St. Petersburg","Unspecified",2016-12-13,0,3
+"259","St. Petersburg","Unspecified",2016-12-14,0,4
+"260","St. Petersburg","Unspecified",2016-12-15,0,5
+"261","St. Petersburg","Unspecified",2016-12-16,0,4
+"262","St. Petersburg","Unspecified",2016-12-17,0,5
+"263","St. Petersburg","Unspecified",2016-12-18,0,3
+"264","St. Petersburg","Unspecified",2016-12-19,0,3
+"265","St. Petersburg","Unspecified",2016-12-20,0,3
