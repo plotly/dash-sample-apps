@@ -1,7 +1,6 @@
 dash-vtk
-dash-bootstrap-components
-pyvista
-numpy
-vtk
-dash
 gunicorn
+dash
+dash-bootstrap-components
+vtk
+numpy
