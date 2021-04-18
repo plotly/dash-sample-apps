@@ -6,6 +6,7 @@ import dash_bio
 import pandas as pd
 import numpy as np
 import math
+import plotly.graph_objects as go
 
 from layout_helper import run_standalone_app
 
@@ -142,6 +143,13 @@ def layout(app):
                                             id="pileup-dashbio-volcanoplot",
                                             figure=dash_bio.VolcanoPlot(
                                                 dataframe=DE_dataframe,
+                                                margin=go.layout.Margin(l = 0,r = 0, b = 0),
+                                                legend= {
+                                                    'orientation': 'h',
+                                                    'yanchor': 'bottom',
+                                                    'y' : 1.02,
+                                                    'bgcolor': '#f2f5fa'
+                                                },
                                                 effect_size="log2FoldChange",
                                                 effect_size_line = [-1,1],
                                                 title="Differentially Expressed Genes",
@@ -213,6 +221,13 @@ def callbacks(_app):
 
         return dash_bio.VolcanoPlot(
             dataframe=DE_dataframe,
+            margin=go.layout.Margin(l = 0,r = 0, b = 0),
+            legend= {
+                'orientation': 'h',
+                'yanchor': 'bottom',
+                'y' : 1.02,
+                'x': 0.,
+            },
             effect_size='log2FoldChange',
             effect_size_line=effects,
             title="Differentially Expressed Genes",
