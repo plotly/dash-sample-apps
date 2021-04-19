@@ -1,0 +1,67 @@
+.stats-card-container, .port-comparison-sip-cards-container, .map-card-container{
+  display: grid;
+  grid-gap: $padding-desktop;
+  padding: $padding-desktop;
+}
+
+.map-card-container{
+  grid-template-columns: minmax(24%, max-content);
+}
+
+.stats-card-container {
+  grid-template-columns: 1fr 1fr 1fr;
+
+  @media screen and (max-width: $device-width-2) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.port-comparison-sip-cards-container{
+  grid-template-columns: 1fr 1fr;
+
+  @media screen and (max-width: $device-width-3) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sip-card-stats-single {
+  border: 1px solid $theme_dark-Gray-1;
+  padding: $padding-desktop;
+
+  .sip-card-title {
+    display: grid;
+    grid-template-columns: max-content auto;
+    $device-width-2: 800px;
+
+    h3{
+      font-weight: 400;
+      margin-bottom: 0;
+      padding-left: 8px;
+      font-size: 18px;
+      color: $theme_dark-white;
+    }
+
+    img{
+      filter: invert(1);
+    }
+  }
+  
+  .sip-card-body{
+    color: $theme_dark-Gray-3;
+    padding: 8px 0;
+    font-size: 14px;
+
+    ul{
+      padding-left: 15px;
+    }
+  }
+
+  .sip-card-footer{
+    color:$theme_dark-Gray-2;
+  }
+  
+}
+
+.port-comparison-sip-cards-container .sip-card-body{
+  padding-bottom: 0;
+}

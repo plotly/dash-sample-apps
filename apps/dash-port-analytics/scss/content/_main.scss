@@ -1,0 +1,91 @@
+// loading indicator
+.main-area *[data-dash-is-loading="true"]::before {
+    -webkit-animation: fadein 0.2s linear alternate;
+    -moz-animation: fadein 0.2s linear alternate;
+    animation: fadein 0.2s linear alternate;
+    animation-iteration-count: 1;
+
+    content: " ";
+    display: inline-block;
+    visibility: visible;
+    position: absolute;
+    left: 50%;
+    top: calc(50% + 30px);
+    transform: translate(-50%, -50%);
+
+    height: 80px;
+    width: 80px;
+    background-image: url("../img/loading-indicator.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+// fixing loading indicator flickering issue
+.main-area .tab-port-compare-container *[data-dash-is-loading="true"]::before {
+    display: none;
+    visibility: hidden;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+body {
+    overflow-y: scroll;
+    background-color: $theme_dark-page;
+}
+
+.wrapper {
+    width: calc(100% - 60px);
+    transition: 0.3s;
+    max-width: 1200px;
+    margin: auto;
+    margin: 40px auto 0px auto;
+
+    .main-area {
+        position: relative;
+        min-height: 400px;
+
+        width: 100%;
+        background-color: $theme_dark-background;
+
+        -webkit-box-shadow: 0px 1px 5px 0px rgba(0, 142, 222, 0.51);
+        -moz-box-shadow: 0px 1px 5px 0px rgba(0, 142, 222, 0.51);
+        box-shadow: 0px 1px 5px 0px rgba(0, 142, 222, 0.51);
+
+        .ui-card {
+            padding: 1rem 15px 15px 15px;
+        }
+
+        // fadeIn animations
+        -webkit-animation: fadein 0.2s linear alternate;
+        -moz-animation: fadein 0.2s linear alternate;
+        animation: fadein 0.2s linear alternate;
+        animation-iteration-count: 1;
+
+        .map-card-container div,
+        .map-container iframe,
+        .stats-card-container div,
+        .map-table-container div,
+        .graphGrid div,
+        #tab-port-compare-container .graphGrid div,
+        #tab-port-compare-container .port-comparison-sip-cards-container div {
+            -webkit-animation: fadein 0.2s linear alternate;
+            -moz-animation: fadein 0.2s linear alternate;
+            animation: fadein 0.2s linear alternate;
+            animation-iteration-count: 1;
+        }
+    }
+
+    @media screen and (max-width: $device-width-1) {
+        width: calc(100% - 26px);
+    }
+}
+
+p,
+ul {
+    margin-bottom: 0;
+}

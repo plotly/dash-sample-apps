@@ -1,0 +1,50 @@
+.graphGrid {
+  padding: 30px $padding-desktop 30px $padding-desktop;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+
+  .xy text,
+  .traces text,
+  .g-xtitle text,
+  .g-ytitle text {
+    fill: $theme_dark-white !important;
+  }
+
+  .point path,
+  .legendpoints path {
+    stroke-opacity: 0 !important;
+  }
+
+  .zerolinelayer path{
+    stroke-width: 1px !important;
+  }
+}
+
+.ui-card {
+  h3 {
+    font-size: 17px;
+    text-align: center;
+    margin-bottom: 0px;
+    color: $theme_dark-white;
+  }
+  .dash-graph {
+    margin-top: 20px;
+
+    @media screen and (max-width: $device-width-2) {
+      height: 300px !important;
+    }
+
+    @media screen and (max-width: $device-width-3) {
+      height: 250px !important;
+    }
+
+    @media screen and (max-width: 600px) {
+      height: 220px !important;
+    }
+  }
+}
+
+.wrapper .main-area .ui-card {
+  padding: 0px;
+}

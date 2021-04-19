@@ -1,0 +1,8 @@
+-r ./usage-algorithm/requirements.txt
+-r ./pyvista-terrain-following-mesh/requirements.txt
+-r ./slice-rendering/requirements.txt
+-r ./pyvista-point-cloud/requirements.txt
+-r ./volume-rendering/requirements.txt
+-r ./usage-vtk-cfd/requirements.txt
+-r ./usage-algorithm/requirements.txt
+-r ./synthetic-volume-rendering/requirements.txt
