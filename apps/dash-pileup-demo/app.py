@@ -5,6 +5,8 @@ from dash.dependencies import Input, Output
 import dash_bio
 import pandas as pd
 import numpy as np
+import math
+import plotly.graph_objects as go
 
 from layout_helper import run_standalone_app
 
@@ -12,13 +14,12 @@ text_style = {"color": "#506784", "font-family": "Open Sans"}
 
 _COMPONENT_ID = "pileup-browser"
 
-
 def description():
     return "An interactive in-browser track viewer."
 
 
 def azure_url(file):
-    return "https://sampleappsdata.blob.core.windows.net/dash-pileup-demo/" + file
+    return os.path.join("https://sampleappsdata.blob.core.windows.net/dash-pileup-demo/rna/", file)
 
 
 def header_colors():
@@ -29,54 +30,59 @@ def header_colors():
 
 
 def rna_differential(app):
-    basal_bam = {
-        "url": azure_url("SRR1552454.fastq.gz.sampled.converted.bam"),
-        "indexUrl": azure_url("SRR1552454.fastq.gz.sampled.converted.bam.bai"),
+
+    basal_lactate = {
+        "url": azure_url("SRR1552454.fastq.gz.sampled.bam"),
+        "indexUrl": azure_url("SRR1552454.fastq.gz.sampled.bam.bai"),
     }
 
-    luminal_bam = {
+    luminal_lactate = {
         "url": azure_url("SRR1552448.fastq.gz.sampled.bam"),
         "indexUrl": azure_url("SRR1552448.fastq.gz.sampled.bam.bai"),
     }
 
-    return {
-        "range": {"contig": "chr1", "start": 54986297, "stop": 54991347},
-        "tracks": [
+    HOSTED_TRACKS = {
+        'range': {"contig": "chr1", "start": 54986297, "stop": 54991347},
+        'celltype': [
             {"viz": "scale", "label": "Scale"},
             {"viz": "location", "label": "Location"},
             {
                 "viz": "genes",
                 "label": "genes",
                 "source": "bigBed",
-                "sourceOptions": {"url": azure_url("mm10.chr1.ncbiRefSeq.sorted.bb")},
+                "sourceOptions": {
+                    "url":  azure_url("mm10.ncbiRefSeq.sorted.bb")
+                },
             },
             {
                 "viz": "coverage",
-                "label": "Basal Mouse cells",
+                "label": "Basal",
                 "source": "bam",
-                "sourceOptions": basal_bam,
+                "sourceOptions": basal_lactate,
             },
             {
                 "viz": "pileup",
                 "vizOptions": {"viewAsPairs": True},
-                "label": "Basal Mouse cells",
+                "label": "Basal",
                 "source": "bam",
-                "sourceOptions": basal_bam,
+                "sourceOptions": basal_lactate,
             },
             {
                 "viz": "coverage",
-                "label": "Luminal Mouse cells",
+                "label": "Luminal",
                 "source": "bam",
-                "sourceOptions": luminal_bam,
+                "sourceOptions": luminal_lactate,
             },
             {
                 "viz": "pileup",
-                "label": "Luminal Mouse cells",
+                "label": "Luminal",
                 "source": "bam",
-                "sourceOptions": luminal_bam,
+                "sourceOptions": luminal_lactate,
             },
-        ],
+        ]
     }
+
+    return HOSTED_TRACKS
 
 
 REFERENCE = {
@@ -87,19 +93,21 @@ REFERENCE = {
 DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets/data")
 
 # Differentially expressed genes (identified in R, see assets/data/rna/README.md)
-DE_dataframe = pd.read_csv(os.path.join(DATAPATH, "rna", "DE_genes.csv"))
+DE_dataframe = pd.read_csv(azure_url("DE_genes.csv"))
+# filter for the cell type condition
+DE_dataframe = DE_dataframe[DE_dataframe['Comparison'] == "luminal__v__basal"].reset_index()
+
 # add SNP column
 DE_dataframe["SNP"] = "NA"
 
 
-def layout(app):
-    HOSTED_CASE_DICT = {
-        "rna-differential": rna_differential(app),
-    }
+# get min and max effect sizes
+df_min = math.floor(min(DE_dataframe['log2FoldChange']))
+df_max = math.ceil(max(DE_dataframe['log2FoldChange']))
 
-    HOSTED_USE_CASES = [
-        {"value": "rna-differential", "label": "Differential RNA-seq"},
-    ]
+
+def layout(app):
+    HOSTED_CASE_DICT = rna_differential(app)
 
     return html.Div(
         id="pileup-body",
@@ -119,11 +127,31 @@ def layout(app):
                                 children=html.Div(
                                     className="control-tab",
                                     children=[
+                                        'Effect Size',
+                                        dcc.RangeSlider(
+                                            id='pileup-volcanoplot-input',
+                                            min=df_min,
+                                            max=df_max,
+                                            step=None,
+                                            marks={
+                                                i: {'label': str(i)} for i in range(df_min, df_max+1, 2)
+                                            },
+                                            value=[-1,1]
+                                        ),
+                                        html.Br(),
                                         dcc.Graph(
                                             id="pileup-dashbio-volcanoplot",
                                             figure=dash_bio.VolcanoPlot(
                                                 dataframe=DE_dataframe,
+                                                margin=go.layout.Margin(l = 0,r = 0, b = 0),
+                                                legend= {
+                                                    'orientation': 'h',
+                                                    'yanchor': 'bottom',
+                                                    'y' : 1.02,
+                                                    'bgcolor': '#f2f5fa'
+                                                },
                                                 effect_size="log2FoldChange",
+                                                effect_size_line = [-1,1],
                                                 title="Differentially Expressed Genes",
                                                 genomewideline_value=-np.log10(0.05),
                                                 p="padj",
@@ -171,9 +199,9 @@ def layout(app):
                     [
                         dash_bio.Pileup(
                             id=_COMPONENT_ID,
-                            range=HOSTED_CASE_DICT["rna-differential"]["range"],
+                            range=HOSTED_CASE_DICT["range"],
                             reference=REFERENCE,
-                            tracks=HOSTED_CASE_DICT["rna-differential"]["tracks"],
+                            tracks=HOSTED_CASE_DICT["celltype"],
                         )
                     ]
                 ),
@@ -183,23 +211,40 @@ def layout(app):
 
 
 def callbacks(_app):
-    HOSTED_CASE_DICT = {
-        "rna-differential": rna_differential(_app),
-    }
-
-    HOSTED_USE_CASES = [
-        {"value": "rna-differential", "label": "Differential RNA-seq"},
-    ]
+    HOSTED_CASE_DICT = rna_differential(_app)
 
     @_app.callback(
-        Output(_COMPONENT_ID, "range"), Input("pileup-dashbio-volcanoplot", "clickData")
+        Output('pileup-dashbio-volcanoplot', 'figure'),
+        [Input('pileup-volcanoplot-input', 'value')]
+    )
+    def update_volcano(effects):
+
+        return dash_bio.VolcanoPlot(
+            dataframe=DE_dataframe,
+            margin=go.layout.Margin(l = 0,r = 0, b = 0),
+            legend= {
+                'orientation': 'h',
+                'yanchor': 'bottom',
+                'y' : 1.02,
+                'x': 0.,
+            },
+            effect_size='log2FoldChange',
+            effect_size_line=effects,
+            title="Differentially Expressed Genes",
+            genomewideline_value=-np.log10(0.05),
+            p='padj',
+            snp='SNP',
+            gene='Gene',
+        )
+
+    @_app.callback(
+        Output(_COMPONENT_ID, "range"),
+        Input("pileup-dashbio-volcanoplot", "clickData")
     )
     def update_range(point):
 
-        data = HOSTED_CASE_DICT["rna-differential"]
-
         if point is None:
-            range = data["range"]
+            range = HOSTED_CASE_DICT["range"]
         else:
 
             # get genomic location of selected genes and goto
