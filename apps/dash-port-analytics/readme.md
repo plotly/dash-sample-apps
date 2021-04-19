@@ -10,9 +10,6 @@
 ```
 pip install -r requirements.txt
 ```
-```
-npm install
-```
 - Run the app:
 ```
 python main.py
@@ -21,7 +18,13 @@ python main.py
 ```
 https://localhost:9000
 ```
-- on the another terminal run below to start gulp scss/js bundler
+# Gulp
+
+- Go to directory `~/path-to-repo/gulp/` and install dependencies
+```
+npm install
+```
+- run below to start gulp scss/js bundler
 ```
 gulp watch
 ```
@@ -29,6 +32,7 @@ __optional if you don't have gulp on your machine then you can install it throug
 ```
 npm install --save gulp-install
 ```
+#
 
 ## To add additional port data
 - [Here's a step-by-step guide](add_data.md)
