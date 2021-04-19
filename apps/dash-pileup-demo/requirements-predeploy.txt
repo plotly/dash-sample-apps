@@ -1,7 +1,7 @@
 cython>=0.19
 dash>=1.6.1
-dash_bio-0.6.1-py3-none-any.whl
-dash-bio-utils==0.0.4
+dash_bio-0.6.2-py3-none-any.whl
+dash-bio-utils==0.0.6
 dash-daq==0.2.2
 gunicorn==19.9.0
 jsonschema==2.6.0
