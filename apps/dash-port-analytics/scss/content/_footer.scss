@@ -1,0 +1,35 @@
+.logo-footer {
+  text-align: center;
+  margin: 30px auto;
+
+  .logo-footer-centering {
+    display: inline-block;
+
+    .logo-footer-container {
+      display: grid;
+      grid-template-columns: max-content max-content max-content;
+      justify-content: center;
+      margin: auto;
+      text-decoration: none;
+
+      h4 {
+        font-size: 14px;
+        font-weight: 400;
+        color: $theme_dark-white;
+      }
+
+      #appsilon-icon{
+        padding-left: 9px;
+        padding-right: 7px;
+      }
+
+      #appsilon-text{
+        filter: invert(100%);
+      }
+
+      .footer-element{
+        margin: auto;
+      }
+    }
+  }
+}
