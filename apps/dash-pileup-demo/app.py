@@ -14,12 +14,15 @@ text_style = {"color": "#506784", "font-family": "Open Sans"}
 
 _COMPONENT_ID = "pileup-browser"
 
+
 def description():
     return "An interactive in-browser track viewer."
 
 
 def azure_url(file):
-    return os.path.join("https://sampleappsdata.blob.core.windows.net/dash-pileup-demo/rna/", file)
+    return os.path.join(
+        "https://sampleappsdata.blob.core.windows.net/dash-pileup-demo/rna/", file
+    )
 
 
 def header_colors():
@@ -42,17 +45,15 @@ def rna_differential(app):
     }
 
     HOSTED_TRACKS = {
-        'range': {"contig": "chr1", "start": 54986297, "stop": 54991347},
-        'celltype': [
+        "range": {"contig": "chr1", "start": 54986297, "stop": 54991347},
+        "celltype": [
             {"viz": "scale", "label": "Scale"},
             {"viz": "location", "label": "Location"},
             {
                 "viz": "genes",
                 "label": "genes",
                 "source": "bigBed",
-                "sourceOptions": {
-                    "url":  azure_url("mm10.ncbiRefSeq.sorted.bb")
-                },
+                "sourceOptions": {"url": azure_url("mm10.ncbiRefSeq.sorted.bb")},
             },
             {
                 "viz": "coverage",
@@ -79,7 +80,7 @@ def rna_differential(app):
                 "source": "bam",
                 "sourceOptions": luminal_lactate,
             },
-        ]
+        ],
     }
 
     return HOSTED_TRACKS
@@ -95,15 +96,17 @@ DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets/data
 # Differentially expressed genes (identified in R, see assets/data/rna/README.md)
 DE_dataframe = pd.read_csv(azure_url("DE_genes.csv"))
 # filter for the cell type condition
-DE_dataframe = DE_dataframe[DE_dataframe['Comparison'] == "luminal__v__basal"].reset_index()
+DE_dataframe = DE_dataframe[
+    DE_dataframe["Comparison"] == "luminal__v__basal"
+].reset_index()
 
 # add SNP column
 DE_dataframe["SNP"] = "NA"
 
 
 # get min and max effect sizes
-df_min = math.floor(min(DE_dataframe['log2FoldChange']))
-df_max = math.ceil(max(DE_dataframe['log2FoldChange']))
+df_min = math.floor(min(DE_dataframe["log2FoldChange"]))
+df_max = math.ceil(max(DE_dataframe["log2FoldChange"]))
 
 
 def layout(app):
@@ -127,38 +130,39 @@ def layout(app):
                                 children=html.Div(
                                     className="control-tab",
                                     children=[
-                                        'Effect Size',
+                                        "Effect Size",
                                         dcc.RangeSlider(
-                                            id='pileup-volcanoplot-input',
+                                            id="pileup-volcanoplot-input",
                                             min=df_min,
                                             max=df_max,
                                             step=None,
                                             marks={
-                                                i: {'label': str(i)} for i in range(df_min, df_max+1, 2)
+                                                i: {"label": str(i)}
+                                                for i in range(df_min, df_max + 1, 2)
                                             },
-                                            value=[-1,1]
+                                            value=[-1, 1],
                                         ),
                                         html.Br(),
                                         dcc.Graph(
                                             id="pileup-dashbio-volcanoplot",
                                             figure=dash_bio.VolcanoPlot(
                                                 dataframe=DE_dataframe,
-                                                margin=go.layout.Margin(l = 0,r = 0, b = 0),
-                                                legend= {
-                                                    'orientation': 'h',
-                                                    'yanchor': 'bottom',
-                                                    'y' : 1.02,
-                                                    'bgcolor': '#f2f5fa'
+                                                margin=go.layout.Margin(l=0, r=0, b=0),
+                                                legend={
+                                                    "orientation": "h",
+                                                    "yanchor": "bottom",
+                                                    "y": 1.02,
+                                                    "bgcolor": "#f2f5fa",
                                                 },
                                                 effect_size="log2FoldChange",
-                                                effect_size_line = [-1,1],
+                                                effect_size_line=[-1, 1],
                                                 title="Differentially Expressed Genes",
                                                 genomewideline_value=-np.log10(0.05),
                                                 p="padj",
                                                 snp="SNP",
                                                 gene="Gene",
                                             ),
-                                        )
+                                        ),
                                     ],
                                 ),
                             ),
@@ -214,32 +218,26 @@ def callbacks(_app):
     HOSTED_CASE_DICT = rna_differential(_app)
 
     @_app.callback(
-        Output('pileup-dashbio-volcanoplot', 'figure'),
-        [Input('pileup-volcanoplot-input', 'value')]
+        Output("pileup-dashbio-volcanoplot", "figure"),
+        [Input("pileup-volcanoplot-input", "value")],
     )
     def update_volcano(effects):
 
         return dash_bio.VolcanoPlot(
             dataframe=DE_dataframe,
-            margin=go.layout.Margin(l = 0,r = 0, b = 0),
-            legend= {
-                'orientation': 'h',
-                'yanchor': 'bottom',
-                'y' : 1.02,
-                'x': 0.,
-            },
-            effect_size='log2FoldChange',
+            margin=go.layout.Margin(l=0, r=0, b=0),
+            legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "x": 0.0,},
+            effect_size="log2FoldChange",
             effect_size_line=effects,
             title="Differentially Expressed Genes",
             genomewideline_value=-np.log10(0.05),
-            p='padj',
-            snp='SNP',
-            gene='Gene',
+            p="padj",
+            snp="SNP",
+            gene="Gene",
         )
 
     @_app.callback(
-        Output(_COMPONENT_ID, "range"),
-        Input("pileup-dashbio-volcanoplot", "clickData")
+        Output(_COMPONENT_ID, "range"), Input("pileup-dashbio-volcanoplot", "clickData")
     )
     def update_range(point):
 
