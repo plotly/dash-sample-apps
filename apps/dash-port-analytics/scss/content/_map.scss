@@ -1,0 +1,14 @@
+iframe {
+  border: 0;
+  width: 100% !important;
+  height: 35rem !important;
+
+  @media screen and (max-width: $device-width-2) {
+    height: 20rem !important;
+  }
+}
+
+.map-container {
+  width: 100% !important;
+  padding: 0 $padding-desktop;
+}
