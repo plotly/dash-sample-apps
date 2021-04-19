@@ -1,7 +1,8 @@
 /venv
 
-/node_modules
-package-lock.json
+/gulp/node_modules
+/gulp/package-lock.json
+/gulp/yarn.lock
 
 # cache files
 .idea
