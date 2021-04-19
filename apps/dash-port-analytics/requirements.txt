@@ -5,6 +5,5 @@ numpy~=1.20.1
 plotly~=4.14.3
 scipy~=1.6.1
 dash~=1.19.0
-dash-auth~=1.4.1
 dash-bootstrap-components~=0.11.3
 gunicorn~=20.0.4

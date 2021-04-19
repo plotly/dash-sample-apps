@@ -1,5 +1,4 @@
 import dash
-import dash_auth
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
@@ -47,7 +46,6 @@ app = dash.Dash(
     external_scripts=external_scripts,
     external_stylesheets=external_stylesheets,
 )
-# auth = dash_auth.BasicAuth(app, constants.APP_CREDENTIALS)
 app.title = strings.APP_NAME
 app.config["suppress_callback_exceptions"] = True
 server = app.server
