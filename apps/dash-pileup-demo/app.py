@@ -166,7 +166,6 @@ def layout(app):
                                     ],
                                 ),
                             ),
-
                             dcc.Tab(
                                 label="About this tutorial",
                                 value="description",
@@ -208,8 +207,6 @@ def layout(app):
                                     ],
                                 ),
                             ),
-
-
                             dcc.Tab(
                                 label="About pileup.js",
                                 value="what-is",
