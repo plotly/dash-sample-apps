@@ -125,7 +125,7 @@ def layout(app):
                         value="data",
                         children=[
                             dcc.Tab(
-                                label="Data",
+                                label="Volcano plot",
                                 value="data",
                                 children=html.Div(
                                     className="control-tab",
@@ -167,7 +167,48 @@ def layout(app):
                                 ),
                             ),
                             dcc.Tab(
-                                label="About",
+                                label="About this tutorial",
+                                value="description",
+                                children=html.Div(
+                                    className="control-tab",
+                                    children=[
+                                        html.H4(
+                                            className="description",
+                                            children="""Visualizing RNA-seq data with pileup.js
+                                            and volcano plots""",
+                                        ),
+                                        dcc.Markdown(
+                                            """
+                                In this example, we use the pileup.js and volcano plot components from dash-bio
+                                to visualize two RNA-sequencing
+                                (RNA-seq) samples from two conditions. RNA-seq allows us to learn how the expression
+                                of genes changes between different samples of interest. Here, we are looking at
+                                RNA-seq from two samples that are taken from two different mouse cell types.
+                                We refer to these different cell types as basal and luminal cell types.
+
+                                On the right, we use pileup.js to visualize aligned reads from RNA-seq samples.
+                                On the left, we have a volcano plot, that visualizes the magnitude of change
+                                in gene expression between the two samples. On the x-axis, the `Effect Size`
+                                indicates the log2 fold change in expression
+                                between the two conditions. On the y-axis, `-log10(p)` indicates the -log10(p-value)
+                                for each gene. This p-value, along with the effect size,
+                                can help determine whether each gene is significantly
+                                differentially expressed between the conditions of interest.
+
+                                To explore a gene, you can click on a gene in the volcano plot. After clicking on
+                                a gene, the genomic region overlapping that gene will show up in the pileup.js
+                                browser on the right. Now, you can investigate RNA-seq alignments at each
+                                gene of interest. You may notice that genes with a negative effect size in the volcano
+                                plot have more RNA-seq reads in the top sample (the basal cell type), while genes
+                                with a positive effect size have more reads in the bottom sample
+                                (the luminal cell type).
+                                """
+                                        ),
+                                    ],
+                                ),
+                            ),
+                            dcc.Tab(
+                                label="About pileup.js",
                                 value="what-is",
                                 children=html.Div(
                                     className="control-tab",
@@ -181,7 +222,7 @@ def layout(app):
                                 The Dash pileup.js component is a high-performance genomics
                                 data visualization component developed originally by the Hammer Lab
                                 (https://github.com/hammerlab/pileup.js). pileup.js
-                                supports visualization of genomic file formats, such as vcfs,
+                                supports visualization of genomic file formats, such as vcf,
                                 bam, and bigbed files. pileup.js additionally allows flexible
                                 interaction with non-standard data formats. Users can visualize
                                 GA4GH JSON formatted alignments, features and variants. Users can
