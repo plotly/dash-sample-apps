@@ -15,7 +15,7 @@
 
 #pileup-control-tabs {
     width: 400px;
-    height: 750px !important;
+    height: 950px !important;
     margin: 50px;
     margin-right: 0px;
     background-color: #fff;
@@ -27,7 +27,7 @@
     padding: 20px;
 }
 #app-page-content .control-tab {
-  height: 750px !important;
+  height: 950px !important;
 }
 .pileup-tab {
     max-height: 420px;
