@@ -2,17 +2,17 @@ import pandas as pd
 import numpy as np
 
 # raw_df = pd.read_csv(cv_file, names=header_list, error_bad_lines=False, dtype=str)
-raw_df1 = pd.read_csv("data/Sample_Game_2_RawTrackingData_Away_Team.csv")
+raw_df1 = pd.read_csv("data/source/Sample_Game_2_RawTrackingData_Away_Team.csv")
 # sample every 5th row
 raw_df1 = raw_df1.iloc[::7, :]
 
-raw_df2 = pd.read_csv("data/Sample_Game_2_RawTrackingData_Home_Team.csv")
+raw_df2 = pd.read_csv("data/source/Sample_Game_2_RawTrackingData_Home_Team.csv")
 raw_df2 = raw_df2.iloc[::7, :]
 
 column = 1
 df = pd.DataFrame(columns=["half", "frame", "time", "x", "y"])
 # x range needs adjusted depending on how many columns there are. Should really calculate this not eyeball items
-# and do it manually. But hey it's just for a demo not ongoing
+# and do it manually.
 for x in range(0, 13):
     column = column + 2
     df_temp = raw_df1.iloc[:, [0, 1, 2, column, column + 1]].copy()
@@ -35,8 +35,8 @@ for x in range(0, 12):
     df_temp2["jersey_number"] = raw_df2.columns[column]
     df2 = pd.concat([df2, df_temp2]).reset_index(drop=True)
 df2["team"] = "Home"
-df2.loc[df2["x"].isna(), "x"] = 0.5
-df2.loc[df2["y"].isna(), "y"] = 0.5
+df2.loc[df2["x"].isna(), "x"] = None
+df2.loc[df2["y"].isna(), "y"] = None
 df2 = df2[df2["x"].notna()]
 df2.drop(df2.loc[df2["half"] == "Period"].index, inplace=True)
 
