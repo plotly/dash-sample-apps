@@ -22,6 +22,7 @@ python app.py
 ```
 
 ## References
+- Original repository: https://github.com/nathanrooy/dash-vtk-cfd
 - SIMPLE algorithm: https://en.wikipedia.org/wiki/SIMPLE_algorithm
 - RANS: https://en.wikipedia.org/wiki/Reynolds-averaged_Navier%E2%80%93Stokes_equations
 - SST k-ω turbulence model: https://www.cfd-online.com/Wiki/SST_k-omega_model
