@@ -1,6 +1,6 @@
 # Dash: Vehicle Geometry with OpenFOAM
 
-by Nathan Rooy
+by [Nathan Rooy](https://github.com/nathanrooy)
 
 ## Background
 
