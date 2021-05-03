@@ -111,32 +111,58 @@ dropdown_game_type_dict = gt_dict = {
 }
 
 
+popover_status = dbc.Popover(
+    [
+        dbc.PopoverHeader("Status of the Game"),
+        dbc.PopoverBody(
+            "Games can be over in a myriad of ways, either by checkmate, draw, player resignation, or when a player runs out of time. Filter the games by these conditions here."
+        ),
+    ],
+    trigger="hover",
+    target="dropdown_status",
+    placement="left",
+)
 
+popover_time_control = dbc.Popover(
+    [
+        dbc.PopoverHeader("Time Control Filter"),
+        dbc.PopoverBody(
+            "Players have a specific time to make their moves. The games in the dataset follow this convention: Bullet Games (0-3 minutes), Blitz(3-10 minutes), Classical(10 minutes+). Note: Lichess uses a slight different system today."
+        ),
+    ],
+    trigger="hover",
+    target="dropdown_time_control",
+    placement="left",
+)
 
-popover_status = dbc.Popover([
-    dbc.PopoverHeader("Status of the Game"),
-    dbc.PopoverBody("Games can be over in a myriad of ways, either by checkmate, draw, player resignation, or when a player runs out of time. Filter the games by these conditions here."),    
-    ],trigger="hover",target="dropdown_status",placement="left")
+popover_game_type = dbc.Popover(
+    [
+        dbc.PopoverHeader("Type of Competitive Setting"),
+        dbc.PopoverBody(
+            "This dataset contains games played in specific tournaments, hosted by Lichess."
+        ),
+    ],
+    trigger="hover",
+    target="dropdown_game_type",
+    placement="left",
+)
 
-popover_time_control = dbc.Popover([
-    dbc.PopoverHeader("Time Control Filter"),
-    dbc.PopoverBody("Players have a specific time to make their moves. The games in the dataset follow this convention: Bullet Games (0-3 minutes), Blitz(3-10 minutes), Classical(10 minutes+). Note: Lichess uses a slight different system today."),
-    
-    ],trigger="hover",target="dropdown_time_control",placement="left")
-
-popover_game_type = dbc.Popover([
-    dbc.PopoverHeader("Type of Competitive Setting"),
-    dbc.PopoverBody("This dataset contains games played in specific tournaments, hosted by Lichess."),
-    
-    ],trigger="hover",target="dropdown_game_type",placement="left")
-
-about_this = html.Div([
-    dbc.Button("About this Visualization",id="abt_us"),
-    dbc.Popover([
-        dbc.PopoverHeader("Powered by Lichess"),
-        dbc.PopoverBody("This visualization is powered by a dataset of games played in April, 2017, sourced from the publically available lichess database.\nAuthors:Frederico Santos, Rupesh Baradi, Tiago Ramos.\nNova IMS,Data Visualization Course, 2021."),
-],trigger="click",target="abt_us"),"stuff"])
-
+about_this = html.Div(
+    [
+        dbc.Button("About this Visualization", id="abt_us"),
+        dbc.Popover(
+            [
+                dbc.PopoverHeader("Powered by Lichess"),
+                dbc.PopoverBody(
+                    "This visualization is powered by a dataset of games played in April, 2017, sourced from the publically available lichess database.\nAuthors:Frederico Santos, Rupesh Baradi, Tiago Ramos.\nNova IMS,Data Visualization Course, 2021."
+                ),
+            ],
+            trigger="click",
+            target="abt_us",
+        ),
+        "stuff",
+    ]
+)
 
 
 # Set stylesheets and app.
@@ -385,7 +411,8 @@ dropdown_status = dbc.DropdownMenu(
         dbc.DropdownMenuItem("Resignation", id="st_resign", n_clicks=0),
         dbc.DropdownMenuItem("Time Forfeit", id="st_outoftime", n_clicks=0),
     ],
-    label="Status",id="dropdown_status"
+    label="Status",
+    id="dropdown_status",
 )
 
 dropdown_winner = dbc.Collapse(
@@ -396,7 +423,8 @@ dropdown_winner = dbc.Collapse(
             dbc.DropdownMenuItem("White", id="wn_white", n_clicks=0),
             dbc.DropdownMenuItem("Black", id="wn_black", n_clicks=0),
         ],
-        label="Winning Side",id="dropdown_winner"
+        label="Winning Side",
+        id="dropdown_winner",
     ),
     id="wn_menu",
 )
@@ -411,7 +439,8 @@ dropdown_time_control = dbc.DropdownMenu(
         dbc.DropdownMenuItem("Classical", id="tc_classic", n_clicks=0),
         dbc.DropdownMenuItem("No Time Control", id="tc_none", n_clicks=0),
     ],
-    label="Time Control",id="dropdown_time_control"
+    label="Time Control",
+    id="dropdown_time_control",
 )
 
 dropdown_game_type = dbc.DropdownMenu(
@@ -421,17 +450,21 @@ dropdown_game_type = dbc.DropdownMenu(
         dbc.DropdownMenuItem("Standard", id="gt_std", n_clicks=0),
         dbc.DropdownMenuItem("Tournament", id="gt_tourney", n_clicks=0),
     ],
-    label="Game Type",id="dropdown_game_type"
+    label="Game Type",
+    id="dropdown_game_type",
 )
 
 dropdown_menus = dbc.Row(
     style={"margin-bottom": margin_bottom},
     justify="center",
     children=[
-        dropdown_status,popover_status,
+        dropdown_status,
+        popover_status,
         dropdown_winner,
-        dropdown_time_control,popover_time_control,
-        dropdown_game_type,popover_game_type
+        dropdown_time_control,
+        popover_time_control,
+        dropdown_game_type,
+        popover_game_type,
     ],
 )
 
@@ -455,7 +488,7 @@ app.layout = dbc.Jumbotron(
                         c_elo_slider,
                         c_moves_slider,
                         dropdown_menus,
-                        about_this
+                        about_this,
                     ]
                 ),
                 # CHESS BOARD COLUMN

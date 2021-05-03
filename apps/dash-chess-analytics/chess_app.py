@@ -23,8 +23,7 @@ from styles import *
 # Read the .csv file with the preprocessed data.
 df = pd.read_csv(
     "chess_app.csv",
-    dtype={"pawns": int, "knights": int,
-           "bishops": int, "rooks": int, "queens": int},
+    dtype={"pawns": int, "knights": int, "bishops": int, "rooks": int, "queens": int},
     converters={"wKing_sqr": ast.literal_eval, "bKing_sqr": ast.literal_eval},
 )
 
@@ -35,10 +34,13 @@ df = board_output(df["wKing_sqr"])
 
 # FILLER STUFF ~ LET'S KEEP THIS FILE CLEAN, have other .py files with everything!
 x_coords = ["A", "B", "C", "D", "E", "F", "G", "H"]
-replacer = {i+1: x for i, x in enumerate(x_coords)}
-df = df.stack().reset_index().rename(
-    columns={"level_0": "rows", "level_1": "cols", 0: "freq"})
-df.iloc[:, 0:2] = df.iloc[:, 0:2].apply(lambda x: x+1)
+replacer = {i + 1: x for i, x in enumerate(x_coords)}
+df = (
+    df.stack()
+    .reset_index()
+    .rename(columns={"level_0": "rows", "level_1": "cols", 0: "freq"})
+)
+df.iloc[:, 0:2] = df.iloc[:, 0:2].apply(lambda x: x + 1)
 df["letters"] = df.cols.replace(replacer)
 
 # Set stylesheets and app.
@@ -55,10 +57,7 @@ app.layout = html.Div(
     style={"backgroundColor": colors["background"]},
     children=[
         html.Div(
-            [
-                html.H2("Chess App"),
-                html.Img(src="/assets/chess-app.jpg"),
-            ],
+            [html.H2("Chess App"), html.Img(src="/assets/chess-app.jpg"),],
             className="banner",
         ),
         html.Div(
@@ -68,8 +67,7 @@ app.layout = html.Div(
                         html.Label("Range Slider"),
                         dcc.RangeSlider(
                             id="rangeslider",
-                            marks={i: "label {}".format(i)
-                                   for i in range(0, 5)},
+                            marks={i: "label {}".format(i) for i in range(0, 5)},
                             min=0,
                             max=5,
                             value=[0, 1],

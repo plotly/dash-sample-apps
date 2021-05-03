@@ -357,12 +357,7 @@ c_moves_slider = dbc.Col(
 
 dropdown_status = dbc.DropdownMenu(
     [
-        dbc.DropdownMenuItem(
-            str(
-                "Status",
-            ).upper(),
-            header=True,
-        ),
+        dbc.DropdownMenuItem(str("Status",).upper(), header=True,),
         dbc.DropdownMenuItem(str("All").upper(), id="st_all", n_clicks=0),
         dbc.DropdownMenuItem(str("Draws").upper(), id="st_draw", n_clicks=0),
         dbc.DropdownMenuItem(str("Checkmate").upper(), id="st_mate", n_clicks=0),

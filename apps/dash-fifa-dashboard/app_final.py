@@ -274,18 +274,10 @@ controls_player_2 = dbc.Card(
 controls = dbc.Card(
     [
         dbc.FormGroup(
-            [
-                html.Label("Choose an Attribute:"),
-                html.Br(),
-                metric1_dropdown,
-            ]
+            [html.Label("Choose an Attribute:"), html.Br(), metric1_dropdown,]
         ),
         dbc.FormGroup(
-            [
-                html.Label("Choose an Attribute:"),
-                html.Br(),
-                metric2_dropdown,
-            ]
+            [html.Label("Choose an Attribute:"), html.Br(), metric2_dropdown,]
         ),
         dbc.FormGroup(
             [html.Label("Choose an Attribute:"), html.Br(), metric3_dropdown]
@@ -298,11 +290,7 @@ controls = dbc.Card(
 controls_club = dbc.Card(
     [
         dbc.FormGroup(
-            [
-                html.Label("Choose a League:"),
-                html.Br(),
-                metric_club_dropdown1,
-            ]
+            [html.Label("Choose a League:"), html.Br(), metric_club_dropdown1,]
         ),
         dbc.FormGroup(
             [
@@ -654,17 +642,11 @@ def bar_plot(input_value1, input_value2, input_value3, age):
         ),
     )
 
-    layout_bar1 = dict(
-        xaxis=dict(title="League", tickangle=45),
-    )
+    layout_bar1 = dict(xaxis=dict(title="League", tickangle=45),)
 
-    layout_bar2 = dict(
-        xaxis=dict(title="League", tickangle=45),
-    )
+    layout_bar2 = dict(xaxis=dict(title="League", tickangle=45),)
 
-    layout_bar3 = dict(
-        xaxis=dict(title="League", tickangle=45),
-    )
+    layout_bar3 = dict(xaxis=dict(title="League", tickangle=45),)
     fig1 = go.Figure(data=data_bar1, layout=layout_bar1)
     fig1.update_traces(
         marker_color="rgb(133,61,246)",
