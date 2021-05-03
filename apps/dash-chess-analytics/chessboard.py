@@ -82,16 +82,16 @@ def getBoard(fig):
     x_black = []
     for i in range(8):
         if (i % 2) == 0:
-            x_black += list(range(0,8,2))
+            x_black += list(range(0, 8, 2))
         else:
-            x_black += list(range(1,8,2))
-            
+            x_black += list(range(1, 8, 2))
+
     x_white = []
     for i in range(8):
         if (i % 2) == 0:
-            x_white += list(range(1,8,2))
+            x_white += list(range(1, 8, 2))
         else:
-            x_white += list(range(0,8,2))
+            x_white += list(range(0, 8, 2))
     fig.add_trace(
         go.Scatter(
             x0=0,
