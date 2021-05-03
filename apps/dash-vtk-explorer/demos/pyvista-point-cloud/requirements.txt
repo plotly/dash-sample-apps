@@ -2,3 +2,4 @@
 dash-vtk
 pyvista
 numpy
+vtk

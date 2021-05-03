@@ -207,7 +207,7 @@ rul_estimation_indicator = dbc.Card(
                     color="#fec036",
                     style={"color": "#black"},
                     backgroundColor="#2b2b2b",
-                    value="12345.67",
+                    value="0.0",
                 )
             ],
             style={
@@ -232,7 +232,7 @@ info_box = dbc.Card(
                         "on the graph and estimated RUL. In order to estimate the RUL, use "
                         "the button 'Get New Data' and then, 'Predict'. The estimated RUL will be "
                         "printed.",
-                        rows=10,
+                        rows=8,
                         style={
                             "width": "100%",
                             "height": "100%",
@@ -278,15 +278,17 @@ blade_angle_display = dbc.Card(
                         max=max(
                             df["WEC: ava. blade angle A"]
                         ),  # This one should be the theoretical maximum
-                        value=100,
+                        value=0,
                         showCurrentValue=True,
                         color="#fec036",
                         style={
+                            "align": "center",
                             "display": "flex",
                             "marginTop": "5%",
                             "marginBottom": "-10%",
                         },
                     ),
+                    className="m-auto",
                     style={
                         "display": "flex",
                         "backgroundColor": "black",
@@ -295,6 +297,7 @@ blade_angle_display = dbc.Card(
                     },
                 )
             ],
+            className="d-flex",
             style={
                 "backgroundColor": "black",
                 "border-radius": "1px",
@@ -332,11 +335,13 @@ active_power_display = dbc.Card(
                         showCurrentValue=True,
                         color="#fec036",
                         style={
+                            "align": "center",
                             "display": "flex",
                             "marginTop": "5%",
                             "marginBottom": "-10%",
                         },
                     ),
+                    className="m-auto",
                     style={
                         "display": "flex",
                         "backgroundColor": "black",
@@ -345,6 +350,7 @@ active_power_display = dbc.Card(
                     },
                 )
             ],
+            className="d-flex",
             style={
                 "backgroundColor": "black",
                 "border-radius": "1px",
@@ -359,8 +365,9 @@ active_power_display = dbc.Card(
 active_power_from_wind_display = dbc.Card(
     children=[
         dbc.CardHeader(
-            "Active Power Available\n from Wind [kW]",
+            "Active Power Available from Wind [kW]",
             style={
+                "display": "inline-block",
                 "text-align": "center",
                 "color": "white",
                 "backgroundColor": "black",
@@ -380,11 +387,13 @@ active_power_from_wind_display = dbc.Card(
                         showCurrentValue=True,
                         color="#fec036",
                         style={
+                            "align": "center",
                             "display": "flex",
                             "marginTop": "5%",
                             "marginBottom": "-10%",
                         },
                     ),
+                    className="m-auto",
                     style={
                         "display": "flex",
                         "backgroundColor": "black",
@@ -393,6 +402,7 @@ active_power_from_wind_display = dbc.Card(
                     },
                 )
             ],
+            className="d-flex",
             style={
                 "backgroundColor": "black",
                 "border-radius": "1px",
@@ -429,11 +439,13 @@ wind_speed_information = dbc.Card(
                         showCurrentValue=True,
                         color="#fec036",
                         style={
+                            "align": "center",
                             "display": "flex",
                             "marginTop": "5%",
                             "marginBottom": "-10%",
                         },
                     ),
+                    className="m-auto",
                     style={
                         "display": "flex",
                         "backgroundColor": "black",
@@ -442,6 +454,7 @@ wind_speed_information = dbc.Card(
                     },
                 )
             ],
+            className="d-flex",
             style={
                 "backgroundColor": "black",
                 "border-radius": "1px",
@@ -478,11 +491,13 @@ reactive_power_display = dbc.Card(
                         showCurrentValue=True,
                         color="#fec036",
                         style={
+                            "align": "center",
                             "display": "flex",
                             "marginTop": "5%",
                             "marginBottom": "-10%",
                         },
                     ),
+                    className="m-auto",
                     style={
                         "display": "flex",
                         "backgroundColor": "black",
@@ -491,6 +506,7 @@ reactive_power_display = dbc.Card(
                     },
                 )
             ],
+            className="d-flex",
             style={
                 "backgroundColor": "black",
                 "border-radius": "1px",
@@ -502,33 +518,77 @@ reactive_power_display = dbc.Card(
     style={"height": "95%"},
 )
 
+gauge_size = "auto"
 app.layout = dbc.Container(
     fluid=True,
     children=[
         logo(app),
         dbc.Row(
             [
-                dbc.Col(graphs, width=10),
+                dbc.Col(graphs, xs=10, md=10, lg=10, width=10),
                 dbc.Col(
                     [
-                        dbc.Row(dbc.Col(rul_estimation_indicator, width=12)),
-                        dbc.Row(dbc.Col(info_box, width=12)),
-                        dbc.Row(dbc.Col(get_new_information_button, width=12)),
-                        dbc.Row(dbc.Col(predict_button, width=12)),
+                        dbc.Row(
+                            dbc.Col(
+                                rul_estimation_indicator, xs=12, md=12, lg=12, width=12
+                            )
+                        ),
+                        dbc.Row(dbc.Col(info_box, xs=12, md=12, lg=12, width=12)),
+                        dbc.Row(
+                            dbc.Col(
+                                get_new_information_button,
+                                xs=12,
+                                md=12,
+                                lg=12,
+                                width=12,
+                            )
+                        ),
+                        dbc.Row(dbc.Col(predict_button, xs=12, md=12, lg=12, width=12)),
                     ]
                 ),
             ],
-            style={"display": "flex", "marginBottom": "-3%",},
+            justify="start",
+            style={"display": "flex", "marginBottom": "-3%"},
         ),
         dbc.Row(
             [
-                dbc.Col(active_power_display, width="auto"),
-                dbc.Col(active_power_from_wind_display, width="auto"),
-                dbc.Col(reactive_power_display, width="auto"),
-                dbc.Col(wind_speed_information, width="auto"),
-                dbc.Col(blade_angle_display, width="auto"),
+                dbc.Col(
+                    active_power_display,
+                    xs=gauge_size,
+                    md=gauge_size,
+                    lg=gauge_size,
+                    width=gauge_size,
+                ),
+                dbc.Col(
+                    active_power_from_wind_display,
+                    xs=gauge_size,
+                    md=gauge_size,
+                    lg=gauge_size,
+                    width=gauge_size,
+                ),
+                dbc.Col(
+                    reactive_power_display,
+                    xs=gauge_size,
+                    md=gauge_size,
+                    lg=gauge_size,
+                    width=gauge_size,
+                ),
+                dbc.Col(
+                    wind_speed_information,
+                    xs=gauge_size,
+                    md=gauge_size,
+                    lg=gauge_size,
+                    width=gauge_size,
+                ),
+                dbc.Col(
+                    blade_angle_display,
+                    xs=gauge_size,
+                    md=gauge_size,
+                    lg=gauge_size,
+                    width=gauge_size,
+                ),
             ],
-            style={"marginRight": "10%"},
+            style={"marginTop": "3%"},
         ),
     ],
 )
@@ -590,7 +650,7 @@ def fig_update_layout(fig):
 )
 def update_graph(selected_column, start_date, end_date, n_get_new_info, n_pred):
     if n_pred is None:  # here is my work before prediction button is activated.
-        value_rul = 123456.7
+        value_rul = 0.0
         information_update = (
             "This field is used to display information about a feature displayed "
             "on the graph and estimated RUL. In order to estimate the RUL, use "
@@ -723,7 +783,7 @@ def update_graph(selected_column, start_date, end_date, n_get_new_info, n_pred):
                 return fig, value_rul, _information_update
     else:
         if n_get_new_info is None:
-            value_rul = 123456.7
+            value_rul = 0.0
             information_update = "To predict RUL, please use 'Get New Data' button."
             if selected_column in list(df):
                 if start_date and end_date:
@@ -771,7 +831,7 @@ def update_graph(selected_column, start_date, end_date, n_get_new_info, n_pred):
             y_pred = model.predict(x_test)
             df_out = pd.DataFrame()
             df_out["pred"] = y_pred
-            value_rul = int(max(df_out["pred"]))
+            value_rul = round(max(df_out["pred"]))
             information_update = "RUL is estimated based on the readings from the last week: " "from " + str(
                 x_test.index[0]
             ) + " to " + str(

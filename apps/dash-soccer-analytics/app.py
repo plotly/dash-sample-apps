@@ -40,7 +40,7 @@ static_graph_controls = [
             dbc.Select(
                 id="event-file",
                 options=[{"label": i, "value": i} for i in event_files],
-                value=event_files[0],
+                value=None,
                 placeholder="Select a file for events",
             ),
         ]

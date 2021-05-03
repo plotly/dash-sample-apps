@@ -1,0 +1,120 @@
+.banner {
+    height: 75px;
+    margin: 0px -10px 10px;
+    background-color: rgb(66, 196, 247);
+    border-radius: 2px;
+}
+
+.banner h2{
+    color: white;
+    padding-top: 10px;
+    margin-left: 2%;
+    display: inline-block;
+}
+
+.banner Img{
+    position:relative;
+    float: right;
+    right: 10px;
+    height: 75px;
+}
+
+body {
+    margin: 40px;
+    background-color: #e0e0e0;
+}
+
+
+/* BUTTON STUFF */
+
+.btn-outline-dark:not(:disabled):not(.disabled):focus, .btn-outline-dark:not(:disabled):not(.disabled).focus, .show>.btn-outline-dark.dropdown-toggle {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+/* SLIDER STUFF */
+
+.rc-slider-handle:hover {
+    border-color: #4b4b4b;
+}
+
+.rc-slider-handle {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    cursor: -webkit-grab;
+    margin-top: -5px;
+    cursor: grab;
+    border-radius: 0%;
+    border: solid 2px #858585;
+    background-color: #fff;
+    -ms-touch-action: pan-x;
+    touch-action: pan-x;
+}
+
+.rc-slider-handle:focus {
+    border-color: #6c6c6c;
+    box-shadow: 0 0 0 5px #d3d3d3;
+    outline: none;
+}
+
+.rc-slider-handle-click-focused:focus {
+    border-color: #6c6c6c;
+    box-shadow: 0 0 0 5px #d3d3d3;
+    outline: none;
+}
+
+.rc-slider-dot {
+    position: absolute;
+    bottom: -2px;
+    margin-left: -4px;
+    width: 2px;
+    height: 8px;
+    border: 1px solid #f8f8f8;
+    background-color: #c3c3c3;
+    cursor: pointer;
+    border-radius: 0%;
+    vertical-align: middle;
+}
+
+.rc-slider-dot-active {
+    border-color: #9b9b9b;
+}
+
+.rc-slider-rail {
+    position: absolute;
+    width: 100%;
+    background-color: #f8f8f8;
+    height: 4px;
+    border-radius: 6px;
+}
+
+.rc-slider-track {
+    position: absolute;
+    left: 0;
+    height: 4px;
+    border-radius: 6px;
+    background-color: #999999;
+}
+
+.rc-slider-handle:active {
+    border-color: #303030;
+    box-shadow: 0 0 5px #414141;
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+}
+
+/* 
+
+PLACE THIS CODE IN THE HEAD SECTION OF OUR PAGES
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#bd3636">
+<meta name="msapplication-TileColor" content="#bd3636">
+<meta name="theme-color" content="#f98a8a">
+ */

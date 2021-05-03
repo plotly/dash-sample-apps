@@ -1,0 +1,9 @@
+pandas~=1.2.3
+branca~=0.4.2
+folium~=0.12.1
+numpy~=1.20.1
+plotly~=4.14.3
+scipy~=1.6.1
+dash~=1.19.0
+dash-bootstrap-components~=0.11.3
+gunicorn~=20.0.4

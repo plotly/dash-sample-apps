@@ -1,0 +1,17 @@
+/venv
+
+/gulp/node_modules
+/gulp/package-lock.json
+/gulp/yarn.lock
+
+# cache files
+.idea
+/.idea
+/app/__pycache__
+/app/ui/__pycache__
+/config/__pycache__
+
+# generated HTML file
+/data/index.html
+.vscode
+*__pycache__

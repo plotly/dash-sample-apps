@@ -40,6 +40,12 @@ def game_simulator(file, half, start, stop):
     # Make the ball marker size smaller than the other markers
     df.loc[df["jersey_number"] == 0, "size"] = 3
 
+    # Hide substitutes and ball out of bounds by making their size 0
+    df.loc[df["x"] == None, "size"] = 0
+    df.loc[df["y"] == None, "size"] = 0
+    df.loc[df["x"] == None, "jersey_number"] = ""
+    df.loc[df["y"] == None, "jersey_number"] = ""
+
     # Limit the dataframe to include only columns that we're going to use
     df = df[["half", "time", "x", "y", "team", "size", "jersey_number"]]
 
@@ -94,6 +100,15 @@ def game_simulator(file, half, start, stop):
             "Team": False,
             "jersey_number": False,
         },
+    )
+
+    # Add corner flags to prevent zoom and pitch distortion
+    fig.add_scatter(
+        x=[0, 0, 1, 1],
+        y=[0, 1, 0, 1],
+        mode="markers",
+        marker=dict(size=1, color="grey"),
+        name="Flags",
     )
 
     # Make jersey number really small inside markers
@@ -171,10 +186,7 @@ def game_simulator(file, half, start, stop):
     ] = "lightgrey"
     fig["layout"]["template"]["data"]["scatter"][0]["marker"]["opacity"] = 0.9
 
-    # Trying to set marker border colours (doesn't seem to work - gets overwritten by theme)
-    fig.update_traces(marker=dict(size=10, opacity=0.9), selector=dict(mode="markers"))
-
-    fig.update_layout(margin=dict(l=20, r=20, b=10, t=20))
+    fig.update_layout(margin=dict(l=20, r=20, b=20, t=20))
 
     fig.update_layout(
         legend_orientation="v", transition={"duration": 0, "ordering": "traces first"}
@@ -202,6 +214,11 @@ def game_simulator(file, half, start, stop):
     fig.update_layout(autosize=True, hovermode="closest")
     # fig.update_layout(showlegend=False)
     fig.update_layout(legend=dict(font=dict(family="Arial", size=10, color="grey")))
+
+    # Hide corner flag trace in the legend
+    for trace in fig["data"]:
+        if trace["name"] == "Flags":
+            trace["showlegend"] = False
 
     export = input("Do you wish to export the graph to json (y/n)?:")
     if export == "y":
