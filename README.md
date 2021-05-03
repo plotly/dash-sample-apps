@@ -21,7 +21,7 @@ want to run is `my_dash_app` and the app filename is `app.py`, you
 would need to run `python apps/my_dash_app/app.py` from the root
 of the repository.
 
-Each app has a requirements.txt, install the dependecies in a virtual
+Each app has a requirements.txt, install the dependencies in a virtual
 environment.
 
 ## Downloading and running a single app

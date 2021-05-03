@@ -1,0 +1,111 @@
+#pileup-body ::-webkit-scrollbar-thumb {
+    background-color: #34AD99 !important;
+}
+
+.pileup-root {
+   padding: 20px;
+}
+
+/* pileup track */
+.pileup-root > .pileup, .pileup-root > .genotypes {
+  flex: 1;  /* stretch to fill remaining space */
+  flex-basis: auto;
+  min-height: 200px !important; /* prevent tracks from becoming too small */
+}
+
+#pileup-control-tabs {
+    width: 400px;
+    height: 950px !important;
+    margin: 50px;
+    margin-right: 0px;
+    background-color: #fff;
+    font-size: 10pt;
+    float: left;
+    display: inline-block;
+}
+#pileup-control-tabs .tab-content {
+    padding: 20px;
+}
+#app-page-content .control-tab {
+  height: 950px !important;
+}
+.pileup-tab {
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+#pileup-tabs-parent .tab-content {
+  height: 820px !important;
+}
+
+#pileup-body .control-tabs .tab--selected {
+    color: #34AD99 !important;
+}
+
+#pileup-control-tabs .tab-content {
+    padding: 20px;
+}
+#pileup-chart {
+    width: calc(100vw - 650px);
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 50px;
+    display: inline-block;
+}
+#pileup-chart svg {
+    background-color: rgba(0,0,0,0) !important;
+}
+#pileup-body .control-upload {
+    border-color: #34AD99 !important;
+}
+#pileup-body .control-download:hover {
+    color: #34AD99 !important;
+    border-color: #34AD99 !important;
+}
+#pileup-body h5 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#pileup-body .rc-slider-track {
+    background-color: #34AD99;
+}
+#pileup-body .rc-slider-handle, #pileup-body .rc-slider-dot {
+    border-color: #34AD99;
+}
+.pileup-settings .rc-slider {
+    width: 50% !important;
+    margin-left: 25px;
+}
+
+.pileup-radio > label {
+    text-align: left;
+    display: block;
+}
+.pileup-radio {
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 140px !important;
+    display: inline-block;
+}
+h3.pileup-settings-section {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 16pt;
+}
+
+#pileup-colorscale-dropdown, #pileup-overview-dropdown,
+#pileup-conservationcolorscale-dropdown, #pileup-conservationmethod-dropdown,
+#pileup-gapcolor-dropdown {
+    display: inline-block;
+    width: 150px;
+    float: right;
+}
+#pileup-body .rc-slider-track {
+    background-color: #34AD99 !important;
+}
+
+#pileup-body .rc-slider-handle {
+    border-color: #34AD99 !important;
+}
