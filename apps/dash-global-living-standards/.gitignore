@@ -1,0 +1,14 @@
+.idea
+data
+.ipynb_checkpoints
+__pycache__
+age_group.csv
+City.csv
+City1.csv
+col.csv
+country_codes.csv
+df_outer_full.csv
+Index.csv
+Milennial ranking.csv
+whr.csv
+venv/
