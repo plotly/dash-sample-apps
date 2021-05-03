@@ -1,0 +1,143 @@
+body {
+  background-color:#EDEFEB;
+  font-family: "Open Sans", verdana, arial, sans-serif;
+}
+
+.side_bar {
+  height: 100%;
+  width: 14%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #4B9072;
+  padding-left: 1%;
+  padding-right: 1%;
+  color:rgb(7, 7, 7);
+}
+
+.main {
+  font-size: 15px; 
+  padding: 0px 10px;
+  padding-left: 16%;
+  color:#363535;
+}
+
+.footer {
+  position: relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #4b9072a7;
+  padding-left: 1%;
+}
+
+h1 {
+  color:#EDEFEB;
+  font-family: ui-monospace;
+}
+
+h3 {
+  margin-block-start:0.3em;
+  font-size: smaller;
+}
+
+h4 {
+  margin-block-end:0.3em;
+  font-size: smaller;
+}
+
+.text{
+  margin: 10px;
+  padding: 25px;
+  align-self: center;
+}
+
+.row{
+  display: flex;
+}
+
+/* Boxes */
+
+.box {
+  border-radius: 20px;
+  background-color: #F9F9F8;
+  margin: 10px;
+  padding: 25px;
+  box-shadow: 2px 2px 2px lightgrey;
+}
+
+.box_comment {
+  border-radius: 20px;
+  background-color: #d4f5c29a;
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 2px 2px 2px lightgrey;
+  font-size: small;
+  text-align: center;
+  font-family: system-ui;
+}
+
+.box_emissions{
+  border-radius: 20px;
+  background-color: #e9a8538e;    
+  margin: 2px;
+  box-shadow: 2px 2px 2px lightgrey;
+  justify-content: center;
+  width: 50%;
+  text-align: center;
+}
+/* Drop down */
+#drop_map .VirtualizedSelectFocusedOption {
+  background-color:#ebb36abf;
+}
+
+#drop_continent .VirtualizedSelectFocusedOption {
+  background-color:#ebb36abf;
+}
+
+/* Radio buttons */
+.radio {
+  display:flex;
+  justify-content: left;
+  place-content:space-around;
+  width: 88%;
+}
+
+.radio input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+}
+
+.radio label {
+  display: table-caption;
+  background-color: #F9F9F8;
+  padding: 15px 15px;
+  font-size: 16px;
+  border: 2px solid #e9a8538e;
+  border-radius: 10px;
+  width: 200%;
+  text-align: center;
+}
+
+.radio input[type="radio"]:checked + label {
+  background-color: #e98b1044;              
+  border: 2px solid #F9F9F8;
+}
+
+.radio label:hover {
+  background-color: #e1e2df;
+  border: 2px solid #e1e2df;
+}
+
+/* Scrollbars */
+*::-webkit-scrollbar {
+  width: 12px;               
+}
+*::-webkit-scrollbar-track {
+  background: #EDEFEB;        
+}
+*::-webkit-scrollbar-thumb {
+  background-color:#ebb36abf;    
+  border-radius: 20px;      
+  border: 3px solid #EDEFEB;  
+}

@@ -1,0 +1,37 @@
+Food product,Land use change,Animal Feed,Farm,Processing,Transport,Packging,Retail,Total_emissions,Origin
+Apples,0.0,0.0,0.2,0.0,0.1,0.0,0.0,0.3,Vegetal
+Bananas,0.0,0.0,0.3,0.1,0.3,0.1,0.0,0.8,Vegetal
+Barley,0.0,0.0,0.2,0.1,0.0,0.5,0.3,1.1,Vegetal
+Beef (beef herd),16.3,1.9,39.4,1.3,0.3,0.2,0.2,59.6,Animal
+Beet Sugar,0.0,0.0,0.5,0.2,0.6,0.1,0.0,1.4,Vegetal
+Berries & Grapes,0.0,0.0,0.7,0.0,0.2,0.2,0.0,1.1,Vegetal
+Brassicas,0.0,0.0,0.3,0.0,0.1,0.0,0.0,0.4,Vegetal
+Cane Sugar,1.2,0.0,0.5,0.0,0.8,0.1,0.0,2.6,Vegetal
+Cassava,0.6,0.0,0.2,0.0,0.1,0.0,0.0,0.9,Vegetal
+Cheese,4.5,2.3,13.1,0.7,0.1,0.2,0.3,21.2,Animal
+Citrus Fruit,-0.1,0.0,0.3,0.0,0.1,0.0,0.0,0.3,Vegetal
+Coffee,3.7,0.0,10.4,0.6,0.1,1.6,0.1,16.5,Vegetal
+Dark Chocolate,14.3,0.0,3.7,0.2,0.1,0.4,0.0,18.7,Vegetal
+Eggs,0.7,2.2,1.3,0.0,0.1,0.2,0.0,4.5,Animal
+Groundnuts,0.4,0.0,1.4,0.4,0.1,0.1,0.0,2.4,Vegetal
+Lamb & Mutton,0.5,2.4,19.5,1.1,0.5,0.3,0.2,24.5,Animal
+Maize,0.3,0.0,0.5,0.1,0.1,0.1,0.0,1.1,Vegetal
+Milk,0.5,0.2,1.5,0.1,0.1,0.1,0.3,2.8,Animal
+Nuts,-2.1,0.0,2.1,0.0,0.1,0.1,0.0,0.2,Vegetal
+Oatmeal,0.0,0.0,1.4,0.0,0.1,0.1,0.0,1.6,Vegetal
+Olive Oil,-0.4,0.0,4.3,0.7,0.5,0.9,0.0,6.0,Vegetal
+Onions & Leeks,0.0,0.0,0.2,0.0,0.1,0.0,0.0,0.3,Vegetal
+Palm Oil,3.1,0.0,2.1,1.3,0.2,0.9,0.0,7.6,Vegetal
+Peas,0.0,0.0,0.7,0.0,0.1,0.0,0.0,0.8,Vegetal
+Pig Meat,1.5,2.9,1.7,0.3,0.3,0.3,0.2,7.2,Animal
+Potatoes,0.0,0.0,0.2,0.0,0.1,0.0,0.0,0.3,Vegetal
+Poultry Meat,2.5,1.8,0.7,0.4,0.3,0.2,0.2,6.1,Animal
+Rapeseed Oil,0.2,0.0,2.3,0.2,0.2,0.8,0.0,3.7,Vegetal
+Rice,0.0,0.0,3.6,0.1,0.1,0.1,0.1,4.0,Vegetal
+Root Vegetables,0.0,0.0,0.2,0.0,0.1,0.0,0.0,0.3,Vegetal
+Seafood (farmed),0.7,3.3,12.0,0.0,0.30000000000000004,0.4,0.2,16.9,Animal
+Soymilk,0.2,0.0,0.1,0.2,0.1,0.1,0.3,1.0,Vegetal
+Sunflower Oil,0.1,0.0,2.1,0.2,0.2,0.9,0.0,3.5,Vegetal
+Tofu,1.0,0.0,0.5,0.8,0.2,0.2,0.3,3.0,Vegetal
+Tomatoes,0.4,0.0,0.7,0.0,0.2,0.1,0.0,1.4,Vegetal
+Wheat & Rye,0.1,0.0,0.8,0.2,0.1,0.1,0.1,1.4,Vegetal

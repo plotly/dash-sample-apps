@@ -1,0 +1,12 @@
+Emissions,Group,Subgroup,Percentage of food emissions
+Food,Supply chain,Retail,0.78
+Food,Supply chain,Packaging,1.3
+Food,Supply chain,Transport,1.56
+Food,Supply chain,Food processing,1.04
+Food,Livestock and fisheries,Wild catch fisheries,0.26
+Food,Livestock and fisheries,Livestock and fish farms,7.8
+Food,Crop production,Crops for animal feed,1.56
+Food,Crop production,Crops for human food,5.46
+Food,Land Use,Land use for human food,2.08
+Food,Land Use,Land use for livestock,4.16
+Non-Food,,,74
