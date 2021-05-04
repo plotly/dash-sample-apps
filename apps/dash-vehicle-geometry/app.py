@@ -334,7 +334,7 @@ def probe_data(info):
                     nb_comp = array.GetNumberOfComponents()
                     value = array.GetValue(idx)
                     value_str = f"{array.GetValue(idx):.2f}"
-                    norm_str = "" 
+                    norm_str = ""
                     if nb_comp == 3:
                         value = array.GetTuple3(idx)
                         norm = (value[0] ** 2 + value[1] ** 2 + value[2] ** 2) ** 0.5
