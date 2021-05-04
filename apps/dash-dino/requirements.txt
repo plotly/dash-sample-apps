@@ -1,0 +1,12 @@
+torch
+dash-labs==0.1.0
+dash-bootstrap-components
+spectra
+colormath
+requests
+tinycss2
+pandas
+torchvision
+Pillow
+Flask-Caching
+gunicorn
