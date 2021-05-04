@@ -2,7 +2,7 @@ appdirs==1.4.4
 Brotli==1.0.9
 click==7.1.2
 dash==1.19.0
-dash-bootstrap-components==0.12.0
+dash-bootstrap-components==0.12.1
 dash-core-components==1.15.0
 dash-html-components==1.1.2
 dash-renderer==1.9.0

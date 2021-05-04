@@ -20,19 +20,23 @@ DATA_PATH = "data"
 # Helper functions
 # -----------------------------------------------------------------------------
 
-vtk_datasets = {}
-
 
 def _load_vtp(filepath, fieldname=None, point_arrays=[], cell_arrays=[]):
     reader = vtk.vtkXMLPolyDataReader()
     reader.SetFileName(filepath)
     reader.Update()
 
+    return to_mesh_state(reader.GetOutput(), fieldname, point_arrays, cell_arrays)
+
+
+def cache_mesh(filepath, di, fieldname=None, point_arrays=[], cell_arrays=[]):
+    reader = vtk.vtkXMLPolyDataReader()
+    reader.SetFileName(filepath)
+    reader.Update()
+
     # Cache mesh for future lookup
     part_name = filepath.split("/")[-1].replace(".vtp", "")
-    vtk_datasets[part_name] = reader.GetOutput()
-
-    return to_mesh_state(reader.GetOutput(), fieldname, point_arrays, cell_arrays)
+    di[part_name] = reader.GetOutput()
 
 
 # -----------------------------------------------------------------------------
@@ -55,7 +59,7 @@ vehicle_vtk = []
 vehicle_mesh_ids = []
 vehicle_meshes = []
 
-for filename in glob.glob(os.path.join(DATA_PATH, "vehicle") + "/*.vtp"):
+for filename in glob.glob(os.path.join(DATA_PATH, "vehicle-original") + "/*.vtp"):
     mesh = _load_vtp(filename, point_arrays=["U", "p"])
     part_name = filename.split("/")[-1].replace(".vtp", "")
     child = dash_vtk.GeometryRepresentation(
@@ -94,6 +98,13 @@ for filename in glob.glob(os.path.join(DATA_PATH, "isosurfaces") + "/*.vtp"):
     isomesh_ids.append(f"{surf_name}-mesh")
     isosurfs_meshes.append(mesh)
 
+# time to cache meshes
+vtk_datasets = {}
+for filename in glob.glob(os.path.join(DATA_PATH, "vehicle-original") + "/*.vtp"):
+    cache_mesh(filename, vtk_datasets)
+
+for filename in glob.glob(os.path.join(DATA_PATH, "isosurfaces") + "/*.vtp"):
+    cache_mesh(filename, vtk_datasets)
 
 # -----------------------------------------------------------------------------
 # 3D Viz
@@ -180,18 +191,19 @@ app.layout = dbc.Container(
                     width=8,
                     children=[
                         html.Div(
-                            dbc.Spinner(
-                                html.Div(
-                                    id="vtk-view-container",
-                                    style={
-                                        "height": "calc(100vh - 230px)",
-                                        "width": "100%",
-                                    },
-                                ),
-                                color="light",
+                            children=html.Div(
+                                dbc.Spinner(color="light"),
+                                style={
+                                    "background-color": "#334c66",
+                                    "height": "calc(100vh - 230px)",
+                                    "width": "100%",
+                                    "text-align": "center",
+                                    "padding-top": "calc(50vh - 105px)",
+                                },
                             ),
-                            style={"background-color": "#334c66"},
-                        )
+                            id="vtk-view-container",
+                            style={"height": "calc(100vh - 230px)", "width": "100%",},
+                        ),
                     ],
                 ),
             ],
