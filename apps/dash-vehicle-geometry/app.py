@@ -20,11 +20,18 @@ DATA_PATH = "data"
 # Helper functions
 # -----------------------------------------------------------------------------
 
+vtk_datasets = {}
+
 
 def _load_vtp(filepath, fieldname=None, point_arrays=[], cell_arrays=[]):
     reader = vtk.vtkXMLPolyDataReader()
     reader.SetFileName(filepath)
     reader.Update()
+
+    # Cache mesh for future lookup
+    part_name = filepath.split("/")[-1].replace(".vtp", "")
+    vtk_datasets[part_name] = reader.GetOutput()
+
     return to_mesh_state(reader.GetOutput(), fieldname, point_arrays, cell_arrays)
 
 
@@ -93,7 +100,7 @@ for filename in glob.glob(os.path.join(DATA_PATH, "isosurfaces") + "/*.vtp"):
 # -----------------------------------------------------------------------------
 
 # vtk_view = dash_vtk.View(id="vtk-view", children=vehicle_vtk + isosurfs_vtk)
-vtk_view = dash_vtk.View(id="vtk-view")
+# vtk_view = dash_vtk.View(id="vtk-view", pickingModes=['hover'])
 
 # -----------------------------------------------------------------------------
 # Control UI
@@ -190,6 +197,16 @@ app.layout = dbc.Container(
             ],
             style={"margin-top": "15px", "height": "calc(100vh - 230px)"},
         ),
+        html.Pre(
+            id="tooltip",
+            style={
+                "position": "absolute",
+                "bottom": "25px",
+                "left": "25px",
+                "zIndex": 1,
+                "color": "white",
+            },
+        ),
     ],
 )
 
@@ -206,7 +223,16 @@ def initial_loading(geometry):
     if triggered:
         return dash.no_update
 
-    return dash_vtk.View(id="vtk-view", children=vehicle_vtk + isosurfs_vtk)
+    cone_pointer = dash_vtk.GeometryRepresentation(
+        property={"color": [1, 0, 0]},
+        children=[dash_vtk.Algorithm(id="pointer", vtkClass="vtkConeSource")],
+    )
+
+    return dash_vtk.View(
+        id="vtk-view",
+        children=vehicle_vtk + isosurfs_vtk + [cone_pointer],
+        pickingModes=["hover"],
+    )
 
 
 @app.callback(
@@ -265,6 +291,60 @@ def update_scene(geometry, isosurfaces, surfcolor):
         color_ranges = [dash.no_update] * len(vehicle_vtk)
 
     return [random.random()] + surf_state + geo_viz + color_ranges + [iso_viz]
+
+
+SCALE_P = 0.0001
+SCALE_U = 0.01
+
+
+@app.callback(
+    [Output("tooltip", "children"), Output("pointer", "state"),],
+    [Input("vtk-view", "hoverInfo"),],
+)
+def probe_data(info):
+    cone_state = {"resolution": 12}
+    if info:
+        if "representationId" not in info:
+            return dash.no_update, dash.no_update
+        ds_name = info["representationId"].replace("-rep", "")
+        mesh = vtk_datasets[ds_name]
+        if mesh:
+            xyx = info["worldPosition"]
+            idx = mesh.FindPoint(xyx)
+            if idx > -1:
+                cone_state["center"] = mesh.GetPoints().GetPoint(idx)
+                messages = []
+                pd = mesh.GetPointData()
+                size = pd.GetNumberOfArrays()
+                for i in range(size):
+                    array = pd.GetArray(i)
+                    name = array.GetName()
+                    nb_comp = array.GetNumberOfComponents()
+                    value = array.GetValue(idx)
+                    value_str = f"{array.GetValue(idx):.2f}"
+                    norm_str = ""
+                    if nb_comp == 3:
+                        value = array.GetTuple3(idx)
+                        norm = (value[0] ** 2 + value[1] ** 2 + value[2] ** 2) ** 0.5
+                        norm_str = f" norm({norm:.2f})"
+                        value_str = ", ".join([f"{v:.2f}" for v in value])
+
+                        cone_state["height"] = SCALE_U * norm
+                        cone_state["direction"] = [v / norm for v in value]
+
+                    if name == "p":
+                        cone_state["radius"] = array.GetValue(idx) * SCALE_P
+
+                    messages.append(f"{name}: {value_str} {norm_str}")
+
+        if "height" in cone_state:
+            new_center = [v for v in cone_state["center"]]
+            for i in range(3):
+                new_center[i] -= 0.5 * cone_state["height"] * cone_state["direction"][i]
+            cone_state["center"] = new_center
+
+        return ["\n".join(messages)], cone_state
+    return [""], cone_state
 
 
 # -----------------------------------------------------------------------------
