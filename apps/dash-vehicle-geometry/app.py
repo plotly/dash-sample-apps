@@ -59,7 +59,7 @@ vehicle_vtk = []
 vehicle_mesh_ids = []
 vehicle_meshes = []
 
-for filename in glob.glob(os.path.join(DATA_PATH, "vehicle-original") + "/*.vtp"):
+for filename in glob.glob(os.path.join(DATA_PATH, "vehicle-vect") + "/*.vtp"):
     mesh = _load_vtp(filename, point_arrays=["U", "p"])
     part_name = filename.split("/")[-1].replace(".vtp", "")
     child = dash_vtk.GeometryRepresentation(
@@ -100,7 +100,7 @@ for filename in glob.glob(os.path.join(DATA_PATH, "isosurfaces") + "/*.vtp"):
 
 # time to cache meshes
 vtk_datasets = {}
-for filename in glob.glob(os.path.join(DATA_PATH, "vehicle-original") + "/*.vtp"):
+for filename in glob.glob(os.path.join(DATA_PATH, "vehicle-vect") + "/*.vtp"):
     cache_mesh(filename, vtk_datasets)
 
 for filename in glob.glob(os.path.join(DATA_PATH, "isosurfaces") + "/*.vtp"):
@@ -334,7 +334,7 @@ def probe_data(info):
                     nb_comp = array.GetNumberOfComponents()
                     value = array.GetValue(idx)
                     value_str = f"{array.GetValue(idx):.2f}"
-                    norm_str = ""
+                    norm_str = "" 
                     if nb_comp == 3:
                         value = array.GetTuple3(idx)
                         norm = (value[0] ** 2 + value[1] ** 2 + value[2] ** 2) ** 0.5
