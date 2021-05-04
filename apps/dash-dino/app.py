@@ -1,6 +1,3 @@
-import time
-from functools import partial
-
 import dash
 import dash_bootstrap_components as dbc
 import dash_labs as dl
@@ -12,21 +9,18 @@ import torch
 import torch.nn as nn
 from torchvision import transforms as pth_transforms
 from PIL import Image
-import numpy as np
 from flask_caching import Cache
 
 
-def download_img(url, size=(500, 500)):
+def download_img(url, size=(600, 600)):
     im = Image.open(requests.get(url, stream=True).raw).convert("RGB")
     im.thumbnail(size)
     return im
 
 
+# Source: https://github.com/facebookresearch/dino/blob/main/visualize_attention.py
 def compute_attentions(model, patch_size=16):
     def aux(img):
-        """
-        Source: https://github.com/facebookresearch/dino/blob/main/visualize_attention.py
-        """
         # make the image divisible by the patch size
         w, h = (
             img.shape[1] - img.shape[1] % patch_size,
@@ -42,6 +36,7 @@ def compute_attentions(model, patch_size=16):
     return aux
 
 
+# Source: https://github.com/facebookresearch/dino/blob/main/visualize_attention.py
 def apply_threshold(attentions, w_featmap, h_featmap, threshold, patch_size=16):
     nh = attentions.shape[1]  # number of head
     # we keep only the output patch attention
@@ -55,15 +50,11 @@ def apply_threshold(attentions, w_featmap, h_featmap, threshold, patch_size=16):
     for head in range(nh):
         th_attn[head] = th_attn[head][idx2[head]]
     th_attn = th_attn.reshape(nh, w_featmap, h_featmap).float()
-    # interpolate
-    th_attn = (
-        nn.functional.interpolate(
-            th_attn.unsqueeze(0), scale_factor=patch_size, mode="nearest"
-        )[0]
-        .detach()
-        .cpu()
-        .numpy()
+    th_attn = nn.functional.interpolate(
+        th_attn.unsqueeze(0), scale_factor=patch_size, mode="nearest"
     )
+    th_attn = th_attn[0].detach().cpu().numpy()
+
     attentions = attentions.reshape(nh, w_featmap, h_featmap)
     attentions = nn.functional.interpolate(
         attentions.unsqueeze(0), scale_factor=patch_size, mode="nearest"
@@ -73,7 +64,7 @@ def apply_threshold(attentions, w_featmap, h_featmap, threshold, patch_size=16):
     return th_attn, attentions
 
 
-# vars
+# VARS
 default_url = "https://dl.fbaipublicfiles.com/dino/img.png"
 
 # Load model
@@ -88,17 +79,11 @@ transform = pth_transforms.Compose(
 )
 
 # Initialize dash app and dash-labs template
-app = dash.Dash(__name__, plugins=[dl.plugins.FlexibleCallbacks()])
+title = "Zero-shot segmentation with DINO and Dash Labs"
+app = dash.Dash(__name__, title=title, plugins=[dl.plugins.FlexibleCallbacks()])
+tpl = dl.templates.DbcSidebar(title=title, theme=dbc.themes.DARKLY)
 cache = Cache(
-    app.server,
-    config={
-        # try 'filesystem' if you don't want to setup redis
-        "CACHE_TYPE": "filesystem",
-        "CACHE_DIR": "flask_cache",
-    },
-)
-tpl = dl.templates.DbcSidebar(
-    title="DINO Demo (using Dash Labs)", theme=dbc.themes.DARKLY,
+    app.server, config={"CACHE_TYPE": "filesystem", "CACHE_DIR": "flask_cache"},
 )
 
 # memoize functions
@@ -124,16 +109,12 @@ def callback(url, run, threshold, head, options):
         return go.Figure().update_layout(title="Incorrect URL")
 
     ix = int(head)
-
     # Run model
     img = transform(im).to(device)
     attentions, w_featmap, h_featmap = predict(img)
     th_attn, scalar_attn = apply_threshold(attentions, w_featmap, h_featmap, threshold)
 
-    if "use threshold" in options:
-        attns = th_attn
-    else:
-        attns = scalar_attn
+    attns = th_attn if "use threshold" in options else scalar_attn
 
     if "overlay" in options:
         fig = px.imshow(im)
@@ -141,8 +122,9 @@ def callback(url, run, threshold, head, options):
     else:
         fig = make_subplots(1, 2)
         fig.add_trace(go.Image(z=im), 1, 1)
-        fig.add_trace(go.Heatmap(z=attns[ix], y=np.arange(attns.shape[1], 0, -1)), 1, 2)
+        fig.add_trace(go.Heatmap(z=attns[ix]), 1, 2)
         fig.update_xaxes(matches="x")
+        fig.update_yaxes(matches="y")
 
     return fig
 
