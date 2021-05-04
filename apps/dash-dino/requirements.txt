@@ -9,3 +9,4 @@ pandas
 torchvision
 Pillow
 Flask-Caching
+gunicorn
