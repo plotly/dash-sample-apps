@@ -68,6 +68,7 @@ def apply_threshold(attentions, w_featmap, h_featmap, threshold, patch_size=16):
 default_url = "https://dl.fbaipublicfiles.com/dino/img.png"
 
 # Load model
+torch.hub.set_dir("./")
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 print("Running on", device)
 model = torch.hub.load("facebookresearch/dino:main", "dino_deits16").to(device)
