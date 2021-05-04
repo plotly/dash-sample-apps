@@ -81,6 +81,7 @@ transform = pth_transforms.Compose(
 # Initialize dash app and dash-labs template
 title = "Zero-shot segmentation with DINO and Dash Labs"
 app = dash.Dash(__name__, title=title, plugins=[dl.plugins.FlexibleCallbacks()])
+server = app.server
 tpl = dl.templates.DbcSidebar(title=title, theme=dbc.themes.DARKLY)
 cache = Cache(
     app.server, config={"CACHE_TYPE": "filesystem", "CACHE_DIR": "flask_cache"},
