@@ -191,16 +191,18 @@ app.layout = dbc.Container(
                     width=8,
                     children=[
                         html.Div(
-                            children=html.Div(
-                                dbc.Spinner(color="light"),
-                                style={
-                                    "background-color": "#334c66",
-                                    "height": "calc(100vh - 230px)",
-                                    "width": "100%",
-                                    "text-align": "center",
-                                    "padding-top": "calc(50vh - 105px)",
-                                },
-                            ),
+                            children=[
+                                html.Div(
+                                    dbc.Spinner(color="light"),
+                                    style={
+                                        "background-color": "#334c66",
+                                        "height": "calc(100vh - 230px)",
+                                        "width": "100%",
+                                        "text-align": "center",
+                                        "padding-top": "calc(50vh - 105px)",
+                                    },
+                                ),
+                            ],
                             id="vtk-view-container",
                             style={"height": "calc(100vh - 230px)", "width": "100%",},
                         ),
@@ -208,16 +210,6 @@ app.layout = dbc.Container(
                 ),
             ],
             style={"margin-top": "15px", "height": "calc(100vh - 230px)"},
-        ),
-        html.Pre(
-            id="tooltip",
-            style={
-                "position": "absolute",
-                "bottom": "25px",
-                "left": "25px",
-                "zIndex": 1,
-                "color": "white",
-            },
         ),
     ],
 )
@@ -240,9 +232,20 @@ def initial_loading(geometry):
         children=[dash_vtk.Algorithm(id="pointer", vtkClass="vtkConeSource")],
     )
 
+    tooltip = html.Pre(
+        id="tooltip",
+        style={
+            "position": "absolute",
+            "bottom": "25px",
+            "left": "25px",
+            "zIndex": 1,
+            "color": "white",
+        },
+    )
+
     return dash_vtk.View(
         id="vtk-view",
-        children=vehicle_vtk + isosurfs_vtk + [cone_pointer],
+        children=vehicle_vtk + isosurfs_vtk + [cone_pointer, tooltip],
         pickingModes=["hover"],
     )
 
