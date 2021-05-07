@@ -18,6 +18,9 @@ from flask_caching import Cache
 import dash_reusable_components as drc
 import utils
 
+os.environ['REDIS_URL'] = os.getenv('REDIS_URL', os.getenv('EXTERNAL_REDIS_URL'))
+# os.environ['DATABASE_URL'] = os.getenv('DATABASE_URL', os.getenv('EXTERNAL_DATABASE_URL'))
+
 DEBUG = True
 LOCAL = False
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
