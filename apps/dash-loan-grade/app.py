@@ -23,6 +23,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier, plot_tree, export_graphviz
 from sklearn import metrics
 
+os.environ["REDIS_URL"] = os.getenv("REDIS_URL", os.getenv("EXTERNAL_REDIS_URL"))
+# os.environ['DATABASE_URL'] = os.getenv('DATABASE_URL', os.getenv('EXTERNAL_DATABASE_URL'))
+
 
 def connect_read_sql(query, engine):
     connection = engine.connect()
