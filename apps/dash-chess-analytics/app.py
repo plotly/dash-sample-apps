@@ -127,7 +127,7 @@ banner = dbc.Row(
     children=[
         dbc.Col(
             html.Img(
-                src="/assets/apple-touch-icon.png",
+                src=app.get_asset_url("apple-touch-icon.png"),
                 id="logo",
                 style={"border-radius": "50%"},
             ),
