@@ -13,7 +13,9 @@ from pages import (
 )
 
 app = dash.Dash(
-    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+    __name__,
+    meta_tags=[{"name": "viewport", "content": "width=device-width"}],
+    title="Financial Report",
 )
 server = app.server
 

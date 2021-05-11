@@ -13,6 +13,7 @@ import pandas as pd
 
 app = dash.Dash(
     __name__,
+    title="Manufacturing SPC Dashboard",
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
 server = app.server
