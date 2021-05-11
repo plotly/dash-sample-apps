@@ -18,10 +18,9 @@ from plotly import tools
 
 
 app = dash.Dash(
-    __name__,
-    meta_tags=[{"name": "viewport", "content": "width=device-width"}],
-    title="FOREX Web Trader",
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}],
 )
+app.title = "FOREX Web Trader"
 
 server = app.server
 

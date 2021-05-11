@@ -11,9 +11,10 @@ from mni import create_mesh_data, default_colorscale
 
 app = dash.Dash(
     __name__,
-    title="Brain Surface Viewer",
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
+
+app.title = "Brain Surface Viewer"
 
 server = app.server
 

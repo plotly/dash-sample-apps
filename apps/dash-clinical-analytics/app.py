@@ -11,9 +11,9 @@ import pathlib
 
 app = dash.Dash(
     __name__,
-    title="Clinical Analytics Dashboard",
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
+app.title = "Clinical Analytics Dashboard"
 
 server = app.server
 app.config.suppress_callback_exceptions = True
