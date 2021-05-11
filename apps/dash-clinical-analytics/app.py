@@ -11,6 +11,7 @@ import pathlib
 
 app = dash.Dash(
     __name__,
+    title="Clinical Analytics Dashboard",
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
 

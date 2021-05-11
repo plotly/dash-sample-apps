@@ -66,7 +66,11 @@ loan_min //= loan_marks
 
 
 # Define app
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(
+    __name__,
+    title="Interest Rate Modeling",
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
+)
 server = app.server
 cache = Cache(
     app.server,
