@@ -26,6 +26,7 @@ LOCAL = False
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
 app = dash.Dash(__name__)
+app.title = "Image Processing App"
 server = app.server
 
 if "BUCKET_NAME" in os.environ:

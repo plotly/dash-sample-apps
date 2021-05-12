@@ -9,6 +9,7 @@ app = dash.Dash(
     external_stylesheets=[dbc.themes.SANDSTONE],
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
+app.title = "Baseball Historical Statistics"
 # set app server to variable for deployment
 srv = app.server
 

@@ -22,6 +22,7 @@ def Header(name, app):
 mapbox_token = os.getenv("MAPBOX_ACCESS_TOKEN")
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app.title = "Autonomous Vehicle Visualization"
 server = app.server
 
 STYLES = ["light", "dark", "satellite"]

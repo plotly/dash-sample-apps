@@ -18,6 +18,7 @@ app = dash.Dash(
         }
     ],
 )
+app.title = "Medical Provider Charges"
 server = app.server
 
 app.config["suppress_callback_exceptions"] = True
