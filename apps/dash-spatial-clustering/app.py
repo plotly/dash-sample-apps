@@ -17,6 +17,7 @@ from helpers import (
 )
 
 app = dash.Dash(__name__)
+app.title = "Real Estate Spatial Clustering"
 server = app.server
 app.config.suppress_callback_exceptions = True
 
