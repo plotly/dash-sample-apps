@@ -6,3 +6,4 @@ pandas==0.24.2
 scikit-learn
 scipy==1.2.1
 pillow==7.1.0
+cryptography==3.3.*
