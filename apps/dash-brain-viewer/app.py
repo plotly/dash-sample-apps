@@ -14,6 +14,8 @@ app = dash.Dash(
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
 
+app.title = "Brain Surface Viewer"
+
 server = app.server
 
 GITHUB_LINK = os.environ.get(

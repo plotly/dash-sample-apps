@@ -10,6 +10,7 @@ from demo import create_layout, demo_callbacks
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
+app.title = "t-SNE Explorer"
 
 server = app.server
 app.layout = create_layout(app)

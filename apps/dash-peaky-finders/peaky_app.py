@@ -31,6 +31,7 @@ TEMPLATE = "plotly_white"
 app = dash.Dash(
     external_stylesheets=[dbc.themes.LUX], suppress_callback_exceptions=True
 )
+app.title = "US Electric Grid Forecasting"
 server = app.server
 
 """Homepage"""
