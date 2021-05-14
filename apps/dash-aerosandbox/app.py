@@ -13,6 +13,7 @@ import numpy as np
 import pandas as pd
 
 app = dash.Dash(external_stylesheets=[dbc.themes.MINTY])
+app.title = "Aircraft CFD"
 server = app.server
 
 app.layout = dbc.Container(

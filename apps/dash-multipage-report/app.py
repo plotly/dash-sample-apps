@@ -36,6 +36,7 @@ color_3 = "#002277"
 color_b = "#F8F8FF"
 
 app = dash.Dash(__name__)
+app.title = "Multipage Report"
 
 server = app.server
 

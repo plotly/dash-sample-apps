@@ -18,6 +18,7 @@ LOGFILE = "examples/run_log.csv"
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
+app.title = "Live Model Training"
 
 server = app.server
 demo_mode = True
