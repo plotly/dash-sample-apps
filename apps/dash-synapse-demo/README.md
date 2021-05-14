@@ -1,8 +1,6 @@
-# Dash Interest Rate Modeling (with Snowflake)
+# Azure Synapse Analytics (Integration Demo)
 
-This app shows how to query loan data from a Snowflake Data Warehouse, and train and analyze a Ridge regression model using Dash.
-
-![demo](assets/demo.gif)
+This demo shows how to integrate Azure Synapse Analytics within a Dash app.
 
 ## Setting up Synapse
 
