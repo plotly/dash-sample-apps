@@ -1,14 +1,3 @@
-sudo su
-curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+curl https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/m/msodbcsql17/msodbcsql17_17.3.1.1-1_amd64.deb --output msodbcsql17_17.3.1.1-1_amd64.deb
 
-#Ubuntu 18.04
-curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-
-exit
-sudo apt-get update
-sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
-# optional: for unixODBC development headers
-sudo apt-get install -y unixodbc-dev
-
-# install requirements that needed the commands above
-pip install -r requirements-predeploy.txt
+ACCEPT_EULA=Y dpkg -i msodbcsql17_17.3.1.1-1_amd64.deb

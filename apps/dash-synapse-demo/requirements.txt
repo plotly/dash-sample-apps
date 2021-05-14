@@ -7,3 +7,4 @@ scikit-learn
 Flask-Caching
 gunicorn
 redis
+pyodbc
