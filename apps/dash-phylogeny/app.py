@@ -16,6 +16,7 @@ from utils import (
 )
 
 app = dash.Dash(__name__)
+app.title = "Phylogeny Tree Explorer"
 server = app.server
 
 virus_name = "measles"

@@ -29,6 +29,7 @@ table_header_style = {
 
 
 app = dash.Dash(__name__)
+app.title = "Pharmacokinetics Calculator"
 server = app.server
 
 APP_PATH = str(pl.Path(__file__).parent.resolve())
