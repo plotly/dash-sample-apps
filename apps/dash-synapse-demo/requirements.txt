@@ -1,0 +1,9 @@
+dash
+dash-bootstrap-components
+sqlalchemy
+pandas
+numpy
+scikit-learn
+Flask-Caching
+gunicorn
+redis
