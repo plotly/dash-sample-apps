@@ -40,3 +40,4 @@ options=[
 in `app.py` to adjust the selectable range of filters being displayed.
 
 * Created by JP Hwang for Plotly 
+
