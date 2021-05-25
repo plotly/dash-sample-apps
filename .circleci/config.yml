@@ -4,7 +4,7 @@ jobs:
   test_black:
     docker:
       - image: circleci/python:3.6-stretch-node-browsers
-    working_directory: ~/dash-teaser-apps
+    working_directory: ~/dash-sample-apps
 
     steps:
       - checkout
@@ -20,7 +20,7 @@ jobs:
   deploy:
     docker:
       - image: cimg/base:stable-20.04
-    working_directory: ~/dash-teaser-apps
+    working_directory: ~/dash-sample-apps
     parameters:
       only_changed_apps:
         type: boolean
@@ -110,8 +110,9 @@ commands:
         name: Deploy
         environment:
           CREATE_APP: "true"
+          CREATE_DBS: "false"
         command: |
-          APPS_MODIFIED=$(ls apps | grep dash- | sort -u)
+          APPS_MODIFIED=$(ls apps | sort -u)
           <<# parameters.only_changed_apps >>
           APPS_MODIFIED=$(git diff origin/main origin/$CIRCLE_BRANCH --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} } ' | sort -u)
           <</ parameters.only_changed_apps >>
