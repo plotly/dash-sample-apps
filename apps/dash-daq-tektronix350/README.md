@@ -53,3 +53,4 @@ You can run the app on your browser at http://127.0.0.1:8050
 
 To learn more about Dash, please visit [documentation](https://plot.ly/dash).
 To learn more about Dash DAQ, visit [Dash DAQ Documentation](https://dash.plot.ly/dash-daq).
+
