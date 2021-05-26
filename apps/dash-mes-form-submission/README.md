@@ -44,3 +44,4 @@ The user enters data in the required fields on the `DATA ENTRY` tab using the `S
 ## Resources
 
 - To learn more about Dash, check out our [documentation](https://plot.ly/dash).
+

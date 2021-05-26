@@ -61,3 +61,4 @@ single bar or drag along scatters to know flight details in the table.
 * [Omnisci Core](https://www.omnisci.com/platform/core)
 * [PymapD Python Client](https://pymapd.readthedocs.io/en/latest/)
 * Inspired by [Omnisci Demo app](https://www.omnisci.com/demos/flights/#/dashboard/4?_k=ks7460).
+
