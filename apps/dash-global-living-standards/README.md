@@ -20,3 +20,4 @@ It can be accessed in [here](https://where-to-live-app.herokuapp.com/)
 * kaleido==0.1.0
 * networkx==2.5
 * gunicorn==20.0.4
+

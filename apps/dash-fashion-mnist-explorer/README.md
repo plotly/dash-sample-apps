@@ -14,3 +14,4 @@ The fashion MNIST images were split into a training and testing set, and fed int
 Users can choose to display the TSNE embeddings of the training images, testing images, or both over two dimensions. The color of the markers in the scatter correspond to the true class that each image belongs to. By hovering over points, users see a thumbnail of the image represented by that point. Clicking on a point feeds the image it represents into the cnn, and outputs a prediction. The prediction is displayed along with a percentage of certainty.
 
 Users can also upload their own images, which get transformed and classified by the cnn. Some sample images are provided in the repo.
+

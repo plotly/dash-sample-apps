@@ -82,3 +82,4 @@ In order to add a control yourself, you must:
 ### Adding your own spectrometers
 Although this app was created for Ocean Optics spectrometers, it is possible to use it to interface with other types of spectrometers. The abstract base class `DashOceanOpticsSpectrometer` contains a set of methods and properties that are necessary for the spectrometer to properly interface with the app. 
 Please note that you should be using the communication and spectrometer locks as necessary to avoid issues with two different callbacks trying to modify/read the same thing concurrently. 
+

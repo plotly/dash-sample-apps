@@ -53,3 +53,4 @@ key while clicking and dragging for multi-region selection.
 
 ## Data source
 Historical shale gas production data for selected Devonian Ohio Shale wells http://www.uky.edu/KGS/emsweb/kyogfaq/kyogfaq10.html
+

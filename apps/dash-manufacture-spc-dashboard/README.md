@@ -65,3 +65,4 @@ Operators may stop measurement by clicking `Stop` button, and edit specification
 ## Resources and references
 * [Shewhart statistical process control](https://en.wikipedia.org/wiki/Shewhart_individuals_control_chart)
 * [Dash User Guide](https://dash.plot.ly/)
+
