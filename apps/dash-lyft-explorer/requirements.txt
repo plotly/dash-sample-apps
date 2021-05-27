@@ -2,7 +2,7 @@ dash
 dash-deck
 dash-bootstrap-components
 lyft-dataset-sdk
-pydeck
+pydeck==0.5.*
 jupyter
 colorlover
 plotly
