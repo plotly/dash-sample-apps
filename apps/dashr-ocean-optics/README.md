@@ -57,3 +57,4 @@ In order to add a control yourself, you must:
 * Create a new control object in `app.R`; note that the new object must have the key `id` in order for the callbacks to be properly triggered.
 * Append this new object to the list `controls` within `app.R`.
 After the above steps, new controller should be available in user-interface and can also be submitted upon clicking on `update` button. For additional functionality edit the `callbacks` as required. 
+
