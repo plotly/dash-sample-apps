@@ -9,3 +9,4 @@ numpy
 pydeck
 tqdm
 requests
+pydeck==0.5.*
