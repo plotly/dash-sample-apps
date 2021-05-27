@@ -15,3 +15,4 @@ Users can choose to display the TSNE embeddings of the training images, testing 
 
 Users can also upload their own images, which get transformed and classified by the cnn. Some sample images are provided in the repo.
 
+

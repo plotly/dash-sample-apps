@@ -74,3 +74,4 @@ The data displayed in the app are pre-generated for demo purposes. To generate t
 
 ![Screenshot2](screenshots/object-detection-mode.png)
 
+

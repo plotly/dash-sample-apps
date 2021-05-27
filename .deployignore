@@ -6,10 +6,6 @@ dash-chatbot
 dash-translate
 dash-image-enhancing
 dash-mapd-demo
-dash-datashader
-vtk-dicom
-dash-fashion-mnist-explorer
-dash-object-detection
 dash-lastodash
 dash-pileup-demo
 dash-gpt3-chatbot
