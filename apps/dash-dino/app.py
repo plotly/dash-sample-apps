@@ -71,7 +71,7 @@ default_url = "https://dl.fbaipublicfiles.com/dino/img.png"
 torch.hub.set_dir("./")
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 print("Running on", device)
-model = torch.hub.load("facebookresearch/dino:main", "dino_vits16").to(device)
+model = torch.hub.load("facebookresearch/dino:1041dd072b25da0336957963ee1a80e20391736d", "dino_deits16").to(device)
 transform = pth_transforms.Compose(
     [
         pth_transforms.ToTensor(),
