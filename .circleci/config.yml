@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 
 jobs:
   test_black:
@@ -16,111 +16,114 @@ jobs:
           name: run black
           command: |
             black . --check
-  deploy_to_playground:
+
+  deploy:
     docker:
-      - image: circleci/python:3.6-stretch
+      - image: cimg/base:stable-20.04
     working_directory: ~/dash-sample-apps
+    parameters:
+      only_changed_apps:
+        type: boolean
     steps:
       - checkout
-      - run:
-          name: Add plotly remote
-          command: git remote add playground https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
-      - run:
-          name: Create helper-script
-          command: printf '#!/bin/bash\necho username=$PLAYGROUND_DEPLOY_USERNAME\necho password=$PLAYGROUND_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
-      - run:
-          name: Set up git config
-          command: |
-            git config --global credential.helper "/bin/bash /home/circleci/helper-script.sh"
-            git config --global user.email '<>' # Leave email blank
-            git config --global user.name "Circle MonoRepo Automatic Deployer"
-      - run:
-          name: Install curl
-          command: |
-            sudo apt update
-            sudo apt install -y -qq curl
-      - run:
-          name: Install dds-client
-          command: |
-            curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.3.0/dds-client_0.3.0_linux_x86_64.tgz
-            mkdir $HOME/bin
-            tar xzf dds-client.tgz -C $HOME/bin
-            chmod +x $HOME/bin/dds-client
-      - run:
-          name: Deploy
-          command: |
-            APPS_MODIFIED=$(git diff origin/master origin/$CIRCLE_BRANCH --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} } ' | sort -u)
-            if [ -z "$APPS_MODIFIED" ]
-            then
-                  echo "No app change detected. Skipping the deploy.."
-                  exit 0
-            fi
+      - dash_git_setup
+      - install_dds_client
+      - dash_deploy:
+          only_changed_apps: << parameters.only_changed_apps >>
 
-            for APP in $APPS_MODIFIED
-            do
-              CREATE_APP=true DASH_ENTERPRISE_URL="$DASH_PLAYGROUND_ENTERPRISE_URL" DASH_ENTERPRISE_API_KEY="$DASH_PLAYGROUND_ENTERPRISE_API_KEY" PATH="$HOME/bin:$PATH" ./deploy "$APP"
-            done
-  deploy_to_gallery:
-    docker:
-      - image: circleci/python:3.6-stretch
-    working_directory: ~/dash-sample-apps
-    steps:
-      - checkout
-      - run:
-          name: Add plotly remote
-          command: git remote add gallery https://dash-playground.plotly.host/GIT/$CIRCLE_BRANCH
-      - run:
-          name: Create helper-script
-          command: printf '#!/bin/bash\necho username=$GALLERY_DEPLOY_USERNAME\necho password=$GALLERY_DEPLOY_PASSWORD' >> /home/circleci/helper-script.sh
-      - run:
-          name: Set up git config
-          command: |
-            git config --global credential.helper "/bin/bash /home/circleci/helper-script.sh"
-            git config --global user.email '<>' # Leave email blank
-            git config --global user.name "Circle MonoRepo Automatic Deployer"
-      - run:
-          name: Install curl
-          command: |
-            sudo apt update
-            sudo apt install -y -qq curl
-      - run:
-          name: Install dds-client
-          command: |
-            curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.3.0/dds-client_0.3.0_linux_x86_64.tgz
-            mkdir $HOME/bin
-            tar xzf dds-client.tgz -C $HOME/bin
-            chmod +x $HOME/bin/dds-client
-      - run:
-          name: Deploy
-          command: |
-            APPS_MODIFIED=$(ls apps | grep dash- | sort -u)
-            if [ -z "$APPS_MODIFIED" ]
-            then
-                  echo "No app change detected. Skipping the deploy.."
-                  exit 0
-            fi
-
-            for APP in $APPS_MODIFIED
-            do
-              CREATE_APP=true DASH_ENTERPRISE_URL="$DASH_GALLERY_ENTERPRISE_URL" DASH_ENTERPRISE_API_KEY="$DASH_GALLERY_ENTERPRISE_API_KEY" PATH="$HOME/bin:$PATH" ./deploy "$APP"
-            done
 
 workflows:
   version: 2
   test-and-deploy:
     jobs:
       - test_black
-      - deploy_to_playground:
+
+      #
+      #
+      # Feature branch deploys
+      - deploy:
+          name: Deploy to dash-playground
+          context: dash-playground-credentials
           requires:
             - test_black
           filters:
             branches:
               ignore:
-              - master
-      - deploy_to_gallery:
+              - main
+          only_changed_apps: true
+      
+      - deploy:
+          name: Deploy to dash-playground-k8s
+          context: dash-playground-k8s-credentials
+          requires:
+            - test_black
+          filters:
+            branches:
+              ignore:
+              - main
+          only_changed_apps: true
+
+      #
+      #
+      # main branch deploys
+      - deploy:
+          name: Deploy to dash-gallery
+          context: dash-gallery-credentials
           requires:
             - test_black
           filters:
             branches:
               only:
-              - master
+              - main
+          only_changed_apps: false
+
+commands:
+  dash_git_setup:
+    steps:
+    - run:
+        name: Create helper-script
+        command: printf '#!/bin/bash\necho username=$DASH_ENTERPRISE_USERNAME\necho password=$DASH_ENTERPRISE_PASSWORD' >> /home/circleci/helper-script.sh
+    - run:
+        name: Set up git config
+        command: |
+          git config --global credential.helper "/bin/bash /home/circleci/helper-script.sh"
+          git config --global user.email '<>' # Leave email blank
+          git config --global user.name "Circle MonoRepo Automatic Deployer"
+          git config --global protocol.version 0
+
+  install_dds_client:
+    steps:
+    - run:
+        name: Install dds-client
+        command: |
+          curl -sSL -o dds-client.tgz https://github.com/plotly/dds-client/releases/download/v0.3.0/dds-client_0.3.0_linux_x86_64.tgz
+          mkdir $HOME/bin
+          tar xzf dds-client.tgz -C $HOME/bin
+          chmod +x $HOME/bin/dds-client
+
+  dash_deploy:
+    parameters:
+      only_changed_apps:
+        type: boolean
+    steps:
+    - run:
+        name: Deploy
+        environment:
+          CREATE_APP: "true"
+          CREATE_DBS: "false"
+        command: |
+          APPS_MODIFIED=$(ls apps | sort -u)
+          <<# parameters.only_changed_apps >>
+          APPS_MODIFIED=$(git diff origin/main origin/$CIRCLE_BRANCH --dirstat=files,1 apps/ | awk '{ split($2,a,"/"); if (length(a[2]) != 0) { print a[2]} } ' | sort -u)
+          <</ parameters.only_changed_apps >>
+
+          if [ -z "$APPS_MODIFIED" ]
+          then
+            echo "No app change detected. Skipping the deploy.."
+            exit 0
+          fi
+
+          for APP in $APPS_MODIFIED
+          do
+            PATH="$HOME/bin:$PATH" ./deploy "$APP"
+          done

@@ -97,3 +97,4 @@ The following are screenshots for the full (local) app:
 ![screenshot3](screenshots/default_view.png)
 
 ![screenshot4](screenshots/fashion_mnist_example.png)
+

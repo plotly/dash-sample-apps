@@ -25,3 +25,4 @@ This database is copyright 1996-2021 by Sean Lahman. This data is licensed under
 3.0 Unported License. For details see: [CreativeCommons](http://creativecommons.org/licenses/by-sa/3.0/)
 
 ### Application deployed on Heroku [here](https://historicalbaseball.herokuapp.com/).
+

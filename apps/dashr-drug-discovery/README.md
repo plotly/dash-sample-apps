@@ -30,3 +30,4 @@ Open a browser at http://127.0.0.1:8050
 ## Resources
 
 - To learn more about Dash, check out our [documentation](https://plot.ly/dash).
+

@@ -99,7 +99,7 @@ main() {
 
   log-header "Deploying $APP"
   log-info "dashr: ${is_dashr}"
-  if [[ "$is_dashr" == "false" ]]; then
+  if [[ "$is_dashr" == "false" ]] && [[ "$CREATE_DBS" == "true" ]]; then
     local celery_version="$(cat "$app_dir/requirements.txt" | grep -E "^celery=")"
     local redis_version="$(cat "$app_dir/requirements.txt" | grep -E "^redis=")"
 

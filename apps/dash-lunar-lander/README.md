@@ -54,3 +54,4 @@ Switching the optimizer to time optimal control results in a much smoother and m
 
 - [Dash](https://dash.plot.ly/) - Main server and interactive components
 - [Plotly Python](https://plot.ly/python/) - Used to create the interactive plots
+
