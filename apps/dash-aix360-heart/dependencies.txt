@@ -1,0 +1,8 @@
+aix360
+dash
+dash-bootstrap-components
+plotly
+scikit-learn
+numpy
+pandas
+gunicorn

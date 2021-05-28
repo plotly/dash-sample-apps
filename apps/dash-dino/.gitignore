@@ -1,5 +1,7 @@
 flask_cache
 .vscode
+checkpoints
+facebookresearch_dino_*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

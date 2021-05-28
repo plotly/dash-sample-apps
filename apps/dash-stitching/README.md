@@ -45,3 +45,4 @@ The purpose of this Dash app is to combine multiple images with overlapping elem
 
 - [Dash](https://dash.plot.ly/) - Main server and interactive components
 - [Plotly Python](https://plot.ly/python/) - Used to create the interactive plots
+

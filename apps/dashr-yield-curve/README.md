@@ -10,3 +10,4 @@ To learn more check out our [documentation](https://plot.ly/dash).
 
 ## Screenshot:
 ![screenshot](assets/dashr-yield-curve-screenshot.png)
+

@@ -42,3 +42,4 @@ python app.py
 ## Acknowledgements
 
 Many thanks to Emmanuelle Gouillart for the image classifier training code.
+

@@ -1,1 +1,1 @@
-web: gunicorn explorer:server
+web: gunicorn explorer:server --workers 1

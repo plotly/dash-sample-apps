@@ -59,3 +59,4 @@ See [here](alcor1.pdf) the report printed in PDF format.
 
 * [Dash documentation for Python](https://dash.plot.ly/)
 * [Log ASCII Standard (LAS) file](http://www.cwls.org/las/)
+

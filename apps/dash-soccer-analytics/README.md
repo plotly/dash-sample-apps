@@ -18,3 +18,4 @@ The event viewer is fairly self-explanatory and the user can select the team tha
 ## Acknowledgements
 With great gratitude I would like to thank Bruno Dadnino and his team at Metrica Sports (https://metrica-sports.com/about-us/) for the sample tracking and event data used in this application.
 The original files are here: https://github.com/metrica-sports/sample-data. These files are part of Metrica's Elite Data product. So if you are subscribers to the Elite Data package you will be able to use those files with this application with very minimal changes required (they have been very lightly modified for the purposes of this app). Just copy the format used in the demo files (the changes/differences are very small). Better yet, do it programmatically and it's even easier!
+

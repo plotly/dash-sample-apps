@@ -52,3 +52,4 @@ Your app will be ready to view at http://127.0.0.1:8051/
 
 
 Inspired by [Spatial clustering notebook](http://darribas.org/gds_scipy16/ipynb_md/07_spatial_clustering.html)
+

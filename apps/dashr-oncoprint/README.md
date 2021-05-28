@@ -22,3 +22,4 @@ The app will load into your default browser window. If it does not, navigate to 
 ## Screenshots:
 
 ![screenshot](assets/dashr-oncoprint-screenshot.png)
+

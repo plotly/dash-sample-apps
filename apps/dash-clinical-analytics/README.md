@@ -48,3 +48,4 @@ python app.py
 
 * [Dash](https://dash.plot.ly/)
 * Inspired by [Tableau template](https://www.tableau.com/solutions/workbook/improve-patient-satisfaction-improving-cycle-time).
+

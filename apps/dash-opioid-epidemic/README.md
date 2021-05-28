@@ -37,3 +37,4 @@ and all of the required `pip` packages, will be installed, and the app will be a
 ![plotly-dash-screencast](assets/app_screencast.gif)
 
 Dash app inspired by [this Tableau dashboard](https://www.cdc.gov/nchs/data-visualization/drug-poisoning-mortality/)
+
