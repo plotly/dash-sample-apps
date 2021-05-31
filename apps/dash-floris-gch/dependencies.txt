@@ -1,8 +1,7 @@
-black
 floris
 dash
 pandas
 gunicorn
-ipykernel
 vtk
 dash-vtk
+pyproj~=2.1
