@@ -71,6 +71,7 @@ main() {
   local is_dashr=false
   local tmp_shallow_clone="$(mktemp -d -t apps-XXXXXXXXXX)"
   local tmp_full_clone="$(mktemp -d -t apps-XXXXXXXXXX)"
+  local app_created=false
   local force_push=false
   local push_code=false
   local exit_code remote_sha
@@ -104,11 +105,11 @@ main() {
     local redis_version="$(cat "$app_dir/requirements.txt" | grep -E "^redis=")"
 
     log-info "dash python version: $(cat "$app_dir/requirements.txt" | grep -E "^dash=")"
-    [[ -n "$celery_version" ]] && log-info "celery python version: $(cat "$app_dir/requirements.txt" | grep -E "^celery=")"
-    [[ -n "$redis_version" ]] && log-info "redis python version: $(cat "$app_dir/requirements.txt" | grep -E "^redis=")"
+    [[ -n "$celery_version" ]] && log-info "celery python version: $(cat "$app_dir/requirements.txt" | grep -E "^celery")"
+    [[ -n "$redis_version" ]] && log-info "redis python version: $(cat "$app_dir/requirements.txt" | grep -E "^redis")"
 
-    [[ -n "$sqlalchemy_version" ]] && log-info "sqlalchemy python version: $(cat "$app_dir/requirements.txt" | grep -E "^sqlalchemy=")"
-    [[ -n "$flask_sqlalchemy_version" ]] && log-info "flask-sqlalchemy python version: $(cat "$app_dir/requirements.txt" | grep -E "^flask-sqlalchemy=")"
+    [[ -n "$sqlalchemy_version" ]] && log-info "sqlalchemy python version: $(cat "$app_dir/requirements.txt" | grep -E "^sqlalchemy")"
+    [[ -n "$flask_sqlalchemy_version" ]] && log-info "flask-sqlalchemy python version: $(cat "$app_dir/requirements.txt" | grep -E "^flask-sqlalchemy")"
 
     if [[ -n "$sqlalchemy_version" ]] || [[ -n "$flask_sqlalchemy_version" ]]; then
       if ! dds-client postgres:exists --name "$APP"; then
@@ -132,6 +133,7 @@ main() {
     if [[ "$CREATE_APP" == "true" ]]; then
       log-warn "$APP not found, creating"
       dds-client apps:create --name "$APP"
+      app_created=true
     else
       log-exit "Deploy failed because there is no such app on Dash Gallery: $APP. Please use the web interface to create an app with this name"
     fi
@@ -139,7 +141,10 @@ main() {
     log-info "exists: true"
   fi
 
-  if ! git clone --depth 1 "$remote_url" "$tmp_shallow_clone" 2>/dev/null; then
+  # Disable sslverification
+  git config --global http.sslVerify false
+
+  if ! git clone --depth 1 "$remote_url" "$tmp_shallow_clone" 2>/dev/null && [[ "$app_created" != "true" ]]; then
     log-fail "Unable to clone repository"
   fi
 
