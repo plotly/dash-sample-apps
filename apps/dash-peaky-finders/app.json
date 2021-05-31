@@ -1,7 +1,0 @@
-{
-    "scripts": {
-      "dokku": {
-        "predeploy": "bash install.sh"
-      }
-    }
-  }
