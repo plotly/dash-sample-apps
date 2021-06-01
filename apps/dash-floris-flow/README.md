@@ -24,3 +24,4 @@ python app.py
 ## Contact
 
 Interested in building or deploying apps like this? [Reach out](https://plotly.com/contact-us/) or [get a demo](https://plotly.com/get-demo).
+
