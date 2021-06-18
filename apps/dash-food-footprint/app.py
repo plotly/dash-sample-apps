@@ -12,7 +12,7 @@ import plotly.express as px
 path = "https://raw.githubusercontent.com/InesRoque3/GroupV_project2/main/data/"
 
 emissions = pd.read_csv(path + "emissions_with_origin.csv")
-productions = pd.read_csv(path + "productions.csv")
+productions = pd.read_csv(path + "productions.csv.gz")
 water = pd.read_csv(path + "water_use.csv")
 global_emissions = pd.read_csv(path + "Global_Emissions.csv")
 
