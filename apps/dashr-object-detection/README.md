@@ -6,7 +6,7 @@ DashR abstracts away all of the technologies and protocols required to build an 
 
 Try out the [demo app here]( https://dash-playground.plotly.host/dash-object-detection).
 
-![Animated1](images/Screencast.gif)
+![Animated1](../dash-object-detection/screenshots/dash-object-detection-demo.gif)
 
 ## Getting Started
 
