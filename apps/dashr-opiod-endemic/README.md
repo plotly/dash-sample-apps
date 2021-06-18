@@ -1,10 +1,12 @@
 # dashr-opioid-endemic
+
+![Demo Image](../dash-opioid-epidemic/assets/app_screencast.gif)
+
 # Opioid Endemic
 
 This is a dash for R version of the Opioid Endemic app written in python [Opioid Endemic](https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-opioid-endemic)
 
 ## Screenshots
-![assets/opioid-demo.gif](assets/opioid-demo.gif)
 
 ## About this app:
 
