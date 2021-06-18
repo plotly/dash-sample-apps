@@ -15,7 +15,7 @@ import dash_bootstrap_components as dbc
 # Dataset Processing
 
 # importing data
-data = pd.read_csv("archive/players_21.csv")
+data = pd.read_csv("archive/players_21.csv.gz")
 
 # data cleaning
 nonusefulcolumns = ["sofifa_id", "player_url", "long_name", "league_rank"]
