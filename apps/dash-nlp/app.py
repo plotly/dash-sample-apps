@@ -34,7 +34,7 @@ bigram_df = pd.read_csv("data/bigram_counts_data.csv", index_col=0)
 
 DATA_PATH = pathlib.Path(__file__).parent.resolve()
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
-FILENAME = "data/customer_complaints_narrative_sample.csv"
+FILENAME = "data/customer_complaints_narrative_sample.csv.gz"
 FILENAME_PRECOMPUTED = "data/precomputed.json"
 PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
 GLOBAL_DF = pd.read_csv(DATA_PATH.joinpath(FILENAME), header=0)
