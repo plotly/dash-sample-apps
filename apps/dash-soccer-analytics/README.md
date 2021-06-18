@@ -8,7 +8,7 @@
 The app is actually comprised of two parts: a visual app and a game animation preparation script. This pre-preparation of animated game activity is necessary in order to speed up the graphical rendering process and minimize the amount of data processing downloading required to view a match. It is recommended to process no more than 25 minutes of a match at at time. Beyond this threshold it may be too difficult to create and render graphs.
 
 Pre-processing of animated match data can be accomplished by doing the following:
-- Executing the motion-graph.py script and selecting the time period of a match that you would like to pre-process (again in max 25 minute windows). You will need to select a .csv tracking file when executing the script.
+- Executing the motion-graph.py script and selecting the time period of a match that you would like to pre-process (again in max 25 minute windows). You will need to select a .csv.gz tracking file when executing the script.
 - Save the resulting file in the data directory and name it using a .json file extension
 - The file will now be visible and selectable within the app 
 - The submit button must be selected to view the match

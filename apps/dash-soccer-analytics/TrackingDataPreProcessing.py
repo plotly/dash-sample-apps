@@ -2,11 +2,11 @@ import pandas as pd
 import numpy as np
 
 # raw_df = pd.read_csv(cv_file, names=header_list, error_bad_lines=False, dtype=str)
-raw_df1 = pd.read_csv("data/source/Sample_Game_2_RawTrackingData_Away_Team.csv")
+raw_df1 = pd.read_csv("data/source/Sample_Game_2_RawTrackingData_Away_Team.csv.gz")
 # sample every 5th row
 raw_df1 = raw_df1.iloc[::7, :]
 
-raw_df2 = pd.read_csv("data/source/Sample_Game_2_RawTrackingData_Home_Team.csv")
+raw_df2 = pd.read_csv("data/source/Sample_Game_2_RawTrackingData_Home_Team.csv.gz")
 raw_df2 = raw_df2.iloc[::7, :]
 
 column = 1
@@ -53,7 +53,7 @@ df_export = df_export.sort_values(by=["frame"])
 df_export["time"] = df_export["time"].apply(pd.to_numeric, errors="coerce")
 df_export["time"] = df_export["time"].div(60).round(4)
 export_file_name = input(
-    "Please enter a name for the file to be exported (ending with .csv): "
+    "Please enter a name for the file to be exported (ending with .csv.gz): "
 )
 export_file_name = "data/" + export_file_name
 df_export.to_csv(export_file_name, index=False)

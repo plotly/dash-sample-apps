@@ -15,7 +15,7 @@ from initial_figures import (
 import dash_daq as daq
 
 # Create list of event csv files available to select from via a pulldown menu
-event_file_list = glob.glob("data/*.csv")
+event_file_list = glob.glob("data/*.csv.gz")
 event_files = [w.replace("data/", "") for w in event_file_list]
 event_files = [s for s in event_files if "Event" in s]
 
