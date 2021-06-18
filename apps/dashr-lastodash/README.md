@@ -1,5 +1,9 @@
 # LAStoDash
 
+## Screenshots
+
+![Demo](../dash-lastodash/alcor1.gif)
+
 ## About this app
 
 LAStoDash is a sample Dash project that takes a [Log ASCII Standard (LAS) file](http://www.cwls.org/las/) and builds a web app to view its content and print in PDF format.
@@ -34,9 +38,6 @@ $ Rscript app.R
 
 View in your browser at http://127.0.0.1:8050.
 
-## Screenshots
-
-![demo/demo.gif](demo/demo.gif)
 
 ## Resources
 
