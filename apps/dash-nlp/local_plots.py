@@ -22,7 +22,9 @@ pd.set_option("display.width", desired_width)
 
 def main():
 
-    comp_df = pd.read_csv("data/customer_complaints_narrative_sample.csv.gz", index_col=0)
+    comp_df = pd.read_csv(
+        "data/customer_complaints_narrative_sample.csv.gz", index_col=0
+    )
 
     # ===============================================
     # ========== EXPLORATORY DATA ANALYSIS ==========
