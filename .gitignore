@@ -13,3 +13,4 @@ apps/*/__pycache__/*
 apps/dash-tsne/data
 apps/dash-tsne/demo_embeddings
 temp.py
+temp.sh
