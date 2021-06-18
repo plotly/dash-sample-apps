@@ -14,9 +14,9 @@ import pandas as pd
 # for easier display of historical team data
 teams = pd.read_csv("data/update_team.csv")
 # Import Players batting data
-batters = pd.read_csv("data/update_batting.csv")
+batters = pd.read_csv("data/update_batting.csv.gz")
 # Import custom Fielding data
-fielding = pd.read_csv("data/update_fielding.csv")
+fielding = pd.read_csv("data/update_fielding.csv.gz")
 # Import custom pitching data
 pitching = pd.read_csv("data/update_pitching.csv")
 # Import Player profile data
