@@ -551,21 +551,21 @@ app$callback(
 ## Global varlable for the data storage required.
 #
 #
-datLst <<- list(mnist_3000 = fread("data/mnist_3000_input.csv", header=T), 
-                fashion_3000= fread("data/fashion_3000_input.csv", header=T),
-                cifar_gray_3000 = fread("data/cifar_gray_3000_input.csv", header=T),
-                wikipedia_3000 = fread("data/wikipedia_3000.csv", header=T),
-                crawler_3000 = fread("data/crawler_3000.csv", header=T),
-                twitter_3000 = fread('data/twitter_3000.csv', encoding='Latin-1', header=T)
+datLst <<- list(mnist_3000 = fread("data/mnist_3000_input.csv.gz", header=T), 
+                fashion_3000= fread("data/fashion_3000_input.csv.gz", header=T),
+                cifar_gray_3000 = fread("data/cifar_gray_3000_input.csv.gz", header=T),
+                wikipedia_3000 = fread("data/wikipedia_3000.csv.gz", header=T),
+                crawler_3000 = fread("data/crawler_3000.csv.gz", header=T),
+                twitter_3000 = fread('data/twitter_3000.csv.gz', encoding='Latin-1', header=T)
 )
 
 datLabels <<- list(
-  mnist_3000 = unique(fread("data/mnist_3000_labels.csv", header=T)), 
-  fashion_3000= unique( fread("data/fashion_3000_labels.csv", header=T)),
-  cifar_gray_3000 = unique(fread("data/cifar_gray_3000_labels.csv", header=T)),
-  wikipedia_3000 = unique(fread("data/wikipedia_3000.csv", header=T)[, 1]),
-  crawler_3000 = unique(fread("data/crawler_3000.csv", header=T)[, 1]),
-  twitter_3000 =  unique(fread('data/twitter_3000.csv', encoding='Latin-1', header=T)[,1])
+  mnist_3000 = unique(fread("data/mnist_3000_labels.csv.gz", header=T)), 
+  fashion_3000= unique( fread("data/fashion_3000_labels.csv.gz", header=T)),
+  cifar_gray_3000 = unique(fread("data/cifar_gray_3000_labels.csv.gz", header=T)),
+  wikipedia_3000 = unique(fread("data/wikipedia_3000.csv.gz", header=T)[, 1]),
+  crawler_3000 = unique(fread("data/crawler_3000.csv.gz", header=T)[, 1]),
+  twitter_3000 =  unique(fread('data/twitter_3000.csv.gz', encoding='Latin-1', header=T)[,1])
 )
 
 app$callback(
