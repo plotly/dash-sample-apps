@@ -35,7 +35,7 @@ well_type_options = lapply(1:length(WELL_TYPES),
                                             value=labels(WELL_TYPES[x]))})
 
 # Load data
-df <- read.csv('data/wellspublic.csv')
+df <- read.csv('data/wellspublic.csv.gz')
 df$Date_Well_Completed <- as.Date(df$Date_Well_Completed, format = "%Y-%m-%d %H:%M:%S")
 df <- df[df$Date_Well_Completed > as.Date('1960-01-01'),]
 rownames(df) <- 1:nrow(df)
