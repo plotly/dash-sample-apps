@@ -8,6 +8,9 @@ options(repos=r)
 
 # ======================================================================
 
+# Allows reading csv.gz
+install.packages("R.utils")
+
 # packages go here
 install.packages("remotes")
 
