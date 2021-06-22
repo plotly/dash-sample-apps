@@ -52,7 +52,7 @@ plotly==4.6.0
 pluggy==0.13.1
 preshed==3.0.2
 protobuf==3.11.3
-py==1.8.1
+py==1.10.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pyLDAvis==2.1.2
