@@ -30,16 +30,16 @@ DATA_PATH = PATH.joinpath("data").resolve()
 # Loading historical tick data
 currency_pair_data = {
     "EURUSD": pd.read_csv(
-        DATA_PATH.joinpath("EURUSD.csv"), index_col=1, parse_dates=["Date"]
+        DATA_PATH.joinpath("EURUSD.csv.gz"), index_col=1, parse_dates=["Date"]
     ),
     "USDJPY": pd.read_csv(
-        DATA_PATH.joinpath("USDJPY.csv"), index_col=1, parse_dates=["Date"]
+        DATA_PATH.joinpath("USDJPY.csv.gz"), index_col=1, parse_dates=["Date"]
     ),
     "GBPUSD": pd.read_csv(
-        DATA_PATH.joinpath("GBPUSD.csv"), index_col=1, parse_dates=["Date"]
+        DATA_PATH.joinpath("GBPUSD.csv.gz"), index_col=1, parse_dates=["Date"]
     ),
     "USDCHF": pd.read_csv(
-        DATA_PATH.joinpath("USDCHF.csv"), index_col=1, parse_dates=["Date"]
+        DATA_PATH.joinpath("USDCHF.csv.gz"), index_col=1, parse_dates=["Date"]
     ),
 }
 
