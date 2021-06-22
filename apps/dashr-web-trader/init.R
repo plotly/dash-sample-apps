@@ -16,3 +16,6 @@ remotes::install_github("plotly/dashR", ref="0.1.0-cran")
 install.packages("xts")
 install.packages("fasttime")
 
+
+# Allows reading csv.gz
+install.packages("R.utils")

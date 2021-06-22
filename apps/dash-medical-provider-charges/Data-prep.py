@@ -6,7 +6,7 @@ from uszipcode import SearchEngine
 
 DATA_PATH = pathlib.Path(__file__, "/data").resolve()
 all_data = DATA_PATH.joinpath(
-    "CMS_inpatient_2016_data/Inpatient_summary_2016_all/Medicare_Provider_Charge_Inpatient_DRGALL_FY2016.csv"
+    "CMS_inpatient_2016_data/Inpatient_summary_2016_all/Medicare_Provider_Charge_Inpatient_DRGALL_FY2016.csv.gz"
 )
 
 # Read all

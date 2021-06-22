@@ -1,3 +1,5 @@
+import os
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -9,10 +11,11 @@ import pandas as pd
 import plotly.graph_objs as go
 import plotly.express as px
 
-path = "https://raw.githubusercontent.com/InesRoque3/GroupV_project2/main/data/"
+dirname = os.path.dirname(__file__)
+path = os.path.join(dirname, "data/")
 
 emissions = pd.read_csv(path + "emissions_with_origin.csv")
-productions = pd.read_csv(path + "productions.csv")
+productions = pd.read_csv(path + "productions.csv.gz")
 water = pd.read_csv(path + "water_use.csv")
 global_emissions = pd.read_csv(path + "Global_Emissions.csv")
 

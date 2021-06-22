@@ -23,7 +23,7 @@ BASE_PATH = pathlib.Path(__file__).parent.resolve()
 DATA_PATH = BASE_PATH.joinpath("data").resolve()
 
 # Read data
-df = pd.read_csv(DATA_PATH.joinpath("clinical_analytics.csv"))
+df = pd.read_csv(DATA_PATH.joinpath("clinical_analytics.csv.gz"))
 
 clinic_list = df["Clinic Name"].unique()
 df["Admit Source"] = df["Admit Source"].fillna("Not Identified")

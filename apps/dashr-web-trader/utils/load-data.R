@@ -3,10 +3,10 @@
 
 library(data.table)
 
-EURUSD <- fread(file.path("pairs", "EURUSD.csv"))
-USDCHF <- fread(file.path("pairs", "USDCHF.csv"))
-USDJPY <- fread(file.path("pairs", "USDJPY.csv"))
-GBPUSD <- fread(file.path("pairs", "GBPUSD.csv"))
+EURUSD <- fread(file.path("pairs", "EURUSD.csv.gz"))
+USDCHF <- fread(file.path("pairs", "USDCHF.csv.gz"))
+USDJPY <- fread(file.path("pairs", "USDJPY.csv.gz"))
+GBPUSD <- fread(file.path("pairs", "GBPUSD.csv.gz"))
 
 USDCHF[, Date := strptime(Date, format = "%Y%m%d %H:%M:%OS")]
 USDJPY[, Date := strptime(Date, format = "%Y%m%d %H:%M:%OS")]

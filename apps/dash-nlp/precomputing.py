@@ -7,7 +7,7 @@ import json
 
 DATA_PATH = pathlib.Path(__file__).parent.resolve()
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
-FILENAME = "data/customer_complaints_narrative_sample.csv"
+FILENAME = "data/customer_complaints_narrative_sample.csv.gz"
 GLOBAL_DF = pd.read_csv(DATA_PATH.joinpath(FILENAME), header=0)
 
 """

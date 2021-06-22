@@ -5,7 +5,7 @@ pd.options.mode.chained_assignment = None
 
 
 def data_preprocessing():
-    df = pd.read_csv("data/SCADA_data.csv")
+    df = pd.read_csv("data/SCADA_data.csv.gz")
     status_data_wec = pd.read_csv("data/status_data_wec.csv")
 
     df["Inverter avg. temp"] = df[
