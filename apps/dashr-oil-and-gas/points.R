@@ -1,5 +1,3 @@
-setwd('/Users/kevinphan/Desktop/PLOTLY APPS MADE/OIL AND GAS/data')
-#install.packages("dashR_0.0.4.tar.gz", repos = NULL, type = "source")
 library(dplyr)
 library(sqldf)
 options(scipen=999)
@@ -12,10 +10,10 @@ columns1 <- c('API.Well.Number', 'Gas.Produced..MCF',
 columns2 <- c('API.Well.Number', 'Gas.Produced..MCF',
             'Water.Produced..bbl', 'Oil.Produced..bbl', 'Reporting.Year')
 
-df1 = read.csv('data/Oil_and_Gas_Annual_Production__1985_-_2000.csv')
+df1 = read.csv('data/Oil_and_Gas_Annual_Production__1985_-_2000.csv.gz')
 df1 <- df1[,columns1]
 
-df2 = read.csv('data/Oil_and_Gas_Annual_Production__Beginning_2001.csv')
+df2 = read.csv('data/Oil_and_Gas_Annual_Production__Beginning_2001.csv.gz')
 df2 <- df2[,columns2]
 
 dfIn <- merge(df1,df2, all = TRUE)
