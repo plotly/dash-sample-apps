@@ -49,10 +49,19 @@ def build_banner():
             html.Div(
                 id="banner-logo",
                 children=[
+                    html.A(
+                        html.Button(
+                            children="ENTERPRISE DEMO"
+                        ),
+                        href="https://plotly.com/get-demo/"
+                    ),
                     html.Button(
                         id="learn-more-button", children="LEARN MORE", n_clicks=0
                     ),
-                    html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png")),
+                    html.A(
+                        html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png")),
+                        href="https://plotly.com/dash/"
+                    ),
                 ],
             ),
         ],
@@ -260,6 +269,10 @@ def generate_modal():
                         trigger alerts instantly for a detailed checkup.
                         
                         Operators may stop measurement by clicking on `Stop` button, and edit specification parameters by clicking specification tab.
+
+                        ###### Source Code
+
+                        You can find the source code of this app on our [Github repository](https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-manufacture-spc-dashboard).
 
                     """
                             )
