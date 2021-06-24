@@ -50,17 +50,15 @@ def build_banner():
                 id="banner-logo",
                 children=[
                     html.A(
-                        html.Button(
-                            children="ENTERPRISE DEMO"
-                        ),
-                        href="https://plotly.com/get-demo/"
+                        html.Button(children="ENTERPRISE DEMO"),
+                        href="https://plotly.com/get-demo/",
                     ),
                     html.Button(
                         id="learn-more-button", children="LEARN MORE", n_clicks=0
                     ),
                     html.A(
                         html.Img(id="logo", src=app.get_asset_url("dash-logo-new.png")),
-                        href="https://plotly.com/dash/"
+                        href="https://plotly.com/dash/",
                     ),
                 ],
             ),
