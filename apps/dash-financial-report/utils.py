@@ -16,10 +16,14 @@ def get_header(app):
                             src=app.get_asset_url("dash-financial-logo.png"),
                             className="logo",
                         ),
-                        href="https://plotly.com/dash"
+                        href="https://plotly.com/dash",
                     ),
                     html.A(
-                        html.Button("Enterprise Demo", id="learn-more-button", style={"margin-left": "-10px"}),
+                        html.Button(
+                            "Enterprise Demo",
+                            id="learn-more-button",
+                            style={"margin-left": "-10px"},
+                        ),
                         href="https://plotly.com/get-demo/",
                     ),
                     html.A(

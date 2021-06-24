@@ -797,9 +797,10 @@ app.layout = html.Div(
                     children=[
                         html.A(
                             html.Img(
-                                className="logo", src=app.get_asset_url("dash-logo-new.png")
+                                className="logo",
+                                src=app.get_asset_url("dash-logo-new.png"),
                             ),
-                            href="https://plotly.com/dash/"
+                            href="https://plotly.com/dash/",
                         ),
                         html.H6(className="title-header", children="FOREX TRADER"),
                         dcc.Markdown(
