@@ -795,15 +795,21 @@ app.layout = html.Div(
                 html.Div(
                     className="div-info",
                     children=[
-                        html.Img(
-                            className="logo", src=app.get_asset_url("dash-logo-new.png")
+                        html.A(
+                            html.Img(
+                                className="logo", src=app.get_asset_url("dash-logo-new.png")
+                            ),
+                            href="https://plotly.com/dash/"
                         ),
                         html.H6(className="title-header", children="FOREX TRADER"),
-                        html.P(
+                        dcc.Markdown(
                             """
                             This app continually queries csv files and updates Ask and Bid prices
                             for major currency pairs as well as Stock Charts. You can also virtually
                             buy and sell stocks and see the profit updates.
+
+                            [Source Code](https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-web-trader) |
+                            [Enterprise Demo](https://plotly.com/get-demo/)
                             """
                         ),
                     ],
