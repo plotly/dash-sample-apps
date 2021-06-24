@@ -68,8 +68,11 @@ app.layout = html.Div(
                 html.Div(
                     className="four columns div-user-controls",
                     children=[
-                        html.Img(
-                            className="logo", src=app.get_asset_url("dash-logo-new.png")
+                        html.A(
+                            html.Img(
+                                className="logo", src=app.get_asset_url("dash-logo-new.png")
+                            ),
+                            href="https://plotly.com/dash/"
                         ),
                         html.H2("DASH - UBER DATA APP"),
                         html.P(
@@ -132,9 +135,11 @@ app.layout = html.Div(
                         html.P(id="total-rides-selection"),
                         html.P(id="date-value"),
                         dcc.Markdown(
-                            children=[
-                                "Source: [FiveThirtyEight](https://github.com/fivethirtyeight/uber-tlc-foil-response/tree/master/uber-trip-data)"
-                            ]
+                            """
+                            Source: [FiveThirtyEight](https://github.com/fivethirtyeight/uber-tlc-foil-response/tree/master/uber-trip-data)
+
+                            Links: [Source Code](https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-uber-rides-demo) | [Enterprise Demo](https://plotly.com/get-demo/)
+                            """
                         ),
                     ],
                 ),
