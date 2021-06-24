@@ -16,6 +16,7 @@ def Header(name, app):
             html.H1(name, style={"margin": 10, "display": "inline"}),
             html.A(dash_logo, href="https://plotly.com/dash/"),
             html.A(ghub_logo, href="https://github.com/plotly/dash-pivottable"),
+            html.A(html.Button("Enterprise Demo", style={"float": "right", "margin-right": "10px", "margin-top": "5px", "padding": "5px 10px", "font-size": "15px"}), href="https://plotly.com/get-demo/"),
             html.Hr(),
         ]
     )
