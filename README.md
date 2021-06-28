@@ -21,7 +21,7 @@ then run the app:
 python app.py
 ```
 
-## Cloning a repository
+## Cloning this whole repository
 
 To clone this repository, run:
 ```
@@ -32,4 +32,4 @@ Note this might take a long time since it copies over 100 apps available in the 
 
 ## Contributing
 
-To contribute to this repository, please see the [contributing document](CONTRIBUTING.md).
+To contribute to this repository, please see the [contributing guide](CONTRIBUTING.md).
