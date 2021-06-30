@@ -11,13 +11,24 @@ def get_header(app):
         [
             html.Div(
                 [
-                    html.Img(
-                        src=app.get_asset_url("dash-financial-logo.png"),
-                        className="logo",
+                    html.A(
+                        html.Img(
+                            src=app.get_asset_url("dash-financial-logo.png"),
+                            className="logo",
+                        ),
+                        href="https://plotly.com/dash",
                     ),
                     html.A(
-                        html.Button("Learn More", id="learn-more-button"),
-                        href="https://plot.ly/dash/pricing/",
+                        html.Button(
+                            "Enterprise Demo",
+                            id="learn-more-button",
+                            style={"margin-left": "-10px"},
+                        ),
+                        href="https://plotly.com/get-demo/",
+                    ),
+                    html.A(
+                        html.Button("Source Code", id="learn-more-button"),
+                        href="https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-financial-report",
                     ),
                 ],
                 className="row",
