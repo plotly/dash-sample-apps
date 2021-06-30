@@ -94,7 +94,18 @@ app.layout = html.Div(
         html.Div(
             id="header",
             children=[
-                html.Img(id="logo", src=app.get_asset_url("dash-logo.png")),
+                html.A(
+                    html.Img(id="logo", src=app.get_asset_url("dash-logo.png")),
+                    href="https://plotly.com/dash/",
+                ),
+                html.A(
+                    html.Button("Enterprise Demo", className="link-button"),
+                    href="https://plotly.com/get-demo/",
+                ),
+                html.A(
+                    html.Button("Source Code", className="link-button"),
+                    href="https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-opioid-epidemic",
+                ),
                 html.H4(children="Rate of US Poison-Induced Deaths"),
                 html.P(
                     id="description",

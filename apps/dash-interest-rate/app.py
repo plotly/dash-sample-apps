@@ -116,7 +116,7 @@ controls = [
 app.layout = dbc.Container(
     fluid=True,
     children=[
-        html.H1("Dash Interest Rate Modeling with Snowflake"),
+        Header("Dash Interest Rate Modeling with Snowflake", app),
         html.Hr(),
         dbc.Row(
             [
