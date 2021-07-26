@@ -124,6 +124,7 @@ engine = create_engine(
 
 # Define app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app.title = "Loan Grade Classification with Snowflake"
 server = app.server
 
 
