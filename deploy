@@ -72,7 +72,7 @@ main() {
   local tmp_shallow_clone="$(mktemp -d -t apps-XXXXXXXXXX)"
   local tmp_full_clone="$(mktemp -d -t apps-XXXXXXXXXX)"
   local app_created=false
-  local force_push=false
+  local force_push=true
   local push_code=false
   local exit_code remote_sha
   trap "rm -rf '$tmp_shallow_clone' '$tmp_full_clone' >/dev/null" RETURN INT TERM EXIT
