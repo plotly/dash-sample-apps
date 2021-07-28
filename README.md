@@ -16,7 +16,7 @@ source venv/bin/activate  # Windows: \venv\scripts\activate
 pip install -r requirements.txt
 ```
 
-then run the app:
+then you can run the app:
 ```bash
 python app.py
 ```
