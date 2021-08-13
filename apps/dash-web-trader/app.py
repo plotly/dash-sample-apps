@@ -20,6 +20,7 @@ from plotly import tools
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}],
 )
+
 app.title = "FOREX Web Trader"
 
 server = app.server
@@ -1479,4 +1480,3 @@ def update_news_div(n):
 
 if __name__ == "__main__":
     app.run_server(debug=True)
-
