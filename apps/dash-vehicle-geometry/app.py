@@ -187,21 +187,13 @@ external_buttons = html.Div(
     [
         html.A(
             dbc.Button(
-                "Enterprise Demo",
-                color="primary",
-                size="md",
-                className="mr-1",
+                "Enterprise Demo", color="primary", size="md", className="mr-1",
             ),
             href="https://plotly.com/get-demo/",
             target="_blank",
         ),
         html.A(
-            dbc.Button(
-                "Source Code",
-                size="md",
-                className="mr-1",
-                color="secondary",
-            ),
+            dbc.Button("Source Code", size="md", className="mr-1", color="secondary",),
             href="https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-vehicle-geometry",
             target="_blank",
         ),
@@ -216,11 +208,7 @@ external_buttons = html.Div(
             target="_blank",
         ),
     ],
-    style={
-        "float": "right",
-        "height": "60px",
-        "padding-bottom": "0px",
-    },
+    style={"float": "right", "height": "60px", "padding-bottom": "0px",},
 )
 
 # -----------------------------------------------------------------------------
@@ -262,10 +250,7 @@ app.layout = dbc.Container(
                                 ),
                             ],
                             id="vtk-view-container",
-                            style={
-                                "height": "calc(100vh - 230px)",
-                                "width": "100%",
-                            },
+                            style={"height": "calc(100vh - 230px)", "width": "100%",},
                         ),
                     ],
                 ),
@@ -374,13 +359,8 @@ SCALE_U = 0.01
 
 
 @app.callback(
-    [
-        Output("tooltip", "children"),
-        Output("pointer", "state"),
-    ],
-    [
-        Input("vtk-view", "clickInfo"),
-    ],
+    [Output("tooltip", "children"), Output("pointer", "state"),],
+    [Input("vtk-view", "clickInfo"),],
 )
 def probe_data(info):
     cone_state = {"resolution": 12}
