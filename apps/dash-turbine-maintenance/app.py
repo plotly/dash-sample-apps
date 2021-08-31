@@ -32,13 +32,31 @@ def logo(app):
         style={"marginLeft": "10px"},
     )
 
-    logo_image = html.Img(
-        src=app.get_asset_url("dash-logo.png"), style={"float": "right", "height": 50}
+    logo_image = html.Img(src=app.get_asset_url("dash-logo.png"), style={"height": 50})
+
+    link_btns = html.Div(
+        style={"float": "right"},
+        children=[
+            html.A(
+                dbc.Button("Enterprise Demo", color="primary", className="mr-1",),
+                href="https://plotly.com/get-demo/",
+                target="_blank",
+            ),
+            html.A(
+                dbc.Button("Source Code", color="secondary", className="mr-1"),
+                href="https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-turbine-maintenance",
+                target="_blank",
+            ),
+            html.A(
+                logo_image,
+                href="https://plotly.com/dash/",
+                style={"margin-left": "15px"},
+            ),
+        ],
     )
-    link = html.A(logo_image, href="https://plotly.com/dash/")
 
     return dbc.Row(
-        [dbc.Col([dbc.Row([title]), dbc.Row([info_about_app])]), dbc.Col(link)]
+        [dbc.Col([dbc.Row([title]), dbc.Row([info_about_app])]), dbc.Col([link_btns])]
     )
 
 
