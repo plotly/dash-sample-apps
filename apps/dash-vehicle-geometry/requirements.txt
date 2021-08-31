@@ -27,6 +27,6 @@ scooby==0.5.6
 six==1.15.0
 transforms3d==0.3.1
 typing-extensions==3.7.4.3
-vtk==9.0.1
+vtk==9.0.*
 Werkzeug==1.0.1
 zipp==3.4.1
