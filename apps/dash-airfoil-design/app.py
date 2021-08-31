@@ -19,6 +19,8 @@ app = dash.Dash(
 )
 server = app.server
 
+btn_style = {"margin-top": "13px"}
+
 app.layout = dbc.Container(
     [
         dbc.Row(
@@ -29,21 +31,51 @@ app.layout = dbc.Container(
                             """
                 # Airfoil Analysis with [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox) and [Dash](https://plotly.com/dash/)
                 
-                By [Peter Sharpe](https://peterdsharpe.github.io/). Uses potential flow theory (viscous effects neglected, for now). [Source code here](https://github.com/peterdsharpe/Automotive-Airfoil-Design).
+                By [Peter Sharpe](https://peterdsharpe.github.io/). Uses potential flow theory (viscous effects neglected, for now). [Original repository here](https://github.com/peterdsharpe/Automotive-Airfoil-Design).
                 """
                         )
                     ],
-                    width=True,
+                    width=8,
                 ),
                 dbc.Col(
                     [
-                        html.Img(
-                            src="assets/MIT-logo-red-gray-72x38.svg",
-                            alt="MIT Logo",
-                            height="30px",
+                        html.Div(
+                            [
+                                html.A(
+                                    dbc.Button(
+                                        "Enterprise Demo",
+                                        color="primary",
+                                        size="md",
+                                        className="mr-1",
+                                    ),
+                                    href="https://plotly.com/get-demo/",
+                                    target="_blank",
+                                    style=btn_style,
+                                ),
+                                html.A(
+                                    dbc.Button(
+                                        "Source Code",
+                                        size="md",
+                                        className="mr-1",
+                                        color="secondary",
+                                    ),
+                                    href="https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-airfoil-design",
+                                ),
+                                html.Img(
+                                    src="assets/MIT-logo-red-gray-72x38.svg",
+                                    alt="MIT Logo",
+                                    height="100%",
+                                    style={"margin-left": "15px"},
+                                ),
+                            ],
+                            style={
+                                "float": "right",
+                                "height": "80px",
+                                "padding-bottom": "20px",
+                            },
                         ),
                     ],
-                    width=1,
+                    width=4,
                 ),
             ],
             align="end",
@@ -319,4 +351,4 @@ def display_graph(
 
 
 if __name__ == "__main__":
-    app.run_server(debug=False)
+    app.run_server(debug=True)
