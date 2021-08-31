@@ -72,7 +72,8 @@ def app_page_layout(
                     html.A(
                         children=["Enterprise Demo"],
                         className="gh-link",
-                        href="http://github.com/plotly/dash-bio/",
+                        href="https://plotly.com/get-demo/",
+                        target="_blank",
                         style={
                             "color": "white" if light_logo else "black",
                             "border": "solid 1px white"
@@ -84,6 +85,7 @@ def app_page_layout(
                         className="gh-link",
                         children=["Source Code"],
                         href="https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-pileup-demo",
+                        target="_blank",
                         style={
                             "color": "white" if light_logo else "black",
                             "border": "solid 1px white"
