@@ -4,10 +4,12 @@ import random
 
 import dash
 import dash_bootstrap_components as dbc
+from dash_bootstrap_components._components.Col import Col
 import dash_html_components as html
 import dash_core_components as dcc
 
 from dash.dependencies import Input, Output, State
+from dash_html_components.Br import Br
 
 import dash_vtk
 from dash_vtk.utils import to_mesh_state, preset_as_options
@@ -173,7 +175,41 @@ controls = [
             ),
         ]
     ),
+    html.Br(),
+    dbc.Alert(
+        "Please click on the vehicle to display the cones",
+        color="info",
+        dismissable=True,
+    ),
 ]
+
+external_buttons = html.Div(
+    [
+        html.A(
+            dbc.Button(
+                "Enterprise Demo", color="primary", size="md", className="mr-1",
+            ),
+            href="https://plotly.com/get-demo/",
+            target="_blank",
+        ),
+        html.A(
+            dbc.Button("Source Code", size="md", className="mr-1", color="secondary",),
+            href="https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-vehicle-geometry",
+            target="_blank",
+        ),
+        html.A(
+            html.Img(
+                src=app.get_asset_url("dash-logo.png"),
+                alt="MIT Logo",
+                height="100%",
+                style={"margin-left": "15px"},
+            ),
+            href="https://plotly.com/dash/",
+            target="_blank",
+        ),
+    ],
+    style={"float": "right", "height": "60px", "padding-bottom": "0px",},
+)
 
 # -----------------------------------------------------------------------------
 # App UI
@@ -182,7 +218,17 @@ controls = [
 app.layout = dbc.Container(
     fluid=True,
     children=[
-        html.H2("Vehicle Geometry with OpenFOAM"),
+        dbc.Row(
+            [
+                dbc.Col(
+                    [html.H2("Vehicle Geometry with OpenFOAM")],
+                    width=7,
+                    style={"padding-top": "10px"},
+                ),
+                dbc.Col([external_buttons], width=5),
+            ],
+            style={"margin-bottom": "1px"},
+        ),
         html.Hr(),
         dbc.Row(
             [
@@ -246,7 +292,7 @@ def initial_loading(geometry):
     return dash_vtk.View(
         id="vtk-view",
         children=vehicle_vtk + isosurfs_vtk + [cone_pointer, tooltip],
-        pickingModes=["hover"],
+        pickingModes=["click"],
     )
 
 
@@ -314,7 +360,7 @@ SCALE_U = 0.01
 
 @app.callback(
     [Output("tooltip", "children"), Output("pointer", "state"),],
-    [Input("vtk-view", "hoverInfo"),],
+    [Input("vtk-view", "clickInfo"),],
 )
 def probe_data(info):
     cone_state = {"resolution": 12}
