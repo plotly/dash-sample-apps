@@ -70,12 +70,20 @@ def app_page_layout(
                     ),
                     html.H2(app_title),
                     html.A(
-                        id="gh-link",
-                        children=["View on GitHub"],
-                        href="http://github.com/plotly/dash-bio/"
-                        "blob/master/tests/dashbio_demos/dash-{}/app.py".format(
-                            app_name
-                        ),
+                        children=["Enterprise Demo"],
+                        className="gh-link",
+                        href="http://github.com/plotly/dash-bio/",
+                        style={
+                            "color": "white" if light_logo else "black",
+                            "border": "solid 1px white"
+                            if light_logo
+                            else "solid 1px black",
+                        },
+                    ),
+                    html.A(
+                        className="gh-link",
+                        children=["Source Code"],
+                        href="https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-pileup-demo",
                         style={
                             "color": "white" if light_logo else "black",
                             "border": "solid 1px white"
