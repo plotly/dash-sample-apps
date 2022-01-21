@@ -14,7 +14,7 @@ Flask-Compress==1.9.0
 future==0.18.2
 gunicorn==20.1.0
 ipykernel==5.4.2
-ipython==7.19.0
+ipython==7.31.1
 ipython-genutils==0.2.0
 itsdangerous==1.1.0
 jedi==0.17.2
