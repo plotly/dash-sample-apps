@@ -41,7 +41,7 @@ app = Dash(
     #external_scripts=external_scripts,
     external_stylesheets=[dbc.themes.FLATLY])
 
-server = app.server
+server = app.server  # for deployment
 
 app.config.suppress_callback_exceptions = True
 #==========================================
@@ -107,7 +107,7 @@ app.layout = html.Div([
     ]),
     dbc.Row([
         svm_params := html.Div(style={'display': 'none'}),
-        dcc.Store(id='datasets_params', storage_type='memory')
+        dcc.Store(id='datasets_params', storage_type='memory')  # It seems like the current version of dcc.Store doesn't support assignment expressions.
     ])
 ])
 
@@ -362,7 +362,7 @@ def params_update(n_clicks, value, idx, data_1_idx, data_1_value, data_2_idx,
             for i, j in enumerate(data_2_idx)
         }
 
-        df0 = parse_contents(list(filter(None, uploaded_data))[0],
+        df0 = parse_contents(list(filter(None, uploaded_data))[0],  #  This is not recommended. I did this to bypass a bug in the current version where when I wanted to call back a component placed in dbc.Tab, the process would report an error saying that the component could not be found.
                              list(filter(None, filename))[0],
                              header=False,
                              usecols=[
@@ -531,6 +531,7 @@ def reset_threshold(n_clicks, fig):
 
 
 #==========================================
+#==========client side callbacks===========
 
 app.clientside_callback(
     ClientsideFunction(namespace='clientside', function_name='canvas_toggle'),
