@@ -2,7 +2,8 @@
 
 import dash_bootstrap_components as dbc
 from dash import (Input, Output, State, html, Dash, dcc, dash_table,
-                  get_asset_url, ALL, MATCH)
+                  get_asset_url, ALL, MATCH, ClientsideFunction,
+                  callback_context)
 from dash.exceptions import PreventUpdate
 #==========================================
 
@@ -33,11 +34,12 @@ from utils.split_components import *
 
 #==========================================
 
-app = Dash(__name__,
-           title='SVM',
-           update_title='Eating...',
-           #external_scripts=external_scripts,
-           external_stylesheets=[dbc.themes.FLATLY])
+app = Dash(
+    __name__,
+    title='SVM',
+    update_title='Eating...',
+    #external_scripts=external_scripts,
+    external_stylesheets=[dbc.themes.FLATLY])
 
 server = app.server
 
@@ -103,7 +105,10 @@ app.layout = html.Div([
             width=4,
         )
     ]),
-    dbc.Row(params := html.Div(style={'display': 'none'}))
+    dbc.Row([
+        svm_params := html.Div(style={'display': 'none'}),
+        dcc.Store(id='datasets_params', storage_type='memory')
+    ])
 ])
 
 #==========================================
@@ -262,7 +267,7 @@ def generate_data(value, idx):
     return df.to_dict('records')
 
 
-@app.callback(Output(params, 'children'),
+@app.callback(Output(svm_params, 'children'),
               [Input({
                   'type': 'svm_parameter',
                   'index': ALL
@@ -328,12 +333,20 @@ def params_update(value, idx):
         'type': 'canvas_parameter',
         'index': ALL
     }, 'value'),
-    State(tabs, 'active_tab')
+    State(tabs, 'active_tab'),
+    State('datasets_params', 'data')
 ])
 def params_update(n_clicks, value, idx, data_1_idx, data_1_value, data_2_idx,
                   data_2_value, uploaded_data, filename, canvas_data,
-                  canvas_params, at):
+                  canvas_params, at, store):
     t1 = time.perf_counter()
+
+    if store and callback_context.triggered[0]["prop_id"].split(
+            ".")[0] != save_btn.id:
+        [
+            data_1_idx, data_1_value, data_2_idx, data_2_value, uploaded_data,
+            filename, canvas_data, canvas_params, at
+        ] = store
 
     if at == 'tab-0':
         data_1_params = {
@@ -520,16 +533,8 @@ def reset_threshold(n_clicks, fig):
 #==========================================
 
 app.clientside_callback(
-    """
-    function(n, c) {
-        if (c === '#509188') {
-            return '#FF7070'
-        } else {
-            return '#509188'
-        }
-    
-    }
-    """, Output({
+    ClientsideFunction(namespace='clientside', function_name='canvas_toggle'),
+    Output({
         'type': 'canvas_parameter',
         'index': 'canvas'
     }, 'lineColor'),
@@ -541,6 +546,48 @@ app.clientside_callback(
         'type': 'canvas_parameter',
         'index': 'canvas'
     }, 'lineColor')])
+
+app.clientside_callback(
+    ClientsideFunction(namespace='clientside',
+                       function_name='datasets_params_store'),
+    Output('datasets_params', 'data'),
+    [Input(save_btn, 'n_clicks')],
+    [
+        # data_1_idx, data_1_value, data_2_idx,data_2_value, uploaded_data, filename, canvas_data, canvas_params
+        State({
+            'type': 'dataset_parameter',
+            'index': ALL
+        }, 'id'),
+        State({
+            'type': 'dataset_parameter',
+            'index': ALL
+        }, 'value'),
+        State({
+            'type': 'uploader_parameter',
+            'index': ALL
+        }, 'id'),
+        State({
+            'type': 'uploader_parameter',
+            'index': ALL
+        }, 'value'),
+        State({
+            'type': 'uploader_parameter',
+            'index': ALL
+        }, 'contents'),
+        State({
+            'type': 'uploader_parameter',
+            'index': ALL
+        }, 'filename'),
+        State({
+            'type': 'canvas_parameter',
+            'index': ALL
+        }, 'json_data'),
+        State({
+            'type': 'canvas_parameter',
+            'index': ALL
+        }, 'value'),
+        State(tabs, 'active_tab')
+    ])
 #==========================================
 #==========================================
 #==========================================
