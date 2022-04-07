@@ -74,26 +74,24 @@ def prediction_plot(**kwargs):
                             line=dict(width=1),
                         ))
 
-    layout = go.Layout(
-        xaxis=dict(
-            ticks='',
-            showticklabels=False,
-            showgrid=False,
-            zeroline=False,
-        ),
-        transition=dict(
-            easing='exp-in-out',
-            ordering="traces first",
-            duration=500),
-        yaxis=dict(
-            ticks='',
-            showticklabels=False,
-            showgrid=False,
-            zeroline=False,
-        ),
-        hovermode='closest',
-        legend=dict(x=0, y=-0.01, orientation="h"),
-        margin=dict(l=0, r=0, t=0, b=0))
+    layout = go.Layout(xaxis=dict(
+        ticks='',
+        showticklabels=False,
+        showgrid=False,
+        zeroline=False,
+    ),
+                       transition=dict(easing='exp-in-out',
+                                       ordering="traces first",
+                                       duration=500),
+                       yaxis=dict(
+                           ticks='',
+                           showticklabels=False,
+                           showgrid=False,
+                           zeroline=False,
+                       ),
+                       hovermode='closest',
+                       legend=dict(x=0, y=-0.01, orientation="h"),
+                       margin=dict(l=0, r=0, t=0, b=0))
 
     fig = go.Figure(data=[trace0, trace1, trace2, trace3], layout=layout)
 
@@ -112,6 +110,7 @@ def roc_curve_plot(**kwargs):
     auc_score = roc_auc_score(y_true=_data[2], y_score=y_score)
 
     fig = px.line(x=fpr, y=tpr)
+    fig.update_traces(hovertemplate=None)
     fig.update_layout(
         title={
             'text': f'ROC Curve (AUC = {auc_score:.3f})',
@@ -159,11 +158,15 @@ def confusion_matrix_plot(**kwargs):
                     zmin=0,
                     zmax=1,
                     aspect="auto")
-    fig.update_traces(text=label_text, texttemplate="%{text}")
+
+    fig.update_traces(text=label_text,
+                      texttemplate="%{text}",
+                      customdata=matrix,
+                      hovertemplate='%{customdata:,}'
+                      )  # I don't know where that 0 came from.
 
     fig.update_layout(xaxis_title="TRAIN",
                       yaxis_title="TEST",
-                      hovermode='closest',
                       transition=dict(easing='sin-in-out', duration=500),
                       height=400,
                       margin=dict(l=10, r=20, t=40, b=20))
