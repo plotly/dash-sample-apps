@@ -55,7 +55,8 @@ app.layout = html.Div([
             html.A(
                 dbc.Row([
                     dbc.Col(
-                        html.Img(src=get_asset_url('logo.png'),
+                        html.Img(
+                            src="https://plotly-marketing-website.cdn.prismic.io/plotly-marketing-website/948b6663-9429-4bd6-a4cc-cb33231d4532_logo-plotly.svg",
                                  height="30px")),
                     dbc.Col(
                         dbc.NavbarBrand("Support Vector Machines",
