@@ -221,7 +221,7 @@ tab_3_content = html.Div([
                     [
                         html.Div(
                             [
-                                dash_canvas.DashCanvas(
+                                dash_canvas.DashCanvas(  # This will be switched to the annotation component in the future.
                                     id={
                                         'type': 'canvas_parameter',
                                         'index': 'canvas'
