@@ -71,11 +71,19 @@ app.layout = html.Div([
         dbc.Col(
             dbc.Container([
                 html.Br(),
-                dbc.Row(dbc.Col(fig_0 := dcc.Graph(), )),
+                dbc.Row(
+                    dbc.Col(fig_0 := dcc.Graph(config=dict(
+                        displayModeBar='hover')))),
                 html.Br(),
                 dbc.Row([
-                    dbc.Col(fig_1 := dcc.Graph(), width=6, align='center'),
-                    dbc.Col(fig_2 := dcc.Graph(), width=6, align='center'),
+                    dbc.Col(fig_1 :=
+                            dcc.Graph(config=dict(displayModeBar=False)),
+                            width=6,
+                            align='center'),
+                    dbc.Col(fig_2 :=
+                            dcc.Graph(config=dict(displayModeBar=False)),
+                            width=6,
+                            align='center'),
                 ]),
                 html.Br(),
                 dbc.Row(
@@ -107,7 +115,8 @@ app.layout = html.Div([
     ]),
     dbc.Row([
         svm_params := html.Div(style={'display': 'none'}),
-        dcc.Store(id='datasets_params', storage_type='memory')  # It seems like the current version of dcc.Store doesn't support assignment expressions.
+        dcc.Store(id='datasets_params', storage_type='memory')
+        # It seems like the current version of dcc.Store doesn't support assignment expressions.
     ])
 ])
 
@@ -362,13 +371,15 @@ def params_update(n_clicks, value, idx, data_1_idx, data_1_value, data_2_idx,
             for i, j in enumerate(data_2_idx)
         }
 
-        df0 = parse_contents(list(filter(None, uploaded_data))[0],  #  This is not recommended. I did this to bypass a bug in the current version where when I wanted to call back a component placed in dbc.Tab, the process would report an error saying that the component could not be found.
-                             list(filter(None, filename))[0],
-                             header=False,
-                             usecols=[
-                                 v for k, v in data_2_params.items()
-                                 if k not in ['uploader', 'test_size']
-                             ])
+        df0 = parse_contents(
+            list(filter(None, uploaded_data))[0],
+            #  This is not recommended. I did this to bypass a bug in the current version where when I wanted to call back a component placed in dbc.Tab, the process would report an error saying that the component could not be found.
+            list(filter(None, filename))[0],
+            header=False,
+            usecols=[
+                v for k, v in data_2_params.items()
+                if k not in ['uploader', 'test_size']
+            ])
 
         df0.rename(columns={
             v: k
