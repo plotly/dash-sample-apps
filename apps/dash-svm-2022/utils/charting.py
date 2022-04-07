@@ -89,6 +89,8 @@ def prediction_plot(**kwargs):
                            showgrid=False,
                            zeroline=False,
                        ),
+                       plot_bgcolor="#fff",
+                       paper_bgcolor="#fff",
                        hovermode='closest',
                        legend=dict(x=0, y=-0.01, orientation="h"),
                        margin=dict(l=0, r=0, t=0, b=0))
@@ -110,7 +112,7 @@ def roc_curve_plot(**kwargs):
     auc_score = roc_auc_score(y_true=_data[2], y_score=y_score)
 
     fig = px.line(x=fpr, y=tpr)
-    fig.update_traces(hovertemplate=None)
+    fig.update_traces(hovertemplate=None, line_color='rgb(49,130,189)')
     fig.update_layout(
         title={
             'text': f'ROC Curve (AUC = {auc_score:.3f})',
@@ -129,7 +131,8 @@ def roc_curve_plot(**kwargs):
         hovermode='closest',
         height=400,
         showlegend=False,
-        margin=dict(l=10, r=0, t=40, b=20))
+        plot_bgcolor='#FAF9DE',
+        margin=dict(l=10, r=0, t=50, b=20))
 
     return fig
 
@@ -161,14 +164,14 @@ def confusion_matrix_plot(**kwargs):
 
     fig.update_traces(text=label_text,
                       texttemplate="%{text}",
+                      name='',
                       customdata=matrix,
-                      hovertemplate='%{customdata:,}'
-                      )  # I don't know where that 0 came from.
+                      hovertemplate='%{customdata:,}')
 
     fig.update_layout(xaxis_title="TRAIN",
                       yaxis_title="TEST",
                       transition=dict(easing='sin-in-out', duration=500),
                       height=400,
-                      margin=dict(l=10, r=20, t=40, b=20))
+                      margin=dict(l=10, r=20, t=50, b=20))
 
     return fig
