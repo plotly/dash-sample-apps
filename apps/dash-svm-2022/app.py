@@ -210,7 +210,7 @@ def update_output(xyc, idx, uploaded_data, filename):
                      for k, v in data_params.items() if k != 'test_size'},
             inplace=1)
 
-        data_params.update({'df': df0})
+        data_params |= {'df': df0}
 
         data = df_split(**data_params)
 
@@ -401,7 +401,7 @@ def params_update(n_clicks, value, idx, tab_1_idx, tab_1_values, tab_2_idx,
         },
                    inplace=1)
 
-        data_2_params.update({'df': df0})
+        data_2_params |= {'df': df0}
 
         data = df_split(**data_2_params)
 
@@ -421,12 +421,12 @@ def params_update(n_clicks, value, idx, tab_1_idx, tab_1_values, tab_2_idx,
 
     params = {j['index']: value[i] for i, j in enumerate(idx)}
 
-    params.update({'data': data})
-    params.update({'cost': 10**params['cost_power'] * params['cost_coef']})
-    params.update({'gamma': 10**params['gamma_power'] * params['gamma_coef']})
+    params |= {'data': data}
+    params |= {'cost': 10**params['cost_power'] * params['cost_coef']}
+    params |= {'gamma': 10**params['gamma_power'] * params['gamma_coef']}
 
     model = modeling(**params)
-    params.update({'model': model})
+    params |= {'model': model}
 
     fig_0 = prediction_plot(**params)
     fig_1 = roc_curve_plot(**params)
