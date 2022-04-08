@@ -56,8 +56,9 @@ app.layout = html.Div([
                 dbc.Row([
                     dbc.Col(
                         html.Img(
-                            src="https://plotly-marketing-website.cdn.prismic.io/plotly-marketing-website/948b6663-9429-4bd6-a4cc-cb33231d4532_logo-plotly.svg",
-                                 height="30px")),
+                            src=
+                            "https://plotly-marketing-website.cdn.prismic.io/plotly-marketing-website/948b6663-9429-4bd6-a4cc-cb33231d4532_logo-plotly.svg",
+                            height="30px")),
                     dbc.Col(
                         dbc.NavbarBrand("Support Vector Machines",
                                         className="ms-2")),
@@ -87,14 +88,13 @@ app.layout = html.Div([
                             align='center'),
                 ]),
                 html.Br(),
-                dbc.Row(
-                    alert := dbc.Alert(is_open=False,
-                                       dismissable=True,
-                                       duration=2000,
-                                       style={
-                                           'padding-left': '45px',
-                                           'margin-top': '55px'
-                                       }), )
+                dbc.Row(alert := dbc.Alert(is_open=False,
+                                           dismissable=True,
+                                           duration=2000,
+                                           style={
+                                               'padding-left': '45px',
+                                               'margin-top': '55px'
+                                           }))
             ], ),
             width=8,
         ),
@@ -116,8 +116,22 @@ app.layout = html.Div([
     ]),
     dbc.Row([
         svm_params := html.Div(style={'display': 'none'}),
-        dcc.Store(id='datasets_params', storage_type='memory')
         # It seems like the current version of dcc.Store doesn't support assignment expressions.
+        dcc.Store(id='datasets_params',
+                  storage_type='memory',
+                  data=[[{
+                      'type': 'dataset_parameter',
+                      'index': 'dataset'
+                  }, {
+                      'type': 'dataset_parameter',
+                      'index': 'sample_size'
+                  }, {
+                      'type': 'dataset_parameter',
+                      'index': 'noise'
+                  }, {
+                      'type': 'dataset_parameter',
+                      'index': 'test_size'
+                  }], ['LS', 100, 0.4, 0.25], [], [], [], [], [], [], 'tab-0'])
     ])
 ])
 
@@ -346,30 +360,29 @@ def params_update(value, idx):
     State(tabs, 'active_tab'),
     State('datasets_params', 'data')
 ])
-def params_update(n_clicks, value, idx, data_1_idx, data_1_value, data_2_idx,
-                  data_2_value, uploaded_data, filename, canvas_data,
-                  canvas_params, at, store):
+def params_update(n_clicks, value, idx, tab_1_idx, tab_1_values, tab_2_idx,
+                  tab_2_values, uploaded_data, filename, canvas_data,
+                  tab_3_params, at, tabs_cache):
     t1 = time.perf_counter()
 
-    if store and callback_context.triggered[0]["prop_id"].split(
-            ".")[0] != save_btn.id:
+    if callback_context.triggered[0]["prop_id"].split(".")[0] != save_btn.id:
         [
-            data_1_idx, data_1_value, data_2_idx, data_2_value, uploaded_data,
-            filename, canvas_data, canvas_params, at
-        ] = store
+            tab_1_idx, tab_1_values, tab_2_idx, tab_2_values, uploaded_data,
+            filename, canvas_data, tab_3_params, at
+        ] = tabs_cache
 
     if at == 'tab-0':
         data_1_params = {
-            j['index']: data_1_value[i]
-            for i, j in enumerate(data_1_idx)
+            j['index']: tab_1_values[i]
+            for i, j in enumerate(tab_1_idx)
         }
 
         data = sampling(**data_1_params)
 
     elif at == 'tab-1':
         data_2_params = {
-            j['index']: data_2_value[i]
-            for i, j in enumerate(data_2_idx)
+            j['index']: tab_2_values[i]
+            for i, j in enumerate(tab_2_idx)
         }
 
         df0 = parse_contents(
@@ -396,7 +409,7 @@ def params_update(n_clicks, value, idx, data_1_idx, data_1_value, data_2_idx,
         X, y = handle_json(list(filter(None, canvas_data))[0], )
 
         split_params = {
-            'test_size': list(filter(None, canvas_params))[0],
+            'test_size': list(filter(None, tab_3_params))[0],
             'X': X,
             'y': y
         }
@@ -543,7 +556,6 @@ def reset_threshold(n_clicks, fig):
 
 
 #==========================================
-#==========client side callbacks===========
 
 app.clientside_callback(
     ClientsideFunction(namespace='clientside', function_name='canvas_toggle'),
@@ -566,7 +578,7 @@ app.clientside_callback(
     Output('datasets_params', 'data'),
     [Input(save_btn, 'n_clicks')],
     [
-        # data_1_idx, data_1_value, data_2_idx,data_2_value, uploaded_data, filename, canvas_data, canvas_params
+        # tab_1_idx, tab_1_values, tab_2_idx,tab_2_values, uploaded_data, filename, canvas_data, tab_3_params
         State({
             'type': 'dataset_parameter',
             'index': ALL
@@ -608,3 +620,4 @@ app.clientside_callback(
 
 if __name__ == "__main__":
     app.run_server(debug=True)
+    
