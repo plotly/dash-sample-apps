@@ -163,7 +163,7 @@ app.callback(
     }, 'filename')],
     prevent_initial_call=True)(lambda data, filename: 3 *
                                [parse_contents(data, filename, header=True)]
-                               if data else no_update)
+                               if data else 3 * [no_update])
 
 
 @app.callback(Output({
