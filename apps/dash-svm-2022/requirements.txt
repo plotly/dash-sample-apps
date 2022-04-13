@@ -7,3 +7,4 @@ dash_bootstrap_components==1.1.0
 plotly==5.7.0
 scikit_learn==1.0.2
 gunicorn==20.1.0
+openpyxl==3.0.9
