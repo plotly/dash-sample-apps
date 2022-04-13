@@ -12,14 +12,7 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
             'sigmoid': '$K(x,z) = tanh(\\gamma x \\bullet z+r)$'
         }[kernel]),
         disable_param_gamma: kernel => { let _ = ['rbf', 'poly', 'sigmoid'].includes(kernel); return [_, _]; },
-        scale_param_C_coef: power => {
-            let labels = {};
-            for (i of Array.from(Array(5).keys(), n => 2 * n + 1)) {
-                labels[i] = power < 0 ? (i / 10 ** -power).toString() : (i * 10 ** power).toString()
-            };
-            return labels;
-        },
-        scale_param_gamma: power => {
+        scale_param: power => {
             let labels = {};
             for (i of Array.from(Array(5).keys(), n => 2 * n + 1)) {
                 labels[i] = power < 0 ? (i / 10 ** -power).toString() : (i * 10 ** power).toString()
