@@ -8,18 +8,19 @@ import pandas as pd
 def parse_contents(contents, filename, header, usecols=None):
     content_type, content_string = contents.split(',')
 
-    decoded = base64.b64decode(content_string)
+    decoded = io.BytesIO(base64.b64decode(content_string))
     try:
         if filename.endswith('csv'):
             # Assume that the user uploaded a CSV file
-            df = pd.read_csv(io.StringIO(decoded.decode('utf-8')),
-                             usecols=usecols)
+            df = pd.read_csv(decoded, usecols=usecols)
         elif filename.endswith('xls') or filename.endswith('xlsx'):
             # Assume that the user uploaded an excel file
-            df = pd.read_excel(io.BytesIO(decoded), usecols=usecols)
+            df = pd.read_excel(decoded, usecols=usecols)
+        else:
+            print('What files?')
 
     except:
-        print('Somthing wrong with uploader.')
+        print('Somthing is wrong with uploader.')
 
     if header:
         return df.columns
