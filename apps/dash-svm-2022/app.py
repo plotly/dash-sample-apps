@@ -3,7 +3,7 @@
 import dash_bootstrap_components as dbc
 from dash import (Input, Output, State, html, Dash, dcc, dash_table,
                   get_asset_url, ALL, MATCH, ClientsideFunction,
-                  callback_context)
+                  callback_context, no_update)
 from dash.exceptions import PreventUpdate
 #==========================================
 
@@ -137,9 +137,8 @@ app.layout = html.Div([
 
 #==========================================
 
-
 #================callbacks=================
-@app.callback(
+app.callback(
     [
         Output({
             'type': 'uploader_parameter',
@@ -161,13 +160,10 @@ app.layout = html.Div([
     [State({
         'type': 'uploader_parameter',
         'index': 'uploader'
-    }, 'filename')])
-def update_output(data, filename):
-    if data is None:
-        raise PreventUpdate
-    else:
-        header = parse_contents(data, filename, header=True)
-        return 3 * [header]
+    }, 'filename')],
+    prevent_initial_call=True)(lambda data, filename: 3 *
+                               [parse_contents(data, filename, header=True)]
+                               if data else no_update)
 
 
 @app.callback(Output({
@@ -448,7 +444,7 @@ def switch_tab(at):
         return tab_2_content
     elif at == 'tab-2':
         return tab_3_content
-    return html.P("Something wrong...")
+    return html.P("Something is wrong...")
 
 
 @app.callback(Output({
