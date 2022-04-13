@@ -575,8 +575,7 @@ app.clientside_callback(
     }, 'value')])
 
 app.clientside_callback(
-    ClientsideFunction(namespace='clientside',
-                       function_name='scale_param_C_coef'),
+    ClientsideFunction(namespace='clientside', function_name='scale_param'),
     Output({
         'type': 'svm_parameter',
         'index': 'cost_coef'
@@ -587,8 +586,7 @@ app.clientside_callback(
     }, 'value')])
 
 app.clientside_callback(
-    ClientsideFunction(namespace='clientside',
-                       function_name='scale_param_gamma'),
+    ClientsideFunction(namespace='clientside', function_name='scale_param'),
     Output({
         'type': 'svm_parameter',
         'index': 'gamma_coef'
