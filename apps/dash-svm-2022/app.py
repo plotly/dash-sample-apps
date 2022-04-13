@@ -439,27 +439,6 @@ def params_update(n_clicks, value, idx, tab_1_idx, tab_1_values, tab_2_idx,
     return fig_0, fig_1, fig_2, alert_info, True
 
 
-@app.callback(Output(offcanvas, 'is_open'),
-              [Input(offcanvas_btn, 'n_clicks'),
-               Input(save_btn, 'n_clicks')], [State(offcanvas, 'is_open')])
-def open_offcanvas(n, sn, is_open):
-    if n or sn:
-        return not is_open
-    return is_open
-
-
-@app.callback(Output(save_btn, 'disabled'),
-              [Input({
-                  'type': 'tabs-table',
-                  'id': ALL
-              }, 'is_loading')])
-def btn_disabled(tabs_table):
-    if any(tabs_table):
-        return True
-    else:
-        return False
-
-
 @app.callback(Output(offcanvas_content, "children"),
               [Input(tabs, "active_tab")])
 def switch_tab(at):
@@ -470,76 +449,6 @@ def switch_tab(at):
     elif at == 'tab-2':
         return tab_3_content
     return html.P("Something wrong...")
-
-
-@app.callback(Output({
-    'type': 'svm_parameter',
-    'index': 'degree'
-}, 'disabled'), [Input({
-    'type': 'svm_parameter',
-    'index': 'kernel'
-}, 'value')])
-def disable_param_degree(kernel):
-    return kernel != 'poly'
-
-
-@app.callback(Output(latex_formula, 'children'),
-              [Input({
-                  'type': 'svm_parameter',
-                  'index': 'kernel'
-              }, 'value')])
-def disable_param_degree(kernel):
-    ltx = {
-        'rbf': r'$K(x, z) = exp(-\gamma||x-z||^2)$',
-        'linear': r'$K(x, z) = x \bullet z$',
-        'poly': r'$K(x,z) = (\gamma x \bullet z+r)^d$',
-        'sigmoid': r'$K(x,z) = tanh(\gamma x \bullet z+r)$'
-    }
-    return dcc.Markdown(ltx[kernel], mathjax=True)
-
-
-@app.callback([
-    Output({
-        'type': 'svm_parameter',
-        'index': 'gamma_power'
-    }, 'disabled'),
-    Output({
-        'type': 'svm_parameter',
-        'index': 'gamma_coef'
-    }, 'disabled')
-], [Input({
-    'type': 'svm_parameter',
-    'index': 'kernel'
-}, 'value')])
-def disable_param_gamma(kernel):
-    _ = kernel not in ['rbf', 'poly', 'sigmoid']
-    return _, _
-
-
-@app.callback(
-    Output({
-        'type': 'svm_parameter',
-        'index': 'cost_coef'
-    }, 'marks'),
-    [Input({
-        'type': 'svm_parameter',
-        'index': 'cost_power'
-    }, 'value')])
-def update_slider_svm_parameter_C_coef(power):
-    scale = 10**power
-    return {i: str(round(i * scale, 8)) for i in range(1, 10, 2)}
-
-
-@app.callback(Output({
-    'type': 'svm_parameter',
-    'index': 'gamma_coef'
-}, 'marks'), Input({
-    'type': 'svm_parameter',
-    'index': 'gamma_power'
-}, 'value'))
-def scale_param_gamma(power):
-    scale = 10**power
-    return {i: str(round(i * scale, 8)) for i in range(1, 10, 2)}
 
 
 @app.callback(Output({
@@ -613,6 +522,82 @@ app.clientside_callback(
         }, 'value'),
         State(tabs, 'active_tab')
     ])
+
+app.clientside_callback(
+    ClientsideFunction(namespace='clientside', function_name='open_offcanvas'),
+    Output(offcanvas, 'is_open'),
+    [Input(offcanvas_btn, 'n_clicks'),
+     Input(save_btn, 'n_clicks')], [State(offcanvas, 'is_open')])
+
+app.clientside_callback(
+    ClientsideFunction(namespace='clientside', function_name='btn_disabled'),
+    Output(save_btn, 'disabled'),
+    [Input({
+        'type': 'tabs-table',
+        'id': ALL
+    }, 'is_loading')])
+
+app.clientside_callback(
+    ClientsideFunction(namespace='clientside',
+                       function_name='disable_param_degree'),
+    Output({
+        'type': 'svm_parameter',
+        'index': 'degree'
+    }, 'disabled'),
+    [Input({
+        'type': 'svm_parameter',
+        'index': 'kernel'
+    }, 'value')])
+
+app.clientside_callback(
+    ClientsideFunction(namespace='clientside', function_name='kernel_formula'),
+    Output(latex_formula, 'children'),
+    [Input({
+        'type': 'svm_parameter',
+        'index': 'kernel'
+    }, 'value')])
+
+app.clientside_callback(
+    ClientsideFunction(namespace='clientside',
+                       function_name='disable_param_gamma'),
+    [
+        Output({
+            'type': 'svm_parameter',
+            'index': 'gamma_power'
+        }, 'disabled'),
+        Output({
+            'type': 'svm_parameter',
+            'index': 'gamma_coef'
+        }, 'disabled')
+    ], [Input({
+        'type': 'svm_parameter',
+        'index': 'kernel'
+    }, 'value')])
+
+app.clientside_callback(
+    ClientsideFunction(namespace='clientside',
+                       function_name='scale_param_C_coef'),
+    Output({
+        'type': 'svm_parameter',
+        'index': 'cost_coef'
+    }, 'marks'),
+    [Input({
+        'type': 'svm_parameter',
+        'index': 'cost_power'
+    }, 'value')])
+
+app.clientside_callback(
+    ClientsideFunction(namespace='clientside',
+                       function_name='scale_param_gamma'),
+    Output({
+        'type': 'svm_parameter',
+        'index': 'gamma_coef'
+    }, 'marks'),
+    Input({
+        'type': 'svm_parameter',
+        'index': 'gamma_power'
+    }, 'value'))
+
 #==========================================
 #==========================================
 #==========================================
@@ -620,4 +605,3 @@ app.clientside_callback(
 
 if __name__ == "__main__":
     app.run_server(debug=True)
-    
