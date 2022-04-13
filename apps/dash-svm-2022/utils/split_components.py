@@ -339,7 +339,7 @@ kernel = html.Div([
 ],
                   style={'margin-bottom': '15px'})
 
-formula = html.Div(latex_formula := html.P())
+formula = html.Div(latex_formula := dcc.Markdown(mathjax=True))
 
 cost = html.Div(
     [
