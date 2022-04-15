@@ -32,13 +32,48 @@ from utils.split_components import *
 
 #==========================================
 
+meta_tags = [  # Please modify before deploying.
+    dict(
+        name="description",
+        content=
+        "This is a 2022 replica of dash-svm. I used dash's recent new components and new features, and I've added new page elements."
+    ),
+    dict(property="og:url", content="https://plotly.com/"),
+    dict(property="og:type", content="website"),
+    dict(property="og:title", content="Support Vector Machine Explorer"),
+    dict(
+        property="og:description",
+        content=
+        "This is a 2022 replica of dash-svm. I used dash's recent new components and new features, and I've added new page elements."
+    ),
+    dict(
+        property="og:image",
+        content=
+        "https://plotly-marketing-website.cdn.prismic.io/plotly-marketing-website/948b6663-9429-4bd6-a4cc-cb33231d4532_logo-plotly.svg"
+    ),
+    dict(name="twitter:card", content="summary_large_image"),
+    dict(property="twitter:domain", content="www.plotly.com/"),
+    dict(property="twitter:url", content="https://plotly.com/"),
+    dict(name="twitter:title", content="Support Vector Machines"),
+    dict(
+        name="twitter:description",
+        content=
+        "This is a 2022 replica of dash-svm. I used dash's recent new components and new features, and I've added new page elements."
+    ),
+    dict(
+        name="twitter:image",
+        content=
+        "https://plotly-marketing-website.cdn.prismic.io/plotly-marketing-website/948b6663-9429-4bd6-a4cc-cb33231d4532_logo-plotly.svg"
+    )
+]
 #==========================================
 
 app = Dash(
     __name__,
-    title='SVM',
+    title='Support Vector Machine Explorer',
     update_title='Eating...',
     #external_scripts=external_scripts,
+    meta_tags=meta_tags,
     external_stylesheets=[dbc.themes.FLATLY])
 
 server = app.server  # for deployment
@@ -60,7 +95,7 @@ app.layout = html.Div([
                             "https://plotly-marketing-website.cdn.prismic.io/plotly-marketing-website/948b6663-9429-4bd6-a4cc-cb33231d4532_logo-plotly.svg",
                             height="30px")),
                     dbc.Col(
-                        dbc.NavbarBrand("Support Vector Machines",
+                        dbc.NavbarBrand("Support Vector Machine Explorer",
                                         className="ms-2")),
                 ],
                         align="center",
