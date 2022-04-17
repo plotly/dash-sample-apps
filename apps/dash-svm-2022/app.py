@@ -482,20 +482,15 @@ def switch_tab(at):
     return html.P("Something is wrong...")
 
 
-@app.callback(Output({
-    'type': 'svm_parameter',
-    'index': 'threshold'
-}, 'value'), [Input(threshold_btn, 'n_clicks')], [State(fig_0, 'figure')])
-def reset_threshold(n_clicks, fig):
-    if n_clicks:
-        Z = np.array(fig['data'][0]['z'])
-        value = -Z.min() / (Z.max() - Z.min())
-    else:
-        value = 0.5
-    return value
-
-
 #==========================================
+
+app.clientside_callback(
+    ClientsideFunction(namespace='clientside',
+                       function_name='reset_threshold'),
+    Output({
+        'type': 'svm_parameter',
+        'index': 'threshold'
+    }, 'value'), [Input(threshold_btn, 'n_clicks')], [State(fig_0, 'figure')])
 
 app.clientside_callback(
     ClientsideFunction(namespace='clientside', function_name='canvas_toggle'),
