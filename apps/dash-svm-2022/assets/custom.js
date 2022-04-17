@@ -5,6 +5,14 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
         open_offcanvas: (n, sn, is_open) => n || sn ? !is_open : is_open,
         btn_disabled: tabs_table => tabs_table.some(Boolean),
         disable_param_degree: kernel => kernel != 'poly',
+        reset_threshold: (n_clicks, fig) => {
+            if (n_clicks) {
+                let Z = fig['data'][0]['z'].flat(Infinity);
+                return -Math.min(...Z) / (Math.max(...Z) - Math.min(...Z));
+            } else {
+                return 0.5;
+            }
+        },
         kernel_formula: kernel => ({
             'rbf': '$K(x, z) = exp(-\\gamma||x-z||^2)$',
             'linear': '$K(x, z) = x \\bullet z$',
