@@ -83,7 +83,7 @@ app = Dash(
     update_title="Eating...",
     # external_scripts=external_scripts,
     meta_tags=meta_tags,
-    external_stylesheets=[dbc.themes.FLATLY],
+    external_stylesheets=[dbc.themes.FLATLY, dbc.icons.BOOTSTRAP],
 )
 
 server = app.server  # for deployment
@@ -162,6 +162,7 @@ app.layout = html.Div(
                                     is_open=False,
                                     dismissable=True,
                                     duration=2000,
+                                    className="d-flex align-items-center",
                                     style={
                                         "padding-left": "45px",
                                         "margin-top": "55px",
@@ -477,7 +478,10 @@ def params_update(
 
     t2 = time.perf_counter()
 
-    alert_info = "Takes {:.3} seconds".format(t2 - t1)
+    alert_info = [
+        html.I(className="bi bi-check-circle-fill me-2"),
+        "It took {:.3} seconds".format(t2 - t1),
+    ]
 
     return fig_0, fig_1, fig_2, alert_info, True
 
