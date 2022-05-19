@@ -19,7 +19,7 @@ This shows how to build a real-time AV explorer from scratch using Dash Deck and
 
 📰 [Article](https://medium.com/plotly/the-history-of-autonomous-vehicle-datasets-and-3-open-source-python-apps-for-visualizing-them-afee9d13f58a)
 
-![demo](assets/demo.gif)
+![demo](assets/github/demo.gif)
 
 ## Instructions
 
