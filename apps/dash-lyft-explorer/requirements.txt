@@ -7,7 +7,3 @@ colorlover==0.3.0
 lyft-dataset-sdk==0.0.8
 pydeck==0.7.1
 gunicorn==20.1.0
-
-pydeck==0.5.*
-Pillow
-opencv-python==4.2.0.34
