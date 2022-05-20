@@ -109,7 +109,7 @@ tomlkit==0.7.0
 tornado==6.1
 traitlets==5.0.5
 transforms3d==0.3.1
-Twisted==21.2.0
+Twisted==22.4.0
 txaio==21.2.1
 urllib3==1.26.4
 vectormath==0.2.2
