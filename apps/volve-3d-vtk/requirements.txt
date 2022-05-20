@@ -41,7 +41,7 @@ incremental==21.3.0
 ipycanvas==0.8.2
 ipyevents==0.8.2
 ipykernel==5.5.3
-ipython==7.22.0
+ipython==7.31.1
 ipython-genutils==0.2.0
 ipyvtklink==0.2.1
 ipywidgets==7.6.3
