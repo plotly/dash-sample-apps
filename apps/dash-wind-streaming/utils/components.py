@@ -5,6 +5,27 @@ import os
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 5000)
 
 
+def Header(app, header, subheader=None):
+    left_headers = html.Div(
+        [
+            html.Div(header, className="header-title"),
+            html.Div(subheader, className="subheader-title"),
+        ]
+    )
+
+    logo = html.Img(src=app.get_asset_url("images/plotly-logo.png"))
+    link = html.A(logo, href="https://plotly.com/dash/", target="_blank")
+    demo_link = html.A(
+        "ENTERPRISE DEMO",
+        href="https://plotly.com/dash/",
+        target="_blank",
+        className="demo-button",
+    )
+    right_logos = html.Div([demo_link, link], className="header-logos")
+
+    return html.Div([left_headers, right_logos], className="header")
+
+
 slider = [
     dcc.Slider(
         id="bin-slider",

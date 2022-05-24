@@ -11,6 +11,7 @@ from db.api import get_wind_data, get_wind_data_by_id
 from dash.exceptions import PreventUpdate
 
 from utils.components import (
+    Header,
     slider,
     checklist,
     left_graph,
@@ -23,7 +24,6 @@ from utils.helper_functions import (
     gen_wind_speed,
     gen_wind_direction,
     gen_wind_histogram,
-    app_color,
 )
 
 
@@ -37,41 +37,10 @@ server = app.server
 
 app.layout = html.Div(
     [
-        # header
-        html.Div(
-            [
-                html.Div(
-                    [
-                        html.H4("WIND SPEED STREAMING", className="app__header__title"),
-                        html.P(
-                            "This app continually queries a SQL database and displays live charts of wind speed and wind direction.",
-                            className="app__header__title--grey",
-                        ),
-                    ],
-                    className="app__header__desc",
-                ),
-                html.Div(
-                    [
-                        html.A(
-                            html.Button("SOURCE CODE", className="link-button"),
-                            href="https://github.com/plotly/dash-sample-apps/tree/main/apps/dash-wind-streaming",
-                        ),
-                        html.A(
-                            html.Button("ENTERPRISE DEMO", className="link-button"),
-                            href="https://plotly.com/get-demo/",
-                        ),
-                        html.A(
-                            html.Img(
-                                src=app.get_asset_url("dash-new-logo.png"),
-                                className="app__menu__img",
-                            ),
-                            href="https://plotly.com/dash/",
-                        ),
-                    ],
-                    className="app__header__logo",
-                ),
-            ],
-            className="app__header",
+        Header(
+            app,
+            "WIND SPEED STREAMING",
+            "This app continually queries a SQL database and displays live charts of wind speed and wind direction.",
         ),
         html.Div(
             [
