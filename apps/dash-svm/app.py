@@ -15,7 +15,7 @@ server = app.server
 
 app.layout = dbc.Container(
     children=[
-        Header(app), 
+        Header(app, "Support Vector Machine (SVM) Explorer"), 
         dbc.Row([
             dbc.Col([
                 dbc.Card(controls_first),

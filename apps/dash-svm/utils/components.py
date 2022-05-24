@@ -1,12 +1,14 @@
 from dash import html, dcc
-from textwrap import dedent
 
-def Header(app):
-    app_name = html.Span("Support Vector Machine (SVM) Explorer")
+def Header(app, header, subheader=None):
+    left_headers = html.Div([html.Div(header, className="header-title"), html.Div(subheader, className="subheader-title")])
+
     logo = html.Img(src=app.get_asset_url("images/plotly-logo.png"))
-    link = html.A(logo, href="https://plotly.com/dash/", target="_blank") 
-    demo_link = html.A("ENTERPRISE DEMO", href="https://plotly.com/get-demo/", target="_blank", className="demo-button")
-    return html.Div([html.Div(app_name, className="header-title"), html.Div([demo_link, link], className="header-logos")], className="header")
+    link = html.A(logo, href="https://plotly.com/dash/", target="_blank")
+    demo_link = html.A("ENTERPRISE DEMO", href="https://plotly.com/dash/", target="_blank", className="demo-button")
+    right_logos = html.Div([demo_link, link], className="header-logos")
+    
+    return html.Div([left_headers, right_logos], className="header")
 
 
 def _omit(omitted_keys, d):
