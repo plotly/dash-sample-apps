@@ -55,13 +55,13 @@ This app uses Salesforce API in order to implement a custom CRM dashboard. The A
 
 The following are screenshots for the app in this repo:
 
-![Screenshot1](screenshots/opportunities_screenshot.png)
+![Screenshot1](assets/github/opportunities_screenshot.png)
 
-![Screenshot1](screenshots/leads_screenshot.png)
+![Screenshot1](assets/github/leads_screenshot.png)
 
-![Screenshot1](screenshots/cases_screenshot.png)
+![Screenshot1](assets/github/cases_screenshot.png)
 
-![Animated](screenshots/dash-salesforce-demo.gif)
+![Animated](assets/github/dash-salesforce-demo.gif)
 
 
 

@@ -1,50 +1,31 @@
-import math
-import dash
-import dash_html_components as html
+from dash import Dash, html, dcc, Input, Output
+import dash_bootstrap_components as dbc
+from panels import opportunities, cases, leads
 
-from sfManager import sf_Manager
+from constants import salesforce_manager
+from utils.components import Header
 
-app = dash.Dash(
-    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+app = Dash(
+    __name__, 
+    external_stylesheets=[dbc.themes.CYBORG],
+    title="CRM Salesforce"
+)
+server = app.server
+
+app.layout = dbc.Container([
+        Header(app),
+        dbc.Tabs([
+            dbc.Tab(opportunities.layout, label="Opportunities"),
+            dbc.Tab(leads.layout, label="Leads"),
+            dbc.Tab(cases.layout, label="Cases"),
+        ]),
+        
+        dcc.Store(id="opportunities_df", data=salesforce_manager.get_opportunities().to_json(orient="split")),
+        dcc.Store(id="leads_df", data=salesforce_manager.get_leads().to_json(orient="split")),
+        dcc.Store(id="cases_df", data=salesforce_manager.get_cases().to_json(orient="split")),
+    ],
+    fluid=True,
 )
 
-app.config.suppress_callback_exceptions = True
-
-sf_manager = sf_Manager()
-
-millnames = ["", " K", " M", " B", " T"]  # used to convert numbers
-
-
-# return html Table with dataframe values
-def df_to_table(df):
-    return html.Table(
-        [html.Tr([html.Th(col) for col in df.columns])]
-        + [
-            html.Tr([html.Td(df.iloc[i][col]) for col in df.columns])
-            for i in range(len(df))
-        ]
-    )
-
-
-# returns most significant part of a number
-def millify(n):
-    n = float(n)
-    millidx = max(
-        0,
-        min(
-            len(millnames) - 1, int(math.floor(0 if n == 0 else math.log10(abs(n)) / 3))
-        ),
-    )
-
-    return "{:.0f}{}".format(n / 10 ** (3 * millidx), millnames[millidx])
-
-
-# returns top indicator div
-def indicator(color, text, id_value):
-    return html.Div(
-        [
-            html.P(id=id_value, className="indicator_value"),
-            html.P(text, className="twelve columns indicator_text"),
-        ],
-        className="four columns indicator pretty_container",
-    )
+if __name__ == "__main__":
+    app.run_server(debug=True)
