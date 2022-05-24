@@ -11,7 +11,6 @@ from dash.dependencies import Input, Output, State
 from scipy.stats import rayleigh
 from db.api import get_wind_data, get_wind_data_by_id
 
-
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 5000)
 
 app = dash.Dash(
@@ -183,7 +182,7 @@ app.layout = html.Div(
 
 
 def get_current_time():
-    """ Helper function to get the current time in seconds. """
+    """Helper function to get the current time in seconds."""
 
     now = dt.datetime.now()
     total_time = (now.hour * 3600) + (now.minute * 60) + (now.second)
@@ -443,7 +442,7 @@ def gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
     [State("wind-speed", "figure")],
 )
 def deselect_auto(slider_value, wind_speed_figure):
-    """ Toggle the auto checkbox. """
+    """Toggle the auto checkbox."""
 
     # prevent update if graph has no data
     if "data" not in wind_speed_figure:
@@ -462,7 +461,7 @@ def deselect_auto(slider_value, wind_speed_figure):
     [State("bin-slider", "value")],
 )
 def show_num_bins(autoValue, slider_value):
-    """ Display the number of bins. """
+    """Display the number of bins."""
 
     if "Auto" in autoValue:
         return "# of Bins: Auto"
