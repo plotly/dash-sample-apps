@@ -5,7 +5,7 @@ def Header(app, header, subheader=None):
 
     logo = html.Img(src=app.get_asset_url("images/plotly-logo.png"))
     link = html.A(logo, href="https://plotly.com/dash/", target="_blank")
-    demo_link = html.A("ENTERPRISE DEMO", href="https://plotly.com/dash/", target="_blank", className="demo-button")
+    demo_link = html.A("LEARN MORE", href="https://plotly.com/dash/", target="_blank", className="demo-button")
     right_logos = html.Div([demo_link, link], className="header-logos")
     
     return html.Div([left_headers, right_logos], className="header")
