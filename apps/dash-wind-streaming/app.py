@@ -1,4 +1,7 @@
-from dash import Dash, html, Input, Output, State, PreventUpdate
+from dash import Dash, html, Input, Output, State
+
+from dash.exceptions import PreventUpdate
+
 
 from utils.components import (
     Header,
@@ -15,11 +18,7 @@ from utils.helper_functions import (
     gen_wind_histogram,
 )
 
-
-app = Dash(
-    __name__,
-    title = "Wind Speed Dashboard"
-)
+app = Dash(__name__, title="Wind Speed Dashboard")
 server = app.server
 
 app.layout = html.Div(
@@ -92,10 +91,7 @@ app.layout = html.Div(
 )
 
 
-@app.callback(
-    Output("wind-speed", "figure"), 
-    Input("wind-speed-update", "n_intervals")
-)
+@app.callback(Output("wind-speed", "figure"), Input("wind-speed-update", "n_intervals"))
 def return_gen_wind_speed(interval):
     """
     Generate the wind speed graph.
@@ -107,8 +103,7 @@ def return_gen_wind_speed(interval):
 
 
 @app.callback(
-    Output("wind-direction", "figure"), 
-    Input("wind-speed-update", "n_intervals")
+    Output("wind-direction", "figure"), Input("wind-speed-update", "n_intervals")
 )
 def return_gen_wind_direction(interval):
     """

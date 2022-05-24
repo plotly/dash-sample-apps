@@ -3,11 +3,8 @@ from db.api import get_wind_data, get_wind_data_by_id
 import numpy as np
 from scipy.stats import rayleigh
 
-
+from constants import app_color
 from dash.exceptions import PreventUpdate
-
-
-app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 
 
 def get_current_time():
