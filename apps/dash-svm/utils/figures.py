@@ -1,7 +1,7 @@
-import colorlover as cl
 import plotly.graph_objs as go
 import numpy as np
 from sklearn import metrics
+import colorlover as cl
 
 
 def serve_prediction_plot(
