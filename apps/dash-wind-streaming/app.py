@@ -1,14 +1,4 @@
-import os
-import pathlib
-import numpy as np
-
-import dash
-from dash import html
-
-from dash.dependencies import Input, Output, State
-from db.api import get_wind_data, get_wind_data_by_id
-
-from dash.exceptions import PreventUpdate
+from dash import Dash, html, Input, Output, State, PreventUpdate
 
 from utils.components import (
     Header,
@@ -19,7 +9,6 @@ from utils.components import (
     right_graph_one,
     right_graph_two,
 )
-
 from utils.helper_functions import (
     gen_wind_speed,
     gen_wind_direction,
@@ -27,12 +16,10 @@ from utils.helper_functions import (
 )
 
 
-app = dash.Dash(
+app = Dash(
     __name__,
-    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+    title = "Wind Speed Dashboard"
 )
-app.title = "Wind Speed Dashboard"
-
 server = app.server
 
 app.layout = html.Div(
@@ -106,7 +93,8 @@ app.layout = html.Div(
 
 
 @app.callback(
-    Output("wind-speed", "figure"), [Input("wind-speed-update", "n_intervals")]
+    Output("wind-speed", "figure"), 
+    Input("wind-speed-update", "n_intervals")
 )
 def return_gen_wind_speed(interval):
     """
@@ -119,7 +107,8 @@ def return_gen_wind_speed(interval):
 
 
 @app.callback(
-    Output("wind-direction", "figure"), Input("wind-speed-update", "n_intervals")
+    Output("wind-direction", "figure"), 
+    Input("wind-speed-update", "n_intervals")
 )
 def return_gen_wind_direction(interval):
     """
@@ -133,12 +122,10 @@ def return_gen_wind_direction(interval):
 
 @app.callback(
     Output("wind-histogram", "figure"),
-    [Input("wind-speed-update", "n_intervals")],
-    [
-        State("wind-speed", "figure"),
-        State("bin-slider", "value"),
-        State("bin-auto", "value"),
-    ],
+    Input("wind-speed-update", "n_intervals"),
+    State("wind-speed", "figure"),
+    State("bin-slider", "value"),
+    State("bin-auto", "value"),
 )
 def return_gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
     """
@@ -154,8 +141,8 @@ def return_gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_st
 
 @app.callback(
     Output("bin-auto", "value"),
-    [Input("bin-slider", "value")],
-    [State("wind-speed", "figure")],
+    Input("bin-slider", "value"),
+    State("wind-speed", "figure"),
 )
 def deselect_auto(slider_value, wind_speed_figure):
     """Toggle the auto checkbox."""
@@ -167,14 +154,14 @@ def deselect_auto(slider_value, wind_speed_figure):
         raise PreventUpdate
 
     if wind_speed_figure is not None and len(wind_speed_figure["data"][0]["y"]) > 5:
-        return [""]
-    return ["Auto"]
+        return ""
+    return "Auto"
 
 
 @app.callback(
     Output("bin-size", "children"),
-    [Input("bin-auto", "value")],
-    [State("bin-slider", "value")],
+    Input("bin-auto", "value"),
+    State("bin-slider", "value"),
 )
 def show_num_bins(autoValue, slider_value):
     """Display the number of bins."""
