@@ -1,6 +1,6 @@
 # US opioid epidemic dataset and Dash app
 
-![plotly-dash-screencast](assets/app_screencast.gif)
+![plotly-dash-screencast](assets/images/app_screencast.gif)
 
 Poison induced death data was downloaded from [CDC Wonder](dash_app_screencast.gif), using cause-of-death codes X40–X44 (unintentional), X60–X64 (suicide), X85 (homicide), or Y10–Y14 (undetermined intent).
 
