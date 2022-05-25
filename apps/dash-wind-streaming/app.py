@@ -1,22 +1,8 @@
-from dash import Dash, html, Input, Output, State
+from dash import Dash, html, dcc, Input, Output, State, callback, callback_context
 
-from dash.exceptions import PreventUpdate
-
-
-from utils.components import (
-    Header,
-    slider,
-    checklist,
-    left_graph,
-    interval,
-    right_graph_one,
-    right_graph_two,
-)
-from utils.helper_functions import (
-    gen_wind_speed,
-    gen_wind_direction,
-    gen_wind_histogram,
-)
+from constants import GRAPH_INTERVAL
+from utils.components import Header, wind_speed_card, histogram_card, wind_direction_card
+import utils.figures as figs
 
 app = Dash(__name__, title="Wind Speed Dashboard")
 server = app.server
@@ -30,140 +16,51 @@ app.layout = html.Div(
         ),
         html.Div(
             [
-                # wind speed
+                wind_speed_card("wind-speed"),
                 html.Div(
                     [
-                        html.Div(
-                            [html.H6("WIND SPEED (MPH)", className="graph__title")]
-                        ),
-                        left_graph,
-                        interval,
-                    ],
-                    className="two-thirds column wind__speed__container",
-                ),
-                html.Div(
-                    [
-                        # histogram
-                        html.Div(
-                            [
-                                html.Div(
-                                    [
-                                        html.H6(
-                                            "WIND SPEED HISTOGRAM",
-                                            className="graph__title",
-                                        )
-                                    ]
-                                ),
-                                html.Div(
-                                    slider,
-                                    className="slider",
-                                ),
-                                html.Div(
-                                    checklist,
-                                    className="auto__container",
-                                ),
-                                right_graph_one,
-                            ],
-                            className="graph__container first",
-                        ),
-                        # wind direction
-                        html.Div(
-                            [
-                                html.Div(
-                                    [
-                                        html.H6(
-                                            "WIND DIRECTION", className="graph__title"
-                                        )
-                                    ]
-                                ),
-                                right_graph_two,
-                            ],
-                            className="graph__container second",
-                        ),
+                        histogram_card("wind-histogram"),
+                        wind_direction_card("wind-direction")
                     ],
                     className="one-third column histogram__direction",
                 ),
             ],
             className="app__content",
         ),
+        dcc.Interval(id="wind-speed-update", interval=GRAPH_INTERVAL)
     ],
     className="app__container",
 )
 
 
-@app.callback(Output("wind-speed", "figure"), Input("wind-speed-update", "n_intervals"))
-def return_gen_wind_speed(interval):
-    """
-    Generate the wind speed graph.
-
-    :params interval: update the graph based on an interval
-    """
-
-    return gen_wind_speed()
-
-
-@app.callback(
-    Output("wind-direction", "figure"), Input("wind-speed-update", "n_intervals")
-)
-def return_gen_wind_direction(interval):
-    """
-    Generate the wind direction graph.
-
-    :params interval: update the graph based on an interval
-    """
-
-    return gen_wind_direction()
-
-
-@app.callback(
+@callback(
     Output("wind-histogram", "figure"),
+    Output("wind-speed", "figure"), 
+    Output("wind-direction", "figure"), 
     Input("wind-speed-update", "n_intervals"),
-    State("wind-speed", "figure"),
     State("bin-slider", "value"),
     State("bin-auto", "value"),
 )
-def return_gen_wind_histogram(interval, wind_speed_figure, slider_value, auto_state):
-    """
-    Genererate wind histogram graph.
-
-    :params interval: upadte the graph based on an interval
-    :params wind_speed_figure: current wind speed graph
-    :params slider_value: current slider value
-    :params auto_state: current auto state
-    """
-    return gen_wind_histogram(wind_speed_figure, slider_value, auto_state)
+def return_gen_wind_histogram(interval, slider_value, auto_state):
+    fig_wind_speed = figs.gen_wind_speed()
+    fig_wind_direction =figs.gen_wind_direction()
+    fig_wind_histogram = figs.gen_wind_histogram(fig_wind_speed, slider_value, auto_state)
+    return fig_wind_histogram, fig_wind_speed, fig_wind_direction
 
 
-@app.callback(
+@callback(
     Output("bin-auto", "value"),
-    Input("bin-slider", "value"),
-    State("wind-speed", "figure"),
-)
-def deselect_auto(slider_value, wind_speed_figure):
-    """Toggle the auto checkbox."""
-
-    # prevent update if graph has no data
-    if "data" not in wind_speed_figure:
-        raise PreventUpdate
-    if not len(wind_speed_figure["data"]):
-        raise PreventUpdate
-
-    if wind_speed_figure is not None and len(wind_speed_figure["data"][0]["y"]) > 5:
-        return ""
-    return "Auto"
-
-
-@app.callback(
     Output("bin-size", "children"),
+    Input("bin-slider", "value"),
     Input("bin-auto", "value"),
-    State("bin-slider", "value"),
+    prevent_initial_call=True,
 )
-def show_num_bins(autoValue, slider_value):
-    """Display the number of bins."""
-
-    if "Auto" in autoValue:
-        return "# of Bins: Auto"
-    return "# of Bins: " + str(int(slider_value))
+def deselect_auto(slider_value, bin_auto):
+    triggered_id = callback_context.triggered[0]["prop_id"].split(".")[0]
+    if triggered_id == "bin-slider":
+        return [], "# of Bins: " + str(int(slider_value))
+    else:
+        return ["Auto"], "# of Bins: Auto"
 
 
 if __name__ == "__main__":

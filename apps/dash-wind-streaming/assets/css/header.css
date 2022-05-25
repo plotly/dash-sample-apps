@@ -2,14 +2,14 @@
 .header {
     height: 10vh;
     display: flex;
-    background-color: #0d1c41;
+    background-color: transparent;
     padding-left: 2%;
     padding-right: 2%;
     font-family: playfair display, sans-serif;
 }
 
 .header .header-title {
-    color: #A2ACB8 !important;
+    color: #FFFFFF !important;
     font-size: 5vh;
 }
 
