@@ -2,13 +2,8 @@ from dash import html, dcc, get_asset_url
 import dash_daq as daq
 import plotly.graph_objs as go
 
-from app import params, max_length, state_dict, suffix_row, suffix_button_id, suffix_sparkline_graph, suffix_count, suffix_ooc_n, suffix_ooc_g, suffix_indicator
+from constants import params, max_length, state_dict, suffix_row, suffix_button_id, suffix_sparkline_graph, suffix_count, suffix_ooc_n, suffix_ooc_g, suffix_indicator
 
-
-ud_usl_input = daq.NumericInput(id="ud_usl_input", className="setting-input", size=200, max=9999999)
-ud_lsl_input = daq.NumericInput(id="ud_lsl_input", className="setting-input", size=200, max=9999999)
-ud_ucl_input = daq.NumericInput(id="ud_ucl_input", className="setting-input", size=200, max=9999999)
-ud_lcl_input = daq.NumericInput(id="ud_lcl_input", className="setting-input", size=200, max=9999999)
 
 def build_banner():
     return html.Div(
@@ -25,15 +20,9 @@ def build_banner():
             html.Div(
                 id="banner-logo",
                 children=[
+                    html.A("LEARN MORE", href="https://plotly.com/dash/", target="_blank", className="demo-button"),
                     html.A(
-                        html.Button(children="ENTERPRISE DEMO"),
-                        href="https://plotly.com/get-demo/",
-                    ),
-                    html.Button(
-                        id="learn-more-button", children="LEARN MORE", n_clicks=0
-                    ),
-                    html.A(
-                        html.Img(id="logo", src=get_asset_url("dash-logo-new.png")),
+                        html.Img(id="logo", src=get_asset_url("images/plotly-logo.png")),
                         href="https://plotly.com/dash/",
                     ),
                 ],
@@ -113,25 +102,25 @@ def build_tab_1():
                                     "value-setter-panel-usl",
                                     "Upper Specification limit",
                                     state_dict[params[1]]["usl"],
-                                    ud_usl_input,
+                                    daq.NumericInput(id="ud_usl_input", className="setting-input", size=200, max=9999999),
                                 ),
                                 build_value_setter_line(
                                     "value-setter-panel-lsl",
                                     "Lower Specification limit",
                                     state_dict[params[1]]["lsl"],
-                                    ud_lsl_input,
+                                    daq.NumericInput(id="ud_lsl_input", className="setting-input", size=200, max=9999999),
                                 ),
                                 build_value_setter_line(
                                     "value-setter-panel-ucl",
                                     "Upper Control limit",
                                     state_dict[params[1]]["ucl"],
-                                    ud_ucl_input,
+                                    daq.NumericInput(id="ud_ucl_input", className="setting-input", size=200, max=9999999),
                                 ),
                                 build_value_setter_line(
                                     "value-setter-panel-lcl",
                                     "Lower Control limit",
                                     state_dict[params[1]]["lcl"],
-                                    ud_lcl_input,
+                                    daq.NumericInput(id="ud_lcl_input", className="setting-input", size=200, max=9999999),
                                 ),
                             ],
                         ),

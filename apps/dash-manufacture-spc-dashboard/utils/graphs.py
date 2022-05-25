@@ -2,8 +2,7 @@ import plotly.graph_objs as go
 from dash import html, dcc
 
 from utils.components import generate_section_banner
-
-from app import params, state_dict, max_length
+from constants import params, state_dict, max_length
 
 def generate_piechart():
     return dcc.Graph(
