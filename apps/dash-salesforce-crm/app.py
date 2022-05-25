@@ -1,13 +1,13 @@
 from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
-from panels import opportunities, cases, leads
+from pages import opportunities, cases, leads
 
 from constants import salesforce_manager
 from utils.components import Header
 
 app = Dash(
     __name__, 
-    external_stylesheets=[dbc.themes.CYBORG],
+    external_stylesheets=[dbc.themes.QUARTZ],
     title="CRM Salesforce"
 )
 server = app.server

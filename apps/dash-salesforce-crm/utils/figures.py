@@ -125,6 +125,8 @@ def converted_leads_count(period, df):
 
 
 def converted_opportunities(period, source, df):
+    print(df)
+
     df["CreatedDate"] = pd.to_datetime(df["CreatedDate"], format="%Y-%m-%d")
 
     # source filtering
@@ -132,7 +134,6 @@ def converted_opportunities(period, source, df):
         df = df[df["IsWon"] == 1]
     else:
         df = df[(df["LeadSource"] == source) & (df["IsWon"] == 1)]
-
     # period filtering
     if period == "W-MON":
         df["CreatedDate"] = pd.to_datetime(df["CreatedDate"]) - pd.to_timedelta(

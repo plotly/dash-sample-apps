@@ -1,7 +1,7 @@
 from dash import html, dcc, dash_table
+import dash_bootstrap_components as dbc
 from constants import states
 from datetime import date
-import dash_bootstrap_components as dbc
 
 
 def Header(app):
@@ -18,16 +18,16 @@ def Header(app):
 def dbc_indicator(text, id_value, width):
     return dbc.Col(
         dbc.Card([
-            html.P(id=id_value, className="indicator_value"),
-            html.P(text, className="twelve columns indicator_text"),
-        ]), width = width
+            html.H1(id=id_value, className="card-title"),
+            html.P(text),
+        ], className="align-items-center"), width = width
     )
 
 def dbc_card(header, child_id, width, table=None):
     if table is None:
         child = dcc.Graph(id=child_id, config=dict(displayModeBar=False))
     else:
-        child = dash_table.DataTable(id=child_id)
+        child = dash_table.DataTable(id=child_id, style_table={'overflowX': 'auto'},)
     return dbc.Col(
         dbc.Card(
             dbc.CardBody([
@@ -49,8 +49,9 @@ leads_controls = [
                     {"label": "By week", "value": "W-MON"},
                     {"label": "By month", "value": "M"},
                 ],
-                value="D",
+                value="M",
                 clearable=False,
+                searchable=False,
             )
         ], width=2),
         dbc.Col([
@@ -64,6 +65,7 @@ leads_controls = [
                 ],
                 value="all",
                 clearable=False,
+                searchable=False,
             )
         ], width=2),
         dbc.Col(width=6),
@@ -105,6 +107,7 @@ def leads_modal():
                     id="new_lead_state",
                     options=states,
                     value="NY",
+                    searchable=False,
                 ),
             ], width=6),
             dbc.Col([
@@ -113,6 +116,7 @@ def leads_modal():
                     id="new_lead_status",
                     options=["Open - Not Contacted", "Working - Contacted", "Closed - Converted", "Closed - Not Converted"],
                     value="Open - Not Contacted",
+                    searchable=False,
                 ),
             ], width=6),
             dbc.Col([
@@ -121,6 +125,7 @@ def leads_modal():
                     id="new_lead_source",
                     options=["Web", "Phone Inquiry", "Partner Referral", "Purchased List", "Other"],
                     value="Web",
+                    searchable=False,
                 ),
             ], width=6),
         ])),
@@ -143,8 +148,9 @@ cases_controls = [
                     {"label": "By week", "value": "W-MON"},
                     {"label": "By month", "value": "M"},
                 ],
-                value="D",
+                value="M",
                 clearable=False,
+                searchable=False,
             ),
         ], width=2),
         dbc.Col([
@@ -158,6 +164,7 @@ cases_controls = [
                 ],
                 value="all_p",
                 clearable=False,
+                searchable=False,
             ),
         ], width=2),
         dbc.Col([
@@ -171,6 +178,7 @@ cases_controls = [
                 ],
                 value="all",
                 clearable=False,
+                searchable=False,
             ),
         ], width=2),
         dbc.Col(width=4),
@@ -217,6 +225,7 @@ def cases_modal(salesforce_manager):
                         for index, row in accounts.iterrows()
                     ],
                     clearable=False,
+                    searchable=False,
                     value=accounts.iloc[0].Id,
                 )
             ], width=6),
@@ -232,6 +241,7 @@ def cases_modal(salesforce_manager):
                         for index, row in contacts.iterrows()
                     ],
                     clearable=False,
+                    searchable=False,
                     value=contacts.iloc[0].Id,
                 )
             ], width=6),
@@ -246,6 +256,7 @@ def cases_modal(salesforce_manager):
                     ],
                     value="Medium",
                     clearable=False,
+                    searchable=False,
                 ),
             ], width=6),
             dbc.Col([
@@ -272,6 +283,7 @@ def cases_modal(salesforce_manager):
                         {"label": "Other", "value": "Other"},
                     ],
                     value="Electrical",
+                    searchable=False,
                 ),
             ], width=6),
             dbc.Col([
@@ -285,6 +297,7 @@ def cases_modal(salesforce_manager):
                     ],
                     value="Phone",
                     clearable=False,
+                    searchable=False,
                 ),
             ], width=6),
             dbc.Col([
@@ -304,6 +317,7 @@ def cases_modal(salesforce_manager):
                         {"label": "Closed", "value": "Closed"},
                     ],
                     value="New",
+                    searchable=False,
                 ),
             ], width=6),
             dbc.Col([
@@ -339,6 +353,7 @@ def cases_modal(salesforce_manager):
                     ],
                     value="Installation",
                     clearable=False,
+                    searchable=False,
                 ),
             ], width=6),
             dbc.Col([
@@ -389,8 +404,9 @@ opportunities_controls = [
                     {"label": "By week", "value": "W-MON"},
                     {"label": "By month", "value": "M"},
                 ],
-                value="D",
+                value="M",
                 clearable=False,
+                searchable=False,
             ),
         ], width=2),
         dbc.Col([
@@ -404,23 +420,25 @@ opportunities_controls = [
                 ],
                 value="all_s",
                 clearable=False,
+                searchable=False,
             ),
         ], width=2),
         dbc.Col([
             dcc.Dropdown(
-                    id="source_dropdown",
-                    options=[
-                        {"label": "All sources", "value": "all_s"},
-                        {"label": "Web", "value": "Web"},
-                        {"label": "Word of Mouth", "value": "Word of mouth"},
-                        {"label": "Phone Inquiry", "value": "Phone Inquiry"},
-                        {"label": "Partner Referral", "value": "Partner Referral"},
-                        {"label": "Purchased List", "value": "Purchased List"},
-                        {"label": "Other", "value": "Other"},
-                    ],
-                    value="all_s",
-                    clearable=False,
-                ),
+                id="source_dropdown",
+                options=[
+                    {"label": "All sources", "value": "all_s"},
+                    {"label": "Web", "value": "Web"},
+                    {"label": "Word of Mouth", "value": "Word of mouth"},
+                    {"label": "Phone Inquiry", "value": "Phone Inquiry"},
+                    {"label": "Partner Referral", "value": "Partner Referral"},
+                    {"label": "Purchased List", "value": "Purchased List"},
+                    {"label": "Other", "value": "Other"},
+                ],
+                value="all_s",
+                clearable=False,
+                searchable=False,
+            ),
         ], width=2),
         dbc.Col(width=4),
         dbc.Col([
@@ -503,6 +521,7 @@ def opportunities_modal():
                     ],
                     clearable=False,
                     value="Prospecting",
+                    searchable=False,
                 )
             ], width=6),
             dbc.Col([
@@ -511,6 +530,7 @@ def opportunities_modal():
                     id="new_opportunity_source",
                     options=["Web", "Phone Inquiry", "Partner Referral", "Purchased List", "Other"],
                     value="Web",
+                    searchable=False,
                 ),
             ], width=6),
             dbc.Col([
@@ -532,6 +552,7 @@ def opportunities_modal():
                     id="new_opportunity_type",
                     options=["Existing Customer - Replacement", "New Customer", "Existing Customer - Upgrade", "Existing Customer - Downgrade"],
                     value="New Customer",
+                    searchable=False,
                 ),
             ], width=6),
             dbc.Col([

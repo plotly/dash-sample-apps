@@ -10,21 +10,40 @@
     gap: 5%;
 }
 
-
-.tab-content {
-    padding: 10px 10rem 0 10rem;
-}
-
-.main-svg {
-    background-color: transparent !important;
-}
-
 .row {
     margin-top: 20px;
 }
 
 .card {
     margin-bottom: 20px;
+}
+
+.tab-content {
+    padding: 10px 10rem 0 10rem;
+}
+
+/*  graph background color */
+.main-svg {
+    background-color: transparent !important;
+}
+.layer.bg * {
+    fill: none !important;
+}
+/*  Graph legend */
+.infolayer .legend .bg {
+    fill: none !important;
+}
+
+/* table */
+td {
+    background-color: transparent !important;
+}
+th span {
+    font-weight: bold;
+    text-align: center;
+}
+th {
+    background-color: rgba(202, 65, 123, 0.7) !important;
 }
 
 
