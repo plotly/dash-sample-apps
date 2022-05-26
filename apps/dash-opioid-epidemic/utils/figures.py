@@ -2,14 +2,14 @@ import re
 import pandas as pd
 
 from constants import (
-    df_full_data,
-    df_lat_lon,
     BINS,
     DEFAULT_COLORSCALE,
     DEFAULT_OPACITY,
     mapbox_access_token,
     mapbox_style,
 )
+
+from utils.load_data import df_full_data, df_lat_lon
 
 
 def display_map(year, figure):
