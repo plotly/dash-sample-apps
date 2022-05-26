@@ -4,7 +4,7 @@ import cufflinks as cf
 
 from utils.figures import display_map, display_selected_data
 
-from utils.components import Header, choropleth_card, slider_graph_card
+from utils.components import header, choropleth_card, slider_graph_card
 
 from constants import (
     YEARS,
@@ -23,14 +23,19 @@ app = dash.Dash(
 app.title = "US Opioid Epidemic"
 server = app.server
 
+# def header(
+#     app, header_color, header, subheader=None, header_background_color="transparent"
+# )
+
 
 # App layout
 app.layout = html.Div(
     [
-        Header(
+        header(
             app,
+            "#1f2630",
             "Rate of US Poison-Induced Deaths",
-            "† Deaths are classified using the International Classification of Diseases, \
+            subheader="† Deaths are classified using the International Classification of Diseases, \
                     Tenth Revision (ICD–10). Drug-poisoning deaths are defined as having ICD–10 underlying \
                     cause-of-death codes X40–X44 (unintentional), X60–X64 (suicide), X85 (homicide), or Y10–Y14 \
                     (undetermined intent).",
