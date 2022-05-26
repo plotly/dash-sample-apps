@@ -8,7 +8,6 @@ from mni import create_mesh_data
 from utils.figures import brain_graph_handler, save_annotations
 from utils.components import header, brain_graph, color_picker
 
-from constants import default_colorscale_index, axis_template, plot_layout
 
 app = dash.Dash(
     __name__,
