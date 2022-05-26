@@ -38,7 +38,7 @@ Open a browser at http://127.0.0.1:8050
 
 ## Screenshots
 
-![brain.png](brain.png)
+![brain.png](assets/images/brain.png)
 
 ### Credit
 

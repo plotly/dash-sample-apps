@@ -49,7 +49,8 @@ a:hover {
     color: #F9FAFB;
     text-decoration: none;
     border-radius: 0.35rem;
-    border: 1px solid #F9FAFB;;
+    border: 1px solid #F9FAFB;
+    ;
     margin: 15px 10px 0px 0px;
 }
 
@@ -81,7 +82,7 @@ a:hover {
 }
 
 .app__right__section::-webkit-scrollbar-corner {
-    background: rgba(0,0,0,0);
+    background: rgba(0, 0, 0, 0);
 }
 
 .subheader {
@@ -135,38 +136,47 @@ a:hover {
         display: block;
         margin-top: 25px;
     }
+
     .header__title h4 {
         text-align: center;
     }
+
     .header__title img {
         display: flex;
         height: 30px;
         width: auto;
         padding-bottom: 10px;
     }
+
     .header__info p {
         text-align: center;
         font-size: 14px;
     }
+
     .header__button {
         text-align: center;
     }
+
     .app__right__section {
         border: none;
     }
+
     .graph__container {
         padding-top: 50px;
         padding-bottom: 50px;
     }
+
     .app__right__section {
         overflow-y: hidden;
         overflow: hidden;
-        min-height:initial;
+        min-height: initial;
         max-height: initial;
     }
+
     #radio-options {
         font-size: 11px;
     }
+
     #brain-graph {
         height: 350px;
         width: 350px;
