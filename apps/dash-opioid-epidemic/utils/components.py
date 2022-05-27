@@ -51,6 +51,7 @@ def choropleth_card(county_choropleth_id):
                         min=min(YEARS),
                         max=max(YEARS),
                         value=min(YEARS),
+                        step=1,
                         marks={
                             str(year): {
                                 "label": str(year),

@@ -62,7 +62,7 @@ def display_map(year, figure):
     else:
         lat = 38.72490
         lon = -95.61446
-        zoom = 3.5
+        zoom = 2.5
 
     layout = dict(
         mapbox=dict(
