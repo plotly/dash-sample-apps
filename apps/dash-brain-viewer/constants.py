@@ -1,13 +1,4 @@
-from mni import create_mesh_data, default_colorscale
-import os
-
-
-GITHUB_LINK = os.environ.get(
-    "GITHUB_LINK",
-    "https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-brain-viewer",
-)
-
-default_colorscale_index = [ea[1] for ea in default_colorscale]
+import pathlib 
 
 axis_template = {
     "showbackground": True,
@@ -32,3 +23,15 @@ plot_layout = {
         "annotations": [],
     },
 }
+
+DATA_PATH = pathlib.Path(__file__).parent.joinpath("data").resolve()
+
+default_colorscale = [
+    [0, "rgb(12,51,131)"],
+    [0.25, "rgb(10,136,186)"],
+    [0.5, "rgb(242,211,56)"],
+    [0.75, "rgb(242,143,56)"],
+    [1, "rgb(217,30,30)"],
+]
+
+default_colorscale_index = [ea[1] for ea in default_colorscale]
