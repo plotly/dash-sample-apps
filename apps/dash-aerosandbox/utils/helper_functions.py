@@ -1,3 +1,5 @@
+import dash_bootstrap_components as dbc
+
 import aerosandbox as asb
 from aerosandbox.library.airfoils import e216
 import numpy as np
@@ -7,8 +9,15 @@ import copy
 naca0008 = asb.Airfoil("naca0008")
 
 
+def make_table(dataframe):
+    return dbc.Table.from_dataframe(
+        dataframe, bordered=True, hover=True, responsive=True, striped=True, style={}
+    )
+
+
 def make_airplane(
-    n_booms, wing_span,
+    n_booms,
+    wing_span,
 ):
     # n_booms = 3
 
