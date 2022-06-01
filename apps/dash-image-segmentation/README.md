@@ -37,7 +37,7 @@ python app.py
 
 ## Screenshot
 
-![Screenshot of app](assets/screenshot.png)
+![Screenshot of app](assets/github/screenshot.png)
 
 ## Acknowledgements
 
