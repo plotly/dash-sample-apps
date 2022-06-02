@@ -51,11 +51,11 @@ This Dash app displays oil production in western New York. There are filters at 
 
 The following are screenshots for the app in this repo:
 
-![animated1](screenshots/animated1.gif)
+![animated1](assets/github/animated1.gif)
 
-![screenshot](screenshots/screenshot1.png)
+![screenshot](assets/github/screenshot1.png)
 
-![screenshot](screenshots/screenshot2.png)
+![screenshot](assets/github/screenshot2.png)
 
-![screenshot](screenshots/screenshot3.png)
+![screenshot](assets/github/screenshot3.png)
 
