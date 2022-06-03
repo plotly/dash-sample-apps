@@ -20,7 +20,7 @@ from utils.helper_functions import (
     procedure_stats,
 )
 
-from utils.components import build_upper_left_panel, map_card, procedure_card
+from utils.components import header, build_upper_left_panel, map_card, procedure_card
 
 from utils.figures import (
     generate_geo_map,
@@ -39,10 +39,14 @@ app = dash.Dash(
         }
     ],
 )
-app.title = "Medical Provider Charges"
+# app.title = "Medical Provider Charges"
 server = app.server
 
 app.config["suppress_callback_exceptions"] = True
+
+
+# def header(app, header_color, header, subheader=None, header_background_color="transparent"):
+
 
 app.layout = html.Div(
     className="container scalable",
@@ -51,8 +55,9 @@ app.layout = html.Div(
             id="banner",
             className="banner",
             children=[
-                html.H6("Dash Clinical Analytics"),
-                html.Img(src=app.get_asset_url("plotly_logo_white.png")),
+                header(
+                    app, "black", "Dash Clinical Analytics", "Medical Provider Charges"
+                ),
             ],
         ),
         html.Div(
