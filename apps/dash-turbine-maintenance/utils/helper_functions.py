@@ -121,3 +121,58 @@ def data_preprocessing():
     df_test = x_test.iloc[:, : df.shape[1]]
 
     return df, df_test, x_test, y_test
+
+
+df, df_button, x_test, y_test = data_preprocessing()
+
+
+def fig_update_layout(fig):
+    fig.update_layout(
+        xaxis=dict(
+            showline=False,
+            showgrid=False,
+            showticklabels=True,
+            zeroline=False,
+            gridcolor="#636363",
+            linecolor="rgb(204, 204, 204)",
+            linewidth=2,
+            tickfont=dict(
+                family="Arial",
+                size=12,
+                color="white",
+            ),
+            title=dict(
+                font=dict(family="Arial", size=24, color="#fec036"),
+            ),
+        ),
+        yaxis=dict(
+            showline=False,
+            showgrid=False,
+            showticklabels=True,
+            zeroline=False,
+            gridcolor="#636363",
+            linecolor="rgb(204, 204, 204)",
+            linewidth=2,
+            tickfont=dict(
+                family="Arial",
+                size=12,
+                color="white",
+            ),
+            title=dict(
+                font=dict(family="Arial", size=24, color="#fec036"),
+            ),
+        ),
+        autosize=True,
+        margin=dict(autoexpand=True, l=50, b=40, r=35, t=30),
+        showlegend=False,
+        paper_bgcolor="black",
+        plot_bgcolor="black",
+        title=dict(
+            font=dict(family="Arial", size=32, color="darkgray"),
+            xanchor="center",
+            yanchor="top",
+            y=1,
+            x=0.5,
+        ),
+    )
+    return fig

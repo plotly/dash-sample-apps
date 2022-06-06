@@ -5,9 +5,9 @@
 `dash-predictive-maintenance` is a dashboard designed to demonstrate the power of Machine Learning to predict failures (Remaining Useful Life (RUL)) in wind turbines. The data covers periods from May, 2014 to January, 2015. To predict the date when equipment will completely fail (RUL), XGBoost is used. The achieved RMSE error is `0.018534` days, which is highly accurate.
 
 ## Screenshots
-![initial](screenshots/screenshot1.png)
+![initial](assets/github/screenshot1.png)
 
-![initial](screenshots/screenshot2.png)
+![initial](assets/github/screenshot2.png)
 
 ## Built With
 * [Dash](https://dash.plot.ly/) - Main server and interactive components.
