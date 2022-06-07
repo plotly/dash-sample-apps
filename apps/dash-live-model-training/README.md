@@ -9,7 +9,7 @@ Dash abstracts away all of the technologies and protocols required to build an i
 
 Try out the [demo app here](https://dash-gallery.plotly.host/dash-live-model-training/).
 
-![animated1](images/animated.gif)
+![animated1](assets/github/animated.gif)
 
 ## Getting Started
 
@@ -46,7 +46,7 @@ python app.py
 
 ### How to use the app
 
-The demo app shows how the viewer works by simulating the training process of a few basic models. If you want to use the full app with your own model, follow theses steps:
+The demo app shows how the viewer works by simulating the training process of a few basic models. If you want to use the full app with your own model, follow these steps:
 
 1. Import the helper functions, `add_eval()` and `write_data()` from `tfutils.py`.
 2. Use `add_eval()` to add the accuracy and cross-entropy operations in your tensorflow graph, if they are not already present. It takes as input `y_`, the Tensor containing the true target, aka labels, and `y`, which contains the predicted targets, aka logits. It will return two variables, accuracy and cross_entropy.
@@ -70,7 +70,7 @@ _Dash's Live Model Training Viewer_ is a compact visualization app that monitors
 - **Easy to modify**: The app is stored inside one module, and is written in under 400 lines. You can quickly modify and improve the app without breaking anything.
 - **Plotly Graphs and Dash Integration**: Easily integrate the app into more complex Dash Apps, and includes all the tools found in Plotly graphs.
 
-![flowchart](images/flowchart.png)
+![flowchart](assets/github/flowchart.png)
 
 At the moment, the logging only works for iterative Tensorflow models. We are planning to extend it for PyTorch. You are encouraged to port the logging function (which is a simple csv logging) to Keras, Tensorflow's high-level API, MXNet, etc.
 
@@ -89,7 +89,7 @@ See also the list of [contributors](https://github.com/your/project/contributors
 
 ## Screenshots
 
-![screenshot1](images/screenshot-1.png)
+![screenshot1](assets/github/screenshot-1.png)
 
-![screenshot2](images/screenshot-2.png)
+![screenshot2](assets/github/screenshot-2.png)
 
