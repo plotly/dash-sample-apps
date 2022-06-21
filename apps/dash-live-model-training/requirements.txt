@@ -1,5 +1,5 @@
 dash==1.0.0
 gunicorn==19.9.0
 scipy==1.2.1
-numpy==1.16.3
+numpy==1.22.0
 pandas==0.24.2
