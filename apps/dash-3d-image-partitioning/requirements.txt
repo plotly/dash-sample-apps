@@ -38,7 +38,7 @@ nbformat==5.0.7
 networkx==2.4
 nibabel==3.1.0
 nilearn==0.6.2
-numpy==1.18.5
+numpy==1.22.0
 packaging==20.4
 pandas==1.0.4
 parso==0.7.0
