@@ -21,110 +21,22 @@ modal_overlay = dbc.Modal(
 button_howto = dbc.Button(
     "Learn more",
     id="howto-open",
-    outline=True,
+    outline=False,
     color="info",
     # Turn off lowercase transformation for class .button in stylesheet
     style={"textTransform": "none"},
+    size="md",
 )
 
 button_github = dbc.Button(
-    "View Code on github",
-    outline=True,
+    "Github Code",
+    outline=False,
     color="primary",
     href="https://github.com/plotly/dash-sample-apps/tree/master/apps/dash-image-segmentation",
     id="gh-link",
     style={"text-transform": "none"},
+    size="md",
 )
-
-
-# def header(
-#     app, header_color, header, subheader=None, header_background_color="transparent"
-# ):
-#     left_headers = html.Div(
-#         [
-#             html.Div(header, className="header-title"),
-#             html.Div(subheader, className="subheader-title"),
-#         ],
-#         style={"color": header_color},
-#     )
-
-#     logo = html.Img(src=app.get_asset_url("images/plotly-logo-light-theme.png"))
-#     logo_link = html.A(logo, href="https://plotly.com/get-demo/", target="_blank")
-#     demo_link = html.A(
-#         "LEARN MORE",
-#         href="https://plotly.com/dash/",
-#         target="_blank",
-#         className="demo-button",
-#     )
-#     right_logos = html.Div([demo_link, logo_link], className="header-logos")
-
-#     return html.Div(
-#         [left_headers, right_logos],
-#         className="header",
-#         style={"background-color": header_background_color},
-#     )
-
-
-# # DBC Header
-# dbc_header = dbc.Navbar(
-#     dbc.Container(
-#         [
-#             dbc.Row(
-#                 [
-#                     dbc.Col(
-#                         html.Img(
-#                             id="logo",
-#                             src=("assets/images/plotly-logo-dark-theme.png"),
-#                             height="30px",
-#                         ),
-#                         md="auto",
-#                     ),
-#                     dbc.Col(
-#                         [
-#                             html.Div(
-#                                 [
-#                                     html.H3("Interactive Machine Learning"),
-#                                     html.P("Image segmentation"),
-#                                 ],
-#                                 id="app-title",
-#                             )
-#                         ],
-#                         md=True,
-#                         align="center",
-#                     ),
-#                 ],
-#                 align="center",
-#             ),
-#             dbc.Row(
-#                 [
-#                     dbc.Col(
-#                         [
-#                             dbc.NavbarToggler(id="navbar-toggler"),
-#                             dbc.Collapse(
-#                                 dbc.Nav(
-#                                     [
-#                                         dbc.NavItem(button_howto),
-#                                         dbc.NavItem(button_github),
-#                                     ],
-#                                     navbar=True,
-#                                 ),
-#                                 id="navbar-collapse",
-#                                 navbar=True,
-#                             ),
-#                             modal_overlay,
-#                         ],
-#                         md=2,
-#                     ),
-#                 ],
-#                 align="center",
-#             ),
-#         ],
-#         fluid=True,
-#     ),
-#     dark=True,
-#     color="dark",
-#     sticky="top",
-# )
 
 header_items = dmc.Group(
     position="apart",
@@ -139,23 +51,10 @@ header_items = dmc.Group(
             weight=600,
             transform="capitalize",
         ),
-        dbc.DropdownMenu(
-            children=[
-                dbc.DropdownMenuItem(
-                    "Behind the App", href="https://plotly.com/dash/design-kit/"
-                ),
-                dbc.DropdownMenuItem(
-                    "View Code on Github",
-                    href="https://github.com/plotly/dash-sample-apps/blob/main/apps/dash-image-segmentation/app.py",
-                ),
-            ],
-            nav=True,
-            in_navbar=True,
-            label="Learn More",
-        ),
+        dbc.NavItem(button_howto),
+        dbc.NavItem(button_github),
     ],
 )
-
 
 # Description
 description = dbc.Col(
@@ -345,6 +244,13 @@ sidebar = [
                                 ]
                             ),
                             # Indicate showing most recently computed segmentation
+                            #                             dbc.Button(
+                            #     name="Show Segmentation",
+                            #     size="lg",
+                            #     id="show-segmentation",
+                            #     value="Show Segmentation",
+                            #     type="submit",
+                            # ),
                             dcc.Checklist(
                                 id="show-segmentation",
                                 options=[

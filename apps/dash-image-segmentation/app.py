@@ -22,6 +22,7 @@ from utils.components import (
     sidebar,
     meta,
     header_items,
+    modal_overlay,
 )
 
 external_stylesheets = [dbc.themes.FLATLY, "assets/css/app.css"]
@@ -30,6 +31,9 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 server = app.server
 app.title = "Interactive image segmentation based on machine learning"
+
+with open("explanations.md", "r") as f:
+    howto_md = f.read()
 
 app.layout = html.Div(
     [
@@ -42,6 +46,7 @@ app.layout = html.Div(
                     children=[dbc.Col(segmentation, md=8), dbc.Col(sidebar, md=4)],
                 ),
                 dbc.Row(dbc.Col(meta)),
+                modal_overlay,
             ],
             fluid=True,
         ),
