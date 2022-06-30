@@ -17,11 +17,11 @@ from utils.helper_functions import (
 )
 from utils.figures import make_default_figure, annotation_react
 from utils.components import (
-    dbc_header,
     description,
     segmentation,
     sidebar,
     meta,
+    header_items,
 )
 
 external_stylesheets = [dbc.themes.FLATLY, "assets/css/app.css"]
@@ -33,7 +33,7 @@ app.title = "Interactive image segmentation based on machine learning"
 
 app.layout = html.Div(
     [
-        dbc_header,
+        dmc.Header(height=70, padding="md", children=header_items),
         dbc.Container(
             [
                 dbc.Row(description),
