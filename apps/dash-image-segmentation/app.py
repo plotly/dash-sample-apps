@@ -2,6 +2,7 @@ import plotly.express as px
 import dash
 from dash import Dash, html, dcc, Input, Output, State, callback, callback_context
 import dash_bootstrap_components as dbc
+import dash_mantine_components as dmc
 
 from time import time
 
@@ -23,7 +24,8 @@ from utils.components import (
     meta,
 )
 
-external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/css/segmentation-style.css"]
+external_stylesheets = [dbc.themes.FLATLY, "assets/css/app.css"]
+
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 server = app.server

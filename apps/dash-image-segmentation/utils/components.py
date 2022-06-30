@@ -261,7 +261,7 @@ sidebar = [
                     html.Hr(),
                     dbc.Form(
                         [
-                            dbc.FormGroup(
+                            dbc.Row(
                                 [
                                     dbc.Label(
                                         "Width of annotation paintbrush",
@@ -277,7 +277,7 @@ sidebar = [
                                     ),
                                 ]
                             ),
-                            dbc.FormGroup(
+                            dbc.Row(
                                 [
                                     html.H6(
                                         id="stroke-width-display",
@@ -296,7 +296,7 @@ sidebar = [
                                     ),
                                 ]
                             ),
-                            dbc.FormGroup(
+                            dbc.Row(
                                 [
                                     dbc.Label(
                                         "Select features",
