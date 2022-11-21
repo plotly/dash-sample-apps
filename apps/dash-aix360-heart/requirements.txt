@@ -77,7 +77,7 @@ shap==0.34.0
 six==1.16.0
 sqlparse==0.4.1
 tensorboard==1.14.0
-tensorflow==1.14.0
+tensorflow==2.9.3
 tensorflow-estimator==1.14.0
 termcolor==1.1.0
 threadpoolctl==2.1.0
