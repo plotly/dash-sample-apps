@@ -1,9 +1,67 @@
+
+body {
+    font-size: 1.5rem; /* currently ems cause chrome bug misinterpreting rems on body element */
+    line-height: 1.6;
+    font-weight: 400;
+    font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #7fafdf;
+    margin: 0;
+    background-color: #1f2630;
+    padding: 10px;
+
+}
+
+
+.card {
+    background-color: #262D3D;
+    padding: 20px 30px;
+}
+
+
+
+/* Dropdown
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.Select-value {
+    cursor: pointer;
+}
+
+.Select-control {
+    color: #7fafdf !important;
+}
+
+.Select {
+    color: #7fafdf !important;
+}
+
+.Select-menu-outer {
+    background-color: #252e3f !important;
+    border: 1px solid #7fafdf !important;
+}
+
+.Select div {
+    background-color: #252e3f !important;
+}
+
+.Select-menu-outer div:hover {
+    background-color: rgba(255, 255, 255, 0.01) !important;
+    cursor: pointer;
+}
+
+.Select-value-label {
+    color: #7fafdf !important;
+}
+
+.Select--single > .Select-control .Select-value, .Select-placeholder {
+    border: 1px solid #7fafdf !important;
+    border-radius: 4px !important;
+}
+
 /* Header */
 .header {
-    height: 10vh;
     display: flex;
     padding-left: 2%;
     padding-right: 2%;
+    padding-bottom: 1%;
     font-family: playfair display, sans-serif;
     font-weight: bold;
 }
@@ -14,17 +72,20 @@
 
 .subheader-title {
     font-size: 1.5vh;
+    border-left: #2cfec1 solid 1rem;
+    padding-left: 1rem;
+    max-width: 60rem;
+    word-wrap: break-word;
 }
 
 .header-logos {
     margin-left: auto;
+    align-self: center !important;
 }
-
 .header-logos img {
     margin-left: 3vh !important;
     max-height: 5vh;
 }
-
 
 /* Demo button css */
 .demo-button {
@@ -60,4 +121,4 @@
 .demo-button:hover {
     color: #7A76FF;
     background-position: 0%;
-}
+} 

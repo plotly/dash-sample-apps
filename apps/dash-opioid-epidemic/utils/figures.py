@@ -1,5 +1,6 @@
 import re
 import pandas as pd
+import plotly.express as px
 
 from constants import (
     BINS,
@@ -134,9 +135,7 @@ def display_selected_data(selectedData, chart_dropdown, year):
         deaths_or_rate_by_fips = deaths_or_rate_by_fips.sort_values()
         # Only look at non-zero rows:
         deaths_or_rate_by_fips = deaths_or_rate_by_fips[deaths_or_rate_by_fips > 0]
-        fig = deaths_or_rate_by_fips.iplot(
-            kind="bar", y=AGGREGATE_BY, title=title, asFigure=True
-        )
+        fig = px.bar(deaths_or_rate_by_fips, y=AGGREGATE_BY, title=title)
 
         fig_layout = fig["layout"]
         fig_data = fig["data"]

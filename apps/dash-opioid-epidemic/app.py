@@ -1,53 +1,31 @@
-import pandas as pd
-from dash import dash, html, dcc, Input, Output, State, callback, callback_context
-import cufflinks as cf
+from dash import dash, html, Input, Output, State, callback
+import dash_bootstrap_components as dbc
 
-from utils.figures import display_map, display_selected_data
-
+import utils.figures as figs
 from utils.components import header, choropleth_card, slider_graph_card
 
-from constants import (
-    YEARS,
-    mapbox_access_token,
-    mapbox_style,
-)
-
-# Initialize app
-
-app = dash.Dash(
-    __name__,
-    meta_tags=[
-        {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
-    ],
-)
-app.title = "US Opioid Epidemic"
+app = dash.Dash(__name__, title = "US Opioid Epidemic", external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
-# def header(
-#     app, header_color, header, subheader=None, header_background_color="transparent"
-# )
-
-
 # App layout
-app.layout = html.Div(
+app.layout = dbc.Container(
     [
         header(
             app,
-            "#1f2630",
+            "inherit",
             "Rate of US Poison-Induced Deaths",
             subheader="† Deaths are classified using the International Classification of Diseases, \
-                    Tenth Revision (ICD–10). Drug-poisoning deaths are defined as having ICD–10 underlying \
-                    cause-of-death codes X40–X44 (unintentional), X60–X64 (suicide), X85 (homicide), or Y10–Y14 \
+                    Tenth Revision (ICD-10).\n\nDrug-poisoning deaths are defined as having ICD-10 underlying \
+                    cause-of-death codes X40-X44 (unintentional), X60-X64 (suicide), X85 (homicide), or Y10-Y14 \
                     (undetermined intent).",
         ),
-        html.Div(
-            id="app-container",
-            children=[
-                choropleth_card("county-choropleth"),
-                slider_graph_card("selected-data"),
+        dbc.Row([
+                dbc.Col(choropleth_card("county-choropleth"), width=7),
+                dbc.Col(slider_graph_card("selected-data"),width=5)
             ],
         ),
     ],
+    fluid=True
 )
 
 
@@ -57,15 +35,15 @@ app.layout = html.Div(
     State("county-choropleth", "figure"),
 )
 def return_display_map(year, figure):
-    return display_map(year, figure)
+    return figs.display_map(year, figure)
 
 
-@callback(Output("heatmap-title", "children"), Input("years-slider", "value"))
+@callback(
+    Output("heatmap-title", "children"), 
+    Input("years-slider", "value")
+)
 def update_map_title(year):
-    return "Heatmap of age adjusted mortality rates \
-				from poisonings in year {0}".format(
-        year
-    )
+    return f"Heatmap of age adjusted mortality rates from poisonings in year {year}"
 
 
 @callback(
@@ -75,7 +53,7 @@ def update_map_title(year):
     Input("years-slider", "value"),
 )
 def return_display_selected_data(selectedData, chart_dropdown, year):
-    return display_selected_data(selectedData, chart_dropdown, year)
+    return figs.display_selected_data(selectedData, chart_dropdown, year)
 
 
 if __name__ == "__main__":
