@@ -5,7 +5,7 @@ import numpy as np
 mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
 
 # Dictionary of important locations in New York
-list_of_locations = {
+dict_of_locations = {
     "Madison Square Garden": {"lat": 40.7505, "lon": -73.9934},
     "Yankee Stadium": {"lat": 40.8296, "lon": -73.9262},
     "Empire State Building": {"lat": 40.7484, "lon": -73.9857},
@@ -18,29 +18,21 @@ list_of_locations = {
 }
 
 # Initialize data frame
-df1 = pd.read_csv(
-    "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv",
-    dtype=object,
-)
-df2 = pd.read_csv(
-    "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv",
-    dtype=object,
-)
-df3 = pd.read_csv(
-    "https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv",
-    dtype=object,
-)
+df1 = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data1.csv", dtype=object )
+df2 = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data2.csv", dtype=object )
+df3 = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data3.csv", dtype=object )
 df = pd.concat([df1, df2, df3], axis=0)
+
 df["Date/Time"] = pd.to_datetime(df["Date/Time"], format="%Y-%m-%d %H:%M")
 df.index = df["Date/Time"]
-df.drop("Date/Time", 1, inplace=True)
+df.drop("Date/Time", axis=1, inplace=True)
 totalList = []
 for month in df.groupby(df.index.month):
     dailyList = []
     for day in month[1].groupby(month[1].index.day):
         dailyList.append(day[1])
     totalList.append(dailyList)
-totalList = np.array(totalList)
+# totalList = np.array(totalList)
 
 
 

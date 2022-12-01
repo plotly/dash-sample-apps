@@ -1,40 +1,61 @@
 from dash import Dash, dcc, html, Input, Output, callback
+import dash_bootstrap_components as dbc
 
 import utils.figures as figs
 from constants import totalList
 from utils.helper_functions import total_rides_calculation
 from utils.components import controls
+from datetime import datetime as dt
 
-app = Dash(__name__, title = "New York Uber Rides")
+app = Dash(__name__, title = "New York Uber Rides", external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
 
 # Layout of Dash App
-app.layout = html.Div(
-    children=[
-        html.Div(
-            className="row",
-            children=[
-                # Column for user controls
-                controls(app),
-                # Column for app graphs and plots
-                html.Div(
-                    className="eight columns div-for-charts bg-grey",
-                    children=[
-                        dcc.Graph(id="map-graph"),
-                        html.Div(
-                            className="text-padding",
-                            children=[
-                                "Select any of the bars on the histogram to section data by time."
-                            ],
-                        ),
-                        dcc.Graph(id="histogram"),
-                    ],
-                ),
-            ],
-        )
-    ]
-)
+# app.layout = html.Div(
+#     children=[
+#         html.Div(
+#             className="row",
+#             children=[
+#                 # Column for user controls
+#                 controls(app),
+#                 # Column for app graphs and plots
+#                 html.Div(
+#                     className="eight columns div-for-charts bg-grey",
+#                     children=[
+#                         dcc.Graph(id="map-graph", config={ 'displayModeBar': False }),
+#                         html.Div(
+#                             className="text-padding",
+#                             children="Select any of the bars on the histogram to section data by time."
+#                         ),
+#                         dcc.Graph(id="histogram", config={ 'displayModeBar': False }),
+#                     ],
+#                 ),
+#             ],
+#         )
+#     ]
+# )
+
+
+# Layout of Dash App
+app.layout = dbc.Row([
+    # Column for user controls
+    controls(app),
+
+    # Column for app graphs and plots
+    dbc.Col(
+        children=[
+            dcc.Graph(id="map-graph", config={ 'displayModeBar': False }),
+            html.Div(
+                className="text-padding",
+                children="Select any of the bars on the histogram to section data by time."
+            ),
+            dcc.Graph(id="histogram", config={ 'displayModeBar': False }),
+        ],
+        className="div-for-charts bg-grey",
+        md=8,
+    ),
+])
 
 
 @callback(

@@ -3,7 +3,7 @@ from plotly import graph_objs as go
 import numpy as np
 
 from utils.helper_functions import get_selection, getLatLonColor
-from constants import list_of_locations, mapbox_access_token
+from constants import dict_of_locations, mapbox_access_token
 
 def map(date_picked, bars_selected, location):
     zoom = 12.0
@@ -13,8 +13,8 @@ def map(date_picked, bars_selected, location):
 
     if location:
         zoom = 15.0
-        latInitial = list_of_locations[location]["lat"]
-        lonInitial = list_of_locations[location]["lon"]
+        latInitial = dict_of_locations[location]["lat"]
+        lonInitial = dict_of_locations[location]["lon"]
 
     date_picked = dt.strptime(date_picked, "%Y-%m-%d")
     monthPicked = date_picked.month - 4
@@ -66,11 +66,11 @@ def map(date_picked, bars_selected, location):
             ),
             # Plot of important locations on the map
             go.Scattermapbox(
-                lat=[list_of_locations[i]["lat"] for i in list_of_locations],
-                lon=[list_of_locations[i]["lon"] for i in list_of_locations],
+                lat=[dict_of_locations[i]["lat"] for i in dict_of_locations],
+                lon=[dict_of_locations[i]["lon"] for i in dict_of_locations],
                 mode="markers",
                 hoverinfo="text",
-                text=[i for i in list_of_locations],
+                text=[i for i in dict_of_locations],
                 marker=dict(size=8, color="#ffa0a0"),
             ),
         ],

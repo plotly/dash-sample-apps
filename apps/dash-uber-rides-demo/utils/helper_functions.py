@@ -55,11 +55,11 @@ def getLatLonColor(selectedData, month, day):
     listCoords = totalList[month][day]
 
     # No times selected, output all times for chosen month and date
-    if selectedData is None or len(selectedData) is 0:
+    if selectedData is None or len(selectedData) == 0:
         return listCoords
     listStr = "listCoords["
     for time in selectedData:
-        if selectedData.index(time) is not len(selectedData) - 1:
+        if selectedData.index(time) != len(selectedData) - 1:
             listStr += "(totalList[month][day].index.hour==" + str(int(time)) + ") | "
         else:
             listStr += "(totalList[month][day].index.hour==" + str(int(time)) + ")]"
@@ -80,7 +80,7 @@ def total_rides_calculation(date_picked, bars_selected):
                     == int(x)
                 ]
             )
-        firstOutput = "Total rides in selection: {:,d}".format(totalInSelection)
+        firstOutput = f"Total rides in selection: {totalInSelection:,d}"
 
     if (bars_selected is None
         or bars_selected is None
