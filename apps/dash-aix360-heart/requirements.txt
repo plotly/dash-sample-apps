@@ -6,7 +6,7 @@ backcall==0.2.0
 bleach==3.3.0
 Brotli==1.0.9
 cached-property==1.5.2
-certifi==2020.12.5
+certifi==2022.12.7
 chardet==4.0.0
 click==8.0.1
 cvxopt==1.2.6
