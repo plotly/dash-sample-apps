@@ -1,6 +1,6 @@
 backcall==0.2.0
 Brotli==1.0.9
-certifi==2020.12.5
+certifi==2022.12.7
 click==7.1.2
 dash==1.19.0
 dash-bootstrap-components==0.12.0
