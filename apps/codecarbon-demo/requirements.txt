@@ -1,6 +1,6 @@
 APScheduler==3.7.0
 Brotli==1.0.9
-certifi==2021.5.30
+certifi==2022.12.7
 charset-normalizer==2.0.4
 click==8.0.1
 codecarbon==1.2.0
