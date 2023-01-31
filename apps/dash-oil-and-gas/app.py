@@ -7,9 +7,7 @@ import dash
 import math
 import datetime as dt
 import pandas as pd
-from dash.dependencies import Input, Output, State, ClientsideFunction
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import html, dcc, Input, Output, State, ClientsideFunction
 
 # Multi-dropdown options
 from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
@@ -63,7 +61,6 @@ dataset = trim.to_dict(orient="index")
 
 
 # Create global chart template
-mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
 
 layout = dict(
     autosize=True,
@@ -75,8 +72,7 @@ layout = dict(
     legend=dict(font=dict(size=10), orientation="h"),
     title="Satellite Overview",
     mapbox=dict(
-        accesstoken=mapbox_access_token,
-        style="light",
+        style="open-street-map",
         center=dict(lon=-78.05, lat=42.54),
         zoom=7,
     ),
@@ -147,7 +143,9 @@ app.layout = html.Div(
                         dcc.RangeSlider(
                             id="year_slider",
                             min=1960,
-                            max=2017,
+                            max=2020,
+                            marks={i: "{}".format(i) for i in range(1960, 2021, 10)},
+                            step=1,
                             value=[1990, 2010],
                             className="dcc_control",
                         ),
@@ -404,7 +402,7 @@ def update_year_slider(count_graph_selected):
 
     if count_graph_selected is None:
         return [1990, 2010]
-
+    
     nums = [int(point["pointNumber"]) for point in count_graph_selected["points"]]
     return [min(nums) + 1960, max(nums) + 1961]
 
