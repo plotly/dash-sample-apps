@@ -1,6 +1,6 @@
 cloudpickle==1.1.1
 dash==1.0.0
-dask==0.18.0
+dask==2021.10.0
 datashader==0.6.9
 gunicorn==19.9.0
 numpy==1.18.1
