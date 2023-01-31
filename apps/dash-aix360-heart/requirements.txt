@@ -57,7 +57,7 @@ pickleshare==0.7.5
 Pillow==8.2.0
 plotly==4.14.3
 progressbar==2.5
-protobuf==3.17.1
+protobuf==3.18.3
 Pygments==2.9.0
 pyparsing==2.4.7
 python-dateutil==2.8.1
