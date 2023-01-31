@@ -111,7 +111,7 @@ traitlets==5.0.5
 transforms3d==0.3.1
 Twisted==21.2.0
 txaio==21.2.1
-urllib3==1.26.4
+urllib3==1.26.5
 vectormath==0.2.2
 vtk==9.0.2
 wcwidth==0.2.5
