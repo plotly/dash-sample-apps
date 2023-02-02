@@ -1,362 +1,115 @@
-import json
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.express as px
-import urllib.request as urllib
+import plotly
 
-# from urllib.request import urlopen
 import pandas as pd
 import plotly.graph_objs as go
-import statsmodels.api as sm
-import plotly.figure_factory as ff
-# import geopandas as gpd
+import numpy as np
+
 import geojson
 import os
-# import numpy as np
+from plotly.subplots import make_subplots
 
 mapbox_access_token = "pk.eyJ1Ijoic3RlZmZlbmhpbGwiLCJhIjoiY2ttc3p6ODlrMG1ybzJwcG10d3hoaDZndCJ9.YE2gGNJiw6deBuFgHRHPjg"
-path = "https://raw.githubusercontent.com/FranzMichaelFrank/health_eu/main/"
-df = pd.read_csv(path + "food_supply.csv", dtype={"id": str})
-df_scatter = pd.read_csv(path + "scatter_data.csv", dtype={"id": str})
-clusters = pd.read_csv(path + "final_clusters.csv")
-box_cluster = pd.read_csv(path + "box_cluster.csv")
-
-url = path + "european-union-countries.geojson"
-response = urllib.urlopen(url)
-european_union = json.loads(response.read())
 
 dirname = os.path.dirname(__file__)
-path2 = os.path.join(dirname, "data/")
-# vn_map = gpd.read_file(path2 + "diaphantinhenglish.geojson", driver='GeoJSON')
-with open(path2 + "diaphantinhenglish.geojson") as f:
+path = os.path.join(dirname, "data/")
+
+with open(path + "diaphantinhenglish.geojson") as f:
     vn_map = geojson.load(f)
-vn_tctk = pd.read_csv(path2 + 'tctk.csv', sep=',')
+vn_tctk = pd.read_csv(path + 'tctk.csv', sep=',')
+# vn_tctk['xuat_cu_2021'] = -vn_tctk['xuat_cu_2021']
 
-def cz(s):
-    if s == "Czech Republic":
-        return "Czechia"
-    else:
-        return s
+food_options_ = {
+    "di_cu_2021": "Di cư thuần",
+    "nhap_cu_2021": "Nhập cư",
+    "xuat_cu_2021": "Xuất cư",
 
+    # "thu_nhap_2021": "Thu nhập 2021",
+    # "du_an_DTNN_2021": "DA ĐTNN 2021",
+    # "von_DTNN_2021": "Vốn ĐTNN 2021",
+    # "SV_DH_2020": "SV ĐH 2020",
+    # "SV_nghe_2020": "SV nghề 2020",
+}
+labels_ = {
+    "di_cu_2021": "Di cư thuần (\u2030)",
+    "nhap_cu_2021": "Nhập cư (\u2030)",
+    "xuat_cu_2021": "Xuất cư (\u2030)",
 
-clusters = clusters.rename(
-    columns={
-        "cluster_food": "Food clusters",
-        "cluster_health": "Health clusters",
-        "cluster_total": "Food & Health clusters",
-    }
-)
-clusters["Food clusters"] = clusters["Food clusters"] + 1
-clusters["Food clusters"] = clusters["Food clusters"].apply(str)
-clusters["Health clusters"] = clusters["Health clusters"] + 1
-clusters["Health clusters"] = clusters["Health clusters"].apply(str)
-clusters["Food & Health clusters"] = clusters["Food & Health clusters"] + 1
-clusters["Food & Health clusters"] = clusters["Food & Health clusters"].apply(str)
-
-clusters["Country"] = clusters["Country"].apply(cz)
-df["Country"] = df["Country"].apply(cz)
-
-layout = dict(
-    autosize=True,
-    # automargin=True,
-    margin=dict(l=30, r=30, b=20, t=40),
-    hovermode="closest",
-    plot_bgcolor="#F9F9F9",
-    paper_bgcolor="#F9F9F9",
-    legend=dict(font=dict(size=10), orientation="h"),
-    title="Satellite Overview",
-    mapbox=dict(
-        accesstoken=mapbox_access_token,
-        style="light",
-        center=dict(lon=-78.05, lat=42.54),
-        zoom=7,
-    ),
-)
-
-# design for mapbox
-bgcolor = "#f3f3f1"  # mapbox light map land color
-row_heights = [150, 500, 300]
-template = {"layout": {"paper_bgcolor": bgcolor, "plot_bgcolor": bgcolor}}
-
-
-def blank_fig(height):
-    """
-    Build blank figure with the requested height
-    """
-    return {
-        "data": [],
-        "layout": {
-            "height": height,
-            "template": template,
-            "xaxis": {"visible": False},
-            "yaxis": {"visible": False},
-        },
-    }
-
-
-columns = df.iloc[:, 2:22].columns
-health_cols = [
-    "Obesity",
-    "Diabetes Prevalence",
-    "Cardiovascular Death Rate",
-    "Life Expectancy",
-    "Health Expenditure",
-]
-
-# Create controls
-behaviour_options = [dict(label=country, value=country) for country in columns]
-
-
-food_options_ = [
-    "nhap_cu_2021",
-    "xuat_cu_2021",
-    "di_cu_2021",
-    "thu_nhap_2021",
-    "du_an_DTNN_2021",
-    "von_DTNN_2021",
-    "SV_DH_2020",
-    "SV_nghe_2020",
-    # "Offals",
-    # "Oilcrops",
-    # "Pulses",
-    # "Spices",
-    # "Starchy Roots",
-    # "Stimulants",
-    # "Sugar & Sweeteners",
-    # "Treenuts",
-    # "Vegetable Oils",
-    # "Vegetables",
-]
-
-food_options = [dict(label=country, value=country) for country in food_options_]
-
-
-dropdown_behaviour = dcc.Dropdown(
-    id="candidate_radio", options=behaviour_options, value=columns[0]
-)
-
-ots = [
-    "Alcoholic Beverages",
-    "Animal fats",
-    "Cereals - Excluding Beer",
-    "Eggs",
-    "Fish, Seafood",
-    "Fruits - Excluding Wine",
-    "Meat",
-    "Milk - Excluding Butter",
-    "Offals",
-    "Oilcrops",
-    "Pulses",
-    "Spices",
-    "Starchy Roots",
-    "Stimulants",
-    "Sugar & Sweeteners",
-    "Treenuts",
-    "Vegetable Oils",
-    "Vegetables",
-    "Obesity",
-    "Diabetes Prevalence",
-    "Cardiovascular Death Rate",
-    "Life Expectancy",
-    "Health Expenditure",
-]
-ots_ = [dict(label=country, value=country) for country in ots]
-
-ots_behaviour = dcc.Dropdown(id="box_dd", options=ots_, value="Alcoholic Beverages")
+    # "thu_nhap_2021": "Thu nhập 2021",
+    # "du_an_DTNN_2021": "DA ĐTNN 2021",
+    # "von_DTNN_2021": "Vốn ĐTNN 2021",
+    # "SV_DH_2020": "SV ĐH 2020",
+    # "SV_nghe_2020": "SV nghề 2020",
+}
+food_options = [dict(label=food_options_[country], value=country) for country in food_options_.keys()]
 
 radio_food_behaviour = dcc.RadioItems(
     id="nutrition_types",
     options=food_options,
-    value="nhap_cu_2021",
+    value="di_cu_2021",
     labelStyle={"display": "block", "text-align": "justify"},
 )
 
-
-corr_options = [
-    dict(label=country, value=country)
-    for country in [
-        "Obesity",
-        "Diabetes Prevalence",
-        "Cardiovascular Death Rate",
-        "Life Expectancy",
-        "Health Expenditure",
-    ]
-]
-cor_behav = dcc.Dropdown(
-    id="cor_behave",
-    options=corr_options,
-    value="Obesity"  # ,
-    # labelStyle={'display': 'block', "text-align": "justify"}
+ages = pd.read_csv(path + 'age.csv', sep=',')
+age_fig = go.Figure(
+    data=[go.Bar(y=ages["percent"], x=ages['ages'])],
+    layout=go.Layout(
+        title=go.layout.Title(text="1. Tuổi người di cư (năm 2019)"),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        yaxis=dict(title='%')
+    )
 )
 
-clust_opt = ["Food clusters", "Health clusters", "Food & Health clusters"]
-clust_options = [dict(label=country, value=country) for country in clust_opt]
-radio_clust_behaviour = dcc.RadioItems(
-    id="clust_types",
-    options=clust_options,
-    value="Food clusters",
-    labelStyle={"display": "inline-flex", "text-align": "center"},
-    style={"padding-left": "10%"},
+age_fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=1, gridcolor='LightPink', showline=True, linewidth=1,
+                     linecolor='black', mirror=True)
+age_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True, tickangle=-40)
+
+training = pd.read_csv(path + 'training.csv', sep=',')
+
+training_fig = go.Figure(
+    data=[go.Bar(x=training["percent"], y=training['group'], orientation='h')],
+    layout=go.Layout(
+        title=go.layout.Title(text="2. Trình độ chuyên môn"),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(title='%')
+    )
 )
+
+training_fig.update_yaxes(tickfont_size=10, showgrid=True, gridwidth=1, gridcolor='LightPink', showline=True,
+                          linewidth=1,
+                          linecolor='black', mirror=True)
+training_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True)
 
 app = dash.Dash(__name__)
 
-###
-df_new = pd.read_csv("https://plotly.github.io/datasets/country_indicators.csv")
-available_indicators = df_new["Indicator Name"].unique()
-###
 
-
-## FF ##
-foods = [
-    "Alcoholic Beverages",
-    "Animal fats",
-    "Cereals - Excluding Beer",
-    "Eggs",
-    "Fish, Seafood",
-    "Fruits - Excluding Wine",
-    "Meat",
-    "Milk - Excluding Butter",
-    "Offals",
-    "Oilcrops",
-    "Pulses",
-    "Spices",
-    "Starchy Roots",
-    "Stimulants",
-    "Sugar & Sweeteners",
-    "Treenuts",
-    "Vegetable Oils",
-    "Vegetables",
-]
-
-foods_r = [
-    "Vegetables",
-    "Vegetable Oils",
-    "Treenuts",
-    "Sugar & Sweeteners",
-    "Stimulants",
-    "Starchy Roots",
-    "Spices",
-    "Pulses",
-    "Oilcrops",
-    "Offals",
-    "Milk - Excluding Butter",
-    "Meat",
-    "Fruits - Excluding Wine",
-    "Fish, Seafood",
-    "Eggs",
-    "Cereals - Excluding Beer",
-    "Animal fats",
-    "Alcoholic Beverages",
-]
-foods_health = [
-    "Vegetables",
-    "Vegetable Oils",
-    "Treenuts",
-    "Sugar & Sweeteners",
-    "Stimulants",
-    "Starchy Roots",
-    "Spices",
-    "Pulses",
-    "Oilcrops",
-    "Offals",
-    "Milk - Excluding Butter",
-    "Meat",
-    "Fruits - Excluding Wine",
-    "Fish, Seafood",
-    "Eggs",
-    "Cereals - Excluding Beer",
-    "Animal fats",
-    "Alcoholic Beverages",
-    "Obesity",
-    "Diabetes Prevalence",
-    "Cardiovascular Death Rate",
-    "Life Expectancy",
-    "Health Expenditure",
-]
-
-df_corr_r = df_scatter[foods_health]
-df_corr_round = df_corr_r.corr()[["Obesity"]].T[foods_r].T.round(2)
-# , "Diabetes Prevalence", "Cardiovascular Death Rate", "Life Expectancy", "Health Expenditure"
-fig_cor = ff.create_annotated_heatmap(
-    z=df_corr_round.to_numpy(),
-    x=df_corr_round.columns.tolist(),
-    y=df_corr_round.index.tolist(),
-    zmax=1,
-    zmin=-1,
-    showscale=True,
-    hoverongaps=True,
-)
-fig_cor.update_layout(
-    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
-)
-# fig_cor.update_layout(yaxis_tickangle=-45)
-fig_cor.update_layout(xaxis_tickangle=0)
-fig_cor.update_layout(title_text="", height=600)
-
-
-health = df_scatter[
-    [
-        "Country",
-        "Obesity",
-        "Diabetes Prevalence",
-        "Cardiovascular Death Rate",
-        "Life Expectancy",
-        "Health Expenditure",
-    ]
-]
-
-
-fig_bar = go.Figure()
-fig_bar.add_trace(
-    go.Bar(
-        x=health["Country"], y=health["Obesity"], name="Obesity", marker_color="#0d0887"
+def get_fig_bar(col):
+    dat = vn_tctk.sort_values(by='di_cu_2021')
+    fig = go.Figure(
+        data=[go.Bar(y=dat["Name"], x=dat[col], orientation='h')],
+        layout=go.Layout(
+            title=go.layout.Title(text=food_options_[col]),
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)'
+        )
     )
-)
-fig_bar.add_trace(
-    go.Bar(
-        x=health["Country"],
-        y=health["Diabetes Prevalence"],
-        name="Diabetes Prevalence",
-        marker_color="#7201a8",
+    fig.update_layout(
+        height=700,
+        # title_text='GDP and Life Expectancy (Americas, 2007)'
     )
-)
-
-fig_bar.add_trace(
-    go.Bar(
-        x=health["Country"],
-        y=health["Cardiovascular Death Rate"],
-        name="Cardiovascular Death Rate",
-        marker_color="#bd3786",
-    )
-)
-
-fig_bar.add_trace(
-    go.Bar(
-        x=health["Country"],
-        y=health["Life Expectancy"],
-        name="Life Expectancy",
-        marker_color="#ed7953",
-    )
-)
-
-fig_bar.add_trace(
-    go.Bar(
-        x=health["Country"],
-        y=health["Health Expenditure"],
-        name="Health Expenditure",
-        marker_color="#fdca26",
-    )
-)
-# Here we modify the tickangle of the xaxis, resulting in rotated labels.
-fig_bar.update_layout(barmode="group", xaxis_tickangle=-45)
-fig_bar.update_layout(plot_bgcolor="white")
-fig_bar.update_yaxes(showline=True, linewidth=2, linecolor="black", gridcolor="grey")
-fig_bar.update_xaxes(showline=True, linewidth=2, linecolor="black")
+    fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=1, gridcolor='LightPink', showline=True, linewidth=1,
+                     linecolor='black', mirror=True)
+    fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True)
+    return fig
 
 
+fig_bar = get_fig_bar("di_cu_2021")
 ## FF ##
 
 # Create app layout
@@ -369,15 +122,15 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.Img(
-                            src=app.get_asset_url("Nova_IMS.png"),
-                            id="plotly-image",
-                            style={
-                                "height": "60px",
-                                "width": "auto",
-                                "margin-bottom": "25px",
-                            },
-                        )
+                        # html.Img(
+                        #     src=app.get_asset_url("Nova_IMS.png"),
+                        #     id="plotly-image",
+                        #     style={
+                        #         "height": "60px",
+                        #         "width": "auto",
+                        #         "margin-bottom": "25px",
+                        #     },
+                        # )
                     ],
                     className="one-third column",
                 ),
@@ -385,12 +138,12 @@ app.layout = html.Div(
                     [
                         html.Div(
                             [
-                                html.H4(
-                                    "Food consumption characteristics of the European Union",
+                                html.H5(
+                                    "Hiện trạng di cư giữa các tỉnh thành tại Việt Nam năm 2021",
                                     style={"font-weight": "bold"},
                                 ),
-                                html.H5(
-                                    "Analysis of the relationship between nutritional patterns and \n the health status within the countries",
+                                html.H6(
+                                    "Phân tích mối quan hệ giữa di cư và các yếu tố kinh tế - giáo dục",
                                     style={"margin-top": "0px"},
                                 ),
                             ]
@@ -413,7 +166,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.H6(
-                            "Consumption by food type",
+                            "Hiện trạng di cư",
                             style={
                                 "margin-top": "0",
                                 "font-weight": "bold",
@@ -421,14 +174,13 @@ app.layout = html.Div(
                             },
                         ),
                         html.P(
-                            "The cultures and customs of the 27 EU countries differ widely. The same applies to their eating and drinking habits."
-                            " The map on the right explores the food supply in kilograms per capita per year.",
+                            "Để tìm tìm nguyên nhân di cư, trước tiên ta cần xem xét phân tích hiện trạng di cư. Theo số liệu di cư năm 2021 của TCTK, tình trạng di cư tại các tỉnh thành phố tại Việt Nam như sau:",
                             className="control_label",
                             style={"text-align": "justify"},
                         ),
                         html.P(),
                         html.P(
-                            "Select a food category",
+                            "Chọn số liệu",
                             className="control_label",
                             style={"text-align": "center", "font-weight": "bold"},
                         ),
@@ -442,7 +194,6 @@ app.layout = html.Div(
                     [
                         html.Div(
                             [dcc.Graph(id="choropleth")],
-                            # id="countGraphContainer",
                             className="pretty_container",
                         ),
                     ],
@@ -454,22 +205,110 @@ app.layout = html.Div(
         ),
         html.Div(
             [
-                html.H6(
-                    "General health information about the countries",
+                html.H5(
+                    "Đặc điểm người di cư",
                     style={
                         "margin-top": "0",
                         "font-weight": "bold",
                         "text-align": "center",
                     },
                 ),
-                html.P(
-                    "Similarly to nutrition, the health status also varies from country to country. The bar chart below shows the differences between the countries in terms of the following variables: prevalence of obesity in the adult population in % (Obesity), prevalence of diabetes in the adult population in % (Diabetes Prevalence), cardiovascular death rate per 100,000 population (Cardiovascular Death Rate), average life expectancy in years (Life Expectancy) and the expenditure of the government on the country's health system in % of the respective GDP (Health Expenditure).",
-                    className="control_label",
-                    style={"text-align": "justify"},
+                html.Div(
+                    [html.Div(
+                        [
+                            html.P("1. Tuổi",
+                                   className="control_label",
+                                   style={"text-align": "center", "font-weight": "bold"},
+                                   ),
+                            html.Img(
+                                src=app.get_asset_url("age.png"),
+                                className="bare_container"
+                            ),
+                        ],
+                        className="bare_container six columns",
+                    ),
+                        html.Div(
+                            [
+                                html.P("2. Trình độ",
+                                       className="control_label",
+                                       style={"text-align": "center", "font-weight": "bold"},
+                                       ),
+                                html.Img(
+                                    src=app.get_asset_url("trinhdo.png"),
+                                    className="bare_container"
+                                ),
+                            ],
+                            className="bare_container six columns",
+                        ),
+                    ],
+                    className="row no_border_container",
                 ),
                 html.Div(
-                    [dcc.Graph(id="bar_chart", figure=fig_bar)],
-                    className="pretty_container twelve columns",
+                    [html.Div(
+                        [
+                            html.P("3. Giới tính",
+                                   className="control_label",
+                                   style={"text-align": "center", "font-weight": "bold"},
+                                   ),
+                            html.Img(
+                                src=app.get_asset_url("gender.png"),
+                                className="bare_container"
+                            ),
+                        ],
+                        className="bare_container six columns",
+                    ),
+                        html.Div(
+                            [
+                                html.P("4. Hôn nhân",
+                                       className="control_label",
+                                       style={"text-align": "center", "font-weight": "bold"},
+                                       ),
+                                html.Img(
+                                    src=app.get_asset_url("honnhan.png"),
+                                    className="contain",
+                                ),
+                            ],
+                            className="bare_container six columns",
+                        ),
+                    ],
+                    className="row no_border_container",
+                ),
+            ],
+            className="pretty_container",
+        ),
+        html.Div(
+            [
+                html.Div(
+                    [
+                        html.H6(
+                            "Tương quan giữa di cư và kinh tế - giáo dục",
+                            style={
+                                "margin-top": "0",
+                                "font-weight": "bold",
+                                "text-align": "center",
+                            },
+                        ),
+                        dcc.RadioItems(
+                            id="yaxis-type",
+                            options=[
+                                {"label": i, "value": i}
+                                for i in ["Kinh tế", "Giáo dục"]
+                            ],
+                            value="Kinh tế",
+                            labelStyle={"display": "inline-block"},
+                            style={"padding-left": "43%"},
+                        ),
+
+                        html.Div(
+                            [html.Div(
+                                [dcc.Graph(id="indicator-graphic")],
+                                className="no_border_container twelve columns",
+                            ),
+                            ],
+                            className="row no_border_container",
+                        ),
+                    ],
+                    className="no_border_container twelve columns",
                 ),
             ],
             className="row pretty_container",
@@ -477,159 +316,23 @@ app.layout = html.Div(
         html.Div(
             [
                 html.Div(
-                    # cor_behav,
-                    [
-                        html.H6(
-                            "Exploring correlations",
-                            style={
-                                "margin-top": "0",
-                                "font-weight": "bold",
-                                "text-align": "center",
-                            },
-                        ),
-                        html.P(
-                            "In the heatmap below, the correlations between the 5 health variables and the 18 food variables can be explored.",
-                            className="control_label",
-                            style={"text-align": "justify"},
-                        ),
-                        # html.P("""<br>"""),
-                        html.P(
-                            "Select a health variable",
-                            style={"font-weight": "bold", "text-align": "center"},
-                        ),
-                        cor_behav,
-                        html.Div(
-                            [dcc.Graph(id="cor_ma")],
-                            className="pretty_container twelve columns",
-                        ),
-                    ],  # ,cor_behav,
-                    className="pretty_container four columns",
+                    className="no_border_container two columns",
                 ),
                 html.Div(
                     [
-                        html.H6(
-                            "Analysing the correlations between food consumption and health",
-                            style={
-                                "margin-top": "0",
-                                "font-weight": "bold",
-                                "text-align": "center",
-                            },
-                        ),
-                        html.P(
-                            "Below, the correlations can be analysed in more detail. It is important to note that correlation in this case does not necessarily mean causation. For example, the wealth level of a country might often influence the variables, which is why it is represented through the size of the dots as GDP per capita. Furthermore, outliers should also be watched out for.",
-                            className="control_label",
-                            style={"text-align": "justify"},
-                        ),
-                        html.Div(
-                            [
-                                html.P(
-                                    "Select a food category",
-                                    className="control_label",
-                                    style={
-                                        "font-weight": "bold",
-                                        "text-align": "center",
-                                    },
-                                ),
-                                dcc.Dropdown(
-                                    id="xaxis-column",
-                                    options=[
-                                        {"label": i, "value": i} for i in food_options_
-                                    ],
-                                    value="Alcoholic Beverages",  # ,className="pretty_container four columns",
-                                ),
-                                dcc.RadioItems(
-                                    id="xaxis-type",
-                                    options=[
-                                        {"label": i, "value": i}
-                                        for i in ["Box", "Violin"]
-                                    ],
-                                    value="Box",
-                                    labelStyle={
-                                        "display": "inline-block"
-                                    },  # ,className="pretty_container four columns",
-                                    style={"padding-left": "34%"},
-                                ),
-                            ],
-                            className="pretty_container sixish columns",
-                        ),
-                        html.Div(
-                            [
-                                html.P(
-                                    "Select a health variable",
-                                    className="control_label",
-                                    style={
-                                        "font-weight": "bold",
-                                        "text-align": "center",
-                                    },
-                                ),
-                                dcc.Dropdown(
-                                    id="yaxis-column",
-                                    options=[
-                                        {"label": i, "value": i} for i in health_cols
-                                    ],
-                                    value=health_cols[0],
-                                ),
-                                dcc.RadioItems(
-                                    id="yaxis-type",
-                                    options=[
-                                        {"label": i, "value": i}
-                                        for i in ["Box", "Violin"]
-                                    ],
-                                    value="Box",
-                                    labelStyle={"display": "inline-block"},
-                                    style={"padding-left": "34%"},
-                                ),
-                            ],
-                            className="pretty_container sixish columns",
-                        ),
-                        html.Div(
-                            [dcc.Graph(id="indicator-graphic"),],
-                            className="pretty_container almost columns",
+                        html.P("Kết quả khảo sát lý do di cư theo tổng điều tra dân số và nhà ở năm 2019",
+                               className="control_label",
+                               style={"text-align": "center", "font-weight": "bold"},
+                               ),
+                        html.Img(
+                            src=app.get_asset_url("reason.png"),
+                            className="bare_container"
                         ),
                     ],
-                    className="pretty_container eight columns",
-                ),
-            ],
-            className="row flex-display",
-        ),
-        html.Div(
-            [
-                html.H6(
-                    "K-means clustering",
-                    style={
-                        "margin-top": "0",
-                        "font-weight": "bold",
-                        "text-align": "center",
-                    },
-                ),
-                html.P(
-                    "Finally, k-means clustering is carried out. The criterion can be selected on the left side, whereby either the 18 food variables, the 5 health variables or all of them in combination may be chosen for the clustering. On the right side, the resulting clusters can then be compared with respect to a chosen variable.",
-                    className="control_label",
-                    style={"text-align": "justify"},
+                    className="no_border_container eight columns",
                 ),
                 html.Div(
-                    [
-                        html.P(
-                            "Select a clustering criterion",
-                            className="control_label",
-                            style={"text-align": "center", "font-weight": "bold"},
-                        ),
-                        radio_clust_behaviour,
-                        dcc.Graph(id="cluster_map"),
-                    ],
-                    className="pretty_container sixish columns",
-                ),
-                html.Div(
-                    [
-                        html.P(
-                            "Select a variable for cluster comparison",
-                            className="control_label",
-                            style={"text-align": "center", "font-weight": "bold"},
-                        ),
-                        ots_behaviour,
-                        dcc.Graph(id="boxes"),
-                    ],
-                    className="pretty_container sixish columns",
+                    className="no_border_container two columns",
                 ),
             ],
             className="row pretty_container",
@@ -637,7 +340,7 @@ app.layout = html.Div(
         html.Div(
             [
                 html.H6(
-                    "Authors",
+                    "Người thực hiện",
                     style={
                         "margin-top": "0",
                         "font-weight": "bold",
@@ -645,16 +348,16 @@ app.layout = html.Div(
                     },
                 ),
                 html.P(
-                    "Maximilian Maukner (m20200645@novaims.unl.pt)  -  Ehsan Meisami Fard (m20201050@novaims.unl.pt)  -  Franz Michael Frank (m20200618@novaims.unl.pt)  -  Steffen Hillmann (m20200589@novaims.unl.pt)",
+                    "Đào Thị Thu Hồng (21007975)  -  Lê Kim Dũng (21007978)",
                     style={"text-align": "center", "font-size": "10pt"},
                 ),
             ],
-            className="row pretty_container",
+            className="pretty_container",
         ),
         html.Div(
             [
                 html.H6(
-                    "Sources",
+                    "Số liệu \n",
                     style={
                         "margin-top": "0",
                         "font-weight": "bold",
@@ -663,38 +366,31 @@ app.layout = html.Div(
                 ),
                 dcc.Markdown(
                     """\
-                         - Eurostat: https://ec.europa.eu/eurostat/databrowser/view/HLTH_SHA11_HF__custom_227597/bookmark/table?lang=en&bookmarkId=1530a1e6-767e-4661-9e15-0ed2f7fae0d5
-                         - Food and Agriculture Organization of the United Nations: http://www.fao.org/faostat/en/#data/FBS
-                         - Opendatasoft: https://data.opendatasoft.com/explore/dataset/european-union-countries@public/export/
-                         - Our World in Data: https://covid.ourworldindata.org/data/owid-covid-data.csv?v=2021-03-11
+                         1.	Số liệu tổng cục thống kê: https://www.gso.gov.vn/
+                         2.	Số liệu tổng điều tra dân số và nhà ở 2019: https://www.gso.gov.vn/tong-dieu-tra-dan-so-va-nha-o/
                         """,
                     style={"font-size": "10pt"},
                 ),
             ],
-            className="row pretty_container",
+            className="pretty_container",
         ),
     ],
     id="mainContainer",
     style={"display": "flex", "flex-direction": "column"},
 )
 
-colors = [
-    "#0d0887",
-    "#46039f",
-    "#7201a8",
-    "#9c179e",
-    "#bd3786",
-    "#d8576b",
-    "#ed7953",
-    "#fb9f3a",
-    "#fdca26",
-    "#f0f921",
-]
-colors2 = ["#fdca26", "#ed7953", "#bd3786", "#7201a8", "#0d0887"]
 
 ####
 @app.callback(Output("choropleth", "figure"), [Input("nutrition_types", "value")])
 def display_choropleth(candi):
+    midpoint = None
+    colors = color_continuous_scale=["blue",'white',"red" ]
+    if candi == 'nhap_cu_2021':
+        colors = color_continuous_scale = ['white',"red"]
+    if candi == 'xuat_cu_2021':
+        colors = color_continuous_scale = ['white',"blue"]
+    if candi == 'di_cu_2021':
+        midpoint = 0
     fig = px.choropleth_mapbox(
         vn_tctk,
         geojson=vn_map,
@@ -703,294 +399,92 @@ def display_choropleth(candi):
         featureidkey="properties.Name",
         hover_name="Name",
         opacity=0.7,  # hover_data = [],
-        center={"lat": 15, "lon": 106},
-        zoom=4,
+        center={"lat": 16, "lon": 106},
+        zoom=4.3,
+        labels=labels_,
+        color_continuous_scale=colors,
+        color_continuous_midpoint  = midpoint
     )
     fig.update_layout(
-        margin={"r": 0, "t": 0, "l": 0, "b": 0}, mapbox_accesstoken=mapbox_access_token
+        margin={"r": 0, "t": 0, "l": 0, "b": 0}, mapbox_accesstoken=mapbox_access_token,
+        legend=dict(title=food_options_[candi])
     )
+
+    # fig.update_traces(legendgrouptitle_text=food_options_[candi], selector=dict(type='choreographically'))
 
     return fig
 
 
-@app.callback(
-    Output("boxes", "figure"), [Input("clust_types", "value"), Input("box_dd", "value")]
-)
-def display_boxes(clust, vari):
-    clusts = ["Food", "Health", "Food & Health"]
-
-    box_cluster = pd.read_csv(path + "box_cluster.csv").rename(
-        columns={
-            "Food": "Food clusters",
-            "Health": "Health clusters",
-            "Food & Health": "Food & Health clusters",
-        }
-    )
-    box_cluster["Food clusters"] = box_cluster["Food clusters"] + 1
-    box_cluster["Health clusters"] = box_cluster["Health clusters"] + 1
-    box_cluster["Food & Health clusters"] = box_cluster["Food & Health clusters"] + 1
-    box_cluster = box_cluster.sort_values(clust)
-    fig = px.box(
-        box_cluster,
-        x=clust,
-        y=vari,
-        color=clust,
-        color_discrete_sequence=["#fdca26", "#ed7953", "#bd3786", "#7201a8", "#0d0887"],
-    )
-    fig.update_layout(plot_bgcolor="white")
-    fig.update_yaxes(showline=True, linewidth=2, linecolor="black")
-    fig.update_xaxes(showline=True, linewidth=2, linecolor="black")
-    fig.update_layout(legend=dict(yanchor="bottom", y=0))
-
-    return fig
-
-
-@app.callback(Output("cluster_map", "figure"), [Input("clust_types", "value")])
-def display_cluster_map(type_clust):
-    fig = px.choropleth_mapbox(
-        clusters.sort_values(type_clust),
-        locations="id",
-        geojson=european_union,
-        featureidkey="properties.gu_a3",
-        color=type_clust,
-        hover_name="Country",
-        hover_data=[type_clust],
-        # hover_data=["Life Expectancy"],
-        # title="clusters by food",
-        mapbox_style="carto-positron",
-        center={"lat": 56.5, "lon": 11},
-        zoom=2.5,
-        opacity=0.7,
-        color_discrete_sequence=colors2,
-    )
-
-    fig.update_layout(
-        legend=dict(yanchor="bottom", y=0),
-        margin={"r": 0, "t": 0, "l": 0, "b": 0},
-        mapbox_accesstoken=mapbox_access_token,
-    )
-
-    return fig
-
-
-## FF ##
-@app.callback(Output("cor_ma", "figure"), [Input("cor_behave", "value")])
-def display_cor_ma(var):
-    foods = [
-        "Alcoholic Beverages",
-        "Animal fats",
-        "Cereals - Excluding Beer",
-        "Eggs",
-        "Fish, Seafood",
-        "Fruits - Excluding Wine",
-        "Meat",
-        "Milk - Excluding Butter",
-        "Offals",
-        "Oilcrops",
-        "Pulses",
-        "Spices",
-        "Starchy Roots",
-        "Stimulants",
-        "Sugar & Sweeteners",
-        "Treenuts",
-        "Vegetable Oils",
-        "Vegetables",
-    ]
-
-    foods_r = [
-        "Vegetables",
-        "Vegetable Oils",
-        "Treenuts",
-        "Sugar & Sweeteners",
-        "Stimulants",
-        "Starchy Roots",
-        "Spices",
-        "Pulses",
-        "Oilcrops",
-        "Offals",
-        "Milk - Excluding Butter",
-        "Meat",
-        "Fruits - Excluding Wine",
-        "Fish, Seafood",
-        "Eggs",
-        "Cereals - Excluding Beer",
-        "Animal fats",
-        "Alcoholic Beverages",
-    ]
-    foods_health = [
-        "Vegetables",
-        "Vegetable Oils",
-        "Treenuts",
-        "Sugar & Sweeteners",
-        "Stimulants",
-        "Starchy Roots",
-        "Spices",
-        "Pulses",
-        "Oilcrops",
-        "Offals",
-        "Milk - Excluding Butter",
-        "Meat",
-        "Fruits - Excluding Wine",
-        "Fish, Seafood",
-        "Eggs",
-        "Cereals - Excluding Beer",
-        "Animal fats",
-        "Alcoholic Beverages",
-        "Obesity",
-        "Diabetes Prevalence",
-        "Cardiovascular Death Rate",
-        "Life Expectancy",
-        "Health Expenditure",
-    ]
-
-    df_corr_r = df_scatter[foods_health]
-    df_corr_round = df_corr_r.corr()[[var]].T[foods_r].T.round(2)
-    # , "Diabetes Prevalence", "Cardiovascular Death Rate", "Life Expectancy", "Health Expenditure"
-    fig_cor = ff.create_annotated_heatmap(
-        z=df_corr_round.to_numpy(),
-        x=df_corr_round.columns.tolist(),
-        y=df_corr_round.index.tolist(),
-        zmax=1,
-        zmin=-1,
-        showscale=True,
-        hoverongaps=True,
-        ygap=3,
-    )
-    fig_cor.update_layout(
-        yaxis=dict(showgrid=False),
-        xaxis=dict(showgrid=False),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-    )
-    # fig_cor.update_layout(yaxis_tickangle=-45)
-    fig_cor.update_layout(xaxis_tickangle=0)
-    fig_cor.update_layout(title_text="", height=550)  #
-
-    return fig_cor
-
-
-## FF ##
-
-
-@app.callback(
-    [
-        Output("max_name", "children"),
-        Output("max_value", "children"),
-        Output("min_name", "children"),
-        Output("min_value", "children"),
-        Output("mean", "children"),
-        Output("st_dev", "children"),
-    ],
-    [Input("nutrition_types", "value"),],
-)
-def indicator(auswahl):
-    max_id = df[auswahl].idxmax()
-    min_id = df[auswahl].idxmin()
-
-    max_value = df[auswahl].max()
-    max_value = str(max_value)
-
-    max_name = df.loc[max_id, "Country"]
-    min_value = df[auswahl].min()
-    min_value = str(min_value)
-
-    min_name = df.loc[min_id, "Country"]
-    mean = df[auswahl].mean()
-    st_dev = df[auswahl].std()
-    st_dev = round(st_dev, 2)
-    st_dev = str(st_dev)
-    mean = round(mean, 2)
-    mean = str(mean)
-
-    return (
-        "Country: " + max_name,
-        max_value + " kg per capita per year",
-        "Country: " + min_name,
-        min_value + " kg per capita per year",
-        mean + " kg per capita per year",
-        st_dev + " kg per capita per year",
-    )
-
+# @app.callback(
+#     Output("indicator-graphic2", "figure"),
+#     Output("indicator-graphic3", "figure"),
+#     Input("yaxis-type", "value"),
+# )
+# def update_graph(yaxis_type):
+#
+#     if yaxis_type == "Kinh tế":
+#         col2 = "thu_nhap_2021"
+#         col3 = "von_DTNN_2021"
+#     else:
+#         col2 = "SV_DH_2020"
+#         col3 = "SV_nghe_2020"
+#
+#
+#     fig2 = get_fig_bar(col2)
+#     fig3 = get_fig_bar(col3)
+#     fig2.update_yaxes(showticklabels = False)
+#     fig3.update_yaxes(showticklabels=False)
+#     return fig2, fig3
 
 @app.callback(
     Output("indicator-graphic", "figure"),
-    Input("xaxis-column", "value"),
-    Input("yaxis-column", "value"),
-    Input("xaxis-type", "value"),
     Input("yaxis-type", "value"),
 )
-def update_graph(xaxis_column_name, yaxis_column_name, xaxis_type, yaxis_type):
+def update_graph(yaxis_type):
+    dat = vn_tctk.sort_values(by='di_cu_2021')
+    cols = plotly.colors.DEFAULT_PLOTLY_COLORS
+    if yaxis_type == "Kinh tế":
+        fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần", "Thu nhập", "Vốn ĐTNN"))
+        fig.add_trace(
+            go.Bar(y=dat["Name"], x=dat["thu_nhap_2021"] / 1000, orientation='h',marker=dict(color=cols[0])),
+            row=1, col=2
+        )
+        fig.add_trace(
+            go.Bar(y=dat["Name"], x=dat["von_DTNN_2021"] / 1000, orientation='h',marker=dict(color=cols[0])),
+            row=1, col=3
+        )
+        fig.update_layout(xaxis1=dict(title='Tỉ lệ di cư (\u2030)'),
+                          xaxis2=dict(title='Thu nhập bình quân (triệu/tháng)'), xaxis3=dict(title='Vốn ĐTNN (tỉ USD)'))
 
-    # col_name = str(yaxis_column_name) + " (above Average)"
-    col_name = " "
-    df_scatter[col_name] = (
-        df_scatter[yaxis_column_name] > df_scatter[yaxis_column_name].mean()
-    )
+    else:
+        fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần", "Sinh viên đại học", "Sinh viên nghề"))
 
-    def aa(inp):
-        if inp == True:
-            return yaxis_column_name + " above average"
+        fig.add_trace(
+            go.Bar(y=dat["Name"], x=dat["SV_DH_2020"] / 1000, orientation='h', marker=dict(color=cols[0])),
+            row=1, col=2
+        )
+        fig.add_trace(
+            go.Bar(y=dat["Name"], x=dat["SV_nghe_2020"] / 1000, orientation='h',marker=dict(color=cols[0])),
+            row=1, col=3
+        )
+        fig.update_layout(xaxis1=dict(title='Tỉ lệ di cư (\u2030)'), xaxis2=dict(title='Sinh viên đại học (nghìn)'),
+                          xaxis3=dict(title='Sinh viên nghề (nghìn)'))
+    colors = []
+
+    for i in range(63):
+        if dat.iloc[i, 3] < 0:
+            colors.append(cols[0])
         else:
-            return yaxis_column_name + " below average"
-
-    df_scatter[col_name] = df_scatter[col_name].apply(aa)
-
-    if yaxis_type == "Box":
-        type_y = "box"
-    else:
-        type_y = "violin"
-
-    if xaxis_type == "Box":
-        type_x = "box"
-    else:
-        type_x = "violin"
-
-    fig = px.scatter(
-        df_scatter,
-        x=xaxis_column_name,
-        y=yaxis_column_name,
-        size="GDP per Capita",
-        color=col_name,
-        hover_name="Country",
-        log_x=False,
-        marginal_x=type_x,
-        marginal_y=type_y,
-        template="simple_white",
-        color_discrete_sequence=["#0d0887", "#9c179e"],
+            colors.append('red')
+    fig.add_trace(
+        go.Bar(y=dat["Name"], x=dat['di_cu_2021'], orientation='h', marker=dict(color=colors)),
+        row=1, col=1
     )
-
-    # linear regression
-    regline = (
-        sm.OLS(
-            df_scatter[yaxis_column_name],
-            sm.add_constant(df_scatter[xaxis_column_name]),
-        )
-        .fit()
-        .fittedvalues
-    )
-
-    # add linear regression line for whole sample
-    fig.add_traces(
-        go.Scatter(
-            x=df_scatter[xaxis_column_name],
-            y=regline,
-            mode="lines",
-            marker_color="#fb9f3a",
-            name="OLS Trendline",
-        )
-    )
-
-    fig.update_layout(
-        legend=dict(orientation="h", xanchor="center", x=0.5, yanchor="top", y=-0.2)
-    )
-
-    fig.update_layout(margin={"l": 40, "b": 40, "t": 10, "r": 0}, hovermode="closest")
-
-    # fig.update_xaxes(title=xaxis_column_name,
-    #                type='linear' if xaxis_type == 'Linear' else 'log')
-
-    # fig.update_yaxes(title=yaxis_column_name,
-    #                type='linear' if yaxis_type == 'Linear' else 'log')
-
+    fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=0.5, gridcolor='LightGrey', showline=True, linewidth=1,
+                     linecolor='black', mirror=True)
+    fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True)
+    fig.update_layout(height=750, yaxis2=dict(showticklabels=False), yaxis3=dict(showticklabels=False),
+                      showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
     return fig
 
 

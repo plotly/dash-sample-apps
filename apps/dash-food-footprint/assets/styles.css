@@ -28,7 +28,7 @@ body {
 
 .no_border_container {
   border-radius: 0px;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   margin: 0px;
   padding: 0px;
   position: relative;
@@ -151,3 +151,9 @@ body {
   pointer-events: all;
   transform: translate(30px, 349px);
 }
+
+.fill {object-fit: fill;}
+.contain {object-fit: contain;}
+.cover {object-fit: cover;}
+.scale-down {object-fit: scale-down;}
+.none {object-fit: none;}
