@@ -17,6 +17,71 @@ path = os.path.join(dirname, "data/")
 with open(path + "diaphantinhenglish.geojson") as f:
     vn_map = geojson.load(f)
 vn_tctk = pd.read_csv(path + 'tctk.csv', sep=',')
+vn_tctk['Name_v'] = vn_tctk["Name"].map({
+"An Giang":"An Giang",
+"Bac Giang":"Bắc Giang",
+"Bac Kan":"Bắc Cạn",
+"Bac Lieu":"Bạc Liêu",
+"Bac Ninh":"Bắc Ninh",
+"Ben Tre":"Bến Tre",
+"Ba Ria - Vung Tau":"Bà Rịa - Vũng Tàu",
+"Binh Dinh":"Bình Định",
+"Binh Duong":"Bình Dương",
+"Binh Phuoc":"Bình Phước",
+"Binh Thuan":"Bình Thuận",
+"Can Tho":"Cần Thơ",
+"Ca Mau":"Cà Mau",
+"Cao Bang":"Cao Bằng",
+"Dak Lak":"Đắc Lắc",
+"Dak Nong":"Đắc Nông",
+"Dong Nai":"Đồng Nai",
+"Dong Thap":"Đồng Tháp",
+"Da Nang":"Đà Nẵng",
+"Dien Bien":"Điện Biên",
+"Gia Lai":"Gia Lai",
+"Hai Duong":"Hải Dương",
+"Hai Phong":"Hải Phòng",
+"Hau Giang":"Hậu Giang",
+"Ha Giang":"Hà Giang",
+"Ha Noi":"Hà Nội",
+"Ha Nam":"Hà Nam",
+"Ha Tinh":"Hà Tĩnh",
+"Hoa Binh":"Hòa Bình",
+"Hung Yen":"Hưng Yên",
+"Khanh Hoa":"Khánh Hòa",
+"Kien Giang":"Kiên Giang",
+"Kon Tum":"Kon Tum",
+"Lang Son":"Lạng Sơn",
+"Lai Chau":"Lai Châu",
+"Lam Dong":"Lâm Đồng",
+"Lao Cai":"Lào Cai",
+"Long An":"Long An",
+"Nam Dinh":"Nam Định",
+"Nghe An":"Nghệ An",
+"Ninh Binh":"Ninh Bình",
+"Ninh Thuan":"Ninh Thuận",
+"Phu Tho":"Phú Thọ",
+"Phu Yen":"Phú Yên",
+"Quang Binh":"Quảng Bình",
+"Quang Nam":"Quảng Nam",
+"Quang Ngai":"Quảng Ngãi",
+"Quang Ninh":"Quảng Ninh",
+"Quang Tri":"Quảng Trị",
+"Soc Trang":"Sóc Trăng",
+"Son La":"Sơn La",
+"Tay Ninh":"Tây Ninh",
+"Thua Thien - Hue":"Thừa Thiên - Huế",
+"Thai Binh":"Thái Bình",
+"Thai Nguyen":"Thái Nguyên",
+"Thanh Hoa":"Thanh Hóa",
+"Tien Giang":"Tiền Giang",
+"TP. Ho Chi Minh":"TP. Hồ Chí Minh",
+"Tra Vinh":"Trà Vinh",
+"Tuyen Quang":"Tuyên Quang",
+"Vinh Long":"Vĩnh Long",
+"Vinh Phuc":"Vĩnh Phúc",
+"Yen Bai":"Yên Bái"
+})
 # vn_tctk['xuat_cu_2021'] = -vn_tctk['xuat_cu_2021']
 
 food_options_ = {
@@ -169,6 +234,7 @@ school_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0
 school_fig.update_xaxes(tickfont_size=13, showline=True, linewidth=1,
                         linecolor='black')
 school_fig.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
+school_fig.update_traces(hovertemplate='<extra>%{y}</extra>')
 
 app = dash.Dash(__name__)
 
@@ -457,8 +523,9 @@ def display_choropleth(candi):
         color=candi,
         locations="Name",
         featureidkey="properties.Name",
-        hover_name="Name",
-        opacity=0.7,  # hover_data = [],
+        hover_name="Name_v",
+        opacity=0.7,
+        # hover_data = [],
         center={"lat": 16, "lon": 106},
         zoom=4.3,
         labels=labels_,
@@ -469,7 +536,7 @@ def display_choropleth(candi):
         margin={"r": 0, "t": 0, "l": 0, "b": 0}, mapbox_accesstoken=mapbox_access_token,
         legend=dict(title=food_options_[candi])
     )
-
+    fig.update_traces(hoverinfo="z", selector=dict(type='choroplethmapbox'))
     return fig
 
 @app.callback(
@@ -481,11 +548,11 @@ def update_graph(yaxis_type):
     if yaxis_type == "Kinh tế":
         fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần", "Thu nhập", "Vốn đầu tư nước ngoài"))
         fig.add_trace(
-            go.Bar(y=dat["Name"], x=dat["thu_nhap_2021"] / 1000, orientation='h', marker=dict(color='blue')),
+            go.Bar(y=dat["Name_v"], x=dat["thu_nhap_2021"] / 1000, orientation='h', marker=dict(color='blue')),
             row=1, col=2
         )
         fig.add_trace(
-            go.Bar(y=dat["Name"], x=dat["von_DTNN_2021"] / 1000, orientation='h', marker=dict(color='blue')),
+            go.Bar(y=dat["Name_v"], x=dat["von_DTNN_2021"] / 1000, orientation='h', marker=dict(color='blue')),
             row=1, col=3
         )
         fig.update_layout(xaxis1=dict(title='Tỉ lệ di cư (\u2030)'),
@@ -495,11 +562,11 @@ def update_graph(yaxis_type):
         fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần", "Sinh viên đại học", "Sinh viên nghề"))
 
         fig.add_trace(
-            go.Bar(y=dat["Name"], x=dat["SV_DH_2020"] / 1000, orientation='h', marker=dict(color='blue')),
+            go.Bar(y=dat["Name_v"], x=dat["SV_DH_2020"] / 1000, orientation='h', marker=dict(color='blue')),
             row=1, col=2
         )
         fig.add_trace(
-            go.Bar(y=dat["Name"], x=dat["SV_nghe_2020"] / 1000, orientation='h', marker=dict(color='blue')),
+            go.Bar(y=dat["Name_v"], x=dat["SV_nghe_2020"] / 1000, orientation='h', marker=dict(color='blue')),
             row=1, col=3
         )
         fig.update_layout(xaxis1=dict(title='Tỉ lệ di cư (\u2030)'), xaxis2=dict(title='Sinh viên đại học (nghìn)'),
@@ -512,7 +579,7 @@ def update_graph(yaxis_type):
         else:
             colors.append('red')
     fig.add_trace(
-        go.Bar(y=dat["Name"], x=dat['di_cu_2021'], orientation='h', marker=dict(color=colors)),
+        go.Bar(y=dat["Name_v"], x=dat['di_cu_2021'], orientation='h', marker=dict(color=colors)),
         row=1, col=1
     )
     fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=0.5, gridcolor='LightGrey', showline=True, linewidth=1,
@@ -520,6 +587,7 @@ def update_graph(yaxis_type):
     fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True, showgrid=True, gridwidth=1, gridcolor='LightGrey')
     fig.update_layout(height=750, yaxis2=dict(showticklabels=True), yaxis3=dict(showticklabels=True),
                       showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+    fig.update_traces(hovertemplate='<extra>(%{y},%{x})</extra>')
     return fig
 
 
