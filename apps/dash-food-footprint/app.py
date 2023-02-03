@@ -525,18 +525,19 @@ def display_choropleth(candi):
         featureidkey="properties.Name",
         hover_name="Name_v",
         opacity=0.7,
-        # hover_data = [],
+        hover_data = {'Name':False},
         center={"lat": 16, "lon": 106},
         zoom=4.3,
         labels=labels_,
         color_continuous_scale=colors,
-        color_continuous_midpoint=midpoint
+        color_continuous_midpoint=midpoint,
+        # hoverinfo = "z"
     )
     fig.update_layout(
         margin={"r": 0, "t": 0, "l": 0, "b": 0}, mapbox_accesstoken=mapbox_access_token,
         legend=dict(title=food_options_[candi])
     )
-    fig.update_traces(hoverinfo="z", selector=dict(type='choroplethmapbox'))
+    # fig.update_traces(hovertemplate="%{location}: %{z}", selector=dict(type='choroplethmapbox'))
     return fig
 
 @app.callback(
