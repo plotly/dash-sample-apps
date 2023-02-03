@@ -3,12 +3,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.express as px
-import plotly
-
 import pandas as pd
 import plotly.graph_objs as go
-import numpy as np
-
 import geojson
 import os
 from plotly.subplots import make_subplots
@@ -53,63 +49,129 @@ radio_food_behaviour = dcc.RadioItems(
     value="di_cu_2021",
     labelStyle={"display": "block", "text-align": "justify"},
 )
-
+# tuổi
 ages = pd.read_csv(path + 'age.csv', sep=',')
 age_fig = go.Figure(
-    data=[go.Bar(y=ages["percent"], x=ages['ages'])],
+    data=[go.Bar(y=ages["percent"], x=ages['ages'],hovertemplate = '<extra>%{y}</extra>')],
     layout=go.Layout(
-        title=go.layout.Title(text="1. Tuổi người di cư (năm 2019)"),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        yaxis=dict(title='%')
+        yaxis=dict(title='%'),
+        xaxis=dict(title='Tuổi')
     )
 )
 
-age_fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=1, gridcolor='LightPink', showline=True, linewidth=1,
-                     linecolor='black', mirror=True)
-age_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True, tickangle=-40)
+age_fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=1, gridcolor='LightGrey', showline=True, linewidth=1,
+                     linecolor='black')
+age_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', tickangle=-40)
 
+# trình độ chuyên môn
 training = pd.read_csv(path + 'training.csv', sep=',')
+training['group_v'] = training['group'].map({
+    "no professional knowledge": "Không có chuyên môn",
+    "elementary level": "Sơ cấp",
+    "intermediate level": "Trung cấp",
+    "college degree": "Cao đẳng",
+    "university degree and above": "Đại học và SĐH"
+})
 
 training_fig = go.Figure(
-    data=[go.Bar(x=training["percent"], y=training['group'], orientation='h')],
+    data=[go.Bar(x=training["percent"], y=training['group_v'], orientation='h',hovertemplate = '<extra>%{x}</extra>')],
     layout=go.Layout(
-        title=go.layout.Title(text="2. Trình độ chuyên môn"),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        xaxis=dict(title='%')
+        xaxis=dict(title='%'),
+    )
+)
+training_fig.update_yaxes(tickfont_size=13, showline=True,
+                          linewidth=1, linecolor='black')
+training_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
+
+# hôn nhân
+married = pd.read_csv(path + 'marriage.csv', sep=',')
+married['group_v'] = married['marriage_status'].map({
+    "not married": "Chưa kết hôn",
+    "married": "Đã kết hôn",
+    "widow/widower": "Góa chồng/vợ",
+    "divorce": "Ly dị",
+    "separated": "Ly thân"
+})
+
+married_fig = go.Figure(
+    data=[go.Bar(x=married["percent"], y=married['group_v'], orientation='h',hovertemplate = '<extra>%{x}</extra>')],
+    layout=go.Layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(title='%'),
     )
 )
 
-training_fig.update_yaxes(tickfont_size=10, showgrid=True, gridwidth=1, gridcolor='LightPink', showline=True,
-                          linewidth=1,
-                          linecolor='black', mirror=True)
-training_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True)
+married_fig.update_yaxes(tickfont_size=13, showline=True,
+                         linewidth=1, linecolor='black')
+married_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
+
+# nguyên nhân
+reason = pd.read_csv(path + 'reason.csv', sep=',')
+reason['group_v'] = reason['reason'].map({
+    "new job": "Tìm việc mới",
+    "losse job": "Mất việc",
+    "move new house with family": "Đi cùng gia đình",
+    "marriage": "Kết hôn",
+    "education": "Học tập",
+    "others": "Khác"
+})
+
+reason_fig = go.Figure(
+    data=[go.Bar(x=reason["percent"], y=reason['group_v'], orientation='h',hovertemplate = '<extra>%{x}</extra>')],
+    layout=go.Layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(title='%'),
+    )
+)
+
+reason_fig.update_yaxes(tickfont_size=13, showline=True, linewidth=1,
+                        linecolor='black')
+reason_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
+
+# Giới tính
+gender = pd.read_csv(path + 'gender.csv', sep=',')
+gender['group_v'] = gender['group'].map({
+    "male": "Nam",
+    "female": "Nữ",
+})
+# gender['Nam'] = gender['male']
+# gender['Nữ'] = gender['female']
+
+# gender_fig = px.bar(gender, y=["migrate"], x=["Nam", "Nữ"], labels={'value': "%", 'variable': ""})
+# gender_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+gender_fig = go.Figure(
+    data=[go.Bar(x=gender["group_v"], y=gender['percent'], hovertemplate = '<extra>%{y}</extra>')],
+    layout=go.Layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        yaxis=dict(title='%'),
+    )
+)
+gender_fig.update_xaxes(tickfont_size=13, showline=True, linewidth=1,
+                        linecolor='black')
+gender_fig.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
+
+# Văn hóa
+school = pd.read_csv(path + 'school.csv', sep=',')
+
+school['Đang đi học'] = school['at shool']
+school['Đã thôi học'] = school['stop learning']
+school['Chưa đi học'] = school['never went to school']
+
+school_fig = px.bar(school, x="Ages", y=['Đang đi học', 'Đã thôi học','Chưa đi học'], labels={'Ages': "Tuổi", 'value': "%", 'variable': ""})
+school_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+school_fig.update_xaxes(tickfont_size=13, showline=True, linewidth=1,
+                        linecolor='black')
+school_fig.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
 
 app = dash.Dash(__name__)
 
-
-def get_fig_bar(col):
-    dat = vn_tctk.sort_values(by='di_cu_2021')
-    fig = go.Figure(
-        data=[go.Bar(y=dat["Name"], x=dat[col], orientation='h')],
-        layout=go.Layout(
-            title=go.layout.Title(text=food_options_[col]),
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)'
-        )
-    )
-    fig.update_layout(
-        height=700,
-        # title_text='GDP and Life Expectancy (Americas, 2007)'
-    )
-    fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=1, gridcolor='LightPink', showline=True, linewidth=1,
-                     linecolor='black', mirror=True)
-    fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True)
-    return fig
-
-
-fig_bar = get_fig_bar("di_cu_2021")
 ## FF ##
 
 # Create app layout
@@ -121,17 +183,6 @@ app.layout = html.Div(
         html.Div(
             [
                 html.Div(
-                    [
-                        # html.Img(
-                        #     src=app.get_asset_url("Nova_IMS.png"),
-                        #     id="plotly-image",
-                        #     style={
-                        #         "height": "60px",
-                        #         "width": "auto",
-                        #         "margin-bottom": "25px",
-                        #     },
-                        # )
-                    ],
                     className="one-third column",
                 ),
                 html.Div(
@@ -142,10 +193,6 @@ app.layout = html.Div(
                                     "Hiện trạng di cư giữa các tỉnh thành tại Việt Nam năm 2021",
                                     style={"font-weight": "bold"},
                                 ),
-                                html.H6(
-                                    "Phân tích mối quan hệ giữa di cư và các yếu tố kinh tế - giáo dục",
-                                    style={"margin-top": "0px"},
-                                ),
                             ]
                         )
                     ],
@@ -153,7 +200,6 @@ app.layout = html.Div(
                     id="title",
                 ),
                 html.Div(
-                    # create empty div for align cente
                     className="one-third column",
                 ),
             ],
@@ -220,8 +266,8 @@ app.layout = html.Div(
                                    className="control_label",
                                    style={"text-align": "center", "font-weight": "bold"},
                                    ),
-                            html.Img(
-                                src=app.get_asset_url("age.png"),
+                            html.Div(
+                                [dcc.Graph(figure=age_fig)],
                                 className="bare_container"
                             ),
                         ],
@@ -229,12 +275,12 @@ app.layout = html.Div(
                     ),
                         html.Div(
                             [
-                                html.P("2. Trình độ",
+                                html.P("2. Hôn nhân",
                                        className="control_label",
                                        style={"text-align": "center", "font-weight": "bold"},
                                        ),
-                                html.Img(
-                                    src=app.get_asset_url("trinhdo.png"),
+                                html.Div(
+                                    [dcc.Graph(figure=married_fig)],
                                     className="bare_container"
                                 ),
                             ],
@@ -250,25 +296,38 @@ app.layout = html.Div(
                                    className="control_label",
                                    style={"text-align": "center", "font-weight": "bold"},
                                    ),
-                            html.Img(
-                                src=app.get_asset_url("gender.png"),
+                            html.Div(
+                                [dcc.Graph(figure=gender_fig)],
                                 className="bare_container"
                             ),
                         ],
-                        className="bare_container six columns",
+                        className="bare_container three columns",
                     ),
                         html.Div(
                             [
-                                html.P("4. Hôn nhân",
+                                html.P("4. Trình độ chuyên môn",
                                        className="control_label",
                                        style={"text-align": "center", "font-weight": "bold"},
                                        ),
-                                html.Img(
-                                    src=app.get_asset_url("honnhan.png"),
-                                    className="contain",
+                                html.Div(
+                                    [dcc.Graph(figure=training_fig)],
+                                    className="bare_container"
                                 ),
                             ],
-                            className="bare_container six columns",
+                            className="bare_container five columns",
+                        ),
+                        html.Div(
+                            [
+                                html.P("5. Trình độ văn hóa",
+                                       className="control_label",
+                                       style={"text-align": "center", "font-weight": "bold"},
+                                       ),
+                                html.Div(
+                                    [dcc.Graph(figure=school_fig)],
+                                    className="bare_container"
+                                ),
+                            ],
+                            className="bare_container four columns",
                         ),
                     ],
                     className="row no_border_container",
@@ -324,8 +383,8 @@ app.layout = html.Div(
                                className="control_label",
                                style={"text-align": "center", "font-weight": "bold"},
                                ),
-                        html.Img(
-                            src=app.get_asset_url("reason.png"),
+                        html.Div(
+                            [dcc.Graph(figure=reason_fig)],
                             className="bare_container"
                         ),
                     ],
@@ -368,6 +427,7 @@ app.layout = html.Div(
                     """\
                          1.	Số liệu tổng cục thống kê: https://www.gso.gov.vn/
                          2.	Số liệu tổng điều tra dân số và nhà ở 2019: https://www.gso.gov.vn/tong-dieu-tra-dan-so-va-nha-o/
+                         3. Dữ liệu địa không gian được sưu tầm tại trang web của tổ chức Sáng kiến phát triển mở Việt Nam (Open Development Vietnam – ODV): https://vietnam.opendevelopmentmekong.net/vi/about-us/.
                         """,
                     style={"font-size": "10pt"},
                 ),
@@ -384,11 +444,11 @@ app.layout = html.Div(
 @app.callback(Output("choropleth", "figure"), [Input("nutrition_types", "value")])
 def display_choropleth(candi):
     midpoint = None
-    colors = color_continuous_scale=["blue",'white',"red" ]
+    colors = ["blue", 'white', "red"]
     if candi == 'nhap_cu_2021':
-        colors = color_continuous_scale = ['white',"red"]
+        colors = ['white', "red"]
     if candi == 'xuat_cu_2021':
-        colors = color_continuous_scale = ['white',"blue"]
+        colors = ['white', "blue"]
     if candi == 'di_cu_2021':
         midpoint = 0
     fig = px.choropleth_mapbox(
@@ -403,38 +463,14 @@ def display_choropleth(candi):
         zoom=4.3,
         labels=labels_,
         color_continuous_scale=colors,
-        color_continuous_midpoint  = midpoint
+        color_continuous_midpoint=midpoint
     )
     fig.update_layout(
         margin={"r": 0, "t": 0, "l": 0, "b": 0}, mapbox_accesstoken=mapbox_access_token,
         legend=dict(title=food_options_[candi])
     )
 
-    # fig.update_traces(legendgrouptitle_text=food_options_[candi], selector=dict(type='choreographically'))
-
     return fig
-
-
-# @app.callback(
-#     Output("indicator-graphic2", "figure"),
-#     Output("indicator-graphic3", "figure"),
-#     Input("yaxis-type", "value"),
-# )
-# def update_graph(yaxis_type):
-#
-#     if yaxis_type == "Kinh tế":
-#         col2 = "thu_nhap_2021"
-#         col3 = "von_DTNN_2021"
-#     else:
-#         col2 = "SV_DH_2020"
-#         col3 = "SV_nghe_2020"
-#
-#
-#     fig2 = get_fig_bar(col2)
-#     fig3 = get_fig_bar(col3)
-#     fig2.update_yaxes(showticklabels = False)
-#     fig3.update_yaxes(showticklabels=False)
-#     return fig2, fig3
 
 @app.callback(
     Output("indicator-graphic", "figure"),
@@ -442,29 +478,28 @@ def display_choropleth(candi):
 )
 def update_graph(yaxis_type):
     dat = vn_tctk.sort_values(by='di_cu_2021')
-    cols = plotly.colors.DEFAULT_PLOTLY_COLORS
     if yaxis_type == "Kinh tế":
-        fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần", "Thu nhập", "Vốn ĐTNN"))
+        fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần", "Thu nhập", "Vốn đầu tư nước ngoài"))
         fig.add_trace(
-            go.Bar(y=dat["Name"], x=dat["thu_nhap_2021"] / 1000, orientation='h',marker=dict(color=cols[0])),
+            go.Bar(y=dat["Name"], x=dat["thu_nhap_2021"] / 1000, orientation='h', marker=dict(color='blue')),
             row=1, col=2
         )
         fig.add_trace(
-            go.Bar(y=dat["Name"], x=dat["von_DTNN_2021"] / 1000, orientation='h',marker=dict(color=cols[0])),
+            go.Bar(y=dat["Name"], x=dat["von_DTNN_2021"] / 1000, orientation='h', marker=dict(color='blue')),
             row=1, col=3
         )
         fig.update_layout(xaxis1=dict(title='Tỉ lệ di cư (\u2030)'),
-                          xaxis2=dict(title='Thu nhập bình quân (triệu/tháng)'), xaxis3=dict(title='Vốn ĐTNN (tỉ USD)'))
+                          xaxis2=dict(title='Thu nhập bình quân (triệu/tháng)'), xaxis3=dict(title='Vốn đầu tư nước ngoài (tỉ USD)'))
 
     else:
         fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần", "Sinh viên đại học", "Sinh viên nghề"))
 
         fig.add_trace(
-            go.Bar(y=dat["Name"], x=dat["SV_DH_2020"] / 1000, orientation='h', marker=dict(color=cols[0])),
+            go.Bar(y=dat["Name"], x=dat["SV_DH_2020"] / 1000, orientation='h', marker=dict(color='blue')),
             row=1, col=2
         )
         fig.add_trace(
-            go.Bar(y=dat["Name"], x=dat["SV_nghe_2020"] / 1000, orientation='h',marker=dict(color=cols[0])),
+            go.Bar(y=dat["Name"], x=dat["SV_nghe_2020"] / 1000, orientation='h', marker=dict(color='blue')),
             row=1, col=3
         )
         fig.update_layout(xaxis1=dict(title='Tỉ lệ di cư (\u2030)'), xaxis2=dict(title='Sinh viên đại học (nghìn)'),
@@ -473,7 +508,7 @@ def update_graph(yaxis_type):
 
     for i in range(63):
         if dat.iloc[i, 3] < 0:
-            colors.append(cols[0])
+            colors.append('blue')
         else:
             colors.append('red')
     fig.add_trace(
@@ -482,8 +517,8 @@ def update_graph(yaxis_type):
     )
     fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=0.5, gridcolor='LightGrey', showline=True, linewidth=1,
                      linecolor='black', mirror=True)
-    fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True)
-    fig.update_layout(height=750, yaxis2=dict(showticklabels=False), yaxis3=dict(showticklabels=False),
+    fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True, showgrid=True, gridwidth=1, gridcolor='LightGrey')
+    fig.update_layout(height=750, yaxis2=dict(showticklabels=True), yaxis3=dict(showticklabels=True),
                       showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
     return fig
 
