@@ -8,6 +8,7 @@ import plotly.graph_objs as go
 import geojson
 import os
 from plotly.subplots import make_subplots
+import dash_bootstrap_components as dbc
 
 mapbox_access_token = "pk.eyJ1Ijoic3RlZmZlbmhpbGwiLCJhIjoiY2ttc3p6ODlrMG1ybzJwcG10d3hoaDZndCJ9.YE2gGNJiw6deBuFgHRHPjg"
 
@@ -251,6 +252,7 @@ app.layout = html.Div(
                 html.Div(
                     className="one-third column",
                 ),
+                dbc.Row([dbc.Col()]),
                 html.Div(
                     [
                         html.Div(
@@ -547,7 +549,7 @@ def display_choropleth(candi):
 def update_graph(yaxis_type):
     dat = vn_tctk.sort_values(by='di_cu_2021')
     if yaxis_type == "Kinh tế":
-        fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần", "Thu nhập", "Vốn đầu tư nước ngoài"))
+        fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần (2021)", "Thu nhập (2021)", "Vốn đầu tư nước ngoài (2021)"))
         fig.add_trace(
             go.Bar(y=dat["Name_v"], x=dat["thu_nhap_2021"] / 1000, orientation='h', marker=dict(color='blue')),
             row=1, col=2
@@ -586,9 +588,9 @@ def update_graph(yaxis_type):
     fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=0.5, gridcolor='LightGrey', showline=True, linewidth=1,
                      linecolor='black', mirror=True)
     fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True, showgrid=True, gridwidth=1, gridcolor='LightGrey')
-    fig.update_layout(height=750, yaxis2=dict(showticklabels=True), yaxis3=dict(showticklabels=True),
+    fig.update_layout(height=750, yaxis2=dict(color='white'), yaxis3=dict(color='white'),
                       showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-    fig.update_traces(hovertemplate='<extra>(%{y},%{x})</extra>')
+    fig.update_traces(hovertemplate='<extra>(%{y}, %{x})</extra>')
     return fig
 
 
