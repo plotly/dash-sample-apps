@@ -5,9 +5,9 @@
 This is a demo of Dash interactive Python framework developed by [Plotly](https//plot.ly/).
 
 ## Screenshots
-![initial](img/screencapture2.png)
+![initial](assets/github/screencapture2.png)
 
-![initial](img/screencapture1.png)
+![initial](assets/github/screencapture1.png)
 
 
 ## Built With
@@ -66,3 +66,5 @@ Operators may stop measurement by clicking `Stop` button, and edit specification
 * [Shewhart statistical process control](https://en.wikipedia.org/wiki/Shewhart_individuals_control_chart)
 * [Dash User Guide](https://dash.plot.ly/)
 
+## App worked on by
+* **Daniel Anton S** - *2022 complete refactor* - [@danton267](https://github.com/danton267)
