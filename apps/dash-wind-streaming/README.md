@@ -37,7 +37,7 @@ Open a browser at http://127.0.0.1:8050
 
 ## Screenshots
 
-![demo.gif](demo.gif)
+![demo.gif](assets/github/demo.gif)
 
 ## Resources
 
