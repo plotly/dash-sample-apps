@@ -3,13 +3,13 @@ This application is a portfolio project built using Plotly's Dash, faculty.ai's 
 Using historical MLB (Major League Baseball) data, this application provides visualizations for team and player
 statistics dating from 1903 to 2020. Selecting from a dropdown menu, the era will update the list of available
 teams and players in the range set on the years slider. The slider allows the user to adjust the range of years
-with wich the data is presented.
+with which the data is presented.
 
 ## The Analysis
-The applicaiton breaks down each baseball teams win/loss performance within a range of the teams history.
+The application breaks down each baseball teams win/loss performance within a range of the teams history.
 Additionally, the application will break down the batting performance with the team batting average, BABIP, and strikeout
-rate. The application also brakes down the piching perfomance using the teams ERA and strikeout to walk ratio. Finally the feilding
-performance of each team is illustrated with total errors and double plays. The applicaiton will similarly breakdown
+rate. The application also breaks down the pitching perfomance using the teams ERA and strikeout to walk ratio. Finally the fielding
+performance of each team is illustrated with total errors and double plays. The application will similarly breakdown
 each teams players statistics within the given era.
 
 ## Dependencies
