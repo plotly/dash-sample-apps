@@ -71,5 +71,5 @@ traitlets==4.3.3
 typed-ast==1.4.1
 wcwidth==0.2.4
 webencodings==0.5.1
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 zipp==3.1.0
