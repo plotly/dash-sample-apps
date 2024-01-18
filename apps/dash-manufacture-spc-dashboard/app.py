@@ -1,14 +1,13 @@
 import os
 import pathlib
-
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output, State
-import dash_table
+# import dash_core_components as dcc
+# import dash_html_components as html
+# from dash.dependencies import Input, Output, State
+from dash import dash_table, Input, Output, State, html, dcc, callback
 import plotly.graph_objs as go
 import dash_daq as daq
-
+import dash_mantine_components as dmc
 import pandas as pd
 
 app = dash.Dash(
@@ -185,38 +184,60 @@ def build_tab_1():
                         html.Div(id="value-setter-panel"),
                         html.Br(),
                         html.Div(
-                            id="button-div",
                             children=[
-                                html.Button("Update", id="value-setter-set-btn"),
-                                html.Button(
-                                    "View current setup",
-                                    id="value-setter-view-btn",
-                                    n_clicks=0,
+                                html.Div(
+                                    id="button-div",
+                                    children=[
+                                        html.Div(
+                                            children=[
+                                                dmc.HoverCard(
+                                                    withArrow=True,
+                                                    width=200,
+                                                    style={"width": "100%"},
+                                                    shadow="md",
+                                                    children=[
+                                                        dmc.HoverCardTarget(
+                                                            html.Button("Update", id="value-setter-set-btn", disabled=True),
+                                                        ),
+                                                        dmc.HoverCardDropdown(
+                                                            dmc.Text(
+                                                                "DISABLED: Change control limits in dashboard", size="sm", color='black'
+                                                            )
+                                                        ),
+                                                    ]
+                                                )
+                                            ],
+                                        ),
+                                        html.Button(
+                                            "View current setup",
+                                            id="value-setter-view-btn",
+                                            n_clicks=0,
+                                        ),
+                                    ]
                                 ),
                             ],
-                        ),
-                        html.Div(
-                            id="value-setter-view-output", className="output-datatable"
-                        ),
-                    ],
                 ),
+                html.Div(
+                    id="value-setter-view-output", className="output-datatable"
+                ),
+            ]),
             ],
         ),
     ]
 
 
-ud_usl_input = daq.NumericInput(
-    id="ud_usl_input", className="setting-input", size=200, max=9999999
-)
-ud_lsl_input = daq.NumericInput(
-    id="ud_lsl_input", className="setting-input", size=200, max=9999999
-)
-ud_ucl_input = daq.NumericInput(
-    id="ud_ucl_input", className="setting-input", size=200, max=9999999
-)
-ud_lcl_input = daq.NumericInput(
-    id="ud_lcl_input", className="setting-input", size=200, max=9999999
-)
+# ud_usl_input = daq.NumericInput(
+#     id="ud_usl_input", className="setting-input", size=200, max=9999999
+# )
+# ud_lsl_input = daq.NumericInput(
+#     id="ud_lsl_input", className="setting-input", size=200, max=9999999
+# )
+# ud_ucl_input = daq.NumericInput(
+#     id="ud_ucl_input", className="setting-input", size=200, max=9999999
+# )
+# ud_lcl_input = daq.NumericInput(
+#     id="ud_lcl_input", className="setting-input", size=200, max=9999999
+# )
 
 
 def build_value_setter_line(line_num, label, value, col3):
@@ -953,20 +974,21 @@ def update_gauge(interval):
 
 
 # ===== Callbacks to update values based on store data and dropdown selection =====
-@app.callback(
-    output=[
+@callback(
+# @app.callback(
+#     output=[
         Output("value-setter-panel", "children"),
-        Output("ud_usl_input", "value"),
-        Output("ud_lsl_input", "value"),
-        Output("ud_ucl_input", "value"),
-        Output("ud_lcl_input", "value"),
-    ],
+        # Output("ud_usl_input", "value"),
+        # Output("ud_lsl_input", "value"),
+        # Output("ud_ucl_input", "value"),
+        # Output("ud_lcl_input", "value"),
+    # ],
     inputs=[Input("metric-select-dropdown", "value")],
     state=[State("value-setter-store", "data")],
 )
 def build_value_setter_panel(dd_select, state_value):
     return (
-        [
+        # [
             build_value_setter_line(
                 "value-setter-panel-header",
                 "Specs",
@@ -977,31 +999,31 @@ def build_value_setter_panel(dd_select, state_value):
                 "value-setter-panel-usl",
                 "Upper Specification limit",
                 state_dict[dd_select]["usl"],
-                ud_usl_input,
+                daq.NumericInput(id="ud_usl_input", className="setting-input", size=200, max=9999999)
             ),
             build_value_setter_line(
                 "value-setter-panel-lsl",
                 "Lower Specification limit",
                 state_dict[dd_select]["lsl"],
-                ud_lsl_input,
+                daq.NumericInput(id="ud_lsl_input", className="setting-input", size=200, max=9999999)
             ),
             build_value_setter_line(
                 "value-setter-panel-ucl",
                 "Upper Control limit",
                 state_dict[dd_select]["ucl"],
-                ud_ucl_input,
+                daq.NumericInput(id="ud_ucl_input", className="setting-input", size=200, max=9999999)
             ),
             build_value_setter_line(
                 "value-setter-panel-lcl",
                 "Lower Control limit",
                 state_dict[dd_select]["lcl"],
-                ud_lcl_input,
+                daq.NumericInput(id="ud_lcl_input", className="setting-input", size=200, max=9999999),
             ),
-        ],
-        state_value[dd_select]["usl"],
-        state_value[dd_select]["lsl"],
-        state_value[dd_select]["ucl"],
-        state_value[dd_select]["lcl"],
+        # ],
+        # state_value[dd_select]["usl"],
+        # state_value[dd_select]["lsl"],
+        # state_value[dd_select]["ucl"],
+        # state_value[dd_select]["lcl"],
     )
 
 
@@ -1012,13 +1034,25 @@ def build_value_setter_panel(dd_select, state_value):
     state=[
         State("metric-select-dropdown", "value"),
         State("value-setter-store", "data"),
-        State("ud_usl_input", "value"),
-        State("ud_lsl_input", "value"),
-        State("ud_ucl_input", "value"),
-        State("ud_lcl_input", "value"),
+        # State("ud_usl_input", "value"),
+        # State("ud_lsl_input", "value"),
+        # State("ud_ucl_input", "value"),
+        # State("ud_lcl_input", "value"),
     ],
 )
-def set_value_setter_store(set_btn, param, data, usl, lsl, ucl, lcl):
+def set_value_setter_store(set_btn, param, data):
+    usl = daq.NumericInput(
+        id="ud_usl_input", className="setting-input", size=200, max=9999999
+    )
+    lsl = daq.NumericInput(
+        id="ud_lsl_input", className="setting-input", size=200, max=9999999
+    )
+    ucl = daq.NumericInput(
+        id="ud_ucl_input", className="setting-input", size=200, max=9999999
+    )
+    lcl = daq.NumericInput(
+        id="ud_lcl_input", className="setting-input", size=200, max=9999999
+    )
     if set_btn is None:
         return data
     else:
@@ -1082,7 +1116,7 @@ def show_current_specs(n_clicks, dd_select, store_data):
                 {"selector": "table", "rule": "--accent: #1e2130;"},
                 {"selector": "tr", "rule": "background-color: transparent"},
             ],
-            data=new_df.to_dict("rows"),
+            data=new_df.to_dict(orient="records"),
             columns=[{"id": c, "name": c} for c in ["Specs", "Current Setup"]],
         )
 
