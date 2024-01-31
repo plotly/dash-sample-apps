@@ -114,6 +114,10 @@ def generate_control_card():
                 multi=True,
             ),
             html.Br(),
+            # html.Div(
+            #     id="reset-btn-outer",
+            #     children=html.Button(id="reset-btn", children="Reset", n_clicks=0),
+            # ),
         ],
     )
 
@@ -392,6 +396,8 @@ def generate_patient_table(figure_list, departments, wait_time_xrange, score_xra
     ]
 
     # department_row
+    # print(type(departments))
+    # print(departments)
     rows = [generate_table_row_helper(department) for department in departments]
     # empty_row
     empty_departments = [item for item in all_departments if item not in departments]

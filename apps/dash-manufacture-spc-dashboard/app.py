@@ -1,9 +1,6 @@
 import os
 import pathlib
 import dash
-# import dash_core_components as dcc
-# import dash_html_components as html
-# from dash.dependencies import Input, Output, State
 from dash import dash_table, Input, Output, State, html, dcc, callback
 import plotly.graph_objs as go
 import dash_daq as daq
@@ -154,7 +151,6 @@ def build_tab_1():
         # Manually select metrics
         html.Div(
             id="set-specs-intro-container",
-            # className='twelve columns',
             children=html.P(
                 "Use historical control limits to establish a benchmark, or set new values."
             ),
@@ -164,7 +160,6 @@ def build_tab_1():
             children=[
                 html.Div(
                     id="metric-select-menu",
-                    # className='five columns',
                     children=[
                         html.Label(id="metric-select-title", children="Select Metrics"),
                         html.Br(),
@@ -179,7 +174,6 @@ def build_tab_1():
                 ),
                 html.Div(
                     id="value-setter-menu",
-                    # className='six columns',
                     children=[
                         html.Div(id="value-setter-panel"),
                         html.Br(),
