@@ -1,6 +1,6 @@
-dash>=1.0.0
-gunicorn>=19.9.0
+dash==2.12.1
+gunicorn==20.0.4
 numpy>=1.16.2
-pandas>=0.24.2
+pandas==1.5.1
 datetime>=4.3
 pathlib>=1.0.1
