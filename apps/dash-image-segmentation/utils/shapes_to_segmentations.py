@@ -4,8 +4,8 @@ import skimage
 import skimage.util
 import skimage.io
 import skimage.color
-import shape_utils
-from trainable_segmentation import fit_segmenter
+import utils.shape_utils as shape_utils
+from utils.trainable_segmentation import fit_segmenter
 import plotly.express as px
 from sklearn.ensemble import RandomForestClassifier
 from time import time
