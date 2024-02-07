@@ -1,0 +1,27 @@
+.Select-control {
+    border: none !important;
+    box-shadow: inset 1px 1px rgb(255 255 255 / 20%), inset -1px -1px rgb(255 255 255 / 10%), 1px 3px 24px -1px rgb(0 0 0 / 15%) !important;
+    background-color: transparent !important;
+    background-image: linear-gradient(125deg,rgba(255,255,255,.3),rgba(255,255,255,.2) 70%) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    backdrop-filter: blur(5px) !important;
+    --bs-secondary-rgb: transparent !important;
+}
+.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label { color: #FFFF !important; }
+
+.Select-menu-outer {
+    border: none !important;
+    box-shadow: inset 1px 1px rgb(255 255 255 / 20%), inset -1px -1px rgb(255 255 255 / 10%), 1px 3px 24px -1px rgb(0 0 0 / 15%) !important;
+    background-color: transparent !important;
+    background-image: linear-gradient(125deg,rgba(255,255,255,.5),rgba(255,255,255,.5) 70%) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    backdrop-filter: blur(5px) !important;
+    --bs-secondary-rgb: transparent !important;
+}
+.Select-control .Select-input:focus {
+    background: transparent !important;
+}
+.modal-body .Select-menu-outer {
+    background-color: #CA417B !important;
+}
+.CalendarDay__selected, .CalendarDay__default:hover  { color:#CA417B !important; }

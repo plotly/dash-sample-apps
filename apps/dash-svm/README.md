@@ -64,6 +64,7 @@ An SVM is a popular Machine Learning model used in many different fields. You ca
 * **Matthew Chan** - *Code Review* - [@matthewchan15](https://github.com/matthewchan15)
 * **Yunke Xiao** - *Redesign* - [@YunkeXiao](https://github.com/YunkeXiao)
 * **celinehuang** - *Code Review* - [@celinehuang](https://github.com/celinehuang)
+* **Daniel Anton S** - *2022 complete refactor* - [@danton267](https://github.com/danton267)
 
 
 ## Acknowledgments
