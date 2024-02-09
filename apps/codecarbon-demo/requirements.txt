@@ -31,4 +31,4 @@ tenacity==8.0.1
 termcolor==1.1.0
 tzlocal==2.1
 urllib3==1.26.6
-Werkzeug==2.0.1
+Werkzeug==2.2.3
