@@ -6,8 +6,6 @@
 body {
   background-color: #1E1E1E;
   color: #d8d8d8;
-  margin: 0;
-  padding: 0;
 }
 h1, h2, h3, h4, h5 {
   font-family: "Open Sans";
@@ -22,9 +20,6 @@ p {
   font-size: 14px;
   padding-left: 12px;
 }
-a {
-  text-decoration: none;
-}
 .bg-grey{
   background-color: #31302F;
 }
@@ -36,7 +31,7 @@ a {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 100%;
+  /* width: 100%; */
 }
 #histogram {
   flex-grow: 1 
@@ -60,11 +55,17 @@ a {
   width: 97%;
   text-align: center;
 }
-.logo {
+
+.logos {
+  display: flex;
+  justify-content: space-between;
+}
+.logos img {
   height: 35px;
   padding-bottom: 12px;
   margin-left: 8px;
 }
+
 .Select-control, .Select-menu-outer, .Select-multi-value-wrapper, .select-up, .is-open .Select-control {
   background-color: #1E1E1E;
   color: white;
@@ -157,7 +158,6 @@ a {
   }
   .div-for-charts {
       padding: 0px;
-      width: 100%;
       text-align: center;
  }
 
@@ -207,3 +207,41 @@ a {
 .CalendarMonth_table td {
   padding: unset;  
 }
+
+
+
+/* Demo button css */
+.demo-button {
+  font-size: 1.5vh;
+  font-family: Open Sans, sans-serif;
+  text-decoration: none;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 8px;
+  font-weight: 700;
+  -webkit-padding-start: 1rem;
+  padding-inline-start: 1rem;
+  -webkit-padding-end: 1rem;
+  padding-inline-end: 1rem;
+  color: #ffffff;
+  letter-spacing: 1.5px;
+  border: solid 1.5px transparent;
+  box-shadow: 2px 1000px 1px #0c0c0c inset;
+  background-image: linear-gradient(135deg, #7A76FF, #7A76FF, #7FE4FF);
+  -webkit-background-size: 200% 100%;
+  background-size: 200% 100%;
+  -webkit-background-position: 99%;
+  background-position: 99%;
+  background-origin: border-box;
+  transition: all .4s ease-in-out;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  vertical-align: super;
+}
+
+.demo-button:hover {
+  color: #7A76FF;
+  background-position: 0%;
+} 
