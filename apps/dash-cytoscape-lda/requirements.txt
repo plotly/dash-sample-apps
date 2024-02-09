@@ -83,5 +83,5 @@ umap-learn==0.4.0
 urllib3==1.26.5
 wasabi==0.6.0
 wcwidth==0.1.9
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 zipp==3.1.0
