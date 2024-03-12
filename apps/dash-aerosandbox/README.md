@@ -9,4 +9,4 @@ An interactive demo of AeroSandbox, powered by Dash! Work in progress.
 2. Run `app.py` to launch a local Dash server to host the Dash app. A link will appear in your console; click this to use the Dash app.
 
 ## Illustration
-![Screenshot of Demo](assets/screenshot.png)
+![Screenshot of Demo](assets/github/screenshot.png)
