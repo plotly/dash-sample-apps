@@ -46,7 +46,7 @@ Select state, cost metric and region to visualize average charges or payments(fo
 
 ## Screenshot
 
-![Screencast](screenshot.png)
+![Screencast](assets/github/screenshot.png)
 
 ## Resources
 * [Dash](https://dash.plot.ly/)
