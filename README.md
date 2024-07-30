@@ -2,6 +2,13 @@
 
 [![CircleCI](https://circleci.com/gh/plotly/dash-sample-apps.svg?style=svg)](https://circleci.com/gh/plotly/dash-sample-apps)
 
+<div align="center">
+  <a href="https://dash.plotly.com/project-maintenance">
+    <img src="https://dash.plotly.com/assets/images/maintained-by-plotly.png" width="400px" alt="Maintained by Plotly">
+  </a>
+</div>
+
+
 This repository hosts the code for over 100 open-source Dash apps written in Python or R. They can serve as a starting point for your own Dash app, as a learning tool to better understand how Dash works, as a reusable templates, and much more.
 
 Most apps in this repository are hosted on [Dash Gallery](https://dash-gallery.plotly.host/), which is our internal server running on [Dash Enterprise Kubernetes](https://plotly.com/dash/kubernetes/). Note that you can find both open-sourced apps and demos for our [licensed products](https://plotly.com/dash/), including [Design Kit](https://plotly.com/dash/design-kit/) and [Snapshot Engine](https://plotly.com/dash/snapshot-engine/). If you are interested in learning more, don't hesitate to reach out to [get a demo](https://plotly.com/get-demo/). If you want to only see the open-sourced apps, select the ["Open Source" tag](https://dash-gallery.plotly.host/Portal/?search=[Open%20Source]).
