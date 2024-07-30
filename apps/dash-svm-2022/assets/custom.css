@@ -1,0 +1,55 @@
+[class^="daq-slider"] {
+    margin-top: 25px;
+    margin-bottom: 12px;
+}
+
+[class^="daq-knob"] {
+    margin-top: 15px;
+}
+
+._dash-loading {
+    margin: auto;
+    color: transparent;
+    width: 0;
+    height: 0;
+    text-align: center;
+}
+
+._dash-loading::after {
+    content: '';
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    color: black;
+    vertical-align: text-bottom;
+    border: 0.25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spinner-border 0.75s linear infinite;
+    animation: spinner-border 0.75s linear infinite;
+    margin-top: 10rem;
+}
+
+.canvas_container button:hover {
+    color: #fff;
+    background-color: #253544;
+    border-color: #233240;
+}
+
+.canvas_container button {
+    color: #fff !important;
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
