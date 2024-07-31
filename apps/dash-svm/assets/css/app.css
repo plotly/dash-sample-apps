@@ -1,0 +1,150 @@
+/* App style */
+body {
+    font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #a5b1cd;
+    background-color: #282b38;
+}
+
+.container-fluid {
+    padding-top: 1vh;
+}
+
+.control-pannel {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 80vh;
+    position: relative;
+}
+
+.card {
+    background-color: #292B37;
+    width: auto;
+    padding: 20px 30px;
+    border: none;
+    border-bottom: 1px solid #3A3D4A;
+}
+
+.app-body {
+    padding: 20px 10px 10px 10px;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2f3445; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2f3445; 
+}
+
+/* Header */
+.header {
+    height: 10vh;
+    display: flex;
+    background-color: #2f3445;
+    padding-left: 2%;
+    padding-right: 2%;
+    font-family: playfair display,sans-serif;
+}
+.header .header-title {
+    color: #9EA7C0 !important;
+    font-size: 5vh;
+}
+.header-logos {
+    margin-left: auto;
+    align-self: center;
+}
+.header-logos img {
+    margin-left: 3vh !important;
+    max-height: 5vh;
+}
+.subheader-title {
+    font-size: 1.5vh;
+}
+
+
+/* buttons and dropdowns */
+#button-zero-threshold {
+    background-color: #2f3445;
+    color: #a5b1cd;
+    border-color: gray;
+    border: 1px solid #bbb;
+    padding: 0 30px;
+    line-height: 38px;
+    border-radius: 4px;
+}
+.Select-control {
+    color: #a5b1cd;
+}
+
+.Select {
+    color: #a5b1cd;
+}
+
+.Select-menu-outer {
+    background-color: #2f3445;
+    border: 1px solid gray;
+}
+
+.Select div {
+    background-color: #2f3445;
+}
+
+.Select-menu-outer div:hover {
+    background-color: rgba(255, 255, 255, 0.01);
+}
+
+.Select-value-label {
+    color: #a5b1cd !important;
+}
+
+.Select--single > .Select-control .Select-value, .Select-placeholder {
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+
+/* Demo button css */
+.demo-button {
+    font-size: 1.5vh;
+    font-family: Open Sans,sans-serif;
+    text-decoration: none;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-radius: 8px;
+    font-weight: 700;
+    -webkit-padding-start: 1rem;
+    padding-inline-start: 1rem;
+    -webkit-padding-end: 1rem;
+    padding-inline-end: 1rem;
+    color: #ffffff;
+    letter-spacing: 1.5px;
+    border: solid 1.5px transparent;
+    box-shadow: 2px 1000px 1px #0c0c0c inset;
+    background-image: linear-gradient(135deg, #7A76FF, #7A76FF, #7FE4FF);
+    -webkit-background-size: 200% 100%;
+    background-size: 200% 100%;
+    -webkit-background-position: 99%;
+    background-position: 99%;
+    background-origin: border-box;
+    transition: all .4s ease-in-out;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+.demo-button:hover {
+    color: #7A76FF;
+    background-position: 0%;
+} 
