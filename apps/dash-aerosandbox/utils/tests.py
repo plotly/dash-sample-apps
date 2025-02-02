@@ -1,13 +1,20 @@
 import aerosandbox as asb
 import casadi as cas
-from airplane import make_airplane
+from utils.helper_functions import make_airplane
 
 n_booms = 1
 wing_span = 40
 alpha = 5
 
-airplane = make_airplane(n_booms=n_booms, wing_span=wing_span,)
-op_point = asb.OperatingPoint(density=0.10, velocity=20, alpha=alpha,)
+airplane = make_airplane(
+    n_booms=n_booms,
+    wing_span=wing_span,
+)
+op_point = asb.OperatingPoint(
+    density=0.10,
+    velocity=20,
+    alpha=alpha,
+)
 
 ### LL
 # Run an analysis
