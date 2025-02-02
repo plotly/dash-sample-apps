@@ -1,46 +1,16 @@
-import dash
-from dash.dependencies import Input, Output
-import dash_html_components as html
+from dash import Dash, html, Input, Output
 import dash_pivottable
 
-from data import data
+from data.data import data
+from utils.components import header
 
-
-def Header(name, app):
-    img_style = {"float": "right", "height": 40, "margin-right": 10}
-    dash_logo = html.Img(src=app.get_asset_url("dash.png"), style=img_style)
-    ghub_logo = html.Img(src=app.get_asset_url("github.png"), style=img_style)
-
-    return html.Div(
-        [
-            html.H1(name, style={"margin": 10, "display": "inline"}),
-            html.A(dash_logo, href="https://plotly.com/dash/"),
-            html.A(ghub_logo, href="https://github.com/plotly/dash-pivottable"),
-            html.A(
-                html.Button(
-                    "Enterprise Demo",
-                    style={
-                        "float": "right",
-                        "margin-right": "10px",
-                        "margin-top": "5px",
-                        "padding": "5px 10px",
-                        "font-size": "15px",
-                    },
-                ),
-                href="https://plotly.com/get-demo/",
-            ),
-            html.Hr(),
-        ]
-    )
-
-
-app = dash.Dash(__name__)
-app.title = "Dash Pivottable"
+app = Dash(__name__, title="Dash Pivottable")
 server = app.server
 
-app.layout = html.Div(
-    [
-        Header("Dash Pivottable", app),
+app.layout = html.Div([
+    header(app, "black", "Dash PivotTable"),
+
+    html.Div([
         dash_pivottable.PivotTable(
             id="table",
             data=data,
@@ -54,29 +24,32 @@ app.layout = html.Div(
             valueFilter={"Day of Week": {"Thursday": False}},
         ),
         html.Div(id="output"),
-    ]
-)
+    ],
+    className="app-body")
+])
 
 
 @app.callback(
     Output("output", "children"),
-    [
-        Input("table", "cols"),
-        Input("table", "rows"),
-        Input("table", "rowOrder"),
-        Input("table", "colOrder"),
-        Input("table", "aggregatorName"),
-        Input("table", "rendererName"),
-    ],
+    Input("table", "cols"),
+    Input("table", "rows"),
+    Input("table", "rowOrder"),
+    Input("table", "colOrder"),
+    Input("table", "aggregatorName"),
+    Input("table", "rendererName"),
 )
 def display_props(cols, rows, row_order, col_order, aggregator, renderer):
+    """
+        This callback demonstrates how to access the properties of the PivotTable, which can then be used as needed.
+    """
     return [
-        html.P(str(cols), id="columns"),
-        html.P(str(rows), id="rows"),
-        html.P(str(row_order), id="row_order"),
-        html.P(str(col_order), id="col_order"),
-        html.P(str(aggregator), id="aggregator"),
-        html.P(str(renderer), id="renderer"),
+        html.H3("PivotTable parameters:"),
+        html.P("cols: " + str(cols)),
+        html.P("rows: " + str(rows)),
+        html.P("row_order: " + str(row_order)),
+        html.P("col_order: " + str(col_order)),
+        html.P("aggregator: " + str(aggregator)),
+        html.P("renderer: " + str(renderer)),
     ]
 
 
