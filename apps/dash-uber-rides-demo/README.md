@@ -47,7 +47,7 @@ You can run the app on your browser at http://127.0.0.1:8050
 
 ## Screenshots
 
-![demo.png](demo.png)
+![demo.png](assets/github/demo.png)
 
 ## Resources
 
