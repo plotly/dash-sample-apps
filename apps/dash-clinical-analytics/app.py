@@ -1,7 +1,4 @@
 import dash
-# import dash_core_components as dcc
-# import dash_html_components as html
-# from dash.dependencies import Input, Output, ClientsideFunction
 from dash import dcc, html, Input, Output, ClientsideFunction
 import numpy as np
 import pandas as pd
@@ -734,11 +731,6 @@ def update_table(start, end, clinic, admit_type, heatmap_click, reset_click, *ar
                 score_selected_index,
             )
             figure_list.append(department_score_figure)
-    # print('BREAKBREAKBREAKBREAK')
-    # departments = np.insert(departments, 0, None)
-    # figure_list[0]['layout']['margin']['b'] = 1
-    # print(figure_list[0]['data'][0])
-    # print(figure_list[0]['layout']['margin']['t'])
     # Put figures in table
     table = generate_patient_table(
         figure_list, departments, wait_time_xrange, score_xrange
