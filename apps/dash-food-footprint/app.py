@@ -1,717 +1,600 @@
-import os
-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State
-import dash_daq as daq
-import dash_bootstrap_components as dbc
-import numpy as np
+from dash.dependencies import Input, Output
+import plotly.express as px
 import pandas as pd
 import plotly.graph_objs as go
-import plotly.express as px
+import geojson
+import os
+from plotly.subplots import make_subplots
+import dash_bootstrap_components as dbc
+
+mapbox_access_token = "pk.eyJ1Ijoic3RlZmZlbmhpbGwiLCJhIjoiY2ttc3p6ODlrMG1ybzJwcG10d3hoaDZndCJ9.YE2gGNJiw6deBuFgHRHPjg"
 
 dirname = os.path.dirname(__file__)
 path = os.path.join(dirname, "data/")
 
-emissions = pd.read_csv(path + "emissions_with_origin.csv")
-productions = pd.read_csv(path + "productions.csv.gz")
-water = pd.read_csv(path + "water_use.csv")
-global_emissions = pd.read_csv(path + "Global_Emissions.csv")
+with open(path + "diaphantinhenglish.geojson") as f:
+    vn_map = geojson.load(f)
+vn_tctk = pd.read_csv(path + 'tctk.csv', sep=',')
+vn_tctk['Name_v'] = vn_tctk["Name"].map({
+"An Giang":"An Giang",
+"Bac Giang":"Bắc Giang",
+"Bac Kan":"Bắc Cạn",
+"Bac Lieu":"Bạc Liêu",
+"Bac Ninh":"Bắc Ninh",
+"Ben Tre":"Bến Tre",
+"Ba Ria - Vung Tau":"Bà Rịa - Vũng Tàu",
+"Binh Dinh":"Bình Định",
+"Binh Duong":"Bình Dương",
+"Binh Phuoc":"Bình Phước",
+"Binh Thuan":"Bình Thuận",
+"Can Tho":"Cần Thơ",
+"Ca Mau":"Cà Mau",
+"Cao Bang":"Cao Bằng",
+"Dak Lak":"Đắc Lắc",
+"Dak Nong":"Đắc Nông",
+"Dong Nai":"Đồng Nai",
+"Dong Thap":"Đồng Tháp",
+"Da Nang":"Đà Nẵng",
+"Dien Bien":"Điện Biên",
+"Gia Lai":"Gia Lai",
+"Hai Duong":"Hải Dương",
+"Hai Phong":"Hải Phòng",
+"Hau Giang":"Hậu Giang",
+"Ha Giang":"Hà Giang",
+"Ha Noi":"Hà Nội",
+"Ha Nam":"Hà Nam",
+"Ha Tinh":"Hà Tĩnh",
+"Hoa Binh":"Hòa Bình",
+"Hung Yen":"Hưng Yên",
+"Khanh Hoa":"Khánh Hòa",
+"Kien Giang":"Kiên Giang",
+"Kon Tum":"Kon Tum",
+"Lang Son":"Lạng Sơn",
+"Lai Chau":"Lai Châu",
+"Lam Dong":"Lâm Đồng",
+"Lao Cai":"Lào Cai",
+"Long An":"Long An",
+"Nam Dinh":"Nam Định",
+"Nghe An":"Nghệ An",
+"Ninh Binh":"Ninh Bình",
+"Ninh Thuan":"Ninh Thuận",
+"Phu Tho":"Phú Thọ",
+"Phu Yen":"Phú Yên",
+"Quang Binh":"Quảng Bình",
+"Quang Nam":"Quảng Nam",
+"Quang Ngai":"Quảng Ngãi",
+"Quang Ninh":"Quảng Ninh",
+"Quang Tri":"Quảng Trị",
+"Soc Trang":"Sóc Trăng",
+"Son La":"Sơn La",
+"Tay Ninh":"Tây Ninh",
+"Thua Thien - Hue":"Thừa Thiên - Huế",
+"Thai Binh":"Thái Bình",
+"Thai Nguyen":"Thái Nguyên",
+"Thanh Hoa":"Thanh Hóa",
+"Tien Giang":"Tiền Giang",
+"TP. Ho Chi Minh":"TP. Hồ Chí Minh",
+"Tra Vinh":"Trà Vinh",
+"Tuyen Quang":"Tuyên Quang",
+"Vinh Long":"Vĩnh Long",
+"Vinh Phuc":"Vĩnh Phúc",
+"Yen Bai":"Yên Bái"
+})
+# vn_tctk['xuat_cu_2021'] = -vn_tctk['xuat_cu_2021']
 
-top10 = emissions.sort_values("Total_emissions")[-10:]
-top10_vegetal = emissions[emissions.Origin == "Vegetal"].sort_values("Total_emissions")[
-    -10:
-]
-top8_animal = emissions[emissions.Origin == "Animal"].sort_values("Total_emissions")
+food_options_ = {
+    "di_cu_2021": "Di cư thuần",
+    "nhap_cu_2021": "Nhập cư",
+    "xuat_cu_2021": "Xuất cư",
 
-
-radio_ani_veg = dbc.RadioItems(
-    id="ani_veg",
-    className="radio",
-    options=[
-        dict(label="Animal", value=0),
-        dict(label="Vegetal", value=1),
-        dict(label="Total", value=2),
-    ],
-    value=2,
-    inline=True,
-)
-
-dict_ = {
-    "Apples": "Apples",
-    "Bananas": "Bananas",
-    "Barley": "Barley",
-    "Beet Sugar": "Sugar beet",
-    "Berries & Grapes": "Berries & Grapes",
-    "Brassicas": "Brassicas",
-    "Cane Sugar": "Sugar cane",
-    "Cassava": "Cassava",
-    "Citrus Fruit": "Citrus",
-    "Coffee": "Coffee beans",
-    "Groundnuts": "Groundnuts",
-    "Maize": "Maize",
-    "Nuts": "Nuts",
-    "Oatmeal": "Oats",
-    "Olive Oil": "Olives",
-    "Onions & Leeks": "Onions & Leeks",
-    "Palm Oil": "Oil palm fruit",
-    "Peas": "Peas",
-    "Potatoes": "Potatoes",
-    "Rapeseed Oil": "Rapeseed",
-    "Rice": "Rice",
-    "Root Vegetables": "Roots and tubers",
-    "Soymilk": "Soybeans",
-    "Sunflower Oil": "Sunflower seed",
-    "Tofu": "Soybeans",
-    "Tomatoes": "Tomatoes",
-    "Wheat & Rye": "Wheat & Rye",
-    "Dark Chocolate": "Cocoa, beans",
-    "Milk": "Milk",
-    "Eggs": "Eggs",
-    "Poultry Meat": "Poultry Meat",
-    "Pig Meat": "Pig Meat",
-    "Seafood (farmed)": "Seafood (farmed)",
-    "Cheese": "Cheese",
-    "Lamb & Mutton": "Lamb & Mutton",
-    "Beef (beef herd)": "Beef (beef herd)",
+    # "thu_nhap_2021": "Thu nhập 2021",
+    # "du_an_DTNN_2021": "DA ĐTNN 2021",
+    # "von_DTNN_2021": "Vốn ĐTNN 2021",
+    # "SV_DH_2020": "SV ĐH 2020",
+    # "SV_nghe_2020": "SV nghề 2020",
 }
+labels_ = {
+    "di_cu_2021": "Di cư thuần (\u2030)",
+    "nhap_cu_2021": "Nhập cư (\u2030)",
+    "xuat_cu_2021": "Xuất cư (\u2030)",
 
-options_veg = [
-    dict(label=key, value=dict_[key])
-    for key in top10_vegetal["Food product"].tolist()[::-1]
-    if key in dict_.keys()
-]
-options_an = [
-    dict(label=val, value=val) for val in top8_animal["Food product"].tolist()[::-1]
-]
-options_total = [
-    dict(label=key, value=dict_[key])
-    for key in top10["Food product"].tolist()[::-1]
-    if key in dict_.keys()
-]
+    # "thu_nhap_2021": "Thu nhập 2021",
+    # "du_an_DTNN_2021": "DA ĐTNN 2021",
+    # "von_DTNN_2021": "Vốn ĐTNN 2021",
+    # "SV_DH_2020": "SV ĐH 2020",
+    # "SV_nghe_2020": "SV nghề 2020",
+}
+food_options = [dict(label=food_options_[country], value=country) for country in food_options_.keys()]
 
-bar_colors = ["#ebb36a", "#6dbf9c"]
-bar_options = [top8_animal, top10_vegetal, top10]
-
-drop_map = dcc.Dropdown(
-    id="drop_map",
-    clearable=False,
-    searchable=False,
-    style={"margin": "4px", "box-shadow": "0px 0px #ebb36a", "border-color": "#ebb36a"},
+radio_food_behaviour = dcc.RadioItems(
+    id="nutrition_types",
+    options=food_options,
+    value="di_cu_2021",
+    labelStyle={"display": "block", "text-align": "justify"},
+)
+# tuổi
+ages = pd.read_csv(path + 'age.csv', sep=',')
+age_fig = go.Figure(
+    data=[go.Bar(y=ages["percent"], x=ages['ages'],hovertemplate = '<extra>%{y}</extra>')],
+    layout=go.Layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        yaxis=dict(title='%'),
+        xaxis=dict(title='Tuổi')
+    )
 )
 
-drop_continent = dcc.Dropdown(
-    id="drop_continent",
-    clearable=False,
-    searchable=False,
-    options=[
-        {"label": "World", "value": "world"},
-        {"label": "Europe", "value": "europe"},
-        {"label": "Asia", "value": "asia"},
-        {"label": "Africa", "value": "africa"},
-        {"label": "North america", "value": "north america"},
-        {"label": "South america", "value": "south america"},
-    ],
-    value="world",
-    style={"margin": "4px", "box-shadow": "0px 0px #ebb36a", "border-color": "#ebb36a"},
+age_fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=1, gridcolor='LightGrey', showline=True, linewidth=1,
+                     linecolor='black')
+age_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', tickangle=-40)
+
+# trình độ chuyên môn
+training = pd.read_csv(path + 'training.csv', sep=',')
+training['group_v'] = training['group'].map({
+    "no professional knowledge": "Không có chuyên môn",
+    "elementary level": "Sơ cấp",
+    "intermediate level": "Trung cấp",
+    "college degree": "Cao đẳng",
+    "university degree and above": "Đại học và SĐH"
+})
+
+training_fig = go.Figure(
+    data=[go.Bar(x=training["percent"], y=training['group_v'], orientation='h',hovertemplate = '<extra>%{x}</extra>')],
+    layout=go.Layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(title='%'),
+    )
+)
+training_fig.update_yaxes(tickfont_size=13, showline=True,
+                          linewidth=1, linecolor='black')
+training_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
+
+# hôn nhân
+married = pd.read_csv(path + 'marriage.csv', sep=',')
+married['group_v'] = married['marriage_status'].map({
+    "not married": "Chưa kết hôn",
+    "married": "Đã kết hôn",
+    "widow/widower": "Góa chồng/vợ",
+    "divorce": "Ly dị",
+    "separated": "Ly thân"
+})
+
+married_fig = go.Figure(
+    data=[go.Bar(x=married["percent"], y=married['group_v'], orientation='h',hovertemplate = '<extra>%{x}</extra>')],
+    layout=go.Layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(title='%'),
+    )
 )
 
-slider_map = daq.Slider(
-    id="slider_map",
-    handleLabel={"showCurrentValue": True, "label": "Year"},
-    marks={str(i): str(i) for i in [1990, 1995, 2000, 2005, 2010, 2015]},
-    min=1990,
-    size=450,
-    color="#4B9072",
+married_fig.update_yaxes(tickfont_size=13, showline=True,
+                         linewidth=1, linecolor='black')
+married_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
+
+# nguyên nhân
+reason = pd.read_csv(path + 'reason.csv', sep=',')
+reason['group_v'] = reason['reason'].map({
+    "new job": "Tìm việc mới",
+    "losse job": "Mất việc",
+    "move new house with family": "Đi cùng gia đình",
+    "marriage": "Kết hôn",
+    "education": "Học tập",
+    "others": "Khác"
+})
+
+reason_fig = go.Figure(
+    data=[go.Bar(x=reason["percent"], y=reason['group_v'], orientation='h',hovertemplate = '<extra>%{x}</extra>')],
+    layout=go.Layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(title='%'),
+    )
 )
 
-fig_water = px.sunburst(
-    water,
-    path=["Origin", "Category", "Product"],
-    values="Water Used",
-    color="Category",
-    color_discrete_sequence=px.colors.sequential.haline_r,
-).update_traces(hovertemplate="%{label}<br>" + "Water Used: %{value} L")
+reason_fig.update_yaxes(tickfont_size=13, showline=True, linewidth=1,
+                        linecolor='black')
+reason_fig.update_xaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
 
-fig_water = fig_water.update_layout(
-    {
-        "margin": dict(t=0, l=0, r=0, b=10),
-        "paper_bgcolor": "#F9F9F8",
-        "font_color": "#363535",
-    }
+# Giới tính
+gender = pd.read_csv(path + 'gender.csv', sep=',')
+gender['group_v'] = gender['group'].map({
+    "male": "Nam",
+    "female": "Nữ",
+})
+# gender['Nam'] = gender['male']
+# gender['Nữ'] = gender['female']
+
+# gender_fig = px.bar(gender, y=["migrate"], x=["Nam", "Nữ"], labels={'value': "%", 'variable': ""})
+# gender_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+gender_fig = go.Figure(
+    data=[go.Bar(x=gender["group_v"], y=gender['percent'], hovertemplate = '<extra>%{y}</extra>')],
+    layout=go.Layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        yaxis=dict(title='%'),
+    )
 )
+gender_fig.update_xaxes(tickfont_size=13, showline=True, linewidth=1,
+                        linecolor='black')
+gender_fig.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
 
-fig_gemissions = px.sunburst(
-    global_emissions,
-    path=["Emissions", "Group", "Subgroup"],
-    values="Percentage of food emissions",
-    color="Group",
-    color_discrete_sequence=px.colors.sequential.Peach_r,
-).update_traces(
-    hovertemplate="%{label}<br>" + "Global Emissions: %{value}%",
-    textinfo="label + percent entry",
-)
+# Văn hóa
+school = pd.read_csv(path + 'school.csv', sep=',')
 
-fig_gemissions = fig_gemissions.update_layout(
-    {
-        "margin": dict(t=0, l=0, r=0, b=10),
-        "paper_bgcolor": "#F9F9F8",
-        "font_color": "#363535",
-    }
-)
+school['Đang đi học'] = school['at shool']
+school['Đã thôi học'] = school['stop learning']
+school['Chưa đi học'] = school['never went to school']
 
-
-# ------------------------------------------------------ APP ------------------------------------------------------
+school_fig = px.bar(school, x="Ages", y=['Đang đi học', 'Đã thôi học','Chưa đi học'], labels={'Ages': "Tuổi", 'value': "%", 'variable': ""})
+school_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+school_fig.update_xaxes(tickfont_size=13, showline=True, linewidth=1,
+                        linecolor='black')
+school_fig.update_yaxes(showline=True, linewidth=1, linecolor='black', showgrid=True, gridwidth=1, gridcolor='LightGrey')
+school_fig.update_traces(hovertemplate='<extra>%{y}</extra>')
 
 app = dash.Dash(__name__)
 
-server = app.server
+## FF ##
 
+# Create app layout
 app.layout = html.Div(
     [
+        dcc.Store(id="aggregate_data"),
+        # empty Div to trigger javascript file for graph resizing
+        html.Div(id="output-clientside"),
         html.Div(
             [
-                html.H1(children="FOOD FOOTPRINT"),
-                html.Label(
-                    "We are interested in investigating the food products that have the biggest impact on environment. Here you can understand which are the products whose productions emit more greenhouse gases and associate this with each supply chain step, their worldwide productions, and the water use.",
-                    style={"color": "rgb(33 36 35)"},
+                html.Div(
+                    className="one-third column",
                 ),
-                html.Img(
-                    src=app.get_asset_url("supply_chain.png"),
-                    style={
-                        "position": "relative",
-                        "width": "180%",
-                        "left": "-83px",
-                        "top": "-20px",
-                    },
+                dbc.Row([dbc.Col()]),
+                html.Div(
+                    [
+                        html.Div(
+                            [
+                                html.H5(
+                                    "Hiện trạng di cư giữa các tỉnh thành tại Việt Nam năm 2021",
+                                    style={"font-weight": "bold"},
+                                ),
+                            ]
+                        )
+                    ],
+                    className="three column",
+                    id="title",
+                ),
+                html.Div(
+                    className="one-third column",
                 ),
             ],
-            className="side_bar",
+            id="header",
+            className="row flex-display",
+            style={"margin-bottom": "25px"},
         ),
         html.Div(
             [
                 html.Div(
                     [
-                        html.Div(
-                            [
-                                html.Label("Choose the Product's Origin:"),
-                                html.Br(),
-                                html.Br(),
-                                radio_ani_veg,
-                            ],
-                            className="box",
+                        html.H6(
+                            "Hiện trạng di cư",
                             style={
-                                "margin": "10px",
-                                "padding-top": "15px",
-                                "padding-bottom": "15px",
+                                "margin-top": "0",
+                                "font-weight": "bold",
+                                "text-align": "center",
                             },
                         ),
-                        html.Div(
-                            [
-                                html.Div(
-                                    [
-                                        html.Div(
-                                            [
-                                                html.Label(id="title_bar"),
-                                                dcc.Graph(id="bar_fig"),
-                                                html.Div(
-                                                    [html.P(id="comment")],
-                                                    className="box_comment",
-                                                ),
-                                            ],
-                                            className="box",
-                                            style={"padding-bottom": "15px"},
-                                        ),
-                                        html.Div(
-                                            [
-                                                html.Img(
-                                                    src=app.get_asset_url("Food.png"),
-                                                    style={
-                                                        "width": "100%",
-                                                        "position": "relative",
-                                                        "opacity": "80%",
-                                                    },
-                                                ),
-                                            ]
-                                        ),
-                                    ],
-                                    style={"width": "40%"},
-                                ),
-                                html.Div(
-                                    [
-                                        html.Div(
-                                            [
-                                                html.Label(
-                                                    id="choose_product",
-                                                    style={"margin": "10px"},
-                                                ),
-                                                drop_map,
-                                            ],
-                                            className="box",
-                                        ),
-                                        html.Div(
-                                            [
-                                                html.Div(
-                                                    [
-                                                        html.Label(
-                                                            "Emissions measured as kg of CO2 per kg of product",
-                                                            style={
-                                                                "font-size": "medium"
-                                                            },
-                                                        ),
-                                                        html.Br(),
-                                                        html.Br(),
-                                                        html.Div(
-                                                            [
-                                                                html.Div(
-                                                                    [
-                                                                        html.H4(
-                                                                            "Land use",
-                                                                            style={
-                                                                                "font-weight": "normal"
-                                                                            },
-                                                                        ),
-                                                                        html.H3(
-                                                                            id="land_use"
-                                                                        ),
-                                                                    ],
-                                                                    className="box_emissions",
-                                                                ),
-                                                                html.Div(
-                                                                    [
-                                                                        html.H4(
-                                                                            "Animal Feed",
-                                                                            style={
-                                                                                "font-weight": "normal"
-                                                                            },
-                                                                        ),
-                                                                        html.H3(
-                                                                            id="animal_feed"
-                                                                        ),
-                                                                    ],
-                                                                    className="box_emissions",
-                                                                ),
-                                                                html.Div(
-                                                                    [
-                                                                        html.H4(
-                                                                            "Farm",
-                                                                            style={
-                                                                                "font-weight": "normal"
-                                                                            },
-                                                                        ),
-                                                                        html.H3(
-                                                                            id="farm"
-                                                                        ),
-                                                                    ],
-                                                                    className="box_emissions",
-                                                                ),
-                                                                html.Div(
-                                                                    [
-                                                                        html.H4(
-                                                                            "Processing",
-                                                                            style={
-                                                                                "font-weight": "normal"
-                                                                            },
-                                                                        ),
-                                                                        html.H3(
-                                                                            id="processing"
-                                                                        ),
-                                                                    ],
-                                                                    className="box_emissions",
-                                                                ),
-                                                                html.Div(
-                                                                    [
-                                                                        html.H4(
-                                                                            "Transport",
-                                                                            style={
-                                                                                "font-weight": "normal"
-                                                                            },
-                                                                        ),
-                                                                        html.H3(
-                                                                            id="transport"
-                                                                        ),
-                                                                    ],
-                                                                    className="box_emissions",
-                                                                ),
-                                                                html.Div(
-                                                                    [
-                                                                        html.H4(
-                                                                            "Packaging",
-                                                                            style={
-                                                                                "font-weight": "normal"
-                                                                            },
-                                                                        ),
-                                                                        html.H3(
-                                                                            id="packging"
-                                                                        ),
-                                                                    ],
-                                                                    className="box_emissions",
-                                                                ),
-                                                                html.Div(
-                                                                    [
-                                                                        html.H4(
-                                                                            "Retail",
-                                                                            style={
-                                                                                "font-weight": "normal"
-                                                                            },
-                                                                        ),
-                                                                        html.H3(
-                                                                            id="retail"
-                                                                        ),
-                                                                    ],
-                                                                    className="box_emissions",
-                                                                ),
-                                                            ],
-                                                            style={"display": "flex"},
-                                                        ),
-                                                    ],
-                                                    className="box",
-                                                    style={"heigth": "10%"},
-                                                ),
-                                                html.Div(
-                                                    [
-                                                        html.Div(
-                                                            [
-                                                                html.Div(
-                                                                    [
-                                                                        html.Br(),
-                                                                        html.Label(
-                                                                            id="title_map",
-                                                                            style={
-                                                                                "font-size": "medium"
-                                                                            },
-                                                                        ),
-                                                                        html.Br(),
-                                                                        html.Label(
-                                                                            "These quantities refer to the raw material used to produce the product selected above",
-                                                                            style={
-                                                                                "font-size": "9px"
-                                                                            },
-                                                                        ),
-                                                                    ],
-                                                                    style={
-                                                                        "width": "70%"
-                                                                    },
-                                                                ),
-                                                                html.Div(
-                                                                    [],
-                                                                    style={
-                                                                        "width": "5%"
-                                                                    },
-                                                                ),
-                                                                html.Div(
-                                                                    [
-                                                                        drop_continent,
-                                                                        html.Br(),
-                                                                        html.Br(),
-                                                                    ],
-                                                                    style={
-                                                                        "width": "25%"
-                                                                    },
-                                                                ),
-                                                            ],
-                                                            className="row",
-                                                        ),
-                                                        dcc.Graph(
-                                                            id="map",
-                                                            style={
-                                                                "position": "relative",
-                                                                "top": "-50px",
-                                                            },
-                                                        ),
-                                                        html.Div(
-                                                            [slider_map],
-                                                            style={
-                                                                "margin-left": "15%",
-                                                                "position": "relative",
-                                                                "top": "-38px",
-                                                            },
-                                                        ),
-                                                    ],
-                                                    className="box",
-                                                    style={"padding-bottom": "0px"},
-                                                ),
-                                            ]
-                                        ),
-                                    ],
-                                    style={"width": "60%"},
-                                ),
-                            ],
-                            className="row",
+                        html.P(
+                            "Để tìm tìm nguyên nhân di cư, trước tiên ta cần xem xét phân tích hiện trạng di cư. Theo số liệu di cư năm 2021 của TCTK, tình trạng di cư tại các tỉnh thành phố tại Việt Nam như sau:",
+                            className="control_label",
+                            style={"text-align": "justify"},
                         ),
-                        html.Div(
-                            [
-                                html.Div(
-                                    [
-                                        html.Label(
-                                            "3. Global greenhouse gas emissions from food production, in percentage",
-                                            style={"font-size": "medium"},
-                                        ),
-                                        html.Br(),
-                                        html.Label(
-                                            "Click on it to know more!",
-                                            style={"font-size": "9px"},
-                                        ),
-                                        html.Br(),
-                                        html.Br(),
-                                        dcc.Graph(figure=fig_gemissions),
-                                    ],
-                                    className="box",
-                                    style={"width": "40%"},
-                                ),
-                                html.Div(
-                                    [
-                                        html.Label(
-                                            "4. Freshwater withdrawals per kg of product, in Liters",
-                                            style={"font-size": "medium"},
-                                        ),
-                                        html.Br(),
-                                        html.Label(
-                                            "Click on it to know more!",
-                                            style={"font-size": "9px"},
-                                        ),
-                                        html.Br(),
-                                        html.Br(),
-                                        dcc.Graph(figure=fig_water),
-                                    ],
-                                    className="box",
-                                    style={"width": "63%"},
-                                ),
-                            ],
-                            className="row",
+                        html.P(),
+                        html.P(
+                            "Chọn số liệu",
+                            className="control_label",
+                            style={"text-align": "center", "font-weight": "bold"},
                         ),
+                        radio_food_behaviour,
+                    ],
+                    className="pretty_container four columns",
+                    id="cross-filter-options",
+                    style={"text-align": "justify"},
+                ),
+                html.Div(
+                    [
                         html.Div(
-                            [
-                                html.Div(
-                                    [
-                                        html.P(
-                                            [
-                                                "GroupV",
-                                                html.Br(),
-                                                "Ana Carrelha (20200631), Inês Melo (20200624), Inês Roque (20200644), Ricardo Nunes(20200611)",
-                                            ],
-                                            style={"font-size": "12px"},
-                                        ),
-                                    ],
-                                    style={"width": "60%"},
-                                ),
-                                html.Div(
-                                    [
-                                        html.P(
-                                            [
-                                                "Sources ",
-                                                html.Br(),
-                                                html.A(
-                                                    "Our World in Data",
-                                                    href="https://ourworldindata.org/",
-                                                    target="_blank",
-                                                ),
-                                                ", ",
-                                                html.A(
-                                                    "Food and Agriculture Organization of the United Nations",
-                                                    href="http://www.fao.org/faostat/en/#data",
-                                                    target="_blank",
-                                                ),
-                                            ],
-                                            style={"font-size": "12px"},
-                                        )
-                                    ],
-                                    style={"width": "37%"},
-                                ),
-                            ],
-                            className="footer",
-                            style={"display": "flex"},
+                            [dcc.Graph(id="choropleth")],
+                            className="pretty_container",
                         ),
                     ],
-                    className="main",
+                    id="right-column",
+                    className="eight columns",
                 ),
-            ]
+            ],
+            className="row flex-display",
         ),
-    ]
+        html.Div(
+            [
+                html.H5(
+                    "Đặc điểm người di cư",
+                    style={
+                        "margin-top": "0",
+                        "font-weight": "bold",
+                        "text-align": "center",
+                    },
+                ),
+                html.Div(
+                    [html.Div(
+                        [
+                            html.P("1. Tuổi",
+                                   className="control_label",
+                                   style={"text-align": "center", "font-weight": "bold"},
+                                   ),
+                            html.Div(
+                                [dcc.Graph(figure=age_fig)],
+                                className="bare_container"
+                            ),
+                        ],
+                        className="bare_container six columns",
+                    ),
+                        html.Div(
+                            [
+                                html.P("2. Hôn nhân",
+                                       className="control_label",
+                                       style={"text-align": "center", "font-weight": "bold"},
+                                       ),
+                                html.Div(
+                                    [dcc.Graph(figure=married_fig)],
+                                    className="bare_container"
+                                ),
+                            ],
+                            className="bare_container six columns",
+                        ),
+                    ],
+                    className="row no_border_container",
+                ),
+                html.Div(
+                    [html.Div(
+                        [
+                            html.P("3. Giới tính",
+                                   className="control_label",
+                                   style={"text-align": "center", "font-weight": "bold"},
+                                   ),
+                            html.Div(
+                                [dcc.Graph(figure=gender_fig)],
+                                className="bare_container"
+                            ),
+                        ],
+                        className="bare_container three columns",
+                    ),
+                        html.Div(
+                            [
+                                html.P("4. Trình độ chuyên môn",
+                                       className="control_label",
+                                       style={"text-align": "center", "font-weight": "bold"},
+                                       ),
+                                html.Div(
+                                    [dcc.Graph(figure=training_fig)],
+                                    className="bare_container"
+                                ),
+                            ],
+                            className="bare_container five columns",
+                        ),
+                        html.Div(
+                            [
+                                html.P("5. Trình độ văn hóa",
+                                       className="control_label",
+                                       style={"text-align": "center", "font-weight": "bold"},
+                                       ),
+                                html.Div(
+                                    [dcc.Graph(figure=school_fig)],
+                                    className="bare_container"
+                                ),
+                            ],
+                            className="bare_container four columns",
+                        ),
+                    ],
+                    className="row no_border_container",
+                ),
+            ],
+            className="pretty_container",
+        ),
+        html.Div(
+            [
+                html.Div(
+                    [
+                        html.H6(
+                            "Tương quan giữa di cư và kinh tế - giáo dục",
+                            style={
+                                "margin-top": "0",
+                                "font-weight": "bold",
+                                "text-align": "center",
+                            },
+                        ),
+                        dcc.RadioItems(
+                            id="yaxis-type",
+                            options=[
+                                {"label": i, "value": i}
+                                for i in ["Kinh tế", "Giáo dục"]
+                            ],
+                            value="Kinh tế",
+                            labelStyle={"display": "inline-block"},
+                            style={"padding-left": "43%"},
+                        ),
+
+                        html.Div(
+                            [html.Div(
+                                [dcc.Graph(id="indicator-graphic")],
+                                className="no_border_container twelve columns",
+                            ),
+                            ],
+                            className="row no_border_container",
+                        ),
+                    ],
+                    className="no_border_container twelve columns",
+                ),
+            ],
+            className="row pretty_container",
+        ),
+        html.Div(
+            [
+                html.Div(
+                    className="no_border_container two columns",
+                ),
+                html.Div(
+                    [
+                        html.P("Kết quả khảo sát lý do di cư theo tổng điều tra dân số và nhà ở năm 2019",
+                               className="control_label",
+                               style={"text-align": "center", "font-weight": "bold"},
+                               ),
+                        html.Div(
+                            [dcc.Graph(figure=reason_fig)],
+                            className="bare_container"
+                        ),
+                    ],
+                    className="no_border_container eight columns",
+                ),
+                html.Div(
+                    className="no_border_container two columns",
+                ),
+            ],
+            className="row pretty_container",
+        ),
+        html.Div(
+            [
+                html.H6(
+                    "Người thực hiện",
+                    style={
+                        "margin-top": "0",
+                        "font-weight": "bold",
+                        "text-align": "center",
+                    },
+                ),
+                html.P(
+                    "Đào Thị Thu Hồng (21007975)  -  Lê Kim Dũng (21007978)",
+                    style={"text-align": "center", "font-size": "10pt"},
+                ),
+            ],
+            className="pretty_container",
+        ),
+        html.Div(
+            [
+                html.H6(
+                    "Số liệu \n",
+                    style={
+                        "margin-top": "0",
+                        "font-weight": "bold",
+                        "text-align": "center",
+                    },
+                ),
+                dcc.Markdown(
+                    """\
+                         1.	Số liệu tổng cục thống kê: https://www.gso.gov.vn/
+                         2.	Số liệu tổng điều tra dân số và nhà ở 2019: https://www.gso.gov.vn/tong-dieu-tra-dan-so-va-nha-o/
+                         3. Dữ liệu địa không gian được sưu tầm tại trang web của tổ chức Sáng kiến phát triển mở Việt Nam (Open Development Vietnam – ODV): https://vietnam.opendevelopmentmekong.net/vi/about-us/.
+                        """,
+                    style={"font-size": "10pt"},
+                ),
+            ],
+            className="pretty_container",
+        ),
+    ],
+    id="mainContainer",
+    style={"display": "flex", "flex-direction": "column"},
 )
 
 
-# ------------------------------------------------------ Callbacks ------------------------------------------------------
-
+####
+@app.callback(Output("choropleth", "figure"), [Input("nutrition_types", "value")])
+def display_choropleth(candi):
+    midpoint = None
+    colors = ["blue", 'white', "red"]
+    if candi == 'nhap_cu_2021':
+        colors = ['white', "red"]
+    if candi == 'xuat_cu_2021':
+        colors = ['white', "blue"]
+    if candi == 'di_cu_2021':
+        midpoint = 0
+    fig = px.choropleth_mapbox(
+        vn_tctk,
+        geojson=vn_map,
+        color=candi,
+        locations="Name",
+        featureidkey="properties.Name",
+        hover_name="Name_v",
+        opacity=0.7,
+        hover_data = {'Name':False},
+        center={"lat": 16, "lon": 106},
+        zoom=4.3,
+        labels=labels_,
+        color_continuous_scale=colors,
+        color_continuous_midpoint=midpoint,
+        # hoverinfo = "z"
+    )
+    fig.update_layout(
+        margin={"r": 0, "t": 0, "l": 0, "b": 0}, mapbox_accesstoken=mapbox_access_token,
+        legend=dict(title=food_options_[candi])
+    )
+    # fig.update_traces(hovertemplate="%{location}: %{z}", selector=dict(type='choroplethmapbox'))
+    return fig
 
 @app.callback(
-    [
-        Output("title_bar", "children"),
-        Output("bar_fig", "figure"),
-        Output("comment", "children"),
-        Output("drop_map", "options"),
-        Output("drop_map", "value"),
-        Output("choose_product", "children"),
-    ],
-    [Input("ani_veg", "value")],
+    Output("indicator-graphic", "figure"),
+    Input("yaxis-type", "value"),
 )
-def bar_chart(top10_select):
-
-    ################## Top10 Plot ##################
-    title = "1. Greenhouse emissions (kg CO2 per kg of product)"
-    df = bar_options[top10_select]
-
-    if top10_select == 2:
-        bar_fig = dict(
-            type="bar",
-            x=df.Total_emissions,
-            y=df["Food product"],
-            orientation="h",
-            marker_color=["#ebb36a" if x == "Animal" else "#6dbf9c" for x in df.Origin],
+def update_graph(yaxis_type):
+    dat = vn_tctk.sort_values(by='di_cu_2021')
+    if yaxis_type == "Kinh tế":
+        fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần (2021)", "Thu nhập (2021)", "Vốn đầu tư nước ngoài (2021)"))
+        fig.add_trace(
+            go.Bar(y=dat["Name_v"], x=dat["thu_nhap_2021"] / 1000, orientation='h', marker=dict(color='blue')),
+            row=1, col=2
         )
-    else:
-        bar_fig = dict(
-            type="bar",
-            x=df.Total_emissions,
-            y=df["Food product"],
-            orientation="h",
-            marker_color=bar_colors[top10_select],
+        fig.add_trace(
+            go.Bar(y=dat["Name_v"], x=dat["von_DTNN_2021"] / 1000, orientation='h', marker=dict(color='blue')),
+            row=1, col=3
         )
+        fig.update_layout(xaxis1=dict(title='Tỉ lệ di cư (\u2030)'),
+                          xaxis2=dict(title='Thu nhập bình quân (triệu/tháng)'), xaxis3=dict(title='Vốn đầu tư nước ngoài (tỉ USD)'))
 
-    ################## Dropdown Bar ##################
-    if top10_select == 0:
-        options_return = options_an
-        product_chosen = "2. Choose an animal product:"
-        comment = [
-            "Look at the beef production emissions! Each kilogram of beef produces almost 60 kg of CO2.",
-            html.Br(),
-            html.Br(),
-        ]
-    elif top10_select == 1:
-        options_return = options_veg
-        product_chosen = "2. Choose a vegetal product:"
-        comment = [
-            "Did you know that dark chocolate and coffee are the vegetal-based products that emit more gases?",
-            html.Br(),
-            html.Br(),
-        ]
     else:
-        options_return = options_total
-        product_chosen = "2. Choose an animal or vegetal product:"
-        comment = "Check the difference between animal and vegetal-based products! Beef (top1 animal-based emitter) produces around 3 times more emissions than dark chocolate (top1 plant-based emitter)."
+        fig = make_subplots(rows=1, cols=3, subplot_titles=("Di cư thuần", "Sinh viên đại học", "Sinh viên nghề"))
 
-    return (
-        title,
-        go.Figure(
-            data=bar_fig,
-            layout=dict(
-                height=300,
-                font_color="#363535",
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
-                margin=dict(l=20, r=20, t=30, b=20),
-                margin_pad=10,
-            ),
-        ),
-        comment,
-        options_return,
-        options_return[0]["value"],
-        product_chosen,
+        fig.add_trace(
+            go.Bar(y=dat["Name_v"], x=dat["SV_DH_2020"] / 1000, orientation='h', marker=dict(color='blue')),
+            row=1, col=2
+        )
+        fig.add_trace(
+            go.Bar(y=dat["Name_v"], x=dat["SV_nghe_2020"] / 1000, orientation='h', marker=dict(color='blue')),
+            row=1, col=3
+        )
+        fig.update_layout(xaxis1=dict(title='Tỉ lệ di cư (\u2030)'), xaxis2=dict(title='Sinh viên đại học (nghìn)'),
+                          xaxis3=dict(title='Sinh viên nghề (nghìn)'))
+    colors = []
+
+    for i in range(63):
+        if dat.iloc[i, 3] < 0:
+            colors.append('blue')
+        else:
+            colors.append('red')
+    fig.add_trace(
+        go.Bar(y=dat["Name_v"], x=dat['di_cu_2021'], orientation='h', marker=dict(color=colors)),
+        row=1, col=1
     )
+    fig.update_yaxes(tickfont_size=7, showgrid=True, gridwidth=0.5, gridcolor='LightGrey', showline=True, linewidth=1,
+                     linecolor='black', mirror=True)
+    fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=True, showgrid=True, gridwidth=1, gridcolor='LightGrey')
+    fig.update_layout(height=750, yaxis2=dict(color='white'), yaxis3=dict(color='white'),
+                      showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+    fig.update_traces(hovertemplate='<extra>(%{y}, %{x})</extra>')
+    return fig
 
 
-@app.callback(
-    [Output("slider_map", "max"), Output("slider_map", "value"),],
-    [Input("drop_map", "value")],
-)
-def update_slider(product):
-    year = productions[productions["Item"] == product]["Year"].max()
-    return year, year
-
-
-@app.callback(
-    [
-        Output("land_use", "children"),
-        Output("animal_feed", "children"),
-        Output("farm", "children"),
-        Output("processing", "children"),
-        Output("transport", "children"),
-        Output("packging", "children"),
-        Output("retail", "children"),
-        Output("title_map", "children"),
-        Output("map", "figure"),
-    ],
-    [
-        Input("drop_map", "value"),
-        Input("slider_map", "value"),
-        Input("drop_continent", "value"),
-    ],
-    [State("drop_map", "options")],
-)
-def update_map(drop_map_value, year, continent, opt):
-
-    ################## Emissions datset ##################
-
-    the_label = [x["label"] for x in opt if x["value"] == drop_map_value]
-
-    data_emissions = emissions[emissions["Food product"] == the_label[0]]
-    land_use_str = str(np.round(data_emissions["Land use change"].values[0], 2))
-    animal_feed_str = str(np.round(data_emissions["Animal Feed"].values[0], 2))
-    farm_str = str(np.round(data_emissions["Farm"].values[0], 2))
-    processing_str = str(np.round(data_emissions["Processing"].values[0], 2))
-    transport_str = str(np.round(data_emissions["Transport"].values[0], 2))
-    packging_str = str(np.round(data_emissions["Packging"].values[0], 2))
-    retail_str = str(np.round(data_emissions["Retail"].values[0], 2))
-
-    ################## Choroplet Plot ##################
-
-    prod1 = productions[
-        (productions["Item"] == drop_map_value) & (productions["Year"] == year)
-    ]
-
-    title = "Production quantities of {}, by country".format(
-        prod1["Item"].unique()[0]
-    )  # font_color = '#363535',
-    data_slider = []
-    data_each_yr = dict(
-        type="choropleth",
-        locations=prod1["Area"],
-        locationmode="country names",
-        autocolorscale=False,
-        z=np.log(prod1["Value"].astype(float)),
-        zmin=0,
-        zmax=np.log(productions[productions["Item"] == drop_map_value]["Value"].max()),
-        colorscale=["#ffe2bd", "#006837"],
-        marker_line_color="rgba(0,0,0,0)",
-        colorbar={"title": "Tonnes (log)"},  # Tonnes in logscale
-        colorbar_lenmode="fraction",
-        colorbar_len=0.8,
-        colorbar_x=1,
-        colorbar_xanchor="left",
-        colorbar_y=0.5,
-        name="",
-    )
-    data_slider.append(data_each_yr)
-
-    layout = dict(
-        geo=dict(
-            scope=continent,
-            projection={"type": "natural earth"},
-            bgcolor="rgba(0,0,0,0)",
-        ),
-        margin=dict(l=0, r=0, b=0, t=30, pad=0),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-    )
-
-    fig_choropleth = go.Figure(data=data_slider, layout=layout)
-    fig_choropleth.update_geos(
-        showcoastlines=False, showsubunits=False, showframe=False
-    )
-
-    return (
-        land_use_str,
-        animal_feed_str,
-        farm_str,
-        processing_str,
-        transport_str,
-        packging_str,
-        retail_str,
-        title,
-        fig_choropleth,
-    )
-
+server = app.server
 
 if __name__ == "__main__":
     app.run_server(debug=True)
