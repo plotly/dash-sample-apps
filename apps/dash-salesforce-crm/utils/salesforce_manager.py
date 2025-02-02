@@ -3,8 +3,7 @@ from simple_salesforce.exceptions import SalesforceExpiredSession
 import pandas as pd
 import os
 
-
-class sf_Manager:
+class SalesforceManager:
     def __init__(self):
         # Create a free SalesForce account: https://developer.salesforce.com/signup
         self.sf = Salesforce(
