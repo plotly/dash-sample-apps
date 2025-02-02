@@ -1,0 +1,124 @@
+
+body {
+    font-size: 1.5rem; /* currently ems cause chrome bug misinterpreting rems on body element */
+    line-height: 1.6;
+    font-weight: 400;
+    font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #7fafdf;
+    margin: 0;
+    background-color: #1f2630;
+    padding: 10px;
+
+}
+
+
+.card {
+    background-color: #262D3D;
+    padding: 20px 30px;
+}
+
+
+
+/* Dropdown
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.Select-value {
+    cursor: pointer;
+}
+
+.Select-control {
+    color: #7fafdf !important;
+}
+
+.Select {
+    color: #7fafdf !important;
+}
+
+.Select-menu-outer {
+    background-color: #252e3f !important;
+    border: 1px solid #7fafdf !important;
+}
+
+.Select div {
+    background-color: #252e3f !important;
+}
+
+.Select-menu-outer div:hover {
+    background-color: rgba(255, 255, 255, 0.01) !important;
+    cursor: pointer;
+}
+
+.Select-value-label {
+    color: #7fafdf !important;
+}
+
+.Select--single > .Select-control .Select-value, .Select-placeholder {
+    border: 1px solid #7fafdf !important;
+    border-radius: 4px !important;
+}
+
+/* Header */
+.header {
+    display: flex;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-bottom: 1%;
+    font-family: playfair display, sans-serif;
+    font-weight: bold;
+}
+
+.header .header-title {
+    font-size: 5vh;
+}
+
+.subheader-title {
+    font-size: 1.5vh;
+    border-left: #2cfec1 solid 1rem;
+    padding-left: 1rem;
+    max-width: 60rem;
+    word-wrap: break-word;
+}
+
+.header-logos {
+    margin-left: auto;
+    align-self: center !important;
+}
+.header-logos img {
+    margin-left: 3vh !important;
+    max-height: 5vh;
+}
+
+/* Demo button css */
+.demo-button {
+    font-size: 1.5vh;
+    font-family: Open Sans, sans-serif;
+    text-decoration: none;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-radius: 8px;
+    font-weight: 700;
+    -webkit-padding-start: 1rem;
+    padding-inline-start: 1rem;
+    -webkit-padding-end: 1rem;
+    padding-inline-end: 1rem;
+    color: #ffffff;
+    letter-spacing: 1.5px;
+    border: solid 1.5px transparent;
+    box-shadow: 2px 1000px 1px #0c0c0c inset;
+    background-image: linear-gradient(135deg, #7A76FF, #7A76FF, #7FE4FF);
+    -webkit-background-size: 200% 100%;
+    background-size: 200% 100%;
+    -webkit-background-position: 99%;
+    background-position: 99%;
+    background-origin: border-box;
+    transition: all .4s ease-in-out;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    vertical-align: super;
+}
+
+.demo-button:hover {
+    color: #7A76FF;
+    background-position: 0%;
+} 
