@@ -31,7 +31,7 @@ _Dash's Live Model Training Viewer_ is a compact visualization app that monitors
 - **Plotly Graphs and Dash Integration**: Easily integrate the app into more complex Dash Apps, and includes all the tools found in Plotly graphs.
 
 Here is a flowchart of the process from model training to visualization:
-![flowchart](https://raw.githubusercontent.com/plotly/dash-live-model-training/master/images/flowchart.png)
+![flowchart](assets/github/flowchart.png)
 
 At the moment, the logging only works for iterative Tensorflow models. We are planning to extend it for PyTorch. You are encouraged to port the logging function (which is a simple csv logging) to Keras, Tensorflow's high-level API, MXNet, etc.
 

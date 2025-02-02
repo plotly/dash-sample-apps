@@ -1,7 +1,5 @@
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import Dash, html, dcc, Input, Output, State, callback, callback_context
 import pandas as pd
-from dash.dependencies import Input, Output, State
 import pathlib
 
 # get relative data folder

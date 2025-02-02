@@ -1,10 +1,8 @@
 import dash
 import pathlib
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import Dash, html, dcc, Input, Output, State, callback, callback_context
 import pandas as pd
 import plotly.graph_objs as go
-from dash.dependencies import Input, Output
 from plotly import tools
 
 from demo_utils import demo_callbacks, demo_explanation
