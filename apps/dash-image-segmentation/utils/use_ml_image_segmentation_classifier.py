@@ -14,9 +14,9 @@ Note that currently only png format is supported for output images.
 """
 
 import os
-import plot_common
-import shapes_to_segmentations
-from trainable_segmentation import multiscale_basic_features, predict_segmenter
+import utils.plot_common as plot_common
+import utils.shapes_to_segmentations as shapes_to_segmentations
+from utils.trainable_segmentation import multiscale_basic_features, predict_segmenter
 import pickle
 import base64
 import io
