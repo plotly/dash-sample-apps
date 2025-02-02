@@ -1,10 +1,7 @@
-import pathlib
 import sqlite3
 import pandas as pd
 
-
-DB_FILE = pathlib.Path(__file__).resolve().parent.joinpath("wind-data.db").resolve()
-
+from constants import DB_FILE
 
 def get_wind_data(start, end):
     """
